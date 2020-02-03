@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FakeItEasy" Version="6.0.0" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="System.IO.Abstractions" Version="8.0.3" />
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="8.0.3" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="XunitXml.TestLogger" Version="2.1.26" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Config\CreativeCoders.Config.Base\CreativeCoders.Config.Base.csproj" />
+    <ProjectReference Include="..\..\Config\CreativeCoders.Config.Sources\CreativeCoders.Config.Sources.csproj" />
+    <ProjectReference Include="..\..\Config\CreativeCoders.Config\CreativeCoders.Config.csproj" />
+    <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+    <ProjectReference Include="..\..\Di\CreativeCoders.Di.Autofac\CreativeCoders.Di.Autofac.csproj" />
+    <ProjectReference Include="..\..\Di\CreativeCoders.Di.MsServiceProvider\CreativeCoders.Di.MsServiceProvider.csproj" />
+    <ProjectReference Include="..\..\Di\CreativeCoders.Di.SimpleInjector\CreativeCoders.Di.SimpleInjector.csproj" />
+    <ProjectReference Include="..\..\Di\CreativeCoders.Di\CreativeCoders.Di.csproj" />
+    <ProjectReference Include="..\..\Logging\CreativeCoders.Logging.Console\CreativeCoders.Logging.Console.csproj" />
+    <ProjectReference Include="..\..\Logging\CreativeCoders.Logging.DebuggerOutput\CreativeCoders.Logging.DebuggerOutput.csproj" />
+    <ProjectReference Include="..\..\Logging\CreativeCoders.Logging.Delegate\CreativeCoders.Logging.Delegate.csproj" />
+    <ProjectReference Include="..\..\Logging\CreativeCoders.Logging.Log4net\CreativeCoders.Logging.Log4net.csproj" />
+    <ProjectReference Include="..\..\Logging\CreativeCoders.Logging.Nlog\CreativeCoders.Logging.Nlog.csproj" />
+    <ProjectReference Include="..\..\Validation\CreativeCoders.Validation\CreativeCoders.Validation.csproj" />
+    <ProjectReference Include="..\CreativeCoders.UnitTests\CreativeCoders.UnitTests.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d">
+    
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    
+    <!-- <fluentRibbon:RibbonItemTemplateSelector x:Key="ItemTemplateSelector"> -->
+    <!--     <fluentRibbon:RibbonItemTemplateSelector.ButtonTemplate> -->
+    <!--         <DataTemplate DataType="controls:RibbonButtonViewModel"> -->
+    <!--             <fluent:Button Header="{Binding Text}" /> -->
+    <!--         </DataTemplate> -->
+    <!--     </fluentRibbon:RibbonItemTemplateSelector.ButtonTemplate> -->
+    <!--     <fluentRibbon:RibbonItemTemplateSelector.CheckBoxTemplate> -->
+    <!--         <DataTemplate DataType="controls:RibbonCheckBoxViewModel"> -->
+    <!--             <fluent:CheckBox Header="{Binding Text}" IsChecked="{Binding IsChecked}" /> -->
+    <!--         </DataTemplate> -->
+    <!--     </fluentRibbon:RibbonItemTemplateSelector.CheckBoxTemplate> -->
+    <!-- </fluentRibbon:RibbonItemTemplateSelector> -->
+    <!-- -->
+    <!-- <Style TargetType="fluent:RibbonTabItem" d:DataContext="{ribbon:RibbonTabViewModel}"> -->
+    <!--     <Setter Property="Header" Value="{Binding Text}" /> -->
+    <!--     <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" /> -->
+    <!--     <Setter Property="fluentRibbon:FluentRibbonTabExtensions.RibbonTabGroups" Value="{Binding Groups}" /> -->
+    <!-- </Style> -->
+    <!-- -->
+    <!-- <Style TargetType="fluent:RibbonGroupBox" d:DataContext="{ribbon:RibbonBarViewModel}"> -->
+    <!--     <Setter Property="Header" Value="{Binding Text}" /> -->
+    <!--     <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" /> -->
+    <!--     <Setter Property="ItemsSource" Value="{Binding Items}" /> -->
+    <!--     <Setter Property="ItemTemplateSelector" Value="{StaticResource ItemTemplateSelector}" /> -->
+    <!-- </Style> -->
+    
+</ResourceDictionary>

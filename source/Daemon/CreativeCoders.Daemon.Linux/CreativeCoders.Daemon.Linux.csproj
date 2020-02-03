@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <Authors>CreativeCoders</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CreativeCoders.Daemon.Base\CreativeCoders.Daemon.Base.csproj" />
+    <ProjectReference Include="..\CreativeCoders.Daemon.Runner.Base\CreativeCoders.Daemon.Runner.Base.csproj" />
+  </ItemGroup>
+
+</Project>

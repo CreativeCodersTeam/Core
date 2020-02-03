@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <Authors>CreativeCoders</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NDatabase" Version="3.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+    <ProjectReference Include="..\CreativeCoders.Data\CreativeCoders.Data.csproj" />
+  </ItemGroup>
+
+</Project>
