@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <Authors>CreativeCoders</Authors>
+    <Description>File dialog services for MVVM</Description>
   </PropertyGroup>
 
   <ItemGroup>

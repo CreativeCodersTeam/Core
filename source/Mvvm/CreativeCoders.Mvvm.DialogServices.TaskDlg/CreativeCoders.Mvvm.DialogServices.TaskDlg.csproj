@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <Authors>CreativeCoders</Authors>
+    <Description>Base classes and types for task dialog</Description>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>CreativeCoders</Authors>
+    <Description>Default implementation of configuration system for CreativeCoders.Config.Base</Description>
   </PropertyGroup>
 
   <ItemGroup>

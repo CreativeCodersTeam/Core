@@ -5,11 +5,12 @@ using CreativeCoders.Config.Base;
 using CreativeCoders.Config.Base.Exceptions;
 using CreativeCoders.Core;
 using CreativeCoders.Core.IO;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace CreativeCoders.Config.Sources.Json
 {
-    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
+    [PublicAPI]
     public class JsonConfigurationSource<T> : IConfigurationSource<T>
         where T : class, new()
     {

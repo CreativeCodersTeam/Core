@@ -4,6 +4,7 @@
         <OutputType>Library</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <UseWPF>true</UseWPF>
+        <Description>FluentRibbon implementation for CreativeCoders.Mvvm.Ribbon</Description>
     </PropertyGroup>
 
     <ItemGroup>

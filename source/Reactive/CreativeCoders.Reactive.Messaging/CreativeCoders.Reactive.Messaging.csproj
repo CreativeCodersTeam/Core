@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>CreativeCoders</Authors>
+    <Description>Simple message topic implementation based on Reactive.net</Description>
   </PropertyGroup>
 
   <ItemGroup>

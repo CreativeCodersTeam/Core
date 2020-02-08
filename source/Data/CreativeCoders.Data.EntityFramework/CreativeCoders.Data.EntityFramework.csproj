@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
     <Authors>CreativeCoders</Authors>
+    <Description>Entity Framework implementation of a data repository for CreativeCoders.Data</Description>
   </PropertyGroup>
 
   <ItemGroup>

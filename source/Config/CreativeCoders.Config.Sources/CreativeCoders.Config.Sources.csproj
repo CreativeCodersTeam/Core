@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>CreativeCoders</Authors>
+    <Description>Configuration sources implementation for CreativeCoders.Config</Description>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.NukeBuild;
 using CreativeCoders.NukeBuild.BuildActions;
@@ -38,7 +39,7 @@ class Build : NukeBuild, IBuildInfo
 
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
 
-    const string LicenseUrl = "http://www.gnu.org/licenses/lgpl-3.0.txt";
+    const string PackageProjectUrl = "https://github.com/CreativeCodersTeam/Core"; 
 
     Target Clean => _ => _
         .Before(Restore)
@@ -65,7 +66,9 @@ class Build : NukeBuild, IBuildInfo
         .DependsOn(Clean)
         .DependsOn(RunTests)
         .UseBuildAction<PackBuildAction>(this, x => x
-            .SetPackageLicenseExpression(PackageLicenseExpressions.LGPL30Only));
+            .SetPackageLicenseExpression(PackageLicenseExpressions.LGPL30Only)
+            .SetPackageProjectUrl(PackageProjectUrl)
+            .SetCopyright($"{DateTime.Now.Year} CreativeCoders"));
 
     Target Rebuild => _ => _
         .DependsOn(Clean)

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>CreativeCoders</Authors>
+    <Description>Base implementation for the daemon runner</Description>
   </PropertyGroup>
 
   <ItemGroup>

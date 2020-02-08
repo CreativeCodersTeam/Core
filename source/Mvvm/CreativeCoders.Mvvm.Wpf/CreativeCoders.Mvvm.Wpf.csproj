@@ -4,6 +4,7 @@
         <OutputType>Library</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <UseWPF>true</UseWPF>
+        <Description>WPF specific base classes and type for MVVM</Description>
     </PropertyGroup>
 
     <ItemGroup>

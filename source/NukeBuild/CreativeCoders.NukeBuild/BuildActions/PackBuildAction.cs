@@ -13,6 +13,10 @@ namespace CreativeCoders.NukeBuild.BuildActions
         private string _packageLicenseUrl;
         
         private string _packageLicenseExpression;
+        
+        private string _packageProjectUrl;
+        
+        private string _copyright;
 
         public PackBuildAction()
         {
@@ -30,6 +34,8 @@ namespace CreativeCoders.NukeBuild.BuildActions
                 .EnableIncludeSymbols()
                 .SetOutputDirectory(BuildInfo.ArtifactsDirectory)
                 .SetVersion(BuildInfo.VersionInfo.NuGetVersionV2)
+                .FluentIf(!string.IsNullOrWhiteSpace(_copyright), x => x.SetCopyright(_copyright))
+                .FluentIf(!string.IsNullOrWhiteSpace(_packageProjectUrl), x => x.SetPackageProjectUrl(_packageProjectUrl))
                 .FluentIf(!string.IsNullOrEmpty(_packageLicenseUrl), x => x.SetPackageLicenseUrl(_packageLicenseUrl))
                 .FluentIf(!string.IsNullOrWhiteSpace(_packageLicenseExpression),
                     x => x.SetProperty("PackageLicenseExpression", _packageLicenseExpression))
@@ -53,6 +59,20 @@ namespace CreativeCoders.NukeBuild.BuildActions
         public PackBuildAction SetPackageLicenseExpression(string packageLicenseExpression)
         {
             _packageLicenseExpression = packageLicenseExpression;
+
+            return this;
+        }
+
+        public PackBuildAction SetPackageProjectUrl(string packageProjectUrl)
+        {
+            _packageProjectUrl = packageProjectUrl;
+
+            return this;
+        }
+
+        public PackBuildAction SetCopyright(string copyright)
+        {
+            _copyright = copyright;
 
             return this;
         }

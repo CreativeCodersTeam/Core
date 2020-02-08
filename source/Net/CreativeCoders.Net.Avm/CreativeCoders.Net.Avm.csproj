@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>CreativeCoders</Authors>
+    <Description>Remote access AVM Firtzbox. Support for TR064.</Description>
   </PropertyGroup>
 
   <ItemGroup>

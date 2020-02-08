@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>CreativeCoders</Authors>
     <LangVersion>latest</LangVersion>
+    <Description>Windows specific classes and types</Description>
   </PropertyGroup>
 
   <ItemGroup>

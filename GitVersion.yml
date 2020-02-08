@@ -33,6 +33,15 @@ branches:
     track-merge-target: false
     tracks-release-branches: false
     is-release-branch: false
+  release:
+    regex: release?[/-]
+    mode: ContinuousDeployment
+    tag: useBranchName
+    increment: Inherit
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: true
 ignore:
   sha: []
 merge-message-formats: {}
