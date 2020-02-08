@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Authors>CreativeCoders</Authors>
+    <Description>Base classes and types for MVVM Ribbon support</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+    <ProjectReference Include="..\CreativeCoders.Mvvm\CreativeCoders.Mvvm.csproj" />
+  </ItemGroup>
+
+</Project>

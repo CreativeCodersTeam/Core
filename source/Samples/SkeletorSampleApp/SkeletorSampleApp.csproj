@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Di\CreativeCoders.Di.SimpleInjector\CreativeCoders.Di.SimpleInjector.csproj" />
+      <ProjectReference Include="..\..\Mvvm\CreativeCoders.Mvvm.FileDialogService\CreativeCoders.Mvvm.FileDialogService.csproj" />
+      <ProjectReference Include="..\..\Mvvm\CreativeCoders.Mvvm.Skeletor\CreativeCoders.Mvvm.Skeletor.csproj" />
+      <ProjectReference Include="..\..\Mvvm\CreativeCoders.Mvvm\CreativeCoders.Mvvm.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SimpleInjector" Version="4.9.0" />
+    </ItemGroup>
+
+</Project>

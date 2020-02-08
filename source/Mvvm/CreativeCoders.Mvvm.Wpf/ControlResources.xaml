@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Thickness x:Key="ControlMargin" Left="8" Top="8" Right="8" Bottom="8" />
+    <Thickness x:Key="ControlMarginLeft" Left="8" Top="0" Right="0" Bottom="0" />
+    <Thickness x:Key="ControlMarginTop" Left="0" Top="8" Right="0" Bottom="0" />
+    <Thickness x:Key="ControlMarginRight" Left="0" Top="0" Right="8" Bottom="0" />
+    <Thickness x:Key="ControlMarginBottom" Left="0" Top="0" Right="0" Bottom="8" />
+    <Thickness x:Key="ControlMarginLeftTop" Left="8" Top="8" Right="0" Bottom="0" />
+    <Thickness x:Key="ControlMarginLeftBottom" Left="8" Top="0" Right="0" Bottom="8" />
+    <Thickness x:Key="ControlMarginLeftRight" Left="8" Top="0" Right="8" Bottom="0" />
+    <Thickness x:Key="ControlMarginRightTop" Left="0" Top="8" Right="8" Bottom="0" />
+    <Thickness x:Key="ControlMarginRightBottom" Left="0" Top="0" Right="8" Bottom="8" />
+    <Thickness x:Key="ControlMarginTopBottom" Left="0" Top="8" Right="0" Bottom="8" />
+</ResourceDictionary>

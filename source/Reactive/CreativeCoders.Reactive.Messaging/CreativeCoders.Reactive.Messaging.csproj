@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>CreativeCoders</Authors>
+    <Description>Simple message topic implementation based on Reactive.net</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reactive" Version="4.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+  </ItemGroup>
+
+</Project>

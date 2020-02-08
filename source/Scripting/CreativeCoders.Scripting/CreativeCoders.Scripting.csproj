@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>CreativeCoders</Authors>
+    <Description>Base classes and types for scripting</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CodeCompilation\CreativeCoders.CodeCompilation\CreativeCoders.CodeCompilation.csproj" />
+    <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+  </ItemGroup>
+
+</Project>

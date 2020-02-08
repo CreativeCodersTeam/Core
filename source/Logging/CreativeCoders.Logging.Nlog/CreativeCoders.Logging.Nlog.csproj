@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>CreativeCoders</Authors>
+    <Description>Nlog logger implementation for CreativeCoders.Core.Logging</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="4.6.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+  </ItemGroup>
+
+</Project>

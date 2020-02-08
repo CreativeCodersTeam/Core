@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>CreativeCoders</Authors>
+    <Description>Configuration sources implementation for CreativeCoders.Config</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+    <ProjectReference Include="..\CreativeCoders.Config.Base\CreativeCoders.Config.Base.csproj" />
+  </ItemGroup>
+
+</Project>

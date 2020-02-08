@@ -1,0 +1,53 @@
+﻿using System;
+
+namespace CreativeCoders.Core.Threading
+{
+    public class LockLockingMechanism : ILockingMechanism
+    {
+        private readonly object _lockObj;
+
+        public LockLockingMechanism()
+        {
+            _lockObj = this;
+        }
+
+        public LockLockingMechanism(object lockObject)
+        {
+            Ensure.IsNotNull(lockObject, nameof(lockObject));
+
+            _lockObj = lockObject;
+        }
+
+        public void Read(Action action)
+        {
+            lock (_lockObj)
+            {
+                action();
+            }
+        }
+
+        public T Read<T>(Func<T> func)
+        {
+            lock (_lockObj)
+            {
+                return func();
+            }
+        }
+
+        public void Write(Action action)
+        {
+            lock (_lockObj)
+            {
+                action();
+            }
+        }
+
+        public T Write<T>(Func<T> func)
+        {
+            lock (_lockObj)
+            {
+                return func();
+            }
+        }
+    }
+}

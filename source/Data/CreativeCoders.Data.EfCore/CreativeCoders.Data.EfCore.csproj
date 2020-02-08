@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>CreativeCoders</Authors>
+    <Description>Entity Framework Core implementation of a data repository for CreativeCoders.Data</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+    <ProjectReference Include="..\..\Di\CreativeCoders.Di\CreativeCoders.Di.csproj" />
+    <ProjectReference Include="..\CreativeCoders.Data\CreativeCoders.Data.csproj" />
+  </ItemGroup>
+
+</Project>

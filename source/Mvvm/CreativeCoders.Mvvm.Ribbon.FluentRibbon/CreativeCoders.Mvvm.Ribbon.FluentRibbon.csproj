@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <Description>FluentRibbon implementation for CreativeCoders.Mvvm.Ribbon</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Fluent.Ribbon" Version="7.0.1" />
+      <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CreativeCoders.Mvvm.Wpf\CreativeCoders.Mvvm.Wpf.csproj" />
+    </ItemGroup>
+
+</Project>
