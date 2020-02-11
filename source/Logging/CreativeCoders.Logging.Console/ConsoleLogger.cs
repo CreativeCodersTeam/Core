@@ -79,9 +79,9 @@ namespace CreativeCoders.Logging.Console
             Log(logLevel, obj?.ToString() ?? string.Empty);
         }
 
-        public void Log<T>(LogLevel logLevel, Func<T> messageFunc)
+        public void Log<T>(LogLevel logLevel, Func<T> getMessage)
         {
-            Log(logLevel, messageFunc());
+            Log(logLevel, getMessage());
         }
     }
 }

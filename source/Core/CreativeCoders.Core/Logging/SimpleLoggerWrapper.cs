@@ -44,9 +44,9 @@ namespace CreativeCoders.Core.Logging
             _loggerImpl.Log(logLevel, value);
         }
 
-        public void Log<T>(LogLevel logLevel, Func<T> messageFunc)
+        public void Log<T>(LogLevel logLevel, Func<T> getMessage)
         {
-            _loggerImpl.Log(logLevel, messageFunc);
+            _loggerImpl.Log(logLevel, getMessage);
         }
 
         public void Trace(string message)
@@ -69,9 +69,9 @@ namespace CreativeCoders.Core.Logging
             Log(LogLevel.Trace, value);
         }
 
-        public void Trace<T>(Func<T> messageFunc)
+        public void Trace<T>(Func<T> getMessage)
         {
-            Trace(messageFunc());
+            Trace(getMessage());
         }
 
         public void Debug(string message)
@@ -94,9 +94,9 @@ namespace CreativeCoders.Core.Logging
             Log(LogLevel.Debug, value);
         }
 
-        public void Debug<T>(Func<T> messageFunc)
+        public void Debug<T>(Func<T> getMessage)
         {
-            Debug(messageFunc());
+            Debug(getMessage());
         }
 
         public void Info(string message)
@@ -119,9 +119,9 @@ namespace CreativeCoders.Core.Logging
             Log(LogLevel.Info, value);
         }
 
-        public void Info<T>(Func<T> messageFunc)
+        public void Info<T>(Func<T> getMessage)
         {
-            Info(messageFunc());
+            Info(getMessage());
         }
 
         public void Warn(string message)
@@ -144,9 +144,9 @@ namespace CreativeCoders.Core.Logging
             Log(LogLevel.Warn, value);
         }
 
-        public void Warn<T>(Func<T> messageFunc)
+        public void Warn<T>(Func<T> getMessage)
         {
-            Warn(messageFunc());
+            Warn(getMessage());
         }
 
         public void Error(string message)
@@ -169,11 +169,11 @@ namespace CreativeCoders.Core.Logging
             Log(LogLevel.Error, value);
         }
 
-        public void Error<T>(Func<T> messageFunc)
+        public void Error<T>(Func<T> getMessage)
         {
             if (IsErrorEnabled)
             {
-                Error(messageFunc());
+                Error(getMessage());
             }
         }
 
@@ -197,11 +197,11 @@ namespace CreativeCoders.Core.Logging
             Log(LogLevel.Fatal, value);
         }
 
-        public void Fatal<T>(Func<T> messageFunc)
+        public void Fatal<T>(Func<T> getMessage)
         {
             if (IsFatalEnabled)
             {
-                Fatal(messageFunc());
+                Fatal(getMessage());
             }
         }
     }

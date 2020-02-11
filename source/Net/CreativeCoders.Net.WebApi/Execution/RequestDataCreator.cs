@@ -39,7 +39,7 @@ namespace CreativeCoders.Net.WebApi.Execution
                 RequestReturnType = _apiMethod.ReturnType,
                 DataObjectType = GetDataObjectType(),
                 DefaultDataFormatter = _apiData.DefaultDataFormatter,
-                GetBodyValue = GetBodyValueFunc(),
+                GetBodyValue = GetBodyValueFunction(),
                 CompletionOption = GetCompletionOption(),
                 CancellationToken = GetCancellationToken()
             };
@@ -80,7 +80,7 @@ namespace CreativeCoders.Net.WebApi.Execution
             }
         }
 
-        private Func<object> GetBodyValueFunc()
+        private Func<object> GetBodyValueFunction()
         {
             var body = _apiMethod.Body;
 

@@ -19,14 +19,14 @@ namespace CreativeCoders.Core
         }
         
         // ReSharper disable once UnusedParameter.Global
-        public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Func<TFluent> fluentFunc)
+        public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Func<TFluent> fluentFunction)
         {
-            return fluentFunc();
+            return fluentFunction();
         }
         
-        public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Func<TFluent, TFluent> fluentFunc)
+        public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Func<TFluent, TFluent> fluentFunction)
         {
-            return fluentFunc(fluentInterface);
+            return fluentFunction(fluentInterface);
         }
         
         public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Action fluentAction)
@@ -49,17 +49,17 @@ namespace CreativeCoders.Core
             return fluentInterface;
         }
         
-        public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Func<TFluent> fluentFunc)
+        public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Func<TFluent> fluentFunction)
         {
             return condition
-                ? fluentFunc()
+                ? fluentFunction()
                 : fluentInterface;
         }
         
-        public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Func<TFluent, TFluent> fluentFunc)
+        public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Func<TFluent, TFluent> fluentFunction)
         {
             return condition
-                ? fluentFunc(fluentInterface)
+                ? fluentFunction(fluentInterface)
                 : fluentInterface;
         }
     }

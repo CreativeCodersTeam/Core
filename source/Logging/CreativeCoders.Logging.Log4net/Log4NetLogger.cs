@@ -51,12 +51,12 @@ namespace CreativeCoders.Logging.Log4net
             _log.Log(LogLevelToLog4NetLogLevel(logLevel), value);
         }
 
-        public void Log<T>(LogLevel logLevel, Func<T> messageFunc)
+        public void Log<T>(LogLevel logLevel, Func<T> getMessage)
         {
             var log4NetLogLevel = LogLevelToLog4NetLogLevel(logLevel);
             if (_log.Logger.IsEnabledFor(log4NetLogLevel))
             {
-                _log.Log(log4NetLogLevel, messageFunc());
+                _log.Log(log4NetLogLevel, getMessage());
             }
         }
 
@@ -80,11 +80,11 @@ namespace CreativeCoders.Logging.Log4net
             _log.Trace(value);
         }
 
-        public void Trace<T>(Func<T> messageFunc)
+        public void Trace<T>(Func<T> getMessage)
         {
             if (IsTraceEnabled)
             {
-                _log.Trace(messageFunc());
+                _log.Trace(getMessage());
             }
         }
 
@@ -108,11 +108,11 @@ namespace CreativeCoders.Logging.Log4net
             _log.Debug(value);
         }
 
-        public void Debug<T>(Func<T> messageFunc)
+        public void Debug<T>(Func<T> getMessage)
         {
             if (IsDebugEnabled)
             {
-                _log.Debug(messageFunc());
+                _log.Debug(getMessage());
             }
         }
 
@@ -136,11 +136,11 @@ namespace CreativeCoders.Logging.Log4net
             _log.Info(value);
         }
 
-        public void Info<T>(Func<T> messageFunc)
+        public void Info<T>(Func<T> getMessage)
         {
             if (IsInfoEnabled)
             {
-                _log.Info(messageFunc());
+                _log.Info(getMessage());
             }
         }
 
@@ -164,11 +164,11 @@ namespace CreativeCoders.Logging.Log4net
             _log.Warn(value);
         }
 
-        public void Warn<T>(Func<T> messageFunc)
+        public void Warn<T>(Func<T> getMessage)
         {
             if (IsWarnEnabled)
             {
-                _log.Warn(messageFunc());
+                _log.Warn(getMessage());
             }
         }
 
@@ -192,11 +192,11 @@ namespace CreativeCoders.Logging.Log4net
             _log.Error(value);
         }
 
-        public void Error<T>(Func<T> messageFunc)
+        public void Error<T>(Func<T> getMessage)
         {
             if (IsErrorEnabled)
             {
-                _log.Error(messageFunc());
+                _log.Error(getMessage());
             }
         }
 
@@ -220,11 +220,11 @@ namespace CreativeCoders.Logging.Log4net
             _log.Fatal(value);
         }
 
-        public void Fatal<T>(Func<T> messageFunc)
+        public void Fatal<T>(Func<T> getMessage)
         {
             if (IsFatalEnabled)
             {
-                _log.Fatal(messageFunc());
+                _log.Fatal(getMessage());
             }
         }
 

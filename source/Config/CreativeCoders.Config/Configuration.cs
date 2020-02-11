@@ -54,12 +54,12 @@ namespace CreativeCoders.Config
                 .ToArray();
         }
 
-        private T InvokeWithExceptionHandling<T>(IConfigurationSource source, Func<IConfigurationSource, T> func)
+        private T InvokeWithExceptionHandling<T>(IConfigurationSource source, Func<IConfigurationSource, T> function)
             where T : class
         {
             try
             {
-                return func(source);
+                return function(source);
             }
             catch (Exception ex)
             {

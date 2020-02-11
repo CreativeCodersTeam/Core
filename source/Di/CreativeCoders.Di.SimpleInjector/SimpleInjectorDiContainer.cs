@@ -13,17 +13,17 @@ namespace CreativeCoders.Di.SimpleInjector
     {
         private readonly Container _container;
 
-        private readonly Func<Container, Scope> _beginScopeFunc;
+        private readonly Func<Container, Scope> _beginScope;
 
         public SimpleInjectorDiContainer(Container container) : this(container, AsyncScopedLifestyle.BeginScope) { }
 
-        public SimpleInjectorDiContainer(Container container, Func<Container, Scope> beginScopeFunc)
+        public SimpleInjectorDiContainer(Container container, Func<Container, Scope> beginScope)
         {
             Ensure.IsNotNull(container, nameof(container));
-            Ensure.IsNotNull(beginScopeFunc, nameof(beginScopeFunc));
+            Ensure.IsNotNull(beginScope, nameof(beginScope));
 
             _container = container;
-            _beginScopeFunc = beginScopeFunc;
+            _beginScope = beginScope;
         }
 
         public object GetService(Type serviceType)
@@ -107,8 +107,8 @@ namespace CreativeCoders.Di.SimpleInjector
 
         public IDiContainerScope CreateScope()
         {
-            var scope = _beginScopeFunc(_container);
-            var containerScope = new DiContainerScope(new SimpleInjectorDiContainer(scope.Container, _beginScopeFunc), () => scope.Dispose());
+            var scope = _beginScope(_container);
+            var containerScope = new DiContainerScope(new SimpleInjectorDiContainer(scope.Container, _beginScope), () => scope.Dispose());
             return containerScope;
         }
     }

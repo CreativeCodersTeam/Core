@@ -10,6 +10,6 @@ namespace CreativeCoders.Validation.Rules
 
         void SetFaultMessage(string message);
 
-        void SetCondition(Func<T, bool> conditionFunc);
+        void SetCondition(Func<T, bool> checkCondition);
     }
 }

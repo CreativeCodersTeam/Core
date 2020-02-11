@@ -65,13 +65,13 @@ namespace CreativeCoders.Logging.Delegate
             _logAction(logLevel, _scope, value.ToString());
         }
 
-        public void Log<T>(LogLevel logLevel, Func<T> messageFunc)
+        public void Log<T>(LogLevel logLevel, Func<T> getMessage)
         {
             if (!IsLogLevelEnabled(logLevel))
             {
                 return;
             }
-            _logAction(logLevel, _scope, messageFunc().ToString());
+            _logAction(logLevel, _scope, getMessage().ToString());
         }
 
         private bool IsLogLevelEnabled(LogLevel logLevel)

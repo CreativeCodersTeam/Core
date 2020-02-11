@@ -7,20 +7,20 @@ namespace CreativeCoders.Validation.ValidationSteps
     public class DelegatePropertyValidationStep<T, TProperty> : SimplePropertyValidationStepBase<T, TProperty>
         where T : class
     {
-        private readonly Func<TProperty, bool> _validateFunc;
+        private readonly Func<TProperty, bool> _validate;
 
-        public DelegatePropertyValidationStep(Func<TProperty, bool> validateFunc) : this(validateFunc, string.Empty)
+        public DelegatePropertyValidationStep(Func<TProperty, bool> validate) : this(validate, string.Empty)
         {
         }
 
-        public DelegatePropertyValidationStep(Func<TProperty, bool> validateFunc, string faultMessage) : base(faultMessage)
+        public DelegatePropertyValidationStep(Func<TProperty, bool> validate, string faultMessage) : base(faultMessage)
         {
-            _validateFunc = validateFunc;
+            _validate = validate;
         }
 
         protected override bool IsValid(TProperty propertyValue)
         {
-            return _validateFunc(propertyValue);
+            return _validate(propertyValue);
         }
     }
 }

@@ -6,13 +6,13 @@ namespace CreativeCoders.Core.Comparing
 {
     public class FuncEqualityComparer<T, TKey> : IEqualityComparer<T>
     {
-        private readonly Func<T, TKey> _keySelectorFunc;
+        private readonly Func<T, TKey> _keySelector;
 
-        public FuncEqualityComparer(Func<T, TKey> keySelectorFunc)
+        public FuncEqualityComparer(Func<T, TKey> keySelector)
         {
-            Ensure.IsNotNull(keySelectorFunc, nameof(keySelectorFunc));
+            Ensure.IsNotNull(keySelector, nameof(keySelector));
 
-            _keySelectorFunc = keySelectorFunc;
+            _keySelector = keySelector;
         }
 
         [SuppressMessage("ReSharper", "CompareNonConstrainedGenericWithNull")]
@@ -28,15 +28,15 @@ namespace CreativeCoders.Core.Comparing
                 return false;
             }
 
-            var xValue = _keySelectorFunc(x);
-            var yValue = _keySelectorFunc(y);
+            var xValue = _keySelector(x);
+            var yValue = _keySelector(y);
 
             return EqualityComparer<TKey>.Default.Equals(xValue, yValue);
         }
 
         public int GetHashCode(T obj)
         {
-            return _keySelectorFunc(obj)?.GetHashCode() ?? 0;
+            return _keySelector(obj)?.GetHashCode() ?? 0;
         }
     }
 }

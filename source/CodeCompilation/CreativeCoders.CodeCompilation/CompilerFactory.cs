@@ -5,18 +5,18 @@ namespace CreativeCoders.CodeCompilation
 {
     public class CompilerFactory : ICompilerFactory
     {
-        private readonly Func<ICompiler> _createCompilerFunc;
+        private readonly Func<ICompiler> _createCompiler;
 
-        public CompilerFactory(Func<ICompiler> createCompilerFunc)
+        public CompilerFactory(Func<ICompiler> createCompiler)
         {
-            Ensure.IsNotNull(createCompilerFunc, nameof(createCompilerFunc));
+            Ensure.IsNotNull(createCompiler, nameof(createCompiler));
 
-            _createCompilerFunc = createCompilerFunc;
+            _createCompiler = createCompiler;
         }
 
         public ICompiler CreateCompiler()
         {
-            return _createCompilerFunc();
+            return _createCompiler();
         }
     }
 }

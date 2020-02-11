@@ -4,7 +4,7 @@ namespace CreativeCoders.Core.Pipelining
 {
     public class Stage<TInput, TOutput> : IStage<TInput, TOutput>
     {
-        public Func<TInput, TOutput> StageWorkerFunc { get; set; }
+        public Func<TInput, TOutput> StageWorker { get; set; }
 
         public object ProcessData(object inputData)
         {
@@ -12,7 +12,7 @@ namespace CreativeCoders.Core.Pipelining
             {
                 throw new InvalidOperationException();
             }
-            return StageWorkerFunc((TInput)inputData);
+            return StageWorker((TInput)inputData);
         }
 
         public bool OutputIsOfType(Type type)

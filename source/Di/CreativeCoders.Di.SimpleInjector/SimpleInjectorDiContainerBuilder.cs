@@ -19,10 +19,10 @@ namespace CreativeCoders.Di.SimpleInjector
         public SimpleInjectorDiContainerBuilder(Container container) : this(container,
             AsyncScopedLifestyle.BeginScope) { }
 
-        public SimpleInjectorDiContainerBuilder(Container container, Func<Container, Scope> beginScopeFunc)
+        public SimpleInjectorDiContainerBuilder(Container container, Func<Container, Scope> beginScope)
         {
             Ensure.IsNotNull(container, nameof(container));
-            Ensure.IsNotNull(beginScopeFunc, nameof(beginScopeFunc));
+            Ensure.IsNotNull(beginScope, nameof(beginScope));
 
             _container = container;
             

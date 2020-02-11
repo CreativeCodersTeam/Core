@@ -7,30 +7,30 @@ namespace CreativeCoders.Core.Comparing
     [PublicAPI]
     public class DelegateEqualityComparer<T> : IEqualityComparer<T>
     {
-        private readonly Func<T, T, bool> _compareFunc;
+        private readonly Func<T, T, bool> _compare;
 
-        private readonly Func<T, int> _hashCodeFunc;
+        private readonly Func<T, int> _getHashCode;
 
-        public DelegateEqualityComparer(Func<T, T, bool> compareFunc) : this(compareFunc, null)
+        public DelegateEqualityComparer(Func<T, T, bool> compare) : this(compare, null)
         {
         }
 
-        public DelegateEqualityComparer(Func<T, T, bool> compareFunc, Func<T, int> hashCodeFunc)
+        public DelegateEqualityComparer(Func<T, T, bool> compare, Func<T, int> getHashCode)
         {
-            Ensure.IsNotNull(compareFunc, nameof(compareFunc));
+            Ensure.IsNotNull(compare, nameof(compare));
             
-            _compareFunc = compareFunc;
-            _hashCodeFunc = hashCodeFunc;
+            _compare = compare;
+            _getHashCode = getHashCode;
         }
 
         public bool Equals(T x, T y)
         {
-            return _compareFunc(x, y);
+            return _compare(x, y);
         }
 
         public int GetHashCode(T obj)
         {
-            return _hashCodeFunc?.Invoke(obj) ?? obj.GetHashCode();
+            return _getHashCode?.Invoke(obj) ?? obj.GetHashCode();
         }
     }
 }

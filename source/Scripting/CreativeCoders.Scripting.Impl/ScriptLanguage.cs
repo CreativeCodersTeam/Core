@@ -13,8 +13,8 @@ namespace CreativeCoders.Scripting.Impl
 
         public ScriptLanguage(string name, bool supportsDirectExecute,
             ScriptClassTemplate scriptClassTemplate,
-            Func<ICompiler> createCompilerFunc) : this(name, supportsDirectExecute, scriptClassTemplate,
-            new CompilerFactory(createCompilerFunc)) { }
+            Func<ICompiler> createCompiler) : this(name, supportsDirectExecute, scriptClassTemplate,
+            new CompilerFactory(createCompiler)) { }
 
         public ScriptLanguage(string name, bool supportsDirectExecute,
             ScriptClassTemplate scriptClassTemplate,

@@ -5,12 +5,12 @@ namespace CreativeCoders.Di
 {
     public abstract class DiContainerBase
     {
-        protected static T Resolve<T, TException>(Func<T> resolveFunc)
+        protected static T Resolve<T, TException>(Func<T> resolve)
             where TException : Exception
         {
             try
             {
-                return resolveFunc();
+                return resolve();
             }
             catch (TException ex)
             {
@@ -18,12 +18,12 @@ namespace CreativeCoders.Di
             }
         }
 
-        protected static object Resolve<TException>(Type serviceType, Func<object> resolveFunc)
+        protected static object Resolve<TException>(Type serviceType, Func<object> resolve)
             where TException : Exception
         {
             try
             {
-                return resolveFunc();
+                return resolve();
             }
             catch (TException ex)
             {

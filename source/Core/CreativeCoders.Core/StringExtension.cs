@@ -52,9 +52,9 @@ namespace CreativeCoders.Core
             return stringBuilder;
         }
 
-        public static string Filter(this string text, Func<char, bool> allowedFunc)
+        public static string Filter(this string text, Func<char, bool> isAllowedChar)
         {
-            return text.IsNullOrEmpty() ? string.Empty : string.Join("", text.Where(allowedFunc));
+            return text.IsNullOrEmpty() ? string.Empty : string.Join("", text.Where(isAllowedChar));
         }
 
         public static string Filter(this string text, params char[] filteredChars)

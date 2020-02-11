@@ -9,20 +9,20 @@ namespace CreativeCoders.Net.Soap.Request {
     {
         private readonly SoapRequestInfo _soapRequestInfo;
 
-        private readonly Func<SoapRequestInfo, IHttpWebRequest> _createHttpWebRequestFunc;
+        private readonly Func<SoapRequestInfo, IHttpWebRequest> _createHttpWebRequest;
 
-        public SoapRequester(SoapRequestInfo soapRequestInfo, Func<SoapRequestInfo, IHttpWebRequest> createHttpWebRequestFunc)
+        public SoapRequester(SoapRequestInfo soapRequestInfo, Func<SoapRequestInfo, IHttpWebRequest> createHttpWebRequest)
         {
             Ensure.IsNotNull(soapRequestInfo, nameof(soapRequestInfo));
-            Ensure.IsNotNull(createHttpWebRequestFunc, nameof(createHttpWebRequestFunc));
+            Ensure.IsNotNull(createHttpWebRequest, nameof(createHttpWebRequest));
 
             _soapRequestInfo = soapRequestInfo;
-            _createHttpWebRequestFunc = createHttpWebRequestFunc;
+            _createHttpWebRequest = createHttpWebRequest;
         }
 
         public WebResponse GetResponse()
         {
-            var httpWebRequest = _createHttpWebRequestFunc(_soapRequestInfo);
+            var httpWebRequest = _createHttpWebRequest(_soapRequestInfo);
 
             using (var writer = new StreamWriter(httpWebRequest.GetRequestStream()))
             {

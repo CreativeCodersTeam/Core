@@ -12,7 +12,7 @@ namespace CreativeCoders.Core.Caching
 
         TValue GetValue(TKey key, TValue defaultValue);
 
-        TValue GetValue(TKey key, Func<TValue> addValueFunc);
+        TValue GetValue(TKey key, Func<TValue> addValue);
 
         bool TryGetValue(TKey key, out TValue value);
 

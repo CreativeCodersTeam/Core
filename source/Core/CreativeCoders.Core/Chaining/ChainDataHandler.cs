@@ -4,16 +4,16 @@ namespace CreativeCoders.Core.Chaining
 {
     public class ChainDataHandler<TData, TResult> : IChainDataHandler<TData, TResult>
     {
-        private readonly Func<TData, HandleResult<TResult>> _handleFunc;
+        private readonly Func<TData, HandleResult<TResult>> _handle;
 
-        public ChainDataHandler(Func<TData, HandleResult<TResult>> handleFunc)
+        public ChainDataHandler(Func<TData, HandleResult<TResult>> handle)
         {
-            _handleFunc = handleFunc;
+            _handle = handle;
         }
 
         public HandleResult<TResult> Handle(TData data)
         {
-            return _handleFunc(data);
+            return _handle(data);
         }
     }
 }

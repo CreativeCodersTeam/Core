@@ -48,9 +48,9 @@ namespace CreativeCoders.Logging.Nlog
             _logger.Log(LogLevelToNlogLogLevel(logLevel), value);
         }
 
-        public void Log<T>(LogLevel logLevel, Func<T> messageFunc)
+        public void Log<T>(LogLevel logLevel, Func<T> getMessage)
         {
-            _logger.Log(LogLevelToNlogLogLevel(logLevel), messageFunc());
+            _logger.Log(LogLevelToNlogLogLevel(logLevel), getMessage());
         }
 
         public void Trace(string message)
@@ -73,9 +73,9 @@ namespace CreativeCoders.Logging.Nlog
             _logger.Trace(value);
         }
 
-        public void Trace<T>(Func<T> messageFunc)
+        public void Trace<T>(Func<T> getMessage)
         {
-            _logger.Trace(messageFunc());
+            _logger.Trace(getMessage());
         }
 
         public void Debug(string message)
@@ -98,9 +98,9 @@ namespace CreativeCoders.Logging.Nlog
             _logger.Debug(value);
         }
 
-        public void Debug<T>(Func<T> messageFunc)
+        public void Debug<T>(Func<T> getMessage)
         {
-            _logger.Debug(messageFunc());
+            _logger.Debug(getMessage());
         }
 
         public void Info(string message)
@@ -123,9 +123,9 @@ namespace CreativeCoders.Logging.Nlog
             _logger.Info(value);
         }
 
-        public void Info<T>(Func<T> messageFunc)
+        public void Info<T>(Func<T> getMessage)
         {
-            _logger.Info(messageFunc());
+            _logger.Info(getMessage());
         }
 
         public void Warn(string message)
@@ -148,9 +148,9 @@ namespace CreativeCoders.Logging.Nlog
             _logger.Warn(value);
         }
 
-        public void Warn<T>(Func<T> messageFunc)
+        public void Warn<T>(Func<T> getMessage)
         {
-            _logger.Warn(messageFunc());
+            _logger.Warn(getMessage());
         }
 
         public void Error(string message)
@@ -173,9 +173,9 @@ namespace CreativeCoders.Logging.Nlog
             _logger.Error(value);
         }
 
-        public void Error<T>(Func<T> messageFunc)
+        public void Error<T>(Func<T> getMessage)
         {
-            _logger.Error(messageFunc());
+            _logger.Error(getMessage());
         }
 
         public void Fatal(string message)
@@ -198,9 +198,9 @@ namespace CreativeCoders.Logging.Nlog
             _logger.Fatal(value);
         }
 
-        public void Fatal<T>(Func<T> messageFunc)
+        public void Fatal<T>(Func<T> getMessage)
         {
-            _logger.Fatal(messageFunc());
+            _logger.Fatal(getMessage());
         }
 
         private static NLog.LogLevel LogLevelToNlogLogLevel(LogLevel logLevel)

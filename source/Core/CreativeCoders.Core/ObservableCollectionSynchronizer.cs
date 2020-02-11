@@ -14,22 +14,22 @@ namespace CreativeCoders.Core
         
         private readonly ObservableCollection<TSlaveElement> _slaveCollection;
         
-        private readonly Func<TMasterElement, TSlaveElement> _createSlaveFunc;
+        private readonly Func<TMasterElement, TSlaveElement> _createSlave;
         
         private readonly Func<TMasterElement, TSlaveElement> _getSlaveForMaster;
 
         public ObservableCollectionSynchronizer(ObservableCollection<TMasterElement> masterCollection,
-            ObservableCollection<TSlaveElement> slaveCollection, Func<TMasterElement, TSlaveElement> createSlaveFunc,
+            ObservableCollection<TSlaveElement> slaveCollection, Func<TMasterElement, TSlaveElement> createSlave,
             Func<TMasterElement, TSlaveElement> getSlaveForMaster)
         {
             _masterCollection = masterCollection;
             _slaveCollection = slaveCollection;
-            _createSlaveFunc = createSlaveFunc;
+            _createSlave = createSlave;
             _getSlaveForMaster = getSlaveForMaster;
 
             _masterCollection.CollectionChanged += MasterCollectionOnCollectionChanged;
             
-            _slaveCollection.AddRange(_masterCollection.Select(_createSlaveFunc));
+            _slaveCollection.AddRange(_masterCollection.Select(_createSlave));
         }
 
         private void MasterCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -53,7 +53,7 @@ namespace CreativeCoders.Core
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     _slaveCollection.Clear();
-                    _slaveCollection.AddRange(_masterCollection.Select(_createSlaveFunc));
+                    _slaveCollection.AddRange(_masterCollection.Select(_createSlave));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -66,7 +66,7 @@ namespace CreativeCoders.Core
                 eventArgs.NewStartingIndex == eventArgs.OldStartingIndex)
             {
                 _slaveCollection[eventArgs.NewStartingIndex] =
-                    _createSlaveFunc(eventArgs.NewItems.Cast<TMasterElement>().First());
+                    _createSlave(eventArgs.NewItems.Cast<TMasterElement>().First());
             }
         }
 
@@ -74,11 +74,11 @@ namespace CreativeCoders.Core
         {
             if (newStartingIndex == -1)
             {
-                _slaveCollection.Add(_createSlaveFunc(masterElement));
+                _slaveCollection.Add(_createSlave(masterElement));
             }
             else
             {
-                _slaveCollection.Insert(newStartingIndex, _createSlaveFunc(masterElement));
+                _slaveCollection.Insert(newStartingIndex, _createSlave(masterElement));
             }
         }
 

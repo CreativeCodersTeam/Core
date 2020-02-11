@@ -108,46 +108,46 @@ namespace CreativeCoders.Validation
         }
 
         public static IPropertyRuleBuilder<T, TProperty> IsTrue<T, TProperty>(
-            this IPropertyRuleBuilder<T, TProperty> ruleBuilder, Func<TProperty, bool> isTrueFunc)
+            this IPropertyRuleBuilder<T, TProperty> ruleBuilder, Func<TProperty, bool> isTrue)
             where T : class
         {
-            Ensure.IsNotNull(isTrueFunc, nameof(isTrueFunc));
+            Ensure.IsNotNull(isTrue, nameof(isTrue));
 
-            var validationStep = new DelegatePropertyValidationStep<T, TProperty>(isTrueFunc);
+            var validationStep = new DelegatePropertyValidationStep<T, TProperty>(isTrue);
             ruleBuilder.AddValidationStep(validationStep);
 
             return ruleBuilder;
         }
 
         public static IPropertyRuleBuilder<T, TProperty> IsFalse<T, TProperty>(
-            this IPropertyRuleBuilder<T, TProperty> ruleBuilder, Func<TProperty, bool> isFalseFunc)
+            this IPropertyRuleBuilder<T, TProperty> ruleBuilder, Func<TProperty, bool> isFalse)
             where T : class
         {
-            Ensure.IsNotNull(isFalseFunc, nameof(isFalseFunc));
+            Ensure.IsNotNull(isFalse, nameof(isFalse));
 
-            var validationStep = new DelegatePropertyValidationStep<T, TProperty>(prop => !isFalseFunc(prop));
+            var validationStep = new DelegatePropertyValidationStep<T, TProperty>(prop => !isFalse(prop));
             ruleBuilder.AddValidationStep(validationStep);
 
             return ruleBuilder;
         }
 
         public static IPropertyRuleBuilder<T, TProperty> Must<T, TProperty>(
-            this IPropertyRuleBuilder<T, TProperty> ruleBuilder, Func<T, TProperty, bool> validateFunc)
+            this IPropertyRuleBuilder<T, TProperty> ruleBuilder, Func<T, TProperty, bool> validate)
             where T : class
         {
-            Ensure.IsNotNull(validateFunc, nameof(validateFunc));
+            Ensure.IsNotNull(validate, nameof(validate));
 
-            var validationStep = new ExtendedDelegatePropertyValidationStep<T, TProperty>(validateFunc);
+            var validationStep = new ExtendedDelegatePropertyValidationStep<T, TProperty>(validate);
             ruleBuilder.AddValidationStep(validationStep);
 
             return ruleBuilder;
         }
 
         public static IPropertyRuleBuilder<T, TProperty> MustNot<T, TProperty>(
-            this IPropertyRuleBuilder<T, TProperty> ruleBuilder, Func<T, TProperty, bool> validateFunc)
+            this IPropertyRuleBuilder<T, TProperty> ruleBuilder, Func<T, TProperty, bool> validate)
             where T : class
         {
-            return ruleBuilder.Must((instance, property) => !validateFunc(instance, property));
+            return ruleBuilder.Must((instance, property) => !validate(instance, property));
         }
 
         public static IPropertyRuleBuilder<T, TProperty> Between<T, TProperty>(
@@ -231,10 +231,10 @@ namespace CreativeCoders.Validation
         }
 
         public static IPropertyRuleBuilder<T, TProperty> HasLength<T, TProperty>(
-            this IPropertyRuleBuilder<T, TProperty> ruleBuilder, Func<T, TProperty, int> checkLengthFunc)
+            this IPropertyRuleBuilder<T, TProperty> ruleBuilder, Func<T, TProperty, int> checkLength)
             where T : class
         {
-            var validationStep = new CheckLengthPropertyValidationStep<T, TProperty>(checkLengthFunc);
+            var validationStep = new CheckLengthPropertyValidationStep<T, TProperty>(checkLength);
             ruleBuilder.AddValidationStep(validationStep);
 
             return ruleBuilder;
@@ -306,31 +306,31 @@ namespace CreativeCoders.Validation
         }
 
         public static IPropertyRuleBuilder<T, IEnumerable<TElement>> All<T, TElement>(
-            this IPropertyRuleBuilder<T, IEnumerable<TElement>> ruleBuilder, Func<TElement, bool> predicateFunc)
+            this IPropertyRuleBuilder<T, IEnumerable<TElement>> ruleBuilder, Func<TElement, bool> predicate)
             where T : class
         {
-            return ruleBuilder.Must((instance, property) => property.All(predicateFunc));
+            return ruleBuilder.Must((instance, property) => property.All(predicate));
         }
 
         public static IPropertyRuleBuilder<T, IList<TElement>> All<T, TElement>(
-            this IPropertyRuleBuilder<T, IList<TElement>> ruleBuilder, Func<TElement, bool> predicateFunc)
+            this IPropertyRuleBuilder<T, IList<TElement>> ruleBuilder, Func<TElement, bool> predicate)
             where T : class
         {
-            return ruleBuilder.Must((instance, property) => property.All(predicateFunc));
+            return ruleBuilder.Must((instance, property) => property.All(predicate));
         }
 
         public static IPropertyRuleBuilder<T, IEnumerable<TElement>> Any<T, TElement>(
-            this IPropertyRuleBuilder<T, IEnumerable<TElement>> ruleBuilder, Func<TElement, bool> predicateFunc)
+            this IPropertyRuleBuilder<T, IEnumerable<TElement>> ruleBuilder, Func<TElement, bool> predicate)
             where T : class
         {
-            return ruleBuilder.Must((instance, property) => property.Any(predicateFunc));
+            return ruleBuilder.Must((instance, property) => property.Any(predicate));
         }
 
         public static IPropertyRuleBuilder<T, IList<TElement>> Any<T, TElement>(
-            this IPropertyRuleBuilder<T, IList<TElement>> ruleBuilder, Func<TElement, bool> predicateFunc)
+            this IPropertyRuleBuilder<T, IList<TElement>> ruleBuilder, Func<TElement, bool> predicate)
             where T : class
         {
-            return ruleBuilder.Must((instance, property) => property.Any(predicateFunc));
+            return ruleBuilder.Must((instance, property) => property.Any(predicate));
         }
 
         //public static IPropertyRuleBuilder<T, ICollection<TElement>> Any<T, TElement>(

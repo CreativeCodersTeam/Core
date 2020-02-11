@@ -22,11 +22,11 @@ namespace CreativeCoders.Core
         }
 
         [ContractAnnotation("halt <= value: null")]
-        public static void IsNotNull<T>(object value, Func<T> createExceptionFunc) where T: Exception
+        public static void IsNotNull<T>(object value, Func<T> createException) where T: Exception
         {
             if (value == null)
             {
-                throw createExceptionFunc();
+                throw createException();
             }
         }
 

@@ -18,11 +18,11 @@ namespace CreativeCoders.NukeBuild
             _defaultBuildRevision = defaultBuildRevision;
         }
 
-        private string SafeCallGitVersion(Func<string> call)
+        private string SafeCallGitVersion(Func<string> callGitVersion)
         {
             try
             {
-                return call();
+                return callGitVersion();
             }
             catch (Exception)
             {

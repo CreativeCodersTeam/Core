@@ -29,16 +29,16 @@ namespace CreativeCoders.Core.Caching
             return TryGetValue(key, out var value) ? value : defaultValue;
         }
 
-        public TValue GetValue(TKey key, Func<TValue> addValueFunc)
+        public TValue GetValue(TKey key, Func<TValue> addValue)
         {
-            Ensure.IsNotNull(addValueFunc, nameof(addValueFunc));
+            Ensure.IsNotNull(addValue, nameof(addValue));
 
             if (TryGetValue(key, out var value))
             {
                 return value;
             }
 
-            var newValue = addValueFunc();
+            var newValue = addValue();
             AddOrUpdate(key, newValue);
 
             return newValue;

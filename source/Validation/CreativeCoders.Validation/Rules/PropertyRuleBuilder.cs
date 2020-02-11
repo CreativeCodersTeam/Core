@@ -23,15 +23,15 @@ namespace CreativeCoders.Validation.Rules
             _propertyValidationRule.SetFaultMessage(message);
         }
 
-        public IPropertyRuleBuilder<T, TProperty> IfThen(Func<T, bool> conditionFunc)
+        public IPropertyRuleBuilder<T, TProperty> IfThen(Func<T, bool> checkCondition)
         {
-            _propertyValidationRule.SetCondition(conditionFunc);
+            _propertyValidationRule.SetCondition(checkCondition);
             return this;
         }
 
-        public IPropertyRuleBuilder<T, TProperty> IfNotThen(Func<T, bool> conditionFunc)
+        public IPropertyRuleBuilder<T, TProperty> IfNotThen(Func<T, bool> checkCondition)
         {
-            _propertyValidationRule.SetCondition(x => !conditionFunc(x));
+            _propertyValidationRule.SetCondition(x => !checkCondition(x));
             return this;
         }
     }

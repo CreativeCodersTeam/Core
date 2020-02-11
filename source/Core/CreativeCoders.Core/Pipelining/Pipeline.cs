@@ -23,13 +23,13 @@ namespace CreativeCoders.Core.Pipelining
 
         public bool RunStageParallel { get; set; }
 
-        public IStage<TStageInput, TStageOutput> AddStage<TStageInput, TStageOutput>(Func<TStageInput, TStageOutput> stageWorkerFunc)
+        public IStage<TStageInput, TStageOutput> AddStage<TStageInput, TStageOutput>(Func<TStageInput, TStageOutput> stageWorker)
         {
-            Ensure.IsNotNull(stageWorkerFunc, nameof(stageWorkerFunc));
+            Ensure.IsNotNull(stageWorker, nameof(stageWorker));
             Ensure.That(!(_stages.Count == 0 && typeof(TStageInput) != typeof(TInput)), nameof(TStageInput));
             Ensure.That(_stages.LastOrDefault()?.OutputIsOfType(typeof(TStageInput)) != false, nameof(TStageInput));
 
-            var stage = new Stage<TStageInput, TStageOutput> { StageWorkerFunc = stageWorkerFunc };
+            var stage = new Stage<TStageInput, TStageOutput> { StageWorker = stageWorker };
             _stages.Add(stage);
             return stage;
         }

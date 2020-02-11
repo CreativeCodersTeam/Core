@@ -62,13 +62,13 @@ namespace CreativeCoders.Logging.DebuggerOutput
             WriteText(logLevel, value.ToString());
         }
 
-        public void Log<T>(LogLevel logLevel, Func<T> messageFunc)
+        public void Log<T>(LogLevel logLevel, Func<T> getMessage)
         {
             if (!IsLogLevelEnabled(logLevel))
             {
                 return;
             }
-            WriteText(logLevel, messageFunc().ToString());
+            WriteText(logLevel, getMessage().ToString());
         }
 
         private void WriteText(LogLevel logLevel, string text)

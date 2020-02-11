@@ -6,18 +6,18 @@ namespace CreativeCoders.Core
     [PublicAPI]
     public class DelegateClassFactory : IClassFactory
     {
-        private readonly Func<Type, object> _creatorFunc;
+        private readonly Func<Type, object> _createInstance;
 
-        public DelegateClassFactory(Func<Type, object> creatorFunc)
+        public DelegateClassFactory(Func<Type, object> createInstance)
         {
-            Ensure.IsNotNull(creatorFunc, nameof(creatorFunc));
+            Ensure.IsNotNull(createInstance, nameof(createInstance));
             
-            _creatorFunc = creatorFunc;
+            _createInstance = createInstance;
         }
         
         public object Create(Type classType)
         {
-            return _creatorFunc(classType);
+            return _createInstance(classType);
         }
 
         public object Create(Type classType, Action<object> setupInstance)
@@ -48,15 +48,15 @@ namespace CreativeCoders.Core
     public class DelegateClassFactory<T> : DelegateClassFactory, IClassFactory<T>
         where T : class
     {
-        private readonly Func<T> _creatorFunc;
+        private readonly Func<T> _createInstance;
 
-        public DelegateClassFactory(Func<T> creatorFunc) : base(type => CreateClassObject(type, creatorFunc))
+        public DelegateClassFactory(Func<T> createInstance) : base(type => CreateClassObject(type, createInstance))
         {
-            _creatorFunc = creatorFunc;
+            _createInstance = createInstance;
         }
 
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-        private static object CreateClassObject(Type classType, Func<T> creatorFunc)
+        private static object CreateClassObject(Type classType, Func<T> createInstance)
         {
             if (typeof(T) != classType)
             {
@@ -64,17 +64,17 @@ namespace CreativeCoders.Core
                     $"Class type '{classType.FullName}' not possible for generic delegate class factory for type '{typeof(T).FullName}'");
             }
 
-            return creatorFunc();
+            return createInstance();
         }
 
         public T Create()
         {
-            return _creatorFunc();
+            return _createInstance();
         }
 
         public T Create(Action<T> setupInstance)
         {
-            var instance = _creatorFunc();
+            var instance = _createInstance();
 
             setupInstance(instance);
 

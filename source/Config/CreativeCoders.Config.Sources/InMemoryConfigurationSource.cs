@@ -11,7 +11,7 @@ namespace CreativeCoders.Config.Sources
             Ensure.IsNotNull(data, nameof(data));
         }
 
-        public InMemoryConfigurationSource(T data, Func<T> getDefaultSettingObjectFunc) : base(() => data, getDefaultSettingObjectFunc)
+        public InMemoryConfigurationSource(T data, Func<T> getDefaultSettingObject) : base(() => data, getDefaultSettingObject)
         {
             Ensure.IsNotNull(data, nameof(data));
         }

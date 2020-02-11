@@ -7,11 +7,11 @@ namespace CreativeCoders.Core
     {
         [ContractAnnotation("halt <= self: null")]
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Global
-        public static void ThrowIfNull(this object self, Func<Exception> throwAction)
+        public static void ThrowIfNull(this object self, Func<Exception> createException)
         {
             if (self == null)
             {
-                throw throwAction();
+                throw createException();
             }
         }
     }

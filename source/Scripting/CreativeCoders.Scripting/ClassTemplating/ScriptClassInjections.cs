@@ -17,12 +17,12 @@ namespace CreativeCoders.Scripting.ClassTemplating {
             _injections = new List<IScriptClassInjection>();
         }
 
-        public void AddProperty<T>(string propertyName, Func<T> getInjectionDataFunc)
+        public void AddProperty<T>(string propertyName, Func<T> getInjectionData)
         {
             Ensure.IsNotNullOrWhitespace(propertyName, nameof(propertyName));
-            Ensure.IsNotNull(getInjectionDataFunc, nameof(getInjectionDataFunc));
+            Ensure.IsNotNull(getInjectionData, nameof(getInjectionData));
 
-            var propertyInjection = new PropertyInjection<T>(propertyName, getInjectionDataFunc);
+            var propertyInjection = new PropertyInjection<T>(propertyName, getInjectionData);
             _injections.Add(propertyInjection);
             _template.Members.AddProperty(propertyName, typeof(T).Name);
         }

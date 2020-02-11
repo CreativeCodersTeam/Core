@@ -23,11 +23,11 @@ namespace CreativeCoders.Core.Reflection
                     .SelectMany(assembly => assembly.GetTypesSafe());
         }
 
-        public static IEnumerable<Type> GetAllTypes(Func<Assembly, bool> checkAssemblyFunc)
+        public static IEnumerable<Type> GetAllTypes(Func<Assembly, bool> checkAssembly)
         {
             return
                 GetAllAssemblies()
-                    .Where(checkAssemblyFunc)
+                    .Where(checkAssembly)
                     .SelectMany(assembly => assembly.GetTypesSafe());
         }
     }
