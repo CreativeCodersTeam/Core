@@ -18,7 +18,7 @@ namespace XmlRpcSampleApp
         public async Task RunAsync()
         {
             var xmlRpcServer = new XmlRpcServer(new AspNetCoreHttpServer(), new XmlRpcServerMethods(), Encoding.UTF8);
-            xmlRpcServer.Urls.Add("http://localhost:12345");
+            xmlRpcServer.Urls.Add("http://localhost:12345/");
             xmlRpcServer.Methods.RegisterMethods(this);
 
             await xmlRpcServer.StartAsync();
