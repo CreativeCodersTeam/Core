@@ -60,11 +60,14 @@ namespace CreativeCoders.Net.Servers.Http.SimpleImpl
             context.Response.OutputStream.Close();
         }
 
-        public Task StopAsync()
+        public async Task StopAsync()
         {
             _running = false;
-            _listenerThread.Abort();
-            return Task.Run(() => _httpListener.Stop());
+            await Task.Run(() =>
+            {
+                _httpListener.Close();
+                _httpListener.Abort();
+            });
         }
 
         public void RegisterRequestHandler(IHttpRequestHandler requestHandler)

@@ -18,5 +18,15 @@ namespace CreativeCoders.Core.Threading
                 errorHandler?.HandleException(e);
             }
         }
+
+        public static async Task<T> ToTask<T>(this Task task)
+        {
+            await task;
+
+            var resultProperty = task.GetType().GetProperty("Result")
+                                 ?? throw new InvalidCastException($"{task.GetType().FullName} has no Result property");
+
+            return (T) resultProperty.GetValue(task);
+        }
     }
 }

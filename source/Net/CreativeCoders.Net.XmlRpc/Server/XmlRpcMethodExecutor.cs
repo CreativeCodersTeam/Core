@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Threading;
 using CreativeCoders.Net.XmlRpc.Definition;
 using CreativeCoders.Net.XmlRpc.Model;
 using CreativeCoders.Net.XmlRpc.Model.Values;
@@ -22,7 +24,7 @@ namespace CreativeCoders.Net.XmlRpc.Server
             _xmlRpcServerMethods.RegisterMethods("system", this);
         }
 
-        public object Invoke(XmlRpcMethodCall methodCall)
+        public async Task<object> Invoke(XmlRpcMethodCall methodCall)
         {
             Ensure.IsNotNull(methodCall, nameof(methodCall));
 
@@ -32,11 +34,18 @@ namespace CreativeCoders.Net.XmlRpc.Server
             {
                 throw new MissingMethodException();
             }
-
-
+            
             var parameters = GetParameters(methodRegistration.Method.GetParameters(), methodCall.Parameters.ToArray());
 
-            return methodRegistration.Method.Invoke(methodRegistration.Target, parameters);
+            if (!methodRegistration.Method.ReturnType.IsGenericType ||
+                methodRegistration.Method.ReturnType.GetGenericTypeDefinition() != typeof(Task<>))
+            {
+                return methodRegistration.Method.Invoke(methodRegistration.Target, parameters);
+            }
+
+            var task = (Task) methodRegistration.Method.Invoke(methodRegistration.Target, parameters);
+
+            return await task.ToTask<object>();
         }
 
         private static object[] GetParameters(IReadOnlyList<ParameterInfo> parameterInfos, IReadOnlyCollection<XmlRpcValue> parameters)

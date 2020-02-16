@@ -39,7 +39,7 @@ namespace CreativeCoders.Net.Servers.Http.AspNetCore
                 .UseUrls(webHostConfig.Urls.ToArray())
                 .Build();
 
-            return _webHost.RunAsync();
+            return _webHost.StartAsync();
         }
 
         public Task StopAsync()

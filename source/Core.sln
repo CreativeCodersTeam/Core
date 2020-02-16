@@ -170,6 +170,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RibbonSampleApp", "Samples\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkeletorSampleApp", "Samples\SkeletorSampleApp\SkeletorSampleApp.csproj", "{84500D7A-8C0E-4A55-B1CA-AB67D159F8C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlRpcSampleApp", "Samples\XmlRpcSampleApp\XmlRpcSampleApp.csproj", "{61B4DBCC-2F85-4F8F-9DF9-E5A4EC17334B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -398,6 +400,10 @@ Global
 		{84500D7A-8C0E-4A55-B1CA-AB67D159F8C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84500D7A-8C0E-4A55-B1CA-AB67D159F8C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84500D7A-8C0E-4A55-B1CA-AB67D159F8C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61B4DBCC-2F85-4F8F-9DF9-E5A4EC17334B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61B4DBCC-2F85-4F8F-9DF9-E5A4EC17334B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61B4DBCC-2F85-4F8F-9DF9-E5A4EC17334B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61B4DBCC-2F85-4F8F-9DF9-E5A4EC17334B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -464,6 +470,7 @@ Global
 		{074BB6B0-2E06-4F36-8C2A-F9C374B63F35} = {FBC32DFA-90EB-442F-834D-4F6ADA7E9DE5}
 		{5424651E-ACDD-4C7F-BE70-819A89308152} = {72E179CA-7AE6-412A-856D-7BD13838E8E3}
 		{84500D7A-8C0E-4A55-B1CA-AB67D159F8C9} = {72E179CA-7AE6-412A-856D-7BD13838E8E3}
+		{61B4DBCC-2F85-4F8F-9DF9-E5A4EC17334B} = {72E179CA-7AE6-412A-856D-7BD13838E8E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}
