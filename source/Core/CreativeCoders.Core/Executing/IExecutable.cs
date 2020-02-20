@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Core
+namespace CreativeCoders.Core.Executing
 {
     [PublicAPI]
     public interface IExecutable

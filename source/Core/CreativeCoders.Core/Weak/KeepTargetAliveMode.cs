@@ -1,6 +1,6 @@
 ﻿namespace CreativeCoders.Core.Weak
 {
-    public enum KeepActionTargetAliveMode
+    public enum KeepTargetAliveMode
     {
         KeepAlive,
         NotKeepAlive,

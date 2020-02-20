@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using CreativeCoders.Core.Logging;
+using System.Threading.Tasks;
 using CreativeCoders.Core.Threading;
 using CreativeCoders.Core.Weak;
 
@@ -10,8 +10,6 @@ namespace CreativeCoders.Core.Messaging
 {
     internal class MessengerImpl : IMessenger
     {
-        private static readonly ILogger Log = LogManager.GetLogger<MessengerImpl>();
-
         private readonly ConcurrentDictionary<Type, IList<IMessengerRegistration>> _registrationsForMessages;
 
         public MessengerImpl()
@@ -21,15 +19,25 @@ namespace CreativeCoders.Core.Messaging
 
         public IDisposable Register<TMessage>(object receiver, Action<TMessage> action)
         {
-            return Register(receiver, action, KeepActionTargetAliveMode.NotKeepAlive);
+            return Register(receiver, action, KeepTargetAliveMode.NotKeepAlive);
         }
 
-        public IDisposable Register<TMessage>(object receiver, Action<TMessage> action, KeepActionTargetAliveMode keepActionTargetAliveMode)
+        public IDisposable RegisterAsyncHandler<TMessage>(object receiver, Func<TMessage, Task> asyncAction)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDisposable Register<TMessage>(object receiver, Action<TMessage> action, KeepTargetAliveMode keepTargetAliveMode)
         {
             var actions = GetRegistrationsForMessageType<TMessage>();
-            var registration = new MessengerRegistration<TMessage>(this, receiver, action, keepActionTargetAliveMode);
+            var registration = new MessengerRegistration<TMessage>(this, receiver, action, keepTargetAliveMode);
             actions.Add(registration);
             return registration;
+        }
+
+        public IDisposable RegisterAsyncHandler<TMessage>(object receiver, Func<TMessage, Task> asyncAction, KeepTargetAliveMode keepTargetAliveMode)
+        {
+            throw new NotImplementedException();
         }
 
         public void Unregister(object receiver)
@@ -40,7 +48,7 @@ namespace CreativeCoders.Core.Messaging
         public void Unregister<TMessage>(object receiver)
         {
             var registrations = GetRegistrationsForMessageType<TMessage>();
-            var registrationsForRemove = registrations.Where(x => x.MessengerAction.Target == receiver).ToList();
+            var registrationsForRemove = registrations.Where(x => x.Target == receiver).ToList();
             foreach (var registration in registrationsForRemove)
             {
                 registration.RemovedFromMessenger();
@@ -58,22 +66,19 @@ namespace CreativeCoders.Core.Messaging
             Ensure.IsNotNull(message, nameof(message));
 
             var actions = GetRegistrationsForMessageType<TMessage>();
-            foreach (var action in actions.Select(registration => registration.MessengerAction).OfType<WeakAction<TMessage>>())
-            {
-                ExecuteAction(action, message);
-            }
+            
+            actions.ForEach(action => action.Execute(message));
         }
 
-        private static void ExecuteAction<TMessage>(IExecutable<TMessage> action, TMessage message)
+        public Task SendAsync<TMessage>(TMessage message)
         {
-            try
-            {
-                action.Execute(message);
-            }
-            catch (Exception ex)
-            {
-                Log.Error("Sending message via action to subscriber failed!", ex);
-            }
+            Ensure.IsNotNull(message, nameof(message));
+
+            var actions = GetRegistrationsForMessageType<TMessage>();
+            
+            actions.ForEach(action => action.Execute(message));
+            
+            return Task.CompletedTask;
         }
 
         private IList<IMessengerRegistration> GetRegistrationsForMessageType<TMessage>()
@@ -92,12 +97,12 @@ namespace CreativeCoders.Core.Messaging
             RemoveRegistrations(x => !x.IsAlive);
         }
 
-        private void RemoveRegistrations(Predicate<WeakActionBase> predicate)
+        private void RemoveRegistrations(Predicate<IMessengerRegistration> predicate)
         {
             foreach (var receiver in _registrationsForMessages)
             {
                 var registrations = receiver.Value;
-                var registrationsForRemove = registrations.Where(x => predicate(x.MessengerAction)).ToList();
+                var registrationsForRemove = registrations.Where(x => predicate(x)).ToList();
                 foreach (var registration in registrationsForRemove)
                 {
                     registration.RemovedFromMessenger();

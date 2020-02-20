@@ -1,21 +1,22 @@
 ﻿using System;
+using CreativeCoders.Core.Executing;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Weak
 {
     [PublicAPI]
-    public class WeakAction<T> : WeakActionBase, IExecutable, IExecutable<T>
+    public class WeakAction<T> : WeakBase<Action<T>>, IExecutable, IExecutable<T>, IExecutableWithParameter
     {
         public WeakAction(Action<T> action) : this(action?.Target, action) {}
 
-        public WeakAction(Action<T> action, KeepActionTargetAliveMode keepActionTargetAliveMode)
-            : this(action?.Target, action, keepActionTargetAliveMode) { }
+        public WeakAction(Action<T> action, KeepTargetAliveMode keepTargetAliveMode)
+            : this(action?.Target, action, keepTargetAliveMode) { }
 
         public WeakAction(object target, Action<T> action)
-            : base(target ?? action?.Target, action?.Method, action?.Target) {}
+            : base(target ?? action?.Target, action, KeepTargetAliveMode.NotKeepAlive) {}
 
-        public WeakAction(object target, Action<T> action, KeepActionTargetAliveMode keepActionTargetAliveMode)
-            : base(target ?? action?.Target, action?.Method, action?.Target, keepActionTargetAliveMode) { }
+        public WeakAction(object target, Action<T> action, KeepTargetAliveMode keepTargetAliveMode)
+            : base(target ?? action?.Target, action, keepTargetAliveMode) { }
 
         public void Execute()
         {
@@ -24,8 +25,13 @@ namespace CreativeCoders.Core.Weak
 
         public void Execute(T parameter)
         {
-            var action = CreateAction<Action<T>>();
+            var action = GetData();
             action?.Invoke(parameter);
+        }
+
+        public void Execute(object parameter)
+        {
+            Execute((T) parameter);
         }
     }
 }
