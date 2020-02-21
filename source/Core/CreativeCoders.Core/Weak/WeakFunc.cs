@@ -7,16 +7,16 @@ namespace CreativeCoders.Core.Weak
     [PublicAPI]
     public class WeakFunc<T> : WeakBase<Func<T>>, IExecutableWithResult<T>
     {
-        public WeakFunc(Func<T> function) : this(function?.Target, function) {}
+        public WeakFunc(Func<T> function) : this(function?.Target, function) { }
 
-        public WeakFunc(Func<T> function, KeepTargetAliveMode keepTargetAliveMode)
-            : this(function?.Target, function, keepTargetAliveMode) { }
+        public WeakFunc(Func<T> function, KeepOwnerAliveMode keepOwnerAliveMode)
+            : this(function?.Target, function, keepOwnerAliveMode) { }
 
         public WeakFunc(object target, Func<T> function)
-            : base(target ?? function?.Target, function, KeepTargetAliveMode.NotKeepAlive) {}
+            : this(target, function, KeepOwnerAliveMode.NotKeepAlive) { }
 
-        public WeakFunc(object target, Func<T> function, KeepTargetAliveMode keepTargetAliveMode)
-            : base(target ?? function?.Target, function, keepTargetAliveMode) { }
+        public WeakFunc(object target, Func<T> function, KeepOwnerAliveMode keepOwnerAliveMode)
+            : base(target ?? function?.Target, function, keepOwnerAliveMode) { }
 
         public T Execute()
         {
@@ -24,20 +24,21 @@ namespace CreativeCoders.Core.Weak
             return function();
         }
     }
-    
-    [PublicAPI]
-    public class WeakFunc<TParameter, TResult> : WeakBase<Func<TParameter, TResult>>, IExecutableWithResult<TParameter, TResult>
-    {
-        public WeakFunc(Func<TParameter, TResult> function) : this(function?.Target, function) {}
 
-        public WeakFunc(Func<TParameter, TResult> function, KeepTargetAliveMode keepTargetAliveMode)
-            : this(function?.Target, function, keepTargetAliveMode) { }
+    [PublicAPI]
+    public class WeakFunc<TParameter, TResult> : WeakBase<Func<TParameter, TResult>>,
+        IExecutableWithResult<TParameter, TResult>
+    {
+        public WeakFunc(Func<TParameter, TResult> function) : this(function?.Target, function) { }
+
+        public WeakFunc(Func<TParameter, TResult> function, KeepOwnerAliveMode keepOwnerAliveMode)
+            : this(function?.Target, function, keepOwnerAliveMode) { }
 
         public WeakFunc(object target, Func<TParameter, TResult> function)
-            : base(target ?? function?.Target, function, KeepTargetAliveMode.NotKeepAlive) {}
+            : base(target ?? function?.Target, function, KeepOwnerAliveMode.NotKeepAlive) { }
 
-        public WeakFunc(object target, Func<TParameter, TResult> function, KeepTargetAliveMode keepTargetAliveMode)
-            : base(target ?? function?.Target, function, keepTargetAliveMode) { }
+        public WeakFunc(object target, Func<TParameter, TResult> function, KeepOwnerAliveMode keepOwnerAliveMode)
+            : base(target ?? function?.Target, function, keepOwnerAliveMode) { }
 
         public TResult Execute(TParameter parameter)
         {

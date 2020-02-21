@@ -9,14 +9,14 @@ namespace CreativeCoders.Core.Weak
     {
         public WeakAction(Action<T> action) : this(action?.Target, action) {}
 
-        public WeakAction(Action<T> action, KeepTargetAliveMode keepTargetAliveMode)
-            : this(action?.Target, action, keepTargetAliveMode) { }
+        public WeakAction(Action<T> action, KeepOwnerAliveMode keepOwnerAliveMode)
+            : this(action?.Target, action, keepOwnerAliveMode) { }
 
         public WeakAction(object target, Action<T> action)
-            : base(target ?? action?.Target, action, KeepTargetAliveMode.NotKeepAlive) {}
+            : base(target ?? action?.Target, action, KeepOwnerAliveMode.NotKeepAlive) {}
 
-        public WeakAction(object target, Action<T> action, KeepTargetAliveMode keepTargetAliveMode)
-            : base(target ?? action?.Target, action, keepTargetAliveMode) { }
+        public WeakAction(object target, Action<T> action, KeepOwnerAliveMode keepOwnerAliveMode)
+            : base(target ?? action?.Target, action, keepOwnerAliveMode) { }
 
         public void Execute()
         {

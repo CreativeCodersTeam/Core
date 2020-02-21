@@ -9,8 +9,10 @@ namespace CreativeCoders.Messaging.Core
 
         IDisposable RegisterAsyncHandler<TMessage>(object target, Func<TMessage, Task> asyncAction);
 
-        void Send<TMessage>(TMessage message);
-
+        void UnregisterHandler(object target);
+        
+        void UnregisterHandler<TMessage>(object target);
+        
         Task SendAsync<TMessage>(TMessage message);
     }
 }

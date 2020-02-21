@@ -14,21 +14,12 @@ namespace CreativeCoders.Messaging.DefaultMediator
             _weakAsyncAction = new WeakFunc<T, Task>(target, asyncAction);
         }
         
-        public void Execute(object message)
-        {
-            ExecuteAsync(message).Wait();
-        }
+        public Task ExecuteAsync(object message) => _weakAsyncAction.Execute((T) message);
 
-        public Task ExecuteAsync(object message)
-        {
-            return _weakAsyncAction.Execute((T) message);
-        }
+        public bool IsAlive() => _weakAsyncAction.IsAlive();
 
+        public void Dispose() => _weakAsyncAction?.Dispose();
+        
         public object Target { get; }
-
-        public void Dispose()
-        {
-            _weakAsyncAction?.Dispose();
-        }
     }
 }

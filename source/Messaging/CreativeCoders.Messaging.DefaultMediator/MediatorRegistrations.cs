@@ -44,12 +44,30 @@ namespace CreativeCoders.Messaging.DefaultMediator
 
         private IList<IMediatorRegistration> GetRegistrationList<TMessage>()
         {
-            return _registrations.GetOrAdd(typeof(TMessage), type => new ConcurrentList<IMediatorRegistration>());
+            var typeRegistrations = _registrations.GetOrAdd(typeof(TMessage), type => new ConcurrentList<IMediatorRegistration>());
+            typeRegistrations.Remove(registration => !registration.IsAlive());
+
+            return typeRegistrations;
         }
 
         public IEnumerable<IMediatorRegistration> GetRegistrationsForMessage<TMessage>()
         {
             return GetRegistrationList<TMessage>();
+        }
+
+        public void UnregisterHandler(object target)
+        {
+            foreach (var typeRegistrations in _registrations)
+            {
+                typeRegistrations.Value.Remove(registration => registration.Target == target);
+            }
+        }
+        
+        public void UnregisterHandler<TMessage>(object target)
+        {
+            var typeRegistrations = GetRegistrationList<TMessage>();
+
+            typeRegistrations.Remove(registration => registration.Target == target);
         }
     }
 }

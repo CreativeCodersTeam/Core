@@ -108,17 +108,17 @@ namespace CreativeCoders.Core.UnitTests.Weak
         {
             // ReSharper disable once ConvertToLocalFunction
             Action action = () => { };
-            var weakAction = new WeakAction(action, KeepTargetAliveMode.NotKeepAlive);
+            var weakAction = new WeakAction(action, KeepOwnerAliveMode.NotKeepAlive);
 
-            Assert.False(weakAction.KeepTargetAlive);
+            Assert.False(weakAction.KeepOwnerAlive);
 
-            var weakAction2 = new WeakAction(action, KeepTargetAliveMode.KeepAlive);
+            var weakAction2 = new WeakAction(action, KeepOwnerAliveMode.KeepAlive);
 
-            Assert.True(weakAction2.KeepTargetAlive);
+            Assert.True(weakAction2.KeepOwnerAlive);
 
-            var weakAction3 = new WeakAction(action, KeepTargetAliveMode.AutoGuess);
+            var weakAction3 = new WeakAction(action, KeepOwnerAliveMode.AutoGuess);
 
-            Assert.True(weakAction3.KeepTargetAlive);
+            Assert.True(weakAction3.KeepOwnerAlive);
         }
 
         [Fact]
@@ -126,17 +126,17 @@ namespace CreativeCoders.Core.UnitTests.Weak
         {
             // ReSharper disable once ConvertToLocalFunction
             Action<string> action = s => { };
-            var weakAction = new WeakAction<string>(action, KeepTargetAliveMode.NotKeepAlive);
+            var weakAction = new WeakAction<string>(action, KeepOwnerAliveMode.NotKeepAlive);
 
-            Assert.False(weakAction.KeepTargetAlive);
+            Assert.False(weakAction.KeepOwnerAlive);
 
-            var weakAction2 = new WeakAction<string>(action, KeepTargetAliveMode.KeepAlive);
+            var weakAction2 = new WeakAction<string>(action, KeepOwnerAliveMode.KeepAlive);
 
-            Assert.True(weakAction2.KeepTargetAlive);
+            Assert.True(weakAction2.KeepOwnerAlive);
 
-            var weakAction3 = new WeakAction<string>(action, KeepTargetAliveMode.AutoGuess);
+            var weakAction3 = new WeakAction<string>(action, KeepOwnerAliveMode.AutoGuess);
 
-            Assert.True(weakAction3.KeepTargetAlive);
+            Assert.True(weakAction3.KeepOwnerAlive);
         }
 
         [Fact]
@@ -144,11 +144,11 @@ namespace CreativeCoders.Core.UnitTests.Weak
         {
             // ReSharper disable once ConvertToLocalFunction
             Action<string> action = s => { };
-            var weakAction = new WeakAction<string>(action, KeepTargetAliveMode.KeepAlive);
+            var weakAction = new WeakAction<string>(action, KeepOwnerAliveMode.KeepAlive);
 
             weakAction.Dispose();
 
-            Assert.False(weakAction.GetIsAlive());            
+            Assert.False(weakAction.IsAlive());            
         }
     }
 }

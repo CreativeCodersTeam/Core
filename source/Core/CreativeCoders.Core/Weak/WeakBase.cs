@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Weak
@@ -7,67 +8,68 @@ namespace CreativeCoders.Core.Weak
     public class WeakBase<T> : IDisposable
         where T : class
     {
-        private WeakReference _targetReference;
+        private WeakReference _ownerReference;
         
         private WeakReference<T> _dataReference;
         
-        private object _target;
+        private object _owner;
 
-        public WeakBase(object target, T data, KeepTargetAliveMode keepTargetAliveMode)
+        public WeakBase(object owner, T data, KeepOwnerAliveMode keepOwnerAliveMode)
         {
             Ensure.IsNotNull(data, nameof(data));
 
-            if (target != null)
+            if (owner != null)
             {
-                _targetReference = new WeakReference(target);
+                _ownerReference = new WeakReference(owner);
 
-                KeepTargetAlive = GetKeepAlive(keepTargetAliveMode, target);
+                KeepOwnerAlive = GetKeepAlive(keepOwnerAliveMode, owner);
                     
-                if (KeepTargetAlive)
+                if (KeepOwnerAlive)
                 {
-                    _target = target;
+                    _owner = owner;
                 }
             }
             
             _dataReference = new WeakReference<T>(data);
         }
 
-        private static bool GetKeepAlive(KeepTargetAliveMode keepTargetAliveMode, object target)
+        private static bool GetKeepAlive(KeepOwnerAliveMode keepOwnerAliveMode, object target)
         {
-            return keepTargetAliveMode switch
+            return keepOwnerAliveMode switch
             {
-                KeepTargetAliveMode.KeepAlive => true,
-                KeepTargetAliveMode.AutoGuess => (target?.GetType().Name.Contains("<>") == true),
+                KeepOwnerAliveMode.KeepAlive => true,
+                KeepOwnerAliveMode.AutoGuess => (target?.GetType().Name.Contains("<>") == true),
                 _ => false
             };
         }
 
         public T GetData()
         {
-            if (_targetReference == null)
+            if (_ownerReference == null)
             {
                 return _dataReference?.GetTarget();
             }
             
-            var target = _targetReference.Target;
+            var target = _ownerReference.Target;
 
             return target == null 
                 ? default
                 : _dataReference?.GetTarget();
         }
         
-        public bool KeepTargetAlive { get; }
+        public bool KeepOwnerAlive { get; }
 
-        public bool GetIsAlive()
+        public bool IsAlive()
         {
-            return (_targetReference == null || _targetReference.IsAlive) && _dataReference?.GetIsAlive() == true;
+            return (_ownerReference == null || _ownerReference.IsAlive) && _dataReference?.GetIsAlive() == true;
         }
 
         public object GetTarget()
         {
-            return _target ?? _targetReference?.Target;
+            return _owner ?? _ownerReference?.Target;
         }
 
+        [ExcludeFromCodeCoverage]
         protected virtual void Dispose(bool disposing)
         {
             if (!disposing)
@@ -75,8 +77,8 @@ namespace CreativeCoders.Core.Weak
                 return;
             }
 
-            _target = null;
-            _targetReference = null;
+            _owner = null;
+            _ownerReference = null;
             _dataReference = null;
         }
 

@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using CreativeCoders.Core.Threading;
 using CreativeCoders.Core.Weak;
 
@@ -19,25 +18,15 @@ namespace CreativeCoders.Core.Messaging
 
         public IDisposable Register<TMessage>(object receiver, Action<TMessage> action)
         {
-            return Register(receiver, action, KeepTargetAliveMode.NotKeepAlive);
+            return Register(receiver, action, KeepOwnerAliveMode.NotKeepAlive);
         }
 
-        public IDisposable RegisterAsyncHandler<TMessage>(object receiver, Func<TMessage, Task> asyncAction)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IDisposable Register<TMessage>(object receiver, Action<TMessage> action, KeepTargetAliveMode keepTargetAliveMode)
+        public IDisposable Register<TMessage>(object receiver, Action<TMessage> action, KeepOwnerAliveMode keepOwnerAliveMode)
         {
             var actions = GetRegistrationsForMessageType<TMessage>();
-            var registration = new MessengerRegistration<TMessage>(this, receiver, action, keepTargetAliveMode);
+            var registration = new MessengerRegistration<TMessage>(this, receiver, action, keepOwnerAliveMode);
             actions.Add(registration);
             return registration;
-        }
-
-        public IDisposable RegisterAsyncHandler<TMessage>(object receiver, Func<TMessage, Task> asyncAction, KeepTargetAliveMode keepTargetAliveMode)
-        {
-            throw new NotImplementedException();
         }
 
         public void Unregister(object receiver)
@@ -68,17 +57,6 @@ namespace CreativeCoders.Core.Messaging
             var actions = GetRegistrationsForMessageType<TMessage>();
             
             actions.ForEach(action => action.Execute(message));
-        }
-
-        public Task SendAsync<TMessage>(TMessage message)
-        {
-            Ensure.IsNotNull(message, nameof(message));
-
-            var actions = GetRegistrationsForMessageType<TMessage>();
-            
-            actions.ForEach(action => action.Execute(message));
-            
-            return Task.CompletedTask;
         }
 
         private IList<IMessengerRegistration> GetRegistrationsForMessageType<TMessage>()

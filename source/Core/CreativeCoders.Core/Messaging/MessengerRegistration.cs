@@ -1,5 +1,4 @@
 ﻿using System;
-using CreativeCoders.Core.Executing;
 using CreativeCoders.Core.Logging;
 using CreativeCoders.Core.Weak;
 
@@ -16,13 +15,11 @@ namespace CreativeCoders.Core.Messaging
         private readonly WeakAction<TMessage> _weakAction;
 
         public MessengerRegistration(MessengerImpl messenger, object receiver, Action<TMessage> action,
-            KeepTargetAliveMode keepTargetAliveMode)
+            KeepOwnerAliveMode keepOwnerAliveMode)
         {
             _messenger = messenger;
-            _weakAction = new WeakAction<TMessage>(receiver, action, keepTargetAliveMode);
+            _weakAction = new WeakAction<TMessage>(receiver, action, keepOwnerAliveMode);
         }
-
-        public IExecutableWithParameter Executable => _weakAction;
 
         public void Execute<T>(T message)
         {
@@ -38,7 +35,7 @@ namespace CreativeCoders.Core.Messaging
 
         public object Target => _weakAction.GetTarget();
 
-        public bool IsAlive => _weakAction.GetIsAlive();
+        public bool IsAlive => _weakAction.IsAlive();
 
         private void Dispose(bool disposing)
         {
