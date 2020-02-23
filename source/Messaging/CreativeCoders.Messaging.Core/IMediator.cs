@@ -1,8 +1,10 @@
 using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Messaging.Core
 {
+    [PublicAPI]
     public interface IMediator
     {
         IDisposable RegisterHandler<TMessage>(object target, Action<TMessage> action);
