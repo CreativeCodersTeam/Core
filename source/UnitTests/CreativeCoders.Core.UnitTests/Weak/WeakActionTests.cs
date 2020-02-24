@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.Core.Weak;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace CreativeCoders.Core.UnitTests.Weak
 {
+    [SuppressMessage("ReSharper", "ConvertToLocalFunction")]
     public class WeakActionTests
     {
         private readonly ITestOutputHelper _testOutputHelper;
@@ -67,7 +69,7 @@ namespace CreativeCoders.Core.UnitTests.Weak
 
             Assert.False(actionExecuted);
 
-            var action = weakAction.CreateAction<Action>();
+            var action = weakAction.GetData();
 
             Assert.NotNull(action);
 
@@ -106,49 +108,46 @@ namespace CreativeCoders.Core.UnitTests.Weak
         [Fact]
         public void CtorKeepAliveActionTarget()
         {
-            // ReSharper disable once ConvertToLocalFunction
             Action action = () => { };
-            var weakAction = new WeakAction(action, KeepActionTargetAliveMode.NotKeepAlive);
+            var weakAction = new WeakAction(action, KeepOwnerAliveMode.NotKeepAlive);
 
-            Assert.False(weakAction.KeepActionTargetAlive);
+            Assert.False(weakAction.KeepOwnerAlive);
 
-            var weakAction2 = new WeakAction(action, KeepActionTargetAliveMode.KeepAlive);
+            var weakAction2 = new WeakAction(action, KeepOwnerAliveMode.KeepAlive);
 
-            Assert.True(weakAction2.KeepActionTargetAlive);
+            Assert.True(weakAction2.KeepOwnerAlive);
 
-            var weakAction3 = new WeakAction(action, KeepActionTargetAliveMode.AutoGuess);
+            var weakAction3 = new WeakAction(action, KeepOwnerAliveMode.AutoGuess);
 
-            Assert.True(weakAction3.KeepActionTargetAlive);
+            Assert.True(weakAction3.KeepOwnerAlive);
         }
 
         [Fact]
         public void CtorKeepAliveActionTargetGeneric()
         {
-            // ReSharper disable once ConvertToLocalFunction
             Action<string> action = s => { };
-            var weakAction = new WeakAction<string>(action, KeepActionTargetAliveMode.NotKeepAlive);
+            var weakAction = new WeakAction<string>(action, KeepOwnerAliveMode.NotKeepAlive);
 
-            Assert.False(weakAction.KeepActionTargetAlive);
+            Assert.False(weakAction.KeepOwnerAlive);
 
-            var weakAction2 = new WeakAction<string>(action, KeepActionTargetAliveMode.KeepAlive);
+            var weakAction2 = new WeakAction<string>(action, KeepOwnerAliveMode.KeepAlive);
 
-            Assert.True(weakAction2.KeepActionTargetAlive);
+            Assert.True(weakAction2.KeepOwnerAlive);
 
-            var weakAction3 = new WeakAction<string>(action, KeepActionTargetAliveMode.AutoGuess);
+            var weakAction3 = new WeakAction<string>(action, KeepOwnerAliveMode.AutoGuess);
 
-            Assert.True(weakAction3.KeepActionTargetAlive);
+            Assert.True(weakAction3.KeepOwnerAlive);
         }
 
         [Fact]
         public void DisposeTest()
         {
-            // ReSharper disable once ConvertToLocalFunction
             Action<string> action = s => { };
-            var weakAction = new WeakAction<string>(action, KeepActionTargetAliveMode.KeepAlive);
+            var weakAction = new WeakAction<string>(action, KeepOwnerAliveMode.KeepAlive);
 
             weakAction.Dispose();
 
-            Assert.False(weakAction.IsAlive);            
+            Assert.False(weakAction.IsAlive());            
         }
     }
 }

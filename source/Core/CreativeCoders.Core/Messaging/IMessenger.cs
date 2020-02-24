@@ -8,9 +8,9 @@ namespace CreativeCoders.Core.Messaging
     public interface IMessenger
     {
         IDisposable Register<TMessage>(object receiver, Action<TMessage> action);
-
-        IDisposable Register<TMessage>(object receiver, Action<TMessage> action, KeepActionTargetAliveMode keepActionTargetAliveMode);
-
+        
+        IDisposable Register<TMessage>(object receiver, Action<TMessage> action, KeepOwnerAliveMode keepOwnerAliveMode);
+        
         void Unregister(object receiver);
 
         void Unregister<TMessage>(object receiver);
