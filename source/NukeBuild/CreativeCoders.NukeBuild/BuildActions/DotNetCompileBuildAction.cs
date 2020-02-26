@@ -9,8 +9,8 @@ namespace CreativeCoders.NukeBuild.BuildActions
             DotNetTasks.DotNetBuild(s => s
                 .SetProjectFile(BuildInfo.Solution)
                 .SetConfiguration(BuildInfo.Configuration)
-                .SetAssemblyVersion(BuildInfo.VersionInfo.GetNormalizedAssemblyVersion())
-                .SetFileVersion(BuildInfo.VersionInfo.GetNormalizedFileVersion())
+                .SetAssemblyVersion(BuildInfo.VersionInfo.GetAssemblySemVer())
+                .SetFileVersion(BuildInfo.VersionInfo.GetAssemblySemFileVer())
                 .SetInformationalVersion(BuildInfo.VersionInfo.InformationalVersion)
                 .EnableNoRestore());
         }

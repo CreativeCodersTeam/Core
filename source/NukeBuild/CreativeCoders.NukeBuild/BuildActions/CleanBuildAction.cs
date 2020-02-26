@@ -11,7 +11,7 @@ namespace CreativeCoders.NukeBuild.BuildActions
             FileSystemTasks.EnsureCleanDirectory(BuildInfo.ArtifactsDirectory);
         }
 
-        private static void SafeDeleteDirectory(PathConstruction.AbsolutePath directory)
+        private static void SafeDeleteDirectory(AbsolutePath directory)
         {
             FileSystemTasks.EnsureCleanDirectory(directory);
             FileSystemTasks.DeleteDirectory(directory);

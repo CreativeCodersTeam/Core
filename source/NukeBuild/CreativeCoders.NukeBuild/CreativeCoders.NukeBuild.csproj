@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <Authors>CreativeCoders</Authors>
     <Description>Nuke build extensions</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nuke.Common" Version="0.22.1" />
+    <PackageReference Include="Nuke.Common" Version="0.24.2" />
   </ItemGroup>
 
   <ItemGroup>

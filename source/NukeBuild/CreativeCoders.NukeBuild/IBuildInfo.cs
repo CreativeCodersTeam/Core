@@ -17,8 +17,8 @@ namespace CreativeCoders.NukeBuild
 
         IVersionInfo VersionInfo { get; }
 
-        PathConstruction.AbsolutePath SourceDirectory { get; }
+        AbsolutePath SourceDirectory { get; }
 
-        PathConstruction.AbsolutePath ArtifactsDirectory { get; }
+        AbsolutePath ArtifactsDirectory { get; }
     }
 }
