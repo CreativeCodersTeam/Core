@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using CreativeCoders.Core.Caching;
 using CreativeCoders.Core.Caching.Default;
+using FakeItEasy;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Caching
@@ -81,24 +82,89 @@ namespace CreativeCoders.Core.UnitTests.Caching
         public void Clear_TryGetValue_ReturnFalse()
         {
             var cache = new DictionaryCache<int, string>();
-            cache.AddOrUpdate(1, "TestValue");
+            cache.AddOrUpdate(1, "TestValue1");
+            cache.AddOrUpdate(2, "TestValue2");
             cache.Clear();
 
-            var keyExists = cache.TryGet(1, out _);
+            var keyExists1 = cache.TryGet(1, out _);
+            var keyExists2 = cache.TryGet(2, out _);
 
-            Assert.False(keyExists);
+            Assert.False(keyExists1);
+            Assert.False(keyExists2);
         }
         
         [Fact]
         public async Task ClearAsync_TryGetValue_ReturnFalse()
         {
             var cache = new DictionaryCache<int, string>();
-            await cache.AddOrUpdateAsync(1, "TestValue");
+            await cache.AddOrUpdateAsync(1, "TestValue1");
+            await cache.AddOrUpdateAsync(2, "TestValue2");
             await cache.ClearAsync();
 
-            var cacheRequestResult = await cache.TryGetAsync(1);
+            var cacheRequestResult1 = await cache.TryGetAsync(1);
+            var cacheRequestResult2 = await cache.TryGetAsync(2);
 
-            Assert.False(cacheRequestResult.EntryExists);
+            Assert.False(cacheRequestResult1.EntryExists);
+            Assert.False(cacheRequestResult2.EntryExists);
+        }
+        
+        [Fact]
+        public void GetEntry_ExistingKey_ReturnEntry()
+        {
+            var cache = new DictionaryCache<int, string>();
+            cache.AddOrUpdate(1, "TestValue1");
+            cache.AddOrUpdate(2, "TestValue2");
+
+            var cacheEntry = cache.GetEntry(1);
+
+            Assert.Equal(1, cacheEntry.Key);
+            Assert.Equal("TestValue1", cacheEntry.Value);
+            Assert.Same(CacheExpirationPolicyTests.NeverExpire, cacheEntry.ExpirationPolicy);
+        }
+        
+        [Fact]
+        public async Task GetEntryAsync_ExistingKey_ReturnEntry()
+        {
+            var cache = new DictionaryCache<int, string>();
+            await cache.AddOrUpdateAsync(1, "TestValue1");
+            await cache.AddOrUpdateAsync(2, "TestValue2");
+            
+
+            var cacheEntry = await cache.GetEntryAsync(1);
+
+            Assert.Equal(1, cacheEntry.Key);
+            Assert.Equal("TestValue1", cacheEntry.Value);
+            Assert.Same(CacheExpirationPolicyTests.NeverExpire, cacheEntry.ExpirationPolicy);
+        }
+        
+        [Fact]
+        public void Remove_TryGetValue_ReturnFalse()
+        {
+            var cache = new DictionaryCache<int, string>();
+            cache.AddOrUpdate(1, "TestValue1");
+            cache.AddOrUpdate(2, "TestValue2");
+            cache.Remove(1);
+
+            var keyExists1 = cache.TryGet(1, out _);
+            var keyExists2 = cache.TryGet(2, out _);
+
+            Assert.False(keyExists1);
+            Assert.True(keyExists2);
+        }
+        
+        [Fact]
+        public async Task RemoveAsync_TryGetValue_ReturnFalse()
+        {
+            var cache = new DictionaryCache<int, string>();
+            await cache.AddOrUpdateAsync(1, "TestValue");
+            await cache.AddOrUpdateAsync(2, "TestValue2");
+            await cache.RemoveAsync(1);
+
+            var cacheRequestResult1 = await cache.TryGetAsync(1);
+            var cacheRequestResult2 = await cache.TryGetAsync(2);
+
+            Assert.False(cacheRequestResult1.EntryExists);
+            Assert.True(cacheRequestResult2.EntryExists);
         }
 
         [Fact]
@@ -237,7 +303,8 @@ namespace CreativeCoders.Core.UnitTests.Caching
         [Fact]
         public void TryGet_AfterExpiration_ReturnsFalse()
         {
-            var expirationPolicy = new ManuelCacheExpirationPolicy();
+            var expirationPolicy = A.Fake<ICacheExpirationPolicy>();
+            A.CallTo(() => expirationPolicy.CheckIsExpired()).Returns(false);
             
             var cache = new DictionaryCache<int, string>();
             cache.AddOrUpdate(1, "TestValue", expirationPolicy);
@@ -246,7 +313,7 @@ namespace CreativeCoders.Core.UnitTests.Caching
             
             Assert.Equal("TestValue", value);
 
-            expirationPolicy.Expire();
+            A.CallTo(() => expirationPolicy.CheckIsExpired()).Returns(true);
             
             Assert.False(cache.TryGet(1, out _));
         }
@@ -254,7 +321,8 @@ namespace CreativeCoders.Core.UnitTests.Caching
         [Fact]
         public async Task TryGetAsync_AfterExpiration_ReturnsFalse()
         {
-            var expirationPolicy = new ManuelCacheExpirationPolicy();
+            var expirationPolicy = A.Fake<ICacheExpirationPolicy>();
+            A.CallTo(() => expirationPolicy.CheckIsExpired()).Returns(false);
             
             var cache = new DictionaryCache<int, string>();
             await cache.AddOrUpdateAsync(1, "TestValue", expirationPolicy);
@@ -263,7 +331,7 @@ namespace CreativeCoders.Core.UnitTests.Caching
             
             Assert.Equal("TestValue", value);
 
-            expirationPolicy.Expire();
+            A.CallTo(() => expirationPolicy.CheckIsExpired()).Returns(true);
             
             Assert.False(cache.TryGet(1, out _));
         }

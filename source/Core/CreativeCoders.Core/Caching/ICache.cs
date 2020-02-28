@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Core.Caching
 {
     [PublicAPI]
-    public interface ICache<in TKey, TValue>
+    public interface ICache<TKey, TValue>
     {
         TValue GetOrAdd(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy);
         
@@ -18,6 +18,10 @@ namespace CreativeCoders.Core.Caching
         void AddOrUpdate(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy);
         
         Task AddOrUpdateAsync(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy);
+
+        ICacheEntry<TKey, TValue> GetEntry(TKey key);
+        
+        Task<ICacheEntry<TKey, TValue>> GetEntryAsync(TKey key);
 
         void Clear();
         

@@ -71,6 +71,18 @@ namespace CreativeCoders.Core.Caching.Default
             return Task.CompletedTask;
         }
 
+        public ICacheEntry<TKey, TValue> GetEntry(TKey key)
+        {
+            return _data.TryGetValue(key, out var value)
+                ? value
+                : null;
+        }
+
+        public Task<ICacheEntry<TKey, TValue>> GetEntryAsync(TKey key)
+        {
+            return Task.FromResult(GetEntry(key));
+        }
+
         public void Clear()
         {
             _data.Clear();
