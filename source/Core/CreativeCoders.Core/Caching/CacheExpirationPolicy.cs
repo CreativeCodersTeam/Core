@@ -6,33 +6,28 @@ namespace CreativeCoders.Core.Caching
     [PublicAPI]
     public class CacheExpirationPolicy : ICacheExpirationPolicy
     {
-        public CacheExpirationPolicy(CacheExpirationMode expirationMode)
-        {
-            ExpirationMode = expirationMode;
-        }
-        
-        public static readonly CacheExpirationPolicy NeverExpire = new CacheExpirationPolicy(CacheExpirationMode.NeverExpire);
+        private readonly Func<bool> _isExpired;
 
-        public static CacheExpirationPolicy AfterAbsoluteDateTime(DateTime absoluteDateTime)
+        public CacheExpirationPolicy(Func<bool> isExpired)
         {
-            return new CacheExpirationPolicy(CacheExpirationMode.AbsoluteDateTime)
-            {
-                AbsoluteDateTime = absoluteDateTime
-            };
+            _isExpired = isExpired;
         }
 
-        public static CacheExpirationPolicy AfterSlidingTimeSpan(TimeSpan slidingTimeSpan)
+        public static ICacheExpirationPolicy NeverExpire { get; } = new CacheExpirationPolicy(() => false);
+
+        public static ICacheExpirationPolicy AfterDateTime(DateTime dateTime)
         {
-            return new CacheExpirationPolicy(CacheExpirationMode.SlidingTimeSpan)
-            {
-                SlidingTimeSpan = slidingTimeSpan
-            };
+            return new CacheExpirationPolicy(() => DateTime.Now > dateTime);
         }
-        
-        public CacheExpirationMode ExpirationMode { get; }
 
-        public DateTime AbsoluteDateTime { get; private set; }
+        public static ICacheExpirationPolicy AfterTimeSpan(TimeSpan timeSpan)
+        {
+            return AfterDateTime(DateTime.Now.Add(timeSpan));
+        }
 
-        public TimeSpan SlidingTimeSpan { get; private set; }
+        public bool CheckIsExpired()
+        {
+            return _isExpired();
+        }
     }
 }

@@ -1,35 +1,13 @@
-﻿using System;
-
-namespace CreativeCoders.Core.Caching.Default
+﻿namespace CreativeCoders.Core.Caching.Default
 {
     public class CacheEntry<TKey, TValue> : ICacheEntry<TKey, TValue>
     {
-        private DateTime _lastEntryCheck;
-        
         public CacheEntry(TKey key, ICacheExpirationPolicy expirationPolicy)
         {
             Key = key;
             ExpirationPolicy = expirationPolicy;
-            _lastEntryCheck = DateTime.Now;
         }
 
-        public bool CheckIsExpired()
-        {
-            switch (ExpirationPolicy.ExpirationMode)
-            {
-                case CacheExpirationMode.NeverExpire:
-                    return false;
-                case CacheExpirationMode.AbsoluteDateTime:
-                    return DateTime.Now > ExpirationPolicy.AbsoluteDateTime;
-                case CacheExpirationMode.SlidingTimeSpan:
-                    var isExpired = DateTime.Now > _lastEntryCheck.Add(ExpirationPolicy.SlidingTimeSpan);
-                    _lastEntryCheck = DateTime.Now;
-                    return isExpired;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-        
         public TKey Key { get; }
 
         public TValue Value { get; set; }
