@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CreativeCoders.Core.Caching;
+using CreativeCoders.Core.Caching.Default;
 
 namespace CreativeCoders.Core.Enums
 {
@@ -29,7 +30,7 @@ namespace CreativeCoders.Core.Enums
         public T Convert<T>(string text)
             where T : Enum
         {
-            var mappingDict = TextToEnumMappingCache.GetValue(typeof(T), () => EnumUtils.GetEnumFieldInfos<T>()
+            var mappingDict = TextToEnumMappingCache.GetOrAdd(typeof(T), () => EnumUtils.GetEnumFieldInfos<T>()
                 .ToDictionary(entry => entry.Key, entry => GetTextForField(entry.Value)));
 
             if (!mappingDict.TryGetKeyByValue(text, out var returnValue))
@@ -47,7 +48,7 @@ namespace CreativeCoders.Core.Enums
 
         private static string GetTextForField(FieldInfo fieldInfo)
         {
-            var attr = EnumToTextCache.GetValue(fieldInfo, () => GetEnumStringAttribute(fieldInfo));
+            var attr = EnumToTextCache.GetOrAdd(fieldInfo, () => GetEnumStringAttribute(fieldInfo));
 
             return attr != null ? attr.Text : fieldInfo.Name;
         }

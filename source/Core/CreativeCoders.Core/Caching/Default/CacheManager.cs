@@ -1,4 +1,4 @@
-﻿namespace CreativeCoders.Core.Caching
+﻿namespace CreativeCoders.Core.Caching.Default
 {
     public static class CacheManager
     {
