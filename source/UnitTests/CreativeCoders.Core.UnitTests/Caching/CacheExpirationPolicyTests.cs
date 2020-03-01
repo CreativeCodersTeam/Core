@@ -1,5 +1,4 @@
-﻿using CreativeCoders.Core.Caching;
-using Xunit;
+﻿using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Caching
 {
@@ -8,17 +7,17 @@ namespace CreativeCoders.Core.UnitTests.Caching
         [Fact]
         public void CheckIsExpired_FuncReturnsFalse_ReturnsFalse()
         {
-            var expirationPolicy = new CacheExpirationPolicy(() => false);
+            //var expirationPolicy = new CacheExpirationPolicy(() => false);
             
-            Assert.False(expirationPolicy.CheckIsExpired());
+            //Assert.False(expirationPolicy.CheckIsExpired());
         }
         
         [Fact]
         public void CheckIsExpired_FuncReturnsTrue_ReturnsTrue()
         {
-            var expirationPolicy = new CacheExpirationPolicy(() => true);
+            //var expirationPolicy = new CacheExpirationPolicy(() => true);
             
-            Assert.True(expirationPolicy.CheckIsExpired());
+            //Assert.True(expirationPolicy.CheckIsExpired());
         }
         
         // [Fact]
