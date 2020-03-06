@@ -14,38 +14,38 @@ namespace CreativeCoders.Core.Caching.Default
 
         public override TValue GetOrAdd(TKey key, Func<TValue> getValue, string regionName = null)
         {
-            if (TryGet(key, out var value))
+            if (TryGet(key, out var value, regionName))
             {
                 return value;
             }
 
             var newValue = getValue();
-            AddOrUpdate(key, newValue);
+            AddOrUpdate(key, newValue, regionName);
 
             return newValue;
         }
         
         public override TValue GetOrAdd(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy, string regionName = null)
         {
-            if (TryGet(key, out var value))
+            if (TryGet(key, out var value, regionName))
             {
                 return value;
             }
 
             var newValue = getValue();
-            AddOrUpdate(key, newValue, expirationPolicy);
+            AddOrUpdate(key, newValue, expirationPolicy, regionName);
 
             return newValue;
         }
 
         public override Task<TValue> GetOrAddAsync(TKey key, Func<TValue> getValue, string regionName = null)
         {
-            return Task.FromResult(GetOrAdd(key, getValue));
+            return Task.FromResult(GetOrAdd(key, getValue, regionName));
         }
 
         public override Task<TValue> GetOrAddAsync(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy, string regionName = null)
         {
-            return Task.FromResult(GetOrAdd(key, getValue, expirationPolicy));
+            return Task.FromResult(GetOrAdd(key, getValue, expirationPolicy, regionName));
         }
 
         public override bool TryGet(TKey key, out TValue value, string regionName = null)
@@ -70,7 +70,7 @@ namespace CreativeCoders.Core.Caching.Default
         public override Task<CacheRequestResult<TValue>> TryGetAsync(TKey key, string regionName = null)
         {
             return Task.FromResult(
-                TryGet(key, out var value)
+                TryGet(key, out var value, regionName)
                     ? new CacheRequestResult<TValue>(true, value)
                     : new CacheRequestResult<TValue>(false, default)
             );
@@ -88,14 +88,14 @@ namespace CreativeCoders.Core.Caching.Default
 
         public override Task AddOrUpdateAsync(TKey key, TValue value, string regionName = null)
         {
-            AddOrUpdate(key, value);
+            AddOrUpdate(key, value, regionName);
             
             return Task.CompletedTask;
         }
 
         public override Task AddOrUpdateAsync(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy, string regionName = null)
         {
-            AddOrUpdate(key, value, expirationPolicy);
+            AddOrUpdate(key, value, expirationPolicy, regionName);
             
             return Task.CompletedTask;
         }

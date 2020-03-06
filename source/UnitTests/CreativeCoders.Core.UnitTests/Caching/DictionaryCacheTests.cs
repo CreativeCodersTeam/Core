@@ -50,15 +50,33 @@ namespace CreativeCoders.Core.UnitTests.Caching
         }
 
         [Fact]
+        public async Task TryGetAsync_KeyExistsWithRegion_ReturnsTrueAndValue()
+        {
+            await TestCaching.TryGetAsync_KeyExistsWithRegion_ReturnsTrueAndValue(CreateCache<int, string>());
+        }
+
+        [Fact]
         public void TryGet_AddOrUpdateTwoValue_ReturnsLastValue()
         {
             TestCaching.TryGet_AddOrUpdateTwoValue_ReturnsLastValue(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void TryGet_AddOrUpdateTwoValueWithRegions_ReturnsLastValue()
+        {
+            TestCaching.TryGet_AddOrUpdateTwoValueWithRegions_ReturnsLastValue(CreateCache<int, string>());
         }
         
         [Fact]
         public async Task TryGetAsync_AddOrUpdateTwoValue_ReturnsLastValue()
         {
             await TestCaching.TryGetAsync_AddOrUpdateTwoValue_ReturnsLastValue(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task TryGetAsync_AddOrUpdateTwoValueWithRegions_ReturnsLastValue()
+        {
+            await TestCaching.TryGetAsync_AddOrUpdateTwoValueWithRegions_ReturnsLastValue(CreateCache<int, string>());
         }
 
         [Fact]
