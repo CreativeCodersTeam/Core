@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
 namespace CreativeCoders.Core.Caching.Default
 {
-    public class DictionaryCache<TKey, TValue> : ICache<TKey, TValue>
+    public class DictionaryCache<TKey, TValue> : CacheBase<TKey, TValue>
     {
-        private readonly ConcurrentDictionary<TKey, CacheEntry<TKey, TValue>> _data;
-
+        private readonly CacheRegions<TKey, TValue> _regions;
+        
         public DictionaryCache()
         {
-            _data = new ConcurrentDictionary<TKey, CacheEntry<TKey, TValue>>();
+            _regions = new CacheRegions<TKey, TValue>();
         }
 
-        public TValue GetOrAdd(TKey key, Func<TValue> getValue)
+        public override TValue GetOrAdd(TKey key, Func<TValue> getValue, string regionName = null)
         {
             if (TryGet(key, out var value))
             {
@@ -26,7 +25,7 @@ namespace CreativeCoders.Core.Caching.Default
             return newValue;
         }
         
-        public TValue GetOrAdd(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy)
+        public override TValue GetOrAdd(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy, string regionName = null)
         {
             if (TryGet(key, out var value))
             {
@@ -39,19 +38,19 @@ namespace CreativeCoders.Core.Caching.Default
             return newValue;
         }
 
-        public Task<TValue> GetOrAddAsync(TKey key, Func<TValue> getValue)
+        public override Task<TValue> GetOrAddAsync(TKey key, Func<TValue> getValue, string regionName = null)
         {
             return Task.FromResult(GetOrAdd(key, getValue));
         }
 
-        public Task<TValue> GetOrAddAsync(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy)
+        public override Task<TValue> GetOrAddAsync(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy, string regionName = null)
         {
             return Task.FromResult(GetOrAdd(key, getValue, expirationPolicy));
         }
 
-        public bool TryGet(TKey key, out TValue value)
+        public override bool TryGet(TKey key, out TValue value, string regionName = null)
         {
-            if (!_data.TryGetValue(key, out var cacheEntry))
+            if (!_regions.TryGetValue(key, out var cacheEntry, regionName))
             {
                 value = default;
                 return false;
@@ -59,7 +58,7 @@ namespace CreativeCoders.Core.Caching.Default
 
             if (cacheEntry.CheckIsExpired())
             {
-                _data.TryRemove(key, out _);
+                _regions.TryRemove(key, regionName);
                 value = default;
                 return false;
             }
@@ -68,7 +67,7 @@ namespace CreativeCoders.Core.Caching.Default
             return true;
         }
 
-        public Task<CacheRequestResult<TValue>> TryGetAsync(TKey key)
+        public override Task<CacheRequestResult<TValue>> TryGetAsync(TKey key, string regionName = null)
         {
             return Task.FromResult(
                 TryGet(key, out var value)
@@ -77,47 +76,47 @@ namespace CreativeCoders.Core.Caching.Default
             );
         }
 
-        public void AddOrUpdate(TKey key, TValue value)
+        public override void AddOrUpdate(TKey key, TValue value, string regionName = null)
         {
-            _data[key] = new CacheEntry<TKey, TValue>(key, CacheExpirationPolicy.NeverExpire) {Value = value};
+            _regions.Set(key, new CacheEntry<TKey, TValue>(key, CacheExpirationPolicy.NeverExpire) {Value = value}, regionName);
         }
 
-        public void AddOrUpdate(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy)
+        public override void AddOrUpdate(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy, string regionName = null)
         {
-            _data[key] = new CacheEntry<TKey, TValue>(key, expirationPolicy) {Value = value};
+            _regions.Set(key, new CacheEntry<TKey, TValue>(key, expirationPolicy) {Value = value}, regionName);
         }
 
-        public Task AddOrUpdateAsync(TKey key, TValue value)
+        public override Task AddOrUpdateAsync(TKey key, TValue value, string regionName = null)
         {
             AddOrUpdate(key, value);
             
             return Task.CompletedTask;
         }
 
-        public Task AddOrUpdateAsync(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy)
+        public override Task AddOrUpdateAsync(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy, string regionName = null)
         {
             AddOrUpdate(key, value, expirationPolicy);
             
             return Task.CompletedTask;
         }
 
-        public void Clear()
+        public override void Clear(string regionName = null)
         {
-            _data.Clear();
+            _regions.Clear(regionName);
         }
 
-        public Task ClearAsync()
+        public override Task ClearAsync(string regionName = null)
         {
             Clear();
             return Task.CompletedTask;
         }
 
-        public void Remove(TKey key)
+        public override void Remove(TKey key, string regionName = null)
         {
-            _data.TryRemove(key, out _);
+            _regions.TryRemove(key, regionName);
         }
 
-        public Task RemoveAsync(TKey key)
+        public override Task RemoveAsync(TKey key, string regionName = null)
         {
             Remove(key);
             return Task.CompletedTask;

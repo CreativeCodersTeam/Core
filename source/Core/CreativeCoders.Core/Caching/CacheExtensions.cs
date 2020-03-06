@@ -1,29 +1,28 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace CreativeCoders.Core.Caching
 {
     public static class CacheExtensions
     {
-        public static TValue GetOrAdd<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, Func<TValue> getValue)
-        {
-            return cache.GetOrAdd(key, getValue, CacheExpirationPolicy.NeverExpire);
-        }
+        // public static TValue GetOrAdd<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, Func<TValue> getValue)
+        // {
+        //     return cache.GetOrAdd(key, getValue, CacheExpirationPolicy.NeverExpire);
+        // }
         
-        public static Task<TValue> GetOrAddAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, Func<TValue> getValue)
-        {
-            return cache.GetOrAddAsync(key, getValue, CacheExpirationPolicy.NeverExpire);
-        }
+        // public static Task<TValue> GetOrAddAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, Func<TValue> getValue)
+        // {
+        //     return cache.GetOrAddAsync(key, getValue, CacheExpirationPolicy.NeverExpire);
+        // }
 
-        public static void AddOrUpdate<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, TValue value)
-        {
-            cache.AddOrUpdate(key, value, CacheExpirationPolicy.NeverExpire);
-        }
-        
-        public static Task AddOrUpdateAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, TValue value)
-        {
-            return cache.AddOrUpdateAsync(key, value, CacheExpirationPolicy.NeverExpire);
-        }
+        // public static void AddOrUpdate<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, TValue value)
+        // {
+        //     cache.AddOrUpdate(key, value, CacheExpirationPolicy.NeverExpire);
+        // }
+        //
+        // public static Task AddOrUpdateAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, TValue value)
+        // {
+        //     return cache.AddOrUpdateAsync(key, value, CacheExpirationPolicy.NeverExpire);
+        // }
 
         public static TValue GetValue<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, bool throwExceptionIfKeyNotExists)
         {
