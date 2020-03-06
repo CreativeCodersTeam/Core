@@ -77,9 +77,10 @@ namespace CreativeCoders.Core.UnitTests.Caching
         
         public static async Task TryGetAsync_KeyExistsWithRegion_ReturnsTrueAndValue(ICache<int, string> cache)
         {
-            await cache.AddOrUpdateAsync(1, "TestValue");
+            await cache.AddOrUpdateAsync(1, "TestValue", "region1");
+            await cache.AddOrUpdateAsync(1, "TestValue2", "region2");
 
-            var cacheRequestResult = await cache.TryGetAsync(1);
+            var cacheRequestResult = await cache.TryGetAsync(1, "region1");
 
             Assert.True(cacheRequestResult.EntryExists);
             Assert.Equal("TestValue", cacheRequestResult.Value);
@@ -96,12 +97,34 @@ namespace CreativeCoders.Core.UnitTests.Caching
             Assert.Equal("TestValue1234", value);
         }
         
+        public static void TryGet_AddOrUpdateTwoValueWithRegions_ReturnsLastValue(ICache<int, string> cache)
+        {
+            cache.AddOrUpdate(1, "TestValue", "region1");
+            cache.AddOrUpdate(1, "TestValue1234", "region1");
+
+            var keyExists = cache.TryGet(1, out var value, "region1");
+
+            Assert.True(keyExists);
+            Assert.Equal("TestValue1234", value);
+        }
+        
         public static async Task TryGetAsync_AddOrUpdateTwoValue_ReturnsLastValue(ICache<int, string> cache)
         {
             await cache.AddOrUpdateAsync(1, "TestValue");
             await cache.AddOrUpdateAsync(1, "TestValue1234");
 
             var cacheRequestResult = await cache.TryGetAsync(1);
+
+            Assert.True(cacheRequestResult.EntryExists);
+            Assert.Equal("TestValue1234", cacheRequestResult.Value);
+        }
+        
+        public static async Task TryGetAsync_AddOrUpdateTwoValueWithRegions_ReturnsLastValue(ICache<int, string> cache)
+        {
+            await cache.AddOrUpdateAsync(1, "TestValue", "region1");
+            await cache.AddOrUpdateAsync(1, "TestValue1234", "region1");
+
+            var cacheRequestResult = await cache.TryGetAsync(1, "region1");
 
             Assert.True(cacheRequestResult.EntryExists);
             Assert.Equal("TestValue1234", cacheRequestResult.Value);
