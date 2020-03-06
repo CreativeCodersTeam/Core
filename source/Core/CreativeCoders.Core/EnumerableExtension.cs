@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using CreativeCoders.Core.Comparing;
 using JetBrains.Annotations;
 
@@ -17,6 +18,16 @@ namespace CreativeCoders.Core
             foreach (var item in self)
             {
                 action(item);
+            }
+        }
+        
+        public static async Task ForEachAsync<T>(this IEnumerable<T> self, Func<T, Task> actionAsync)
+        {
+            Ensure.IsNotNull(actionAsync, nameof(actionAsync));
+
+            foreach (var item in self)
+            {
+                await actionAsync(item);
             }
         }
 
@@ -41,6 +52,17 @@ namespace CreativeCoders.Core
             foreach (var element in source)
             {
                 action(element, index++);
+            }
+        }
+        
+        public static async Task ForEachAsync<T>(this IEnumerable<T> source, Func<T, int, Task> actionAsync)
+        {
+            Ensure.IsNotNull(actionAsync, nameof(actionAsync));
+
+            var index = 0;
+            foreach (var element in source)
+            {
+                await actionAsync(element, index++);
             }
         }
 

@@ -2,9 +2,11 @@
 using System.Threading.Tasks;
 using CreativeCoders.Messaging.Core;
 using CreativeCoders.Messaging.DefaultMediator;
+using JetBrains.Annotations;
 
 namespace MessagingSampleApp
 {
+    [UsedImplicitly]
     public class TestMediator
     {
         private IMediator _mediator;

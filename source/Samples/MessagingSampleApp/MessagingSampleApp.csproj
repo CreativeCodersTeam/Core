@@ -8,6 +8,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Messaging\CreativeCoders.Messaging.Core\CreativeCoders.Messaging.Core.csproj" />
       <ProjectReference Include="..\..\Messaging\CreativeCoders.Messaging.DefaultMediator\CreativeCoders.Messaging.DefaultMediator.csproj" />
+      <ProjectReference Include="..\..\Messaging\CreativeCoders.Messaging.DefaultMessageQueue\CreativeCoders.Messaging.DefaultMessageQueue.csproj" />
     </ItemGroup>
 
 </Project>

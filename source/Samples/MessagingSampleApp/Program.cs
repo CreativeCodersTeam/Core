@@ -7,7 +7,8 @@ namespace MessagingSampleApp
     {
         internal static async Task Main()
         {
-            await new TestMediator().Run();
+            //await new TestMediator().Run();
+            await TestMessageQueue.Run();
             
             Console.WriteLine("Press key to exit...");
             Console.ReadKey();
