@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using JetBrains.Annotations;
 
@@ -11,7 +12,10 @@ namespace CreativeCoders.Core.Threading
 
         private bool _disposed;
 
-        public AcquireWriterLock(ReaderWriterLockSlim lockSlim) : this(lockSlim, Timeout.Infinite) {}
+        [ExcludeFromCodeCoverage]
+        public AcquireWriterLock() : this(new ReaderWriterLockSlim()) { }
+
+        public AcquireWriterLock(ReaderWriterLockSlim lockSlim) : this(lockSlim, Timeout.Infinite) { }
 
         public AcquireWriterLock(ReaderWriterLockSlim lockSlim, int timeout)
         {
@@ -36,6 +40,7 @@ namespace CreativeCoders.Core.Threading
             {
                 _lockSlim.ExitWriteLock();
             }
+
             _disposed = true;
         }
     }

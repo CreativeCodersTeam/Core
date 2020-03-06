@@ -48,5 +48,57 @@ namespace CreativeCoders.Core.UnitTests.Threading
 
             Assert.True(executed);
         }
+
+        [Fact]
+        public void UpgradeableRead_WithWriteUpgrade_CalledCorrectAndLockModesAreAlsoCorrect()
+        {
+            var executed = false;
+            
+            var slimLock = new ReaderWriterLockSlim();
+            
+            var lockingMechanism = new LockSlimLockingMechanism(slimLock);
+
+            lockingMechanism.UpgradeableRead(useWriteLock =>
+            {
+                Assert.True(slimLock.IsUpgradeableReadLockHeld);
+                Assert.False(slimLock.IsWriteLockHeld);
+
+                using (useWriteLock())
+                {
+                    Assert.True(slimLock.IsWriteLockHeld);
+                    executed = true;
+                }
+            });
+            
+            Assert.True(executed);
+        }
+        
+        [Fact]
+        public void UpgradeableReadWithResult_WithWriteUpgrade_CalledCorrectAndLockModesAreAlsoCorrect()
+        {
+            const string expectedResult = "Test text";
+            
+            var executed = false;
+            
+            var slimLock = new ReaderWriterLockSlim();
+            
+            var lockingMechanism = new LockSlimLockingMechanism(slimLock);
+
+            var result = lockingMechanism.UpgradeableRead(useWriteLock =>
+            {
+                Assert.True(slimLock.IsUpgradeableReadLockHeld);
+                Assert.False(slimLock.IsWriteLockHeld);
+
+                using (useWriteLock())
+                {
+                    Assert.True(slimLock.IsWriteLockHeld);
+                    executed = true;
+                    return expectedResult;
+                }
+            });
+            
+            Assert.True(executed);
+            Assert.Equal(expectedResult, result);
+        }
     }
 }

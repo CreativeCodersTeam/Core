@@ -1,4 +1,5 @@
 ﻿using System;
+using CreativeCoders.Core.Weak;
 
 namespace CreativeCoders.Core.Threading
 {

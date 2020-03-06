@@ -1,22 +1,16 @@
 ﻿using System.Threading.Tasks;
+using CreativeCoders.Caching.SystemRuntimeCaching;
 using CreativeCoders.Core.Caching;
-using CreativeCoders.Core.Caching.Default;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Caching
 {
-    public class DictionaryCacheTests
+    public class SystemRuntimeCacheTests
     {
         [Fact]
         public void TryGet_KeyNotExists_ReturnFalse()
         {
             TestCaching.TryGet_KeyNotExists_ReturnFalse(CreateCache<int, string>());
-        }
-
-        [Fact]
-        public void TryGet_KeyNotExistsWithRegion_ReturnFalse()
-        {
-            TestCaching.TryGet_KeyNotExistsWithRegion_ReturnFalse(CreateCache<int, string>());
         }
         
         [Fact]
@@ -26,21 +20,9 @@ namespace CreativeCoders.Core.UnitTests.Caching
         }
 
         [Fact]
-        public async Task TryGetAsync_KeyNotExistsWithRegion_ReturnFalse()
-        {
-            await TestCaching.TryGetAsync_KeyNotExistsWithRegion_ReturnFalse(CreateCache<int, string>());
-        }
-
-        [Fact]
         public void TryGet_KeyExists_ReturnsTrueAndValue()
         {
             TestCaching.TryGet_KeyExists_ReturnsTrueAndValue(CreateCache<int, string>());
-        }
-
-        [Fact]
-        public void TryGet_KeyExistsWithRegion_ReturnsTrueAndValue()
-        {
-            TestCaching.TryGet_KeyExistsWithRegion_ReturnsTrueAndValue(CreateCache<int, string>());
         }
         
         [Fact]
@@ -168,7 +150,7 @@ namespace CreativeCoders.Core.UnitTests.Caching
         {
             await TestCaching.TryGetAsync_AfterExpiration_ReturnsFalse(CreateCache<int, string>());
         }
-
+        
         [Fact]
         public void GetOrAdd_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
         {
@@ -177,7 +159,7 @@ namespace CreativeCoders.Core.UnitTests.Caching
         
         private static ICache<TKey, TValue> CreateCache<TKey, TValue>()
         {
-            return new DictionaryCache<TKey, TValue>();
+            return new SystemRuntimeCache<TKey, TValue>();
         }
     }
 }
