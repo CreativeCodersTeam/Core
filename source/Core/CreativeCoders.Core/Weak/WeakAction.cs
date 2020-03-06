@@ -13,10 +13,17 @@ namespace CreativeCoders.Core.Weak
             : this(action?.Target, action, keepOwnerAliveMode) { }
 
         public WeakAction(object target, Action action)
-            : base(target ?? action?.Target, action, KeepOwnerAliveMode.NotKeepAlive) {}
+            : base(target ?? action?.Target, action, GetAliveMode(action)) {}
 
         public WeakAction(object target, Action action, KeepOwnerAliveMode keepOwnerAliveMode)
             : base(target ?? action?.Target, action, keepOwnerAliveMode) { }
+
+        private static KeepOwnerAliveMode GetAliveMode(Action action)
+        {
+            return action?.Method.IsStatic == true
+                ? KeepOwnerAliveMode.KeepAlive
+                : KeepOwnerAliveMode.AutoGuess;
+        }
 
         public void Execute()
         {

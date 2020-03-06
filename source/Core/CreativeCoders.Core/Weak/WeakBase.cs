@@ -14,20 +14,27 @@ namespace CreativeCoders.Core.Weak
         
         private object _owner;
 
+        private T _data;
+
         public WeakBase(object owner, T data, KeepOwnerAliveMode keepOwnerAliveMode)
         {
             Ensure.IsNotNull(data, nameof(data));
 
+            KeepOwnerAlive = GetKeepAlive(keepOwnerAliveMode, owner);
+            
             if (owner != null)
             {
                 _ownerReference = new WeakReference(owner);
 
-                KeepOwnerAlive = GetKeepAlive(keepOwnerAliveMode, owner);
-                    
                 if (KeepOwnerAlive)
                 {
                     _owner = owner;
                 }
+            }
+
+            if (KeepOwnerAlive)
+            {
+                _data = data;
             }
             
             _dataReference = new WeakReference<T>(data);
@@ -78,6 +85,7 @@ namespace CreativeCoders.Core.Weak
             }
 
             _owner = null;
+            _data = null;
             _ownerReference = null;
             _dataReference = null;
         }
