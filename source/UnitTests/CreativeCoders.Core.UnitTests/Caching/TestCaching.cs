@@ -143,6 +143,20 @@ namespace CreativeCoders.Core.UnitTests.Caching
             Assert.False(keyExists2);
         }
         
+        public static void Clear_TryGetValueWithRegions_ReturnFalse(ICache<int, string> cache)
+        {
+            cache.AddOrUpdate(1, "TestValue1", "region1");
+            cache.AddOrUpdate(2, "TestValue2", "region2");
+            cache.Clear("region1");
+
+            var keyExists1 = cache.TryGet(1, out _, "region1");
+            var keyExists2 = cache.TryGet(2, out _, "region2");
+
+            Assert.False(keyExists1);
+            Assert.True(keyExists2);
+            Assert.Equal("TestValue2", cache.GetValue(2, "region2"));
+        }
+        
         public static async Task ClearAsync_TryGetValue_ReturnFalse(ICache<int, string> cache)
         {
             await cache.AddOrUpdateAsync(1, "TestValue1");
@@ -151,6 +165,19 @@ namespace CreativeCoders.Core.UnitTests.Caching
 
             var cacheRequestResult1 = await cache.TryGetAsync(1);
             var cacheRequestResult2 = await cache.TryGetAsync(2);
+
+            Assert.False(cacheRequestResult1.EntryExists);
+            Assert.False(cacheRequestResult2.EntryExists);
+        }
+        
+        public static async Task ClearAsync_TryGetValueWithRegions_ReturnFalse(ICache<int, string> cache)
+        {
+            await cache.AddOrUpdateAsync(1, "TestValue1", "region1");
+            await cache.AddOrUpdateAsync(2, "TestValue2", "region2");
+            await cache.ClearAsync();
+
+            var cacheRequestResult1 = await cache.TryGetAsync(1, "region1");
+            var cacheRequestResult2 = await cache.TryGetAsync(2, "region2");
 
             Assert.False(cacheRequestResult1.EntryExists);
             Assert.False(cacheRequestResult2.EntryExists);
@@ -169,6 +196,44 @@ namespace CreativeCoders.Core.UnitTests.Caching
             Assert.True(keyExists2);
         }
         
+        public static void Remove_WithOutRegionsTryGetValue_ReturnFalse(ICache<int, string> cache)
+        {
+            cache.AddOrUpdate(1, "TestValue1", "region1");
+            cache.AddOrUpdate(1, "TestValue1", "region2");
+            cache.AddOrUpdate(2, "TestValue2", "region1");
+            cache.AddOrUpdate(2, "TestValue2", "region2");
+            cache.Remove(1);
+
+            var keyExists1 = cache.TryGet(1, out _, "region1");
+            var keyExists2 = cache.TryGet(1, out _, "region2");
+            var keyExists3 = cache.TryGet(2, out _, "region1");
+            var keyExists4 = cache.TryGet(2, out _, "region2");
+
+            Assert.True(keyExists1);
+            Assert.True(keyExists2);
+            Assert.True(keyExists3);
+            Assert.True(keyExists4);
+        }
+        
+        public static void Remove_WithRegionsTryGetValue_ReturnFalse(ICache<int, string> cache)
+        {
+            cache.AddOrUpdate(1, "TestValue1", "region1");
+            cache.AddOrUpdate(1, "TestValue1", "region2");
+            cache.AddOrUpdate(2, "TestValue2", "region1");
+            cache.AddOrUpdate(2, "TestValue2", "region2");
+            cache.Remove(1, "region1");
+
+            var keyExists1 = cache.TryGet(1, out _, "region1");
+            var keyExists2 = cache.TryGet(1, out _, "region2");
+            var keyExists3 = cache.TryGet(2, out _, "region1");
+            var keyExists4 = cache.TryGet(2, out _, "region2");
+
+            Assert.False(keyExists1);
+            Assert.True(keyExists2);
+            Assert.True(keyExists3);
+            Assert.True(keyExists4);
+        }
+        
         public static async Task RemoveAsync_TryGetValue_ReturnFalse(ICache<int, string> cache)
         {
             await cache.AddOrUpdateAsync(1, "TestValue");
@@ -180,6 +245,44 @@ namespace CreativeCoders.Core.UnitTests.Caching
 
             Assert.False(cacheRequestResult1.EntryExists);
             Assert.True(cacheRequestResult2.EntryExists);
+        }
+        
+        public static async Task RemoveAsync_WithOutRegionsTryGetValue_ReturnFalse(ICache<int, string> cache)
+        {
+            await cache.AddOrUpdateAsync(1, "TestValue1", "region1");
+            await cache.AddOrUpdateAsync(1, "TestValue1", "region2");
+            await cache.AddOrUpdateAsync(2, "TestValue2", "region1");
+            await cache.AddOrUpdateAsync(2, "TestValue2", "region2");
+            await cache.RemoveAsync(1);
+
+            var cacheRequestResult1 = await cache.TryGetAsync(1, "region1");
+            var cacheRequestResult2 = await cache.TryGetAsync(1, "region2");
+            var cacheRequestResult3 = await cache.TryGetAsync(2, "region1");
+            var cacheRequestResult4 = await cache.TryGetAsync(2, "region2");
+
+            Assert.True(cacheRequestResult1.EntryExists);
+            Assert.True(cacheRequestResult2.EntryExists);
+            Assert.True(cacheRequestResult3.EntryExists);
+            Assert.True(cacheRequestResult4.EntryExists);
+        }
+        
+        public static async Task RemoveAsync_WithRegionsTryGetValue_ReturnFalse(ICache<int, string> cache)
+        {
+            await cache.AddOrUpdateAsync(1, "TestValue1", "region1");
+            await cache.AddOrUpdateAsync(1, "TestValue1", "region2");
+            await cache.AddOrUpdateAsync(2, "TestValue2", "region1");
+            await cache.AddOrUpdateAsync(2, "TestValue2", "region2");
+            await cache.RemoveAsync(1, "region1");
+
+            var cacheRequestResult1 = await cache.TryGetAsync(1, "region1");
+            var cacheRequestResult2 = await cache.TryGetAsync(1, "region2");
+            var cacheRequestResult3 = await cache.TryGetAsync(2, "region1");
+            var cacheRequestResult4 = await cache.TryGetAsync(2, "region2");
+
+            Assert.False(cacheRequestResult1.EntryExists);
+            Assert.True(cacheRequestResult2.EntryExists);
+            Assert.True(cacheRequestResult3.EntryExists);
+            Assert.True(cacheRequestResult4.EntryExists);
         }
 
         public static void GetValue_GetExisting_ReturnsValue(ICache<int, string> cache)

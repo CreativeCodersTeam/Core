@@ -12,6 +12,12 @@ namespace CreativeCoders.Core.UnitTests.Caching
         {
             TestCaching.TryGet_KeyNotExists_ReturnFalse(CreateCache<int, string>());
         }
+
+        [Fact]
+        public void TryGet_KeyNotExistsWithRegion_ReturnFalse()
+        {
+            TestCaching.TryGet_KeyNotExistsWithRegion_ReturnFalse(CreateCache<int, string>());
+        }
         
         [Fact]
         public async Task TryGetAsync_KeyNotExists_ReturnFalse()
@@ -20,9 +26,21 @@ namespace CreativeCoders.Core.UnitTests.Caching
         }
 
         [Fact]
+        public async Task TryGetAsync_KeyNotExistsWithRegion_ReturnFalse()
+        {
+            await TestCaching.TryGetAsync_KeyNotExistsWithRegion_ReturnFalse(CreateCache<int, string>());
+        }
+
+        [Fact]
         public void TryGet_KeyExists_ReturnsTrueAndValue()
         {
             TestCaching.TryGet_KeyExists_ReturnsTrueAndValue(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void TryGet_KeyExistsWithRegion_ReturnsTrueAndValue()
+        {
+            TestCaching.TryGet_KeyExistsWithRegion_ReturnsTrueAndValue(CreateCache<int, string>());
         }
         
         [Fact]
@@ -32,9 +50,21 @@ namespace CreativeCoders.Core.UnitTests.Caching
         }
 
         [Fact]
+        public async Task TryGetAsync_KeyExistsWithRegion_ReturnsTrueAndValue()
+        {
+            await TestCaching.TryGetAsync_KeyExistsWithRegion_ReturnsTrueAndValue(CreateCache<int, string>());
+        }
+
+        [Fact]
         public void TryGet_AddOrUpdateTwoValue_ReturnsLastValue()
         {
             TestCaching.TryGet_AddOrUpdateTwoValue_ReturnsLastValue(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void TryGet_AddOrUpdateTwoValueWithRegions_ReturnsLastValue()
+        {
+            TestCaching.TryGet_AddOrUpdateTwoValueWithRegions_ReturnsLastValue(CreateCache<int, string>());
         }
         
         [Fact]
@@ -44,9 +74,21 @@ namespace CreativeCoders.Core.UnitTests.Caching
         }
 
         [Fact]
+        public async Task TryGetAsync_AddOrUpdateTwoValueWithRegions_ReturnsLastValue()
+        {
+            await TestCaching.TryGetAsync_AddOrUpdateTwoValueWithRegions_ReturnsLastValue(CreateCache<int, string>());
+        }
+
+        [Fact]
         public void Clear_TryGetValue_ReturnFalse()
         {
             TestCaching.Clear_TryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void Clear_TryGetValueWithRegions_ReturnFalse()
+        {
+            TestCaching.Clear_TryGetValueWithRegions_ReturnFalse(CreateCache<int, string>());
         }
         
         [Fact]
@@ -54,17 +96,47 @@ namespace CreativeCoders.Core.UnitTests.Caching
         {
             await TestCaching.ClearAsync_TryGetValue_ReturnFalse(CreateCache<int, string>());
         }
+
+        [Fact]
+        public async Task ClearAsync_TryGetValueWithRegions_ReturnFalse()
+        {
+            await TestCaching.ClearAsync_TryGetValueWithRegions_ReturnFalse(CreateCache<int, string>());
+        }
         
         [Fact]
         public void Remove_TryGetValue_ReturnFalse()
         {
             TestCaching.Remove_TryGetValue_ReturnFalse(CreateCache<int, string>());
         }
+
+        [Fact]
+        public void Remove_WithOutRegionsTryGetValue_ReturnFalse()
+        {
+            TestCaching.Remove_WithOutRegionsTryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void Remove_WithRegionsTryGetValue_ReturnFalse()
+        {
+            TestCaching.Remove_WithRegionsTryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
         
         [Fact]
         public async Task RemoveAsync_TryGetValue_ReturnFalse()
         {
             await TestCaching.RemoveAsync_TryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task RemoveAsync_WithOutRegionsTryGetValue_ReturnFalse()
+        {
+            await TestCaching.RemoveAsync_WithOutRegionsTryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task RemoveAsync_WithRegionsTryGetValue_ReturnFalse()
+        {
+            await TestCaching.RemoveAsync_WithRegionsTryGetValue_ReturnFalse(CreateCache<int, string>());
         }
 
         [Fact]
@@ -159,7 +231,9 @@ namespace CreativeCoders.Core.UnitTests.Caching
         
         private static ICache<TKey, TValue> CreateCache<TKey, TValue>()
         {
-            return new SystemRuntimeCache<TKey, TValue>();
+            var cache = new SystemRuntimeCache<TKey, TValue>();
+            cache.Clear();
+            return cache;
         }
     }
 }
