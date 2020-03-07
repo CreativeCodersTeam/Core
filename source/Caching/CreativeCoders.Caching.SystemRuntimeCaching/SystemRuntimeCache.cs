@@ -34,7 +34,7 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
         
         private TValue GetOrAddInternal(TKey key, Func<TValue> getValue, CacheItemPolicy cacheItemPolicy, string regionName = null)
         {
-            var cacheItem = _cache.GetCacheItem(key.ToString());
+            var cacheItem = _cache.GetCacheItem(KeyToString(key, regionName));
 
             if (cacheItem != null)
             {
@@ -42,7 +42,7 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
             }
             
             var addedValue = getValue();
-            var newValue = _cache.AddOrGetExisting(KeyToString(key), addedValue, cacheItemPolicy, regionName);
+            var newValue = _cache.AddOrGetExisting(KeyToString(key, regionName), addedValue, cacheItemPolicy);
             return (TValue) newValue ?? addedValue;
         }
 
@@ -63,7 +63,7 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
 
         public bool TryGet(TKey key, out TValue value, string regionName = null)
         {
-            var cacheItem = _cache.GetCacheItem(KeyToString(key), regionName);
+            var cacheItem = _cache.GetCacheItem(KeyToString(key, regionName));
 
             if (cacheItem != null)
             {
@@ -94,7 +94,7 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
         
         private void AddOrUpdateInternal(TKey key, TValue value, CacheItemPolicy cacheItemPolicy, string regionName = null)
         {
-            _cache.Set(KeyToString(key), value, cacheItemPolicy, regionName);
+            _cache.Set(KeyToString(key, regionName), value, cacheItemPolicy);
         }
 
         public Task AddOrUpdateAsync(TKey key, TValue value, string regionName = null)
@@ -127,13 +127,17 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
 
         public Task RemoveAsync(TKey key, string regionName = null)
         {
-            Remove(key, regionName);
+            Remove(key);
             return Task.CompletedTask;
         }
 
-        private static string KeyToString(TKey key)
+        private static string KeyToString(TKey key, string regionName = null)
         {
-            return key?.ToString();
+            if (string.IsNullOrEmpty(regionName))
+            {
+                return key?.ToString();
+            }
+            return regionName + "_" + key;
         }
 
         private static CacheItemPolicy CreateCacheItemPolicy(ICacheExpirationPolicy expirationPolicy)

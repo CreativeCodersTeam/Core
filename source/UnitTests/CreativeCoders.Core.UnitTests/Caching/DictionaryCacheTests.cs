@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using CreativeCoders.Core.Caching;
 using CreativeCoders.Core.Caching.Default;
+using FakeItEasy.Sdk;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Caching
@@ -84,11 +85,23 @@ namespace CreativeCoders.Core.UnitTests.Caching
         {
             TestCaching.Clear_TryGetValue_ReturnFalse(CreateCache<int, string>());
         }
+
+        [Fact]
+        public void Clear_TryGetValueWithRegions_ReturnFalse()
+        {
+            TestCaching.Clear_TryGetValueWithRegions_ReturnFalse(CreateCache<int, string>());
+        }
         
         [Fact]
         public async Task ClearAsync_TryGetValue_ReturnFalse()
         {
             await TestCaching.ClearAsync_TryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task ClearAsync_TryGetValueWithRegions_ReturnFalse()
+        {
+            await TestCaching.ClearAsync_TryGetValueWithRegions_ReturnFalse(CreateCache<int, string>());
         }
         
         [Fact]
@@ -96,11 +109,35 @@ namespace CreativeCoders.Core.UnitTests.Caching
         {
             TestCaching.Remove_TryGetValue_ReturnFalse(CreateCache<int, string>());
         }
+
+        [Fact]
+        public void Remove_WithOutRegionsTryGetValue_ReturnFalse()
+        {
+            TestCaching.Remove_WithOutRegionsTryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void Remove_WithRegionsTryGetValue_ReturnFalse()
+        {
+            TestCaching.Remove_WithRegionsTryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
         
         [Fact]
         public async Task RemoveAsync_TryGetValue_ReturnFalse()
         {
             await TestCaching.RemoveAsync_TryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task RemoveAsync_WithOutRegionsTryGetValue_ReturnFalse()
+        {
+            await TestCaching.RemoveAsync_WithOutRegionsTryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task RemoveAsync_WithRegionsTryGetValue_ReturnFalse()
+        {
+            await TestCaching.RemoveAsync_WithRegionsTryGetValue_ReturnFalse(CreateCache<int, string>());
         }
 
         [Fact]

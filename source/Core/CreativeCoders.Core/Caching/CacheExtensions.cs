@@ -4,29 +4,10 @@ namespace CreativeCoders.Core.Caching
 {
     public static class CacheExtensions
     {
-        // public static TValue GetOrAdd<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, Func<TValue> getValue)
-        // {
-        //     return cache.GetOrAdd(key, getValue, CacheExpirationPolicy.NeverExpire);
-        // }
-        
-        // public static Task<TValue> GetOrAddAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, Func<TValue> getValue)
-        // {
-        //     return cache.GetOrAddAsync(key, getValue, CacheExpirationPolicy.NeverExpire);
-        // }
-
-        // public static void AddOrUpdate<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, TValue value)
-        // {
-        //     cache.AddOrUpdate(key, value, CacheExpirationPolicy.NeverExpire);
-        // }
-        //
-        // public static Task AddOrUpdateAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, TValue value)
-        // {
-        //     return cache.AddOrUpdateAsync(key, value, CacheExpirationPolicy.NeverExpire);
-        // }
-
-        public static TValue GetValue<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, bool throwExceptionIfKeyNotExists)
+        public static TValue GetValue<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key,
+            bool throwExceptionIfKeyNotExists, string regionName = null)
         {
-            if (cache.TryGet(key, out var value))
+            if (cache.TryGet(key, out var value, regionName))
             {
                 return value;
             }
@@ -38,11 +19,12 @@ namespace CreativeCoders.Core.Caching
 
             return default;
         }
-        
-        public static async Task<TValue> GetValueAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, bool throwExceptionIfKeyNotExists)
+
+        public static async Task<TValue> GetValueAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key,
+            bool throwExceptionIfKeyNotExists, string regionName = null)
         {
-            var cacheRequestResult = await cache.TryGetAsync(key).ConfigureAwait(false);
-            
+            var cacheRequestResult = await cache.TryGetAsync(key, regionName).ConfigureAwait(false);
+
             if (cacheRequestResult.EntryExists)
             {
                 return cacheRequestResult.Value;
@@ -55,26 +37,28 @@ namespace CreativeCoders.Core.Caching
 
             return default;
         }
-        
-        public static TValue GetValue<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key)
+
+        public static TValue GetValue<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, string regionName = null)
         {
-            return cache.GetValue(key, true);
+            return cache.GetValue(key, true, regionName);
         }
         
-        public static Task<TValue> GetValueAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key)
+        public static Task<TValue> GetValueAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, string regionName = null)
         {
-            return cache.GetValueAsync(key, true);
+            return cache.GetValueAsync(key, true, regionName);
         }
-        
-        public static TValue GetValueOrDefault<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, TValue defaultValue)
+
+        public static TValue GetValueOrDefault<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key,
+            TValue defaultValue, string regionName = null)
         {
-            return cache.TryGet(key, out var value) ? value : defaultValue;
+            return cache.TryGet(key, out var value, regionName) ? value : defaultValue;
         }
-        
-        public static async Task<TValue> GetValueOrDefaultAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, TValue defaultValue)
+
+        public static async Task<TValue> GetValueOrDefaultAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key,
+            TValue defaultValue, string regionName = null)
         {
-            var cacheRequestResult = await cache.TryGetAsync(key).ConfigureAwait(false);
-            
+            var cacheRequestResult = await cache.TryGetAsync(key, regionName).ConfigureAwait(false);
+
             return cacheRequestResult.EntryExists ? cacheRequestResult.Value : defaultValue;
         }
     }
