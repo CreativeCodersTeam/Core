@@ -7,14 +7,14 @@ namespace CreativeCoders.Core.Caching
     {
         public virtual TValue GetOrAdd(TKey key, Func<TValue> getValue, string regionName = null)
         {
-            return GetOrAdd(key, getValue, CacheExpirationPolicy.NeverExpire);
+            return GetOrAdd(key, getValue, CacheExpirationPolicy.NeverExpire, regionName);
         }
         
         public abstract TValue GetOrAdd(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy, string regionName = null);
 
         public virtual Task<TValue> GetOrAddAsync(TKey key, Func<TValue> getValue, string regionName = null)
         {
-            return GetOrAddAsync(key, getValue, CacheExpirationPolicy.NeverExpire);
+            return GetOrAddAsync(key, getValue, CacheExpirationPolicy.NeverExpire, regionName);
         }
 
         public abstract Task<TValue> GetOrAddAsync(TKey key, Func<TValue> getValue,

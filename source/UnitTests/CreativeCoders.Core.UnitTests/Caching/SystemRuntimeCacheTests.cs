@@ -144,6 +144,12 @@ namespace CreativeCoders.Core.UnitTests.Caching
         {
             TestCaching.GetValue_GetExisting_ReturnsValue(CreateCache<int, string>());
         }
+
+        [Fact]
+        public void GetValue_GetExistingWithRegion_ReturnsValue()
+        {
+            TestCaching.GetValue_GetExistingWithRegion_ReturnsValue(CreateCache<int, string>());
+        }
         
         [Fact]
         public async Task GetValueAsync_GetExisting_ReturnsValue()
@@ -152,15 +158,33 @@ namespace CreativeCoders.Core.UnitTests.Caching
         }
 
         [Fact]
+        public async Task GetValueAsync_GetExistingWithRegion_ReturnsValue()
+        {
+            await TestCaching.GetValueAsync_GetExistingWithRegion_ReturnsValue(CreateCache<int, string>());
+        }
+
+        [Fact]
         public void GetValue_KeyNotExists_ThrowsException()
         {
             TestCaching.GetValue_KeyNotExists_ThrowsException(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void GetValue_KeyNotExistsWithRegions_ThrowsException()
+        {
+            TestCaching.GetValue_KeyNotExistsWithRegions_ThrowsException(CreateCache<int, string>());
         }
         
         [Fact]
         public async Task GetValueAsync_KeyNotExists_ThrowsException()
         {
             await TestCaching.GetValueAsync_KeyNotExists_ThrowsException(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task GetValueAsync_KeyNotExistsWithRegions_ThrowsException()
+        {
+            await TestCaching.GetValueAsync_KeyNotExistsWithRegions_ThrowsException(CreateCache<int, string>());
         }
 
         [Fact]
@@ -223,6 +247,18 @@ namespace CreativeCoders.Core.UnitTests.Caching
             await TestCaching.TryGetAsync_AfterExpiration_ReturnsFalse(CreateCache<int, string>());
         }
         
+        [Fact]
+        public void TryGet_AfterExpirationTimeSpan_ReturnsFalse()
+        {
+            TestCaching.TryGet_AfterExpirationTimeSpan_ReturnsFalse(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public async Task TryGetAsync_AfterExpirationTimeSpan_ReturnsFalse()
+        {
+            await TestCaching.TryGetAsync_AfterExpirationTimeSpan_ReturnsFalse(CreateCache<int, string>());
+        }
+
         [Fact]
         public void GetOrAdd_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
         {
