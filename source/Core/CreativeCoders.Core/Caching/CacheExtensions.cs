@@ -14,7 +14,7 @@ namespace CreativeCoders.Core.Caching
 
             if (throwExceptionIfKeyNotExists)
             {
-                throw new CacheEntryNotFoundException(key.ToString());
+                throw new CacheEntryNotFoundException(key.ToString(), regionName);
             }
 
             return default;
@@ -32,7 +32,7 @@ namespace CreativeCoders.Core.Caching
 
             if (throwExceptionIfKeyNotExists)
             {
-                throw new CacheEntryNotFoundException(key.ToString());
+                throw new CacheEntryNotFoundException(key.ToString(), regionName);
             }
 
             return default;

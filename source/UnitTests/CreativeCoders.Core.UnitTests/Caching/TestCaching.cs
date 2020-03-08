@@ -174,13 +174,13 @@ namespace CreativeCoders.Core.UnitTests.Caching
         {
             await cache.AddOrUpdateAsync(1, "TestValue1", "region1");
             await cache.AddOrUpdateAsync(2, "TestValue2", "region2");
-            await cache.ClearAsync();
+            await cache.ClearAsync("region1");
 
             var cacheRequestResult1 = await cache.TryGetAsync(1, "region1");
             var cacheRequestResult2 = await cache.TryGetAsync(2, "region2");
 
             Assert.False(cacheRequestResult1.EntryExists);
-            Assert.False(cacheRequestResult2.EntryExists);
+            Assert.True(cacheRequestResult2.EntryExists);
         }
         
         public static void Remove_TryGetValue_ReturnFalse(ICache<int, string> cache)
@@ -294,6 +294,18 @@ namespace CreativeCoders.Core.UnitTests.Caching
             Assert.Equal("TestValue", value);
         }
         
+        public static void GetValue_GetExistingWithRegion_ReturnsValue(ICache<int, string> cache)
+        {
+            cache.AddOrUpdate(1, "TestValue", "region1");
+            cache.AddOrUpdate(1, "TestValue2", "region2");
+
+            var value = cache.GetValue(1, "region1");
+            var value2 = cache.GetValue(1, "region2");
+
+            Assert.Equal("TestValue", value);
+            Assert.Equal("TestValue2", value2);
+        }
+        
         public static async Task GetValueAsync_GetExisting_ReturnsValue(ICache<int, string> cache)
         {
             await cache.AddOrUpdateAsync(1, "TestValue");
@@ -301,6 +313,18 @@ namespace CreativeCoders.Core.UnitTests.Caching
             var value = await cache.GetValueAsync(1);
 
             Assert.Equal("TestValue", value);
+        }
+        
+        public static async Task GetValueAsync_GetExistingWithRegion_ReturnsValue(ICache<int, string> cache)
+        {
+            await cache.AddOrUpdateAsync(1, "TestValue", "region1");
+            await cache.AddOrUpdateAsync(1, "TestValue2", "region2");
+
+            var value = await cache.GetValueAsync(1, "region1");
+            var value2 = await cache.GetValueAsync(1, "region2");
+
+            Assert.Equal("TestValue", value);
+            Assert.Equal("TestValue2", value2);
         }
 
         public static void GetValue_KeyNotExists_ThrowsException(ICache<int, string> cache)
@@ -310,12 +334,44 @@ namespace CreativeCoders.Core.UnitTests.Caching
             Assert.Equal("1", exception.Key);
         }
         
+        public static void GetValue_KeyNotExistsWithRegions_ThrowsException(ICache<int, string> cache)
+        {
+            cache.AddOrUpdate(1, "TestValue", "region1");
+            
+            var exception = Assert.Throws<CacheEntryNotFoundException>(() => cache.GetValue(1));
+            
+            Assert.Equal("1", exception.Key);
+            Assert.Equal(string.Empty, exception.RegionName);
+            
+            var exception2 = Assert.Throws<CacheEntryNotFoundException>(() => cache.GetValue(1, "region2"));
+            
+            Assert.Equal("1", exception2.Key);
+            Assert.Equal("region2", exception2.RegionName);
+        }
+        
         public static async Task GetValueAsync_KeyNotExists_ThrowsException(ICache<int, string> cache)
         {
             var exception =
                 await Assert.ThrowsAsync<CacheEntryNotFoundException>(async () => await cache.GetValueAsync(1));
             
             Assert.Equal("1", exception.Key);
+        }
+        
+        public static async Task GetValueAsync_KeyNotExistsWithRegions_ThrowsException(ICache<int, string> cache)
+        {
+            cache.AddOrUpdate(1, "TestValue", "region1");
+            
+            var exception =
+                await Assert.ThrowsAsync<CacheEntryNotFoundException>(async () => await cache.GetValueAsync(1));
+            
+            Assert.Equal("1", exception.Key);
+            Assert.Equal(string.Empty, exception.RegionName);
+            
+            var exception2 =
+                await Assert.ThrowsAsync<CacheEntryNotFoundException>(async () => await cache.GetValueAsync(1, "region2"));
+            
+            Assert.Equal("1", exception2.Key);
+            Assert.Equal("region2", exception2.RegionName);
         }
 
         public static void GetValue_KeyNotExists_ReturnNull(ICache<int, string> cache)
@@ -389,16 +445,13 @@ namespace CreativeCoders.Core.UnitTests.Caching
         public static void TryGet_AfterExpiration_ReturnsFalse(ICache<int, string> cache)
         {
             var expirationPolicy = A.Fake<ICacheExpirationPolicy>();
-            A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.NeverExpire);
+            A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.AbsoluteDateTime);
+            var expirationDateTime = DateTime.Now;
+            A.CallTo(() => expirationPolicy.AbsoluteDateTime).Returns(expirationDateTime);
             
             cache.AddOrUpdate(1, "TestValue", expirationPolicy);
-        
-            var value = cache.GetValue(1);
-            
-            Assert.Equal("TestValue", value);
 
-            A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.AbsoluteDateTime);
-            A.CallTo(() => expirationPolicy.AbsoluteDateTime).Returns(DateTime.Now.AddMilliseconds(-100));
+            Task.Delay(100).Wait();
         
             Assert.False(cache.TryGet(1, out _));
         }
@@ -406,16 +459,41 @@ namespace CreativeCoders.Core.UnitTests.Caching
         public static async Task TryGetAsync_AfterExpiration_ReturnsFalse(ICache<int, string> cache)
         {
             var expirationPolicy = A.Fake<ICacheExpirationPolicy>();
-            A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.NeverExpire);
-            
-            await cache.AddOrUpdateAsync(1, "TestValue", expirationPolicy);
-        
-            var value = await cache.GetValueAsync(1);
-            
-            Assert.Equal("TestValue", value);
-        
             A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.AbsoluteDateTime);
-            A.CallTo(() => expirationPolicy.AbsoluteDateTime).Returns(DateTime.Now.AddMilliseconds(-100));
+            var expirationDateTime = DateTime.Now;
+            A.CallTo(() => expirationPolicy.AbsoluteDateTime).Returns(expirationDateTime);
+
+            await cache.AddOrUpdateAsync(1, "TestValue", expirationPolicy);
+
+            await Task.Delay(100);
+            
+            Assert.False(cache.TryGet(1, out _));
+        }
+        
+        public static void TryGet_AfterExpirationTimeSpan_ReturnsFalse(ICache<int, string> cache)
+        {
+            var expirationPolicy = A.Fake<ICacheExpirationPolicy>();
+            A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.SlidingTimeSpan);
+            var expirationDateTime = DateTime.Now;
+            A.CallTo(() => expirationPolicy.SlidingTimeSpan).Returns(TimeSpan.FromMilliseconds(50));
+            
+            cache.AddOrUpdate(1, "TestValue", expirationPolicy);
+
+            Task.Delay(100).Wait();
+        
+            Assert.False(cache.TryGet(1, out _));
+        }
+        
+        public static async Task TryGetAsync_AfterExpirationTimeSpan_ReturnsFalse(ICache<int, string> cache)
+        {
+            var expirationPolicy = A.Fake<ICacheExpirationPolicy>();
+            A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.SlidingTimeSpan);
+            var expirationDateTime = DateTime.Now;
+            A.CallTo(() => expirationPolicy.SlidingTimeSpan).Returns(TimeSpan.FromMilliseconds(50));
+
+            await cache.AddOrUpdateAsync(1, "TestValue", expirationPolicy);
+
+            await Task.Delay(100);
             
             Assert.False(cache.TryGet(1, out _));
         }

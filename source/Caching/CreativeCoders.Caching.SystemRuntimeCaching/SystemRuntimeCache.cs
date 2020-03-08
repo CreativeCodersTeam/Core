@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
@@ -111,7 +112,15 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
 
         public void Clear(string regionName = null)
         {
-            _cache.ForEach(entry => _cache.Remove(entry.Key));
+            if (string.IsNullOrEmpty(regionName))
+            {
+                _cache.ForEach(entry => _cache.Remove(entry.Key));
+                return;
+            }
+            
+            _cache
+                .Where(entry => entry.Key.StartsWith(regionName + "_", StringComparison.Ordinal))
+                .ForEach(entry => _cache.Remove(entry.Key));
         }
 
         public Task ClearAsync(string regionName = null)
@@ -122,12 +131,12 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
 
         public void Remove(TKey key, string regionName = null)
         {
-            _cache.Remove(KeyToString(key));
+            _cache.Remove(KeyToString(key, regionName));
         }
 
         public Task RemoveAsync(TKey key, string regionName = null)
         {
-            Remove(key);
+            Remove(key, regionName);
             return Task.CompletedTask;
         }
 

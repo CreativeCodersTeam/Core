@@ -107,7 +107,7 @@ namespace CreativeCoders.Core.Caching.Default
 
         public override Task ClearAsync(string regionName = null)
         {
-            Clear();
+            Clear(regionName);
             return Task.CompletedTask;
         }
 
@@ -118,7 +118,7 @@ namespace CreativeCoders.Core.Caching.Default
 
         public override Task RemoveAsync(TKey key, string regionName = null)
         {
-            Remove(key);
+            Remove(key, regionName);
             return Task.CompletedTask;
         }
     }
