@@ -381,8 +381,26 @@ namespace CreativeCoders.Core.UnitTests.Caching
             Assert.Null(value);
         }
         
+        public static void GetValue_KeyNotExistsWithRegions_ReturnNull(ICache<int, string> cache)
+        {
+            cache.AddOrUpdate(1, "TestValue", "region1");
+            
+            var value = cache.GetValue(1, false);
+
+            Assert.Null(value);
+        }
+        
         public static async Task GetValueAsync_KeyNotExists_ReturnNull(ICache<int, string> cache)
         {
+            var value = await cache.GetValueAsync(1, false);
+
+            Assert.Null(value);
+        }
+        
+        public static async Task GetValueAsync_KeyNotExistsWithRegions_ReturnNull(ICache<int, string> cache)
+        {
+            cache.AddOrUpdate(1, "TestValue", "region1");
+            
             var value = await cache.GetValueAsync(1, false);
 
             Assert.Null(value);
@@ -422,24 +440,38 @@ namespace CreativeCoders.Core.UnitTests.Caching
 
         public static void GetValue_KeyExists_ReturnOldValue(ICache<int, string> cache)
         {
+            var getValueCalled = 0;
+            
             cache.AddOrUpdate(1, "TestValue");
 
-            var value = cache.GetOrAdd(1, () => "DefaultValue");
+            var value = cache.GetOrAdd(1, () =>
+            {
+                getValueCalled++;
+                return "DefaultValue";
+            });
             var secondValue = cache.GetValue(1);
 
             Assert.Equal("TestValue", value);
             Assert.Equal("TestValue", secondValue);
+            Assert.Equal(0, getValueCalled);
         }
         
         public static async Task GetValueAsync_KeyExists_ReturnOldValue(ICache<int, string> cache)
         {
+            var getValueCalled = 0;
+            
             await cache.AddOrUpdateAsync(1, "TestValue");
 
-            var value = await cache.GetOrAddAsync(1, () => "DefaultValue");
+            var value = await cache.GetOrAddAsync(1, () =>
+            {
+                getValueCalled++;
+                return "DefaultValue";
+            });
             var secondValue = await cache.GetValueAsync(1);
 
             Assert.Equal("TestValue", value);
             Assert.Equal("TestValue", secondValue);
+            Assert.Equal(0, getValueCalled);
         }
 
         public static void TryGet_AfterExpiration_ReturnsFalse(ICache<int, string> cache)
@@ -474,7 +506,7 @@ namespace CreativeCoders.Core.UnitTests.Caching
         {
             var expirationPolicy = A.Fake<ICacheExpirationPolicy>();
             A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.SlidingTimeSpan);
-            var expirationDateTime = DateTime.Now;
+            
             A.CallTo(() => expirationPolicy.SlidingTimeSpan).Returns(TimeSpan.FromMilliseconds(50));
             
             cache.AddOrUpdate(1, "TestValue", expirationPolicy);
@@ -488,7 +520,7 @@ namespace CreativeCoders.Core.UnitTests.Caching
         {
             var expirationPolicy = A.Fake<ICacheExpirationPolicy>();
             A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.SlidingTimeSpan);
-            var expirationDateTime = DateTime.Now;
+            
             A.CallTo(() => expirationPolicy.SlidingTimeSpan).Returns(TimeSpan.FromMilliseconds(50));
 
             await cache.AddOrUpdateAsync(1, "TestValue", expirationPolicy);
@@ -519,6 +551,247 @@ namespace CreativeCoders.Core.UnitTests.Caching
             
             Assert.Equal(testValue, secondValue);
             Assert.Equal(1, getValueCalledCount);
+        }
+        
+        public static void GetOrAdd_TwoTimesCalledWithRegions_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(ICache<int, string> cache)
+        {
+            const string testValue = "Test1";
+            
+            var getValueCalledCount = 0;
+            var value = cache.GetOrAdd(1, () =>
+            {
+                getValueCalledCount++;
+                return testValue;
+            }, "region1");
+            
+            Assert.Equal(testValue, value);
+            
+            var secondValue = cache.GetOrAdd(1, () =>
+            {
+                getValueCalledCount++;
+                return testValue;
+            }, "region2");
+            
+            Assert.Equal(testValue, secondValue);
+            Assert.Equal(2, getValueCalledCount);
+        }
+        
+        public static async Task GetOrAddAsync_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(ICache<int, string> cache)
+        {
+            const string testValue = "Test1";
+            
+            var getValueCalledCount = 0;
+            var value = await cache.GetOrAddAsync(1, () =>
+            {
+                getValueCalledCount++;
+                return testValue;
+            });
+            
+            Assert.Equal(testValue, value);
+            
+            var secondValue = await cache.GetOrAddAsync(1, () =>
+            {
+                getValueCalledCount++;
+                return testValue;
+            });
+            
+            Assert.Equal(testValue, secondValue);
+            Assert.Equal(1, getValueCalledCount);
+        }
+        
+        public static async Task GetOrAddAsync_TwoTimesCalledWithRegions_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(ICache<int, string> cache)
+        {
+            const string testValue = "Test1";
+            
+            var getValueCalledCount = 0;
+            var value = await cache.GetOrAddAsync(1, () =>
+            {
+                getValueCalledCount++;
+                return testValue;
+            }, "region1");
+            
+            Assert.Equal(testValue, value);
+            
+            var secondValue = await cache.GetOrAddAsync(1, () =>
+            {
+                getValueCalledCount++;
+                return testValue;
+            }, "region2");
+            
+            Assert.Equal(testValue, secondValue);
+            Assert.Equal(2, getValueCalledCount);
+        }
+
+        public static void GetOrAdd_TwoTimesCalledWithNeverExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(ICache<int, string> cache)
+        {
+            const string testValue = "Test1";
+            
+            var getValueCalledCount = 0;
+            var value = cache.GetOrAdd(1, () =>
+            {
+                getValueCalledCount++;
+                return testValue;
+            }, CacheExpirationPolicy.NeverExpire);
+            
+            Assert.Equal(testValue, value);
+            
+            var secondValue = cache.GetOrAdd(1, () =>
+            {
+                getValueCalledCount++;
+                return testValue;
+            }, CacheExpirationPolicy.NeverExpire);
+            
+            Assert.Equal(testValue, secondValue);
+            Assert.Equal(1, getValueCalledCount);
+        }
+        
+        public static void GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(ICache<int, string> cache)
+        {
+            const string testValue = "Test1";
+            
+            var getValueCalledCount = 0;
+            var value = cache.GetOrAdd(1, () =>
+            {
+                getValueCalledCount++;
+                return testValue;
+            }, CacheExpirationPolicy.AfterAbsoluteDateTime(DateTime.Now.AddMilliseconds(50)));
+            
+            Assert.Equal(testValue, value);
+
+            Task.Delay(100).Wait();
+            
+            var secondValue = cache.GetOrAdd(1, () =>
+            {
+                getValueCalledCount++;
+                return testValue;
+            }, CacheExpirationPolicy.NeverExpire);
+            
+            Assert.Equal(testValue, secondValue);
+            Assert.Equal(2, getValueCalledCount);
+        }
+        
+        public static void GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(ICache<int, string> cache)
+        {
+            const string testValue = "Test1";
+            
+            var getValueCalled= false;
+            var getValueCalled1 = false;
+            var getValueCalled2 = false;
+            var value = cache.GetOrAdd(1, () =>
+            {
+                getValueCalled = true;
+                return testValue;
+            }, CacheExpirationPolicy.AfterAbsoluteDateTime(DateTime.Now.AddMilliseconds(200)));
+            
+            Assert.Equal(testValue, value);
+
+            Task.Delay(50).Wait();
+            
+            var secondValue = cache.GetOrAdd(1, () =>
+            {
+                getValueCalled1 = true;
+                return testValue;
+            }, CacheExpirationPolicy.AfterAbsoluteDateTime(DateTime.Now.AddMilliseconds(200)));
+
+            Task.Delay(200).Wait();
+            
+            var thirdValue = cache.GetOrAdd(1, () =>
+            {
+                getValueCalled2 = true;
+                return testValue;
+            }, CacheExpirationPolicy.AfterAbsoluteDateTime(DateTime.Now.AddMilliseconds(200)));
+            
+            Assert.Equal(testValue, secondValue);
+            Assert.Equal(testValue, thirdValue);
+            Assert.True(getValueCalled);
+            Assert.False(getValueCalled1);
+            Assert.True(getValueCalled2);
+        }
+        
+        public static async Task GetOrAddAsync_TwoTimesCalledWithNeverExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(ICache<int, string> cache)
+        {
+            const string testValue = "Test1";
+            
+            var getValueCalledCount = 0;
+            var value = await cache.GetOrAddAsync(1, () =>
+            {
+                getValueCalledCount++;
+                return testValue;
+            }, CacheExpirationPolicy.NeverExpire);
+            
+            Assert.Equal(testValue, value);
+            
+            var secondValue = await cache.GetOrAddAsync(1, () =>
+            {
+                getValueCalledCount++;
+                return testValue;
+            }, CacheExpirationPolicy.NeverExpire);
+            
+            Assert.Equal(testValue, secondValue);
+            Assert.Equal(1, getValueCalledCount);
+        }
+        
+        public static async Task GetOrAddAsync_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(ICache<int, string> cache)
+        {
+            const string testValue = "Test1";
+            
+            var getValueCalledCount = 0;
+            var value = await cache.GetOrAddAsync(1, () =>
+            {
+                getValueCalledCount++;
+                return testValue;
+            }, CacheExpirationPolicy.AfterAbsoluteDateTime(DateTime.Now.AddMilliseconds(50)));
+            
+            Assert.Equal(testValue, value);
+
+            await Task.Delay(100);
+            
+            var secondValue = await cache.GetOrAddAsync(1, () =>
+            {
+                getValueCalledCount++;
+                return testValue;
+            }, CacheExpirationPolicy.NeverExpire);
+            
+            Assert.Equal(testValue, secondValue);
+            Assert.Equal(2, getValueCalledCount);
+        }
+        
+        public static async Task GetOrAddAsync_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(ICache<int, string> cache)
+        {
+            const string testValue = "Test1";
+            
+            var getValueCalled= false;
+            var getValueCalled1 = false;
+            var getValueCalled2 = false;
+            var value = await cache.GetOrAddAsync(1, () =>
+            {
+                getValueCalled = true;
+                return testValue;
+            }, CacheExpirationPolicy.AfterAbsoluteDateTime(DateTime.Now.AddMilliseconds(200)));
+            
+            Assert.Equal(testValue, value);
+
+            await Task.Delay(50);
+            
+            var secondValue = await cache.GetOrAddAsync(1, () =>
+            {
+                getValueCalled1 = true;
+                return testValue;
+            }, CacheExpirationPolicy.AfterAbsoluteDateTime(DateTime.Now.AddMilliseconds(200)));
+
+            await Task.Delay(200);
+            
+            var thirdValue = await cache.GetOrAddAsync(1, () =>
+            {
+                getValueCalled2 = true;
+                return testValue;
+            }, CacheExpirationPolicy.AfterAbsoluteDateTime(DateTime.Now.AddMilliseconds(200)));
+            
+            Assert.Equal(testValue, secondValue);
+            Assert.Equal(testValue, thirdValue);
+            Assert.True(getValueCalled);
+            Assert.False(getValueCalled1);
+            Assert.True(getValueCalled2);
         }
     }
 }

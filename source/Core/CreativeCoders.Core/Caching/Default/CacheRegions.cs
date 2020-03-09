@@ -9,15 +9,11 @@ namespace CreativeCoders.Core.Caching.Default {
 
         private readonly CacheRegion<TKey, TValue> _defaultRegion;
 
-        private ILockingMechanism _regionsLock;
-
         public CacheRegions()
         {
             _regions = new ConcurrentDictionary<string, CacheRegion<TKey, TValue>>();
             
             _defaultRegion = new CacheRegion<TKey, TValue>();
-            
-            _regionsLock = new LockSlimLockingMechanism();
         }
 
         private CacheRegion<TKey,TValue> GetRegion(string regionName)

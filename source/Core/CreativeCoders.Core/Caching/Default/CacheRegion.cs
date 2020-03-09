@@ -7,13 +7,9 @@ namespace CreativeCoders.Core.Caching.Default
     {
         private readonly IDictionary<TKey, CacheEntry<TKey, TValue>> _data;
 
-        private ILockingMechanism _dataLock;
-
         public CacheRegion()
         {
             _data = new Dictionary<TKey, CacheEntry<TKey, TValue>>();
-            
-            _dataLock = new LockSlimLockingMechanism();
         }
 
         public bool TryGetValue(TKey key, out CacheEntry<TKey, TValue> value)

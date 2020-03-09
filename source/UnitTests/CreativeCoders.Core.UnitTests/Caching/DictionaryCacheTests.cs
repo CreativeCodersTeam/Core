@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using CreativeCoders.Core.Caching;
 using CreativeCoders.Core.Caching.Default;
-using FakeItEasy.Sdk;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Caching
@@ -193,11 +192,23 @@ namespace CreativeCoders.Core.UnitTests.Caching
         {
             TestCaching.GetValue_KeyNotExists_ReturnNull(CreateCache<int, string>());
         }
+
+        [Fact]
+        public void GetValue_KeyNotExistsWithRegions_ReturnNull()
+        {
+            TestCaching.GetValue_KeyNotExistsWithRegions_ReturnNull(CreateCache<int, string>());
+        }
         
         [Fact]
         public async Task GetValueAsync_KeyNotExists_ReturnNull()
         {
             await TestCaching.GetValueAsync_KeyNotExists_ReturnNull(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task GetValueAsync_KeyNotExistsWithRegions_ReturnNull()
+        {
+            await TestCaching.GetValueAsync_KeyNotExistsWithRegions_ReturnNull(CreateCache<int, string>());
         }
 
         [Fact]
@@ -264,6 +275,74 @@ namespace CreativeCoders.Core.UnitTests.Caching
         public void GetOrAdd_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
         {
             TestCaching.GetOrAdd_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void GetOrAdd_TwoTimesCalledWithRegions_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
+        {
+            TestCaching.GetOrAdd_TwoTimesCalledWithRegions_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task GetOrAddAsync_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        {
+            await TestCaching.GetOrAddAsync_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task GetOrAddAsync_TwoTimesCalledWithRegions_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
+        {
+            await TestCaching.GetOrAddAsync_TwoTimesCalledWithRegions_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void GetOrAdd_TwoTimesCalledWithNeverExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        {
+            TestCaching.GetOrAdd_TwoTimesCalledWithNeverExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
+        {
+            TestCaching.GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        {
+            TestCaching.GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task GetOrAddAsync_TwoTimesCalledWithNeverExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        {
+            await TestCaching
+                .GetOrAddAsync_TwoTimesCalledWithNeverExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+                    CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task
+            GetOrAddAsync_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
+        {
+            await TestCaching
+                .GetOrAddAsync_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
+                    CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task
+            GetOrAddAsync_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        {
+            await TestCaching
+                .GetOrAddAsync_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+                    CreateCache<int, string>());
         }
         
         private static ICache<TKey, TValue> CreateCache<TKey, TValue>()
