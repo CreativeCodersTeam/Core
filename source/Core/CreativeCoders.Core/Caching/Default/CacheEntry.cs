@@ -23,7 +23,10 @@ namespace CreativeCoders.Core.Caching.Default
                     return DateTime.Now > ExpirationPolicy.AbsoluteDateTime;
                 case CacheExpirationMode.SlidingTimeSpan:
                     var isExpired = DateTime.Now > _lastEntryCheck.Add(ExpirationPolicy.SlidingTimeSpan);
-                    _lastEntryCheck = DateTime.Now;
+                    if (!isExpired)
+                    {
+                        _lastEntryCheck = DateTime.Now;
+                    }
                     return isExpired;
                 default:
                     throw new ArgumentOutOfRangeException();

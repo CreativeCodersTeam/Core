@@ -12,19 +12,6 @@ namespace CreativeCoders.Core.Caching.Default
             _regions = new CacheRegions<TKey, TValue>();
         }
 
-        public override TValue GetOrAdd(TKey key, Func<TValue> getValue, string regionName = null)
-        {
-            if (TryGet(key, out var value, regionName))
-            {
-                return value;
-            }
-
-            var newValue = getValue();
-            AddOrUpdate(key, newValue, regionName);
-
-            return newValue;
-        }
-        
         public override TValue GetOrAdd(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy, string regionName = null)
         {
             if (TryGet(key, out var value, regionName))
@@ -36,11 +23,6 @@ namespace CreativeCoders.Core.Caching.Default
             AddOrUpdate(key, newValue, expirationPolicy, regionName);
 
             return newValue;
-        }
-
-        public override Task<TValue> GetOrAddAsync(TKey key, Func<TValue> getValue, string regionName = null)
-        {
-            return Task.FromResult(GetOrAdd(key, getValue, regionName));
         }
 
         public override Task<TValue> GetOrAddAsync(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy, string regionName = null)
