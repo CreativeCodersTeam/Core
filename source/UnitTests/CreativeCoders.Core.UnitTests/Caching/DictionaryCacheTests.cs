@@ -320,6 +320,20 @@ namespace CreativeCoders.Core.UnitTests.Caching
         }
 
         [Fact]
+        public void GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes()
+        {
+            TestCaching.GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        {
+            TestCaching.GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
         public async Task GetOrAddAsync_TwoTimesCalledWithNeverExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
         {
             await TestCaching
