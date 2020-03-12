@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Caching
 {
     [PublicAPI]
-    public class CachedValue<TKey, TValue>
+    public class CachedValue<TKey, TValue> : ICachedValue<TValue>
     {
         private readonly ICache<TKey, TValue> _cache;
         
@@ -15,10 +16,12 @@ namespace CreativeCoders.Core.Caching
         private readonly Func<TValue> _getValue;
         
         private readonly ICacheExpirationPolicy _expirationPolicy;
+        
+        private readonly string _regionName;
 
         private readonly CachedValueMode _cachedValueMode;
 
-        public CachedValue(ICache<TKey, TValue> cache, TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy)
+        public CachedValue(ICache<TKey, TValue> cache, TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy, string regionName = null)
         {
             _cachedValueMode = CachedValueMode.GetOrAdd;
             
@@ -26,32 +29,46 @@ namespace CreativeCoders.Core.Caching
             _key = key;
             _getValue = getValue;
             _expirationPolicy = expirationPolicy;
+            _regionName = regionName;
         }
         
-        public CachedValue(ICache<TKey, TValue> cache, TKey key)
+        public CachedValue(ICache<TKey, TValue> cache, TKey key, string regionName = null)
         {
             _cachedValueMode = CachedValueMode.GetValue;
             
             _cache = cache;
             _key = key;
+            _regionName = regionName;
         }
         
-        public CachedValue(ICache<TKey, TValue> cache, TKey key, TValue defaultValue)
+        public CachedValue(ICache<TKey, TValue> cache, TKey key, TValue defaultValue, string regionName = null)
         {
             _cachedValueMode = CachedValueMode.GetValueOrDefault;
             
             _cache = cache;
             _key = key;
             _defaultValue = defaultValue;
+            _regionName = regionName;
         }
 
         private TValue GetValue()
         {
             return _cachedValueMode switch
             {
-                CachedValueMode.GetOrAdd => _cache.GetOrAdd(_key, _getValue, _expirationPolicy),
-                CachedValueMode.GetValue => _cache.GetValue(_key),
-                CachedValueMode.GetValueOrDefault => _cache.GetValueOrDefault(_key, _defaultValue),
+                CachedValueMode.GetOrAdd => _cache.GetOrAdd(_key, _getValue, _expirationPolicy, _regionName),
+                CachedValueMode.GetValue => _cache.GetValue(_key, true, _regionName),
+                CachedValueMode.GetValueOrDefault => _cache.GetValueOrDefault(_key, _defaultValue, _regionName),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+
+        public Task<TValue> GetValueAsync()
+        {
+            return _cachedValueMode switch
+            {
+                CachedValueMode.GetOrAdd => _cache.GetOrAddAsync(_key, _getValue, _expirationPolicy, _regionName),
+                CachedValueMode.GetValue => _cache.GetValueAsync(_key, true, _regionName),
+                CachedValueMode.GetValueOrDefault => _cache.GetValueOrDefaultAsync(_key, _defaultValue, _regionName),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }

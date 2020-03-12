@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using CreativeCoders.Core.Threading;
 
 namespace CreativeCoders.Core.Caching.Default
 {
-    public class CacheRegion<TKey, TValue>
+    internal class CacheRegion<TKey, TValue>
     {
         private readonly IDictionary<TKey, CacheEntry<TKey, TValue>> _data;
 
