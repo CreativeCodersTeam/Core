@@ -1,9 +1,9 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using CreativeCoders.Core.Threading;
 
-namespace CreativeCoders.Core.Caching.Default {
-    public class CacheRegions<TKey, TValue>
+namespace CreativeCoders.Core.Caching.Default
+{
+    internal class CacheRegions<TKey, TValue>
     {
         private readonly IDictionary<string, CacheRegion<TKey, TValue>> _regions;
 
@@ -12,28 +12,28 @@ namespace CreativeCoders.Core.Caching.Default {
         public CacheRegions()
         {
             _regions = new ConcurrentDictionary<string, CacheRegion<TKey, TValue>>();
-            
+
             _defaultRegion = new CacheRegion<TKey, TValue>();
         }
 
-        private CacheRegion<TKey,TValue> GetRegion(string regionName)
+        private CacheRegion<TKey, TValue> GetRegion(string regionName)
         {
             if (regionName == null)
             {
                 return _defaultRegion;
             }
-            
+
             if (_regions.TryGetValue(regionName, out var region))
             {
                 return region;
             }
-            
+
             var newRegion = new CacheRegion<TKey, TValue>();
             _regions[regionName] = newRegion;
 
             return newRegion;
         }
-        
+
         public bool TryGetValue(TKey key, out CacheEntry<TKey, TValue> value, string regionName)
         {
             return GetRegion(regionName).TryGetValue(key, out value);

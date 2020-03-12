@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CreativeCoders.Core.Caching.Default
 {
-    public class CacheEntry<TKey, TValue> : ICacheEntry<TKey, TValue>
+    [ExcludeFromCodeCoverage]
+    internal class CacheEntry<TKey, TValue> : ICacheEntry<TKey, TValue>
     {
         private DateTime _lastEntryCheck;
         

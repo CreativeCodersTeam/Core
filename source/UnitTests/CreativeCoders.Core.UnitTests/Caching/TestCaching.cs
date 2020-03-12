@@ -719,25 +719,25 @@ namespace CreativeCoders.Core.UnitTests.Caching
             {
                 getValueCalled = true;
                 return testValue;
-            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(100)));
+            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(1500)));
             
             Assert.Equal(testValue, value);
 
-            Task.Delay(50).Wait();
+            Task.Delay(1000).Wait();
             
             var secondValue = cache.GetOrAdd(1, () =>
             {
                 getValueCalled1 = true;
                 return testValue;
-            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(100)));
+            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(1500)));
 
-            Task.Delay(200).Wait();
+            Task.Delay(2000).Wait();
             
             var thirdValue = cache.GetOrAdd(1, () =>
             {
                 getValueCalled2 = true;
                 return testValue;
-            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(100)));
+            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(1500)));
             
             Assert.Equal(testValue, secondValue);
             Assert.Equal(testValue, thirdValue);
@@ -757,25 +757,25 @@ namespace CreativeCoders.Core.UnitTests.Caching
             {
                 getValueCalled = true;
                 return testValue;
-            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(100)));
+            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(1500)));
             
             Assert.Equal(testValue, value);
 
-            Task.Delay(75).Wait();
+            Task.Delay(1000).Wait();
             
             var secondValue = cache.GetOrAdd(1, () =>
             {
                 getValueCalled1 = true;
                 return testValue;
-            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(100)));
+            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(1500)));
 
-            Task.Delay(75).Wait();
+            Task.Delay(1000).Wait();
             
             var thirdValue = cache.GetOrAdd(1, () =>
             {
                 getValueCalled2 = true;
                 return testValue;
-            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(100)));
+            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(1500)));
             
             Assert.Equal(testValue, secondValue);
             Assert.Equal(testValue, thirdValue);
