@@ -3,8 +3,9 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UseWPF>true</UseWPF>
     <Authors>CreativeCoders</Authors>
+    <LangVersion>latest</LangVersion>
+    <UseWPF>true</UseWPF>
     <Description>Base classes and types for task dialog</Description>
   </PropertyGroup>
 

@@ -205,23 +205,16 @@ namespace CreativeCoders.Logging.Nlog
 
         private static NLog.LogLevel LogLevelToNlogLogLevel(LogLevel logLevel)
         {
-            switch (logLevel)
+            return logLevel switch
             {
-                case LogLevel.Trace:
-                    return NLog.LogLevel.Trace;
-                case LogLevel.Debug:
-                    return NLog.LogLevel.Debug;
-                case LogLevel.Info:
-                    return NLog.LogLevel.Info;
-                case LogLevel.Warn:
-                    return NLog.LogLevel.Warn;
-                case LogLevel.Error:
-                    return NLog.LogLevel.Error;
-                case LogLevel.Fatal:
-                    return NLog.LogLevel.Fatal;
-                default:
-                    return NLog.LogLevel.Off;
-            }
+                LogLevel.Trace => NLog.LogLevel.Trace,
+                LogLevel.Debug => NLog.LogLevel.Debug,
+                LogLevel.Info => NLog.LogLevel.Info,
+                LogLevel.Warn => NLog.LogLevel.Warn,
+                LogLevel.Error => NLog.LogLevel.Error,
+                LogLevel.Fatal => NLog.LogLevel.Fatal,
+                _ => NLog.LogLevel.Off
+            };
         }
     }
 }

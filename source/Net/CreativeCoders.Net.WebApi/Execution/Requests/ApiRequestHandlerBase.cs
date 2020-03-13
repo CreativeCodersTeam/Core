@@ -27,19 +27,14 @@ namespace CreativeCoders.Net.WebApi.Execution.Requests
 
         private HttpMethod GetHttpMethod(HttpRequestMethod requestMethod)
         {
-            switch (requestMethod)
+            return requestMethod switch
             {
-                case HttpRequestMethod.Get:
-                    return HttpMethod.Get;
-                case HttpRequestMethod.Post:
-                    return HttpMethod.Post;
-                case HttpRequestMethod.Put:
-                    return HttpMethod.Put;
-                case HttpRequestMethod.Delete:
-                    return HttpMethod.Delete;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(requestMethod), requestMethod, null);
-            }
+                HttpRequestMethod.Get => HttpMethod.Get,
+                HttpRequestMethod.Post => HttpMethod.Post,
+                HttpRequestMethod.Put => HttpMethod.Put,
+                HttpRequestMethod.Delete => HttpMethod.Delete,
+                _ => throw new ArgumentOutOfRangeException(nameof(requestMethod), requestMethod, null)
+            };
         }
 
         private static HttpContent GetBodyContent(RequestData requestData)
@@ -51,20 +46,15 @@ namespace CreativeCoders.Net.WebApi.Execution.Requests
                 return null;
             }
 
-            switch (bodyValue)
+            return bodyValue switch
             {
-                case string bodyString:
-                    return new StringContent(bodyString);
-                case Stream bodyStream:
-                    return new StreamContent(bodyStream);
-                case HttpContent bodyContent:
-                    return bodyContent;
-                case byte[] bodyBytes:
-                    return new ByteArrayContent(bodyBytes);
-                default:
-                    return new StringContent(requestData.DefaultDataFormatter.GetSerializer().Serialize(bodyValue),
-                        Encoding.UTF8, requestData.DefaultDataFormatter.ContentMediaType);
-            }
+                string bodyString => new StringContent(bodyString),
+                Stream bodyStream => new StreamContent(bodyStream),
+                HttpContent bodyContent => bodyContent,
+                byte[] bodyBytes => new ByteArrayContent(bodyBytes),
+                _ => new StringContent(requestData.DefaultDataFormatter.GetSerializer().Serialize(bodyValue),
+                    Encoding.UTF8, requestData.DefaultDataFormatter.ContentMediaType)
+            };
         }
 
         private HttpRequestMessage CreateRequestMessage(RequestData requestData)

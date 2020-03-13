@@ -3,6 +3,8 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Authors>CreativeCoders</Authors>
+        <LangVersion>latest</LangVersion>
         <UseWPF>true</UseWPF>
         <Description>WPF specific base classes and type for MVVM</Description>
     </PropertyGroup>

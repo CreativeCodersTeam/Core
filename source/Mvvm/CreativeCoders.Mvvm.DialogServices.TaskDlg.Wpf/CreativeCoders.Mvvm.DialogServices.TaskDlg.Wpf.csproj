@@ -3,9 +3,11 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UseWPF>true</UseWPF>
     <Authors>CreativeCoders</Authors>
+    <LangVersion>latest</LangVersion>
+    <UseWPF>true</UseWPF>
     <Description>WPF implementation of task dialog for CreativeCoders.Mvvm.DialogServices.TaskDialog</Description>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

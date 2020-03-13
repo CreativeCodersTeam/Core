@@ -4,6 +4,7 @@
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>CreativeCoders</Authors>
+    <LangVersion>latest</LangVersion>
     <Description>Base types for token based authentication for ASP.NET Core</Description>
   </PropertyGroup>
 

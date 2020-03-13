@@ -1,7 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <OutputType>Library</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Authors>CreativeCoders</Authors>
+        <LangVersion>latest</LangVersion>
+        <Description>Default message queue implementation for CreativeCoders.Messaging.Core</Description>
     </PropertyGroup>
 
     <ItemGroup>

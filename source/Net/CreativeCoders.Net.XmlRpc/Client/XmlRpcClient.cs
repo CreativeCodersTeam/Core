@@ -76,7 +76,7 @@ namespace CreativeCoders.Net.XmlRpc.Client
         {
             var requestModelWriter = new RequestModelWriter(new ValueWriters());
 
-            using (var stream = new MemoryStream())
+            await using (var stream = new MemoryStream())
             {
                 await requestModelWriter.WriteAsync(stream, request, XmlEncoding).ConfigureAwait(false);
                 stream.Seek(0, SeekOrigin.Begin);

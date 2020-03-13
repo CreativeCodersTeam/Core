@@ -8,34 +8,25 @@ namespace CreativeCoders.CodeCompilation.Roslyn
     {
         public static CompilationMessageType ConvertMessageType(DiagnosticSeverity diagnosticSeverity)
         {
-            switch (diagnosticSeverity)
+            return diagnosticSeverity switch
             {
-                case DiagnosticSeverity.Hidden:
-                    return CompilationMessageType.Suggestion;
-                case DiagnosticSeverity.Info:
-                    return CompilationMessageType.Info;
-                case DiagnosticSeverity.Warning:
-                    return CompilationMessageType.Warning;
-                case DiagnosticSeverity.Error:
-                    return CompilationMessageType.Error;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(diagnosticSeverity), diagnosticSeverity, null);
-            }
+                DiagnosticSeverity.Hidden => CompilationMessageType.Suggestion,
+                DiagnosticSeverity.Info => CompilationMessageType.Info,
+                DiagnosticSeverity.Warning => CompilationMessageType.Warning,
+                DiagnosticSeverity.Error => CompilationMessageType.Error,
+                _ => throw new ArgumentOutOfRangeException(nameof(diagnosticSeverity), diagnosticSeverity, null)
+            };
         }
 
         public static OutputKind ConvertOutputKind(CompilationOutputKind outputKind)
         {
-            switch (outputKind)
+            return outputKind switch
             {
-                case CompilationOutputKind.DynamicallyLinkedLibrary:
-                    return OutputKind.DynamicallyLinkedLibrary;
-                case CompilationOutputKind.ConsoleApplication:
-                    return OutputKind.ConsoleApplication;
-                case CompilationOutputKind.WindowsApplication:
-                    return OutputKind.WindowsApplication;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(outputKind), outputKind, "Output kind unknown");
-            }
+                CompilationOutputKind.DynamicallyLinkedLibrary => OutputKind.DynamicallyLinkedLibrary,
+                CompilationOutputKind.ConsoleApplication => OutputKind.ConsoleApplication,
+                CompilationOutputKind.WindowsApplication => OutputKind.WindowsApplication,
+                _ => throw new ArgumentOutOfRangeException(nameof(outputKind), outputKind, "Output kind unknown")
+            };
         }
 
         public static TextSpan ConvertTextSpan(Microsoft.CodeAnalysis.Text.TextSpan locationSourceSpan)

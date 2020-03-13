@@ -78,23 +78,16 @@ namespace CreativeCoders.Logging.DebuggerOutput
 
         private bool IsLogLevelEnabled(LogLevel logLevel)
         {
-            switch (logLevel)
+            return logLevel switch
             {
-                case LogLevel.Trace:
-                    return IsTraceEnabled;
-                case LogLevel.Debug:
-                    return IsDebugEnabled;
-                case LogLevel.Info:
-                    return IsInfoEnabled;
-                case LogLevel.Warn:
-                    return IsWarnEnabled;
-                case LogLevel.Error:
-                    return IsErrorEnabled;
-                case LogLevel.Fatal:
-                    return IsFatalEnabled;
-                default:
-                    return true;
-            }
+                LogLevel.Trace => IsTraceEnabled,
+                LogLevel.Debug => IsDebugEnabled,
+                LogLevel.Info => IsInfoEnabled,
+                LogLevel.Warn => IsWarnEnabled,
+                LogLevel.Error => IsErrorEnabled,
+                LogLevel.Fatal => IsFatalEnabled,
+                _ => true
+            };
         }
     }
 }

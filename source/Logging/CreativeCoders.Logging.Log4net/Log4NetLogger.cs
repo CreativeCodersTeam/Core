@@ -230,23 +230,16 @@ namespace CreativeCoders.Logging.Log4net
 
         private static Level LogLevelToLog4NetLogLevel(LogLevel logLevel)
         {
-            switch (logLevel)
+            return logLevel switch
             {
-                case LogLevel.Trace:
-                    return Level.Trace;
-                case LogLevel.Debug:
-                    return Level.Debug;
-                case LogLevel.Info:
-                    return Level.Info;
-                case LogLevel.Warn:
-                    return Level.Warn;
-                case LogLevel.Error:
-                    return Level.Error;
-                case LogLevel.Fatal:
-                    return Level.Fatal;
-                default:
-                    return Level.Info;
-            }
+                LogLevel.Trace => Level.Trace,
+                LogLevel.Debug => Level.Debug,
+                LogLevel.Info => Level.Info,
+                LogLevel.Warn => Level.Warn,
+                LogLevel.Error => Level.Error,
+                LogLevel.Fatal => Level.Fatal,
+                _ => Level.Info
+            };
         }
     }
 }

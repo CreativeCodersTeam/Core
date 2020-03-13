@@ -4,6 +4,7 @@
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>CreativeCoders</Authors>
+    <LangVersion>latest</LangVersion>
     <Description>JSON Web Token implementation of token authentication for CreativeCoders.AspNetCore.TokenAuth</Description>
   </PropertyGroup>
 

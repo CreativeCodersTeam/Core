@@ -3,6 +3,8 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Authors>CreativeCoders</Authors>
+        <LangVersion>latest</LangVersion>
         <UseWPF>true</UseWPF>
         <Description>FluentRibbon implementation for CreativeCoders.Mvvm.Ribbon</Description>
     </PropertyGroup>

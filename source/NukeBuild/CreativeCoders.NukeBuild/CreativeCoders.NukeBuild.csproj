@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>CreativeCoders</Authors>
+    <LangVersion>latest</LangVersion>
     <Description>Nuke build extensions</Description>
   </PropertyGroup>
 

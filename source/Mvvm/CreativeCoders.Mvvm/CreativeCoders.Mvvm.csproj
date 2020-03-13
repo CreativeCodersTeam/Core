@@ -4,6 +4,7 @@
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>CreativeCoders</Authors>
+    <LangVersion>latest</LangVersion>
     <Description>Base classes and types for MVVM</Description>
   </PropertyGroup>
 

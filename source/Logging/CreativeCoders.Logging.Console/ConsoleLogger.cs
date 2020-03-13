@@ -37,23 +37,16 @@ namespace CreativeCoders.Logging.Console
 
         private static ConsoleColor GetForegroundColorForLogLevel(LogLevel logLevel)
         {
-            switch (logLevel)
+            return logLevel switch
             {
-                case LogLevel.Trace:
-                    return ConsoleColor.DarkGray;
-                case LogLevel.Debug:
-                    return ConsoleColor.Cyan;
-                case LogLevel.Warn:
-                    return ConsoleColor.Yellow;
-                case LogLevel.Error:
-                    return ConsoleColor.Red;
-                case LogLevel.Fatal:
-                    return ConsoleColor.Red;
-                case LogLevel.Info:
-                    return ConsoleColor.White;
-                default:
-                    return ConsoleColor.White;
-            }
+                LogLevel.Trace => ConsoleColor.DarkGray,
+                LogLevel.Debug => ConsoleColor.Cyan,
+                LogLevel.Warn => ConsoleColor.Yellow,
+                LogLevel.Error => ConsoleColor.Red,
+                LogLevel.Fatal => ConsoleColor.Red,
+                LogLevel.Info => ConsoleColor.White,
+                _ => ConsoleColor.White
+            };
         }
 
         private static ConsoleColor GetBackgroundColorForLogLevel(LogLevel logLevel)

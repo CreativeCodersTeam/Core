@@ -18,6 +18,6 @@ namespace CreativeCoders.Config
             _settingsFactory = settingsFactory;
         }
 
-        public IEnumerable<T> Values => _values ?? (_values = _settingsFactory.Create());
+        public IEnumerable<T> Values => _values ??= _settingsFactory.Create();
     }
 }

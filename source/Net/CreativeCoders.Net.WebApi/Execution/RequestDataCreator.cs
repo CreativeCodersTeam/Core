@@ -61,23 +61,16 @@ namespace CreativeCoders.Net.WebApi.Execution
 
         private HttpCompletionOption GetDefaultCompletionOption(ApiMethodReturnType apiMethodReturnType)
         {
-            switch (apiMethodReturnType)
+            return apiMethodReturnType switch
             {
-                case ApiMethodReturnType.Void:
-                    return HttpCompletionOption.ResponseHeadersRead;
-                case ApiMethodReturnType.HttpResponseMessage:
-                    return HttpCompletionOption.ResponseHeadersRead;
-                case ApiMethodReturnType.String:
-                    return HttpCompletionOption.ResponseContentRead;
-                case ApiMethodReturnType.Stream:
-                    return HttpCompletionOption.ResponseHeadersRead;
-                case ApiMethodReturnType.DataObject:
-                    return HttpCompletionOption.ResponseContentRead;
-                case ApiMethodReturnType.Response:
-                    return HttpCompletionOption.ResponseHeadersRead;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(apiMethodReturnType), apiMethodReturnType, null);
-            }
+                ApiMethodReturnType.Void => HttpCompletionOption.ResponseHeadersRead,
+                ApiMethodReturnType.HttpResponseMessage => HttpCompletionOption.ResponseHeadersRead,
+                ApiMethodReturnType.String => HttpCompletionOption.ResponseContentRead,
+                ApiMethodReturnType.Stream => HttpCompletionOption.ResponseHeadersRead,
+                ApiMethodReturnType.DataObject => HttpCompletionOption.ResponseContentRead,
+                ApiMethodReturnType.Response => HttpCompletionOption.ResponseHeadersRead,
+                _ => throw new ArgumentOutOfRangeException(nameof(apiMethodReturnType), apiMethodReturnType, null)
+            };
         }
 
         private Func<object> GetBodyValueFunction()
