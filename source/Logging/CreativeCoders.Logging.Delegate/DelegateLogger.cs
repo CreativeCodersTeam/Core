@@ -65,34 +65,27 @@ namespace CreativeCoders.Logging.Delegate
             _logAction(logLevel, _scope, value.ToString());
         }
 
-        public void Log<T>(LogLevel logLevel, Func<T> messageFunc)
+        public void Log<T>(LogLevel logLevel, Func<T> getMessage)
         {
             if (!IsLogLevelEnabled(logLevel))
             {
                 return;
             }
-            _logAction(logLevel, _scope, messageFunc().ToString());
+            _logAction(logLevel, _scope, getMessage().ToString());
         }
 
         private bool IsLogLevelEnabled(LogLevel logLevel)
         {
-            switch (logLevel)
+            return logLevel switch
             {
-                case LogLevel.Trace:
-                    return IsTraceEnabled;
-                case LogLevel.Debug:
-                    return IsDebugEnabled;
-                case LogLevel.Info:
-                    return IsInfoEnabled;
-                case LogLevel.Warn:
-                    return IsWarnEnabled;
-                case LogLevel.Error:
-                    return IsErrorEnabled;
-                case LogLevel.Fatal:
-                    return IsFatalEnabled;
-                default:
-                    return false;
-            }
+                LogLevel.Trace => IsTraceEnabled,
+                LogLevel.Debug => IsDebugEnabled,
+                LogLevel.Info => IsInfoEnabled,
+                LogLevel.Warn => IsWarnEnabled,
+                LogLevel.Error => IsErrorEnabled,
+                LogLevel.Fatal => IsFatalEnabled,
+                _ => false
+            };
         }
     }
 }

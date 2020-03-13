@@ -7,29 +7,29 @@ namespace CreativeCoders.Config.Sources
     public class ConfigurationSource<T> : IConfigurationSource<T>
         where T : class, new()
     {
-        private readonly Func<T> _getSettingObjectFunc;
+        private readonly Func<T> _getSettingObject;
 
-        private readonly Func<T> _getDefaultSettingObjectFunc;
+        private readonly Func<T> _getDefaultSettingObject;
 
-        public ConfigurationSource(Func<T> getSettingObjectFunc) : this(getSettingObjectFunc, () => new T()) { }
+        public ConfigurationSource(Func<T> getSettingObject) : this(getSettingObject, () => new T()) { }
 
-        public ConfigurationSource(Func<T> getSettingObjectFunc, Func<T> getDefaultSettingObjectFunc)
+        public ConfigurationSource(Func<T> getSettingObject, Func<T> getDefaultSettingObject)
         {
-            Ensure.IsNotNull(getSettingObjectFunc, nameof(getSettingObjectFunc));
-            Ensure.IsNotNull(getDefaultSettingObjectFunc, nameof(getDefaultSettingObjectFunc));
+            Ensure.IsNotNull(getSettingObject, nameof(getSettingObject));
+            Ensure.IsNotNull(getDefaultSettingObject, nameof(getDefaultSettingObject));
 
-            _getSettingObjectFunc = getSettingObjectFunc;
-            _getDefaultSettingObjectFunc = getDefaultSettingObjectFunc;
+            _getSettingObject = getSettingObject;
+            _getDefaultSettingObject = getDefaultSettingObject;
         }
 
         public virtual object GetSettingObject()
         {
-            return _getSettingObjectFunc();
+            return _getSettingObject();
         }
 
         public virtual object GetDefaultSettingObject()
         {
-            return _getDefaultSettingObjectFunc();
+            return _getDefaultSettingObject();
         }
     }
 }

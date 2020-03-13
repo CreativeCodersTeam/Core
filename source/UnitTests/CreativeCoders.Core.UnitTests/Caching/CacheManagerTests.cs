@@ -1,4 +1,5 @@
 ﻿using CreativeCoders.Core.Caching;
+using CreativeCoders.Core.Caching.Default;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Caching

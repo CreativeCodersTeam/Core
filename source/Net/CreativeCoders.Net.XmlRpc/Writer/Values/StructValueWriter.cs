@@ -12,11 +12,11 @@ namespace CreativeCoders.Net.XmlRpc.Writer.Values
 
         private static void WriteToElement(XmlRpcValue<IDictionary<string, XmlRpcValue>> value, XContainer element, IValueWriters writers)
         {
-            foreach (var keyValuePair in value.Value)
+            foreach (var (key, xmlRpcValue) in value.Value)
             {
                 var memberElement = new XElement(XmlRpcTags.Member);
 
-                WriteMember(keyValuePair.Key, keyValuePair.Value, writers, memberElement);
+                WriteMember(key, xmlRpcValue, writers, memberElement);
 
                 element.Add(memberElement);
             }

@@ -7,11 +7,11 @@ namespace CreativeCoders.Net.WebApi.Specification.Parameters
     [PublicAPI]
     public abstract class ParameterDefinitionBase<TValue>
     {
-        private readonly Func<object, TValue> _transformValueFunc;
+        private readonly Func<object, TValue> _transformValue;
 
-        protected ParameterDefinitionBase(ParameterInfo parameterInfo, Func<object, TValue> transformValueFunc)
+        protected ParameterDefinitionBase(ParameterInfo parameterInfo, Func<object, TValue> transformValue)
         {
-            _transformValueFunc = transformValueFunc;
+            _transformValue = transformValue;
             ParameterInfo = parameterInfo;
         }
 
@@ -26,7 +26,7 @@ namespace CreativeCoders.Net.WebApi.Specification.Parameters
 
             var value = arguments[ParameterInfo.Position];
 
-            return _transformValueFunc(value);
+            return _transformValue(value);
         }
     }
 }

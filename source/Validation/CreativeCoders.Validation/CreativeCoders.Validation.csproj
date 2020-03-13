@@ -1,7 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>CreativeCoders</Authors>
     <LangVersion>latest</LangVersion>
     <Description>Validation framework</Description>
   </PropertyGroup>

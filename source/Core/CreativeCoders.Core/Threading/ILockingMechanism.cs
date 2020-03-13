@@ -6,10 +6,10 @@ namespace CreativeCoders.Core.Threading
     {
         void Read(Action action);
 
-        T Read<T>(Func<T> func);
+        T Read<T>(Func<T> function);
 
         void Write(Action action);
 
-        T Write<T>(Func<T> func);
+        T Write<T>(Func<T> function);
     }
 }

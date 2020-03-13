@@ -1,4 +1,6 @@
-﻿using CreativeCoders.Core.Caching;
+﻿using System.Threading.Tasks;
+using CreativeCoders.Core.Caching;
+using CreativeCoders.Core.Caching.Default;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Caching
@@ -6,122 +8,360 @@ namespace CreativeCoders.Core.UnitTests.Caching
     public class DictionaryCacheTests
     {
         [Fact]
-        public void Ctor_Called_NoException()
+        public void TryGet_KeyNotExists_ReturnFalse()
         {
-            var cache = new DictionaryCache<int, string>();
-            Assert.NotNull(cache);
+            TestCaching.TryGet_KeyNotExists_ReturnFalse(CreateCache<int, string>());
         }
 
         [Fact]
-        public void TryGetValue_KeyNotExists_ReturnFalse()
+        public void TryGet_KeyNotExistsWithRegion_ReturnFalse()
         {
-            var cache = new DictionaryCache<int, string>();
-
-            var keyExists = cache.TryGetValue(1, out _);
-
-            Assert.False(keyExists);
+            TestCaching.TryGet_KeyNotExistsWithRegion_ReturnFalse(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public async Task TryGetAsync_KeyNotExists_ReturnFalse()
+        {
+            await TestCaching.TryGetAsync_KeyNotExists_ReturnFalse(CreateCache<int, string>());
         }
 
         [Fact]
-        public void TryGetValue_KeyExits_ReturnsTrueAndValue()
+        public async Task TryGetAsync_KeyNotExistsWithRegion_ReturnFalse()
         {
-            var cache = new DictionaryCache<int, string>();
-            cache.AddOrUpdate(1, "TestValue");
-
-            var keyExists = cache.TryGetValue(1, out var value);
-
-            Assert.True(keyExists);
-            Assert.Equal("TestValue", value);
+            await TestCaching.TryGetAsync_KeyNotExistsWithRegion_ReturnFalse(CreateCache<int, string>());
         }
 
         [Fact]
-        public void TryGetValue_AddOrUpdateTwoValue_ReturnsLastValue()
+        public void TryGet_KeyExists_ReturnsTrueAndValue()
         {
-            var cache = new DictionaryCache<int, string>();
-            cache.AddOrUpdate(1, "TestValue");
-            cache.AddOrUpdate(1, "TestValue1234");
+            TestCaching.TryGet_KeyExists_ReturnsTrueAndValue(CreateCache<int, string>());
+        }
 
-            var keyExists = cache.TryGetValue(1, out var value);
+        [Fact]
+        public void TryGet_KeyExistsWithRegion_ReturnsTrueAndValue()
+        {
+            TestCaching.TryGet_KeyExistsWithRegion_ReturnsTrueAndValue(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public async Task TryGetAsync_KeyExists_ReturnsTrueAndValue()
+        {
+            await TestCaching.TryGetAsync_KeyExists_ReturnsTrueAndValue(CreateCache<int, string>());
+        }
 
-            Assert.True(keyExists);
-            Assert.Equal("TestValue1234", value);
+        [Fact]
+        public async Task TryGetAsync_KeyExistsWithRegion_ReturnsTrueAndValue()
+        {
+            await TestCaching.TryGetAsync_KeyExistsWithRegion_ReturnsTrueAndValue(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void TryGet_AddOrUpdateTwoValue_ReturnsLastValue()
+        {
+            TestCaching.TryGet_AddOrUpdateTwoValue_ReturnsLastValue(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void TryGet_AddOrUpdateTwoValueWithRegions_ReturnsLastValue()
+        {
+            TestCaching.TryGet_AddOrUpdateTwoValueWithRegions_ReturnsLastValue(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public async Task TryGetAsync_AddOrUpdateTwoValue_ReturnsLastValue()
+        {
+            await TestCaching.TryGetAsync_AddOrUpdateTwoValue_ReturnsLastValue(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task TryGetAsync_AddOrUpdateTwoValueWithRegions_ReturnsLastValue()
+        {
+            await TestCaching.TryGetAsync_AddOrUpdateTwoValueWithRegions_ReturnsLastValue(CreateCache<int, string>());
         }
 
         [Fact]
         public void Clear_TryGetValue_ReturnFalse()
         {
-            var cache = new DictionaryCache<int, string>();
-            cache.AddOrUpdate(1, "TestValue");
-            cache.Clear();
+            TestCaching.Clear_TryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
 
-            var keyExists = cache.TryGetValue(1, out _);
+        [Fact]
+        public void Clear_TryGetValueWithRegions_ReturnFalse()
+        {
+            TestCaching.Clear_TryGetValueWithRegions_ReturnFalse(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public async Task ClearAsync_TryGetValue_ReturnFalse()
+        {
+            await TestCaching.ClearAsync_TryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
 
-            Assert.False(keyExists);
+        [Fact]
+        public async Task ClearAsync_TryGetValueWithRegions_ReturnFalse()
+        {
+            await TestCaching.ClearAsync_TryGetValueWithRegions_ReturnFalse(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public void Remove_TryGetValue_ReturnFalse()
+        {
+            TestCaching.Remove_TryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void Remove_WithOutRegionsTryGetValue_ReturnFalse()
+        {
+            TestCaching.Remove_WithOutRegionsTryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void Remove_WithRegionsTryGetValue_ReturnFalse()
+        {
+            TestCaching.Remove_WithRegionsTryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public async Task RemoveAsync_TryGetValue_ReturnFalse()
+        {
+            await TestCaching.RemoveAsync_TryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task RemoveAsync_WithOutRegionsTryGetValue_ReturnFalse()
+        {
+            await TestCaching.RemoveAsync_WithOutRegionsTryGetValue_ReturnFalse(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task RemoveAsync_WithRegionsTryGetValue_ReturnFalse()
+        {
+            await TestCaching.RemoveAsync_WithRegionsTryGetValue_ReturnFalse(CreateCache<int, string>());
         }
 
         [Fact]
         public void GetValue_GetExisting_ReturnsValue()
         {
-            var cache = new DictionaryCache<int, string>();
-            cache.AddOrUpdate(1, "TestValue");
+            TestCaching.GetValue_GetExisting_ReturnsValue(CreateCache<int, string>());
+        }
 
-            var value = cache.GetValue(1);
+        [Fact]
+        public void GetValue_GetExistingWithRegion_ReturnsValue()
+        {
+            TestCaching.GetValue_GetExistingWithRegion_ReturnsValue(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public async Task GetValueAsync_GetExisting_ReturnsValue()
+        {
+            await TestCaching.GetValueAsync_GetExisting_ReturnsValue(CreateCache<int, string>());
+        }
 
-            Assert.Equal("TestValue", value);
+        [Fact]
+        public async Task GetValueAsync_GetExistingWithRegion_ReturnsValue()
+        {
+            await TestCaching.GetValueAsync_GetExistingWithRegion_ReturnsValue(CreateCache<int, string>());
         }
 
         [Fact]
         public void GetValue_KeyNotExists_ThrowsException()
         {
-            var cache = new DictionaryCache<int, string>();
-            
-            var key = Assert.Throws<CacheEntryNotFoundException>(() => cache.GetValue(1)).Key;
-            Assert.Equal("1", key);
+            TestCaching.GetValue_KeyNotExists_ThrowsException(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void GetValue_KeyNotExistsWithRegions_ThrowsException()
+        {
+            TestCaching.GetValue_KeyNotExistsWithRegions_ThrowsException(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public async Task GetValueAsync_KeyNotExists_ThrowsException()
+        {
+            await TestCaching.GetValueAsync_KeyNotExists_ThrowsException(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task GetValueAsync_KeyNotExistsWithRegions_ThrowsException()
+        {
+            await TestCaching.GetValueAsync_KeyNotExistsWithRegions_ThrowsException(CreateCache<int, string>());
         }
 
         [Fact]
         public void GetValue_KeyNotExists_ReturnNull()
         {
-            var cache = new DictionaryCache<int, string>();
+            TestCaching.GetValue_KeyNotExists_ReturnNull(CreateCache<int, string>());
+        }
 
-            var value = cache.GetValue(1, false);
+        [Fact]
+        public void GetValue_KeyNotExistsWithRegions_ReturnNull()
+        {
+            TestCaching.GetValue_KeyNotExistsWithRegions_ReturnNull(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public async Task GetValueAsync_KeyNotExists_ReturnNull()
+        {
+            await TestCaching.GetValueAsync_KeyNotExists_ReturnNull(CreateCache<int, string>());
+        }
 
-            Assert.Null(value);
+        [Fact]
+        public async Task GetValueAsync_KeyNotExistsWithRegions_ReturnNull()
+        {
+            await TestCaching.GetValueAsync_KeyNotExistsWithRegions_ReturnNull(CreateCache<int, string>());
         }
 
         [Fact]
         public void GetValue_KeyNotExists_ReturnDefaultValue()
         {
-            var cache = new DictionaryCache<int, string>();
-
-            var value = cache.GetValue(1, "DefaultValue");
-
-            Assert.Equal("DefaultValue", value);
+            TestCaching.GetValue_KeyNotExists_ReturnDefaultValue(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public async Task GetValueAsync_KeyNotExists_ReturnDefaultValue()
+        {
+            await TestCaching.GetValueAsync_KeyNotExists_ReturnDefaultValue(CreateCache<int, string>());
         }
 
         [Fact]
         public void GetValue_KeyNotExists_ReturnNewValueAndStoreToCache()
         {
-            var cache = new DictionaryCache<int, string>();
-
-            var value = cache.GetValue(1, () => "DefaultValue");
-            var secondValue = cache.GetValue(1);
-
-            Assert.Equal("DefaultValue", value);
-            Assert.Equal("DefaultValue", secondValue);
+            TestCaching.GetValue_KeyNotExists_ReturnNewValueAndStoreToCache(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public async Task GetValueAsync_KeyNotExists_ReturnNewValueAndStoreToCache()
+        {
+            await TestCaching.GetValueAsync_KeyNotExists_ReturnNewValueAndStoreToCache(CreateCache<int, string>());
         }
 
         [Fact]
         public void GetValue_KeyExists_ReturnOldValue()
         {
-            var cache = new DictionaryCache<int, string>();
-            cache.AddOrUpdate(1, "TestValue");
+            TestCaching.GetValue_KeyExists_ReturnOldValue(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public async Task GetValueAsync_KeyExists_ReturnOldValue()
+        {
+            await TestCaching.GetValueAsync_KeyExists_ReturnOldValue(CreateCache<int, string>());
+        }
 
-            var value = cache.GetValue(1, () => "DefaultValue");
-            var secondValue = cache.GetValue(1);
+        [Fact]
+        public void TryGet_AfterExpiration_ReturnsFalse()
+        {
+            TestCaching.TryGet_AfterExpiration_ReturnsFalse(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public async Task TryGetAsync_AfterExpiration_ReturnsFalse()
+        {
+            await TestCaching.TryGetAsync_AfterExpiration_ReturnsFalse(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public void TryGet_AfterExpirationTimeSpan_ReturnsFalse()
+        {
+            TestCaching.TryGet_AfterExpirationTimeSpan_ReturnsFalse(CreateCache<int, string>());
+        }
+        
+        [Fact]
+        public async Task TryGetAsync_AfterExpirationTimeSpan_ReturnsFalse()
+        {
+            await TestCaching.TryGetAsync_AfterExpirationTimeSpan_ReturnsFalse(CreateCache<int, string>());
+        }
 
-            Assert.Equal("TestValue", value);
-            Assert.Equal("TestValue", secondValue);
+        [Fact]
+        public void GetOrAdd_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        {
+            TestCaching.GetOrAdd_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void GetOrAdd_TwoTimesCalledWithRegions_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
+        {
+            TestCaching.GetOrAdd_TwoTimesCalledWithRegions_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task GetOrAddAsync_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        {
+            await TestCaching.GetOrAddAsync_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task GetOrAddAsync_TwoTimesCalledWithRegions_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
+        {
+            await TestCaching.GetOrAddAsync_TwoTimesCalledWithRegions_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void GetOrAdd_TwoTimesCalledWithNeverExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        {
+            TestCaching.GetOrAdd_TwoTimesCalledWithNeverExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
+        {
+            TestCaching.GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        {
+            TestCaching.GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes()
+        {
+            TestCaching.GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public void GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        {
+            TestCaching.GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+                CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task GetOrAddAsync_TwoTimesCalledWithNeverExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        {
+            await TestCaching
+                .GetOrAddAsync_TwoTimesCalledWithNeverExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+                    CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task
+            GetOrAddAsync_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
+        {
+            await TestCaching
+                .GetOrAddAsync_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
+                    CreateCache<int, string>());
+        }
+
+        [Fact]
+        public async Task
+            GetOrAddAsync_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        {
+            await TestCaching
+                .GetOrAddAsync_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+                    CreateCache<int, string>());
+        }
+        
+        private static ICache<TKey, TValue> CreateCache<TKey, TValue>()
+        {
+            return new DictionaryCache<TKey, TValue>();
         }
     }
 }

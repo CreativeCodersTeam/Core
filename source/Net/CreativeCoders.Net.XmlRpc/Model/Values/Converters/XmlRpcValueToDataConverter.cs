@@ -102,14 +102,14 @@ namespace CreativeCoders.Net.XmlRpc.Model.Values.Converters
 
             var elementType = targetType.GetGenericArguments().Skip(1).First();
 
-            var convertValue = GetConvertValueFunc(elementType);
+            var convertValue = GetConvertValueFunction(elementType);
 
             var dictionary = this.ExecuteGenericMethod<object>(nameof(ToDictionary), new []{elementType}, structValue.Value as IDictionary, convertValue);
 
             return dictionary;
         }
 
-        private Func<XmlRpcValue, Type, object> GetConvertValueFunc(Type elementType)
+        private Func<XmlRpcValue, Type, object> GetConvertValueFunction(Type elementType)
         {
             if (elementType == typeof(object))
             {

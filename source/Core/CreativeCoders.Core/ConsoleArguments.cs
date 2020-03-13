@@ -32,10 +32,10 @@ namespace CreativeCoders.Core
                     valueName = "/" + valueName;
                 }
                 var result = string.Empty;
-                var value = _values.FirstOrDefault(x => ValueNameEquals(valueName, x.Key));
-                if (!string.IsNullOrWhiteSpace(value.Value))
+                var (_, value) = _values.FirstOrDefault(x => ValueNameEquals(valueName, x.Key));
+                if (!string.IsNullOrWhiteSpace(value))
                 {
-                    result = value.Value;
+                    result = value;
                 }
                 return result;
             }

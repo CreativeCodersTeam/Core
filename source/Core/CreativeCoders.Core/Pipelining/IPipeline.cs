@@ -11,7 +11,7 @@ namespace CreativeCoders.Core.Pipelining
 
         Action<TOutput> Output { get; set; }
 
-        IStage<TStageInput, TStageOutput> AddStage<TStageInput, TStageOutput>(Func<TStageInput, TStageOutput> stageWorkerFunc);
+        IStage<TStageInput, TStageOutput> AddStage<TStageInput, TStageOutput>(Func<TStageInput, TStageOutput> stageWorker);
 
         IEnumerable<IStage> Stages { get; }
 

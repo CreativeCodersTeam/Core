@@ -2,9 +2,9 @@
 {
     public interface IVersionInfo
     {
-        string GetNormalizedAssemblyVersion();
+        string GetAssemblySemVer();
         
-        string GetNormalizedFileVersion();
+        string GetAssemblySemFileVer();
         
         string InformationalVersion { get; }
         

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Authors>CreativeCoders</Authors>
+        <LangVersion>latest</LangVersion>
+        <Description>SystemRuntimeCaching implementation for CreativeCoders.Core.Caching</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
+    </ItemGroup>
+
+</Project>

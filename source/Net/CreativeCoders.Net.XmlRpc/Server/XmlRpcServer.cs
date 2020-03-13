@@ -102,7 +102,7 @@ namespace CreativeCoders.Net.XmlRpc.Server
             {
                 var xmlRpcRequest = await ReadXmlRpcRequestFromBodyAsync(request).ConfigureAwait(false);
 
-                xmlRpcResponse = ExecuteMethods(xmlRpcRequest);
+                xmlRpcResponse = await ExecuteMethods(xmlRpcRequest);
             }
             catch (Exception)
             {
@@ -148,18 +148,25 @@ namespace CreativeCoders.Net.XmlRpc.Server
             return xmlRpcRequest;
         }
 
-        private XmlRpcResponse ExecuteMethods(XmlRpcRequest xmlRpcRequest)
+        private async Task<XmlRpcResponse> ExecuteMethods(XmlRpcRequest xmlRpcRequest)
         {
-            var results = xmlRpcRequest.Methods.Select(InvokeMethod).ToArray();
+            var results = new List<object>();
+
+            foreach (var methodCall in xmlRpcRequest.Methods)
+            {
+                var callResult = await InvokeMethod(methodCall);
+                
+                results.Add(callResult);
+            }
 
             return new XmlRpcResponse(results.Select(data => new XmlRpcMethodResult(_dataToXmlRpcValueConverter.Convert(data))), xmlRpcRequest.IsMultiCall);
         }
 
-        private object InvokeMethod(XmlRpcMethodCall methodCall)
+        private async Task<object> InvokeMethod(XmlRpcMethodCall methodCall)
         {
             Log.Debug($"Invoke method '{methodCall.Name}'");
             
-            return _executor.Invoke(methodCall);
+            return await _executor.Invoke(methodCall);
         }
 
         public void Dispose()

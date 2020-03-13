@@ -21,19 +21,19 @@ namespace CreativeCoders.Core.Threading
             }
         }
 
-        public static T Read<T>(this ReaderWriterLockSlim self, Func<T> func)
+        public static T Read<T>(this ReaderWriterLockSlim self, Func<T> function)
         {
             using (new AcquireReaderLock(self))
             {
-                return func();
+                return function();
             }
         }
 
-        public static T Read<T>(this ReaderWriterLockSlim self, Func<T> func, int timeout)
+        public static T Read<T>(this ReaderWriterLockSlim self, Func<T> function, int timeout)
         {
             using (new AcquireReaderLock(self, timeout))
             {
-                return func();
+                return function();
             }
         }
 
@@ -53,19 +53,19 @@ namespace CreativeCoders.Core.Threading
             }
         }
 
-        public static T Write<T>(this ReaderWriterLockSlim self, Func<T> func)
+        public static T Write<T>(this ReaderWriterLockSlim self, Func<T> function)
         {
             using (new AcquireWriterLock(self))
             {
-                return func();
+                return function();
             }
         }
 
-        public static T Write<T>(this ReaderWriterLockSlim self, Func<T> func, int timeout)
+        public static T Write<T>(this ReaderWriterLockSlim self, Func<T> function, int timeout)
         {
             using (new AcquireWriterLock(self, timeout))
             {
-                return func();
+                return function();
             }
         }
 
@@ -77,11 +77,11 @@ namespace CreativeCoders.Core.Threading
             }
         }
 
-        public static T Lock<T>(this object self, Func<T> func)
+        public static T Lock<T>(this object self, Func<T> function)
         {
             lock (self)
             {
-                return func();
+                return function();
             }
         }
     }

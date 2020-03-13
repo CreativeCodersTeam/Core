@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Threading;
 using CreativeCoders.Net.XmlRpc.Definition;
 using CreativeCoders.Net.XmlRpc.Model;
 using CreativeCoders.Net.XmlRpc.Model.Values;
+using CreativeCoders.Net.XmlRpc.Model.Values.Converters;
 
 namespace CreativeCoders.Net.XmlRpc.Server
 {
@@ -20,7 +24,7 @@ namespace CreativeCoders.Net.XmlRpc.Server
             _xmlRpcServerMethods.RegisterMethods("system", this);
         }
 
-        public object Invoke(XmlRpcMethodCall methodCall)
+        public async Task<object> Invoke(XmlRpcMethodCall methodCall)
         {
             Ensure.IsNotNull(methodCall, nameof(methodCall));
 
@@ -30,13 +34,38 @@ namespace CreativeCoders.Net.XmlRpc.Server
             {
                 throw new MissingMethodException();
             }
+            
+            var parameters = GetParameters(methodRegistration.Method.GetParameters(), methodCall.Parameters.ToArray());
 
-            var parameters = methodCall.Parameters.Select(p => p.Data).ToArray();
+            if (!methodRegistration.Method.ReturnType.IsGenericType ||
+                methodRegistration.Method.ReturnType.GetGenericTypeDefinition() != typeof(Task<>))
+            {
+                return methodRegistration.Method.Invoke(methodRegistration.Target, parameters);
+            }
 
-            return methodRegistration.Method.Invoke(methodRegistration.Target,
-                methodRegistration.Method.GetParameters().Any()
-                    ? parameters
-                    : new object[0]);
+            var task = (Task) methodRegistration.Method.Invoke(methodRegistration.Target, parameters);
+
+            return await task.ToTask<object>();
+        }
+
+        private static object[] GetParameters(IReadOnlyList<ParameterInfo> parameterInfos, IReadOnlyCollection<XmlRpcValue> parameters)
+        {
+            if (!parameterInfos.Any())
+            {
+                return new object[0];
+            }
+
+            if (parameters.Count != parameterInfos.Count)
+            {
+                throw new TargetParameterCountException(
+                    $"Xml Rpc method parameter count mismatch. Method parameter count ({parameterInfos.Count}) != calling parameter count ({parameters.Count})");
+            }
+            
+            var converter = new XmlRpcValueToDataConverter();
+
+            return parameters
+                .Select((x, index) => converter.Convert(x, parameterInfos[index].ParameterType))
+                .ToArray();
         }
 
         [XmlRpcMethod("listMethods")]

@@ -15,7 +15,7 @@ namespace CreativeCoders.Validation.Rules
 
         private readonly Expression<Func<T, TProperty>> _propertyExpression;
 
-        private Func<T, bool> _conditionFunc;
+        private Func<T, bool> _checkCondition;
 
         public PropertyValidationRule(Expression<Func<T, TProperty>> propertyExpression)
         {
@@ -29,7 +29,7 @@ namespace CreativeCoders.Validation.Rules
 
         public void Validate(IValidationContext<T> validationContext)
         {
-            if (_conditionFunc?.Invoke(validationContext.InstanceForValidation) == false)
+            if (_checkCondition?.Invoke(validationContext.InstanceForValidation) == false)
             {
                 return;
             }
@@ -83,9 +83,9 @@ namespace CreativeCoders.Validation.Rules
 
         public bool HasFaultMessage { get; private set; }
 
-        public void SetCondition(Func<T, bool> conditionFunc)
+        public void SetCondition(Func<T, bool> checkCondition)
         {
-            _conditionFunc = conditionFunc;
+            _checkCondition = checkCondition;
         }
     }
 }

@@ -26,11 +26,11 @@ namespace CreativeCoders.Core.Threading
             }
         }
 
-        public T Read<T>(Func<T> func)
+        public T Read<T>(Func<T> function)
         {
             lock (_lockObj)
             {
-                return func();
+                return function();
             }
         }
 
@@ -42,11 +42,11 @@ namespace CreativeCoders.Core.Threading
             }
         }
 
-        public T Write<T>(Func<T> func)
+        public T Write<T>(Func<T> function)
         {
             lock (_lockObj)
             {
-                return func();
+                return function();
             }
         }
     }

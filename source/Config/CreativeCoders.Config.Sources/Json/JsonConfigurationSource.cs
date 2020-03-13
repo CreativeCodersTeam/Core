@@ -16,17 +16,17 @@ namespace CreativeCoders.Config.Sources.Json
     {
         private readonly string _jsonFileName;
 
-        private readonly Func<T> _getDefaultSettingObjectFunc;
+        private readonly Func<T> _getDefaultSettingObject;
 
         public JsonConfigurationSource(string jsonFileName) : this(jsonFileName, () => new T()) { }
 
-        public JsonConfigurationSource(string jsonFileName, Func<T> getDefaultSettingObjectFunc)
+        public JsonConfigurationSource(string jsonFileName, Func<T> getDefaultSettingObject)
         {
             Ensure.IsNotNullOrWhitespace(jsonFileName, nameof(jsonFileName));
-            Ensure.IsNotNull(getDefaultSettingObjectFunc, nameof(getDefaultSettingObjectFunc));
+            Ensure.IsNotNull(getDefaultSettingObject, nameof(getDefaultSettingObject));
 
             _jsonFileName = jsonFileName;
-            _getDefaultSettingObjectFunc = getDefaultSettingObjectFunc;
+            _getDefaultSettingObject = getDefaultSettingObject;
         }
 
         private T LoadSettingFromFile(string jsonFileName)
@@ -49,11 +49,11 @@ namespace CreativeCoders.Config.Sources.Json
         }
 
         public static IEnumerable<JsonConfigurationSource<T>> FromFiles(IEnumerable<string> jsonFileNames,
-            Func<T> getDefaultSettingFunc)
+            Func<T> getDefaultSetting)
         {
             Ensure.IsNotNull(jsonFileNames, nameof(jsonFileNames));
 
-            return jsonFileNames.Select(fileName => new JsonConfigurationSource<T>(fileName, getDefaultSettingFunc))
+            return jsonFileNames.Select(fileName => new JsonConfigurationSource<T>(fileName, getDefaultSetting))
                 .ToArray();
         }
         
@@ -64,7 +64,7 @@ namespace CreativeCoders.Config.Sources.Json
 
         public virtual object GetDefaultSettingObject()
         {
-            return _getDefaultSettingObjectFunc();
+            return _getDefaultSettingObject();
         }
     }
 }

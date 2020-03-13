@@ -34,8 +34,8 @@ namespace CreativeCoders.Validation
 
         private TProperty GetValue()
         {
-            var getPropertyValueFunc = _propertyExpression.Compile();
-            return getPropertyValueFunc(_validationContext.InstanceForValidation);
+            var getPropertyValue = _propertyExpression.Compile();
+            return getPropertyValue(_validationContext.InstanceForValidation);
         }
 
         public void AddFault(IValidationFault fault)

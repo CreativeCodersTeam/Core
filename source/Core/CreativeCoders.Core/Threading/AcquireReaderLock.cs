@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 namespace CreativeCoders.Core.Threading
@@ -9,7 +10,10 @@ namespace CreativeCoders.Core.Threading
 
         private bool _disposed;
 
-        public AcquireReaderLock(ReaderWriterLockSlim lockSlim) : this(lockSlim, Timeout.Infinite) {}
+        [ExcludeFromCodeCoverage]
+        public AcquireReaderLock() : this(new ReaderWriterLockSlim()) { }
+
+        public AcquireReaderLock(ReaderWriterLockSlim lockSlim) : this(lockSlim, Timeout.Infinite) { }
 
         public AcquireReaderLock(ReaderWriterLockSlim lockSlim, int timeout)
         {
@@ -34,6 +38,7 @@ namespace CreativeCoders.Core.Threading
             {
                 _lockSlim.ExitReadLock();
             }
+
             _disposed = true;
         }
     }

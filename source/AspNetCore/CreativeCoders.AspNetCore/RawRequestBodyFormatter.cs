@@ -47,7 +47,7 @@ namespace CreativeCoders.AspNetCore
                 return await InputFormatterResult.FailureAsync().ConfigureAwait(false);
             }
 
-            using (var ms = new MemoryStream(2048))
+            await using (var ms = new MemoryStream(2048))
             {
                 await request.Body.CopyToAsync(ms).ConfigureAwait(false);
                 var content = ms.ToArray();

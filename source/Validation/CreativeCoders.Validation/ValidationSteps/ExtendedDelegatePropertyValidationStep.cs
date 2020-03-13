@@ -7,21 +7,21 @@ namespace CreativeCoders.Validation.ValidationSteps
     public class ExtendedDelegatePropertyValidationStep<T, TProperty> : PropertyValidationStepBase<T, TProperty>
         where T : class
     {
-        private readonly Func<T, TProperty, bool> _validateFunc;
+        private readonly Func<T, TProperty, bool> _validate;
 
-        public ExtendedDelegatePropertyValidationStep(Func<T, TProperty, bool> validateFunc) : this(validateFunc,
+        public ExtendedDelegatePropertyValidationStep(Func<T, TProperty, bool> validate) : this(validate,
             string.Empty)
         {
         }
 
-        public ExtendedDelegatePropertyValidationStep(Func<T, TProperty, bool> validateFunc, string faultMessage) : base(faultMessage)
+        public ExtendedDelegatePropertyValidationStep(Func<T, TProperty, bool> validate, string faultMessage) : base(faultMessage)
         {
-            _validateFunc = validateFunc;
+            _validate = validate;
         }
 
         protected override bool IsValid(TProperty propertyValue, IPropertyValidationContext<T, TProperty> propertyValidationContext)
         {
-            return _validateFunc(propertyValidationContext.InstanceForValidation, propertyValue);
+            return _validate(propertyValidationContext.InstanceForValidation, propertyValue);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace CreativeCoders.Core.Logging
 
         void Log<T>(LogLevel logLevel, T value);
 
-        void Log<T>(LogLevel logLevel, Func<T> messageFunc);
+        void Log<T>(LogLevel logLevel, Func<T> getMessage);
 
         void Trace(string message);
 
@@ -34,7 +34,7 @@ namespace CreativeCoders.Core.Logging
 
         void Trace<T>(T value);
 
-        void Trace<T>(Func<T> messageFunc);
+        void Trace<T>(Func<T> getMessage);
 
         void Debug(string message);
 
@@ -44,7 +44,7 @@ namespace CreativeCoders.Core.Logging
 
         void Debug<T>(T value);
 
-        void Debug<T>(Func<T> messageFunc);
+        void Debug<T>(Func<T> getMessage);
 
         void Info(string message);
 
@@ -54,7 +54,7 @@ namespace CreativeCoders.Core.Logging
 
         void Info<T>(T value);
 
-        void Info<T>(Func<T> messageFunc);
+        void Info<T>(Func<T> getMessage);
 
         void Warn(string message);
 
@@ -64,7 +64,7 @@ namespace CreativeCoders.Core.Logging
 
         void Warn<T>(T value);
 
-        void Warn<T>(Func<T> messageFunc);
+        void Warn<T>(Func<T> getMessage);
 
         void Error(string message);
 
@@ -74,7 +74,7 @@ namespace CreativeCoders.Core.Logging
 
         void Error<T>(T value);
 
-        void Error<T>(Func<T> messageFunc);
+        void Error<T>(Func<T> getMessage);
 
         void Fatal(string message);
 
@@ -84,6 +84,6 @@ namespace CreativeCoders.Core.Logging
 
         void Fatal<T>(T value);
 
-        void Fatal<T>(Func<T> messageFunc);
+        void Fatal<T>(Func<T> getMessage);
     }
 }

@@ -18,11 +18,11 @@ namespace CreativeCoders.NukeBuild
             _defaultBuildRevision = defaultBuildRevision;
         }
 
-        private string SafeCallGitVersion(Func<string> call)
+        private string SafeCallGitVersion(Func<string> callGitVersion)
         {
             try
             {
-                return call();
+                return callGitVersion();
             }
             catch (Exception)
             {
@@ -30,15 +30,15 @@ namespace CreativeCoders.NukeBuild
             }
         }
 
-        public string GetNormalizedAssemblyVersion()
+        public string GetAssemblySemVer()
         {
-            return SafeCallGitVersion(() => _gitVersion?.GetNormalizedAssemblyVersion()) ??
+            return SafeCallGitVersion(() => _gitVersion?.AssemblySemVer) ??
                    $"{_defaultVersion}.{_defaultBuildRevision}";
         }
 
-        public string GetNormalizedFileVersion()
+        public string GetAssemblySemFileVer()
         {
-            return SafeCallGitVersion(() => _gitVersion?.GetNormalizedFileVersion()) ??
+            return SafeCallGitVersion(() => _gitVersion?.AssemblySemFileVer) ??
                    $"{_defaultVersion}.{_defaultBuildRevision}";
         }
 

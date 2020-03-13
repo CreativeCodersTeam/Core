@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using CreativeCoders.Core.Comparing;
 using JetBrains.Annotations;
 
@@ -17,6 +18,16 @@ namespace CreativeCoders.Core
             foreach (var item in self)
             {
                 action(item);
+            }
+        }
+        
+        public static async Task ForEachAsync<T>(this IEnumerable<T> self, Func<T, Task> actionAsync)
+        {
+            Ensure.IsNotNull(actionAsync, nameof(actionAsync));
+
+            foreach (var item in self)
+            {
+                await actionAsync(item);
             }
         }
 
@@ -41,6 +52,17 @@ namespace CreativeCoders.Core
             foreach (var element in source)
             {
                 action(element, index++);
+            }
+        }
+        
+        public static async Task ForEachAsync<T>(this IEnumerable<T> source, Func<T, int, Task> actionAsync)
+        {
+            Ensure.IsNotNull(actionAsync, nameof(actionAsync));
+
+            var index = 0;
+            foreach (var element in source)
+            {
+                await actionAsync(element, index++);
             }
         }
 
@@ -73,24 +95,24 @@ namespace CreativeCoders.Core
             }
         }
 
-        public static IEnumerable<T> TakeUntil<T>(this IEnumerable<T> items, Func<T, bool> untilFunc)
+        public static IEnumerable<T> TakeUntil<T>(this IEnumerable<T> items, Func<T, bool> predicate)
         {
-            Ensure.IsNotNull(untilFunc, nameof(untilFunc));
+            Ensure.IsNotNull(predicate, nameof(predicate));
 
             foreach (var item in items)
             {
                 yield return item;
 
-                if (untilFunc(item))
+                if (predicate(item))
                 {
                     yield break;
                 }
             }
         }
 
-        public static IEnumerable<T> SkipUntil<T>(this IEnumerable<T> items, Func<T, bool> untilFunc)
+        public static IEnumerable<T> SkipUntil<T>(this IEnumerable<T> items, Func<T, bool> predicate)
         {
-            Ensure.IsNotNull(untilFunc, nameof(untilFunc));
+            Ensure.IsNotNull(predicate, nameof(predicate));
 
             var checkUntil = true;
 
@@ -98,7 +120,7 @@ namespace CreativeCoders.Core
             {
                 if (checkUntil)
                 {
-                    if (untilFunc(item))
+                    if (predicate(item))
                     {
                         checkUntil = false;
                     }
@@ -125,11 +147,11 @@ namespace CreativeCoders.Core
             }
         }
 
-        public static void Remove<T>(this ICollection<T> self, Predicate<T> removeFunc)
+        public static void Remove<T>(this ICollection<T> self, Predicate<T> predicate)
         {
-            Ensure.IsNotNull(removeFunc, nameof(removeFunc));
+            Ensure.IsNotNull(predicate, nameof(predicate));
 
-            var removeEntries = self.Where(item => removeFunc(item)).ToArray();
+            var removeEntries = self.Where(item => predicate(item)).ToArray();
             self.Remove(removeEntries);
         }
 
@@ -139,16 +161,16 @@ namespace CreativeCoders.Core
             return self.Where(item => item != null);
         }
 
-        public static bool IsSingle<T>(this IEnumerable<T> items, Func<T, bool> predicateFunc)
+        public static bool IsSingle<T>(this IEnumerable<T> items, Func<T, bool> predicate)
         {
-            Ensure.IsNotNull(predicateFunc, nameof(predicateFunc));
+            Ensure.IsNotNull(predicate, nameof(predicate));
 
             var num = 0;
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var item in items)
             {
                 // ReSharper disable once InvertIf
-                if (predicateFunc(item))
+                if (predicate(item))
                 {
                     if (++num > 1)
                     {
@@ -165,47 +187,47 @@ namespace CreativeCoders.Core
             return items.IsSingle(item => true);
         }
 
-        public static IEnumerable<T> Distinct<T, TKey>(this IEnumerable<T> items, Func<T, TKey> keySelectorFunc)
+        public static IEnumerable<T> Distinct<T, TKey>(this IEnumerable<T> items, Func<T, TKey> keySelector)
         {
-            return items.Distinct(new FuncEqualityComparer<T, TKey>(keySelectorFunc));
+            return items.Distinct(new FuncEqualityComparer<T, TKey>(keySelector));
         }
 
         public static IEnumerable<T> Distinct<T, TKey1, TKey2>(this IEnumerable<T> items,
-            Func<T, TKey1> keySelectorFunc1, Func<T, TKey2> keySelectorFunc2)
+            Func<T, TKey1> keySelector1, Func<T, TKey2> keySelector2)
         {
-            return items.Distinct(new MultiFuncEqualityComparer<T, TKey1, TKey2>(keySelectorFunc1, keySelectorFunc2));
+            return items.Distinct(new MultiFuncEqualityComparer<T, TKey1, TKey2>(keySelector1, keySelector2));
         }
 
         public static IEnumerable<T> Distinct<T, TKey1, TKey2, TKey3>(this IEnumerable<T> items,
-            Func<T, TKey1> keySelectorFunc1, Func<T, TKey2> keySelectorFunc2, Func<T, TKey3> keySelectorFunc3)
+            Func<T, TKey1> keySelector1, Func<T, TKey2> keySelector2, Func<T, TKey3> keySelector3)
         {
             return items.Distinct(
-                new MultiFuncEqualityComparer<T, TKey1, TKey2, TKey3>(keySelectorFunc1, keySelectorFunc2,
-                    keySelectorFunc3));
+                new MultiFuncEqualityComparer<T, TKey1, TKey2, TKey3>(keySelector1, keySelector2,
+                    keySelector3));
         }
 
         public static IEnumerable<T> Distinct<T, TKey1, TKey2, TKey3, TKey4>(this IEnumerable<T> items,
-            Func<T, TKey1> keySelectorFunc1, Func<T, TKey2> keySelectorFunc2, Func<T, TKey3> keySelectorFunc3,
-            Func<T, TKey4> keySelectorFunc4)
+            Func<T, TKey1> keySelector1, Func<T, TKey2> keySelector2, Func<T, TKey3> keySelector3,
+            Func<T, TKey4> keySelector4)
         {
             return items.Distinct(
-                new MultiFuncEqualityComparer<T, TKey1, TKey2, TKey3, TKey4>(keySelectorFunc1, keySelectorFunc2,
-                    keySelectorFunc3, keySelectorFunc4));
+                new MultiFuncEqualityComparer<T, TKey1, TKey2, TKey3, TKey4>(keySelector1, keySelector2,
+                    keySelector3, keySelector4));
         }
 
         public static IEnumerable<T> Distinct<T, TKey1, TKey2, TKey3, TKey4, TKey5>(this IEnumerable<T> items,
-            Func<T, TKey1> keySelectorFunc1, Func<T, TKey2> keySelectorFunc2, Func<T, TKey3> keySelectorFunc3,
-            Func<T, TKey4> keySelectorFunc4, Func<T, TKey5> keySelectorFunc5)
+            Func<T, TKey1> keySelector1, Func<T, TKey2> keySelector2, Func<T, TKey3> keySelector3,
+            Func<T, TKey4> keySelector4, Func<T, TKey5> keySelector5)
         {
             return items.Distinct(
-                new MultiFuncEqualityComparer<T, TKey1, TKey2, TKey3, TKey4, TKey5>(keySelectorFunc1, keySelectorFunc2,
-                    keySelectorFunc3, keySelectorFunc4, keySelectorFunc5));
+                new MultiFuncEqualityComparer<T, TKey1, TKey2, TKey3, TKey4, TKey5>(keySelector1, keySelector2,
+                    keySelector3, keySelector4, keySelector5));
         }
 
         public static IEnumerable<T> Distinct<T, TKey>(this IEnumerable<T> items,
-            params Func<T, TKey>[] keySelectorFunctions)
+            params Func<T, TKey>[] keySelectors)
         {
-            return items.Distinct(new MultiFuncEqualityComparer<T, TKey>(keySelectorFunctions));
+            return items.Distinct(new MultiFuncEqualityComparer<T, TKey>(keySelectors));
         }
 
         public static IEnumerable<T> NotDistinct<T>(this IEnumerable<T> items)
@@ -213,48 +235,48 @@ namespace CreativeCoders.Core
             return items.NotDistinct(x => x);
         }
 
-        public static IEnumerable<T> NotDistinct<T, TKey>(this IEnumerable<T> items, Func<T, TKey> keySelectorFunc)
+        public static IEnumerable<T> NotDistinct<T, TKey>(this IEnumerable<T> items, Func<T, TKey> keySelector)
         {
-            return items.NotDistinct(new FuncEqualityComparer<T, TKey>(keySelectorFunc));
+            return items.NotDistinct(new FuncEqualityComparer<T, TKey>(keySelector));
         }
 
         public static IEnumerable<T> NotDistinct<T, TKey1, TKey2>(this IEnumerable<T> items,
-            Func<T, TKey1> keySelectorFunc1, Func<T, TKey2> keySelectorFunc2)
+            Func<T, TKey1> keySelector1, Func<T, TKey2> keySelector2)
         {
             return items.NotDistinct(
-                new MultiFuncEqualityComparer<T, TKey1, TKey2>(keySelectorFunc1, keySelectorFunc2));
+                new MultiFuncEqualityComparer<T, TKey1, TKey2>(keySelector1, keySelector2));
         }
 
         public static IEnumerable<T> NotDistinct<T, TKey1, TKey2, TKey3>(this IEnumerable<T> items,
-            Func<T, TKey1> keySelectorFunc1, Func<T, TKey2> keySelectorFunc2, Func<T, TKey3> keySelectorFunc3)
+            Func<T, TKey1> keySelector1, Func<T, TKey2> keySelector2, Func<T, TKey3> keySelector3)
         {
             return items.NotDistinct(
-                new MultiFuncEqualityComparer<T, TKey1, TKey2, TKey3>(keySelectorFunc1, keySelectorFunc2,
-                    keySelectorFunc3));
+                new MultiFuncEqualityComparer<T, TKey1, TKey2, TKey3>(keySelector1, keySelector2,
+                    keySelector3));
         }
 
         public static IEnumerable<T> NotDistinct<T, TKey1, TKey2, TKey3, TKey4>(this IEnumerable<T> items,
-            Func<T, TKey1> keySelectorFunc1, Func<T, TKey2> keySelectorFunc2, Func<T, TKey3> keySelectorFunc3,
-            Func<T, TKey4> keySelectorFunc4)
+            Func<T, TKey1> keySelector1, Func<T, TKey2> keySelector2, Func<T, TKey3> keySelector3,
+            Func<T, TKey4> keySelector4)
         {
             return items.NotDistinct(
-                new MultiFuncEqualityComparer<T, TKey1, TKey2, TKey3, TKey4>(keySelectorFunc1, keySelectorFunc2,
-                    keySelectorFunc3, keySelectorFunc4));
+                new MultiFuncEqualityComparer<T, TKey1, TKey2, TKey3, TKey4>(keySelector1, keySelector2,
+                    keySelector3, keySelector4));
         }
 
         public static IEnumerable<T> NotDistinct<T, TKey1, TKey2, TKey3, TKey4, TKey5>(this IEnumerable<T> items,
-            Func<T, TKey1> keySelectorFunc1, Func<T, TKey2> keySelectorFunc2, Func<T, TKey3> keySelectorFunc3,
-            Func<T, TKey4> keySelectorFunc4, Func<T, TKey5> keySelectorFunc5)
+            Func<T, TKey1> keySelector1, Func<T, TKey2> keySelector2, Func<T, TKey3> keySelector3,
+            Func<T, TKey4> keySelector4, Func<T, TKey5> keySelector5)
         {
             return items.NotDistinct(
-                new MultiFuncEqualityComparer<T, TKey1, TKey2, TKey3, TKey4, TKey5>(keySelectorFunc1, keySelectorFunc2,
-                    keySelectorFunc3, keySelectorFunc4, keySelectorFunc5));
+                new MultiFuncEqualityComparer<T, TKey1, TKey2, TKey3, TKey4, TKey5>(keySelector1, keySelector2,
+                    keySelector3, keySelector4, keySelector5));
         }
 
         public static IEnumerable<T> NotDistinct<T, TKey>(this IEnumerable<T> items,
-            params Func<T, TKey>[] keySelectorFunctions)
+            params Func<T, TKey>[] keySelectors)
         {
-            return items.NotDistinct(new MultiFuncEqualityComparer<T, TKey>(keySelectorFunctions));
+            return items.NotDistinct(new MultiFuncEqualityComparer<T, TKey>(keySelectors));
         }
 
         public static IEnumerable<T> NotDistinct<T>(this IEnumerable<T> items, IEqualityComparer<T> comparer)
@@ -336,12 +358,12 @@ namespace CreativeCoders.Core
         }
 
         public static IEnumerable<TResult> Choose<T, TResult>(this IEnumerable<T> items,
-            Func<T, (bool IsChoosen, TResult Value)> chooseFunc)
+            Func<T, (bool IsChoosen, TResult Value)> choose)
         {
-            Ensure.IsNotNull(chooseFunc, nameof(chooseFunc));
+            Ensure.IsNotNull(choose, nameof(choose));
 
             return items
-                .Select(chooseFunc)
+                .Select(choose)
                 .Where(x => x.IsChoosen)
                 .Select(x => x.Value);
         }

@@ -21,7 +21,7 @@ namespace CreativeCoders.NukeBuild.BuildActions
             BuildInfo.SourceDirectory.GlobFiles(_fileMask).ForEach(CopyFileToArtifacts);
         }
 
-        private void CopyFileToArtifacts(PathConstruction.AbsolutePath fullFileName)
+        private void CopyFileToArtifacts(AbsolutePath fullFileName)
         {
             var fileName = Path.GetFileName(fullFileName);
 

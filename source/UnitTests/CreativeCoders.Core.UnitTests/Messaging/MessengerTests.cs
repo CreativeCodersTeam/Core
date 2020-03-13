@@ -56,8 +56,10 @@ namespace CreativeCoders.Core.UnitTests.Messaging
         {
             _testCallbackCalledSendString = false;
 
-            Messenger.Default.Register<string>(this, msg => _testCallbackCalledSendString = true);
-            Messenger.Default.Send(new string("Hallo".ToCharArray()));
+            var messenger = Messenger.CreateInstance();
+            
+            messenger.Register<string>(this, msg => _testCallbackCalledSendString = true);
+            messenger.Send(new string("Hallo".ToCharArray()));
 
             Assert.True(_testCallbackCalledSendString);
         }
@@ -67,15 +69,17 @@ namespace CreativeCoders.Core.UnitTests.Messaging
         {
             _testCallbackCalledUnReg = false;
 
-            Messenger.Default.Register<string>(this, msg => _testCallbackCalledUnReg = true);
-            Messenger.Default.Send(new string("Hallo".ToCharArray()));
+            var messenger = Messenger.CreateInstance();
+            
+            messenger.Register<string>(this, msg => _testCallbackCalledUnReg = true);
+            messenger.Send(new string("Hallo".ToCharArray()));
 
             Assert.True(_testCallbackCalledUnReg);
 
             _testCallbackCalledUnReg = false;
 
-            Messenger.Default.Unregister(this);
-            Messenger.Default.Send(new string("Hallo".ToCharArray()));
+            messenger.Unregister(this);
+            messenger.Send(new string("Hallo".ToCharArray()));
 
             Assert.False(_testCallbackCalledUnReg);
         }
@@ -85,15 +89,17 @@ namespace CreativeCoders.Core.UnitTests.Messaging
         {
             _testCallbackCalledUnRegString = false;
 
-            Messenger.Default.Register<string>(this, msg => _testCallbackCalledUnRegString = true);
-            Messenger.Default.Send(new string("Hallo".ToCharArray()));
+            var messenger = Messenger.CreateInstance();
+            
+            messenger.Register<string>(this, msg => _testCallbackCalledUnRegString = true);
+            messenger.Send(new string("Hallo".ToCharArray()));
 
             Assert.True(_testCallbackCalledUnRegString);
 
             _testCallbackCalledUnRegString = false;
 
-            Messenger.Default.Unregister<string>(this);
-            Messenger.Default.Send(new string("Hallo".ToCharArray()));
+            messenger.Unregister<string>(this);
+            messenger.Send(new string("Hallo".ToCharArray()));
 
             Assert.False(_testCallbackCalledUnRegString);
         }
@@ -103,10 +109,12 @@ namespace CreativeCoders.Core.UnitTests.Messaging
         {
             _testCallbackCalledSendMultiple = false;
             _testCallbackCalledSendMultiple2 = false;
+            
+            var messenger = Messenger.CreateInstance();
 
-            Messenger.Default.Register<string>(this, msg => _testCallbackCalledSendMultiple = true);
-            Messenger.Default.Register<string>(this, msg => _testCallbackCalledSendMultiple2 = true);
-            Messenger.Default.Send(new string("Hallo".ToCharArray()));
+            messenger.Register<string>(this, msg => _testCallbackCalledSendMultiple = true);
+            messenger.Register<string>(this, msg => _testCallbackCalledSendMultiple2 = true);
+            messenger.Send(new string("Hallo".ToCharArray()));
 
             Assert.True(_testCallbackCalledSendMultiple);
             Assert.True(_testCallbackCalledSendMultiple2);
@@ -118,19 +126,21 @@ namespace CreativeCoders.Core.UnitTests.Messaging
             _testCallbackCalledUnRegMultiple = false;
             _testCallbackCalledUnRegMultiple2 = false;
 
-            Messenger.Default.Register<string>(this, msg => _testCallbackCalledUnRegMultiple = true);
-            Messenger.Default.Register<string>(this, msg => _testCallbackCalledUnRegMultiple2 = true);
-            Messenger.Default.Send(new string("Hallo".ToCharArray()));
+            var messenger = Messenger.CreateInstance();
+            
+            messenger.Register<string>(this, msg => _testCallbackCalledUnRegMultiple = true);
+            messenger.Register<string>(this, msg => _testCallbackCalledUnRegMultiple2 = true);
+            messenger.Send(new string("Hallo".ToCharArray()));
 
             Assert.True(_testCallbackCalledUnRegMultiple);
             Assert.True(_testCallbackCalledUnRegMultiple2);
 
-            Messenger.Default.Unregister(this);
+            messenger.Unregister(this);
 
             _testCallbackCalledUnRegMultiple = false;
             _testCallbackCalledUnRegMultiple2 = false;
 
-            Messenger.Default.Send(new string("Hallo".ToCharArray()));
+            messenger.Send(new string("Hallo".ToCharArray()));
 
             Assert.False(_testCallbackCalledUnRegMultiple);
             Assert.False(_testCallbackCalledUnRegMultiple2);
@@ -142,31 +152,33 @@ namespace CreativeCoders.Core.UnitTests.Messaging
             _testCallbackCalledUnRegMultipleEx = false;
             _testCallbackCalledUnRegMultipleEx2 = false;
 
-            Messenger.Default.Register<int>(this, msg => _testCallbackCalledUnRegMultipleEx = true);
-            Messenger.Default.Register<string>(this, msg => _testCallbackCalledUnRegMultipleEx2 = true);
-            Messenger.Default.Send(new string("Hallo".ToCharArray()));
-            Messenger.Default.Send(1234);
+            var messenger = Messenger.CreateInstance();
+            
+            messenger.Register<int>(this, msg => _testCallbackCalledUnRegMultipleEx = true);
+            messenger.Register<string>(this, msg => _testCallbackCalledUnRegMultipleEx2 = true);
+            messenger.Send(new string("Hallo".ToCharArray()));
+            messenger.Send(1234);
 
             Assert.True(_testCallbackCalledUnRegMultipleEx);
             Assert.True(_testCallbackCalledUnRegMultipleEx2);
 
-            Messenger.Default.Unregister<int>(this);
+            messenger.Unregister<int>(this);
 
             _testCallbackCalledUnRegMultipleEx = false;
             _testCallbackCalledUnRegMultipleEx2 = false;
 
-            Messenger.Default.Send(new string("Hallo".ToCharArray()));
-            Messenger.Default.Send(1234);
+            messenger.Send(new string("Hallo".ToCharArray()));
+            messenger.Send(1234);
 
             Assert.False(_testCallbackCalledUnRegMultipleEx);
             Assert.True(_testCallbackCalledUnRegMultipleEx2);
 
-            Messenger.Default.Unregister<string>(this);
+            messenger.Unregister<string>(this);
 
             _testCallbackCalledUnRegMultipleEx = false;
             _testCallbackCalledUnRegMultipleEx2 = false;
 
-            Messenger.Default.Send(new string("Hallo".ToCharArray()));
+            messenger.Send(new string("Hallo".ToCharArray()));
 
             Assert.False(_testCallbackCalledUnRegMultipleEx);
             Assert.False(_testCallbackCalledUnRegMultipleEx2);
@@ -184,9 +196,11 @@ namespace CreativeCoders.Core.UnitTests.Messaging
         [Fact]
         public void MessageBaseTest()
         {
+            var messenger = Messenger.CreateInstance();
+            
             var msgBase = new MessageBase();
-            Messenger.Default.Register<MessageBase>(null, msg => msg.IsHandled = true);
-            Messenger.Default.Send(msgBase);
+            messenger.Register<MessageBase>(null, msg => msg.IsHandled = true);
+            messenger.Send(msgBase);
             Assert.True(msgBase.IsHandled);
         }
 
@@ -195,9 +209,11 @@ namespace CreativeCoders.Core.UnitTests.Messaging
         [Fact]
         public void DialogMessageTest()
         {
+            var messenger = Messenger.CreateInstance();
+            
             var dialogMessage = new DialogMessage("Test1234");
-            Messenger.Default.Register<DialogMessage>(null, msg => _dialogMessageText = msg.MessageText);
-            Messenger.Default.Send(dialogMessage);
+            messenger.Register<DialogMessage>(null, msg => _dialogMessageText = msg.MessageText);
+            messenger.Send(dialogMessage);
             Assert.True(_dialogMessageText == "Test1234");
         }
 
@@ -206,9 +222,11 @@ namespace CreativeCoders.Core.UnitTests.Messaging
         {
             _testCallbackCalledSend = false;
 
+            var messenger = Messenger.CreateInstance();
+            
             var callbackMessage = new CallbackMessage(OnCallbackMessage);
-            Messenger.Default.Register<CallbackMessage>(null, msg => msg.Execute());
-            Messenger.Default.Send(callbackMessage);
+            messenger.Register<CallbackMessage>(null, msg => msg.Execute());
+            messenger.Send(callbackMessage);
             Assert.True(_testCallbackCalledSend);
         }
 
@@ -217,8 +235,10 @@ namespace CreativeCoders.Core.UnitTests.Messaging
         {
             _testCallbackCalledSend = false;
 
-            Messenger.Default.Register<TestMessage>(this, TestCallback);
-            Messenger.Default.Send(new TestMessage());
+            var messenger = Messenger.CreateInstance();
+            
+            messenger.Register<TestMessage>(this, TestCallback);
+            messenger.Send(new TestMessage());
 
             Assert.True(_testCallbackCalledSend);
         }
@@ -228,8 +248,10 @@ namespace CreativeCoders.Core.UnitTests.Messaging
         {
             _testCallbackCalledUnRegMultipleEx = false;
 
-            Messenger.Default.Register<TestMessage>(this, msg => _testCallbackCalledUnRegMultipleEx = true);
-            Messenger.Default.Send(new TestMessage());
+            var messenger = Messenger.CreateInstance();
+            
+            messenger.Register<TestMessage>(this, msg => _testCallbackCalledUnRegMultipleEx = true);
+            messenger.Send(new TestMessage());
 
             Assert.True(_testCallbackCalledUnRegMultipleEx);
         }
@@ -237,17 +259,21 @@ namespace CreativeCoders.Core.UnitTests.Messaging
         [Fact]
         public void SendTestWithExceptionInAction()
         {
-            Messenger.Default.Register<TestMessage>(this, msg => throw new InvalidOperationException());
-            Messenger.Default.Send(new TestMessage());
+            var messenger = Messenger.CreateInstance();
+            
+            messenger.Register<TestMessage>(this, msg => throw new InvalidOperationException());
+            messenger.Send(new TestMessage());
         }
 
         [Fact]
         public void SendAfterGarbageCollectTest()
         {
+            var messenger = Messenger.CreateInstance();
+            
             var obj = new TestReceiver();
 
-            Messenger.Default.Register<TestMessage>(obj, obj.HandleMessage);
-            Messenger.Default.Send(new TestMessage());
+            messenger.Register<TestMessage>(obj, obj.HandleMessage);
+            messenger.Send(new TestMessage());
 
             Assert.True(obj.MsgHandled);
 
@@ -258,7 +284,7 @@ namespace CreativeCoders.Core.UnitTests.Messaging
 
             CollectGarbage();
 
-            Messenger.Default.Send(new TestMessage());
+            messenger.Send(new TestMessage());
 
             //Xunit.Assert.False(weakRef.IsAlive);
         }
@@ -284,19 +310,21 @@ namespace CreativeCoders.Core.UnitTests.Messaging
         [Fact]
         public void DisposeRegistrationTest()
         {
+            var messenger = Messenger.CreateInstance();
+            
             _testCallbackCalledSend = false;
             var obj0 = new object();
 
             var callbackMessage = new CallbackMessage(OnCallbackMessage);
-            var registration = Messenger.Default.Register<CallbackMessage>(this, ExecuteCallback);
-            Messenger.Default.Send(callbackMessage);
+            var registration = messenger.Register<CallbackMessage>(this, ExecuteCallback);
+            messenger.Send(callbackMessage);
 
             Assert.True(_testCallbackCalledSend);
 
             _testCallbackCalledSend = false;
             registration.Dispose();
 
-            Messenger.Default.Send(callbackMessage);
+            messenger.Send(callbackMessage);
 
             Assert.False(_testCallbackCalledSend);
         }
@@ -304,12 +332,14 @@ namespace CreativeCoders.Core.UnitTests.Messaging
         [Fact]
         public void DoubleDisposeRegistrationTest()
         {
+            var messenger = Messenger.CreateInstance();
+            
             _testCallbackCalledSend = false;
             var obj0 = new object();
 
             var callbackMessage = new CallbackMessage(OnCallbackMessage);
-            var registration = Messenger.Default.Register<CallbackMessage>(this, ExecuteCallback);
-            Messenger.Default.Send(callbackMessage);
+            var registration = messenger.Register<CallbackMessage>(this, ExecuteCallback);
+            messenger.Send(callbackMessage);
 
             Assert.True(_testCallbackCalledSend);
 
@@ -317,7 +347,7 @@ namespace CreativeCoders.Core.UnitTests.Messaging
             registration.Dispose();
             registration.Dispose();
 
-            Messenger.Default.Send(callbackMessage);
+            messenger.Send(callbackMessage);
 
             Assert.False(_testCallbackCalledSend);
         }

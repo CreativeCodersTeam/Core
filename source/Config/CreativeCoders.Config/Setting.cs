@@ -17,6 +17,6 @@ namespace CreativeCoders.Config
             _settingFactory = settingFactory;
         }
 
-        public T Value => _value ?? (_value = _settingFactory.Create());
+        public T Value => _value ??= _settingFactory.Create();
     }
 }

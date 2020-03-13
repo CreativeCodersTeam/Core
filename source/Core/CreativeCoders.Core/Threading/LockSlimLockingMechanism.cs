@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace CreativeCoders.Core.Threading
 {
-    public class LockSlimLockingMechanism : ILockingMechanism
+    public class LockSlimLockingMechanism : IUpgradeableLockingMechanism
     {
         private readonly ReaderWriterLockSlim _lock;
 
@@ -29,12 +29,12 @@ namespace CreativeCoders.Core.Threading
             }
         }
 
-        public T Read<T>(Func<T> func)
+        public T Read<T>(Func<T> function)
         {
             _lock.EnterReadLock();
             try
             {
-                return func();
+                return function();
             }
             finally
             {
@@ -55,16 +55,56 @@ namespace CreativeCoders.Core.Threading
             }
         }
 
-        public T Write<T>(Func<T> func)
+        public T Write<T>(Func<T> function)
         {
             _lock.EnterWriteLock();
             try
             {
-                return func();
+                return function();
             }
             finally
             {
                 _lock.ExitWriteLock();
+            }
+        }
+
+        public void UpgradeableRead(UpgradeableReadAction action)
+        {
+            _lock.EnterUpgradeableReadLock();
+            try
+            {
+                action(
+                    () =>
+                    {
+                        _lock.EnterWriteLock();
+
+                        return new DelegateDisposable(() => _lock.ExitWriteLock(), true);
+                    }
+                );
+            }
+            finally
+            {
+                _lock.ExitUpgradeableReadLock();
+            }
+        }
+
+        public T UpgradeableRead<T>(UpgradeableReadFunc<T> function)
+        {
+            _lock.EnterUpgradeableReadLock();
+            try
+            {
+                return function(
+                    () =>
+                    {
+                        _lock.EnterWriteLock();
+                        
+                        return new DelegateDisposable(() => _lock.ExitWriteLock(), true);
+                    }
+                );
+            }
+            finally
+            {
+                _lock.ExitUpgradeableReadLock();
             }
         }
     }

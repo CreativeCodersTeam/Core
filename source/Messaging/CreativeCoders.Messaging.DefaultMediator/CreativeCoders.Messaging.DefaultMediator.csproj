@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Authors>CreativeCoders</Authors>
+        <LangVersion>latest</LangVersion>
+        <Description>Default mediator implementation for CreativeCoders.Messaging.Core</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+      <ProjectReference Include="..\CreativeCoders.Messaging.Core\CreativeCoders.Messaging.Core.csproj" />
+    </ItemGroup>
+
+</Project>

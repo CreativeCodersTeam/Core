@@ -24,6 +24,6 @@ namespace CreativeCoders.Core.Logging
 
         void Log<T>(LogLevel logLevel, T value);
 
-        void Log<T>(LogLevel logLevel, Func<T> messageFunc);
+        void Log<T>(LogLevel logLevel, Func<T> getMessage);
     }
 }

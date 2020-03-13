@@ -18,16 +18,16 @@ namespace CreativeCoders.Mvvm.Wpf
             _typeTemplates = new Dictionary<Type, Func<DataTemplate>>();
         }
 
-        protected void AddTypeTemplateMapping(Type type, Func<DataTemplate> templateFunc)
+        protected void AddTypeTemplateMapping(Type type, Func<DataTemplate> getTemplate)
         {
             Ensure.That(!_typeTemplates.ContainsKey(type), nameof(type),
                 "Mapping already contains mapping for type: " + type.Name);
-            _typeTemplates.Add(type, templateFunc);
+            _typeTemplates.Add(type, getTemplate);
         }
 
-        protected void AddTypeTemplateMapping<T>(Func<DataTemplate> templateFunc)
+        protected void AddTypeTemplateMapping<T>(Func<DataTemplate> getTemplate)
         {
-            AddTypeTemplateMapping(typeof(T), templateFunc);
+            AddTypeTemplateMapping(typeof(T), getTemplate);
         }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
