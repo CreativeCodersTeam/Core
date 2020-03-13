@@ -757,19 +757,19 @@ namespace CreativeCoders.Core.UnitTests.Caching
             {
                 getValueCalled = true;
                 return testValue;
-            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(1500)));
+            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(2000)));
             
             Assert.Equal(testValue, value);
 
-            Task.Delay(1000).Wait();
+            Task.Delay(1500).Wait();
             
             var secondValue = cache.GetOrAdd(1, () =>
             {
                 getValueCalled1 = true;
                 return testValue;
-            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(1500)));
+            }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(2000)));
 
-            Task.Delay(1000).Wait();
+            Task.Delay(1500).Wait();
             
             var thirdValue = cache.GetOrAdd(1, () =>
             {
