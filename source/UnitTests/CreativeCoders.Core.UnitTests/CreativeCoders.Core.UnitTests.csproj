@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Caching\CreativeCoders.Caching.SystemRuntimeCaching\CreativeCoders.Caching.SystemRuntimeCaching.csproj" />
     <ProjectReference Include="..\..\Config\CreativeCoders.Config.Base\CreativeCoders.Config.Base.csproj" />
     <ProjectReference Include="..\..\Config\CreativeCoders.Config.Sources\CreativeCoders.Config.Sources.csproj" />
     <ProjectReference Include="..\..\Config\CreativeCoders.Config\CreativeCoders.Config.csproj" />

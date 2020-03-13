@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
+using CreativeCoders.Caching.SystemRuntimeCaching;
 using CreativeCoders.Core.Caching;
-using CreativeCoders.Core.Caching.Default;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Caching
 {
-    public class DictionaryCacheTests
+    public class SystemRuntimeCacheTests
     {
         [Fact]
         public void TryGet_KeyNotExists_ReturnFalse()
@@ -361,7 +361,9 @@ namespace CreativeCoders.Core.UnitTests.Caching
         
         private static ICache<TKey, TValue> CreateCache<TKey, TValue>()
         {
-            return new DictionaryCache<TKey, TValue>();
+            var cache = new SystemRuntimeCache<TKey, TValue>();
+            cache.Clear();
+            return cache;
         }
     }
 }
