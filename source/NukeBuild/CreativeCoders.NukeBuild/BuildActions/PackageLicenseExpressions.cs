@@ -13,5 +13,7 @@
         public const string GPL30OrLater = "GPL-3.0-or-later";
 
         public const string ApacheLicense20 = "Apache-2.0";
+
+        public const string MPL20 = "MPL-2.0";
     }
 }
