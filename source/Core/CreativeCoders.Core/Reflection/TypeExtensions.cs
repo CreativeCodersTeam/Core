@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace CreativeCoders.Core.Reflection
 {
@@ -20,6 +23,20 @@ namespace CreativeCoders.Core.Reflection
             return type.IsValueType
                 ? Activator.CreateInstance(type)
                 : null;
+        }
+
+        public static IEnumerable<Type> GetImplementations(this Type type)
+        {
+            return ReflectionUtils
+                .GetAllTypes()
+                .Where(x => !x.IsAbstract && type.IsAssignableFrom(x));
+        }
+        
+        public static IEnumerable<Type> GetImplementations(this Type type, params Assembly[] assemblies)
+        {
+            return assemblies
+                .SelectMany(assembly => assembly.GetTypesSafe())
+                .Where(x => !x.IsAbstract && type.IsAssignableFrom(x));
         }
     }
 }

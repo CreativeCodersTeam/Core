@@ -27,7 +27,7 @@ namespace CreativeCoders.Core
 
             foreach (var item in self)
             {
-                await actionAsync(item);
+                await actionAsync(item).ConfigureAwait(false);
             }
         }
 
@@ -62,7 +62,7 @@ namespace CreativeCoders.Core
             var index = 0;
             foreach (var element in source)
             {
-                await actionAsync(element, index++);
+                await actionAsync(element, index++).ConfigureAwait(false);
             }
         }
 
