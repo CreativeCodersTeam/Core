@@ -97,10 +97,8 @@ namespace CreativeCoders.Mvvm.DialogServices.TaskDlg.Wpf
         public TaskDlgResult Show(TaskDlgSettings settings)
         {
             var options = WpfTaskDialogHelper.ToTaskDialogOptions(settings);
-            if (options.Owner == null)
-            {
-                options.Owner = GetOwner(null);
-            }
+            options.Owner ??= GetOwner(null);
+            
             var result = TaskDialog.Show(options);
             return WpfTaskDialogHelper.ToTaskDlgResult(result, settings);
         }

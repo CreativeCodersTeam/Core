@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Caching;
 using FakeItEasy;
@@ -6,6 +7,7 @@ using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Caching
 {
+    [SuppressMessage("ReSharper", "MethodHasAsyncOverload")]
     internal static class TestCaching
     {
         public static void TryGet_KeyNotExists_ReturnFalse(ICache<int, string> cache)

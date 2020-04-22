@@ -25,7 +25,7 @@ namespace CreativeCoders.Net.WebApi.Execution.Requests
 
         public abstract object SendRequest(RequestData requestData);
 
-        private HttpMethod GetHttpMethod(HttpRequestMethod requestMethod)
+        private static HttpMethod GetHttpMethod(HttpRequestMethod requestMethod)
         {
             return requestMethod switch
             {
@@ -57,7 +57,7 @@ namespace CreativeCoders.Net.WebApi.Execution.Requests
             };
         }
 
-        private HttpRequestMessage CreateRequestMessage(RequestData requestData)
+        private static HttpRequestMessage CreateRequestMessage(RequestData requestData)
         {
             var request = new HttpRequestMessage(GetHttpMethod(requestData.RequestMethod), requestData.RequestUri)
             {

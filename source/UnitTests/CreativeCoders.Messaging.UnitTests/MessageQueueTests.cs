@@ -16,7 +16,7 @@ namespace CreativeCoders.Messaging.UnitTests
 
             await queue.EnqueueAsync(expectedMessage);
             
-            Assert.Equal(expectedMessage, queue.Dequeue());
+            Assert.Equal(expectedMessage, await queue.DequeueAsync());
         }
         
         [Fact]
@@ -101,7 +101,7 @@ namespace CreativeCoders.Messaging.UnitTests
 
             await queue.TryEnqueueAsync(expectedMessage);
             
-            Assert.Equal(expectedMessage, queue.Dequeue());
+            Assert.Equal(expectedMessage, await queue.DequeueAsync());
         }
         
         [Fact]
@@ -168,7 +168,7 @@ namespace CreativeCoders.Messaging.UnitTests
                     messageReceived = msg;
                 }));
             
-            queue.Enqueue(expectedMessage);
+            await queue.EnqueueAsync(expectedMessage);
 
             queue.CompleteOnDispose = true;
             await queue.DisposeAsync();

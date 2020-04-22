@@ -59,7 +59,7 @@ namespace CreativeCoders.Net.WebApi.Execution
                 ?? GetDefaultCompletionOption(_apiMethod.ReturnType);
         }
 
-        private HttpCompletionOption GetDefaultCompletionOption(ApiMethodReturnType apiMethodReturnType)
+        private static HttpCompletionOption GetDefaultCompletionOption(ApiMethodReturnType apiMethodReturnType)
         {
             return apiMethodReturnType switch
             {

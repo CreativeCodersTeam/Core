@@ -1,4 +1,6 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Core
 {
@@ -26,5 +28,18 @@ namespace CreativeCoders.Core
         }
 
         public static T As<T>(this object instance) => As<T>(instance, default);
+
+        public static async ValueTask TryDisposeAsync(this object instance)
+        {
+            switch (instance)
+            {
+                case IAsyncDisposable asyncDisposable:
+                    await asyncDisposable.DisposeAsync();
+                    break;
+                case IDisposable disposable:
+                    disposable.Dispose();
+                    break;
+            }
+        } 
     }
 }

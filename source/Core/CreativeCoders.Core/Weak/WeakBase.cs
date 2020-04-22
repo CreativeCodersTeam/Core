@@ -45,7 +45,7 @@ namespace CreativeCoders.Core.Weak
             return keepOwnerAliveMode switch
             {
                 KeepOwnerAliveMode.KeepAlive => true,
-                KeepOwnerAliveMode.AutoGuess => (target?.GetType().Name.Contains("<>") == true),
+                KeepOwnerAliveMode.AutoGuess => target?.GetType().Name.Contains("<>") == true,
                 _ => false
             };
         }
