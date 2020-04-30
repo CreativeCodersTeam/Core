@@ -184,6 +184,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Caching", "Caching", "{F4FE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Caching.SystemRuntimeCaching", "Caching\CreativeCoders.Caching.SystemRuntimeCaching\CreativeCoders.Caching.SystemRuntimeCaching.csproj", "{04350322-D491-4DD2-9E5C-0FB087AE84DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetSampleApp", "Samples\NetSampleApp\NetSampleApp.csproj", "{BA8F9211-0427-4A3C-8F86-124B7CE4AECA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -432,6 +434,10 @@ Global
 		{04350322-D491-4DD2-9E5C-0FB087AE84DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04350322-D491-4DD2-9E5C-0FB087AE84DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04350322-D491-4DD2-9E5C-0FB087AE84DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA8F9211-0427-4A3C-8F86-124B7CE4AECA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA8F9211-0427-4A3C-8F86-124B7CE4AECA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA8F9211-0427-4A3C-8F86-124B7CE4AECA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA8F9211-0427-4A3C-8F86-124B7CE4AECA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -503,6 +509,7 @@ Global
 		{2DB88965-B346-40AB-BDFD-928F9AF4C935} = {9A3F55B8-E867-4EA2-B1FA-0C01DE79463E}
 		{BF7FE66B-6631-4530-A02E-90C8166F155B} = {7B596434-1314-49F9-B31C-F09D9CC288E0}
 		{04350322-D491-4DD2-9E5C-0FB087AE84DF} = {F4FE6590-B231-472F-AFCB-06068AFD08BF}
+		{BA8F9211-0427-4A3C-8F86-124B7CE4AECA} = {72E179CA-7AE6-412A-856D-7BD13838E8E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}
