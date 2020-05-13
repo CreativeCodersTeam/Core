@@ -9,6 +9,17 @@ namespace CreativeCoders.Core.UnitTests
 {
     public class EnumerableExtensionTest
     {
+        [Theory]
+        [InlineData(0)]
+        [InlineData(12, 12)]
+        [InlineData(0, 12, 34)]
+        public void OnlySingleOrDefault(int expected, params int[] input)
+        {
+            var result = input.OnlySingleOrDefault();
+            
+            Assert.Equal(expected, result);
+        }
+        
         [Fact]
         public void ForEachTest()
         {

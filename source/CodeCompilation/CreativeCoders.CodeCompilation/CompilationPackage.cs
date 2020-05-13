@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.CodeCompilation
 {
+    [PublicAPI]
     public class CompilationPackage
     {
         public CompilationPackage()
         {
+            AddNetStandardReferences = true;
             ReferencedAssemblyFiles = new List<string>();
             SourceCodes = new List<SourceCodeUnit>();
         }
@@ -20,10 +23,10 @@ namespace CreativeCoders.CodeCompilation
 
         public IList<SourceCodeUnit> SourceCodes { get; }
 
-        public ICompilationOutput Output { get; set; }
-
         public IList<string> ReferencedAssemblyFiles { get; }
 
-        public CompilationOutputKind OutputKind { get; set; }
+        public bool AddNetStandardReferences { get; set; }
+        
+        public bool AddAllLoadedAssemblyReferences { get; set; }
     }
 }

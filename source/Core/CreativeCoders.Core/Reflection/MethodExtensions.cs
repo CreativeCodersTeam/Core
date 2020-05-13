@@ -8,21 +8,55 @@ namespace CreativeCoders.Core.Reflection
 {
     public static class MethodExtensions
     {
-        public static TResult ExecuteGenericMethod<TResult>(this object obj, string methodName,
+        public static void ExecuteMethod(this object instance, string methodName, params object[] arguments)
+        {
+            Ensure.IsNotNull(instance, nameof(instance));
+            
+            var method = arguments == null || arguments.Length == 0
+                ? instance.GetType().GetMethod(methodName, new Type[0])
+                : instance.GetType().GetMethod(methodName, arguments.Select(x => x.GetType()).ToArray());
+            
+            if (method == null)
+            {
+                throw new MissingMethodException();
+            }
+
+            method.Invoke(instance, arguments);
+        }
+        
+        public static TResult ExecuteMethod<TResult>(this object instance, string methodName, params object[] arguments)
+        {
+            Ensure.IsNotNull(instance, nameof(instance));
+            
+            var method = arguments == null || arguments.Length == 0
+                ? instance.GetType().GetMethod(methodName, new Type[0])
+                : instance.GetType().GetMethod(methodName, arguments.Select(x => x.GetType()).ToArray());
+            
+            if (method == null)
+            {
+                throw new MissingMethodException();
+            }
+
+            return (TResult) method.Invoke(instance, arguments);
+        }
+        
+        public static TResult ExecuteGenericMethod<TResult>(this object instance, string methodName,
             IEnumerable<GenericArgument> genericArguments, params object[] methodParams)
         {
-            var genericMethod = obj.GetType().GetMethods().FirstOrDefault(method =>
+            Ensure.IsNotNull(instance, nameof(instance));
+            
+            var genericMethod = instance.GetType().GetMethods().FirstOrDefault(method =>
                 method.Name == methodName && GenericParamsAreEqual(method.GetGenericArguments(),
                     genericArguments.Select(arg => arg.Name)));
 
             if (genericMethod == null)
             {
-                throw new MissingMethodException();
+                throw new MissingMethodException(instance.GetType().Name, methodName);
             }
 
             var noneGenericMethod = genericMethod.MakeGenericMethod(genericArguments.Select(arg => arg.Type).ToArray());
 
-            var resultObject = noneGenericMethod.Invoke(obj, methodParams);
+            var resultObject = noneGenericMethod.Invoke(instance, methodParams);
             if (resultObject is TResult result)
             {
                 return result;
@@ -31,13 +65,15 @@ namespace CreativeCoders.Core.Reflection
             return default;
         }
 
-        public static TResult ExecuteGenericMethod<TResult>(this object obj, string methodName,
+        public static TResult ExecuteGenericMethod<TResult>(this object instance, string methodName,
             Type[] genericTypeArguments, params object[] methodParams)
         {
-            var noneGenericMethod = CreateGenericMethod(obj, methodName, genericTypeArguments,
+            Ensure.IsNotNull(instance, nameof(instance));
+            
+            var noneGenericMethod = CreateGenericMethod(instance, methodName, genericTypeArguments,
                 methodParams.Select(p => p.GetType()).ToArray());
 
-            return ExecuteMethod<TResult>(obj, methodParams, noneGenericMethod);
+            return ExecuteMethod<TResult>(instance, methodParams, noneGenericMethod);
         }
 
         private static TResult ExecuteMethod<TResult>(object obj, object[] methodParams, MethodBase noneGenericMethod)
@@ -51,10 +87,10 @@ namespace CreativeCoders.Core.Reflection
             return default;
         }
 
-        private static MethodInfo CreateGenericMethod(object obj, string methodName, Type[] genericTypeArguments,
+        private static MethodInfo CreateGenericMethod(object instance, string methodName, Type[] genericTypeArguments,
             Type[] methodParamTypes)
         {
-            var genericMethods = obj
+            var genericMethods = instance
                 .GetType()
                 .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                 .Where(method => method.Name == methodName &&
@@ -148,57 +184,57 @@ namespace CreativeCoders.Core.Reflection
             return genericArguments.Select(genericArg => genericArg.Name).SequenceEqual(genericArgumentNames);
         }
 
-        public static void ExecuteGenericMethod(this object obj, string methodName,
+        public static void ExecuteGenericMethod(this object instance, string methodName,
             IEnumerable<GenericArgument> genericArguments, params object[] methodParams)
         {
-            ExecuteGenericMethod<object>(obj, methodName, genericArguments, methodParams);
+            ExecuteGenericMethod<object>(instance, methodName, genericArguments, methodParams);
         }
 
-        public static void ExecuteGenericMethod(this object obj, string methodName,
+        public static void ExecuteGenericMethod(this object instance, string methodName,
             Type[] genericTypeArguments, params object[] methodParams)
         {
-            ExecuteGenericMethod<object>(obj, methodName, genericTypeArguments, methodParams);
+            ExecuteGenericMethod<object>(instance, methodName, genericTypeArguments, methodParams);
         }
 
-        public static Func<object[], TResult> CreateGenericMethodFunc<TResult>(this object obj, string methodName,
+        public static Func<object[], TResult> CreateGenericMethodFunc<TResult>(this object instance, string methodName,
             Type[] parameterTypes, params Type[] genericTypeArguments)
         {
-            var noneGenericMethod = CreateGenericMethod(obj, methodName, genericTypeArguments, parameterTypes);
+            var noneGenericMethod = CreateGenericMethod(instance, methodName, genericTypeArguments, parameterTypes);
 
-            return methodParameters => ExecuteMethod<TResult>(obj, methodParameters, noneGenericMethod);
+            return methodParameters => ExecuteMethod<TResult>(instance, methodParameters, noneGenericMethod);
         }
 
-        public static Func<T, TResult> CreateGenericMethodFunc<T, TResult>(this object obj, string methodName,
+        public static Func<T, TResult> CreateGenericMethodFunc<T, TResult>(this object instance, string methodName,
             Type[] parameterTypes, params Type[] genericTypeArguments)
         {
-            var noneGenericMethod = CreateGenericMethod(obj, methodName, genericTypeArguments, parameterTypes);
-            return ExpressionUtils.CreateCallFunc<T, TResult>(obj, noneGenericMethod);
+            var noneGenericMethod = CreateGenericMethod(instance, methodName, genericTypeArguments, parameterTypes);
+            return ExpressionUtils.CreateCallFunc<T, TResult>(instance, noneGenericMethod);
         }
 
-        public static Func<T1, T2, TResult> CreateGenericMethodFunc<T1, T2, TResult>(this object obj, string methodName,
+        public static Func<T1, T2, TResult> CreateGenericMethodFunc<T1, T2, TResult>(this object instance, string methodName,
             Type[] parameterTypes, params Type[] genericTypeArguments)
         {
-            var noneGenericMethod = CreateGenericMethod(obj, methodName, genericTypeArguments, parameterTypes);
+            var noneGenericMethod = CreateGenericMethod(instance, methodName, genericTypeArguments, parameterTypes);
 
-            return ExpressionUtils.CreateCallFunc<T1, T2, TResult>(obj, noneGenericMethod);
+            return ExpressionUtils.CreateCallFunc<T1, T2, TResult>(instance, noneGenericMethod);
         }
 
-        public static Func<T1, T2, T3, TResult> CreateGenericMethodFunc<T1, T2, T3, TResult>(this object obj,
+        public static Func<T1, T2, T3, TResult> CreateGenericMethodFunc<T1, T2, T3, TResult>(this object instance,
             string methodName,
             Type[] parameterTypes, params Type[] genericTypeArguments)
         {
-            var noneGenericMethod = CreateGenericMethod(obj, methodName, genericTypeArguments, parameterTypes);
+            var noneGenericMethod = CreateGenericMethod(instance, methodName, genericTypeArguments, parameterTypes);
 
-            return ExpressionUtils.CreateCallFunc<T1, T2, T3, TResult>(obj, noneGenericMethod);
+            return ExpressionUtils.CreateCallFunc<T1, T2, T3, TResult>(instance, noneGenericMethod);
         }
 
-        public static Func<T1, T2, T3, T4, TResult> CreateGenericMethodFunc<T1, T2, T3, T4, TResult>(this object obj,
+        public static Func<T1, T2, T3, T4, TResult> CreateGenericMethodFunc<T1, T2, T3, T4, TResult>(this object instance,
             string methodName,
             Type[] parameterTypes, params Type[] genericTypeArguments)
         {
-            var noneGenericMethod = CreateGenericMethod(obj, methodName, genericTypeArguments, parameterTypes);
+            var noneGenericMethod = CreateGenericMethod(instance, methodName, genericTypeArguments, parameterTypes);
 
-            return ExpressionUtils.CreateCallFunc<T1, T2, T3, T4, TResult>(obj, noneGenericMethod);
+            return ExpressionUtils.CreateCallFunc<T1, T2, T3, T4, TResult>(instance, noneGenericMethod);
         }
     }
 }

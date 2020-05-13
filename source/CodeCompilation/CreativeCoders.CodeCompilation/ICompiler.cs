@@ -2,6 +2,6 @@
 {
     public interface ICompiler
     {
-        ICompilationResult Compile(CompilationPackage compilationPackage);
+        ICompilationResult Compile(CompilationPackage compilationPackage, CompilationOutput compilationOutput);
     }
 }

@@ -9,7 +9,7 @@ namespace CreativeCoders.CodeCompilation.Roslyn
     {
         private readonly CSharpCompilation _compilation;
 
-        private readonly ICompilationOutput _output;
+        private readonly ICompilationOutputData _outputData;
 
         private readonly IList<CompilationMessage> _messages;
 
@@ -19,13 +19,13 @@ namespace CreativeCoders.CodeCompilation.Roslyn
             Success = false;
         }
 
-        public RoslynCompilationResult(CSharpCompilation compilation, ICompilationOutput output)
+        public RoslynCompilationResult(CSharpCompilation compilation, ICompilationOutputData outputData)
         {
             Ensure.IsNotNull(compilation, nameof(compilation));
-            Ensure.IsNotNull(output, nameof(output));
+            Ensure.IsNotNull(outputData, nameof(outputData));
 
             _compilation = compilation;
-            _output = output;
+            _outputData = outputData;
             _messages = new List<CompilationMessage>();
             
             EmitCompilation();
@@ -33,7 +33,7 @@ namespace CreativeCoders.CodeCompilation.Roslyn
 
         private void EmitCompilation()
         {
-            var peStream = _output.GetPeStream();
+            var peStream = _outputData.GetPeStream();
             var emitResult = _compilation.Emit(peStream);
             Success = emitResult.Success;
             emitResult.Diagnostics.ForEach(AddMessage);
