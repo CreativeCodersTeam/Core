@@ -30,6 +30,8 @@ namespace CreativeCoders.Core.Weak
                 {
                     _owner = owner;
                 }
+
+                _data = data;
             }
 
             if (KeepOwnerAlive)
@@ -45,7 +47,7 @@ namespace CreativeCoders.Core.Weak
             return keepOwnerAliveMode switch
             {
                 KeepOwnerAliveMode.KeepAlive => true,
-                KeepOwnerAliveMode.AutoGuess => (target?.GetType().Name.Contains("<>") == true),
+                KeepOwnerAliveMode.AutoGuess => target?.GetType().Name.Contains("<>") == true,
                 _ => false
             };
         }
@@ -68,7 +70,9 @@ namespace CreativeCoders.Core.Weak
 
         public bool IsAlive()
         {
-            return (_ownerReference == null || _ownerReference.IsAlive) && _dataReference?.GetIsAlive() == true;
+            return _ownerReference == null
+                ? _dataReference?.GetIsAlive() == true
+                : _ownerReference.IsAlive && _dataReference?.GetIsAlive() == true;
         }
 
         public object GetTarget()

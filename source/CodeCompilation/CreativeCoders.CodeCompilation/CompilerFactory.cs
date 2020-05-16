@@ -1,8 +1,10 @@
 ﻿using System;
 using CreativeCoders.Core;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.CodeCompilation
 {
+    [PublicAPI]
     public class CompilerFactory : ICompilerFactory
     {
         private readonly Func<ICompiler> _createCompiler;

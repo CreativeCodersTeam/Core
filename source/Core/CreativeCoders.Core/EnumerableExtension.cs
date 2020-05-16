@@ -11,6 +11,23 @@ namespace CreativeCoders.Core
     [PublicAPI]
     public static class EnumerableExtension
     {
+        public static T OnlySingleOrDefault<T>(this IEnumerable<T> items)
+        {
+            using (var enumerator = items.GetEnumerator())
+            {
+                if (!enumerator.MoveNext())
+                {
+                    return default;
+                }
+                
+                var firstElement = enumerator.Current;
+
+                return enumerator.MoveNext() 
+                    ? default 
+                    : firstElement;
+            }
+        }
+        
         public static void ForEach<T>(this IEnumerable<T> self, Action<T> action)
         {
             Ensure.IsNotNull(action, nameof(action));
@@ -27,7 +44,7 @@ namespace CreativeCoders.Core
 
             foreach (var item in self)
             {
-                await actionAsync(item);
+                await actionAsync(item).ConfigureAwait(false);
             }
         }
 
@@ -62,7 +79,7 @@ namespace CreativeCoders.Core
             var index = 0;
             foreach (var element in source)
             {
-                await actionAsync(element, index++);
+                await actionAsync(element, index++).ConfigureAwait(false);
             }
         }
 

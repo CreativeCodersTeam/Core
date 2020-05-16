@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Reflection;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Di.Building
@@ -41,6 +43,42 @@ namespace CreativeCoders.Di.Building
             new AutoRegisterImplementations(builder).ForTypesInAllAssemblies().Register();
 
             return builder;
+        }
+
+        public static IDiContainerBuilder AddTransientCollectionFor<TService>(this IDiContainerBuilder builder)
+            where TService : class
+        {
+            AddCollection(typeof(TService), types => builder.AddTransientCollection<TService>(types));
+
+            return builder;
+        }
+        
+        public static IDiContainerBuilder AddScopedCollectionFor<TService>(this IDiContainerBuilder builder)
+            where TService : class
+        {
+            AddCollection(typeof(TService), types => builder.AddScopedCollection<TService>(types));
+
+            return builder;
+        }
+        
+        public static IDiContainerBuilder AddSingletonCollectionFor<TService>(this IDiContainerBuilder builder)
+            where TService : class
+        {
+            AddCollection(typeof(TService), types => builder.AddScopedCollection<TService>(types));
+
+            return builder;
+        }
+
+        private static void AddCollection(Type serviceType, Action<Type[]> addImplementations)
+        {
+            if (!serviceType.IsInterface)
+            {
+                throw new NotSupportedException($"Service type must be an interface. Given service type = '{serviceType.FullName}'");
+            }
+
+            var implementationTypes = serviceType.GetImplementations().ToArray();
+            
+            addImplementations(implementationTypes);
         }
     }
 }

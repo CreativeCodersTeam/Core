@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
 using CreativeCoders.Mvvm.Commands;
@@ -7,6 +8,7 @@ using Xunit;
 
 namespace CreativeCoders.Mvvm.UnitTests.Commands
 {
+    [SuppressMessage("ReSharper", "MethodHasAsyncOverload")]
     public class AsyncSimpleRelayCommandTests
     {
         private bool _canExecuteChangedRaised;

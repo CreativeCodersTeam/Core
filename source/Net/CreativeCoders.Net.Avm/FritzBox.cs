@@ -14,10 +14,13 @@ namespace CreativeCoders.Net.Avm
 
             Hosts = new Hosts(url, userName, password);
             WanPppConnection = new WanPppConnection(url, userName, password);
+            Wlan = new Wlan(url, userName, password);
         }
 
         public Hosts Hosts { get; }
 
         public WanPppConnection WanPppConnection { get; }
+        
+        public Wlan Wlan { get; }
     }
 }

@@ -190,6 +190,42 @@ namespace CreativeCoders.Core.UnitTests.Di.Autofac
                         new AutofacDiContainerBuilder(CreateContainer()));
         }
 
+        [Fact]
+        public void AddTransientCollectionFor_Type_ReturnsCorrectInstances()
+        {
+            new DiContainerBuilderTestHelper()
+                .AddTransientCollectionFor_Type_ReturnsCorrectInstances(
+                    () => 
+                        new AutofacDiContainerBuilder(CreateContainer()));
+        }
+        
+        [Fact]
+        public void AddScopedCollectionFor_Type_ReturnsCorrectInstances()
+        {
+            new DiContainerBuilderTestHelper()
+                .AddScopedCollectionFor_Type_ReturnsCorrectInstances(
+                    () => 
+                        new AutofacDiContainerBuilder(CreateContainer()));
+        }
+        
+        [Fact]
+        public void AddSingletonCollectionFor_Type_ReturnsCorrectInstances()
+        {
+            new DiContainerBuilderTestHelper()
+                .AddSingletonCollectionFor_Type_ReturnsCorrectInstances(
+                    () => 
+                        new AutofacDiContainerBuilder(CreateContainer()));
+        }
+
+        [Fact]
+        public void AddTransientCollectionFor_ForNoneInterfaceType_ThrowsException()
+        {
+            new DiContainerBuilderTestHelper()
+                .AddTransientCollectionFor_ForNoneInterfaceType_ThrowsException(
+                    () =>
+                        new AutofacDiContainerBuilder(CreateContainer()));
+        }
+
         private static ContainerBuilder CreateContainer()
         {
             var container = new ContainerBuilder();

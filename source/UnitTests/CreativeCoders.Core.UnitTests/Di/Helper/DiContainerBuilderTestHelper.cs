@@ -5,6 +5,7 @@ using System.Linq;
 using CreativeCoders.Di;
 using CreativeCoders.Di.Building;
 using CreativeCoders.Di.Exceptions;
+using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Di.Helper
 {
@@ -103,7 +104,7 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             CheckServices(serviceObjects, implementationTypes);
 
-            Xunit.Assert.True(services.All(service => !serviceObjects.ToList().Contains(service)));
+            Assert.True(services.All(service => !serviceObjects.ToList().Contains(service)));
         }
 
         private void CheckScopedServices<TService>(IDiContainer container, Type[] implementationTypes)
@@ -117,7 +118,7 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             CheckServices(serviceObjects, implementationTypes);
 
-            Xunit.Assert.True(services.SequenceEqual(serviceObjects));
+            Assert.True(services.SequenceEqual(serviceObjects));
         }
 
         private void CheckSingletonServices<TService>(IDiContainer container, Type[] implementationTypes)
@@ -131,17 +132,17 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             CheckServices(serviceObjects, implementationTypes);
 
-            Xunit.Assert.True(services.SequenceEqual(serviceObjects));
+            Assert.True(services.SequenceEqual(serviceObjects));
         }
 
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
         private static void CheckServices<TService>(IReadOnlyCollection<TService> services, Type[] implementationTypes)
         {
-            Xunit.Assert.Equal(services.Count, implementationTypes.Length);
+            Assert.Equal(services.Count, implementationTypes.Length);
 
             foreach (var service in services)
             {
-                Xunit.Assert.Contains(service.GetType(), implementationTypes);
+                Assert.Contains(service.GetType(), implementationTypes);
             }
         }
 
@@ -236,11 +237,11 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
         {
             var service = container.GetInstance<TService>();
 
-            Xunit.Assert.IsType<TImplementation>(service);
+            Assert.IsType<TImplementation>(service);
 
             var service2 = container.GetInstance<TService>();
 
-            Xunit.Assert.NotEqual(service, service2);
+            Assert.NotEqual(service, service2);
         }
 
         private void CheckSingletonService<TService, TImplementation>(IDiContainer container)
@@ -249,11 +250,11 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
         {
             var service = container.GetInstance<TService>();
 
-            Xunit.Assert.IsType<TImplementation>(service);
+            Assert.IsType<TImplementation>(service);
 
             var service2 = container.GetInstance<TService>();
 
-            Xunit.Assert.Equal(service, service2);
+            Assert.Equal(service, service2);
         }
 
         private void CheckScopedService<TService, TImplementation>(IDiContainer container)
@@ -262,11 +263,11 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
         {
             var service = container.GetInstance<TService>();
 
-            Xunit.Assert.IsType<TImplementation>(service);
+            Assert.IsType<TImplementation>(service);
 
             var service2 = container.GetInstance<TService>();
 
-            Xunit.Assert.Equal(service, service2);
+            Assert.Equal(service, service2);
         }
 
         public void TestAddTransientNamed(Func<IDiContainerBuilder> createBuilderFunc)
@@ -280,33 +281,33 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             var container = builder.Build();
 
-            Xunit.Assert.Throws<ResolveFailedException>(() => container.GetInstance<ITestService>("NotKnown"));
+            Assert.Throws<ResolveFailedException>(() => container.GetInstance<ITestService>("NotKnown"));
 
-            Xunit.Assert.Throws<ResolveFailedException>(() => container.GetInstance(typeof(ITestService), "NotKnown"));
+            Assert.Throws<ResolveFailedException>(() => container.GetInstance(typeof(ITestService), "NotKnown"));
 
-            Xunit.Assert.Throws<ResolveFailedException>(() => container.GetInstance<IUnknownService>("NotKnown"));
+            Assert.Throws<ResolveFailedException>(() => container.GetInstance<IUnknownService>("NotKnown"));
 
-            Xunit.Assert.Throws<ResolveFailedException>(() => container.GetInstance(typeof(IUnknownService), "NotKnown"));
+            Assert.Throws<ResolveFailedException>(() => container.GetInstance(typeof(IUnknownService), "NotKnown"));
 
             var service2 = container.GetInstance<ITestService>("2");
 
-            Xunit.Assert.IsType<TestService2>(service2);
+            Assert.IsType<TestService2>(service2);
 
             var serviceWithNoCtorParam = container.GetInstance<ITestService>("WithNoCtorParam");
 
             var serviceWithNoCtorParam2 = container.GetInstance(typeof(ITestService), "WithNoCtorParam");
 
-            Xunit.Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam);
+            Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam);
 
-            Xunit.Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam2);
+            Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam2);
 
             var services = container.GetInstances<ITestService>().ToArray();
 
-            Xunit.Assert.Empty(services);
+            Assert.Empty(services);
 
             var serviceObjects = container.GetInstances(typeof(ITestService)).ToArray();
 
-            Xunit.Assert.Empty(serviceObjects);
+            Assert.Empty(serviceObjects);
         }
 
         public void TestAddScopedNamed(Func<IDiContainerBuilder> createBuilderFunc)
@@ -320,37 +321,37 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             var container = builder.Build();
 
-            Xunit.Assert.Throws<ResolveFailedException>(() => container.GetInstance<ITestService>("NotKnown"));
+            Assert.Throws<ResolveFailedException>(() => container.GetInstance<ITestService>("NotKnown"));
 
-            Xunit.Assert.Throws<ResolveFailedException>(() => container.GetInstance(typeof(ITestService), "NotKnown"));
+            Assert.Throws<ResolveFailedException>(() => container.GetInstance(typeof(ITestService), "NotKnown"));
 
-            Xunit.Assert.Throws<ResolveFailedException>(() => container.GetInstance<IUnknownService>("NotKnown"));
+            Assert.Throws<ResolveFailedException>(() => container.GetInstance<IUnknownService>("NotKnown"));
 
-            Xunit.Assert.Throws<ResolveFailedException>(() => container.GetInstance(typeof(IUnknownService), "NotKnown"));
+            Assert.Throws<ResolveFailedException>(() => container.GetInstance(typeof(IUnknownService), "NotKnown"));
 
             var service2 = container.GetInstance<ITestService>("2");
 
-            Xunit.Assert.IsType<TestService2>(service2);
+            Assert.IsType<TestService2>(service2);
 
             var serviceWithNoCtorParam = container.GetInstance<ITestService>("WithNoCtorParam");
 
             var serviceWithNoCtorParam2 = container.GetInstance(typeof(ITestService), "WithNoCtorParam");
 
-            Xunit.Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam);
+            Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam);
 
-            Xunit.Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam2);
+            Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam2);
 
             var service21 = container.GetInstance<ITestService>("2");
 
-            Xunit.Assert.IsType<TestService2>(service2);
+            Assert.IsType<TestService2>(service2);
 
             var serviceWithNoCtorParam1 = container.GetInstance<ITestService>("WithNoCtorParam");
 
-            Xunit.Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam);
+            Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam);
 
-            Xunit.Assert.Equal(service21, service2);
+            Assert.Equal(service21, service2);
 
-            Xunit.Assert.Equal(serviceWithNoCtorParam, serviceWithNoCtorParam1);
+            Assert.Equal(serviceWithNoCtorParam, serviceWithNoCtorParam1);
         }
 
         public void TestAddSingletonNamed(Func<IDiContainerBuilder> createBuilderFunc)
@@ -364,37 +365,37 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             var container = builder.Build();
 
-            Xunit.Assert.Throws<ResolveFailedException>(() => container.GetInstance<ITestService>("NotKnown"));
+            Assert.Throws<ResolveFailedException>(() => container.GetInstance<ITestService>("NotKnown"));
 
-            Xunit.Assert.Throws<ResolveFailedException>(() => container.GetInstance(typeof(ITestService), "NotKnown"));
+            Assert.Throws<ResolveFailedException>(() => container.GetInstance(typeof(ITestService), "NotKnown"));
 
-            Xunit.Assert.Throws<ResolveFailedException>(() => container.GetInstance<IUnknownService>("NotKnown"));
+            Assert.Throws<ResolveFailedException>(() => container.GetInstance<IUnknownService>("NotKnown"));
 
-            Xunit.Assert.Throws<ResolveFailedException>(() => container.GetInstance(typeof(IUnknownService), "NotKnown"));
+            Assert.Throws<ResolveFailedException>(() => container.GetInstance(typeof(IUnknownService), "NotKnown"));
 
             var service2 = container.GetInstance<ITestService>("2");
 
-            Xunit.Assert.IsType<TestService2>(service2);
+            Assert.IsType<TestService2>(service2);
 
             var serviceWithNoCtorParam = container.GetInstance<ITestService>("WithNoCtorParam");
 
             var serviceWithNoCtorParam2 = container.GetInstance(typeof(ITestService), "WithNoCtorParam");
 
-            Xunit.Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam);
+            Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam);
 
-            Xunit.Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam2);
+            Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam2);
 
             var service21 = container.GetInstance<ITestService>("2");
 
-            Xunit.Assert.IsType<TestService2>(service2);
+            Assert.IsType<TestService2>(service2);
 
             var serviceWithNoCtorParam1 = container.GetInstance<ITestService>("WithNoCtorParam");
 
-            Xunit.Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam);
+            Assert.IsType<TestServiceWithNoCtorParam>(serviceWithNoCtorParam);
 
-            Xunit.Assert.Equal(service21, service2);
+            Assert.Equal(service21, service2);
 
-            Xunit.Assert.Equal(serviceWithNoCtorParam, serviceWithNoCtorParam1);
+            Assert.Equal(serviceWithNoCtorParam, serviceWithNoCtorParam1);
         }
 
         public void TestAddTransientNamedTestNoRegistration(Func<IDiContainerBuilder> createBuilderFunc)
@@ -405,9 +406,9 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             var container = builder.Build();
 
-            Xunit.Assert.Throws<ResolveFailedException>(() => container.GetInstance<ITestService>("2"));
+            Assert.Throws<ResolveFailedException>(() => container.GetInstance<ITestService>("2"));
 
-            Xunit.Assert.Throws<ResolveFailedException>(() => container.GetInstance(typeof(ITestService), "2"));
+            Assert.Throws<ResolveFailedException>(() => container.GetInstance(typeof(ITestService), "2"));
         }
 
         public void GetInstance_GetDiContainerInScope_GetsScopedContainer(Func<IDiContainerBuilder> createBuilderFunc)
@@ -425,7 +426,7 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             var secondScopedTestService = TestGetInstanceWithScopedServices(secondScopedContainer);
 
-            Xunit.Assert.NotSame(scopedTestService, secondScopedTestService);
+            Assert.NotSame(scopedTestService, secondScopedTestService);
         }
 
         private static ITestService TestGetInstanceWithScopedServices(IDiContainer diContainer)
@@ -438,9 +439,9 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             var scopedTestServiceFromScopedDiContainer = scopedContainerFromContainer.GetInstance<ITestService>();
 
-            Xunit.Assert.Same(scopedTestService, scopedTestServiceFromScopedDiContainer);
+            Assert.Same(scopedTestService, scopedTestServiceFromScopedDiContainer);
 
-            Xunit.Assert.Same(scopedTestService, scopedTestService2);
+            Assert.Same(scopedTestService, scopedTestService2);
 
             return scopedTestService;
         }
@@ -458,18 +459,18 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
             var services = container.GetInstances<ITestService>().ToArray();
             var serviceContainer = container.GetInstance<TestServiceContainer>();
 
-            Xunit.Assert.Equal(2, services.Length);
-            Xunit.Assert.Equal(2, serviceContainer.Services.Count());
+            Assert.Equal(2, services.Length);
+            Assert.Equal(2, serviceContainer.Services.Count());
 
-            Xunit.Assert.Contains(services, service => service is TestService);
-            Xunit.Assert.Contains(services, service => service is TestService2);
+            Assert.Contains(services, service => service is TestService);
+            Assert.Contains(services, service => service is TestService2);
 
             var serviceObjects = container.GetInstances(typeof(ITestService)).ToArray();
 
-            Xunit.Assert.Equal(2, serviceObjects.Length);
+            Assert.Equal(2, serviceObjects.Length);
 
-            Xunit.Assert.Contains(serviceObjects, service => service is TestService);
-            Xunit.Assert.Contains(serviceObjects, service => service is TestService2);            
+            Assert.Contains(serviceObjects, service => service is TestService);
+            Assert.Contains(serviceObjects, service => service is TestService2);            
         }
 
         public void ClassFactory_GetFactoryForInterface_ReturnsInstance(Func<IDiContainerBuilder> createBuilderFunc)
@@ -483,23 +484,23 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             var testService = serviceFactory.Create();
 
-            Xunit.Assert.NotNull(testService);
-            Xunit.Assert.IsType<TestService>(testService);
+            Assert.NotNull(testService);
+            Assert.IsType<TestService>(testService);
 
             var testServiceWithProperty = serviceFactory.Create(x => x.Text = "Hello World");
 
-            Xunit.Assert.Equal("Hello World", testServiceWithProperty.Text);
+            Assert.Equal("Hello World", testServiceWithProperty.Text);
 
             var serviceFactory2 = container.GetInstance<IClassFactory<TestService2>>();
 
             var testService2 = serviceFactory2.Create();            
 
-            Xunit.Assert.NotNull(testService2);
-            Xunit.Assert.IsType<TestService2>(testService2);
+            Assert.NotNull(testService2);
+            Assert.IsType<TestService2>(testService2);
 
             var testServiceWithProperty2 = serviceFactory2.Create(x => x.Text = "This is a test");
 
-            Xunit.Assert.Equal("This is a test", testServiceWithProperty2.Text);
+            Assert.Equal("This is a test", testServiceWithProperty2.Text);
         }
 
         public void AddSingleton_OpenGeneric_GetInstanceReturnsSameInstance(Func<IDiContainerBuilder> createBuilderFunc)
@@ -516,9 +517,9 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             var instanceString = container.GetInstance<ITestService<string>>();
 
-            Xunit.Assert.Same(instanceInt, instanceInt2);
+            Assert.Same(instanceInt, instanceInt2);
 
-            Xunit.Assert.NotSame(instanceInt, instanceString);
+            Assert.NotSame(instanceInt, instanceString);
         }
 
         public void AddTransient_OpenGeneric_GetInstanceReturnsDifferentInstances(Func<IDiContainerBuilder> createBuilderFunc)
@@ -535,11 +536,11 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             var instanceString = container.GetInstance<ITestService<string>>();
 
-            Xunit.Assert.NotSame(instanceInt, instanceInt2);
+            Assert.NotSame(instanceInt, instanceInt2);
 
-            Xunit.Assert.NotSame(instanceInt, instanceString);
+            Assert.NotSame(instanceInt, instanceString);
 
-            Xunit.Assert.NotSame(instanceInt2, instanceString);
+            Assert.NotSame(instanceInt2, instanceString);
         }
 
         public void RegisterImplementations_ForAllAssemblies_ReturnsCorrectInstances(Func<IDiContainerBuilder> createBuilderFunc)
@@ -554,17 +555,17 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             var instance2 = container.GetInstance<ITestService>();
 
-            Xunit.Assert.IsType<TestService>(instance);
+            Assert.IsType<TestService>(instance);
 
-            Xunit.Assert.NotSame(instance, instance2);
+            Assert.NotSame(instance, instance2);
 
             var singletonInstance = container.GetInstance<ITestService<int>>();
 
             var singletonInstance2 = container.GetInstance<ITestService<int>>();
 
-            Xunit.Assert.IsType<TestService<int>>(singletonInstance);
+            Assert.IsType<TestService<int>>(singletonInstance);
 
-            Xunit.Assert.Same(singletonInstance, singletonInstance2);
+            Assert.Same(singletonInstance, singletonInstance2);
         }
 
         public void RegisterImplementations_ForAssembly_ReturnsCorrectInstance(Func<IDiContainerBuilder> createBuilderFunc)
@@ -579,25 +580,25 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             var instance2 = container.GetInstance<ITestService>();
 
-            Xunit.Assert.IsType<TestService>(instance);
+            Assert.IsType<TestService>(instance);
 
-            Xunit.Assert.NotSame(instance, instance2);
+            Assert.NotSame(instance, instance2);
 
             var singletonInstance = container.GetInstance<ITestService<int>>();
 
             var singletonInstance2 = container.GetInstance<ITestService<int>>();
 
-            Xunit.Assert.IsType<TestService<int>>(singletonInstance);
+            Assert.IsType<TestService<int>>(singletonInstance);
 
-            Xunit.Assert.Same(singletonInstance, singletonInstance2);
+            Assert.Same(singletonInstance, singletonInstance2);
 
             var scopedInstance = container.GetInstance<IUnknownService>();
 
             var scopedInstance2 = container.GetInstance<IUnknownService>();
 
-            Xunit.Assert.IsType<UnknownService>(scopedInstance);
+            Assert.IsType<UnknownService>(scopedInstance);
 
-            Xunit.Assert.Equal(scopedInstance, scopedInstance2);
+            Assert.Equal(scopedInstance, scopedInstance2);
         }
 
         public void RegisterImplementations_ForAssemblies_ReturnsCorrectInstances(Func<IDiContainerBuilder> createBuilderFunc)
@@ -612,17 +613,17 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             var instance2 = container.GetInstance<ITestService>();
 
-            Xunit.Assert.IsType<TestService>(instance);
+            Assert.IsType<TestService>(instance);
 
-            Xunit.Assert.NotSame(instance, instance2);
+            Assert.NotSame(instance, instance2);
 
             var singletonInstance = container.GetInstance<ITestService<int>>();
 
             var singletonInstance2 = container.GetInstance<ITestService<int>>();
 
-            Xunit.Assert.IsType<TestService<int>>(singletonInstance);
+            Assert.IsType<TestService<int>>(singletonInstance);
 
-            Xunit.Assert.Same(singletonInstance, singletonInstance2);
+            Assert.Same(singletonInstance, singletonInstance2);
         }
 
         public void RegisterImplementations_ForType_ReturnsCorrectInstance(Func<IDiContainerBuilder> createBuilderFunc)
@@ -637,9 +638,98 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             var instance2 = container.GetInstance<ITestService>();
 
-            Xunit.Assert.IsType<TestService>(instance);
+            Assert.IsType<TestService>(instance);
 
-            Xunit.Assert.NotSame(instance, instance2);
+            Assert.NotSame(instance, instance2);
+        }
+
+        public void AddTransientCollectionFor_Type_ReturnsCorrectInstances(Func<IDiContainerBuilder> createBuilderFunc)
+        {
+            var builder = createBuilderFunc();
+
+            builder.AddTransientCollectionFor<ITestService>();
+
+            var container = builder.Build();
+
+            var instances = container.GetInstances<ITestService>().ToArray();
+            
+            Assert.Equal(3, instances.Length);
+            Assert.Contains(instances, service => service is TestService);
+            Assert.Contains(instances, service => service is TestService2);
+            Assert.Contains(instances, service => service is TestServiceWithNoCtorParam);
+            
+            var instances2 = container.GetInstances<ITestService>().ToArray();
+            
+            Assert.Equal(3, instances2.Length);
+            Assert.Contains(instances2, service => service is TestService);
+            Assert.Contains(instances2, service => service is TestService2);
+            Assert.Contains(instances2, service => service is TestServiceWithNoCtorParam);
+            
+            Assert.DoesNotContain(instances, service => ReferenceEquals(service, instances2[0]));
+            Assert.DoesNotContain(instances, service => ReferenceEquals(service, instances2[1]));
+            Assert.DoesNotContain(instances, service => ReferenceEquals(service, instances2[2]));
+        }
+        
+        public void AddScopedCollectionFor_Type_ReturnsCorrectInstances(Func<IDiContainerBuilder> createBuilderFunc)
+        {
+            var builder = createBuilderFunc();
+
+            builder.AddScopedCollectionFor<ITestService>();
+
+            var container = builder.Build();
+
+            var instances = container.GetInstances<ITestService>().ToArray();
+            
+            Assert.Equal(3, instances.Length);
+            Assert.Contains(instances, service => service is TestService);
+            Assert.Contains(instances, service => service is TestService2);
+            Assert.Contains(instances, service => service is TestServiceWithNoCtorParam);
+            
+            var instances2 = container.GetInstances<ITestService>().ToArray();
+            
+            Assert.Equal(3, instances2.Length);
+            Assert.Contains(instances2, service => service is TestService);
+            Assert.Contains(instances2, service => service is TestService2);
+            Assert.Contains(instances2, service => service is TestServiceWithNoCtorParam);
+            
+            Assert.Contains(instances, service => ReferenceEquals(service, instances2[0]));
+            Assert.Contains(instances, service => ReferenceEquals(service, instances2[1]));
+            Assert.Contains(instances, service => ReferenceEquals(service, instances2[2]));
+        }
+        
+        public void AddSingletonCollectionFor_Type_ReturnsCorrectInstances(Func<IDiContainerBuilder> createBuilderFunc)
+        {
+            var builder = createBuilderFunc();
+
+            builder.AddSingletonCollectionFor<ITestService>();
+
+            var container = builder.Build();
+
+            var instances = container.GetInstances<ITestService>().ToArray();
+            
+            Assert.Equal(3, instances.Length);
+            Assert.Contains(instances, service => service is TestService);
+            Assert.Contains(instances, service => service is TestService2);
+            Assert.Contains(instances, service => service is TestServiceWithNoCtorParam);
+            
+            var instances2 = container.GetInstances<ITestService>().ToArray();
+            
+            Assert.Equal(3, instances2.Length);
+            Assert.Contains(instances2, service => service is TestService);
+            Assert.Contains(instances2, service => service is TestService2);
+            Assert.Contains(instances2, service => service is TestServiceWithNoCtorParam);
+            
+            Assert.Contains(instances, service => ReferenceEquals(service, instances2[0]));
+            Assert.Contains(instances, service => ReferenceEquals(service, instances2[1]));
+            Assert.Contains(instances, service => ReferenceEquals(service, instances2[2]));
+        }
+
+        public void AddTransientCollectionFor_ForNoneInterfaceType_ThrowsException(
+            Func<IDiContainerBuilder> createBuilderFunc)
+        {
+            var builder = createBuilderFunc();
+
+            Assert.Throws<NotSupportedException>(() => builder.AddTransientCollectionFor<TestService>());
         }
     }
 }

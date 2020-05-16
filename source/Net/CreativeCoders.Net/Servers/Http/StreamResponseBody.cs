@@ -16,10 +16,8 @@ namespace CreativeCoders.Net.Servers.Http
 
         public Task WriteAsync(string content)
         {
-            if (_streamWriter == null)
-            {
-                _streamWriter = new StreamWriter(_stream);
-            }
+            _streamWriter ??= new StreamWriter(_stream);
+            
             return _streamWriter.WriteAsync(content);
         }
 

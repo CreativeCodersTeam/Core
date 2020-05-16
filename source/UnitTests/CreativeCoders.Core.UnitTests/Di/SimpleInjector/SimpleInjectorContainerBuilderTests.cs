@@ -178,6 +178,42 @@ namespace CreativeCoders.Core.UnitTests.Di.SimpleInjector
                     () =>
                         new SimpleInjectorDiContainerBuilder(CreateContainer(false)));
         }
+        
+        [Fact]
+        public void AddTransientCollectionFor_Type_ReturnsCorrectInstances()
+        {
+            new DiContainerBuilderTestHelper()
+                .AddTransientCollectionFor_Type_ReturnsCorrectInstances(
+                    () => 
+                        new SimpleInjectorDiContainerBuilder(CreateContainer(false)));
+        }
+        
+        [Fact]
+        public void AddScopedCollectionFor_Type_ReturnsCorrectInstances()
+        {
+            new DiContainerBuilderTestHelper()
+                .AddScopedCollectionFor_Type_ReturnsCorrectInstances(
+                    () => 
+                        new SimpleInjectorDiContainerBuilder(CreateContainer(false)));
+        }
+        
+        [Fact]
+        public void AddSingletonCollectionFor_Type_ReturnsCorrectInstances()
+        {
+            new DiContainerBuilderTestHelper()
+                .AddSingletonCollectionFor_Type_ReturnsCorrectInstances(
+                    () => 
+                        new SimpleInjectorDiContainerBuilder(CreateContainer(false)));
+        }
+        
+        [Fact]
+        public void AddTransientCollectionFor_ForNoneInterfaceType_ThrowsException()
+        {
+            new DiContainerBuilderTestHelper()
+                .AddTransientCollectionFor_ForNoneInterfaceType_ThrowsException(
+                    () =>
+                        new SimpleInjectorDiContainerBuilder(CreateContainer(false)));
+        }
 
         private static Container CreateContainer(bool createScoped)
         {

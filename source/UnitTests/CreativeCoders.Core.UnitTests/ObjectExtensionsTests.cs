@@ -1,4 +1,7 @@
-﻿using Xunit;
+﻿using System;
+using System.Threading.Tasks;
+using FakeItEasy;
+using Xunit;
 
 namespace CreativeCoders.Core.UnitTests
 {
@@ -84,6 +87,42 @@ namespace CreativeCoders.Core.UnitTests
             
             Assert.IsType<int>(intValue);
             Assert.Equal(0, intValue);
+        }
+
+        [Fact]
+        public async Task TryDisposeAsync_AsyncDisposable_DisposeAsyncIsCalled()
+        {
+            var instance = A.Fake<IAsyncDisposable>();
+
+            A.CallTo(() => instance.DisposeAsync()).Returns(new ValueTask());
+            
+            await instance.TryDisposeAsync();
+            
+            A.CallTo(() => instance.DisposeAsync()).MustHaveHappenedOnceExactly();
+        }
+        
+        [Fact]
+        public async Task TryDisposeAsync_Disposable_DisposeIsCalled()
+        {
+            var instance = A.Fake<IDisposable>();
+            
+            await instance.TryDisposeAsync();
+            
+            A.CallTo(() => instance.Dispose()).MustHaveHappenedOnceExactly();
+        }
+        
+        [Fact]
+        public async Task TryDisposeAsync_AsyncDisposableAndDisposable_DisposeAsyncIsCalled()
+        {
+            var instance = A.Fake<IAsyncDisposable>(x => x.Implements<IDisposable>());
+            var disposable = instance as IDisposable;
+            
+            A.CallTo(() => instance.DisposeAsync()).Returns(new ValueTask());
+            
+            await instance.TryDisposeAsync();
+            
+            A.CallTo(() => instance.DisposeAsync()).MustHaveHappenedOnceExactly();
+            A.CallTo(() => disposable.Dispose()).MustNotHaveHappened();
         }
     }
 }

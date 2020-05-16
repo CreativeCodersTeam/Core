@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Security;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Core
 {
+    [PublicAPI]
     public static class StringExtension
     {
         public static SecureString ToSecureString(this string text)

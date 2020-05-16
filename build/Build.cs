@@ -66,7 +66,7 @@ class Build : NukeBuild, IBuildInfo
         .DependsOn(Clean)
         .DependsOn(RunTests)
         .UseBuildAction<PackBuildAction>(this, x => x
-            .SetPackageLicenseExpression(PackageLicenseExpressions.LGPL30Only)
+            .SetPackageLicenseExpression(PackageLicenseExpressions.MIT)
             .SetPackageProjectUrl(PackageProjectUrl)
             .SetCopyright($"{DateTime.Now.Year} CreativeCoders"));
 

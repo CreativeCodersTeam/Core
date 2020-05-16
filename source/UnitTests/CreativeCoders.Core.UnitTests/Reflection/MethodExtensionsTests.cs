@@ -1,11 +1,117 @@
 ﻿using System;
 using CreativeCoders.Core.Reflection;
+using FakeItEasy;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Reflection
 {
     public class MethodExtensionsTests
     {
+        [Fact]
+        public void ExecuteMethod_ExistingMethod_MethodIsCalled()
+        {
+            var testObject = A.Fake<IReflectionTestObject>();
+            
+            testObject.ExecuteMethod(nameof(testObject.Execute));
+
+            A.CallTo(() => testObject.Execute()).MustHaveHappenedOnceExactly();
+        }
+        
+        [Fact]
+        public void ExecuteMethod_NotExistingMethod_ThrowsException()
+        {
+            var testObject = A.Fake<IReflectionTestObject>();
+            
+            Assert.Throws<MissingMethodException>(() => testObject.ExecuteMethod(nameof(testObject.Execute) + "1234"));
+        }
+        
+        [Fact]
+        public void ExecuteMethod_OverloadedExistingMethod_MethodIsCalled()
+        {
+            var testObject = A.Fake<IReflectionTestObject>();
+            
+            testObject.ExecuteMethod(nameof(testObject.ExecuteEx));
+
+            A.CallTo(() => testObject.ExecuteEx()).MustHaveHappenedOnceExactly();
+        }
+        
+        [Fact]
+        public void ExecuteMethod_OverloadedExistingMethodWithOneArgument_MethodIsCalled()
+        {
+            var testObject = A.Fake<IReflectionTestObject>();
+            
+            testObject.ExecuteMethod(nameof(testObject.ExecuteEx), 1234);
+
+            A.CallTo(() => testObject.ExecuteEx(1234)).MustHaveHappenedOnceExactly();
+        }
+        
+        [Fact]
+        public void ExecuteMethod_OverloadedExistingMethodWithTwoArgument_MethodIsCalled()
+        {
+            var testObject = A.Fake<IReflectionTestObject>();
+            
+            testObject.ExecuteMethod(nameof(testObject.ExecuteEx), 1234, "Test");
+
+            A.CallTo(() => testObject.ExecuteEx(1234, "Test")).MustHaveHappenedOnceExactly();
+        }
+        
+        [Fact]
+        public void ExecuteMethod_OverloadedExistingMethodWithThreeArgument_MethodIsCalled()
+        {
+            var testObject = A.Fake<IReflectionTestObject>();
+            
+            testObject.ExecuteMethod(nameof(testObject.ExecuteEx), 1234, "Test", true);
+
+            A.CallTo(() => testObject.ExecuteEx(1234, "Test", true)).MustHaveHappenedOnceExactly();
+        }
+        
+        [Fact]
+        public void ExecuteMethod_ExistingMethodWithReturnValue_MethodIsCalled()
+        {
+            var testObject = A.Fake<IReflectionTestObject>();
+
+            A.CallTo(() => testObject.Calculate()).Returns(1234);
+            
+            var result = testObject.ExecuteMethod<int>(nameof(testObject.Calculate));
+
+            A.CallTo(() => testObject.Calculate()).MustHaveHappenedOnceExactly();
+            Assert.Equal(1234, result);
+        }
+        
+        [Fact]
+        public void ExecuteMethod_NotExistingMethodWithReturnValue_ThrowsException()
+        {
+            var testObject = A.Fake<IReflectionTestObject>();
+            
+            Assert.Throws<MissingMethodException>(() => testObject.ExecuteMethod<int>(nameof(testObject.Calculate) + "1234"));
+        }
+        
+        [Fact]
+        public void ExecuteMethod_OverloadedExistingMethodWithOneArgumentWithReturnValue_MethodIsCalled()
+        {
+            var testObject = A.Fake<IReflectionTestObject>();
+            
+            A.CallTo(() => testObject.Calculate(3456)).Returns(1234);
+            
+            var result = testObject.ExecuteMethod<int>(nameof(testObject.Calculate), 3456);
+
+            A.CallTo(() => testObject.Calculate(3456)).MustHaveHappenedOnceExactly();
+            Assert.Equal(1234, result);
+        }
+        
+        [Fact]
+        public void ExecuteMethod_OverloadedExistingMethodWithTwoArgumentWithReturnValue_MethodIsCalled()
+        {
+            var testObject = A.Fake<IReflectionTestObject>();
+            
+            A.CallTo(() => testObject.Calculate(3456, "Test")).Returns(1234);
+            
+            var result = testObject.ExecuteMethod<int>(nameof(testObject.Calculate), 3456, "Test");
+
+            A.CallTo(() => testObject.Calculate(3456, "Test")).MustHaveHappenedOnceExactly();
+            Assert.Equal(1234, result);
+        }
+        
         [Fact]
         public void ExecuteGenericMethod_CallVoidMethod_MethodWasCalled()
         {
