@@ -5,6 +5,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using CreativeCoders.Core;
+using CreativeCoders.Core.IO;
 using CreativeCoders.Net.XmlRpc.Model;
 
 namespace CreativeCoders.Net.XmlRpc.Reader
@@ -22,7 +23,10 @@ namespace CreativeCoders.Net.XmlRpc.Reader
 
         protected static async Task<XDocument> ReadXmlDocAsync(Stream inputStream)
         {
-            var xmlDoc = await XDocument.LoadAsync(inputStream, LoadOptions.None, CancellationToken.None);
+            var xmlText = await inputStream.ReadAsStringAsync();
+
+            var textReader = new StringReader(xmlText);
+            var xmlDoc = await XDocument.LoadAsync(textReader, LoadOptions.None, CancellationToken.None);
 
             return xmlDoc;
         }
