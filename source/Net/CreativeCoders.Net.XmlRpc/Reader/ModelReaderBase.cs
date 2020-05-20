@@ -22,12 +22,7 @@ namespace CreativeCoders.Net.XmlRpc.Reader
 
         protected static async Task<XDocument> ReadXmlDocAsync(Stream inputStream)
         {
-            var xmlReader = XmlReader.Create(inputStream, new XmlReaderSettings
-            {
-                Async = true,
-                IgnoreComments = true
-            });
-            var xmlDoc = await XDocument.LoadAsync(xmlReader, LoadOptions.None, CancellationToken.None);
+            var xmlDoc = await XDocument.LoadAsync(inputStream, LoadOptions.None, CancellationToken.None);
 
             return xmlDoc;
         }
