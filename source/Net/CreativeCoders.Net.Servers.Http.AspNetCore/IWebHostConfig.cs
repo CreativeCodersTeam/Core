@@ -9,5 +9,7 @@ namespace CreativeCoders.Net.Servers.Http.AspNetCore
         IReadOnlyCollection<string> Urls { get; }
         
         bool DisableLogging { get; set; }
+
+        bool AllowSynchronousIO { get; set; }
     }
 }

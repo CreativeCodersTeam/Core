@@ -30,7 +30,7 @@ namespace CreativeCoders.Net.Servers.Http.AspNetCore
         {
             Ensure.IsNotNull(webHostConfig, nameof(webHostConfig));
 
-            var webHostBuilder = CreateWebHostBuilder(webHostConfig.Urls);
+            var webHostBuilder = CreateWebHostBuilder(webHostConfig.Urls, webHostConfig.AllowSynchronousIO);
             if (webHostConfig.DisableLogging)
             {
                 webHostBuilder = webHostBuilder.ConfigureLogging(x => x.ClearProviders());
@@ -48,11 +48,16 @@ namespace CreativeCoders.Net.Servers.Http.AspNetCore
             _webHost.Dispose();
         }
 
-        private IHostBuilder CreateWebHostBuilder(IReadOnlyCollection<string> urls)
+        private IHostBuilder CreateWebHostBuilder(IReadOnlyCollection<string> urls, bool allowSynchronousIO)
         {
             var hostBuilder = Host.CreateDefaultBuilder()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    if (allowSynchronousIO)
+                    {
+                        webBuilder.UseKestrel(options => options.AllowSynchronousIO = true);
+                    }
+                    
                     webBuilder.Configure(app =>
                         app.Run(async context => await _handleRequest(context).ConfigureAwait(false)));
 

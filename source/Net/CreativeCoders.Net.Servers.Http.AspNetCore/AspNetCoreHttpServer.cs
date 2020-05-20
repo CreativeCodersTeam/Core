@@ -56,6 +56,8 @@ namespace CreativeCoders.Net.Servers.Http.AspNetCore
         
         public bool DisableLogging { get; set; }
 
+        public bool AllowSynchronousIO { get; set; }
+
         public void Dispose()
         {
             _aspNetCoreWebHost?.Dispose();

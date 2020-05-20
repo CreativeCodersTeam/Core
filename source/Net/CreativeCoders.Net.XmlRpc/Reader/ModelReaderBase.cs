@@ -23,10 +23,13 @@ namespace CreativeCoders.Net.XmlRpc.Reader
 
         protected static async Task<XDocument> ReadXmlDocAsync(Stream inputStream)
         {
-            var xmlText = await inputStream.ReadAsStringAsync();
+            var xmlReader = XmlReader.Create(inputStream, new XmlReaderSettings
+            {
+                Async = true,
+                IgnoreComments = true
+            });
 
-            var textReader = new StringReader(xmlText);
-            var xmlDoc = await XDocument.LoadAsync(textReader, LoadOptions.None, CancellationToken.None);
+            var xmlDoc = await XDocument.LoadAsync(xmlReader, LoadOptions.None, CancellationToken.None);
 
             return xmlDoc;
         }
