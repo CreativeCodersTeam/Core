@@ -11,7 +11,7 @@ namespace CreativeCoders.Core.UnitTests.Reflection
         {
             var attribute = typeof(GenericClass<>).GetCustomAttribute<DummyTestAttribute>(false);
 
-            Assert.Equal(12345, attribute.Value);
+            Assert.Equal(12345, attribute?.Value);
         }
 
         [Fact]
@@ -19,7 +19,7 @@ namespace CreativeCoders.Core.UnitTests.Reflection
         {
             var attribute = typeof(GenericClass<>).GetCustomAttribute<DummyTestAttribute>();
 
-            Assert.Equal(12345, attribute.Value);
+            Assert.Equal(12345, attribute?.Value);
         }
 
         [Fact]

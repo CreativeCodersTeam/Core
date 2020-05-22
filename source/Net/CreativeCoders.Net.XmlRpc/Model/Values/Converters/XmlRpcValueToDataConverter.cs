@@ -147,7 +147,7 @@ namespace CreativeCoders.Net.XmlRpc.Model.Values.Converters
         {
             var instance = Activator.CreateInstance(targetType);
 
-            var properties = instance.GetType().GetProperties();
+            var properties = instance?.GetType().GetProperties() ?? throw new InvalidOperationException("Object for xml rpc struct cannot be created");
 
             var memberProperties = (from property in properties
                 let memberAttribute = property.GetCustomAttribute<XmlRpcStructMemberAttribute>()

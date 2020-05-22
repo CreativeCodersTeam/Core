@@ -173,7 +173,7 @@ namespace CreativeCoders.Messaging.UnitTests
             queue.CompleteOnDispose = true;
             await queue.DisposeAsync();
 
-            // dont know why, but without this delay this test fails if code coverage is run on all the tests in this class
+            // don't know why, but without this delay this test fails if code coverage is run on all the tests in this class
             await Task.Delay(1000);
             
             Assert.Equal(1, messageCount);

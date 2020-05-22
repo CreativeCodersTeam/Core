@@ -14,7 +14,7 @@ namespace CreativeCoders.Validation.ValidationSteps.TextValidations
 
         protected override bool IsValid(TProperty propertyValue, IPropertyValidationContext<T, TProperty> propertyValidationContext)
         {
-            var propertyTextLength = propertyValue?.ToString().Length;
+            var propertyTextLength = propertyValue?.ToString()?.Length;
 
             if (!propertyTextLength.HasValue)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Reflection;
 using JetBrains.Annotations;
 using log4net;
 using log4net.Core;
@@ -56,7 +57,7 @@ namespace CreativeCoders.Logging.Log4net
 
         private static Type GetDeclaringType()
         {
-            return System.Reflection.MethodBase.GetCurrentMethod().DeclaringType;
+            return MethodBase.GetCurrentMethod()?.DeclaringType;
         }
     }
 }
