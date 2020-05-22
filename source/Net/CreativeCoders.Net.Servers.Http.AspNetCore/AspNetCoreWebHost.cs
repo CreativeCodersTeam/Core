@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
 using JetBrains.Annotations;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace CreativeCoders.Net.Servers.Http.AspNetCore
@@ -14,7 +15,7 @@ namespace CreativeCoders.Net.Servers.Http.AspNetCore
     [PublicAPI]
     public class AspNetCoreWebHost : IDisposable
     {
-        private IWebHost _webHost;
+        private IHost _webHost;
 
         private readonly Func<HttpContext, Task> _handleRequest;
 
@@ -29,28 +30,43 @@ namespace CreativeCoders.Net.Servers.Http.AspNetCore
         {
             Ensure.IsNotNull(webHostConfig, nameof(webHostConfig));
 
-            var webHostBuilder = CreateWebHostBuilder();
+            var webHostBuilder = CreateWebHostBuilder(webHostConfig.Urls, webHostConfig.AllowSynchronousIO);
             if (webHostConfig.DisableLogging)
             {
                 webHostBuilder = webHostBuilder.ConfigureLogging(x => x.ClearProviders());
             }
             
             _webHost = webHostBuilder
-                .UseUrls(webHostConfig.Urls.ToArray())
                 .Build();
 
             return _webHost.StartAsync();
         }
 
-        public Task StopAsync()
+        public async Task StopAsync()
         {
-            return _webHost.StopAsync();
+            await _webHost.StopAsync();
+            _webHost.Dispose();
         }
 
-        public IWebHostBuilder CreateWebHostBuilder() =>
-            WebHost.CreateDefaultBuilder()
-                .Configure(app => app.Run(async context => await _handleRequest(context).ConfigureAwait(false)));
+        private IHostBuilder CreateWebHostBuilder(IReadOnlyCollection<string> urls, bool allowSynchronousIO)
+        {
+            var hostBuilder = Host.CreateDefaultBuilder()
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    if (allowSynchronousIO)
+                    {
+                        webBuilder.UseKestrel(options => options.AllowSynchronousIO = true);
+                    }
+                    
+                    webBuilder.Configure(app =>
+                        app.Run(async context => await _handleRequest(context).ConfigureAwait(false)));
 
+                    webBuilder.UseUrls(urls.ToArray());
+                });
+
+            return hostBuilder;
+        }
+            
         public void Dispose()
         {
             _webHost?.Dispose();

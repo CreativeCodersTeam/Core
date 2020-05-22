@@ -104,9 +104,12 @@ namespace CreativeCoders.Net.XmlRpc.Server
 
                 xmlRpcResponse = await ExecuteMethods(xmlRpcRequest);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 response.StatusCode = (int) HttpStatusCode.InternalServerError;
+
+                Log.Error($"Xml rpc method execution failed. Exception: {e}");
+
                 return;
             }
 

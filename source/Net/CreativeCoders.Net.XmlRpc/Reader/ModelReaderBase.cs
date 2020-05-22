@@ -1,9 +1,11 @@
 ﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using CreativeCoders.Core;
+using CreativeCoders.Core.IO;
 using CreativeCoders.Net.XmlRpc.Model;
 
 namespace CreativeCoders.Net.XmlRpc.Reader
@@ -19,17 +21,17 @@ namespace CreativeCoders.Net.XmlRpc.Reader
             _readers = readers;
         }
 
-        protected static Task<XDocument> ReadXmlDocAsync(Stream inputStream)
+        protected static async Task<XDocument> ReadXmlDocAsync(Stream inputStream)
         {
-            // todo make async in .net core 3.0
             var xmlReader = XmlReader.Create(inputStream, new XmlReaderSettings
             {
                 Async = true,
                 IgnoreComments = true
             });
-            var xmlDoc = XDocument.Load(xmlReader);
 
-            return Task.FromResult(xmlDoc);
+            var xmlDoc = await XDocument.LoadAsync(xmlReader, LoadOptions.None, CancellationToken.None);
+
+            return xmlDoc;
         }
 
         protected XmlRpcValue ReadXmlRpcValue(XElement parameterNode)

@@ -6,8 +6,10 @@ namespace CreativeCoders.Net.Servers.Http.AspNetCore
     [PublicAPI]
     public interface IWebHostConfig
     {
-        IEnumerable<string> Urls { get; }
+        IReadOnlyCollection<string> Urls { get; }
         
         bool DisableLogging { get; set; }
+
+        bool AllowSynchronousIO { get; set; }
     }
 }

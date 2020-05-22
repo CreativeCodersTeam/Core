@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Logging;
 using JetBrains.Annotations;
@@ -51,9 +52,11 @@ namespace CreativeCoders.Net.Servers.Http.AspNetCore
             return _aspNetCoreWebHost.StopAsync();
         }
 
-        IEnumerable<string> IWebHostConfig.Urls => Urls;
+        IReadOnlyCollection<string> IWebHostConfig.Urls => Urls.ToImmutableArray();
         
         public bool DisableLogging { get; set; }
+
+        public bool AllowSynchronousIO { get; set; }
 
         public void Dispose()
         {
