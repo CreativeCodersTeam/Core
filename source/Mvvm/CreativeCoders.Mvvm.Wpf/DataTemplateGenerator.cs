@@ -16,9 +16,10 @@ namespace CreativeCoders.Mvvm.Wpf
             var context = new ParserContext {XamlTypeMapper = new XamlTypeMapper(new string[0])};
 
             context.XamlTypeMapper.AddMappingProcessingInstruction("vm",
-                viewModelType.Namespace ?? throw new InvalidOperationException(), viewModelType.Assembly.FullName);
+                viewModelType.Namespace ?? throw new InvalidOperationException(), viewModelType.Assembly.FullName ?? throw new InvalidOperationException());
+
             context.XamlTypeMapper.AddMappingProcessingInstruction("v",
-                viewType.Namespace ?? throw new InvalidOperationException(), viewType.Assembly.FullName);
+                viewType.Namespace ?? throw new InvalidOperationException(), viewType.Assembly.FullName ?? throw new InvalidOperationException());
 
             context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
             context.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");

@@ -5,7 +5,6 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using CreativeCoders.Core;
-using CreativeCoders.Core.IO;
 using CreativeCoders.Net.XmlRpc.Model;
 
 namespace CreativeCoders.Net.XmlRpc.Reader

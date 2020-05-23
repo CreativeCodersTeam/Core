@@ -52,7 +52,14 @@ namespace CreativeCoders.Core.SysEnvironment
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
             foreach (DictionaryEntry environmentVariable in Environment.GetEnvironmentVariables())
             {
-                variables.Add(environmentVariable.Key.ToString(), environmentVariable.Value);
+                var key = environmentVariable.Key.ToString();
+
+                if (key == null)
+                {
+                    continue;
+                }
+
+                variables.Add(key, environmentVariable.Value);
             }
 
             return variables;
@@ -65,7 +72,14 @@ namespace CreativeCoders.Core.SysEnvironment
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
             foreach (DictionaryEntry environmentVariable in Environment.GetEnvironmentVariables(target))
             {
-                variables.Add(environmentVariable.Key.ToString(), environmentVariable.Value);
+                var key = environmentVariable.Key.ToString();
+
+                if (key == null)
+                {
+                    continue;
+                }
+
+                variables.Add(key, environmentVariable.Value);
             }
 
             return variables;
