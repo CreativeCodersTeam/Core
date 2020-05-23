@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Net
 {
     [PublicAPI]
-    public class NetUtils : INetUtils
+    public class NetworkInfo : INetworkInfo
     {
         public int FindFreePort(IEnumerable<int> portRange)
         {
@@ -35,5 +35,15 @@ namespace CreativeCoders.Net
         }
 
         public int NoFreePortFound => -1;
+
+        public string GetHostName()
+        {
+            return IPGlobalProperties.GetIPGlobalProperties().HostName;
+        }
+
+        public string GetDomainName()
+        {
+            return IPGlobalProperties.GetIPGlobalProperties().DomainName;
+        }
     }
 }
