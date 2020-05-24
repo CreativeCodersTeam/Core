@@ -8,7 +8,12 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance viewModels:FirstDetailsViewModel}">
     <Grid>
-        <TextBlock>First Details View</TextBlock>
-        <Button Command="{Binding OpenFileDialogCommand}"></Button>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0">First Details View</TextBlock>
+        <Button Grid.Row="1" Command="{Binding OpenFileDialogCommand}" VerticalAlignment="Stretch"></Button>
     </Grid>
 </UserControl>
