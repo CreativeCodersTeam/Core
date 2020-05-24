@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Authors>CreativeCoders</Authors>
     <LangVersion>latest</LangVersion>
     <Description>Remote access AVM Firtzbox. Support for TR064.</Description>
