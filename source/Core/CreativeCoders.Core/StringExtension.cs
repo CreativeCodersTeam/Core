@@ -54,6 +54,26 @@ namespace CreativeCoders.Core
             return stringBuilder;
         }
 
+        public static StringBuilder AppendIf(this StringBuilder stringBuilder, bool doAppend, string text)
+        {
+            if (doAppend)
+            {
+                stringBuilder.Append(text);
+            }
+
+            return stringBuilder;
+        }
+
+        public static StringBuilder AppendLineIf(this StringBuilder stringBuilder, bool doAppend, string line)
+        {
+            if (doAppend)
+            {
+                stringBuilder.AppendLine(line);
+            }
+
+            return stringBuilder;
+        }
+
         public static string Filter(this string text, Func<char, bool> isAllowedChar)
         {
             return text.IsNullOrEmpty() ? string.Empty : string.Join("", text.Where(isAllowedChar));

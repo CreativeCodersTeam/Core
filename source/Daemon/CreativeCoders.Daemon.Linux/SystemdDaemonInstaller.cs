@@ -3,10 +3,12 @@ using System.Reflection;
 using System.Text;
 using CreativeCoders.Core.IO;
 using CreativeCoders.Core;
-using CreativeCoders.Daemon.Base;
+using CreativeCoders.Core.SysEnvironment;
+using CreativeCoders.Daemon.Base.Info;
 
 namespace CreativeCoders.Daemon.Linux
 {
+    /// <summary>   A systemd daemon installer. </summary>
     public class SystemdDaemonInstaller
     {
         private const string SystemdConfigPath = "/etc/systemd/system";
@@ -15,6 +17,11 @@ namespace CreativeCoders.Daemon.Linux
 
         private readonly string _serviceName;
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SystemdDaemonInstaller"/> class.
+        /// </summary>
+        ///-------------------------------------------------------------------------------------------------
         public SystemdDaemonInstaller()
         {
             _daemonInfo = LoadDaemonInfo();
@@ -23,12 +30,17 @@ namespace CreativeCoders.Daemon.Linux
 
         private static DaemonInfo LoadDaemonInfo()
         {
-            var path = FileSys.Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? string.Empty;
+            var path = Env.GetAppDirectory() ?? string.Empty;
             var fileName = FileSys.Path.Combine(path, "daemon.json");
             var infoFile = new DaemonInfoFile(fileName);
             return infoFile.LoadInfo();
         }
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Installs a systemd service based on the daemon.json file in the app directory.
+        /// </summary>
+        ///-------------------------------------------------------------------------------------------------
         public void Install()
         {
             var configContent = CreateServiceConfig();
@@ -37,6 +49,11 @@ namespace CreativeCoders.Daemon.Linux
             FileSys.File.WriteAllText(serviceConfigFileName, configContent);
         }
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Uninstalls the systemd service specified in the daemon.json file in the app directory.
+        /// </summary>
+        ///-------------------------------------------------------------------------------------------------
         public void Uninstall()
         {
             RunAndWaitSystemctl("stop", _serviceName);
@@ -68,9 +85,9 @@ namespace CreativeCoders.Daemon.Linux
             serviceConfig
                 .AppendLine("[Unit]")
                 .AppendLine($"Description={_daemonInfo.Description}")
-                .AppendLine($"Requires={string.Join(" ", _daemonInfo.DaemonsDependedOn)}", !(_daemonInfo.DaemonsDependedOn?.Count > 1))
-                .AppendLine($"After={string.Join(" ", _daemonInfo.StartAfterDaemons)}", !(_daemonInfo.StartAfterDaemons?.Count > 1))
-                .AppendLine($"Before={string.Join(" ", _daemonInfo.StartBeforeDaemons)}", !(_daemonInfo.StartBeforeDaemons?.Count > 1))
+                .AppendLine($"Requires={string.Join(" ", _daemonInfo.DaemonsDependedOn)}", !(_daemonInfo.DaemonsDependedOn?.Length > 1))
+                .AppendLine($"After={string.Join(" ", _daemonInfo.StartAfterDaemons)}", !(_daemonInfo.StartAfterDaemons?.Length > 1))
+                .AppendLine($"Before={string.Join(" ", _daemonInfo.StartBeforeDaemons)}", !(_daemonInfo.StartBeforeDaemons?.Length > 1))
                 .AppendLine("")
                 .AppendLine("[Service]")
                 .AppendLine($"WorkingDirectory={_daemonInfo.WorkingDirectory}")

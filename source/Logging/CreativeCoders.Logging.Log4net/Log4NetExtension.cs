@@ -57,7 +57,7 @@ namespace CreativeCoders.Logging.Log4net
 
         private static Type GetDeclaringType()
         {
-            return MethodBase.GetCurrentMethod()?.DeclaringType;
+            return MethodBase.GetCurrentMethod().DeclaringType;
         }
     }
 }

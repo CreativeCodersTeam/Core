@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using CreativeCoders.Core.IO;
 
 namespace CreativeCoders.Core.SysEnvironment
@@ -117,8 +117,7 @@ namespace CreativeCoders.Core.SysEnvironment
 
         public string GetAppFileName()
         {
-            var assembly = Assembly.GetEntryAssembly();
-            return assembly?.Location ?? string.Empty;
+            return Process.GetCurrentProcess().MainModule?.FileName;
         }
 
         public string CommandLine => Environment.CommandLine;
