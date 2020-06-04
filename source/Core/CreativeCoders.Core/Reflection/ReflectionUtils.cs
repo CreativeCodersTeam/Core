@@ -16,6 +16,20 @@ namespace CreativeCoders.Core.Reflection
             return assemblies;
         }
 
+        public static IEnumerable<Assembly> GetAllAssemblies(bool withReflectionOnlyAssemblies)
+        {
+            var assemblies = AppDomain
+                .CurrentDomain
+                .GetAssemblies();
+
+            assemblies = assemblies
+                .Concat(AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies())
+                .Distinct()
+                .ToArray();
+
+            return assemblies;
+        }
+
         public static IEnumerable<Type> GetAllTypes()
         {
             return 
@@ -23,10 +37,25 @@ namespace CreativeCoders.Core.Reflection
                     .SelectMany(assembly => assembly.GetTypesSafe());
         }
 
+        public static IEnumerable<Type> GetAllTypes(bool withReflectionOnlyAssemblies)
+        {
+            return
+                GetAllAssemblies(withReflectionOnlyAssemblies)
+                    .SelectMany(assembly => assembly.GetTypesSafe());
+        }
+
         public static IEnumerable<Type> GetAllTypes(Func<Assembly, bool> checkAssembly)
         {
             return
                 GetAllAssemblies()
+                    .Where(checkAssembly)
+                    .SelectMany(assembly => assembly.GetTypesSafe());
+        }
+
+        public static IEnumerable<Type> GetAllTypes(Func<Assembly, bool> checkAssembly, bool withReflectionOnlyAssemblies)
+        {
+            return
+                GetAllAssemblies(withReflectionOnlyAssemblies)
                     .Where(checkAssembly)
                     .SelectMany(assembly => assembly.GetTypesSafe());
         }

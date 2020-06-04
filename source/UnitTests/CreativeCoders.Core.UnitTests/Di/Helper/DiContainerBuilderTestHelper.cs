@@ -731,5 +731,93 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
 
             Assert.Throws<NotSupportedException>(() => builder.AddTransientCollectionFor<TestService>());
         }
+
+        public void AddTransientCollectionFor_ReflectionType_ReturnsCorrectInstances(Func<IDiContainerBuilder> createBuilder)
+        {
+            var builder = createBuilder();
+
+            builder.AddTransientCollectionFor<ITestService>(true);
+
+            var container = builder.Build();
+
+            var instances = container.GetInstances<ITestService>().ToArray();
+
+            Assert.Equal(3, instances.Length);
+            Assert.Contains(instances, service => service is TestService);
+            Assert.Contains(instances, service => service is TestService2);
+            Assert.Contains(instances, service => service is TestServiceWithNoCtorParam);
+
+            var instances2 = container.GetInstances<ITestService>().ToArray();
+
+            Assert.Equal(3, instances2.Length);
+            Assert.Contains(instances2, service => service is TestService);
+            Assert.Contains(instances2, service => service is TestService2);
+            Assert.Contains(instances2, service => service is TestServiceWithNoCtorParam);
+
+            Assert.DoesNotContain(instances, service => ReferenceEquals(service, instances2[0]));
+            Assert.DoesNotContain(instances, service => ReferenceEquals(service, instances2[1]));
+            Assert.DoesNotContain(instances, service => ReferenceEquals(service, instances2[2]));
+        }
+
+        public void AddScopedCollectionFor_ReflectionType_ReturnsCorrectInstances(Func<IDiContainerBuilder> createBuilder)
+        {
+            var builder = createBuilder();
+
+            builder.AddScopedCollectionFor<ITestService>(true);
+
+            var container = builder.Build();
+
+            var instances = container.GetInstances<ITestService>().ToArray();
+
+            Assert.Equal(3, instances.Length);
+            Assert.Contains(instances, service => service is TestService);
+            Assert.Contains(instances, service => service is TestService2);
+            Assert.Contains(instances, service => service is TestServiceWithNoCtorParam);
+
+            var instances2 = container.GetInstances<ITestService>().ToArray();
+
+            Assert.Equal(3, instances2.Length);
+            Assert.Contains(instances2, service => service is TestService);
+            Assert.Contains(instances2, service => service is TestService2);
+            Assert.Contains(instances2, service => service is TestServiceWithNoCtorParam);
+
+            Assert.Contains(instances, service => ReferenceEquals(service, instances2[0]));
+            Assert.Contains(instances, service => ReferenceEquals(service, instances2[1]));
+            Assert.Contains(instances, service => ReferenceEquals(service, instances2[2]));
+        }
+
+        public void AddSingletonCollectionFor_ReflectionType_ReturnsCorrectInstances(Func<IDiContainerBuilder> createBuilder)
+        {
+            var builder = createBuilder();
+
+            builder.AddSingletonCollectionFor<ITestService>(true);
+
+            var container = builder.Build();
+
+            var instances = container.GetInstances<ITestService>().ToArray();
+
+            Assert.Equal(3, instances.Length);
+            Assert.Contains(instances, service => service is TestService);
+            Assert.Contains(instances, service => service is TestService2);
+            Assert.Contains(instances, service => service is TestServiceWithNoCtorParam);
+
+            var instances2 = container.GetInstances<ITestService>().ToArray();
+
+            Assert.Equal(3, instances2.Length);
+            Assert.Contains(instances2, service => service is TestService);
+            Assert.Contains(instances2, service => service is TestService2);
+            Assert.Contains(instances2, service => service is TestServiceWithNoCtorParam);
+
+            Assert.Contains(instances, service => ReferenceEquals(service, instances2[0]));
+            Assert.Contains(instances, service => ReferenceEquals(service, instances2[1]));
+            Assert.Contains(instances, service => ReferenceEquals(service, instances2[2]));
+        }
+
+        public void AddTransientCollectionFor_ReflectionForNoneInterfaceType_ThrowsException(Func<IDiContainerBuilder> createBuilder)
+        {
+            var builder = createBuilder();
+
+            Assert.Throws<NotSupportedException>(() => builder.AddTransientCollectionFor<TestService>(true));
+        }
     }
 }

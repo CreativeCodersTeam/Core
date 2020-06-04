@@ -31,7 +31,14 @@ namespace CreativeCoders.Core.Reflection
                 .GetAllTypes()
                 .Where(x => !x.IsAbstract && type.IsAssignableFrom(x));
         }
-        
+
+        public static IEnumerable<Type> GetImplementations(this Type type, bool withReflectionOnlyAssemblies)
+        {
+            return ReflectionUtils
+                .GetAllTypes(withReflectionOnlyAssemblies)
+                .Where(x => !x.IsAbstract && type.IsAssignableFrom(x));
+        }
+
         public static IEnumerable<Type> GetImplementations(this Type type, params Assembly[] assemblies)
         {
             return assemblies

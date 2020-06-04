@@ -28,5 +28,29 @@ namespace CreativeCoders.Core.UnitTests.Reflection
 
             Assert.NotEmpty(types);
         }
+
+        [Fact]
+        public void GetAllAssemblies_CallWithReflectionOnlyAssemblies_ReturnsAssemblies()
+        {
+            var assemblies = ReflectionUtils.GetAllAssemblies(true);
+
+            Assert.NotEmpty(assemblies);
+        }
+
+        [Fact]
+        public void GetTypes_ForAllAssembliesWithReflectionOnlyAssemblies_ReturnsTypes()
+        {
+            var types = ReflectionUtils.GetAllTypes(true);
+
+            Assert.NotEmpty(types);
+        }
+
+        [Fact]
+        public void GetTypes_ForAllNotDynamicAssembliesWithReflectionOnlyAssemblies_ReturnsTypes()
+        {
+            var types = ReflectionUtils.GetAllTypes(a => !a.IsDynamic, true);
+
+            Assert.NotEmpty(types);
+        }
     }
 }

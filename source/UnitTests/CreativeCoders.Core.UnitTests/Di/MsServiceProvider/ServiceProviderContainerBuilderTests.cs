@@ -201,5 +201,41 @@ namespace CreativeCoders.Core.UnitTests.Di.MsServiceProvider
                     () =>
                         new ServiceProviderDiContainerBuilder(new ServiceCollection()));
         }
+
+        [Fact]
+        public void AddTransientCollectionFor_ReflectionType_ReturnsCorrectInstances()
+        {
+            new DiContainerBuilderTestHelper()
+                .AddTransientCollectionFor_ReflectionType_ReturnsCorrectInstances(
+                    () =>
+                        new ServiceProviderDiContainerBuilder(new ServiceCollection()));
+        }
+
+        [Fact]
+        public void AddScopedCollectionFor_ReflectionType_ReturnsCorrectInstances()
+        {
+            new DiContainerBuilderTestHelper()
+                .AddScopedCollectionFor_ReflectionType_ReturnsCorrectInstances(
+                    () =>
+                        new ServiceProviderDiContainerBuilder(new ServiceCollection()));
+        }
+
+        [Fact]
+        public void AddSingletonCollectionFor_ReflectionType_ReturnsCorrectInstances()
+        {
+            new DiContainerBuilderTestHelper()
+                .AddSingletonCollectionFor_ReflectionType_ReturnsCorrectInstances(
+                    () =>
+                        new ServiceProviderDiContainerBuilder(new ServiceCollection()));
+        }
+
+        [Fact]
+        public void AddTransientCollectionFor_ReflectionForNoneInterfaceType_ThrowsException()
+        {
+            new DiContainerBuilderTestHelper()
+                .AddTransientCollectionFor_ReflectionForNoneInterfaceType_ThrowsException(
+                    () =>
+                        new ServiceProviderDiContainerBuilder(new ServiceCollection()));
+        }
     }
 }
