@@ -22,10 +22,13 @@ namespace CreativeCoders.Core.Reflection
                 .CurrentDomain
                 .GetAssemblies();
 
-            assemblies = assemblies
-                .Concat(AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies())
-                .Distinct()
-                .ToArray();
+            if (withReflectionOnlyAssemblies)
+            {
+                assemblies = assemblies
+                    .Concat(AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies())
+                    .Distinct()
+                    .ToArray();
+            }
 
             return assemblies;
         }

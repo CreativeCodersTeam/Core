@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Reflection
 {
+    [PublicAPI]
     public static class TypeExtensions
     {
         public static object CreateGenericInstance(this Type type, Type typeArgument, params object[] constructorParameters)

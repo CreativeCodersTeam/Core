@@ -1,4 +1,5 @@
-﻿using CreativeCoders.Core.Reflection;
+﻿using System.Linq;
+using CreativeCoders.Core.Reflection;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Reflection
@@ -35,6 +36,16 @@ namespace CreativeCoders.Core.UnitTests.Reflection
             var assemblies = ReflectionUtils.GetAllAssemblies(true);
 
             Assert.NotEmpty(assemblies);
+        }
+
+        [Fact]
+        public void GetAllAssemblies_CallWithReflectionOnlyAssemblies_EqualOrMoreAssembliesThanGetAllAssemblies()
+        {
+            var assembliesWithReflectionOnly = ReflectionUtils.GetAllAssemblies(true).ToArray();
+
+            var assemblies = ReflectionUtils.GetAllAssemblies().ToArray();
+
+            Assert.True(assembliesWithReflectionOnly.Length >= assemblies.Length);
         }
 
         [Fact]
