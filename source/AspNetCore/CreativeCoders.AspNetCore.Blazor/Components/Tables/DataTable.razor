@@ -1,0 +1,32 @@
+﻿@typeparam TItem
+@inherits ItemsControlBase<TItem>
+
+<table class="table">
+
+    <thead>
+    <tr>
+        @HeaderTemplate
+    </tr>
+    </thead>
+    <tbody>
+    @if (ItemsSource != null)
+    {
+        
+        @if (ItemTemplate != null)
+        {
+            foreach (var item in ItemsSource)
+            {
+                <tr>
+                    @ItemTemplate(item)
+                </tr>
+            }
+        }
+    }
+    </tbody>
+
+</table>
+
+@code {
+    [Parameter]
+    public RenderFragment HeaderTemplate { get; set; }
+}

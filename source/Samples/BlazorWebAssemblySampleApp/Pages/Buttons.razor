@@ -1,0 +1,61 @@
+﻿@page "/buttons"
+
+<h3>Buttons</h3>
+
+<div>
+    CcButton: <Button Clicked="@FirstButtonClicked">@FirstButtonText</Button><br />
+    LinkButton: <LinkButton href="/" class="btn-block">Goto Index</LinkButton><br />
+    CcCustomButton: <Button Size="@ButtonSize.Large" Clicked="@CustomButtonClicked">Custom Div button</Button><br />
+
+    <div>@CustomText</div>
+
+    <DropDownButton T="string" DropDownItems="@DropDownItems">
+        <ChildContent>Options</ChildContent>
+        <DropDownItemTemplate>
+            <a class="dropdown-item" href="javscript:" @onclick="@(() => SetFirstButtonText(context))">@context</a>
+        </DropDownItemTemplate>
+    </DropDownButton>
+    
+    <DropDownButton T="string" DropDownItems="@SecondDropDownItems" class="btn-sm">
+        <ChildContent>
+            <span class="material-icons" style="font-size: 48px">
+                admin_panel_settings
+            </span>
+        </ChildContent>
+        <DropDownItemTemplate>
+            <a class="dropdown-item" href="javscript:" @onclick="@(() => SetFirstButtonText(context))">@context</a>
+        </DropDownItemTemplate>
+    </DropDownButton>
+    
+    <span class="material-icons">
+        admin_panel_settings
+    </span>
+</div>
+
+@code {
+    public IReadOnlyCollection<string> DropDownItems { get; set; } = new[] {"First Command", "More Info", "Quit"};
+
+    public IReadOnlyCollection<string> SecondDropDownItems { get; set; } = new[] { "Settings", "Profile", "Packages" };
+
+    public string FirstButtonText = "First Button";
+
+    public string CustomText = "";
+
+    private int _customClickedCounter;
+
+    public void FirstButtonClicked()
+    {
+        FirstButtonText += "!";
+    }
+
+    public void SetFirstButtonText(string text)
+    {
+        FirstButtonText = text;
+    }
+
+    public void CustomButtonClicked()
+    {
+        _customClickedCounter++;
+        CustomText = $"Custom Button clicked {_customClickedCounter} time(s)";
+    }
+}

@@ -78,6 +78,26 @@ namespace CreativeCoders.Core.UnitTests.Enums
         }
 
         [Fact]
+        public void Convert_ElementWithoutAttributeButDefaultValue_ReturnDefault()
+        {
+            var converter = new EnumStringConverter();
+
+            var convertedValue = converter.Convert(TestEnum.ElementWithoutAttribute);
+
+            Assert.Equal("DefaultText", convertedValue);
+        }
+
+        [Fact]
+        public void Convert_ElementWithoutAttributeAndNoDefaultValue_ReturnFieldName()
+        {
+            var converter = new EnumStringConverter();
+
+            var convertedValue = converter.Convert(TestEnumWithInt.Ok);
+
+            Assert.Equal(nameof(TestEnumWithInt.Ok), convertedValue);
+        }
+
+        [Fact]
         public void ClearCaches_Call_NoExceptions()
         {
             EnumStringConverter.ClearCaches();

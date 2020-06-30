@@ -24,14 +24,14 @@ namespace CreativeCoders.Core.Enums
 
             var fieldInfo = EnumUtils.GetFieldInfoForEnum(enumValue);
 
-            return GetTextForField(fieldInfo);
+            return GetTextForField(fieldInfo, enumValue);
         }
 
         public T Convert<T>(string text)
             where T : Enum
         {
             var mappingDict = TextToEnumMappingCache.GetOrAdd(typeof(T), () => EnumUtils.GetEnumFieldInfos<T>()
-                .ToDictionary(entry => entry.Key, entry => GetTextForField(entry.Value)));
+                .ToDictionary(entry => entry.Key, entry => GetTextForField(entry.Value, entry.Key)));
 
             if (!mappingDict.TryGetKeyByValue(text, out var returnValue))
             {
@@ -46,17 +46,19 @@ namespace CreativeCoders.Core.Enums
             return default;
         }
 
-        private static string GetTextForField(FieldInfo fieldInfo)
+        private static string GetTextForField(FieldInfo fieldInfo, Enum enumValue)
         {
-            var attr = EnumToTextCache.GetOrAdd(fieldInfo, () => GetEnumStringAttribute(fieldInfo));
+            var attr =
+                EnumToTextCache.GetOrAdd(fieldInfo, () => GetEnumStringAttribute(fieldInfo))
+                ?? GetEnumStringAttribute(enumValue.GetType());
 
             return attr != null ? attr.Text : fieldInfo.Name;
         }
 
-        // ReSharper disable once SuggestBaseTypeForParameter
-        private static IEnumStringAttribute GetEnumStringAttribute(FieldInfo fieldInfo)
+        
+        private static IEnumStringAttribute GetEnumStringAttribute(ICustomAttributeProvider attributeProvider)
         {
-            var attrs = fieldInfo?.GetCustomAttributes(true);
+            var attrs = attributeProvider?.GetCustomAttributes(true);
 
             if (attrs?.FirstOrDefault(x => x is IEnumStringAttribute) is IEnumStringAttribute attr)
             {

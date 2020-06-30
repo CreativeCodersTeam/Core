@@ -18,6 +18,8 @@ namespace CreativeCoders.NukeBuild.BuildActions
         
         private string _copyright;
 
+        private bool _enableNoBuild;
+
         public PackBuildAction()
         {
             _symbolPackageFormat = DotNetSymbolPackageFormat.snupkg;
@@ -29,11 +31,11 @@ namespace CreativeCoders.NukeBuild.BuildActions
                 .SetWorkingDirectory(BuildInfo.Solution.Directory)
                 .SetSymbolPackageFormat(_symbolPackageFormat)
                 .SetProject(BuildInfo.Solution)
-                .EnableNoBuild()
                 .SetConfiguration(BuildInfo.Configuration)
                 .EnableIncludeSymbols()
                 .SetOutputDirectory(BuildInfo.ArtifactsDirectory)
                 .SetVersion(BuildInfo.VersionInfo.NuGetVersionV2)
+                .FluentIf(_enableNoBuild, x => x.EnableNoBuild())
                 .FluentIf(!string.IsNullOrWhiteSpace(_copyright), x => x.SetCopyright(_copyright))
                 .FluentIf(!string.IsNullOrWhiteSpace(_packageProjectUrl), x => x.SetPackageProjectUrl(_packageProjectUrl))
                 .FluentIf(!string.IsNullOrEmpty(_packageLicenseUrl), x => x.SetPackageLicenseUrl(_packageLicenseUrl))
@@ -73,6 +75,13 @@ namespace CreativeCoders.NukeBuild.BuildActions
         public PackBuildAction SetCopyright(string copyright)
         {
             _copyright = copyright;
+
+            return this;
+        }
+
+        public PackBuildAction SetEnableNoBuild(bool enableNoBuild)
+        {
+            _enableNoBuild = enableNoBuild;
 
             return this;
         }

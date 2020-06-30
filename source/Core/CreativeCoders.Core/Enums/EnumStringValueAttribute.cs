@@ -2,13 +2,11 @@
 
 namespace CreativeCoders.Core.Enums
 {
-    [AttributeUsage(AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Enum)]
     public class EnumStringValueAttribute : Attribute, IEnumStringAttribute
     {
         public EnumStringValueAttribute(string text)
         {
-            Ensure.IsNotNull(text, nameof(text));
-
             Text = text;
         }
 

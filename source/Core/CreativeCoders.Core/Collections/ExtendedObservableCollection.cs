@@ -30,36 +30,38 @@ namespace CreativeCoders.Core.Collections
 
         private readonly SimpleMonitor _reentrancyMonitor;
 
-        public ExtendedObservableCollection() : this(SynchronizationContext.Current, SynchronizationMethod.Send, new LockSlimLockingMechanism(), new T[0])
+        public ExtendedObservableCollection()
+            : this(SynchronizationContext.Current, SynchronizationMethod.Send, () => new LockSlimLockingMechanism(), new T[0])
         {
         }
 
-        public ExtendedObservableCollection(IEnumerable<T> items) : this(SynchronizationContext.Current, SynchronizationMethod.Send, new LockSlimLockingMechanism(), items)
+        public ExtendedObservableCollection(IEnumerable<T> items)
+            : this(SynchronizationContext.Current, SynchronizationMethod.Send, () => new LockSlimLockingMechanism(), items)
         {
         }
 
-        public ExtendedObservableCollection(SynchronizationContext synchronizationContext, SynchronizationMethod synchronizationMethod, ILockingMechanism lockingMechanism) :
-            this(synchronizationContext, synchronizationMethod, lockingMechanism, new T[0])
+        public ExtendedObservableCollection(SynchronizationContext synchronizationContext,
+            SynchronizationMethod synchronizationMethod, Func<ILockingMechanism> lockingMechanism)
+            : this(synchronizationContext, synchronizationMethod, lockingMechanism, new T[0]) { }
+
+        public ExtendedObservableCollection(SynchronizationContext synchronizationContext,
+            SynchronizationMethod synchronizationMethod, Func<ILockingMechanism> lockingMechanism, IEnumerable<T> items)
         {
-        }
-        
-        public ExtendedObservableCollection(SynchronizationContext synchronizationContext, SynchronizationMethod synchronizationMethod, ILockingMechanism lockingMechanism, IEnumerable<T> items)
-        {
-            Ensure.IsNotNull(synchronizationContext, nameof(synchronizationContext));
             Ensure.IsNotNull(synchronizationMethod, nameof(synchronizationMethod));
             Ensure.IsNotNull(lockingMechanism, nameof(lockingMechanism));
             Ensure.IsNotNull(items, nameof(items));
-            
+
             _synchronizationContext = synchronizationContext;
-            _synchronizationMethod = _synchronizationContext != null ? synchronizationMethod : SynchronizationMethod.None;
-            _lockingMechanism = lockingMechanism;
-            
+            _synchronizationMethod =
+                _synchronizationContext != null ? synchronizationMethod : SynchronizationMethod.None;
+            _lockingMechanism = lockingMechanism();
+
             _items = new List<T>(items);
-            _updateCounter = new SynchronizedValue<int>();
-            _collectionHasChanged = new SynchronizedValue<bool>();
+            _updateCounter = new SynchronizedValue<int>(lockingMechanism());
+            _collectionHasChanged = new SynchronizedValue<bool>(lockingMechanism());
             _reentrancyMonitor = new SimpleMonitor();
         }
-        
+
         public IEnumerator<T> GetEnumerator() => _lockingMechanism.Read(() => _items.ToList().GetEnumerator());
 
         IEnumerator IEnumerable.GetEnumerator() => _lockingMechanism.Read(() => _items.ToList().GetEnumerator());
@@ -198,7 +200,8 @@ namespace CreativeCoders.Core.Collections
             InvokeSynchronizationContext(() =>
             {
                 OnPropertyChanged(IndexerName);
-                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, item, newIndex, oldIndex));
+                OnCollectionChanged(
+                    new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, item, newIndex, oldIndex));
             });
         }
 

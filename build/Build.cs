@@ -68,7 +68,8 @@ class Build : NukeBuild, IBuildInfo
         .UseBuildAction<PackBuildAction>(this, x => x
             .SetPackageLicenseExpression(PackageLicenseExpressions.MIT)
             .SetPackageProjectUrl(PackageProjectUrl)
-            .SetCopyright($"{DateTime.Now.Year} CreativeCoders"));
+            .SetCopyright($"{DateTime.Now.Year} CreativeCoders")
+            .SetEnableNoBuild(false));
 
     Target Rebuild => _ => _
         .DependsOn(Clean)

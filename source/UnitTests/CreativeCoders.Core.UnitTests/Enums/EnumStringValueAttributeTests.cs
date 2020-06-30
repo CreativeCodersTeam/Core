@@ -9,7 +9,7 @@ namespace CreativeCoders.Core.UnitTests.Enums
         [Fact]
         public void Ctor_CallWithNullText_ThrowsException()
         {
-            Assert.Throws<ArgumentNullException>(() => new EnumStringValueAttribute(null));
+            var _ = new EnumStringValueAttribute(null);
         }
 
         [Fact]

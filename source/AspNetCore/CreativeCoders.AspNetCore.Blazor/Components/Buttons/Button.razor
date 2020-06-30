@@ -1,0 +1,10 @@
+﻿@using CreativeCoders.Core.Enums
+@inherits ButtonBase
+
+<button id="@Id" @onclick="@Clicked" type="@ButtonType.ToText()" @attributes="@CustomAttributes" class="@Classes.ToString()" style="@Styles.ToString()">@ChildContent</button>
+
+@code
+{
+    [Parameter]
+    public ButtonType ButtonType { get; set; }
+}

@@ -14,9 +14,9 @@ namespace CreativeCoders.Core.UnitTests.Enums
         {
             var enumValues = EnumUtils.GetEnumValues<TestEnum>();
 
-            Assert.Equal(4, enumValues.Length);
+            Assert.Equal(5, enumValues.Length);
 
-            var expectedValues = new Enum[] {TestEnum.None, TestEnum.FirstEntry, TestEnum.Extra, TestEnum.SomeMore};
+            var expectedValues = new Enum[] {TestEnum.None, TestEnum.FirstEntry, TestEnum.Extra, TestEnum.SomeMore, TestEnum.ElementWithoutAttribute};
             Assert.Equal(expectedValues.AsEnumerable(), enumValues.AsEnumerable());
         }
 
@@ -49,7 +49,8 @@ namespace CreativeCoders.Core.UnitTests.Enums
                 {TestEnum.None, typeof(TestEnum).GetField("None") },
                 {TestEnum.FirstEntry, typeof(TestEnum).GetField("FirstEntry") },
                 {TestEnum.Extra, typeof(TestEnum).GetField("Extra") },
-                {TestEnum.SomeMore, typeof(TestEnum).GetField("SomeMore") }
+                {TestEnum.SomeMore, typeof(TestEnum).GetField("SomeMore") },
+                {TestEnum.ElementWithoutAttribute, typeof(TestEnum).GetField("ElementWithoutAttribute")}
             };
 
             Assert.Equal(expectedFieldInfos.Count, enumFieldInfos.Count);
