@@ -21,6 +21,7 @@ namespace CreativeCoders.Core.UnitTests.Di.SimpleInjector
         public void GetInstanceTest()
         {
             var simpleInjectorContainer = new Container();
+            simpleInjectorContainer.Options.ResolveUnregisteredConcreteTypes = true;
             simpleInjectorContainer.Register<ITestService, TestServiceWithNoCtorParam>();
             
             var container = new SimpleInjectorDiContainer(simpleInjectorContainer);
