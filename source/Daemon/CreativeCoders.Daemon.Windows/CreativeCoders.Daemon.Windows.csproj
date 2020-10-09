@@ -1,20 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net471</TargetFramework>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>CreativeCoders</Authors>
+    <LangVersion>latest</LangVersion>
     <Description>Windows implementation of a daemon runner for CreativeCoders.Daemon.Runner.Base</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-    <ProjectReference Include="..\CreativeCoders.Daemon.Base\CreativeCoders.Daemon.Base.csproj" />
-    <ProjectReference Include="..\CreativeCoders.Daemon.Runner.Base\CreativeCoders.Daemon.Runner.Base.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="3.1.8" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.ServiceProcess" />
-  </ItemGroup>  
+    <ProjectReference Include="..\CreativeCoders.Daemon.Base\CreativeCoders.Daemon.Base.csproj" />
+  </ItemGroup>
 
 </Project>

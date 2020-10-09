@@ -39,14 +39,44 @@ namespace CreativeCoders.Core
             return string.IsNullOrEmpty(text);
         }
 
+        public static bool IsNotNullOrEmpty(this string text)
+        {
+            return !string.IsNullOrEmpty(text);
+        }
+
         public static bool IsNullOrWhiteSpace(this string text)
         {
             return string.IsNullOrWhiteSpace(text);
         }
 
+        public static bool IsNotNullOrWhiteSpace(this string text)
+        {
+            return !string.IsNullOrWhiteSpace(text);
+        }
+
         public static StringBuilder AppendLine(this StringBuilder stringBuilder, string line, bool suppressAppend)
         {
             if (!suppressAppend)
+            {
+                stringBuilder.AppendLine(line);
+            }
+
+            return stringBuilder;
+        }
+
+        public static StringBuilder AppendIf(this StringBuilder stringBuilder, bool doAppend, string text)
+        {
+            if (doAppend)
+            {
+                stringBuilder.Append(text);
+            }
+
+            return stringBuilder;
+        }
+
+        public static StringBuilder AppendLineIf(this StringBuilder stringBuilder, bool doAppend, string line)
+        {
+            if (doAppend)
             {
                 stringBuilder.AppendLine(line);
             }

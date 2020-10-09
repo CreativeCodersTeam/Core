@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Reflection
 {
+    [PublicAPI]
     public static class TypeExtensions
     {
         public static object CreateGenericInstance(this Type type, Type typeArgument, params object[] constructorParameters)
@@ -31,7 +33,14 @@ namespace CreativeCoders.Core.Reflection
                 .GetAllTypes()
                 .Where(x => !x.IsAbstract && type.IsAssignableFrom(x));
         }
-        
+
+        public static IEnumerable<Type> GetImplementations(this Type type, bool withReflectionOnlyAssemblies)
+        {
+            return ReflectionUtils
+                .GetAllTypes(withReflectionOnlyAssemblies)
+                .Where(x => !x.IsAbstract && type.IsAssignableFrom(x));
+        }
+
         public static IEnumerable<Type> GetImplementations(this Type type, params Assembly[] assemblies)
         {
             return assemblies

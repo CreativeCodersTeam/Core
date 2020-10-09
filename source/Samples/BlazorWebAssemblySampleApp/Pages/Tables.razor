@@ -1,0 +1,41 @@
+﻿@page "/tables"
+@using BlazorWebAssemblySampleApp.ViewModels
+@using System.Threading
+@using CreativeCoders.Core.Collections
+
+<h3>Tables</h3>
+
+<DataTable ItemsSource="Items">
+    <HeaderTemplate>
+        <th>IntValue</th>
+        <th>Text</th>
+    </HeaderTemplate>
+    <ItemTemplate>
+        <td style="background: blue">@context.IntValue</td>
+        <td>@context.Text</td>
+    </ItemTemplate>
+</DataTable>
+
+<Button Clicked="() => ButtonClicked()">Add items</Button>
+
+@code {
+    private Timer _timer;
+
+    public ExtendedObservableCollection<TestViewModel> Items { get; set; } = new ExtendedObservableCollection<TestViewModel>
+    {
+        new TestViewModel {IntValue = 1, Text = "First Element"},
+        new TestViewModel {IntValue = 2, Text = "Second Element"},
+        new TestViewModel {IntValue = 4, Text = "Forth Element"},
+        new TestViewModel {IntValue = 8, Text = "Eight Element"}
+    };
+
+    public void ButtonClicked()
+    {
+        if (_timer == null)
+        {
+            _timer = new Timer(state => Items.Add(new TestViewModel{IntValue = Environment.TickCount, Text = Environment.TickCount.ToString()}));
+        }
+
+        _timer.Change(1000, 1000);
+    }
+}

@@ -31,11 +31,27 @@ namespace CreativeCoders.Core.UnitTests
         }
 
         [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void IsNotNullOrEmptyTestFalse(string value)
+        {
+            Assert.False(value.IsNotNullOrEmpty());
+        }
+
+        [Theory]
         [InlineData("hello")]
         [InlineData("world")]
         public void IsNullOrEmptyTestFalse(string value)
         {
             Assert.False(value.IsNullOrEmpty());
+        }
+
+        [Theory]
+        [InlineData("hello")]
+        [InlineData("world")]
+        public void IsNotNullOrEmptyTestTrue(string value)
+        {
+            Assert.True(value.IsNotNullOrEmpty());
         }
 
         [Theory]
@@ -49,11 +65,29 @@ namespace CreativeCoders.Core.UnitTests
         }
 
         [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("\n")]
+        public void IsNotNullOrWhiteSpaceTestFalse(string value)
+        {
+            Assert.False(value.IsNotNullOrWhiteSpace());
+        }
+
+        [Theory]
         [InlineData("hello")]
         [InlineData(" world ")]
         public void IsNullOrWhiteSpaceTestFalse(string value)
         {
             Assert.False(value.IsNullOrWhiteSpace());
+        }
+
+        [Theory]
+        [InlineData("hello")]
+        [InlineData(" world ")]
+        public void IsNotNullOrWhiteSpaceTestTrue(string value)
+        {
+            Assert.True(value.IsNotNullOrWhiteSpace());
         }
 
         [Fact]

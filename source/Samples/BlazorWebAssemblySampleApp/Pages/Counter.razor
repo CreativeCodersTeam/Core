@@ -1,0 +1,48 @@
+﻿@page "/counter"
+@using CreativeCoders.AspNetCore.Blazor.Components.Buttons
+@using System.Threading
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<Button ElementType="@(ButtonElementType.Div)" Clicked="@(x => IncrementCount())" class="btn-primary">Click me</Button>
+
+<EditForm Model="this">
+    <InputText class="form-text" @bind-value="Testtext" ValueExpression="() => Testtext"></InputText>
+
+    @*<InputText @bind-Value="Testtext" @bind-Value:event=""></InputText>*@
+
+    <input type="text" class="form-text" @bind-value="Testtext" @bind-value:event="oninput"/>
+</EditForm>
+
+
+
+
+@code {
+    public string Testtext { get; set; } = "Testtext";
+
+    private int currentCount = 0;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        Console.WriteLine("Rendered");
+    }
+
+    private void IncrementCount()
+    {
+        ThreadPool.QueueUserWorkItem(async state =>
+        {
+            Console.WriteLine($"Thread in Task: {Thread.CurrentThread.ManagedThreadId}");
+            await Task.Delay(4000);
+            currentCount += currentCount;
+            await InvokeAsync(StateHasChanged);
+        });
+
+        Console.WriteLine($"Thread in Event: {Thread.CurrentThread.ManagedThreadId}");
+
+        currentCount++;
+        StateHasChanged();
+    }
+}

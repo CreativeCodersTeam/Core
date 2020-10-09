@@ -586,7 +586,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
         {
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
-            var collection = new ExtendedObservableCollection<int>(new TestSynchronizationContext(), SynchronizationMethod.Post, new LockSlimLockingMechanism());
+            var collection = new ExtendedObservableCollection<int>(new TestSynchronizationContext(), SynchronizationMethod.Post, () => new LockSlimLockingMechanism());
             collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
 
             collection.Add(123);
@@ -610,7 +610,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
         {
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
-            var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current, SynchronizationMethod.None, new LockSlimLockingMechanism());
+            var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current, SynchronizationMethod.None, () => new LockSlimLockingMechanism());
             collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
 
             collection.Add(123);
@@ -632,7 +632,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
         [Fact]
         public void Reentrancy_AddNewItemOnCollectionChanged_ItemIsAdded()
         {
-            var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current, SynchronizationMethod.None, new LockSlimLockingMechanism());
+            var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current, SynchronizationMethod.None, () => new LockSlimLockingMechanism());
             collection.CollectionChanged += (sender, args) =>
             {
                 if (collection.Count == 1)
@@ -650,7 +650,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
         [Fact]
         public void Reentrancy_AddNewItemOnCollectionChangedWithTwoEventHandler_ExceptionIsThrown()
         {
-            var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current, SynchronizationMethod.None, new LockSlimLockingMechanism());
+            var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current, SynchronizationMethod.None, () => new LockSlimLockingMechanism());
             collection.CollectionChanged += (sender, args) =>
             {
                 if (collection.Count == 1)

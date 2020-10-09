@@ -1,0 +1,11 @@
+﻿@typeparam TItem
+@inherits ItemsControlBase<TItem>
+
+@foreach (var item in Items)
+{
+    @ItemTemplate(item)
+}
+
+@code {
+    
+}

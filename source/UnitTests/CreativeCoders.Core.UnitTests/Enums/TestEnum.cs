@@ -2,6 +2,7 @@
 
 namespace CreativeCoders.Core.UnitTests.Enums
 {
+    [EnumStringValue("DefaultText")]
     public enum TestEnum
     {
         [EnumStringValue("none value")]
@@ -11,13 +12,7 @@ namespace CreativeCoders.Core.UnitTests.Enums
         [EnumStringValue("extra info")]
         Extra,
         [EnumStringValue("some more")]
-        SomeMore
-    }
-
-    public enum TestEnumWithInt
-    {
-        None = 0,
-        Ok = 1,
-        Test = 2
+        SomeMore,
+        ElementWithoutAttribute
     }
 }

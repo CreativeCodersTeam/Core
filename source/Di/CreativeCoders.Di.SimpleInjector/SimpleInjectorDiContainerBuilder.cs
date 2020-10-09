@@ -159,6 +159,8 @@ namespace CreativeCoders.Di.SimpleInjector
 
         public override IDiContainer Build()
         {
+            _container.Options.ResolveUnregisteredConcreteTypes = true;
+
             _container.Register<IDiContainer, SimpleInjectorDiContainerForRegistration>(
                 _scopedLifestyle);
             RegisterDefault();
