@@ -7,7 +7,7 @@ namespace CreativeCoders.Core.UnitTests
         [Fact]
         public void RandomStringNewTest()
         {
-            var s = RandomString.New();
+            var s = RandomString.Create();
 
             Assert.True(!string.IsNullOrEmpty(s));
         }
@@ -15,7 +15,7 @@ namespace CreativeCoders.Core.UnitTests
         [Fact]
         public void RandomStringNewBufferSizeTest()
         {
-            var s = RandomString.New(10);
+            var s = RandomString.Create(10);
 
             Assert.True(!string.IsNullOrEmpty(s));
         }
