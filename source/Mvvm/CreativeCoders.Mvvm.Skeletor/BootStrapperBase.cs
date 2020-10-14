@@ -118,7 +118,7 @@ namespace CreativeCoders.Mvvm.Skeletor
         {
             var mainViewModel = DiContainer.GetInstance<TMainViewModel>();
             
-            _configureMainViewModel(mainViewModel);
+            _configureMainViewModel?.Invoke(mainViewModel);
             
             var mainWindow = DiContainer.GetInstance<IWindowManager>().CreateWindow(mainViewModel);
             
