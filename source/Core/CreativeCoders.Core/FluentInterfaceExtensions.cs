@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Core
 {
     [ExcludeFromCodeCoverage]
+    [PublicAPI]
     public static class FluentInterfaceExtensions
     {
         public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Action fluentAction)

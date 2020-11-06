@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.IO
 {
     [ExcludeFromCodeCoverage]
+    [PublicAPI]
     public static class FileSys
     {
         private static IFileSystemEx Instance { get; set; } = new FileSystemEx();

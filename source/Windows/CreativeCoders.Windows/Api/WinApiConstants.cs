@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Windows.Api
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [PublicAPI]
     public static class WinApiConstants
     {
         public const int LOGON32_PROVIDER_DEFAULT = 0;

@@ -198,6 +198,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.AspNetCore.B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.AspNetCore.Blazor.UnitTests", "UnitTests\CreativeCoders.AspNetCore.Blazor.UnitTests\CreativeCoders.AspNetCore.Blazor.UnitTests.csproj", "{BDE7FA2F-732E-4AC7-B50B-D330434D42C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsSampleApp", "Samples\WindowsSampleApp\WindowsSampleApp.csproj", "{4F0D9652-96FB-4BD2-B40A-CED6EE2EB507}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -474,6 +476,10 @@ Global
 		{BDE7FA2F-732E-4AC7-B50B-D330434D42C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDE7FA2F-732E-4AC7-B50B-D330434D42C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDE7FA2F-732E-4AC7-B50B-D330434D42C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F0D9652-96FB-4BD2-B40A-CED6EE2EB507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F0D9652-96FB-4BD2-B40A-CED6EE2EB507}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F0D9652-96FB-4BD2-B40A-CED6EE2EB507}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F0D9652-96FB-4BD2-B40A-CED6EE2EB507}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -552,6 +558,7 @@ Global
 		{AA55240A-F447-43F8-9E0E-1B2D29C2C918} = {72E179CA-7AE6-412A-856D-7BD13838E8E3}
 		{3D6B25D4-1358-4043-9B94-0E9EB27DF9C5} = {B485D7EE-B71A-41DE-9518-60F9B7FA8AE4}
 		{BDE7FA2F-732E-4AC7-B50B-D330434D42C0} = {9A3F55B8-E867-4EA2-B1FA-0C01DE79463E}
+		{4F0D9652-96FB-4BD2-B40A-CED6EE2EB507} = {72E179CA-7AE6-412A-856D-7BD13838E8E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}

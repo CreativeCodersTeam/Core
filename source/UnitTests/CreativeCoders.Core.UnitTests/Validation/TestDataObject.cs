@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.UnitTests.Validation
 {
+    [PublicAPI]
     public class TestDataObject
     {
         public string StrValue { get; set; }
