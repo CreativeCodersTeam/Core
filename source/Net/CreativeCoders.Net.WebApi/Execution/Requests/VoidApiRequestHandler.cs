@@ -1,12 +1,12 @@
-﻿using System.Threading.Tasks;
-using CreativeCoders.Net.Http;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution.Requests
 {
     public class VoidApiRequestHandler : ApiRequestHandlerBase
     {
-        public VoidApiRequestHandler(IHttpClient httpClient) : base(ApiMethodReturnType.Void, httpClient)
+        public VoidApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.Void, httpClient)
         {
         }
 

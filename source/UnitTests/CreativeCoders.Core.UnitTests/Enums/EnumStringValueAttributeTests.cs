@@ -1,5 +1,4 @@
-﻿using System;
-using CreativeCoders.Core.Enums;
+﻿using CreativeCoders.Core.Enums;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Enums

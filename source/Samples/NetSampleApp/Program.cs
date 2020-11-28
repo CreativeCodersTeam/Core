@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace NetSampleApp
 {
     public static class Program
     {
-        public static void Main()
+        public static async Task Main()
         {
-            AvmTest.Run();
+            await new HttpClientAuthTest().Run();
+            
+            //await new HttpClientTest().Run();
+            
+            //AvmTest.Run();
             
             Console.WriteLine("Hello World!");
             Console.ReadKey();

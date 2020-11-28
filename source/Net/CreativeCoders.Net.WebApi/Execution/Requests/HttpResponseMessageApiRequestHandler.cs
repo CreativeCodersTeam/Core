@@ -1,11 +1,11 @@
-﻿using CreativeCoders.Net.Http;
+﻿using System.Net.Http;
 using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution.Requests
 {
     public class HttpResponseMessageApiRequestHandler : ApiRequestHandlerBase
     {
-        public HttpResponseMessageApiRequestHandler(IHttpClient httpClient) : base(ApiMethodReturnType.HttpResponseMessage, httpClient)
+        public HttpResponseMessageApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.HttpResponseMessage, httpClient)
         {
         }
 

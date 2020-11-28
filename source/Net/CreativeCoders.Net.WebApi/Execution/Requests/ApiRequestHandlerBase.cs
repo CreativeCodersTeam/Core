@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
-using CreativeCoders.Net.Http;
 using CreativeCoders.Net.WebApi.Definition;
 using CreativeCoders.Net.WebApi.Serialization;
 using CreativeCoders.Net.WebApi.Specification;
@@ -13,9 +12,9 @@ namespace CreativeCoders.Net.WebApi.Execution.Requests
 {
     public abstract class ApiRequestHandlerBase : IApiRequestHandler
     {
-        private readonly IHttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
-        protected ApiRequestHandlerBase(ApiMethodReturnType methodReturnType, IHttpClient httpClient)
+        protected ApiRequestHandlerBase(ApiMethodReturnType methodReturnType, HttpClient httpClient)
         {
             _httpClient = httpClient;
             MethodReturnType = methodReturnType;
@@ -73,7 +72,7 @@ namespace CreativeCoders.Net.WebApi.Execution.Requests
         {
             var httpRequest = CreateRequestMessage(requestData);
 
-            return _httpClient.SendRequestAsync(httpRequest, requestData.CompletionOption,
+            return _httpClient.SendAsync(httpRequest, requestData.CompletionOption,
                 requestData.CancellationToken);
         }
 

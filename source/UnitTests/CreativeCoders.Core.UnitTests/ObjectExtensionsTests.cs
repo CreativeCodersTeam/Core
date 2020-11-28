@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CreativeCoders.UnitTests;
 using FakeItEasy;
 using Xunit;
 
@@ -123,6 +124,44 @@ namespace CreativeCoders.Core.UnitTests
             
             A.CallTo(() => instance.DisposeAsync()).MustHaveHappenedOnceExactly();
             A.CallTo(() => disposable.Dispose()).MustNotHaveHappened();
+        }
+
+        [Fact]
+        public void GetPropertyValue_ReadFromExistingProperty_ReturnsPropertyValue()
+        {
+            const string expectedData = "TestText";
+
+            var instance = new UnitTestDemoObject {Text = expectedData};
+
+            Assert.Equal(expectedData, instance.GetPropertyValue<string>(nameof(instance.Text)));
+        }
+
+        [Fact]
+        public void GetPropertyValue_ReadFromNotExistingProperty_ThrowsMissingMemberException()
+        {
+            var instance = new object();
+
+            Assert.Throws<MissingMemberException>(() => instance.GetPropertyValue<string>("Text"));
+        }
+
+        [Fact]
+        public void SetPropertyValue_WriteToExistingProperty_PropertyValueIsSet()
+        {
+            const string expectedData = "TestText";
+
+            var instance = new UnitTestDemoObject();
+
+            instance.SetPropertyValue(nameof(instance.Text), expectedData);
+
+            Assert.Equal(expectedData, instance.Text);
+        }
+
+        [Fact]
+        public void SetPropertyValue_WriteToNotExistingProperty_ThrowsMissingMemberException()
+        {
+            var instance = new object();
+
+            Assert.Throws<MissingMemberException>(() => instance.SetPropertyValue("Text", string.Empty));
         }
     }
 }

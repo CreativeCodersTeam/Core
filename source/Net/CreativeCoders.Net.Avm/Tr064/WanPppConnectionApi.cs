@@ -2,9 +2,11 @@
 using CreativeCoders.Net.Avm.Tr064.WanPpp.Responses;
 using CreativeCoders.Net.Soap;
 using CreativeCoders.Net.WebRequests;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Net.Avm.Tr064
 {
+    [PublicAPI]
     public class WanPppConnectionApi : Tr064ApiBase
     {
         public WanPppConnectionApi(string fritzBoxUrl, string userName, string password) : base(new SoapHttpClient(WebRequestFactory.Default),

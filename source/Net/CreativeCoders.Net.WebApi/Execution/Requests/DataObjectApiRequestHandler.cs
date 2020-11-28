@@ -1,13 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 using CreativeCoders.Core.Reflection;
-using CreativeCoders.Net.Http;
 using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution.Requests
 {
     public class DataObjectApiRequestHandler : ApiRequestHandlerBase
     {
-        public DataObjectApiRequestHandler(IHttpClient httpClient) : base(ApiMethodReturnType.DataObject, httpClient)
+        public DataObjectApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.DataObject, httpClient)
         {
         }
 

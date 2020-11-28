@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using JetBrains.Annotations;
@@ -29,6 +30,32 @@ namespace CreativeCoders.Core
             if (makeReadOnly)
             {
                 result.MakeReadOnly();
+            }
+
+            return result;
+        }
+
+        public static string ToNormalString(this SecureString secureString)
+        {
+            if (secureString == null || secureString.Length == 0)
+            {
+                return string.Empty;
+            }
+
+            var ptr = IntPtr.Zero;
+            string result;
+
+            try
+            {
+                ptr = Marshal.SecureStringToGlobalAllocUnicode(secureString);
+                result = Marshal.PtrToStringUni(ptr);
+            }
+            finally
+            {
+                if (ptr != IntPtr.Zero)
+                {
+                    Marshal.ZeroFreeGlobalAllocUnicode(ptr);
+                }
             }
 
             return result;

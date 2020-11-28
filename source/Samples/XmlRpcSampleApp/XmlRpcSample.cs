@@ -23,7 +23,7 @@ namespace XmlRpcSampleApp
 
             await xmlRpcServer.StartAsync();
             
-            var xmlRpcClient = new XmlRpcProxyBuilder<ISampleXmlRpcClient>(new ProxyBuilder<ISampleXmlRpcClient>(), new DelegateClassFactory<IHttpClient>(() => new HttpClientEx(new HttpClient())))
+            var xmlRpcClient = new XmlRpcProxyBuilder<ISampleXmlRpcClient>(new ProxyBuilder<ISampleXmlRpcClient>(), new DelegateHttpClientFactory(name => new HttpClient()))
                 .ForUrl("http://localhost:12345")
                 .Build();
 

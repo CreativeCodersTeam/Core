@@ -37,7 +37,9 @@ namespace CreativeCoders.UnitTests
         public override NotifyFilters NotifyFilter { get; set; }
 
         public override string Path { get; set; }
+
         public override ISite Site { get; set; }
+
         public override ISynchronizeInvoke SynchronizingObject { get; set; }
     }
 }
