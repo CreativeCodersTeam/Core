@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Threading
 {
+    [PublicAPI]
     public class ConcurrentList<T> : IList<T>, IReadOnlyCollection<T>
     {
         private readonly ILockingMechanism _locking;
