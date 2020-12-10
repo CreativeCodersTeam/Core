@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
 using CreativeCoders.Core.IO;
-using CreativeCoders.Net.Http;
 using CreativeCoders.Net.XmlRpc.Definition;
 using CreativeCoders.Net.XmlRpc.Exceptions;
 using CreativeCoders.Net.XmlRpc.Model.Values.Converters;
@@ -19,11 +18,11 @@ namespace CreativeCoders.Net.XmlRpc.Client
 {
     public class XmlRpcClient : IXmlRpcClient
     {
-        private readonly IHttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
         private readonly IRequestBuilder _requestBuilder;
 
-        public XmlRpcClient(IHttpClient httpClient)
+        public XmlRpcClient(HttpClient httpClient)
         {
             Ensure.IsNotNull(httpClient, nameof(httpClient));
             
@@ -37,8 +36,9 @@ namespace CreativeCoders.Net.XmlRpc.Client
             
             var httpRequest = await CreateHttpRequestAsync(request).ConfigureAwait(false);
 
-            var httpResponse = await _httpClient.SendRequestAsync(httpRequest, HttpCompletionOption.ResponseContentRead,
-                CancellationToken.None).ConfigureAwait(false);
+            var httpResponse = await _httpClient
+                .SendAsync(httpRequest, HttpCompletionOption.ResponseContentRead, CancellationToken.None)
+                .ConfigureAwait(false);
 
             var response = await ReadResponseAsync(httpResponse).ConfigureAwait(false);
 

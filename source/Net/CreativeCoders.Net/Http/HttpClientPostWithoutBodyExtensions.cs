@@ -9,81 +9,46 @@ namespace CreativeCoders.Net.Http
     [PublicAPI]
     public static class HttpClientPostWithoutBodyExtensions
     {
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     A <see cref="HttpClient"/> extension method for a POST request without a body
+        ///     asynchronous.
+        /// </summary>
+        ///
+        /// <param name="httpClient">           The httpClient to act on. </param>
+        /// <param name="requestUri">           URI of the request. </param>
+        /// <param name="completionOption">     The completion option. </param>
+        /// <param name="cancellationToken">    A token that allows processing to be cancelled. </param>
+        ///
+        /// <returns>   The task object representing the asynchronous operation. </returns>
+        ///-------------------------------------------------------------------------------------------------
         public static Task<HttpResponseMessage> PostAsync(this HttpClient httpClient, Uri requestUri,
-            HttpCompletionOption completionOption, CancellationToken cancellationToken,
-            Action<HttpRequestMessage> setupRequest)
+            HttpCompletionOption completionOption, CancellationToken cancellationToken)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, requestUri) { Content = new ByteArrayContent(new byte[0]) };
-            setupRequest?.Invoke(request);
-
+            using var request = new HttpRequestMessage(HttpMethod.Post, requestUri)
+                {Content = new ByteArrayContent(new byte[0])};
+            
             return httpClient.SendAsync(request, completionOption, cancellationToken);
         }
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     A <see cref="HttpClient"/> extension method for a POST request without a body
+        ///     asynchronous.
+        /// </summary>
+        ///
+        /// <param name="httpClient">           The httpClient to act on. </param>
+        /// <param name="requestUri">           URI of the request. </param>
+        /// <param name="cancellationToken">    (Optional) A token that allows processing to be
+        ///                                     cancelled. </param>
+        ///
+        /// <returns>   The task object representing the asynchronous operation. </returns>
+        ///-------------------------------------------------------------------------------------------------
         public static Task<HttpResponseMessage> PostAsync(this HttpClient httpClient, Uri requestUri,
-            CancellationToken cancellationToken,
-            Action<HttpRequestMessage> setupRequest)
+            CancellationToken cancellationToken = default)
         {
-            return httpClient.PostAsync(requestUri, HttpCompletionOption.ResponseContentRead,
-                cancellationToken, setupRequest);
-        }
-
-        public static Task<HttpResponseMessage> PostAsync(this HttpClient httpClient, Uri requestUri,
-            Action<HttpRequestMessage> setupRequest)
-        {
-            return httpClient.PostAsync(requestUri, HttpCompletionOption.ResponseContentRead,
-                CancellationToken.None, setupRequest);
-        }
-
-        public static async Task<string> PostReturnStringAsync(this HttpClient httpClient, Uri requestUri,
-            HttpCompletionOption completionOption, CancellationToken cancellationToken,
-            Action<HttpRequestMessage> setupRequest)
-        {
-            var response = await HttpClientExtensions.ExecuteHttpActionWithEnsureSuccessStatus(
-                    httpClient.PostAsync(requestUri, completionOption, cancellationToken, setupRequest))
-                .ConfigureAwait(false);
-
-            return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        }
-
-        public static Task<string> PostReturnStringAsync(this HttpClient httpClient, Uri requestUri,
-            CancellationToken cancellationToken,
-            Action<HttpRequestMessage> setupRequest)
-        {
-            return httpClient.PostReturnStringAsync(requestUri, HttpCompletionOption.ResponseContentRead,
-                cancellationToken, setupRequest);
-        }
-
-        public static Task<string> PostReturnStringAsync(this HttpClient httpClient, Uri requestUri,
-            Action<HttpRequestMessage> setupRequest)
-        {
-            return httpClient.PostReturnStringAsync(requestUri, HttpCompletionOption.ResponseContentRead,
-                CancellationToken.None, setupRequest);
-        }
-
-        public static async Task<T> PostReturnJsonAsync<T>(this HttpClient httpClient, Uri requestUri,
-            HttpCompletionOption completionOption, CancellationToken cancellationToken,
-            Action<HttpRequestMessage> setupRequest)
-        {
-            var response = await HttpClientExtensions.ExecuteHttpActionWithEnsureSuccessStatus(
-                    httpClient.PostAsync(requestUri, completionOption, cancellationToken, setupRequest))
-                .ConfigureAwait(false);
-
-            return await response.Content.ReadAsJsonAsync<T>().ConfigureAwait(false);
-        }
-
-        public static Task<T> PostReturnJsonAsync<T>(this HttpClient httpClient, Uri requestUri,
-            CancellationToken cancellationToken,
-            Action<HttpRequestMessage> setupRequest)
-        {
-            return httpClient.PostReturnJsonAsync<T>(requestUri, HttpCompletionOption.ResponseContentRead,
-                cancellationToken, setupRequest);
-        }
-
-        public static Task<T> PostReturnStringAsync<T>(this HttpClient httpClient, Uri requestUri,
-            Action<HttpRequestMessage> setupRequest)
-        {
-            return httpClient.PostReturnJsonAsync<T>(requestUri, HttpCompletionOption.ResponseContentRead,
-                CancellationToken.None, setupRequest);
+            return httpClient.PostAsync(requestUri, HttpCompletionOption.ResponseHeadersRead,
+                cancellationToken);
         }
     }
 }

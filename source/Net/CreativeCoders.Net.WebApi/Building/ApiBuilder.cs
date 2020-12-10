@@ -1,5 +1,5 @@
-﻿using CreativeCoders.DynamicCode.Proxying;
-using CreativeCoders.Net.Http;
+﻿using System.Net.Http;
+using CreativeCoders.DynamicCode.Proxying;
 using CreativeCoders.Net.WebApi.Execution;
 using CreativeCoders.Net.WebApi.Serialization;
 
@@ -7,9 +7,9 @@ namespace CreativeCoders.Net.WebApi.Building
 {
     public class ApiBuilder : IApiBuilder
     {
-        private readonly IHttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
-        public ApiBuilder(IHttpClient httpClient)
+        public ApiBuilder(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }

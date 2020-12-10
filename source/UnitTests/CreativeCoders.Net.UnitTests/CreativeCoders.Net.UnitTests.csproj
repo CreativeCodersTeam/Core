@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Net\CreativeCoders.Net.XmlRpc\CreativeCoders.Net.XmlRpc.csproj" />
+    <ProjectReference Include="..\CreativeCoders.UnitTests\CreativeCoders.UnitTests.csproj" />
   </ItemGroup>
 
 </Project>

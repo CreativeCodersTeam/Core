@@ -40,6 +40,30 @@ namespace CreativeCoders.Core
                     disposable.Dispose();
                     break;
             }
-        } 
+        }
+
+        public static T GetPropertyValue<T>(this object instance, string propertyName)
+        {
+            var propInfo = instance.GetType().GetProperty(propertyName);
+
+            if (propInfo == null)
+            {
+                throw new MissingMemberException(instance.GetType().Name, propertyName);
+            }
+
+            return (T) propInfo.GetValue(instance);
+        }
+
+        public static void SetPropertyValue<T>(this object instance, string propertyName, T value)
+        {
+            var propInfo = instance.GetType().GetProperty(propertyName);
+
+            if (propInfo == null)
+            {
+                throw new MissingMemberException(instance.GetType().Name, propertyName);
+            }
+
+            propInfo.SetValue(instance, value);
+        }
     }
 }

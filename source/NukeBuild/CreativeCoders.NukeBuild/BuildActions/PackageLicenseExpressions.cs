@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.NukeBuild.BuildActions
+﻿using JetBrains.Annotations;
+
+namespace CreativeCoders.NukeBuild.BuildActions
 {
+    [PublicAPI]
     public static class PackageLicenseExpressions
     {
         public const string LGPL30Only = "LGPL-3.0-only";

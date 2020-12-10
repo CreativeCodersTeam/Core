@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Threading
 {
+    [PublicAPI]
     public class AcquireReaderLock : IDisposable
     {
         private readonly ReaderWriterLockSlim _lockSlim;

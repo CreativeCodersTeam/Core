@@ -2,6 +2,7 @@
 
 namespace CreativeCoders.Core
 {
+    [PublicAPI]
     public delegate void EventHandlerEx<in TSender, in TEventArg>(TSender sender, TEventArg e);
 
     [PublicAPI]

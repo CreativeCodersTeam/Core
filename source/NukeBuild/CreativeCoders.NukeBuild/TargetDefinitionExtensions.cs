@@ -1,9 +1,11 @@
 ﻿using System;
 using CreativeCoders.NukeBuild.BuildActions;
+using JetBrains.Annotations;
 using Nuke.Common;
 
 namespace CreativeCoders.NukeBuild
 {
+    [PublicAPI]
     public static class TargetDefinitionExtensions
     {
         public static ITargetDefinition UseBuildAction<TBuildAction>(this ITargetDefinition targetDefinition)

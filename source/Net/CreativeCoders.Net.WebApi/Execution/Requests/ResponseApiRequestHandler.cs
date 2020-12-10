@@ -1,15 +1,15 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Reflection;
-using CreativeCoders.Net.Http;
 using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution.Requests
 {
     public class ResponseApiRequestHandler : ApiRequestHandlerBase
     {
-        public ResponseApiRequestHandler(IHttpClient httpClient) : base(ApiMethodReturnType.Response, httpClient)
+        public ResponseApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.Response, httpClient)
         {
         }
 

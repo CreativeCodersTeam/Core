@@ -16,7 +16,7 @@ using Nuke.Common.Tools.GitVersion;
 [SuppressMessage("ReSharper", "ConvertToAutoProperty")]
 class Build : NukeBuild, IBuildInfo
 {
-    public static int Main () => Execute<Build>(x => x.Compile);
+    public static int Main () => Execute<Build>(x => x.RunBuild);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
@@ -50,47 +50,60 @@ class Build : NukeBuild, IBuildInfo
         .UseBuildAction<RestoreBuildAction>(this);
 
     Target Compile => _ => _
-        .DependsOn(Restore)
-        .ProceedAfterFailure()
+        .After(Clean)
         .UseBuildAction<DotNetCompileBuildAction>(this);
 
-    Target RunTests => _ => _
-        .DependsOn(Compile)
+    Target Test => _ => _
+        .After(Compile)
         .UseBuildAction<UnitTestAction>(this,
             x => x
                 .SetUnitTestsBasePath("UnitTests")
                 .SetProjectsPattern("**/*.csproj")
                 .SetResultsDirectory(ArtifactsDirectory / "test_results"));
-    
+
     Target Pack => _ => _
-        .DependsOn(Clean)
-        .DependsOn(RunTests)
+        .After(Compile)
         .UseBuildAction<PackBuildAction>(this, x => x
             .SetPackageLicenseExpression(PackageLicenseExpressions.ApacheLicense20)
             .SetPackageProjectUrl(PackageProjectUrl)
             .SetCopyright($"{DateTime.Now.Year} CreativeCoders")
             .SetEnableNoBuild(false));
 
-    Target Rebuild => _ => _
-        .DependsOn(Clean)
-        .DependsOn(Compile);
-
-    Target PushDevNuGet => _ => _
-        .DependsOn(Pack)
+    Target PushToDevNuGet => _ => _
         .Requires(() => DevNuGetSource)
         .Requires(() => DevNuGetApiKey)
-        .UseBuildAction<PushBuildAction>(this, 
+        .UseBuildAction<PushBuildAction>(this,
             x => x
                 .SetSource(DevNuGetSource)
                 .SetApiKey(DevNuGetApiKey));
 
-    Target PushNuGet => _ => _
-        .DependsOn(Pack)
+    Target PushToNuGet => _ => _
         .Requires(() => NuGetApiKey)
         .UseBuildAction<PushBuildAction>(this,
             x => x
                 .SetSource(NuGetSource)
                 .SetApiKey(NuGetApiKey));
+
+    Target RunBuild => _ => _
+        .DependsOn(Clean)
+        .DependsOn(Restore)
+        .Executes(Compile);
+
+    Target RunTest => _ => _
+        .DependsOn(RunBuild)
+        .Executes(Test);
+
+    Target CreateNuGetPackages => _ => _
+        .DependsOn(RunTest)
+        .Executes(Pack);
+
+    Target DeployToDevNuGet => _ => _
+        .DependsOn(CreateNuGetPackages)
+        .Executes(PushToDevNuGet);
+
+    Target DeployToNuGet => _ => _
+        .DependsOn(CreateNuGetPackages)
+        .Executes(PushToNuGet);
 
     Configuration IBuildInfo.Configuration => Configuration;
 

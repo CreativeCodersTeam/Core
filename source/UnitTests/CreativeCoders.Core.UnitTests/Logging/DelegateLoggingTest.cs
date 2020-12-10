@@ -60,6 +60,14 @@ namespace CreativeCoders.Core.UnitTests.Logging
             CallLogger(logger);
 
             Assert.True(_logEntries.Count == 0);
+
+            var actualLogLevel = LogLevel.Info;
+            DelegateLog.IsDebugEnabled = true;
+            DelegateLog.Init((logLevel, scope, message) => actualLogLevel = logLevel);
+            logger = LogManager.GetLogger<DelegateLoggingTest>();
+            logger.Log(LogLevel.Debug, "Test");
+
+            Assert.Equal(LogLevel.Debug, actualLogLevel);
         }        
 
         private readonly IDictionary<LogLevel, string> _logEntries = new Dictionary<LogLevel, string>();

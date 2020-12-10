@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
+using JetBrains.Annotations;
 using Microsoft.Win32.SafeHandles;
 
 namespace CreativeCoders.Windows.Api
 {
+    [PublicAPI]
     public static class WinApi
     {
-        private const string User32Dll = "user32.dll";
-
         private const string Kernel32Dll = "kernel32.dll";
 
         private const string Advapi32Dll = "advapi32.dll";
-        
-        [DllImport(User32Dll, CharSet = CharSet.Auto)]
-        public static extern int LoadString(IntPtr hInstance, uint uId, StringBuilder lpBuffer, int nBufferMax);
 
         [DllImport(Kernel32Dll, CharSet = CharSet.Auto)]
         public static extern IntPtr FindResourceEx(IntPtr hModule, IntPtr lpType,

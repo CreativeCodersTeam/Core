@@ -1,5 +1,9 @@
-﻿namespace CreativeCoders.Windows
+﻿using JetBrains.Annotations;
+
+namespace CreativeCoders.Windows
 {
+    /// <summary>   Enumeration with the available buttons. </summary>
+    [PublicAPI]
     public enum WindowsButtonCaption
     {
         Ok = 800,

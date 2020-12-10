@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Runtime.InteropServices.ComTypes;
+using System.Security;
+using System.Text;
 using CreativeCoders.Core.SysEnvironment;
 using Xunit;
 
@@ -140,6 +142,32 @@ namespace CreativeCoders.Core.UnitTests
             var filteredText = input.Filter(filteredChars);
 
             Assert.Equal(expected, filteredText);
+        }
+
+        [Fact]
+        public void ToNormalString_TestText_ReturnsEncryptedText()
+        {
+            var expectedText = "TestText";
+
+            var secureString = expectedText.ToSecureString();
+            
+            Assert.Equal(expectedText, secureString.ToNormalString());
+        }
+
+        [Fact]
+        public void ToNormalString_EmptySecureString_ReturnsEmptyString()
+        {
+            var secureString = new SecureString();
+
+            Assert.Equal(string.Empty, secureString.ToNormalString());
+        }
+
+        [Fact]
+        public void ToNormalString_NullSecureString_ReturnsEmptyString()
+        {
+            SecureString secureString = null;
+
+            Assert.Equal(string.Empty, secureString.ToNormalString());
         }
     }
 }

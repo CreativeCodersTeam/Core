@@ -1,14 +1,14 @@
 ﻿using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using CreativeCoders.Core.IO;
-using CreativeCoders.Net.Http;
 using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution.Requests
 {
     public class StreamApiRequestHandler : ApiRequestHandlerBase
     {
-        public StreamApiRequestHandler(IHttpClient httpClient) : base(ApiMethodReturnType.Stream, httpClient)
+        public StreamApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.Stream, httpClient)
         {
         }
 

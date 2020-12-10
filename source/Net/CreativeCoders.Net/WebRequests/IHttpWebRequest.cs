@@ -2,9 +2,13 @@
 using System.IO;
 using System.Net;
 using System.Net.Security;
+using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.WebRequests {
-    public interface IHttpWebRequest {
+namespace CreativeCoders.Net.WebRequests
+{
+    [PublicAPI]
+    public interface IHttpWebRequest
+    {
         ICredentials Credentials { get; set; }
 
         string Method { get; set; }

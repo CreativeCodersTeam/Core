@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CreativeCoders.Net.Http;
+using System.Net.Http;
 using CreativeCoders.Net.WebApi.Execution.Requests;
 using CreativeCoders.Net.WebApi.Specification;
 
@@ -13,7 +13,7 @@ namespace CreativeCoders.Net.WebApi.Execution
 
         private readonly IList<IApiRequestHandler> _requestHandlers;
 
-        public ApiMethodExecutor(ApiStructure apiStructure, IHttpClient httpClient)
+        public ApiMethodExecutor(ApiStructure apiStructure, HttpClient httpClient)
         {
             _apiStructure = apiStructure;
 

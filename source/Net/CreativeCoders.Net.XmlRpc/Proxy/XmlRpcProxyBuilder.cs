@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Net.Http;
 using System.Text;
 using CreativeCoders.Core;
 using CreativeCoders.DynamicCode.Proxying;
-using CreativeCoders.Net.Http;
 using CreativeCoders.Net.XmlRpc.Client;
 using CreativeCoders.Net.XmlRpc.Proxy.Analyzing;
 using JetBrains.Annotations;
@@ -15,7 +15,7 @@ namespace CreativeCoders.Net.XmlRpc.Proxy
     {
         private readonly IProxyBuilder<T> _proxyBuilder;
 
-        private readonly IClassFactory<IHttpClient> _httpClientFactory;
+        private readonly IHttpClientFactory _httpClientFactory;
         
         private string _url;
         
@@ -23,7 +23,7 @@ namespace CreativeCoders.Net.XmlRpc.Proxy
         
         private string _contentType;
 
-        public XmlRpcProxyBuilder(IProxyBuilder<T> proxyBuilder, IClassFactory<IHttpClient> httpClientFactory)
+        public XmlRpcProxyBuilder(IProxyBuilder<T> proxyBuilder, IHttpClientFactory httpClientFactory)
         {
             Ensure.IsNotNull(proxyBuilder, nameof(proxyBuilder));
             Ensure.IsNotNull(httpClientFactory, nameof(httpClientFactory));
@@ -75,7 +75,7 @@ namespace CreativeCoders.Net.XmlRpc.Proxy
             {
                 return _proxyBuilder.Build(
                     new XmlRpcProxyInterceptor<T>(
-                        new XmlRpcClient(_httpClientFactory.Create())
+                        new XmlRpcClient(_httpClientFactory.CreateClient())
                         {
                             Url = _url,
                             XmlEncoding = _encoding,

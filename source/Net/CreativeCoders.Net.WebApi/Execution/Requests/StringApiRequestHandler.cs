@@ -1,12 +1,12 @@
-﻿using System.Threading.Tasks;
-using CreativeCoders.Net.Http;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution.Requests
 {
     public class StringApiRequestHandler : ApiRequestHandlerBase
     {
-        public StringApiRequestHandler(IHttpClient httpClient) : base(ApiMethodReturnType.String, httpClient)
+        public StringApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.String, httpClient)
         {
         }
 
