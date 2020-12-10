@@ -78,7 +78,7 @@ pipeline {
             steps {
                 echo "Deploy NuGet packages to NuGet.org repository"
 
-                nuke(target: 'deploytonuget', devnugetsource: 'https://api.nuget.org/v3/index.json', devnugetapikey: env.NUGET_ORG_API_KEY)
+                nuke(target: 'deploytonuget', nugetsource: 'https://api.nuget.org/v3/index.json', nugetapikey: env.NUGET_ORG_API_KEY)
             }            
         }
     }
