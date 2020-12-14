@@ -33,7 +33,7 @@ namespace CreativeCoders.Net.XmlRpc.Writer
 
         public Task WriteAsync(Stream outputStream, T data)
         {
-            return WriteAsync(outputStream, data, Encoding.GetEncoding("UTF-8"));
+            return WriteAsync(outputStream, data, Encoding.UTF8);
         }
 
         protected abstract XDocument CreateXml(T xmlRpcRequest, Encoding encoding);

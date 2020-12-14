@@ -37,6 +37,7 @@ namespace CreativeCoders.Net.UnitTests.XmlRpc.Writer.Values
 
             var valueElement = xmlElement.XPathSelectElement("value/dateTime.iso8601");
 
+            Assert.NotNull(valueElement);
             Assert.Equal(now.ToString("yyyyMMddTHH:mm:ss"), valueElement.Value);
         }
     }

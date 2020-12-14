@@ -1,16 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0-windows</TargetFramework>
         <Authors>CreativeCoders</Authors>
-        <LangVersion>latest</LangVersion>
         <UseWPF>true</UseWPF>
         <Description>WPF specific base classes and type for MVVM</Description>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
+      <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.Net.XmlRpc
+﻿using JetBrains.Annotations;
+
+namespace CreativeCoders.Net.XmlRpc
 {
+    [PublicAPI]
     public static class XmlRpcConstants
     {
         public const string DateTimeFormat = "yyyyMMddTHH:mm:ss";

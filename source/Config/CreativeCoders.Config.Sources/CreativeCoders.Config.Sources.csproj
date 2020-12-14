@@ -1,20 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <Authors>CreativeCoders</Authors>
-    <LangVersion>latest</LangVersion>
-    <Description>Configuration sources implementation for CreativeCoders.Config</Description>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<Authors>CreativeCoders</Authors>
+		<Description>Configuration sources implementation for CreativeCoders.Config</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-    <ProjectReference Include="..\CreativeCoders.Config.Base\CreativeCoders.Config.Base.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+		<ProjectReference Include="..\CreativeCoders.Config.Base\CreativeCoders.Config.Base.csproj" />
+	</ItemGroup>
 
 </Project>

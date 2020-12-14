@@ -1,19 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Authors>CreativeCoders</Authors>
-    <LangVersion>latest</LangVersion>
-    <Description>ASP.NET Core implementation of Http server for CreativeCoders.Net.Servers.Http</Description>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<Authors>CreativeCoders</Authors>
+		<Description>ASP.NET Core implementation of Http server for CreativeCoders.Net.Servers.Http</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CreativeCoders.Net\CreativeCoders.Net.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CreativeCoders.Net\CreativeCoders.Net.csproj" />
+	</ItemGroup>
 
 </Project>

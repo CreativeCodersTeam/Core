@@ -1,4 +1,6 @@
-﻿namespace CreativeCoders.Net.WebApi.Definition
+﻿using JetBrains.Annotations;
+
+namespace CreativeCoders.Net.WebApi.Definition
 {
     public enum SerializationKind
     {

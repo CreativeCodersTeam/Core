@@ -13,12 +13,6 @@ namespace CreativeCoders.CodeCompilation.Roslyn
 
         private readonly IList<CompilationMessage> _messages;
 
-        public RoslynCompilationResult()
-        {
-            _messages = new List<CompilationMessage>();
-            Success = false;
-        }
-
         public RoslynCompilationResult(CSharpCompilation compilation, ICompilationOutputData outputData)
         {
             Ensure.IsNotNull(compilation, nameof(compilation));

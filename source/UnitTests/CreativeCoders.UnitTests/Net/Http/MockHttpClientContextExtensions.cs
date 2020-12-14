@@ -32,7 +32,7 @@ namespace CreativeCoders.UnitTests.Net.Http
             return new RecordedRequestVerifier(
                 httpClientContext.RecordedRequests
                     .Where(x =>
-                        PatternMatcher.MatchesPattern(x.RequestMessage.RequestUri.ToString(), uriPattern)).ToList());
+                        PatternMatcher.MatchesPattern(x.RequestMessage.RequestUri.ToStringSafe(), uriPattern)).ToList());
         }
     }
 }

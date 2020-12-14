@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.Core.UnitTests.Comparing
+﻿using JetBrains.Annotations;
+
+namespace CreativeCoders.Core.UnitTests.Comparing
 {
+    [PublicAPI]
     public class ComparerTestObject
     {
         public int IntValue1 { get; set; }

@@ -35,9 +35,9 @@ namespace CreativeCoders.Net.Http.Auth.Jwt
                     TokenRequestUri,
                     new JwtTokenRequest
                     {
-                        UserName = loginCredentials.UserName,
-                        Password = loginCredentials.Password,
-                        Domain = loginCredentials.Domain
+                        UserName = loginCredentials?.UserName,
+                        Password = loginCredentials?.Password,
+                        Domain = loginCredentials?.Domain
                     })
                 .ConfigureAwait(false);
         }

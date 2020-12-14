@@ -1,19 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Authors>CreativeCoders</Authors>
-    <LangVersion>latest</LangVersion>
-    <UseWPF>true</UseWPF>
-    <Description>Sekeltor framework for WPF MVVM applications </Description>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<Authors>CreativeCoders</Authors>
+		<UseWPF>true</UseWPF>
+		<Description>Sekeltor framework for WPF MVVM applications </Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-    <ProjectReference Include="..\..\Di\CreativeCoders.Di\CreativeCoders.Di.csproj" />
-    <ProjectReference Include="..\CreativeCoders.Mvvm.Wpf\CreativeCoders.Mvvm.Wpf.csproj" />
-    <ProjectReference Include="..\CreativeCoders.Mvvm\CreativeCoders.Mvvm.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+		<ProjectReference Include="..\..\Di\CreativeCoders.Di\CreativeCoders.Di.csproj" />
+		<ProjectReference Include="..\CreativeCoders.Mvvm.Wpf\CreativeCoders.Mvvm.Wpf.csproj" />
+		<ProjectReference Include="..\CreativeCoders.Mvvm\CreativeCoders.Mvvm.csproj" />
+	</ItemGroup>
 
 </Project>

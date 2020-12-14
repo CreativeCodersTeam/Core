@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Net.Http;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Net.WebApi.Definition
 {
+    [PublicAPI]
     [AttributeUsage(AttributeTargets.Method)]
     public abstract class ApiMethodBaseAttribute : Attribute
     {

@@ -15,7 +15,7 @@ namespace CreativeCoders.Logging.Log4net
         {
             if (log.Logger.IsEnabledFor(level))
             {
-                log.Logger.Log(GetDeclaringType(), level, message, exception);
+                log.Logger.Log(GetDeclaringType() ?? typeof(void), level, message, exception);
             }
         }
 
@@ -57,7 +57,7 @@ namespace CreativeCoders.Logging.Log4net
 
         private static Type GetDeclaringType()
         {
-            return MethodBase.GetCurrentMethod().DeclaringType;
+            return MethodBase.GetCurrentMethod()?.DeclaringType;
         }
     }
 }

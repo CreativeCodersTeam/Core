@@ -7,9 +7,5 @@ namespace CreativeCoders.Net.WebApi.Exceptions
         protected ApiException(string message) : base(message)
         {
         }
-
-        protected ApiException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
     }
 }

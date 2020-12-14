@@ -1,19 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <Authors>CreativeCoders</Authors>
-    <LangVersion>latest</LangVersion>
-    <Description>Nlog logger implementation for CreativeCoders.Core.Logging</Description>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<Authors>CreativeCoders</Authors>
+		<Description>Nlog logger implementation for CreativeCoders.Core.Logging</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="NLog" Version="4.7.5" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="NLog" Version="4.7.6" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+	</ItemGroup>
 
 </Project>

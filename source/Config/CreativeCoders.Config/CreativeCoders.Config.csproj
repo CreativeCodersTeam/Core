@@ -1,17 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <Authors>CreativeCoders</Authors>
-    <LangVersion>latest</LangVersion>
-    <Description>Default implementation of configuration system for CreativeCoders.Config.Base</Description>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<Authors>CreativeCoders</Authors>
+		<Description>Default implementation of configuration system for CreativeCoders.Config.Base</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-    <ProjectReference Include="..\..\Di\CreativeCoders.Di\CreativeCoders.Di.csproj" />
-    <ProjectReference Include="..\CreativeCoders.Config.Base\CreativeCoders.Config.Base.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+		<ProjectReference Include="..\..\Di\CreativeCoders.Di\CreativeCoders.Di.csproj" />
+		<ProjectReference Include="..\CreativeCoders.Config.Base\CreativeCoders.Config.Base.csproj" />
+	</ItemGroup>
 
 </Project>

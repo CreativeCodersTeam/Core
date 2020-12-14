@@ -7,9 +7,5 @@ namespace CreativeCoders.Net.XmlRpc.Exceptions
         protected XmlRpcException(string message) : base(message)
         {
         }
-
-        protected XmlRpcException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
     }
 }

@@ -4,9 +4,11 @@ using System.Runtime.Caching;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Caching;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Caching.SystemRuntimeCaching
 {
+    [PublicAPI]
     public class SystemRuntimeCache<TKey, TValue> : ICache<TKey, TValue>
     {
         private readonly ObjectCache _cache;

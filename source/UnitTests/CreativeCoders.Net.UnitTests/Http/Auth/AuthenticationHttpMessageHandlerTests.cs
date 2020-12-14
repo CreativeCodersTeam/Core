@@ -104,8 +104,8 @@ namespace CreativeCoders.Net.UnitTests.Http.Auth
 
             var authHeader = request.RequestMessage.Headers.Authorization;
 
-            Assert.Equal(expectedScheme, authHeader.Scheme);
-            Assert.Equal(expectedBearer, authHeader.Parameter);
+            Assert.Equal(expectedScheme, authHeader?.Scheme);
+            Assert.Equal(expectedBearer, authHeader?.Parameter);
         }
 
         [Fact]

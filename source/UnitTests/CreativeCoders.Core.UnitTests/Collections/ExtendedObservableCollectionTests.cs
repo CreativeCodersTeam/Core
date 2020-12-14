@@ -49,6 +49,8 @@ namespace CreativeCoders.Core.UnitTests.Collections
 
             Assert.Single(collectionChangedEventArgsList);
             Assert.Equal(NotifyCollectionChangedAction.Add, collectionChangedEventArgsList[0].Action);
+            
+            Assert.NotNull(collectionChangedEventArgsList[0].NewItems);
             Assert.Single(collectionChangedEventArgsList[0].NewItems);
             Assert.Equal(123, collectionChangedEventArgsList[0].NewItems[0]);
         }
@@ -71,8 +73,13 @@ namespace CreativeCoders.Core.UnitTests.Collections
             Assert.Equal(2, collectionChangedEventArgsList.Count);
             Assert.Equal(NotifyCollectionChangedAction.Add, collectionChangedEventArgsList[0].Action);
             Assert.Equal(NotifyCollectionChangedAction.Add, collectionChangedEventArgsList[1].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].NewItems);
             Assert.Single(collectionChangedEventArgsList[0].NewItems);
+
+            Assert.NotNull(collectionChangedEventArgsList[1].NewItems);
             Assert.Single(collectionChangedEventArgsList[1].NewItems);
+
             Assert.Equal(123, collectionChangedEventArgsList[0].NewItems[0]);
             Assert.Equal(456, collectionChangedEventArgsList[1].NewItems[0]);
         }
@@ -224,7 +231,10 @@ namespace CreativeCoders.Core.UnitTests.Collections
 
             Assert.Single(collectionChangedEventArgsList);
             Assert.Equal(NotifyCollectionChangedAction.Add, collectionChangedEventArgsList[0].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].NewItems);
             Assert.Single(collectionChangedEventArgsList[0].NewItems);
+            
             Assert.Equal(0, collectionChangedEventArgsList[0].NewItems[0]);
         }
 
@@ -243,7 +253,10 @@ namespace CreativeCoders.Core.UnitTests.Collections
 
             Assert.Single(collectionChangedEventArgsList);
             Assert.Equal(NotifyCollectionChangedAction.Add, collectionChangedEventArgsList[0].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].NewItems);
             Assert.Single(collectionChangedEventArgsList[0].NewItems);
+
             Assert.Equal(0, collectionChangedEventArgsList[0].NewItems[0]);
         }
 
@@ -262,7 +275,10 @@ namespace CreativeCoders.Core.UnitTests.Collections
 
             Assert.Single(collectionChangedEventArgsList);
             Assert.Equal(NotifyCollectionChangedAction.Add, collectionChangedEventArgsList[0].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].NewItems);
             Assert.Single(collectionChangedEventArgsList[0].NewItems);
+
             Assert.Equal(0, collectionChangedEventArgsList[0].NewItems[0]);
         }
 
@@ -280,9 +296,15 @@ namespace CreativeCoders.Core.UnitTests.Collections
             
             Assert.Single(collectionChangedEventArgsList);
             Assert.Equal(NotifyCollectionChangedAction.Move, collectionChangedEventArgsList[0].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].NewItems);
             Assert.Single(collectionChangedEventArgsList[0].NewItems);
+
             Assert.Equal(456, collectionChangedEventArgsList[0].NewItems[0]);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].OldItems);
             Assert.Single(collectionChangedEventArgsList[0].OldItems);
+
             Assert.Equal(456, collectionChangedEventArgsList[0].OldItems[0]);
             Assert.Equal(1, collectionChangedEventArgsList[0].OldStartingIndex);
             Assert.Equal(2, collectionChangedEventArgsList[0].NewStartingIndex);
@@ -304,17 +326,29 @@ namespace CreativeCoders.Core.UnitTests.Collections
             Assert.Equal(2, collectionChangedEventArgsList.Count);
             
             Assert.Equal(NotifyCollectionChangedAction.Move, collectionChangedEventArgsList[0].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].NewItems);
             Assert.Single(collectionChangedEventArgsList[0].NewItems);
+
             Assert.Equal(456, collectionChangedEventArgsList[0].NewItems[0]);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].OldItems);
             Assert.Single(collectionChangedEventArgsList[0].OldItems);
+
             Assert.Equal(456, collectionChangedEventArgsList[0].OldItems[0]);
             Assert.Equal(1, collectionChangedEventArgsList[0].OldStartingIndex);
             Assert.Equal(2, collectionChangedEventArgsList[0].NewStartingIndex);
             
             Assert.Equal(NotifyCollectionChangedAction.Move, collectionChangedEventArgsList[1].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[1].NewItems);
             Assert.Single(collectionChangedEventArgsList[1].NewItems);
+
             Assert.Equal(246, collectionChangedEventArgsList[1].NewItems[0]);
+
+            Assert.NotNull(collectionChangedEventArgsList[1].OldItems);
             Assert.Single(collectionChangedEventArgsList[1].OldItems);
+
             Assert.Equal(246, collectionChangedEventArgsList[1].OldItems[0]);
             Assert.Equal(4, collectionChangedEventArgsList[1].OldStartingIndex);
             Assert.Equal(0, collectionChangedEventArgsList[1].NewStartingIndex);
@@ -335,7 +369,10 @@ namespace CreativeCoders.Core.UnitTests.Collections
 
             Assert.Single(collectionChangedEventArgsList);
             Assert.Equal(NotifyCollectionChangedAction.Remove, collectionChangedEventArgsList[0].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].OldItems);
             Assert.Single(collectionChangedEventArgsList[0].OldItems);
+
             Assert.Equal(123, collectionChangedEventArgsList[0].OldItems[0]);
         }
 
@@ -356,11 +393,17 @@ namespace CreativeCoders.Core.UnitTests.Collections
             Assert.Equal(2, collectionChangedEventArgsList.Count);
 
             Assert.Equal(NotifyCollectionChangedAction.Remove, collectionChangedEventArgsList[0].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].OldItems);
             Assert.Single(collectionChangedEventArgsList[0].OldItems);
+
             Assert.Equal(123, collectionChangedEventArgsList[0].OldItems[0]);
 
             Assert.Equal(NotifyCollectionChangedAction.Remove, collectionChangedEventArgsList[1].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[1].OldItems);
             Assert.Single(collectionChangedEventArgsList[1].OldItems);
+
             Assert.Equal(456, collectionChangedEventArgsList[1].OldItems[0]);
         }
 
@@ -380,7 +423,10 @@ namespace CreativeCoders.Core.UnitTests.Collections
             
             Assert.Single(collectionChangedEventArgsList);
             Assert.Equal(NotifyCollectionChangedAction.Remove, collectionChangedEventArgsList[0].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].OldItems);
             Assert.Single(collectionChangedEventArgsList[0].OldItems);
+
             Assert.Equal(456, collectionChangedEventArgsList[0].OldItems[0]);
         }
         
@@ -402,11 +448,17 @@ namespace CreativeCoders.Core.UnitTests.Collections
             Assert.Equal(2, collectionChangedEventArgsList.Count);
 
             Assert.Equal(NotifyCollectionChangedAction.Remove, collectionChangedEventArgsList[0].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].OldItems);
             Assert.Single(collectionChangedEventArgsList[0].OldItems);
+
             Assert.Equal(789, collectionChangedEventArgsList[0].OldItems[0]);
 
             Assert.Equal(NotifyCollectionChangedAction.Remove, collectionChangedEventArgsList[1].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[1].OldItems);
             Assert.Single(collectionChangedEventArgsList[1].OldItems);
+
             Assert.Equal(123, collectionChangedEventArgsList[1].OldItems[0]);
         }
 
@@ -424,9 +476,15 @@ namespace CreativeCoders.Core.UnitTests.Collections
             
             Assert.Single(collectionChangedEventArgsList);
             Assert.Equal(NotifyCollectionChangedAction.Replace, collectionChangedEventArgsList[0].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].OldItems);
             Assert.Single(collectionChangedEventArgsList[0].OldItems);
+
             Assert.Equal(135, collectionChangedEventArgsList[0].OldItems[0]);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].NewItems);
             Assert.Single(collectionChangedEventArgsList[0].NewItems);
+
             Assert.Equal(987, collectionChangedEventArgsList[0].NewItems[0]);
         }
 
@@ -599,8 +657,13 @@ namespace CreativeCoders.Core.UnitTests.Collections
             Assert.Equal(2, collectionChangedEventArgsList.Count);
             Assert.Equal(NotifyCollectionChangedAction.Add, collectionChangedEventArgsList[0].Action);
             Assert.Equal(NotifyCollectionChangedAction.Add, collectionChangedEventArgsList[1].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].NewItems);
             Assert.Single(collectionChangedEventArgsList[0].NewItems);
+
+            Assert.NotNull(collectionChangedEventArgsList[1].NewItems);
             Assert.Single(collectionChangedEventArgsList[1].NewItems);
+
             Assert.Equal(123, collectionChangedEventArgsList[0].NewItems[0]);
             Assert.Equal(456, collectionChangedEventArgsList[1].NewItems[0]);
         }
@@ -623,8 +686,13 @@ namespace CreativeCoders.Core.UnitTests.Collections
             Assert.Equal(2, collectionChangedEventArgsList.Count);
             Assert.Equal(NotifyCollectionChangedAction.Add, collectionChangedEventArgsList[0].Action);
             Assert.Equal(NotifyCollectionChangedAction.Add, collectionChangedEventArgsList[1].Action);
+
+            Assert.NotNull(collectionChangedEventArgsList[0].NewItems);
             Assert.Single(collectionChangedEventArgsList[0].NewItems);
+
+            Assert.NotNull(collectionChangedEventArgsList[1].NewItems);
             Assert.Single(collectionChangedEventArgsList[1].NewItems);
+
             Assert.Equal(123, collectionChangedEventArgsList[0].NewItems[0]);
             Assert.Equal(456, collectionChangedEventArgsList[1].NewItems[0]);
         }

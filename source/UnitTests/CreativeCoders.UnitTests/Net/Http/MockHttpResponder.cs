@@ -98,7 +98,7 @@ namespace CreativeCoders.UnitTests.Net.Http
                 throw new InvalidOperationException("Return() was not configured");
             }
 
-            if (_uriPattern.IsNotNullOrEmpty() && !PatternMatcher.MatchesPattern(requestMessage.RequestUri.ToString(), _uriPattern))
+            if (_uriPattern.IsNotNullOrEmpty() && !PatternMatcher.MatchesPattern(requestMessage.RequestUri.ToStringSafe(), _uriPattern))
             {
                 return Task.FromResult<HttpResponseMessage>(null);
             }

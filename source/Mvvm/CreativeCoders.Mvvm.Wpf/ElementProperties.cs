@@ -1,7 +1,9 @@
 ﻿using System.Windows;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Mvvm.Wpf
 {
+    [PublicAPI]
     public static class ElementProperties
     {
         public static readonly DependencyProperty ObjectLinkProperty = DependencyProperty.RegisterAttached(

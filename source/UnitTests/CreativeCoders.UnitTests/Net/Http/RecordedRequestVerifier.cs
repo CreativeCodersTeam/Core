@@ -34,7 +34,7 @@ namespace CreativeCoders.UnitTests.Net.Http
 
         public IRecordedRequestVerifier WithContentType(string contentType)
         {
-            return RequestMeets(requestMessage => requestMessage.Content.Headers.ContentType.MediaType == contentType,
+            return RequestMeets(requestMessage => requestMessage.Content?.Headers.ContentType?.MediaType == contentType,
                 $"Content type '{contentType}' not found");
         }
 
