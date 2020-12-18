@@ -1,4 +1,13 @@
-﻿[*.{cs,vb}]
+﻿[*]
+insert_final_newline = true
+trim_trailing_whitespace = true
 
+[*.md]
+insert_final_newline = true
+trim_trailing_whitespace = false
+
+[*.{cs,vb}]
+insert_final_newline = true
+trim_trailing_whitespace = true
 # IDE0060: Remove unused parameter
 dotnet_diagnostic.IDE0060.severity = warning
