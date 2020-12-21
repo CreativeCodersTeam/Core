@@ -19,7 +19,7 @@ namespace CreativeCoders.Windows.Window
         {
             var windows = new List<IWindow>();
 
-            User32Api.EnumChildWindows(IntPtr.Zero, (hWnd, param) =>
+            User32Api.EnumChildWindows(IntPtr.Zero, (hWnd, _) =>
             {
                 windows.Add(new Win32Window(hWnd));
 

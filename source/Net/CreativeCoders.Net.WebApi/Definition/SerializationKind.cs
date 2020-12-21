@@ -2,6 +2,7 @@
 
 namespace CreativeCoders.Net.WebApi.Definition
 {
+    [PublicAPI]
     public enum SerializationKind
     {
         ToString,

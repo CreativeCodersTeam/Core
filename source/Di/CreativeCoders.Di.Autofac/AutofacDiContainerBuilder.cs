@@ -42,7 +42,7 @@ namespace CreativeCoders.Di.Autofac
         public override IDiContainerBuilder AddTransient<TService>(Func<IDiContainer, TService> implementationFactory)
         {
             _containerBuilder
-                .Register((c, p) => implementationFactory(c.Resolve<IDiContainer>()))
+                .Register((c, _) => implementationFactory(c.Resolve<IDiContainer>()))
                 .As<TService>()
                 .InstancePerDependency();
 
@@ -72,7 +72,7 @@ namespace CreativeCoders.Di.Autofac
         public override IDiContainerBuilder AddScoped<TService>(Func<IDiContainer, TService> implementationFactory)
         {
             _containerBuilder
-                .Register((c, p) => implementationFactory(c.Resolve<IDiContainer>()))
+                .Register((c, _) => implementationFactory(c.Resolve<IDiContainer>()))
                 .As<TService>()
                 .InstancePerLifetimeScope();
 
@@ -102,7 +102,7 @@ namespace CreativeCoders.Di.Autofac
         public override IDiContainerBuilder AddSingleton<TService>(Func<IDiContainer, TService> implementationFactory)
         {
             _containerBuilder
-                .Register((c, p) => implementationFactory(c.Resolve<IDiContainer>()))
+                .Register((c, _) => implementationFactory(c.Resolve<IDiContainer>()))
                 .As<TService>()
                 .SingleInstance();
 

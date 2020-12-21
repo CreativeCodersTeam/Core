@@ -18,12 +18,12 @@ namespace CreativeCoders.Net.XmlRpc.Model.Values.Converters
         {
             _valueMappings = new Dictionary<Type, Func<Type, XmlRpcValue, object>>
             {
-                {typeof(int), (targetType, xmlRpcValue) => xmlRpcValue.GetValue<int>()},
-                {typeof(string), (targetType, xmlRpcValue) => xmlRpcValue.GetValue<string>()},
-                {typeof(double), (targetType, xmlRpcValue) => xmlRpcValue.GetValue<double>()},
-                {typeof(DateTime), (targetType, xmlRpcValue) => xmlRpcValue.GetValue<DateTime>()},
-                {typeof(bool), (targetType, xmlRpcValue) => xmlRpcValue.GetValue<bool>()},
-                {typeof(byte[]), (targetType, xmlRpcValue) => xmlRpcValue.GetValue<byte[]>()},
+                {typeof(int), (_, xmlRpcValue) => xmlRpcValue.GetValue<int>()},
+                {typeof(string), (_, xmlRpcValue) => xmlRpcValue.GetValue<string>()},
+                {typeof(double), (_, xmlRpcValue) => xmlRpcValue.GetValue<double>()},
+                {typeof(DateTime), (_, xmlRpcValue) => xmlRpcValue.GetValue<DateTime>()},
+                {typeof(bool), (_, xmlRpcValue) => xmlRpcValue.GetValue<bool>()},
+                {typeof(byte[]), (_, xmlRpcValue) => xmlRpcValue.GetValue<byte[]>()},
                 {typeof(IDictionary), ConvertToDictionary},
                 {typeof(IEnumerable), ConvertToEnumerable},
                 {typeof(object), ConvertToObject}
@@ -113,7 +113,7 @@ namespace CreativeCoders.Net.XmlRpc.Model.Values.Converters
         {
             if (elementType == typeof(object))
             {
-                return (valueToConvert, valueType) =>
+                return (valueToConvert, _) =>
                     Convert(valueToConvert, valueToConvert.Data.GetType());
             }
 

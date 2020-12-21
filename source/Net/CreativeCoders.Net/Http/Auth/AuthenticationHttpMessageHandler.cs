@@ -27,7 +27,7 @@ namespace CreativeCoders.Net.Http.Auth
                     x.StatusCode == HttpStatusCode.Unauthorized &&
                     _authenticationProvider?.ClientAuthenticator?.CanAuthenticate(request.RequestUri) == true)
                 .RetryAsync(1,
-                    async (result, i) => await RetryAsync(request))
+                    async (_, _) => await RetryAsync(request))
                 .ExecuteAsync(async () => await base.SendAsync(request, cancellationToken));
         }
 

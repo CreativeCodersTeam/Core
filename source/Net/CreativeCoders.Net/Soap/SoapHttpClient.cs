@@ -106,7 +106,7 @@ namespace CreativeCoders.Net.Soap
         {
             if (AllowUntrustedCertificates)
             {
-                httpWebRequest.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+                httpWebRequest.ServerCertificateValidationCallback = (_, _, _, _) => true;
             }
         }
 

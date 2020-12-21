@@ -31,11 +31,6 @@ namespace CreativeCoders.Net.XmlRpc.Writer
             await writer.FlushAsync().ConfigureAwait(false);
         }
 
-        public Task WriteAsync(Stream outputStream, T data)
-        {
-            return WriteAsync(outputStream, data, Encoding.UTF8);
-        }
-
         protected abstract XDocument CreateXml(T xmlRpcRequest, Encoding encoding);
 
         protected IValueWriters Writers { get; }

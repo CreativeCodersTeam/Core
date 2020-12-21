@@ -5,7 +5,7 @@ namespace CreativeCoders.Core.ObjectLinking
 {
     public class PropertyValueCopier
     {
-        private readonly SynchronizedValue<bool> _isInCopyProperty = new SynchronizedValue<bool>();
+        private readonly SynchronizedValue<bool> _isInCopyProperty = new();
 
         public void CopyPropertyValue(object source, PropertyInfo sourceProperty, object target, PropertyInfo targetProperty, bool backDirection, PropertyLinkInfo info)
         {

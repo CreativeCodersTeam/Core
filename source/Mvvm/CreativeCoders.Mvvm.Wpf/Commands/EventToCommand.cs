@@ -16,7 +16,7 @@ namespace CreativeCoders.Mvvm.Wpf.Commands
 
         public static readonly DependencyProperty CommandParameterProperty =
             DependencyProperty.Register("CommandParameter", typeof(object), typeof(EventToCommand),
-                new PropertyMetadata(null, (s, e) =>
+                new PropertyMetadata(null, (s, _) =>
                 {
                     var sender = s as EventToCommand;
 
@@ -34,7 +34,7 @@ namespace CreativeCoders.Mvvm.Wpf.Commands
 
         public static readonly DependencyProperty MustToggleIsEnabledProperty =
             DependencyProperty.Register("MustToggleIsEnabled", typeof(bool), typeof(EventToCommand),
-                new PropertyMetadata(false, (s, e) =>
+                new PropertyMetadata(false, (s, _) =>
                 {
                     var sender = s as EventToCommand;
 

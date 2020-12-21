@@ -40,7 +40,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int>();
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             collection.Add(123);
 
@@ -61,7 +61,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int>();
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             collection.Add(123);
             collection.Add(456);
@@ -90,7 +90,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int>();
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             collection.AddRange(new[] {123});
 
@@ -107,7 +107,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int>();
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             collection.AddRange(new[] {123, 456});
 
@@ -125,7 +125,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int>();
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             collection.Clear();
 
@@ -139,7 +139,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int> {123, 456};
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             Assert.Equal(2, collection.Count);
 
@@ -222,7 +222,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int> {123, 456, 789};
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             collection.Insert(0, 0);
 
@@ -244,7 +244,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int> {123, 456, 789};
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             collection.Insert(3, 0);
 
@@ -266,7 +266,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int> {123, 456, 789};
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             collection.Insert(1, 0);
 
@@ -288,7 +288,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int> {123, 456, 789};
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
             
             collection.Move(1, 2);
             
@@ -316,7 +316,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int> {123, 456, 789, 135, 246};
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
             
             collection.Move(1, 2);
             collection.Move(4, 0);
@@ -360,7 +360,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int> {123, 456};
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             collection.Remove(123);
 
@@ -382,7 +382,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int> {123, 456, 789};
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             collection.Remove(123);
             collection.Remove(456);
@@ -413,7 +413,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int> {123, 456, 789};
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
             
             collection.RemoveAt(1);
             
@@ -436,7 +436,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int> {135, 123, 456, 789};
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
             
             collection.RemoveAt(3);
             collection.RemoveAt(1);
@@ -468,7 +468,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int> {135, 123, 456, 789};
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             collection[0] = 987;
             
@@ -494,7 +494,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int> {135, 123, 456, 789};
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
             
             collection.BeginUpdate();
             collection.Add(42);
@@ -508,7 +508,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int> {135, 123, 456, 789};
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
             
             collection.BeginUpdate();
             collection.Add(42);
@@ -527,7 +527,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int>();
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
             
             collection.BeginUpdate();
             collection.EndUpdate();
@@ -542,7 +542,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int>();
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
             
             collection.BeginUpdate();
             collection.BeginUpdate();
@@ -559,7 +559,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int>();
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
             
             collection.BeginUpdate();
             
@@ -586,7 +586,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int>();
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             using (collection.Update())
             {
@@ -601,7 +601,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int>();
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             using (collection.Update())
             {
@@ -645,7 +645,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int>(new TestSynchronizationContext(), SynchronizationMethod.Post, () => new LockSlimLockingMechanism());
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             collection.Add(123);
             collection.Add(456);
@@ -674,7 +674,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
             var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current, SynchronizationMethod.None, () => new LockSlimLockingMechanism());
-            collection.CollectionChanged += (sender, args) => collectionChangedEventArgsList.Add(args);
+            collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
             collection.Add(123);
             collection.Add(456);
@@ -701,7 +701,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
         public void Reentrancy_AddNewItemOnCollectionChanged_ItemIsAdded()
         {
             var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current, SynchronizationMethod.None, () => new LockSlimLockingMechanism());
-            collection.CollectionChanged += (sender, args) =>
+            collection.CollectionChanged += (_, _) =>
             {
                 if (collection.Count == 1)
                 {
@@ -719,14 +719,14 @@ namespace CreativeCoders.Core.UnitTests.Collections
         public void Reentrancy_AddNewItemOnCollectionChangedWithTwoEventHandler_ExceptionIsThrown()
         {
             var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current, SynchronizationMethod.None, () => new LockSlimLockingMechanism());
-            collection.CollectionChanged += (sender, args) =>
+            collection.CollectionChanged += (_, _) =>
             {
                 if (collection.Count == 1)
                 {
                     Assert.Throws<InvalidOperationException>(() => collection.Add(collection.Count + 1));
                 }
             };
-            collection.CollectionChanged += (sender, args) =>
+            collection.CollectionChanged += (_, _) =>
             {
                 if (collection.Count == 1)
                 {

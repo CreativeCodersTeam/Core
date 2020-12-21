@@ -5,12 +5,10 @@
     {
         public object Convert(object value, object parameter)
         {
-            if (!(value is T))
+            if (!(value is T structValue))
             {
                 return null;
             }
-            
-            var structValue = (T) value;
             
             T? nullableValue = structValue;
             

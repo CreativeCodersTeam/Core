@@ -118,7 +118,7 @@ namespace CreativeCoders.Net.UnitTests.UnitTests.Net.Http
 
             context
                 .CallShouldBeMade("http://test.com/")
-                .RequestMeets((request, cancellationToken) => !cancellationToken.IsCancellationRequested,
+                .RequestMeets((_, cancellationToken) => !cancellationToken.IsCancellationRequested,
                     "IsCancellationRequested is false");
         }
 
@@ -145,7 +145,7 @@ namespace CreativeCoders.Net.UnitTests.UnitTests.Net.Http
 
             context
                 .CallShouldBeMade("http://test.com/")
-                .RequestMeets((request, cancellationToken) => cancellationToken.IsCancellationRequested,
+                .RequestMeets((_, cancellationToken) => cancellationToken.IsCancellationRequested,
                     "IsCancellationRequested must be true");
         }
 

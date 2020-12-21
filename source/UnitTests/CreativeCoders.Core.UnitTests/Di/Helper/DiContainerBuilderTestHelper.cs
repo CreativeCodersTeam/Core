@@ -28,7 +28,7 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
                 implementationTypes);
 
             var implementationFactories = new Func<IDiContainer, ITestService>[]
-                {c => new TestService2(), c => new TestServiceWithNoCtorParam()};
+                {_ => new TestService2(), _ => new TestServiceWithNoCtorParam()};
 
             TestCollectionRegistration(createBuilderFunc,
                 builder => builder.AddTransientCollection(implementationFactories),
@@ -51,7 +51,7 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
                 implementationTypes);
 
             var implementationFactories = new Func<IDiContainer, ITestService>[]
-                {c => new TestService2(), c => new TestServiceWithNoCtorParam()};
+                {_ => new TestService2(), _ => new TestServiceWithNoCtorParam()};
 
             TestCollectionRegistration(createBuilderFunc,
                 builder => builder.AddScopedCollection(implementationFactories),
@@ -74,7 +74,7 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
                 implementationTypes);
 
             var implementationFactories = new Func<IDiContainer, ITestService>[]
-                {c => new TestService2(), c => new TestServiceWithNoCtorParam()};
+                {_ => new TestService2(), _ => new TestServiceWithNoCtorParam()};
 
             TestCollectionRegistration(createBuilderFunc,
                 builder => builder.AddSingletonCollection(implementationFactories),
@@ -82,7 +82,9 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
                 implementationTypes);
         }
 
-        private void TestCollectionRegistration(Func<IDiContainerBuilder> createBuilderFunc, Action<IDiContainerBuilder> addRegistration, Action<IDiContainer, Type[]> checkServices, Type[] implementationTypes)
+        private void TestCollectionRegistration(Func<IDiContainerBuilder> createBuilderFunc,
+            Action<IDiContainerBuilder> addRegistration, Action<IDiContainer, Type[]> checkServices,
+            Type[] implementationTypes)
         {
             var builder = createBuilderFunc();
 
@@ -159,7 +161,7 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
                 builder => builder.AddTransient(typeof(ITestService), typeof(TestServiceWithNoCtorParam)),
                 CheckTransientService<ITestService, TestServiceWithNoCtorParam>);
             TestRegistration(createBuilderFunc,
-                builder => builder.AddTransient<ITestService>(c => new TestServiceWithNoCtorParam()),
+                builder => builder.AddTransient<ITestService>(_ => new TestServiceWithNoCtorParam()),
                 CheckTransientService<ITestService, TestServiceWithNoCtorParam>);
         }
 
@@ -176,7 +178,7 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
                 builder => builder.AddSingleton(typeof(ITestService), typeof(TestServiceWithNoCtorParam)),
                 CheckSingletonService<ITestService, TestServiceWithNoCtorParam>);
             TestRegistration(createBuilderFunc,
-                builder => builder.AddSingleton<ITestService>(c => new TestServiceWithNoCtorParam()),
+                builder => builder.AddSingleton<ITestService>(_ => new TestServiceWithNoCtorParam()),
                 CheckSingletonService<ITestService, TestServiceWithNoCtorParam>);
         }
 
@@ -195,7 +197,7 @@ namespace CreativeCoders.Core.UnitTests.Di.Helper
                 builder => builder.AddScoped(typeof(ITestService), typeof(TestServiceWithNoCtorParam)),
                 CheckScopedService<ITestService, TestServiceWithNoCtorParam>);
             TestScopedRegistration(createBuilderFunc,
-                builder => builder.AddScoped(c => CreateService<ITestService>()),
+                builder => builder.AddScoped(_ => CreateService<ITestService>()),
                 CheckScopedService<ITestService, TestServiceWithNoCtorParam>);
         }
 

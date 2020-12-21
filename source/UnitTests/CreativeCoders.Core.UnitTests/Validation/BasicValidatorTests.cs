@@ -66,7 +66,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
             var validator = new TestDataObjectValidator(v =>
             {
                 v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((x, i) => i > 100);
+                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
             });
 
             var testData = new TestDataObject();
@@ -85,7 +85,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
             var validator = new TestDataObjectValidator(v =>
             {
                 v.RuleFor(x => x.StrValue).IsNotNull().HasMinimumLength(10);
-                v.RuleFor(x => x.IntValue).Must((x, i) => i > 100);
+                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
             });
 
             var testData = new TestDataObject
@@ -107,7 +107,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
             var validator = new TestDataObjectValidator(v =>
             {
                 v.RuleFor(x => x.StrValue).IsNotNull().HasMinimumLength(10);
-                v.RuleFor(x => x.IntValue).Must((x, i) => i > 100);
+                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
             });
 
             var testData = new TestDataObject
@@ -128,7 +128,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
             var validator = new TestDataObjectValidator(v =>
             {
                 v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((x, i) => i > 100);
+                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
             });
 
             var testData = new TestDataObject();
@@ -146,7 +146,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
             var validator = new TestDataObjectValidator(v =>
             {
                 v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((x, i) => i > 100);
+                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
             });
 
             var testData = new TestDataObject
@@ -166,7 +166,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
             var validator = new TestDataObjectValidator(v =>
             {
                 v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((x, i) => i > 100);
+                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
             });
 
             var testData = new TestDataObject();
@@ -184,7 +184,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
             var validator = new TestDataObjectValidator(v =>
             {
                 v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((x, i) => i > 100);
+                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
             });
 
             var testData = new TestDataObject
@@ -204,7 +204,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
             var validator = new TestDataObjectValidator(v =>
             {
                 v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((x, i) => i > 100);
+                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
             });
 
             var testData = new TestDataObject {IntValue = 101};
@@ -222,7 +222,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
             var validator = new TestDataObjectValidator(v =>
             {
                 v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((x, i) => i > 100);
+                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
             });
 
             var testData = new TestDataObject {StrValue = "Test"};
@@ -240,7 +240,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
             var validator = new TestDataObjectValidator(v =>
             {
                 v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((x, i) => i > 100);
+                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
             });
 
             var testData = new TestDataObject
@@ -258,7 +258,11 @@ namespace CreativeCoders.Core.UnitTests.Validation
         [Fact]
         public void Validate_StrValueNotNullIfThenFalse_StrValueNullReturnsInvalid()
         {
-            var validator = new TestDataObjectValidator(v => v.RuleFor(x => x.StrValue).IfThen(x => false).IsNotNull());
+            var validator = new TestDataObjectValidator(v =>
+                v
+                    .RuleFor(x => x.StrValue)
+                    .IfThen(_ => false)
+                    .IsNotNull());
 
             var testData = new TestDataObject();
 
@@ -271,7 +275,11 @@ namespace CreativeCoders.Core.UnitTests.Validation
         [Fact]
         public void Validate_StrValueNotNullIfThenTrue_StrValueNullReturnsInvalid()
         {
-            var validator = new TestDataObjectValidator(v => v.RuleFor(x => x.StrValue).IfThen(x => true).IsNotNull());
+            var validator = new TestDataObjectValidator(v =>
+                v
+                    .RuleFor(x => x.StrValue)
+                    .IfThen(_ => true)
+                    .IsNotNull());
 
             var testData = new TestDataObject();
 
@@ -285,7 +293,11 @@ namespace CreativeCoders.Core.UnitTests.Validation
         [Fact]
         public void Validate_StrValueNotNullIfThenTrue_StrValueNotNullReturnsValid()
         {
-            var validator = new TestDataObjectValidator(v => v.RuleFor(x => x.StrValue).IfThen(x => true).IsNotNull());
+            var validator = new TestDataObjectValidator(v =>
+                v
+                    .RuleFor(x => x.StrValue)
+                    .IfThen(_ => true)
+                    .IsNotNull());
 
             var testData = new TestDataObject {StrValue = "Test"};
 
@@ -299,7 +311,11 @@ namespace CreativeCoders.Core.UnitTests.Validation
         public void Validate_StrValueNotNullIfNotThenTrue_StrValueNullReturnsInvalid()
         {
             var validator =
-                new TestDataObjectValidator(v => v.RuleFor(x => x.StrValue).IfNotThen(x => true).IsNotNull());
+                new TestDataObjectValidator(v =>
+                    v
+                        .RuleFor(x => x.StrValue)
+                        .IfNotThen(_ => true)
+                        .IsNotNull());
 
             var testData = new TestDataObject();
 
@@ -313,7 +329,11 @@ namespace CreativeCoders.Core.UnitTests.Validation
         public void Validate_StrValueNotNullIfNotThenFalse_StrValueNullReturnsInvalid()
         {
             var validator =
-                new TestDataObjectValidator(v => v.RuleFor(x => x.StrValue).IfNotThen(x => false).IsNotNull());
+                new TestDataObjectValidator(v =>
+                    v
+                        .RuleFor(x => x.StrValue)
+                        .IfNotThen(_ => false)
+                        .IsNotNull());
 
             var testData = new TestDataObject();
 
@@ -328,7 +348,11 @@ namespace CreativeCoders.Core.UnitTests.Validation
         public void Validate_StrValueNotNullIfNotThenFalse_StrValueNotNullReturnsValid()
         {
             var validator =
-                new TestDataObjectValidator(v => v.RuleFor(x => x.StrValue).IfNotThen(x => false).IsNotNull());
+                new TestDataObjectValidator(v =>
+                    v
+                        .RuleFor(x => x.StrValue)
+                        .IfNotThen(_ => false)
+                        .IsNotNull());
 
             var testData = new TestDataObject {StrValue = "Test"};
 
@@ -342,7 +366,10 @@ namespace CreativeCoders.Core.UnitTests.Validation
         public void Validate_StrValueNotNullWithMessage_StrValueNullReturnsInvalid()
         {
             var validator = new TestDataObjectValidator(v =>
-                v.RuleFor(x => x.StrValue).IsNotNull().WithMessage("Fault Test Message"));
+                v
+                    .RuleFor(x => x.StrValue)
+                    .IsNotNull()
+                    .WithMessage("Fault Test Message"));
 
             var testData = new TestDataObject();
 

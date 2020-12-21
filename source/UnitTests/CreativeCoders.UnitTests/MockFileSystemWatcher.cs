@@ -24,12 +24,12 @@ namespace CreativeCoders.UnitTests
 
         public override WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType)
         {
-            return new WaitForChangedResult();
+            return new();
         }
 
         public override WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType, int timeout)
         {
-            return new WaitForChangedResult();
+            return new();
         }
 
         public override bool IncludeSubdirectories { get; set; }

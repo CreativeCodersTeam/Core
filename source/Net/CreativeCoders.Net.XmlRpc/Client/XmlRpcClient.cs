@@ -76,12 +76,13 @@ namespace CreativeCoders.Net.XmlRpc.Client
         {
             var requestModelWriter = new RequestModelWriter(new ValueWriters());
 
-            await using (var stream = new MemoryStream())
-            {
-                await requestModelWriter.WriteAsync(stream, request, XmlEncoding).ConfigureAwait(false);
-                stream.Seek(0, SeekOrigin.Begin);
-                return await stream.ReadAsStringAsync().ConfigureAwait(false);
-            }
+            await using var stream = new MemoryStream();
+            
+            await requestModelWriter.WriteAsync(stream, request, XmlEncoding).ConfigureAwait(false);
+
+            stream.Seek(0, SeekOrigin.Begin);
+
+            return await stream.ReadAsStringAsync().ConfigureAwait(false);
         }
 
         public async Task ExecuteAsync(string methodName, params object[] parameters)

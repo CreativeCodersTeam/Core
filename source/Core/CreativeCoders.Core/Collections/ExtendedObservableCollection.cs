@@ -277,10 +277,10 @@ namespace CreativeCoders.Core.Collections
                         execute();
                         break;
                     case SynchronizationMethod.Post:
-                        _synchronizationContext.Post(state => execute(), null);
+                        _synchronizationContext.Post(_ => execute(), null);
                         break;
                     case SynchronizationMethod.Send:
-                        _synchronizationContext.Send(state => execute(), null);
+                        _synchronizationContext.Send(_ => execute(), null);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

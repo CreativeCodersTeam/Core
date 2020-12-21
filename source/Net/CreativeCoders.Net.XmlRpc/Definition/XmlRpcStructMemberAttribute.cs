@@ -39,6 +39,6 @@ namespace CreativeCoders.Net.XmlRpc.Definition
 
         public Type DataType { get; set; }
         
-        public static readonly object NoDefaultValue = new object();
+        public static readonly object NoDefaultValue = new();
     }
 }

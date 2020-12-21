@@ -44,7 +44,7 @@ namespace CreativeCoders.Net.Http
         {
             Ensure.IsNotNull(sendAsync, nameof(sendAsync));
 
-            _sendAsync = (request, cancellationToken) => sendAsync(request);
+            _sendAsync = (request, _) => sendAsync(request);
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

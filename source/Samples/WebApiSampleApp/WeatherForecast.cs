@@ -1,7 +1,9 @@
 using System;
+using JetBrains.Annotations;
 
 namespace WebApiSampleApp
 {
+    [PublicAPI]
     public class WeatherForecast
     {
         public DateTime Date { get; set; }

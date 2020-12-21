@@ -58,7 +58,7 @@ namespace CreativeCoders.Core.UnitTests.Messaging
 
             var messenger = Messenger.CreateInstance();
             
-            messenger.Register<string>(this, msg => _testCallbackCalledSendString = true);
+            messenger.Register<string>(this, _ => _testCallbackCalledSendString = true);
             messenger.Send(new string("Hallo".ToCharArray()));
 
             Assert.True(_testCallbackCalledSendString);
@@ -71,7 +71,7 @@ namespace CreativeCoders.Core.UnitTests.Messaging
 
             var messenger = Messenger.CreateInstance();
             
-            messenger.Register<string>(this, msg => _testCallbackCalledUnReg = true);
+            messenger.Register<string>(this, _ => _testCallbackCalledUnReg = true);
             messenger.Send(new string("Hallo".ToCharArray()));
 
             Assert.True(_testCallbackCalledUnReg);
@@ -91,7 +91,7 @@ namespace CreativeCoders.Core.UnitTests.Messaging
 
             var messenger = Messenger.CreateInstance();
             
-            messenger.Register<string>(this, msg => _testCallbackCalledUnRegString = true);
+            messenger.Register<string>(this, _ => _testCallbackCalledUnRegString = true);
             messenger.Send(new string("Hallo".ToCharArray()));
 
             Assert.True(_testCallbackCalledUnRegString);
@@ -112,8 +112,8 @@ namespace CreativeCoders.Core.UnitTests.Messaging
             
             var messenger = Messenger.CreateInstance();
 
-            messenger.Register<string>(this, msg => _testCallbackCalledSendMultiple = true);
-            messenger.Register<string>(this, msg => _testCallbackCalledSendMultiple2 = true);
+            messenger.Register<string>(this, _ => _testCallbackCalledSendMultiple = true);
+            messenger.Register<string>(this, _ => _testCallbackCalledSendMultiple2 = true);
             messenger.Send(new string("Hallo".ToCharArray()));
 
             Assert.True(_testCallbackCalledSendMultiple);
@@ -128,8 +128,8 @@ namespace CreativeCoders.Core.UnitTests.Messaging
 
             var messenger = Messenger.CreateInstance();
             
-            messenger.Register<string>(this, msg => _testCallbackCalledUnRegMultiple = true);
-            messenger.Register<string>(this, msg => _testCallbackCalledUnRegMultiple2 = true);
+            messenger.Register<string>(this, _ => _testCallbackCalledUnRegMultiple = true);
+            messenger.Register<string>(this, _ => _testCallbackCalledUnRegMultiple2 = true);
             messenger.Send(new string("Hallo".ToCharArray()));
 
             Assert.True(_testCallbackCalledUnRegMultiple);
@@ -154,8 +154,8 @@ namespace CreativeCoders.Core.UnitTests.Messaging
 
             var messenger = Messenger.CreateInstance();
             
-            messenger.Register<int>(this, msg => _testCallbackCalledUnRegMultipleEx = true);
-            messenger.Register<string>(this, msg => _testCallbackCalledUnRegMultipleEx2 = true);
+            messenger.Register<int>(this, _ => _testCallbackCalledUnRegMultipleEx = true);
+            messenger.Register<string>(this, _ => _testCallbackCalledUnRegMultipleEx2 = true);
             messenger.Send(new string("Hallo".ToCharArray()));
             messenger.Send(1234);
 
@@ -250,7 +250,7 @@ namespace CreativeCoders.Core.UnitTests.Messaging
 
             var messenger = Messenger.CreateInstance();
             
-            messenger.Register<TestMessage>(this, msg => _testCallbackCalledUnRegMultipleEx = true);
+            messenger.Register<TestMessage>(this, _ => _testCallbackCalledUnRegMultipleEx = true);
             messenger.Send(new TestMessage());
 
             Assert.True(_testCallbackCalledUnRegMultipleEx);
@@ -261,7 +261,7 @@ namespace CreativeCoders.Core.UnitTests.Messaging
         {
             var messenger = Messenger.CreateInstance();
             
-            messenger.Register<TestMessage>(this, msg => throw new InvalidOperationException());
+            messenger.Register<TestMessage>(this, _ => throw new InvalidOperationException());
             messenger.Send(new TestMessage());
         }
 
@@ -299,6 +299,7 @@ namespace CreativeCoders.Core.UnitTests.Messaging
 
         private class TestReceiver
         {
+            [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
             public void HandleMessage(TestMessage msg)
             {
                 MsgHandled = true;

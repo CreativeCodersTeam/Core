@@ -31,7 +31,7 @@ namespace CreativeCoders.CodeCompilation.Roslyn
 
         public static TextSpan ConvertTextSpan(Microsoft.CodeAnalysis.Text.TextSpan locationSourceSpan)
         {
-            return new TextSpan(locationSourceSpan.Start, locationSourceSpan.Length);
+            return new(locationSourceSpan.Start, locationSourceSpan.Length);
         }
     }
 }

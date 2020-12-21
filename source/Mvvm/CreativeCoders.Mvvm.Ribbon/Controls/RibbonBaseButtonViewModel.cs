@@ -1,7 +1,9 @@
 ﻿using CreativeCoders.Core.ObjectLinking;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Mvvm.Ribbon.Controls
 {
+    [PublicAPI]
     public abstract class RibbonBaseButtonViewModel : RibbonCommandControlViewModel
     {
         private RibbonButtonSize _size;

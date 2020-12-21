@@ -114,7 +114,7 @@ namespace CreativeCoders.Net.XmlRpc.Server
 
         private async Task SendResponseAsync(IHttpResponse response, XmlRpcResponse xmlRpcResponse)
         {
-            var contentStream = await CreateContentStreamAsync(xmlRpcResponse).ConfigureAwait(false);
+            await using var contentStream = await CreateContentStreamAsync(xmlRpcResponse).ConfigureAwait(false);
 
             var responseStream = response.Body.GetStream();
 

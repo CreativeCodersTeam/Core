@@ -18,12 +18,12 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
             var commandExecuted = false;
             var canExecuteChangedRaised = false;
             
-            var command = new RelayCommand<string>(parameter =>
+            var command = new RelayCommand<string>(_ =>
             {
                 Assert.False(commandExecuted);
                 commandExecuted = true;
             });
-            command.CanExecuteChanged += (sender, args) =>
+            command.CanExecuteChanged += (_, _) =>
             {
                 Assert.False(canExecuteChangedRaised);
                 canExecuteChangedRaised = true;
@@ -43,7 +43,7 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
             var commandExecuted = false;
             _canExecuteChangedRaised = false;
             
-            var command = new RelayCommand<string>(parameter =>
+            var command = new RelayCommand<string>(_ =>
             {
                 // ReSharper disable once AccessToModifiedClosure
                 Assert.False(commandExecuted);
@@ -78,11 +78,11 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
         {
             var commandExecuted = false;
             
-            var command = new RelayCommand<string>(parameter =>
+            var command = new RelayCommand<string>(_ =>
             {
                 Assert.False(commandExecuted);
                 commandExecuted = true;
-            }, parameter => false);
+            }, _ => false);
 
             command.Execute(null);
             

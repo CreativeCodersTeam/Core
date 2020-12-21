@@ -13,7 +13,7 @@ namespace CreativeCoders.Messaging.UnitTests
             
             var mediator = new Mediator();
 
-            mediator.RegisterHandler<string>(this, msg => handlerCalled = true);
+            mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
             
             Assert.False(handlerCalled);
         }
@@ -26,7 +26,7 @@ namespace CreativeCoders.Messaging.UnitTests
             var mediator = new Mediator();
 
             mediator.RegisterAsyncHandler<string>(this,
-                msg =>
+                _ =>
                 {
                     handlerCalled = true;
                     return Task.CompletedTask;
@@ -42,7 +42,7 @@ namespace CreativeCoders.Messaging.UnitTests
             
             var mediator = new Mediator();
 
-            mediator.RegisterHandler<string>(this, msg => handlerCalled = true);
+            mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
 
             await mediator.SendAsync("test");
             
@@ -57,7 +57,7 @@ namespace CreativeCoders.Messaging.UnitTests
             var mediator = new Mediator();
 
             mediator.RegisterAsyncHandler<string>(this,
-                msg =>
+                _ =>
                 {
                     handlerCalled = true;
                     return Task.CompletedTask;
@@ -108,7 +108,7 @@ namespace CreativeCoders.Messaging.UnitTests
             
             var mediator = new Mediator();
 
-            mediator.RegisterHandler<string>(this, msg => handlerCalled = true);
+            mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
             
             mediator.UnregisterHandler(this);
 
@@ -125,7 +125,7 @@ namespace CreativeCoders.Messaging.UnitTests
             var mediator = new Mediator();
 
             mediator.RegisterAsyncHandler<string>(this,
-                msg =>
+                _ =>
                 {
                     handlerCalled = true;
                     return Task.CompletedTask;
@@ -145,7 +145,7 @@ namespace CreativeCoders.Messaging.UnitTests
             
             var mediator = new Mediator();
 
-            mediator.RegisterHandler<string>(this, msg => handlerCalled = true);
+            mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
             
             mediator.UnregisterHandler<string>(this);
 
@@ -162,7 +162,7 @@ namespace CreativeCoders.Messaging.UnitTests
             var mediator = new Mediator();
 
             mediator.RegisterAsyncHandler<string>(this,
-                msg =>
+                _ =>
                 {
                     handlerCalled = true;
                     return Task.CompletedTask;
@@ -182,7 +182,7 @@ namespace CreativeCoders.Messaging.UnitTests
             
             var mediator = new Mediator();
 
-            var registration = mediator.RegisterHandler<string>(this, msg => handlerCalled = true);
+            var registration = mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
             
             registration.Dispose();
 
@@ -199,7 +199,7 @@ namespace CreativeCoders.Messaging.UnitTests
             var mediator = new Mediator();
 
             var registration = mediator.RegisterAsyncHandler<string>(this,
-                msg =>
+                _ =>
                 {
                     handlerCalled = true;
                     return Task.CompletedTask;

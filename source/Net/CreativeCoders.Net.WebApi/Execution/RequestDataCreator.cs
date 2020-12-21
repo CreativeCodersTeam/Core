@@ -31,7 +31,7 @@ namespace CreativeCoders.Net.WebApi.Execution
 
         public RequestData Create()
         {
-            return new RequestData
+            return new()
             {
                 Headers = CreateHeaders(),
                 RequestUri = BuildRequestUri(),

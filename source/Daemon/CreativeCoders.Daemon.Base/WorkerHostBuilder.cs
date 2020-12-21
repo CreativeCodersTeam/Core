@@ -20,7 +20,7 @@ namespace CreativeCoders.Daemon.Base
         {
             var hostBuilder = CreateHostBuilder(configureHostBuilder)
                 .ConfigureLogging(x => x.SetMinimumLevel(LogLevel.Information))
-                .ConfigureServices((hostContext, services) =>
+                .ConfigureServices((_, services) =>
                 {
                     services.AddHostedService<TWorker>();
                     ConfigureServices(services);

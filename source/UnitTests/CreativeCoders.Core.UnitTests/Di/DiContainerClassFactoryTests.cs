@@ -28,7 +28,7 @@ namespace CreativeCoders.Core.UnitTests.Di
         {
             var diContainerMock = A.Fake<IDiContainer>();
             A.CallTo(() => diContainerMock.GetInstance(typeof(ITestService)))
-                .Throws(x => new ResolveFailedException(typeof(ITestService), null));
+                .Throws(_ => new ResolveFailedException(typeof(ITestService), null));
 
             var classFactory = new DiContainerClassFactory(diContainerMock);
 
@@ -118,7 +118,7 @@ namespace CreativeCoders.Core.UnitTests.Di
         {
             var diContainerMock = A.Fake<IDiContainer>();
             A.CallTo(() => diContainerMock.GetInstance<ITestService>())
-                .Throws(x => new ResolveFailedException(typeof(ITestService), null));
+                .Throws(_ => new ResolveFailedException(typeof(ITestService), null));
 
             var classFactory = new DiContainerClassFactory<ITestService>(diContainerMock);
 
@@ -130,7 +130,7 @@ namespace CreativeCoders.Core.UnitTests.Di
         {
             var diContainerMock = A.Fake<IDiContainer>();
             A.CallTo(() => diContainerMock.GetInstance<ITestService>())
-                .Throws(x => new ResolveFailedException(typeof(ITestService), null));
+                .Throws(_ => new ResolveFailedException(typeof(ITestService), null));
 
             var classFactory = new DiContainerClassFactory<ITestService>(diContainerMock);
 

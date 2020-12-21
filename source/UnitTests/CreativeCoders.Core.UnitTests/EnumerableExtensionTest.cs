@@ -25,11 +25,11 @@ namespace CreativeCoders.Core.UnitTests
         {
             var list = new List<TestData>
             {
-                new TestData(),
-                new TestData(),
-                new TestData(),
-                new TestData(),
-                new TestData()
+                new(),
+                new(),
+                new(),
+                new(),
+                new()
             };
 
             var enumerable = list.ToArray();
@@ -800,13 +800,13 @@ namespace CreativeCoders.Core.UnitTests
         {
             public int IntValue1 { get; set; }
 
-            public int IntValue2 { get; set; }
+            public int IntValue2 { get; init; }
 
-            public int IntValue3 { get; set; }
+            public int IntValue3 { get; init; }
 
-            public int IntValue4 { get; set; }
+            public int IntValue4 { get; init; }
 
-            public int IntValue5 { get; set; }
+            public int IntValue5 { get; init; }
         }
     }
 }

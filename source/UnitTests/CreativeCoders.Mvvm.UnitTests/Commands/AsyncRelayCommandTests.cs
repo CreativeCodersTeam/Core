@@ -19,13 +19,13 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
             var commandExecuted = false;
             var canExecuteChangedRaised = false;
             
-            var command = new AsyncRelayCommand(parameter =>
+            var command = new AsyncRelayCommand(_ =>
             {
                 Assert.False(commandExecuted);
                 commandExecuted = true;
                 return Task.CompletedTask;
             });
-            command.CanExecuteChanged += (sender, args) =>
+            command.CanExecuteChanged += (_, _) =>
             {
                 Assert.False(canExecuteChangedRaised);
                 canExecuteChangedRaised = true;
@@ -45,7 +45,7 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
             var commandExecuted = false;
             _canExecuteChangedRaised = false;
             
-            var command = new AsyncRelayCommand(parameter =>
+            var command = new AsyncRelayCommand(_ =>
             {
                 // ReSharper disable once AccessToModifiedClosure
                 Assert.False(commandExecuted);
@@ -85,7 +85,7 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
         {
             var commandExecuted = false;
             
-            var command = new AsyncRelayCommand(parameter =>
+            var command = new AsyncRelayCommand(_ =>
             {
                 Assert.False(commandExecuted);
                 commandExecuted = true;
@@ -102,12 +102,12 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
         {
             var commandExecuted = false;
             
-            var command = new AsyncRelayCommand(parameter =>
+            var command = new AsyncRelayCommand(_ =>
             {
                 Assert.False(commandExecuted);
                 commandExecuted = true;
                 return Task.CompletedTask;
-            }, parameter => false);
+            }, _ => false);
 
             await command.ExecuteAsync(null);
             
@@ -115,6 +115,7 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
         }
         
         [Fact]
+        [SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
         public async Task ExecuteAsync_ExceptionInExecute_ErrorHandlerIsCalled()
         {
             Exception handledException = null;
@@ -126,7 +127,7 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
             {
                 if (parameter == null)
                 {
-                    throw new InvalidOperationException();
+                    throw new ArgumentNullException();
                 }
                 return Task.CompletedTask;
             }, errorHandler);
@@ -135,7 +136,7 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
 
             await Task.Delay(100);
             
-            Assert.IsType<InvalidOperationException>(handledException);
+            Assert.IsType<ArgumentNullException>(handledException);
         }
     }
 }

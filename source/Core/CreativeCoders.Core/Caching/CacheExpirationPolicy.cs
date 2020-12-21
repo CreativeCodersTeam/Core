@@ -11,11 +11,11 @@ namespace CreativeCoders.Core.Caching
             ExpirationMode = expirationMode;
         }
         
-        public static readonly CacheExpirationPolicy NeverExpire = new CacheExpirationPolicy(CacheExpirationMode.NeverExpire);
+        public static readonly CacheExpirationPolicy NeverExpire = new(CacheExpirationMode.NeverExpire);
 
         public static CacheExpirationPolicy AfterAbsoluteDateTime(DateTime absoluteDateTime)
         {
-            return new CacheExpirationPolicy(CacheExpirationMode.AbsoluteDateTime)
+            return new(CacheExpirationMode.AbsoluteDateTime)
             {
                 AbsoluteDateTime = absoluteDateTime
             };
@@ -23,7 +23,7 @@ namespace CreativeCoders.Core.Caching
 
         public static CacheExpirationPolicy AfterSlidingTimeSpan(TimeSpan slidingTimeSpan)
         {
-            return new CacheExpirationPolicy(CacheExpirationMode.SlidingTimeSpan)
+            return new(CacheExpirationMode.SlidingTimeSpan)
             {
                 SlidingTimeSpan = slidingTimeSpan
             };

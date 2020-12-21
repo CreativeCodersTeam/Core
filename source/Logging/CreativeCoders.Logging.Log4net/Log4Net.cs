@@ -52,7 +52,7 @@ namespace CreativeCoders.Logging.Log4net
             ConfigFileSystemWatcher = FileSys.CreateFileSystemWatcher(FileSys.Path.GetDirectoryName(configFileName));
             ConfigFileSystemWatcher.Filter = FileSys.Path.GetFileName(configFileName);
             ConfigFileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
-            ConfigFileSystemWatcher.Changed += (sender, args) => ConfigFileSystemWatcherOnChanged(configFileName, logRepository);
+            ConfigFileSystemWatcher.Changed += (_, _) => ConfigFileSystemWatcherOnChanged(configFileName, logRepository);
             ConfigFileSystemWatcher.EnableRaisingEvents = true;
         }
 

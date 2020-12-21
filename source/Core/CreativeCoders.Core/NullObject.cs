@@ -7,6 +7,6 @@ namespace CreativeCoders.Core
     [ExcludeFromCodeCoverage]
     public class NullObject
     {
-        public static object Instance { get; } = new object();
+        public static object Instance { get; } = new();
     }
 }

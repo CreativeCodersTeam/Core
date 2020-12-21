@@ -79,6 +79,7 @@ namespace CreativeCoders.Net.XmlRpc.Proxy.Analyzing
                     return;
                 }
 
+                // ReSharper disable once ConvertIfStatementToSwitchStatement
                 if (genericArgument.IsGenericType && genericArgument.GetGenericTypeDefinition() == typeof(IDictionary<,>))
                 {
                     apiMethodInfo.ReturnType = ApiMethodReturnType.Dictionary;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
 using CreativeCoders.Mvvm.Commands;
@@ -17,13 +18,13 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
             var commandExecuted = false;
             var canExecuteChangedRaised = false;
             
-            var command = new AsyncRelayCommand<string>(parameter =>
+            var command = new AsyncRelayCommand<string>(_ =>
             {
                 Assert.False(commandExecuted);
                 commandExecuted = true;
                 return Task.CompletedTask;
             });
-            command.CanExecuteChanged += (sender, args) =>
+            command.CanExecuteChanged += (_, _) =>
             {
                 Assert.False(canExecuteChangedRaised);
                 canExecuteChangedRaised = true;
@@ -43,7 +44,7 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
             var commandExecuted = false;
             _canExecuteChangedRaised = false;
             
-            var command = new AsyncRelayCommand<string>(parameter =>
+            var command = new AsyncRelayCommand<string>(_ =>
             {
                 // ReSharper disable once AccessToModifiedClosure
                 Assert.False(commandExecuted);
@@ -82,7 +83,7 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
         {
             var commandExecuted = false;
             
-            var command = new AsyncRelayCommand<string>(parameter =>
+            var command = new AsyncRelayCommand<string>(_ =>
             {
                 Assert.False(commandExecuted);
                 commandExecuted = true;
@@ -99,12 +100,12 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
         {
             var commandExecuted = false;
             
-            var command = new AsyncRelayCommand<string>(parameter =>
+            var command = new AsyncRelayCommand<string>(_ =>
             {
                 Assert.False(commandExecuted);
                 commandExecuted = true;
                 return Task.CompletedTask;
-            }, parameter => false);
+            }, _ => false);
 
             await command.ExecuteAsync(null);
             
@@ -112,18 +113,21 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
         }
         
         [Fact]
+        [SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
         public async Task ExecuteAsync_ExceptionInExecute_ErrorHandlerIsCalled()
         {
             Exception handledException = null;
 
             var errorHandler = A.Fake<IErrorHandler>();
-            A.CallTo(() => errorHandler.HandleException(A<Exception>.Ignored)).Invokes(call => handledException = call.Arguments.Get<Exception>(0));
+            A
+                .CallTo(() => errorHandler.HandleException(A<Exception>.Ignored))
+                .Invokes(call => handledException = call.Arguments.Get<Exception>(0));
             
             var command = new AsyncRelayCommand<string>(parameter =>
             {
                 if (parameter == null)
                 {
-                    throw new InvalidOperationException();
+                    throw new ArgumentNullException(nameof(parameter));
                 }
                 return Task.CompletedTask;
             }, errorHandler);
@@ -132,7 +136,7 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
 
             await Task.Delay(100);
             
-            Assert.IsType<InvalidOperationException>(handledException);
+            Assert.IsType<ArgumentNullException>(handledException);
         }
     }
 }

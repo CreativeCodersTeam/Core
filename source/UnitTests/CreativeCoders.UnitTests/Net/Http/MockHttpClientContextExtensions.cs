@@ -15,7 +15,7 @@ namespace CreativeCoders.UnitTests.Net.Http
         ///-------------------------------------------------------------------------------------------------
         public static HttpClient CreateClient(this MockHttpClientContext httpClientContext)
         {
-            return new HttpClient(httpClientContext.CreateMessageHandler());
+            return new(httpClientContext.CreateMessageHandler());
         }
 
         ///-------------------------------------------------------------------------------------------------

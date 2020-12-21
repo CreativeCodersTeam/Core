@@ -21,9 +21,9 @@ namespace CreativeCoders.Mvvm.Skeletor.Infrastructure.Default
                 return;
             }
 
-            window.Loaded += (sender, args) => windowViewModel.Loaded();
-            window.Closing += (sender, args) => windowViewModel.Closing(args);
-            window.Closed += (sender, args) => windowViewModel.Closed();
+            window.Loaded += (_, _) => windowViewModel.Loaded();
+            window.Closing += (_, args) => windowViewModel.Closing(args);
+            window.Closed += (_, _) => windowViewModel.Closed();
         }
     }
 }

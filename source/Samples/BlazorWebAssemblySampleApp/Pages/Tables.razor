@@ -16,7 +16,7 @@
     </ItemTemplate>
 </DataTable>
 
-<Button Clicked="() => ButtonClicked()">Add items</Button>
+<Button Clicked="ButtonClicked">Add items</Button>
 
 @code {
     private Timer _timer;
@@ -31,10 +31,13 @@
 
     public void ButtonClicked()
     {
-        if (_timer == null)
-        {
-            _timer = new Timer(state => Items.Add(new TestViewModel{IntValue = Environment.TickCount, Text = Environment.TickCount.ToString()}));
-        }
+        _timer ??= new Timer(_ =>
+            Items.Add(
+                new TestViewModel
+                {
+                    IntValue = Environment.TickCount,
+                    Text = Environment.TickCount.ToString()
+                }));
 
         _timer.Change(1000, 1000);
     }

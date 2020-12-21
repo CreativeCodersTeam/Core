@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.Net.WebApi.Specification
+﻿using JetBrains.Annotations;
+
+namespace CreativeCoders.Net.WebApi.Specification
 {
+    [PublicAPI]
     public class QueryDefinition
     {
         public QueryDefinition(string key, string value)
@@ -12,6 +15,7 @@
 
         public string Value { get; }
 
+        //todo implement
         public bool UrlEncode { get; set; }
     }
 }

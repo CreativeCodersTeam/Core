@@ -38,7 +38,7 @@ namespace CreativeCoders.UnitTests.Net.Http
 
         public IMockHttpResponder ReturnText(string content, HttpStatusCode statusCode)
         {
-            return Return((request, cancellationToken) => Task.FromResult(new HttpResponseMessage(statusCode)
+            return Return((_, _) => Task.FromResult(new HttpResponseMessage(statusCode)
                 {Content = new StringContent(content)}));
         }
 
@@ -56,7 +56,7 @@ namespace CreativeCoders.UnitTests.Net.Http
 
         public IMockHttpResponder ReturnJson<T>(T data, HttpStatusCode statusCode, JsonSerializerOptions jsonSerializerOptions = null)
         {
-            return Return((request, cancellationToken) => Task.FromResult(new HttpResponseMessage(statusCode)
+            return Return((_, _) => Task.FromResult(new HttpResponseMessage(statusCode)
                 { Content = JsonContent.Create(data, null, jsonSerializerOptions) }));
         }
 

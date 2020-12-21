@@ -20,7 +20,7 @@
 
     <Button Kind="@ButtonKind.Success">TestButtonContent</Button>
     <Button Kind="@ButtonKind.Success">TestButtonContent</Button>
-    <Button Kind="@ButtonKind.Success" Clicked="() => ButtonClicked()">TestButtonContent</Button>
+    <Button Kind="@ButtonKind.Success" Clicked="ButtonClicked">TestButtonContent</Button>
 
     <Button IsOutlined="@IsOutlined">TestButtonContent</Button>
     <Button IsOutlined="@IsOutlined">TestButtonContent</Button>
@@ -61,7 +61,14 @@ Welcome to your new app.
     {
         if (_timer == null)
         {
-            _timer = new Timer(state => ListItems.Add(new TestViewModel {IntValue = Environment.TickCount, Text = Environment.TickCount.ToString()}));
+            _timer = new Timer(_ =>
+                ListItems.Add(
+                    new TestViewModel
+                    {
+                        IntValue = Environment.TickCount,
+                        Text = Environment.TickCount.ToString()
+                    }));
+
             _timer.Change(500, 1000);
         }
         IsOutlined = !IsOutlined;
