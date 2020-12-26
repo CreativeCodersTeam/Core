@@ -7,7 +7,7 @@ using CreativeCoders.Net.XmlRpc.Model.Values;
 
 namespace CreativeCoders.Net.XmlRpc.Writer
 {
-    public class ResponseModelWriter : ModelWriterBase<XmlRpcResponse>, IResponseModelWriter
+    public class ResponseModelWriter : ModelWriterBase<XmlRpcResponse>
     {
         public ResponseModelWriter(IValueWriters writers) : base(writers)
         {
@@ -36,7 +36,7 @@ namespace CreativeCoders.Net.XmlRpc.Writer
 
         private XDocument CreateMultiCallResponse(XmlRpcResponse xmlRpcResponse, Encoding encoding)
         {
-            return new XDocument(new XDeclaration("1.0", encoding.BodyName.ToUpper(), null), CreateMultiCallResultValues(xmlRpcResponse.Results));
+            return new(new XDeclaration("1.0", encoding.BodyName.ToUpper(), null), CreateMultiCallResultValues(xmlRpcResponse.Results));
         }
 
         private XElement CreateMultiCallResultValues(IEnumerable<XmlRpcMethodResult> results)

@@ -44,7 +44,7 @@ namespace CreativeCoders.Messaging.DefaultMediator
 
         private IList<IMediatorRegistration> GetRegistrationList<TMessage>()
         {
-            var typeRegistrations = _registrations.GetOrAdd(typeof(TMessage), type => new ConcurrentList<IMediatorRegistration>());
+            var typeRegistrations = _registrations.GetOrAdd(typeof(TMessage), _ => new ConcurrentList<IMediatorRegistration>());
             typeRegistrations.Remove(registration => !registration.IsAlive());
 
             return typeRegistrations;

@@ -44,7 +44,7 @@ namespace CreativeCoders.Mvvm.Commands
                 return;
             }
             
-            _synchronizationContext.Post(o => handler.Invoke(this, EventArgs.Empty), null);
+            _synchronizationContext.Post(_ => handler.Invoke(this, EventArgs.Empty), null);
         }
     }
 }

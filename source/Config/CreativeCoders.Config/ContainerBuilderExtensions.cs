@@ -22,7 +22,7 @@ namespace CreativeCoders.Config
             containerBuilder.AddTransient(typeof(ISettingTransient<>), typeof(SettingTransient<>));
             containerBuilder.AddTransient(typeof(ISettingsTransient<>), typeof(SettingsTransient<>));
 
-            containerBuilder.AddSingleton(c => configuration);
+            containerBuilder.AddSingleton(_ => configuration);
         }
     }
 }

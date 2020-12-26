@@ -8,7 +8,7 @@ using CreativeCoders.Net.XmlRpc.Model;
 
 namespace CreativeCoders.Net.XmlRpc.Writer
 {
-    public class RequestModelWriter : ModelWriterBase<XmlRpcRequest>, IRequestModelWriter
+    public class RequestModelWriter : ModelWriterBase<XmlRpcRequest>
     {
         public RequestModelWriter(IValueWriters writers) : base(writers)
         {

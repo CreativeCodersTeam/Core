@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Reflection;
@@ -24,7 +25,17 @@ namespace CreativeCoders.Mvvm.Skeletor.Infrastructure.Default
                 where attribute != null
                 select (ViewType: type, ViewAttribute: attribute);
 
-            typesWithAttributes.ForEach(x => _viewModelToViewMappings.AddMapping(x.ViewAttribute.ViewModelType, x.ViewType));
+            typesWithAttributes.ForEach(x =>
+            {
+                var viewModelType = x.ViewAttribute?.ViewModelType;
+
+                if (viewModelType == null)
+                {
+                    throw new ArgumentException("No view model type declared");
+                }
+                
+                _viewModelToViewMappings.AddMapping(viewModelType, x.ViewType);
+            });
         }
 
         public void InitFromAllAssemblies()

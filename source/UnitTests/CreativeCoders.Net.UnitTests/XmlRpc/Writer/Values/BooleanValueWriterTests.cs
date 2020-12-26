@@ -36,6 +36,7 @@ namespace CreativeCoders.Net.UnitTests.XmlRpc.Writer.Values
 
             var valueElement = xmlElement.XPathSelectElement("value/boolean");
 
+            Assert.NotNull(valueElement);
             Assert.Equal("1", valueElement.Value);
         }
 
@@ -51,6 +52,7 @@ namespace CreativeCoders.Net.UnitTests.XmlRpc.Writer.Values
 
             var valueElement = xmlElement.XPathSelectElement("value/boolean");
 
+            Assert.NotNull(valueElement);
             Assert.Equal("0", valueElement.Value);
         }
     }

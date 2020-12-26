@@ -232,7 +232,7 @@ namespace CreativeCoders.Net.UnitTests.UnitTests.Net.Http
 
             var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            Assert.Equal(ContentMediaTypes.Application.Json, response.Content.Headers.ContentType.MediaType);
+            Assert.Equal(ContentMediaTypes.Application.Json, response.Content.Headers.ContentType?.MediaType);
         }
 
         [Fact]

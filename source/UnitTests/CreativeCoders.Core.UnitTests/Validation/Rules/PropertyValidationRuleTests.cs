@@ -197,7 +197,7 @@ namespace CreativeCoders.Core.UnitTests.Validation.Rules
 
             var rule = new PropertyValidationRule<TestDataObject, string>(x => x.StrValue);
             rule.AddValidationStep(validationStep);
-            rule.SetCondition(x => false);
+            rule.SetCondition(_ => false);
 
 
             rule.Validate(validationContext);
@@ -221,7 +221,7 @@ namespace CreativeCoders.Core.UnitTests.Validation.Rules
 
             var rule = new PropertyValidationRule<TestDataObject, string>(x => x.StrValue);
             rule.AddValidationStep(validationStep);
-            rule.SetCondition(x => true);
+            rule.SetCondition(_ => true);
 
 
             rule.Validate(validationContext);

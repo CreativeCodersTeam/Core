@@ -1,23 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Authors>CreativeCoders</Authors>
-    <LangVersion>latest</LangVersion>
-    <UseWPF>true</UseWPF>
-    <Description>WPF implementation of task dialog for CreativeCoders.Mvvm.DialogServices.TaskDialog</Description>
-    <LangVersion>default</LangVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<Authors>CreativeCoders</Authors>
+		<UseWPF>true</UseWPF>
+		<Description>WPF implementation of task dialog for CreativeCoders.Mvvm.DialogServices.TaskDialog</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="WPFTaskDialog" Version="1.7.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="WPFTaskDialog" Version="1.7.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Windows\CreativeCoders.Windows\CreativeCoders.Windows.csproj" />
-    <ProjectReference Include="..\CreativeCoders.Mvvm.DialogServices.TaskDlg\CreativeCoders.Mvvm.DialogServices.TaskDlg.csproj" />
-    <ProjectReference Include="..\CreativeCoders.Mvvm.Wpf\CreativeCoders.Mvvm.Wpf.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Windows\CreativeCoders.Windows\CreativeCoders.Windows.csproj" />
+		<ProjectReference Include="..\CreativeCoders.Mvvm.DialogServices.TaskDlg\CreativeCoders.Mvvm.DialogServices.TaskDlg.csproj" />
+		<ProjectReference Include="..\CreativeCoders.Mvvm.Wpf\CreativeCoders.Mvvm.Wpf.csproj" />
+	</ItemGroup>
 
 </Project>

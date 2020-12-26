@@ -48,7 +48,7 @@ namespace CreativeCoders.Reactive.UnitTests
             var strPublished = false;
 
             topic.Register(Scheduler.Immediate).Subscribe(o => msgPublished = o);
-            topic.Register<string>(Scheduler.Immediate).Subscribe(s => strPublished = true);
+            topic.Register<string>(Scheduler.Immediate).Subscribe(_ => strPublished = true);
 
             var msg = new object();
 
@@ -74,7 +74,7 @@ namespace CreativeCoders.Reactive.UnitTests
             var strPublished = false;
 
             topic.Register().Subscribe(o => msgPublished = o);
-            topic.Register<string>().Subscribe(s => strPublished = true);
+            topic.Register<string>().Subscribe(_ => strPublished = true);
 
             var msg = new object();
 

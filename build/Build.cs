@@ -105,7 +105,7 @@ class Build : NukeBuild, IBuildInfo
         .DependsOn(CreateNuGetPackages)
         .Executes(PushToNuGet);
 
-    Configuration IBuildInfo.Configuration => Configuration;
+    string IBuildInfo.Configuration => Configuration;
 
     Solution IBuildInfo.Solution => Solution;
 

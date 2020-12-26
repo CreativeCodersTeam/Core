@@ -1,20 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <Authors>CreativeCoders</Authors>
-    <LangVersion>latest</LangVersion>
-    <Description>Dynamic WebApi proxy generation based on attributes</Description>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<Authors>CreativeCoders</Authors>
+		<Description>Dynamic WebApi proxy generation based on attributes</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="4.4.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Castle.Core" Version="4.4.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\DynamicCode\CreativeCoders.DynamicCode.Proxying\CreativeCoders.DynamicCode.Proxying.csproj" />
-    <ProjectReference Include="..\CreativeCoders.Net\CreativeCoders.Net.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\DynamicCode\CreativeCoders.DynamicCode.Proxying\CreativeCoders.DynamicCode.Proxying.csproj" />
+		<ProjectReference Include="..\CreativeCoders.Net\CreativeCoders.Net.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -49,7 +49,7 @@ namespace CreativeCoders.Logging.Nlog
             ConfigFileSystemWatcher = FileSys.CreateFileSystemWatcher(FileSys.Path.GetDirectoryName(configFileName));
             ConfigFileSystemWatcher.Filter = FileSys.Path.GetFileName(configFileName);
             ConfigFileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
-            ConfigFileSystemWatcher.Changed += (sender, args) => ConfigFileSystemWatcherOnChanged(configFileName);
+            ConfigFileSystemWatcher.Changed += (_, _) => ConfigFileSystemWatcherOnChanged(configFileName);
             ConfigFileSystemWatcher.EnableRaisingEvents = true;
         }
 

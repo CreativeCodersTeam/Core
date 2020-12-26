@@ -8,7 +8,7 @@
         xmlns:wpf="clr-namespace:CreativeCoders.Mvvm.Wpf;assembly=CreativeCoders.Mvvm.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        d:DataContext="{ribbonSampleApp:MainWindow}">
+        d:DataContext="{d:DesignInstance ribbonSampleApp:MainWindow}">
     
     <Window.Resources>
         <ResourceDictionary Source="pack://application:,,,/CreativeCoders.Mvvm.Ribbon.FluentRibbon;Component/FluentRibbonResources.xaml"></ResourceDictionary>
@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
         
         <fluent:Ribbon Grid.Row="0">
-            <fluent:RibbonTabItem wpf:ElementProperties.ObjectLink="{Binding FirstTab}">
+            <fluent:RibbonTabItem wpf:ElementProperties.ObjectLink="{Binding Path=FirstTab}">
             </fluent:RibbonTabItem>
         </fluent:Ribbon>
         

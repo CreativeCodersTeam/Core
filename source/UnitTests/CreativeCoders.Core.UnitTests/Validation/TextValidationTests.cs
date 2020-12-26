@@ -89,7 +89,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
         [InlineData("Test1234", 8)]
         public void HasLengthFunc_StrValueHasCorrectLength_Valid(string strValue, int length)
         {
-            Assert.True(IsValid(v => v.HasLength((x, p) => length), strValue));
+            Assert.True(IsValid(v => v.HasLength((_, _) => length), strValue));
         }
 
         [Theory]
@@ -98,7 +98,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
         [InlineData((string)null, 2)]
         public void HasLengthFunc_StrValueHasWrongLength_Invalid(string strValue, int length)
         {
-            Assert.False(IsValid(v => v.HasLength((x, p) => length), strValue));
+            Assert.False(IsValid(v => v.HasLength((_, _) => length), strValue));
         }
 
         [Theory]

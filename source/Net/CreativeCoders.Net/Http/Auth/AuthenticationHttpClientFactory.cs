@@ -17,7 +17,7 @@ namespace CreativeCoders.Net.Http.Auth
 
         public AuthenticationHttpClient CreateClient(string name)
         {
-            return new AuthenticationHttpClient(_httpMessageHandlerFactory, name);
+            return new(_httpMessageHandlerFactory, name);
         }
 
         public AuthenticationHttpClient CreateClient()

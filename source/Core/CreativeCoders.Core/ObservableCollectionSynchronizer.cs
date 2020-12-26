@@ -38,7 +38,7 @@ namespace CreativeCoders.Core
             {
                 case NotifyCollectionChangedAction.Add:
                     var newStartingIndex = e.NewStartingIndex;
-                    e.NewItems
+                    e.NewItems?
                         .Cast<TMasterElement>()
                         .ForEach(x => AddElement(newStartingIndex++, x));
                     break;
@@ -46,7 +46,7 @@ namespace CreativeCoders.Core
                     _slaveCollection.Move(e.OldStartingIndex, e.NewStartingIndex);
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    RemoveElements(e.OldStartingIndex, e.OldItems.Cast<TMasterElement>());
+                    RemoveElements(e.OldStartingIndex, e.OldItems?.Cast<TMasterElement>() ?? Array.Empty<TMasterElement>());
                     break;
                 case NotifyCollectionChangedAction.Replace:
                     ReplaceElement(e);
@@ -56,18 +56,22 @@ namespace CreativeCoders.Core
                     _slaveCollection.AddRange(_masterCollection.Select(_createSlave));
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(e) + "." + nameof(e.Action), $"Unknown action '{e.Action}'");
             }
         }
 
         private void ReplaceElement(NotifyCollectionChangedEventArgs eventArgs)
         {
-            if ((eventArgs.NewStartingIndex > -1 || eventArgs.OldStartingIndex > -1) &&
-                eventArgs.NewStartingIndex == eventArgs.OldStartingIndex)
+            if ((eventArgs.NewStartingIndex <= -1 && eventArgs.OldStartingIndex <= -1) ||
+                eventArgs.NewStartingIndex != eventArgs.OldStartingIndex || eventArgs.NewItems == null)
             {
-                _slaveCollection[eventArgs.NewStartingIndex] =
-                    _createSlave(eventArgs.NewItems.Cast<TMasterElement>().First());
+                return;
             }
+
+            var masterElement = eventArgs.NewItems.Cast<TMasterElement>().First();
+
+            _slaveCollection[eventArgs.NewStartingIndex] =
+                _createSlave(masterElement);
         }
 
         private void AddElement(int newStartingIndex, TMasterElement masterElement)

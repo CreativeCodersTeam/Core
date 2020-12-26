@@ -9,9 +9,9 @@ namespace NetSampleApp
         {
             await new HttpClientAuthTest().Run();
             
-            //await new HttpClientTest().Run();
+            await new HttpClientTest().Run();
             
-            //AvmTest.Run();
+            AvmTest.Run();
             
             Console.WriteLine("Hello World!");
             Console.ReadKey();

@@ -94,11 +94,6 @@ namespace CreativeCoders.Core.IO
             _dataStream.WriteByte(value);
         }
         
-        public override object InitializeLifetimeService()
-        {
-            return _dataStream.InitializeLifetimeService();
-        }
-
         public override bool Equals(object obj)
         {
             return _dataStream.Equals(obj);

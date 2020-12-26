@@ -63,7 +63,7 @@ namespace CreativeCoders.Core.UnitTests.Logging
 
             var actualLogLevel = LogLevel.Info;
             DelegateLog.IsDebugEnabled = true;
-            DelegateLog.Init((logLevel, scope, message) => actualLogLevel = logLevel);
+            DelegateLog.Init((logLevel, _, _) => actualLogLevel = logLevel);
             logger = LogManager.GetLogger<DelegateLoggingTest>();
             logger.Log(LogLevel.Debug, "Test");
 

@@ -37,10 +37,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ribbon", "Ribbon", "{F821FF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Skeletor", "Skeletor", "{592C82FA-C70A-498A-8901-4E808F42FA1D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Mvvm.DialogServices.TaskDlg", "Mvvm\CreativeCoders.Mvvm.DialogServices.TaskDlg\CreativeCoders.Mvvm.DialogServices.TaskDlg.csproj", "{CAA12596-DDBC-4DE6-A89D-73603E76674C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Mvvm.DialogServices.TaskDlg.Wpf", "Mvvm\CreativeCoders.Mvvm.DialogServices.TaskDlg.Wpf\CreativeCoders.Mvvm.DialogServices.TaskDlg.Wpf.csproj", "{99325D18-C38F-4BAE-A10C-CEAC82254DC1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Mvvm.FileDialogService", "Mvvm\CreativeCoders.Mvvm.FileDialogService\CreativeCoders.Mvvm.FileDialogService.csproj", "{22866C99-FA70-4C8B-B741-9E547D9A95CF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Mvvm.Ribbon", "Mvvm\CreativeCoders.Mvvm.Ribbon\CreativeCoders.Mvvm.Ribbon.csproj", "{3426447F-61CA-4F72-8245-39773106A2B7}"
@@ -151,6 +147,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Mvvm.Wpf", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__global", "__global", "{92288F2D-DE57-4018-855B-BD7F2344265F}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		..\.gitattributes = ..\.gitattributes
 		..\.gitignore = ..\.gitignore
 		..\Jenkinsfile = ..\Jenkinsfile
@@ -203,6 +200,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsSampleApp", "Samples
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiSampleApp", "Samples\WebApiSampleApp\WebApiSampleApp.csproj", "{2B60142B-B9D6-4843-A8DB-DF148B2B5670}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Mvvm.DialogServices.TaskDialog", "Mvvm\CreativeCoders.Mvvm.DialogServices.TaskDialog\CreativeCoders.Mvvm.DialogServices.TaskDialog.csproj", "{F458B646-D28E-41FD-ACB1-15FB267C4CD2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Mvvm.DialogServices.TaskDialog.Default", "Mvvm\CreativeCoders.Mvvm.DialogServices.TaskDialog.Default\CreativeCoders.Mvvm.DialogServices.TaskDialog.Default.csproj", "{FD4A5D95-4752-472A-914B-F44C907C5F81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -241,14 +242,6 @@ Global
 		{6CDB212D-7BC6-4C3F-A878-B438F6C2ED67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CDB212D-7BC6-4C3F-A878-B438F6C2ED67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CDB212D-7BC6-4C3F-A878-B438F6C2ED67}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CAA12596-DDBC-4DE6-A89D-73603E76674C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAA12596-DDBC-4DE6-A89D-73603E76674C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAA12596-DDBC-4DE6-A89D-73603E76674C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CAA12596-DDBC-4DE6-A89D-73603E76674C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99325D18-C38F-4BAE-A10C-CEAC82254DC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99325D18-C38F-4BAE-A10C-CEAC82254DC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99325D18-C38F-4BAE-A10C-CEAC82254DC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99325D18-C38F-4BAE-A10C-CEAC82254DC1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{22866C99-FA70-4C8B-B741-9E547D9A95CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{22866C99-FA70-4C8B-B741-9E547D9A95CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22866C99-FA70-4C8B-B741-9E547D9A95CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -487,6 +480,14 @@ Global
 		{2B60142B-B9D6-4843-A8DB-DF148B2B5670}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B60142B-B9D6-4843-A8DB-DF148B2B5670}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B60142B-B9D6-4843-A8DB-DF148B2B5670}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F458B646-D28E-41FD-ACB1-15FB267C4CD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F458B646-D28E-41FD-ACB1-15FB267C4CD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F458B646-D28E-41FD-ACB1-15FB267C4CD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F458B646-D28E-41FD-ACB1-15FB267C4CD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD4A5D95-4752-472A-914B-F44C907C5F81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD4A5D95-4752-472A-914B-F44C907C5F81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD4A5D95-4752-472A-914B-F44C907C5F81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD4A5D95-4752-472A-914B-F44C907C5F81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -504,8 +505,6 @@ Global
 		{B1EF7907-7C14-49DC-9DE9-A8A9E09766B3} = {FADEB579-B16F-4C44-B82D-1ECEC5884E51}
 		{F821FFB3-C266-4FC7-8618-3B047011D6E5} = {FADEB579-B16F-4C44-B82D-1ECEC5884E51}
 		{592C82FA-C70A-498A-8901-4E808F42FA1D} = {FADEB579-B16F-4C44-B82D-1ECEC5884E51}
-		{CAA12596-DDBC-4DE6-A89D-73603E76674C} = {E3663C3B-6BD5-4FC4-8799-3265C8423530}
-		{99325D18-C38F-4BAE-A10C-CEAC82254DC1} = {E3663C3B-6BD5-4FC4-8799-3265C8423530}
 		{22866C99-FA70-4C8B-B741-9E547D9A95CF} = {B1EF7907-7C14-49DC-9DE9-A8A9E09766B3}
 		{3426447F-61CA-4F72-8245-39773106A2B7} = {F821FFB3-C266-4FC7-8618-3B047011D6E5}
 		{F5F68BC3-5A7C-47CD-86D5-2E6F7BB264A6} = {592C82FA-C70A-498A-8901-4E808F42FA1D}
@@ -567,6 +566,8 @@ Global
 		{BDE7FA2F-732E-4AC7-B50B-D330434D42C0} = {9A3F55B8-E867-4EA2-B1FA-0C01DE79463E}
 		{4F0D9652-96FB-4BD2-B40A-CED6EE2EB507} = {72E179CA-7AE6-412A-856D-7BD13838E8E3}
 		{2B60142B-B9D6-4843-A8DB-DF148B2B5670} = {72E179CA-7AE6-412A-856D-7BD13838E8E3}
+		{F458B646-D28E-41FD-ACB1-15FB267C4CD2} = {E3663C3B-6BD5-4FC4-8799-3265C8423530}
+		{FD4A5D95-4752-472A-914B-F44C907C5F81} = {E3663C3B-6BD5-4FC4-8799-3265C8423530}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}

@@ -52,7 +52,7 @@ namespace CreativeCoders.Mvvm.Skeletor
         protected virtual void InitApplication()
         {
             Application.Startup += OnAppStartup;
-            Application.DispatcherUnhandledException += (sender, e) => OnUnhandledException(e);
+            Application.DispatcherUnhandledException += (_, e) => OnUnhandledException(e);
             Application.Exit += OnAppExit;
         }
 
@@ -79,7 +79,7 @@ namespace CreativeCoders.Mvvm.Skeletor
             var shell = CreateShell();
             if (shell is FrameworkElement shellFrameworkElement)
             {
-                shellFrameworkElement.Loaded += (loadedSender, loadedEventArgs) => OnShellLoaded();
+                shellFrameworkElement.Loaded += (_, _) => OnShellLoaded();
             }
             // ReSharper disable once InvertIf
             if (AutoShowShellWindow)

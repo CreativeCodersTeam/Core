@@ -1,4 +1,4 @@
-@Library('JenkinsPipelineLibrary@develop') _
+@Library('JenkinsPipelineLibrary@main') _
 
 pipeline {
     agent any
@@ -26,7 +26,7 @@ pipeline {
                     steps {
                         echo 'Run tests'
 
-                        sh 'nuke test'
+                        nuke(target: 'test')
                     }
                     post {
                         always {
@@ -38,7 +38,7 @@ pipeline {
                     steps {
                         echo 'Run tests'
 
-                        sh 'nuke pack'
+                        nuke(target: 'pack')
                     }
                 }
             }
@@ -84,10 +84,10 @@ pipeline {
     }
     post {
         success {
-            echo "========pipeline executed successfully ========"
+            sendBuildStatusMail('SUCCEEDED')
         }
         failure {
-            echo "========pipeline execution failed========"
+            sendBuildStatusMail('FAILED')
         }
     }
 }

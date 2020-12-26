@@ -70,7 +70,7 @@ namespace CreativeCoders.Reactive.UnitTests
             topic.Register<object>()
                 .Subscribe(o => msgPublished = o);
             topic.Register<string>()
-                .Subscribe(s => strPublished = true);
+                .Subscribe(_ => strPublished = true);
 
             var msg = new object();
 

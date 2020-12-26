@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using CreativeCoders.Core;
 using CreativeCoders.DynamicCode.Proxying;
 using CreativeCoders.Net.Http;
 using CreativeCoders.Net.Servers.Http.AspNetCore;
@@ -17,13 +15,13 @@ namespace XmlRpcSampleApp
     {
         public async Task RunAsync()
         {
-            var xmlRpcServer = new XmlRpcServer(new AspNetCoreHttpServer(), new XmlRpcServerMethods(), Encoding.UTF8);
+            var xmlRpcServer = new XmlRpcServer(new AspNetCoreHttpServer());
             xmlRpcServer.Urls.Add("http://localhost:12345/");
             xmlRpcServer.Methods.RegisterMethods(this);
 
             await xmlRpcServer.StartAsync();
             
-            var xmlRpcClient = new XmlRpcProxyBuilder<ISampleXmlRpcClient>(new ProxyBuilder<ISampleXmlRpcClient>(), new DelegateHttpClientFactory(name => new HttpClient()))
+            var xmlRpcClient = new XmlRpcProxyBuilder<ISampleXmlRpcClient>(new ProxyBuilder<ISampleXmlRpcClient>(), new DelegateHttpClientFactory(_ => new HttpClient()))
                 .ForUrl("http://localhost:12345")
                 .Build();
 

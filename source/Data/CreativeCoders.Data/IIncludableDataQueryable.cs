@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Data
 {
+    [PublicAPI]
     public interface IIncludableDataQueryable<TEntity> : IQueryable<TEntity>
         where TEntity : class
     {
@@ -15,6 +17,7 @@ namespace CreativeCoders.Data
             where TProperty : class;
     }
 
+    [PublicAPI]
     public interface IIncludableDataQueryable<TEntity, TProperty> : IIncludableDataQueryable<TEntity>
         where TEntity : class
         where TProperty : class
@@ -28,6 +31,7 @@ namespace CreativeCoders.Data
     }
 
     // ReSharper disable once UnusedTypeParameter
+    [PublicAPI]
     public interface IIncludableDataQueryable<TEntity, TCollection, TProperty> : IIncludableDataQueryable<TEntity>
         where TEntity : class
         where TCollection : IEnumerable<TProperty>

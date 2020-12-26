@@ -1,6 +1,5 @@
 ﻿using CreativeCoders.Core;
 using JetBrains.Annotations;
-using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.BuildActions
@@ -28,7 +27,7 @@ namespace CreativeCoders.NukeBuild.BuildActions
         protected override void OnExecute()
         {
             DotNetTasks.DotNetPack(s => s
-                .SetWorkingDirectory(BuildInfo.Solution.Directory)
+                //.SetWorkingDirectory(BuildInfo.Solution.Directory)
                 .SetSymbolPackageFormat(_symbolPackageFormat)
                 .SetProject(BuildInfo.Solution)
                 .SetConfiguration(BuildInfo.Configuration)

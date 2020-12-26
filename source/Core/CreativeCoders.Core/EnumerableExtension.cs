@@ -151,7 +151,7 @@ namespace CreativeCoders.Core
 
         public static IEnumerable<T> TakeEvery<T>(this IEnumerable<T> items, int step)
         {
-            return items.Where((x, index) => index % step == 0);
+            return items.Where((_, index) => index % step == 0);
         }
 
         public static void Remove<T>(this ICollection<T> self, IEnumerable<T> removeEntries)
@@ -201,7 +201,7 @@ namespace CreativeCoders.Core
 
         public static bool IsSingle<T>(this IEnumerable<T> items)
         {
-            return items.IsSingle(item => true);
+            return items.IsSingle(_ => true);
         }
 
         public static IEnumerable<T> Distinct<T, TKey>(this IEnumerable<T> items, Func<T, TKey> keySelector)

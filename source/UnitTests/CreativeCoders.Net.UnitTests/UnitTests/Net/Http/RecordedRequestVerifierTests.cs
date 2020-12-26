@@ -1,4 +1,4 @@
-﻿using System.Net;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -8,6 +8,7 @@ using Xunit;
 
 namespace CreativeCoders.Net.UnitTests.UnitTests.Net.Http
 {
+    [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
     public class RecordedRequestVerifierTests
     {
         [Fact]
@@ -117,7 +118,7 @@ namespace CreativeCoders.Net.UnitTests.UnitTests.Net.Http
 
             context
                 .CallShouldBeMade("http://test.com/")
-                .RequestMeets((request, cancellationToken) => !cancellationToken.IsCancellationRequested,
+                .RequestMeets((_, cancellationToken) => !cancellationToken.IsCancellationRequested,
                     "IsCancellationRequested is false");
         }
 
@@ -137,15 +138,15 @@ namespace CreativeCoders.Net.UnitTests.UnitTests.Net.Http
 
             cancellationTokenSource.Cancel();
 
-            var response = await client.GetAsync("http://test.com", HttpCompletionOption.ResponseContentRead,
+            var response = await client.GetAsync("http://test.com", HttpCompletionOption.ResponseHeadersRead,
                 expectedCancellationToken).ConfigureAwait(false);
 
             Assert.Equal("TestData", await response.Content.ReadAsStringAsync().ConfigureAwait(false));
 
             context
                 .CallShouldBeMade("http://test.com/")
-                .RequestMeets((request, cancellationToken) => cancellationToken.IsCancellationRequested,
-                    "IsCancellationRequested is false");
+                .RequestMeets((_, cancellationToken) => cancellationToken.IsCancellationRequested,
+                    "IsCancellationRequested must be true");
         }
 
         [Fact]

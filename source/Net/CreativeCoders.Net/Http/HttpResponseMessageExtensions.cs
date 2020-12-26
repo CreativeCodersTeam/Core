@@ -82,8 +82,7 @@ namespace CreativeCoders.Net.Http
 
             response.EnsureSuccessStatusCode();
 
-            //todo net5 CancellationToken
-            return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 }

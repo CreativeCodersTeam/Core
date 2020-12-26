@@ -23,7 +23,7 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
                 Assert.False(commandExecuted);
                 commandExecuted = true;
             });
-            command.CanExecuteChanged += (sender, args) =>
+            command.CanExecuteChanged += (_, _) =>
             {
                 Assert.False(canExecuteChangedRaised);
                 canExecuteChangedRaised = true;

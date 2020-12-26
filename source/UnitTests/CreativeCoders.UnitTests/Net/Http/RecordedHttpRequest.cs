@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 namespace CreativeCoders.UnitTests.Net.Http
 {
     /// <summary>   A recorded HTTP request. </summary>
+    [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
     public class RecordedHttpRequest
     {
         internal RecordedHttpRequest(HttpRequestMessage requestMessage, CancellationToken cancellationToken)

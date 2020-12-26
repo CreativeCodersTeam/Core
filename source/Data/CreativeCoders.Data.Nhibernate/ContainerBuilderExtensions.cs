@@ -21,7 +21,7 @@ namespace CreativeCoders.Data.Nhibernate
             });
             setupNhibernateConfiguration(configuration);
             
-            builder.AddScoped(c => configuration.BuildSessionFactory());
+            builder.AddScoped(_ => configuration.BuildSessionFactory());
 
             return builder;
         }

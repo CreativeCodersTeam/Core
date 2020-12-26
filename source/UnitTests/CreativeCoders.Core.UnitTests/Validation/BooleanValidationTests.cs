@@ -74,7 +74,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
         [InlineData(7)]
         public void MustNot_IntValueIsOdd_Valid(int intValue)
         {
-            Assert.True(IsValid(rb => rb.MustNot((o, i) => i % 2 == 0), intValue));
+            Assert.True(IsValid(rb => rb.MustNot((_, i) => i % 2 == 0), intValue));
         }
 
         private static bool IsValid(Action<IPropertyRuleBuilder<TestDataObject, int>> setupRule, int intValue)

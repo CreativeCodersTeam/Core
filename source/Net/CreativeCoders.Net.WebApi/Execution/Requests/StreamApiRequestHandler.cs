@@ -23,7 +23,7 @@ namespace CreativeCoders.Net.WebApi.Execution.Requests
             response.EnsureSuccessStatusCode();
 
             return new StreamWrapper(await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                null, disposing => response.Dispose());
+                null, _ => response.Dispose());
         }
     }
 }

@@ -120,7 +120,7 @@ namespace CreativeCoders.Di.MsServiceProvider
             where TService : class
         {
             nameMap.Values.ForEach(addImplementation);
-            addFactory(c => new ServiceByNameFactory<TService>(nameMap));
+            addFactory(_ => new ServiceByNameFactory<TService>(nameMap));
         }
 
         public override IDiContainer Build()

@@ -1,6 +1,5 @@
 ﻿using System;
 using CreativeCoders.Core.Logging;
-using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Logging
 {

@@ -18,7 +18,7 @@ namespace CreativeCoders.Validation
             where T : class
             where TProperty : class
         {
-            return ruleBuilder.Must((o, p) => p == null);
+            return ruleBuilder.Must((_, property) => property == null);
         }
 
         public static IPropertyRuleBuilder<T, TProperty> IsNotNull<T, TProperty>(
@@ -26,7 +26,7 @@ namespace CreativeCoders.Validation
             where T : class
             where TProperty : class
         {
-            return ruleBuilder.Must((o, p) => p != null);
+            return ruleBuilder.Must((_, property) => property != null);
         }
 
         public static IPropertyRuleBuilder<T, TProperty> IsEqual<T, TProperty>(
@@ -83,7 +83,7 @@ namespace CreativeCoders.Validation
             this IPropertyRuleBuilder<T, string> ruleBuilder, string compareValue, StringComparison stringComparison)
             where T : class
         {
-            return ruleBuilder.Must((instance, property) =>
+            return ruleBuilder.Must((_, property) =>
                 property == null && compareValue == null ||
                 property?.ToString().Equals(compareValue, stringComparison) == true);
         }
@@ -92,7 +92,7 @@ namespace CreativeCoders.Validation
             this IPropertyRuleBuilder<T, string> ruleBuilder, string compareValue, StringComparison stringComparison)
             where T : class
         {
-            return ruleBuilder.Must((instance, property) =>
+            return ruleBuilder.Must((_, property) =>
                 !(property == null && compareValue == null ||
                 property?.ToString().Equals(compareValue, stringComparison) == true));
         }
@@ -125,7 +125,7 @@ namespace CreativeCoders.Validation
         {
             Ensure.IsNotNull(isFalse, nameof(isFalse));
 
-            var validationStep = new DelegatePropertyValidationStep<T, TProperty>(prop => !isFalse(prop));
+            var validationStep = new DelegatePropertyValidationStep<T, TProperty>(property => !isFalse(property));
             ruleBuilder.AddValidationStep(validationStep);
 
             return ruleBuilder;
@@ -164,7 +164,7 @@ namespace CreativeCoders.Validation
             this IPropertyRuleBuilder<T, IEnumerable<TElement>> ruleBuilder, TElement element)
             where T : class
         {
-            return ruleBuilder.Must((o, p) => p.Contains(element));
+            return ruleBuilder.Must((_, property) => property.Contains(element));
         }
 
         public static IPropertyRuleBuilder<T, TProperty> Contains<T, TProperty, TElement>(
@@ -172,7 +172,7 @@ namespace CreativeCoders.Validation
             where T : class
             where TProperty : IEnumerable<TElement>
         {
-            return ruleBuilder.Must((o, p) => p.Contains(element));
+            return ruleBuilder.Must((_, property) => property.Contains(element));
         }
 
         public static IPropertyRuleBuilder<T, TProperty> Contains<T, TProperty>(
@@ -180,14 +180,17 @@ namespace CreativeCoders.Validation
             where T : class
             where TProperty : IEnumerable
         {
-            return ruleBuilder.Must((o, p) => p.Cast<object>().Any(x => Comparer.Default.Compare(x, element) == 0));
+            return ruleBuilder.Must((_, property) =>
+                property
+                    .Cast<object>()
+                    .Any(x => Comparer.Default.Compare(x, element) == 0));
         }
 
         public static IPropertyRuleBuilder<T, string> Contains<T>(
             this IPropertyRuleBuilder<T, string> ruleBuilder, string text)
             where T : class
         {
-            return ruleBuilder.Must((o, p) => p.Contains(text));
+            return ruleBuilder.Must((_, property) => property.Contains(text));
         }
 
         public static IPropertyRuleBuilder<T, TProperty> StartsWith<T, TProperty>(
@@ -265,7 +268,7 @@ namespace CreativeCoders.Validation
             where T : class
             where TProperty : IEnumerable
         {
-            return ruleBuilder.Must((instance, property) => !property.Cast<object>().Any());
+            return ruleBuilder.Must((_, property) => !property.Cast<object>().Any());
         }
 
         public static IPropertyRuleBuilder<T, TProperty> IsNotEmpty<T, TProperty>(
@@ -273,21 +276,21 @@ namespace CreativeCoders.Validation
             where T : class
             where TProperty : IEnumerable
         {
-            return ruleBuilder.Must((instance, property) => property.Cast<object>().Any());
+            return ruleBuilder.Must((_, property) => property.Cast<object>().Any());
         }
 
         public static IPropertyRuleBuilder<T, IEnumerable<TElement>> Single<T, TElement>(
             this IPropertyRuleBuilder<T, IEnumerable<TElement>> ruleBuilder)
             where T : class
         {
-            return ruleBuilder.Must((instance, property) => property.IsSingle());
+            return ruleBuilder.Must((_, property) => property.IsSingle());
         }
 
         public static IPropertyRuleBuilder<T, IList<TElement>> Single<T, TElement>(
             this IPropertyRuleBuilder<T, IList<TElement>> ruleBuilder)
             where T : class
         {
-            return ruleBuilder.Must((instance, property) => property.IsSingle());
+            return ruleBuilder.Must((_, property) => property.IsSingle());
         }
 
         public static IPropertyRuleBuilder<T, TProperty> Count<T, TProperty>(
@@ -295,50 +298,43 @@ namespace CreativeCoders.Validation
             where T : class
             where TProperty : IEnumerable
         {
-            return ruleBuilder.Must((instance, property) => property.Cast<object>().Count() == count);
+            return ruleBuilder.Must((_, property) => property.Cast<object>().Count() == count);
         }
 
         public static IPropertyRuleBuilder<T, IEnumerable<TElement>> Count<T, TElement>(
             this IPropertyRuleBuilder<T, IEnumerable<TElement>> ruleBuilder, int count)
             where T : class
         {
-            return ruleBuilder.Must((instance, property) => property.Count() == count);
+            return ruleBuilder.Must((_, property) => property.Count() == count);
         }
 
         public static IPropertyRuleBuilder<T, IEnumerable<TElement>> All<T, TElement>(
             this IPropertyRuleBuilder<T, IEnumerable<TElement>> ruleBuilder, Func<TElement, bool> predicate)
             where T : class
         {
-            return ruleBuilder.Must((instance, property) => property.All(predicate));
+            return ruleBuilder.Must((_, property) => property.All(predicate));
         }
 
         public static IPropertyRuleBuilder<T, IList<TElement>> All<T, TElement>(
             this IPropertyRuleBuilder<T, IList<TElement>> ruleBuilder, Func<TElement, bool> predicate)
             where T : class
         {
-            return ruleBuilder.Must((instance, property) => property.All(predicate));
+            return ruleBuilder.Must((_, property) => property.All(predicate));
         }
 
         public static IPropertyRuleBuilder<T, IEnumerable<TElement>> Any<T, TElement>(
             this IPropertyRuleBuilder<T, IEnumerable<TElement>> ruleBuilder, Func<TElement, bool> predicate)
             where T : class
         {
-            return ruleBuilder.Must((instance, property) => property.Any(predicate));
+            return ruleBuilder.Must((_, property) => property.Any(predicate));
         }
 
         public static IPropertyRuleBuilder<T, IList<TElement>> Any<T, TElement>(
             this IPropertyRuleBuilder<T, IList<TElement>> ruleBuilder, Func<TElement, bool> predicate)
             where T : class
         {
-            return ruleBuilder.Must((instance, property) => property.Any(predicate));
+            return ruleBuilder.Must((_, property) => property.Any(predicate));
         }
-
-        //public static IPropertyRuleBuilder<T, ICollection<TElement>> Any<T, TElement>(
-        //    this IPropertyRuleBuilder<T, ICollection<TElement>> ruleBuilder, Func<TElement, bool> predicateFunc)
-        //    where T : class
-        //{
-        //    return ruleBuilder.Must((instance, property) => property.Any(predicateFunc));
-        //}
 
         public static IPropertyRuleBuilder<T, TProperty> IsNullOrWhiteSpace<T, TProperty>(
             this IPropertyRuleBuilder<T, TProperty> ruleBuilder)
@@ -353,26 +349,5 @@ namespace CreativeCoders.Validation
         {
             return ruleBuilder.IsFalse(property => string.IsNullOrWhiteSpace(property?.ToString()));
         }
-
-        //public static IPropertyRuleBuilder<T, TProperty> Test<T, TProperty>(
-        //    this IPropertyRuleBuilder<T, TProperty> ruleBuilder)
-        //    where T : class
-        //{
-
-        //}
-
-        //public static IPropertyRuleBuilder<T, TProperty> Test<T, TProperty>(
-        //    this IPropertyRuleBuilder<T, TProperty> ruleBuilder)
-        //    where T : class
-        //{
-
-        //}
-
-        //public static IPropertyRuleBuilder<T, TProperty> Test<T, TProperty>(
-        //    this IPropertyRuleBuilder<T, TProperty> ruleBuilder)
-        //    where T : class
-        //{
-
-        //}
     }
 }

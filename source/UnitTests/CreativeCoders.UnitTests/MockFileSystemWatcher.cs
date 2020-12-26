@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.IO.Abstractions;
 
@@ -6,6 +7,11 @@ namespace CreativeCoders.UnitTests
 {
     public class MockFileSystemWatcher : FileSystemWatcherBase
     {
+        public MockFileSystemWatcher()
+        {
+            Filters = new Collection<string>();
+        }
+
         public override void BeginInit()
         {
             throw new System.NotImplementedException();
@@ -18,12 +24,12 @@ namespace CreativeCoders.UnitTests
 
         public override WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType)
         {
-            return new WaitForChangedResult();
+            return new();
         }
 
         public override WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType, int timeout)
         {
-            return new WaitForChangedResult();
+            return new();
         }
 
         public override bool IncludeSubdirectories { get; set; }
@@ -31,6 +37,8 @@ namespace CreativeCoders.UnitTests
         public override bool EnableRaisingEvents { get; set; }
 
         public override string Filter { get; set; }
+
+        public override Collection<string> Filters { get; }
 
         public override int InternalBufferSize { get; set; }
 

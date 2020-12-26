@@ -14,7 +14,7 @@
 
     public async Task OnValueChanged(ChangeEventArgs e)
     {
-        EditorValue = e.Value.ToString();
+        EditorValue = e.Value?.ToString();
         await EditorValueChanged.InvokeAsync(EditorValue);
         Console.WriteLine("Value changed to " + EditorValue);
     }

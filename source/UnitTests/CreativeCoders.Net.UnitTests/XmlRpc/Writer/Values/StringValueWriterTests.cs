@@ -36,6 +36,7 @@ namespace CreativeCoders.Net.UnitTests.XmlRpc.Writer.Values
 
             var valueElement = xmlElement.XPathSelectElement("value/string");
 
+            Assert.NotNull(valueElement);
             Assert.Equal("Test1234", valueElement.Value);
         }
     }

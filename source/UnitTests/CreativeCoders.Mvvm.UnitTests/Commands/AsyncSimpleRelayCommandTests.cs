@@ -25,7 +25,7 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands
                 commandExecuted = true;
                 return Task.CompletedTask;
             });
-            command.CanExecuteChanged += (sender, args) =>
+            command.CanExecuteChanged += (_, _) =>
             {
                 Assert.False(canExecuteChangedRaised);
                 canExecuteChangedRaised = true;

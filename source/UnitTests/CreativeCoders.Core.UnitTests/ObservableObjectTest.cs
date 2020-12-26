@@ -88,7 +88,7 @@ namespace CreativeCoders.Core.UnitTests
             var eventHandlerCalled = false;
 
             var obj = new TestClass();
-            obj.PropertyChanging += (sender, args) =>
+            obj.PropertyChanging += (_, _) =>
             {
                 valueOnChanging = obj.StrValue;
                 eventHandlerCalled = true;

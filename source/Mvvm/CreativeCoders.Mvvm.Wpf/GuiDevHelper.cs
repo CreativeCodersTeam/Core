@@ -9,7 +9,7 @@ namespace CreativeCoders.Mvvm.Wpf
     public static class GuiDevHelper
     {
         private static readonly Lazy<bool> IsInDesignModeLazy =
-            new Lazy<bool>(() => DesignerProperties.GetIsInDesignMode(new DependencyObject()));
+            new(() => DesignerProperties.GetIsInDesignMode(new DependencyObject()));
 
         public static bool IsInDesignMode => IsInDesignModeLazy.Value;
     }

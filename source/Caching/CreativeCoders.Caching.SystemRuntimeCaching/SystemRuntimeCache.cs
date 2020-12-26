@@ -4,9 +4,11 @@ using System.Runtime.Caching;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Caching;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Caching.SystemRuntimeCaching
 {
+    [PublicAPI]
     public class SystemRuntimeCache<TKey, TValue> : ICache<TKey, TValue>
     {
         private readonly ObjectCache _cache;
@@ -21,7 +23,7 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
         }
 
         public static SystemRuntimeCache<TKey, TValue> UsingCache(ObjectCache cache) =>
-            new SystemRuntimeCache<TKey, TValue>(cache);
+            new(cache);
         
         public TValue GetOrAdd(TKey key, Func<TValue> getValue, string regionName = null)
         {

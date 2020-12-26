@@ -62,7 +62,7 @@ namespace CreativeCoders.AspNetCore.Blazor.Components
                 return;
             }
 
-            InvokeAsync(StateHasChanged).FireAndForgetAsync(ex => { });
+            InvokeAsync(StateHasChanged).FireAndForgetAsync(_ => { });
         }
 
         public void Dispose()

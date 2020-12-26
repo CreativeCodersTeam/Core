@@ -37,7 +37,7 @@ namespace CreativeCoders.Messaging.DefaultMessageQueue
 
         public static MessageQueue<T> Create(int maxQueueLength)
         {
-            return new MessageQueue<T>(maxQueueLength);
+            return new(maxQueueLength);
         }
         
         public async Task EnqueueAsync(T message)

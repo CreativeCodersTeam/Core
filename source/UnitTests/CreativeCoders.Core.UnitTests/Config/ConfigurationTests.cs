@@ -65,7 +65,7 @@ namespace CreativeCoders.Core.UnitTests.Config
 
             var _ = new object();
             var source = A.Fake<IConfigurationSource<object>>();
-            A.CallTo(() => source.GetSettingObject()).Throws(call => new FileNotFoundException());
+            A.CallTo(() => source.GetSettingObject()).Throws(_ => new FileNotFoundException());
 
             config.AddSource(source);
 
@@ -79,12 +79,12 @@ namespace CreativeCoders.Core.UnitTests.Config
 
             var settingObject = new object();
             var source = A.Fake<IConfigurationSource<object>>();
-            A.CallTo(() => source.GetSettingObject()).Throws(call => new FileNotFoundException());
+            A.CallTo(() => source.GetSettingObject()).Throws(_ => new FileNotFoundException());
             A.CallTo(() => source.GetDefaultSettingObject()).Returns(settingObject);
 
             config.AddSource(source);
             var exceptionActionCalled = false;
-            config.OnSourceException((configSource, ex, handleResult) =>
+            config.OnSourceException((_, _, handleResult) =>
             {
                 handleResult.IsHandled = true;
                 exceptionActionCalled = true;
@@ -103,11 +103,11 @@ namespace CreativeCoders.Core.UnitTests.Config
 
             var settingObject = new object();
             var source = A.Fake<IConfigurationSource<object>>();
-            A.CallTo(() => source.GetSettingObject()).Throws(call => new FileNotFoundException());
+            A.CallTo(() => source.GetSettingObject()).Throws(_ => new FileNotFoundException());
             A.CallTo(() => source.GetDefaultSettingObject()).Returns(settingObject);
 
             config.AddSource(source);
-            config.OnSourceException((configSource, ex, handleResult) => handleResult.IsHandled = true);
+            config.OnSourceException((_, _, handleResult) => handleResult.IsHandled = true);
 
             var item = config.GetItem<object>();
 

@@ -10,12 +10,8 @@ namespace CreativeCoders.Mvvm.Wpf.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-            {
-                return Binding.DoNothing;
-            }
-            
-            var imageUrl = value.ToString();
+            var imageUrl = value?.ToString();
+
             if (string.IsNullOrWhiteSpace(imageUrl))
             {
                 return Binding.DoNothing;

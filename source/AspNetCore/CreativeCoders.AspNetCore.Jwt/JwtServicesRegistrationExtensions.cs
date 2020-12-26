@@ -15,7 +15,7 @@ namespace CreativeCoders.AspNetCore.Jwt
         {
             serviceCollection
                 .AddScoped<IUserAuthProvider, TUserAuthProvider>()
-                .AddSingleton<ISymSecurityKeyConfig>(sp => new SymSecurityKeyConfig(symSecurityKey))
+                .AddSingleton<ISymSecurityKeyConfig>(_ => new SymSecurityKeyConfig(symSecurityKey))
                 .AddSingleton<ITokenHandler, JwtTokenHandler>()
                 .AddAuthentication(x =>
                 {

@@ -38,6 +38,7 @@ namespace CreativeCoders.Net.UnitTests.XmlRpc.Writer.Values
 
             var valueElement = xmlElement.XPathSelectElement("value/base64");
 
+            Assert.NotNull(valueElement);
             Assert.Equal(Convert.ToBase64String(data), valueElement.Value);
         }
     }

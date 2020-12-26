@@ -154,18 +154,14 @@ namespace CreativeCoders.Net.WebApi.Building
         {
             var requestedAttributes = attributes.Where(a => a.GetType() == typeof(T)).Cast<T>().ToArray();
 
-            if (requestedAttributes.Length == 1 && attributes.Any(a => notAllowedTypes.Contains(a.GetType())))
+            return requestedAttributes.Length switch
             {
-                throw new IllegalParameterAttributeException(parameterInfo, "Not allowed types mixed.");
-            }
-
-            if (requestedAttributes.Length > 1)
-            {
-                throw new IllegalParameterAttributeException(parameterInfo,
-                    $"Parameter '{parameterInfo.Name}' has multiple '{attributeName}' attributes. Allowed is a maximum of one '{attributeName}' attribute.");
-            }
-
-            return requestedAttributes.FirstOrDefault();
+                1 when attributes.Any(a => notAllowedTypes.Contains(a.GetType())) => throw
+                    new IllegalParameterAttributeException(parameterInfo, "Not allowed types mixed."),
+                > 1 => throw new IllegalParameterAttributeException(parameterInfo,
+                    $"Parameter '{parameterInfo.Name}' has multiple '{attributeName}' attributes. Allowed is a maximum of one '{attributeName}' attribute."),
+                _ => requestedAttributes.FirstOrDefault()
+            };
         }
     }
 }

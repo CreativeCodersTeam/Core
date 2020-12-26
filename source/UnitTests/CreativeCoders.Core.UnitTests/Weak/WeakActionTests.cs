@@ -125,7 +125,7 @@ namespace CreativeCoders.Core.UnitTests.Weak
         [Fact]
         public void CtorKeepAliveActionTargetGeneric()
         {
-            Action<string> action = s => { };
+            Action<string> action = _ => { };
             var weakAction = new WeakAction<string>(action, KeepOwnerAliveMode.NotKeepAlive);
 
             Assert.False(weakAction.KeepOwnerAlive);
@@ -142,7 +142,7 @@ namespace CreativeCoders.Core.UnitTests.Weak
         [Fact]
         public void DisposeTest()
         {
-            Action<string> action = s => { };
+            Action<string> action = _ => { };
             var weakAction = new WeakAction<string>(action, KeepOwnerAliveMode.KeepAlive);
 
             weakAction.Dispose();

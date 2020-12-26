@@ -4,9 +4,11 @@ using System.Text;
 using System.Threading.Tasks;
 using CreativeCoders.Core.IO;
 using Xunit;
+#pragma warning disable 618
 
 namespace CreativeCoders.Core.UnitTests.IO
 {
+#pragma warning disable SYSLIB0001 // Type or member is obsolete
     public class StreamExtensionsTests
     {
         [Fact]
@@ -69,8 +71,11 @@ namespace CreativeCoders.Core.UnitTests.IO
         public async Task ReadAsStringAsync_Utf8TextAsBytesInMemoryStreamReadAsUtf7WithAutodetectBOM_ReturnsInput()
         {
             var stream = new MemoryStream(new byte[]{239, 187, 191}.Concat(Encoding.UTF8.GetBytes("Ä")).ToArray());
-            
+
+
             Assert.Equal("Ä", await stream.ReadAsStringAsync(Encoding.UTF7, true));
         }
     }
+#pragma warning restore SYSLIB0001 // Type or member is obsolete
 }
+#pragma warning restore 618

@@ -9,6 +9,7 @@ using CreativeCoders.Net.XmlRpc.Definition;
 using CreativeCoders.Net.XmlRpc.Model;
 using CreativeCoders.Net.XmlRpc.Model.Values;
 using CreativeCoders.Net.XmlRpc.Model.Values.Converters;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Net.XmlRpc.Server
 {
@@ -68,6 +69,7 @@ namespace CreativeCoders.Net.XmlRpc.Server
                 .ToArray();
         }
 
+        [UsedImplicitly]
         [XmlRpcMethod("listMethods")]
         public IEnumerable<string> ListMethods()
         {

@@ -26,28 +26,24 @@ namespace CreativeCoders.Net.XmlRpc.Server
         
         private readonly IHttpServer _httpServer;
 
-        private readonly Encoding _encoding;
-
         private readonly XmlRpcMethodExecutor _executor;
 
         private readonly IList<string> _allowedContentTypes;
 
         private readonly DataToXmlRpcValueConverter _dataToXmlRpcValueConverter;
 
-        public XmlRpcServer(IHttpServer httpServer, IXmlRpcServerMethods xmlRpcServerMethods, Encoding encoding)
+        public XmlRpcServer(IHttpServer httpServer)
         {
             Ensure.IsNotNull(httpServer, nameof(httpServer));
-            Ensure.IsNotNull(encoding, nameof(encoding));
-            Ensure.IsNotNull(encoding, nameof(encoding));
-
+            
             _httpServer = httpServer;
-            _encoding = encoding;
+            Encoding = Encoding.UTF8;
 
             Urls = new List<string>();
 
             _httpServer.RegisterRequestHandler(this);
 
-            Methods = xmlRpcServerMethods;
+            Methods = new XmlRpcServerMethods();
 
             _executor = new XmlRpcMethodExecutor(Methods);
 
@@ -118,7 +114,7 @@ namespace CreativeCoders.Net.XmlRpc.Server
 
         private async Task SendResponseAsync(IHttpResponse response, XmlRpcResponse xmlRpcResponse)
         {
-            var contentStream = await CreateContentStreamAsync(xmlRpcResponse).ConfigureAwait(false);
+            await using var contentStream = await CreateContentStreamAsync(xmlRpcResponse).ConfigureAwait(false);
 
             var responseStream = response.Body.GetStream();
 
@@ -135,7 +131,7 @@ namespace CreativeCoders.Net.XmlRpc.Server
             var contentStream = new MemoryStream();
             var xmlRpcResponseWrite = new ResponseModelWriter(new ValueWriters());
 
-            await xmlRpcResponseWrite.WriteAsync(contentStream, xmlRpcResponse, _encoding).ConfigureAwait(false);
+            await xmlRpcResponseWrite.WriteAsync(contentStream, xmlRpcResponse, Encoding).ConfigureAwait(false);
             contentStream.Seek(0, SeekOrigin.Begin);
 
             return contentStream;
@@ -145,7 +141,7 @@ namespace CreativeCoders.Net.XmlRpc.Server
         {
             var stream = await request.Body.ReadAsStreamAsync().ConfigureAwait(false);
 
-            var xmlRpcRequestReader = new RequestModelReader(new ValueReaders(_encoding));
+            var xmlRpcRequestReader = new RequestModelReader(new ValueReaders(Encoding));
 
             var xmlRpcRequest = await xmlRpcRequestReader.ReadAsync(stream).ConfigureAwait(false);
             return xmlRpcRequest;
@@ -180,5 +176,7 @@ namespace CreativeCoders.Net.XmlRpc.Server
         public IXmlRpcServerMethods Methods { get; }
 
         public bool SupportsListMethods { get; set; }
+
+        public Encoding Encoding { get; set; }
     }
 }

@@ -128,7 +128,7 @@ namespace CreativeCoders.Core.UnitTests.Config.Sources
 
         private class DemoSetting
         {
-            public string Text { get; set; }
+            public string Text { get; init; }
         }
     }
 }
