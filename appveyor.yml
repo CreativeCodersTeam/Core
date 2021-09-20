@@ -4,3 +4,12 @@ image: Visual Studio 2019
 
 build_script:
 - ps: ./build.ps1 Pack
+
+notifications:
+  # Email
+  - provider: Email
+    to:
+      - $env.NotifyEmailAddress
+    subject: 'CreativeCoders.Core Build {{status}}'                  # optional
+    message: "{{message}}, {{commitId}}"    # optional
+    on_build_status_changed: true
