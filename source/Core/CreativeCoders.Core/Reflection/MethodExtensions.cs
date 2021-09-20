@@ -13,7 +13,7 @@ namespace CreativeCoders.Core.Reflection
             Ensure.IsNotNull(instance, nameof(instance));
             
             var method = arguments == null || arguments.Length == 0
-                ? instance.GetType().GetMethod(methodName, new Type[0])
+                ? instance.GetType().GetMethod(methodName, Type.EmptyTypes)
                 : instance.GetType().GetMethod(methodName, arguments.Select(x => x.GetType()).ToArray());
             
             if (method == null)
@@ -29,7 +29,7 @@ namespace CreativeCoders.Core.Reflection
             Ensure.IsNotNull(instance, nameof(instance));
             
             var method = arguments == null || arguments.Length == 0
-                ? instance.GetType().GetMethod(methodName, new Type[0])
+                ? instance.GetType().GetMethod(methodName, Type.EmptyTypes)
                 : instance.GetType().GetMethod(methodName, arguments.Select(x => x.GetType()).ToArray());
             
             if (method == null)
@@ -170,7 +170,9 @@ namespace CreativeCoders.Core.Reflection
 
                 if (type.IsGenericParameter)
                 {
-                    var index = genericArgumentsList.FindIndex(t => t.Name == type.Name);
+                    var genericType = type;
+                    var index = genericArgumentsList.FindIndex(t => t.Name == genericType.Name);
+
                     type = genericTypeArguments[index];
                 }
 

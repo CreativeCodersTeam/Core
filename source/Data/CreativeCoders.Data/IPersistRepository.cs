@@ -4,7 +4,8 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Data
 {
     [PublicAPI]
-    public interface IPersistRepository<in TEntity> where TEntity : class
+    public interface IPersistRepository<in TEntity>
+        where TEntity : class
     {
         void Add(TEntity entity);
 
