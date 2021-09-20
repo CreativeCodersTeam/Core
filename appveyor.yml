@@ -9,7 +9,7 @@ notifications:
   # Email
   - provider: Email
     to:
-      - $env.NotifyEmailAddress
+      - $env:NotifyEmailAddress
     subject: 'CreativeCoders.Core Build {{status}}'                  # optional
     message: "{{message}}, {{commitId}}"    # optional
     on_build_status_changed: true
