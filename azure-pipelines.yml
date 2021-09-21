@@ -32,4 +32,4 @@ stages:
       vmImage: $(VM_IMAGE)
     steps:
     - pwsh: ./build.ps1 RunTest
-    - displayName: '[Nuke Build]'
+      displayName: '[Nuke Build]'
