@@ -3,7 +3,6 @@
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
 		<TargetFramework>net5.0</TargetFramework>
-		<Authors>CreativeCoders</Authors>
 		<Description>General purpose classes and types for ASP.NET Core</Description>
 	</PropertyGroup>
 
