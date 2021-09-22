@@ -21,8 +21,6 @@ stages:
   displayName: 'Build'
   jobs:
   - job: Build
-    parallel: 1
-    limitConcurrency: 1
     strategy:
       matrix:
         'Windows':
