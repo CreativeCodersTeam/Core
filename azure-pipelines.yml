@@ -34,3 +34,10 @@ stages:
     steps:
     - pwsh: ./build.ps1 RunTest
       displayName: '[Nuke Build]'
+    - task: DotNetCoreCLI@2
+      displayName: "Publish NuGet packages"
+      inputs:
+        command: 'push'
+        packagesToPush: '.artifacts/*.nupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: 'Core/testing'
