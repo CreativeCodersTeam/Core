@@ -1,5 +1,4 @@
 trigger:
-  batch: true
   branches:
     include:
     - master
@@ -25,23 +24,15 @@ stages:
       matrix:
         'Windows':
           VM_IMAGE: 'windows-latest'
-        #'Linux':
-        #  VM_IMAGE: 'ubuntu-latest'
-        #'macOS':
-        #  VM_IMAGE: 'macOS-latest'
     pool:
       vmImage: $(VM_IMAGE)
     steps:
     - pwsh: ./build.ps1 CreateNuGetPackages
       displayName: '[Nuke Build]'
-    - pwsh: ls .
-      displayName: 'List .'
-    - pwsh: ls $(Build.SourcesDirectory)
-      displayName: 'List source dir'
-    #- task: DotNetCoreCLI@2
-    #  displayName: "Publish NuGet packages"
-    #  inputs:
-    #    command: 'push'
-    #    packagesToPush: '$(Build.SourcesDirectory)/artifacts/*.nupkg'
-    #    nuGetFeedType: 'internal'
-    #    publishVstsFeed: 'Core/testing'
+    - task: DotNetCoreCLI@2
+      displayName: "Publish NuGet packages"
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.SourcesDirectory)/artifacts/*.nupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: 'Core/testing'
