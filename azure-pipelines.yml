@@ -38,6 +38,6 @@ stages:
       displayName: "Publish NuGet packages"
       inputs:
         command: 'push'
-        packagesToPush: $(Build.SourcesDirectory)/.artifacts/*.nupkg
+        packagesToPush: '$(Build.SourcesDirectory)/artifacts/*.nupkg'
         nuGetFeedType: 'internal'
         publishVstsFeed: 'Core/testing'
