@@ -33,13 +33,11 @@ stages:
       vmImage: $(VM_IMAGE)
     steps:
     - pwsh: ./build.ps1 CreateNuGetPackages
-      workingDirectory: $(Build.SourcesDirectory)
       displayName: '[Nuke Build]'
     - task: DotNetCoreCLI@2
       displayName: "Publish NuGet packages"
-      workingDirectory: $(Build.SourcesDirectory)
       inputs:
         command: 'push'
-        packagesToPush: '.artifacts/*.nupkg'
+        packagesToPush: './.artifacts/*.nupkg'
         nuGetFeedType: 'internal'
         publishVstsFeed: 'Core/testing'
