@@ -34,10 +34,14 @@ stages:
     steps:
     - pwsh: ./build.ps1 CreateNuGetPackages
       displayName: '[Nuke Build]'
-    - task: DotNetCoreCLI@2
-      displayName: "Publish NuGet packages"
-      inputs:
-        command: 'push'
-        packagesToPush: '$(Build.SourcesDirectory)/artifacts/*.nupkg'
-        nuGetFeedType: 'internal'
-        publishVstsFeed: 'Core/testing'
+    - pwsh: ls .
+      displayName: 'List .'
+    - pwsh: ls $(Build.SourcesDirectory)
+      displayName: 'List source dir'
+    #- task: DotNetCoreCLI@2
+    #  displayName: "Publish NuGet packages"
+    #  inputs:
+    #    command: 'push'
+    #    packagesToPush: '$(Build.SourcesDirectory)/artifacts/*.nupkg'
+    #    nuGetFeedType: 'internal'
+    #    publishVstsFeed: 'Core/testing'
