@@ -13,6 +13,7 @@ namespace CreativeCoders.Core.UnitTests
         [Fact]
         public void IsNotNull_AssertTestIsNotNull()
         {
+            throw new ArgumentException();
             Assert.Throws<ArgumentNullException>(() => Ensure.IsNotNull(null, "param"));
             Ensure.IsNotNull(new object(), "param");
         }

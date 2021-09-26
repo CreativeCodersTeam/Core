@@ -28,6 +28,7 @@ stages:
       vmImage: $(VM_IMAGE)
     steps:
     - pwsh: ./build.ps1 CreateNuGetPackages
+      continueOnError: true
       displayName: '[Nuke Build]'
     - task: PublishTestResults@2
       displayName: 'Publish test results'
@@ -36,6 +37,7 @@ stages:
         testResultsFiles: '$(Build.SourcesDirectory)/artifacts/test_results/*.xml'
     - task: DotNetCoreCLI@2
       displayName: "Publish NuGet packages"
+      condition: succeeded()
       inputs:
         command: 'push'
         packagesToPush: '$(Build.SourcesDirectory)/artifacts/*.nupkg'
