@@ -29,10 +29,15 @@ stages:
     steps:
     - pwsh: ./build.ps1 CreateNuGetPackages
       displayName: '[Nuke Build]'
+    - task: PublishTestResults@2
+      displayName: 'Publish test results'
+      inputs:
+        testResultsFormat: XUnit
+        testResultsFiles: '$(Build.SourcesDirectory)/artifacts/test_results/*.xml'
     - task: DotNetCoreCLI@2
       displayName: "Publish NuGet packages"
       inputs:
         command: 'push'
         packagesToPush: '$(Build.SourcesDirectory)/artifacts/*.nupkg'
         nuGetFeedType: 'internal'
-        publishVstsFeed: 'Core/testing'
+        publishVstsFeed: 'Core/testing'    
