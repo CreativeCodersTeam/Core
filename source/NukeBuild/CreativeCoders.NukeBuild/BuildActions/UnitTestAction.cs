@@ -1,6 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using CreativeCoders.NukeBuild.Exceptions;
 using JetBrains.Annotations;
 using Nuke.Common.IO;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.BuildActions
@@ -25,18 +31,32 @@ namespace CreativeCoders.NukeBuild.BuildActions
             
             var unitTestProjects = unitTestPath.GlobFiles(_projectsPattern);
 
+            var failedTests = new List<(string UnitTestProject, Exception Exception)>();
+
             foreach (var unitTestProject in unitTestProjects)
             {
                 var projectName = Path.GetFileNameWithoutExtension(unitTestProject);
 
                 var resultFile = Path.Combine(_resultsDirectory, $"results_{projectName}.xml");
-                
-                DotNetTasks.DotNetTest(
-                    x => x
-                        .SetProjectFile(unitTestProject)
-                        .SetConfiguration(BuildInfo.Configuration)
-                        .SetLogger($"xunit;LogFilePath={resultFile}")
-                        .SetResultsDirectory(_resultsDirectory));
+
+                try
+                {
+                    DotNetTasks.DotNetTest(
+                        x => x
+                            .SetProjectFile(unitTestProject)
+                            .SetConfiguration(BuildInfo.Configuration)
+                            .SetLogger($"xunit;LogFilePath={resultFile}")
+                            .SetResultsDirectory(_resultsDirectory));
+                }
+                catch (Exception e)
+                {
+                    failedTests.Add((UnitTestProject: unitTestProject, Exception: e));
+                }
+            }
+
+            if (failedTests.Any())
+            {
+                throw failedTests.First().Exception;
             }
         }
 

@@ -35,6 +35,7 @@ stages:
       inputs:
         testResultsFormat: XUnit
         testResultsFiles: '$(Build.SourcesDirectory)/artifacts/test_results/*.xml'
+        failTaskOnFailedTests: true
     - task: DotNetCoreCLI@2
       displayName: "Publish NuGet packages"
       condition: succeeded()
