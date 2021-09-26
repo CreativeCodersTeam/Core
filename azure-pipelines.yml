@@ -28,10 +28,11 @@ stages:
       vmImage: $(VM_IMAGE)
     steps:
     - pwsh: ./build.ps1 CreateNuGetPackages
-      continueOnError: true
+      #continueOnError: true
       displayName: '[Nuke Build]'
     - task: PublishTestResults@2
       displayName: 'Publish test results'
+      condition: succeededOrFailed()
       inputs:
         testResultsFormat: XUnit
         testResultsFiles: '$(Build.SourcesDirectory)/artifacts/test_results/*.xml'
