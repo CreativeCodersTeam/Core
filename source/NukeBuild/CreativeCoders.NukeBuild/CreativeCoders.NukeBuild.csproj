@@ -16,4 +16,8 @@
 		<ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Exceptions\" />
+	</ItemGroup>
+
 </Project>

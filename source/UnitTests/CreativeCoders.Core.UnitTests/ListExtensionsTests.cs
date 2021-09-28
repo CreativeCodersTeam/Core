@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -12,7 +13,7 @@ namespace CreativeCoders.Core.UnitTests
             var data = new[] {1, 2, 3, 4};
             var list = new List<int>(data) as IList<int>;
             
-            list.AddRange(new int[0]);
+            list.AddRange(Array.Empty<int>());
             
             Assert.True(list.SequenceEqual(data));
         }
@@ -48,7 +49,7 @@ namespace CreativeCoders.Core.UnitTests
         {
             var list = new List<int>();
             
-            list.SetItems(new int[0]);
+            list.SetItems(Array.Empty<int>());
             
             Assert.Empty(list);
         }
@@ -58,7 +59,7 @@ namespace CreativeCoders.Core.UnitTests
         {
             var list = new List<int>(new []{1, 2, 3, 4});
             
-            list.SetItems(new int[0]);
+            list.SetItems(Array.Empty<int>());
             
             Assert.Empty(list);
         }

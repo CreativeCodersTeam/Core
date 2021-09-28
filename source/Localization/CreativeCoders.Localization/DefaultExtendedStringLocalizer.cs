@@ -40,6 +40,7 @@ namespace CreativeCoders.Localization
                     continue;
                 }
 
+                // ReSharper disable once InvertIf
                 if (globalLocalizedString.ResourceNotFound || !localizedString.ResourceNotFound)
                 {
                     mergedStrings.Remove(globalLocalizedString);

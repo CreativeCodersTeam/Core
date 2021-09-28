@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Reflection;
 using CreativeCoders.Core;
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 
 namespace CreativeCoders.Localization
 {
     /// <summary>   Extension methods for setting up extended localization services in an <see cref="IServiceCollection" />. </summary>
+    [PublicAPI]
     public static class LocalizationServiceCollectionExtensions
     {
         ///-------------------------------------------------------------------------------------------------

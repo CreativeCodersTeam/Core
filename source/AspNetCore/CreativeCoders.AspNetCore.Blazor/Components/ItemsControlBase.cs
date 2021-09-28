@@ -32,7 +32,7 @@ namespace CreativeCoders.AspNetCore.Blazor.Components
 
         private void CopyFromSourceToItems()
         {
-            Items = new List<TItem>((IEnumerable<TItem>) ItemsSource ?? new TItem[0]);
+            Items = new List<TItem>((IEnumerable<TItem>) ItemsSource ?? Array.Empty<TItem>());
         }
 
         [Parameter]

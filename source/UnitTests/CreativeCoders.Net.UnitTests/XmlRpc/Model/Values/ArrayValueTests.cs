@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CreativeCoders.Net.XmlRpc.Model;
 using CreativeCoders.Net.XmlRpc.Model.Values;
@@ -21,7 +22,7 @@ namespace CreativeCoders.Net.UnitTests.XmlRpc.Model.Values
         [Fact]
         public void Ctor_EmptyCollection_ValueIsEmpty()
         {
-            var value = new ArrayValue(new XmlRpcValue[0]);
+            var value = new ArrayValue(Array.Empty<XmlRpcValue>());
             var xmlRpcValue = (XmlRpcValue)value;
 
             Assert.Empty(value.Value);

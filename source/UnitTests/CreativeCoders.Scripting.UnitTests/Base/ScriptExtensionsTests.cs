@@ -30,7 +30,7 @@ namespace CreativeCoders.Scripting.UnitTests.Base
             var script = A.Fake<IScript>();
             
             A.CallTo(() => script.CreateObject<object>(ScriptContext.Empty)).Returns(scriptObject);
-            A.CallTo(() => script.MethodNames).Returns(new string[0]);
+            A.CallTo(() => script.MethodNames).Returns(Array.Empty<string>());
 
             Assert.Throws<MissingMethodException>(() => script.CreateAction());
         }
@@ -117,7 +117,7 @@ namespace CreativeCoders.Scripting.UnitTests.Base
             var script = A.Fake<IScript>();
             
             A.CallTo(() => script.CreateObject<object>(ScriptContext.Empty)).Returns(scriptObject);
-            A.CallTo(() => script.MethodNames).Returns(new string[0]);
+            A.CallTo(() => script.MethodNames).Returns(Array.Empty<string>());
 
             Assert.Throws<MissingMethodException>(() => script.CreateAction<int>());
         }
@@ -204,7 +204,7 @@ namespace CreativeCoders.Scripting.UnitTests.Base
             var script = A.Fake<IScript>();
             
             A.CallTo(() => script.CreateObject<object>(ScriptContext.Empty)).Returns(scriptObject);
-            A.CallTo(() => script.MethodNames).Returns(new string[0]);
+            A.CallTo(() => script.MethodNames).Returns(Array.Empty<string>());
 
             Assert.Throws<MissingMethodException>(() => script.CreateAction<int, string>());
         }
@@ -291,7 +291,7 @@ namespace CreativeCoders.Scripting.UnitTests.Base
             var script = A.Fake<IScript>();
             
             A.CallTo(() => script.CreateObject<object>(ScriptContext.Empty)).Returns(scriptObject);
-            A.CallTo(() => script.MethodNames).Returns(new string[0]);
+            A.CallTo(() => script.MethodNames).Returns(Array.Empty<string>());
 
             Assert.Throws<MissingMethodException>(() => script.CreateAction<int, string, bool>());
         }
@@ -380,7 +380,7 @@ namespace CreativeCoders.Scripting.UnitTests.Base
             var script = A.Fake<IScript>();
             
             A.CallTo(() => script.CreateObject<object>(ScriptContext.Empty)).Returns(scriptObject);
-            A.CallTo(() => script.MethodNames).Returns(new string[0]);
+            A.CallTo(() => script.MethodNames).Returns(Array.Empty<string>());
 
             Assert.Throws<MissingMethodException>(() => script.CreateAction<int, string, bool, object>());
         }
@@ -476,7 +476,7 @@ namespace CreativeCoders.Scripting.UnitTests.Base
             
             A.CallTo(() => scriptObject.Process()).Returns(3456);
             A.CallTo(() => script.CreateObject<object>(ScriptContext.Empty)).Returns(scriptObject);
-            A.CallTo(() => script.MethodNames).Returns(new string[0]);
+            A.CallTo(() => script.MethodNames).Returns(Array.Empty<string>());
 
             Assert.Throws<MissingMethodException>(() => script.CreateFunc<int>());
         }
@@ -573,7 +573,7 @@ namespace CreativeCoders.Scripting.UnitTests.Base
             
             A.CallTo(() => scriptObject.Process(1234)).Returns(3456);
             A.CallTo(() => script.CreateObject<object>(ScriptContext.Empty)).Returns(scriptObject);
-            A.CallTo(() => script.MethodNames).Returns(new string[0]);
+            A.CallTo(() => script.MethodNames).Returns(Array.Empty<string>());
 
             Assert.Throws<MissingMethodException>(() => script.CreateFunc<int, int>());
         }
@@ -670,7 +670,7 @@ namespace CreativeCoders.Scripting.UnitTests.Base
             
             A.CallTo(() => scriptObject.Process(1234, "Test")).Returns(3456);
             A.CallTo(() => script.CreateObject<object>(ScriptContext.Empty)).Returns(scriptObject);
-            A.CallTo(() => script.MethodNames).Returns(new string[0]);
+            A.CallTo(() => script.MethodNames).Returns(Array.Empty<string>());
 
             Assert.Throws<MissingMethodException>(() => script.CreateFunc<int, string, int>());
         }
@@ -767,7 +767,7 @@ namespace CreativeCoders.Scripting.UnitTests.Base
             
             A.CallTo(() => scriptObject.Process(1234, "Test", true)).Returns(3456);
             A.CallTo(() => script.CreateObject<object>(ScriptContext.Empty)).Returns(scriptObject);
-            A.CallTo(() => script.MethodNames).Returns(new string[0]);
+            A.CallTo(() => script.MethodNames).Returns(Array.Empty<string>());
 
             Assert.Throws<MissingMethodException>(() => script.CreateFunc<int, string, bool, int>());
         }
@@ -868,7 +868,7 @@ namespace CreativeCoders.Scripting.UnitTests.Base
             
             A.CallTo(() => scriptObject.Process(1234, "Test", true, objectArgument)).Returns(3456);
             A.CallTo(() => script.CreateObject<object>(ScriptContext.Empty)).Returns(scriptObject);
-            A.CallTo(() => script.MethodNames).Returns(new string[0]);
+            A.CallTo(() => script.MethodNames).Returns(Array.Empty<string>());
 
             Assert.Throws<MissingMethodException>(() => script.CreateFunc<int, string, bool, object, int>());
         }

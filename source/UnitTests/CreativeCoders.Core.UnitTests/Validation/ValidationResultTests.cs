@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using CreativeCoders.Validation;
 using Xunit;
 
@@ -9,7 +10,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
         [Fact]
         public void Ctor_Call_ThrowsNoException()
         {
-            var _ = new ValidationResult(new ValidationFault[0]);
+            var _ = new ValidationResult(Array.Empty<ValidationFault>());
         }
 
         [Fact]
@@ -31,7 +32,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
         [Fact]
         public void Ctor_CallWithEmptyFaultsParam_IsValidTrue()
         {
-            var validationResult = new ValidationResult(new ValidationFault[0]);
+            var validationResult = new ValidationResult(Array.Empty<ValidationFault>());
 
             Assert.True(validationResult.IsValid);
         }
@@ -39,7 +40,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
         [Fact]
         public void Ctor_CallWithNullFaultsParam_IsValidTrue()
         {
-            var validationResult = new ValidationResult(new ValidationFault[0]);
+            var validationResult = new ValidationResult(Array.Empty<ValidationFault>());
 
             Assert.True(validationResult.IsValid);
             Assert.Empty(validationResult.Faults);

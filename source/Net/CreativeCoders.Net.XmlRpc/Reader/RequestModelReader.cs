@@ -25,7 +25,7 @@ namespace CreativeCoders.Net.XmlRpc.Reader
             var methodCallNode = xmlDoc.XPathSelectElement(XmlRpcTags.MethodCall);
             if (methodCallNode == null)
             {
-                return new XmlRpcRequest(new XmlRpcMethodCall[0], false);
+                return new XmlRpcRequest(Array.Empty<XmlRpcMethodCall>(), false);
             }
 
             var method = ReadMethod(methodCallNode);

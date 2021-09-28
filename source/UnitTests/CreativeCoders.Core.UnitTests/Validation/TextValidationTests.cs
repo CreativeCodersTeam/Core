@@ -95,7 +95,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
         [Theory]
         [InlineData("Hell", 5)]
         [InlineData("123456789", 6)]
-        [InlineData((string)null, 2)]
+        [InlineData(null, 2)]
         public void HasLengthFunc_StrValueHasWrongLength_Invalid(string strValue, int length)
         {
             Assert.False(IsValid(v => v.HasLength((_, _) => length), strValue));
