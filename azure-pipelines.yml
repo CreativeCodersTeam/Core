@@ -30,17 +30,28 @@ stages:
     steps:
     - pwsh: ./build.ps1 CreateNuGetPackages
       displayName: '[Nuke Build]'
+
     - task: PublishTestResults@2
       displayName: 'Publish test results'
       condition: succeededOrFailed()
       inputs:
         testResultsFormat: XUnit
         testResultsFiles: '$(Build.SourcesDirectory)/.tests/results/*.xml'
+
+    - task: reportgenerator@4
+      displayName: 'Merge code coverage reports'
+      inputs:
+        reports: '$(Build.SourcesDirectory)/.tests/coverage/*.xml'
+        targetdir: '$(Pipeline.Workspace)/coverlet'
+        reporttypes: 'Cobertura'
+        verbosity: 'Verbose'
+
     - task: PublishCodeCoverageResults@1
       displayName: 'Publish code coverage'
       inputs:
         codeCoverageTool: 'Cobertura'
-        summaryFileLocation: '$(Build.SourcesDirectory)/.tests/coverage/*.xml'
+        summaryFileLocation: '$(Pipeline.Workspace)/coverlet/Cobertura.xml'
+
     - task: DotNetCoreCLI@2
       displayName: "Publish NuGet packages"
       condition: succeeded()
@@ -48,7 +59,8 @@ stages:
         command: 'push'
         packagesToPush: '$(Build.SourcesDirectory)/.artifacts/*.nupkg'
         nuGetFeedType: 'internal'
-        publishVstsFeed: 'Core/testing'    
+        publishVstsFeed: 'Core/testing'  
+        
     #- task: NuGetAuthenticate@0
     #  displayName: 'NuGet.org Auth'
     #  condition: 
