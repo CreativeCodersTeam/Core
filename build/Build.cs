@@ -48,6 +48,8 @@ class Build : NukeBuild, IBuildInfo
 
     AbsolutePath CoverageDirectory => TestBaseDirectory / "coverage";
 
+    AbsolutePath TempNukeDirectory => RootDirectory / ".nuke" / "temp";
+
     const string PackageProjectUrl = "https://github.com/CreativeCodersTeam/Core"; 
 
     Target Clean => _ => _
