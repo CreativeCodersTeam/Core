@@ -54,7 +54,7 @@ stages:
 
     - task: DotNetCoreCLI@2
       displayName: "Publish NuGet packages"
-      condition: succeeded()
+      condition: and(succeeded(), eq(variables.IsMasterBranch, 'true'))
       inputs:
         command: 'push'
         packagesToPush: '$(Build.SourcesDirectory)/.artifacts/*.nupkg'

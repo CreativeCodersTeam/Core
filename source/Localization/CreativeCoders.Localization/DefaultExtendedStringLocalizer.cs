@@ -36,12 +36,8 @@ namespace CreativeCoders.Localization
                 if (globalLocalizedString == null)
                 {
                     mergedStrings.Add(localizedString);
-
-                    continue;
                 }
-
-                // ReSharper disable once InvertIf
-                if (globalLocalizedString.ResourceNotFound || !localizedString.ResourceNotFound)
+                else if (globalLocalizedString.ResourceNotFound || !localizedString.ResourceNotFound)
                 {
                     mergedStrings.Remove(globalLocalizedString);
 
