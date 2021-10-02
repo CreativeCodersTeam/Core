@@ -258,5 +258,19 @@ namespace CreativeCoders.Core
                 throw new ArgumentOutOfRangeException(paramName, index, $"Index '{index}' is out of range '{0}-{collectionLength - 1}'");
             }
         }
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Creates an Argument{T} for fluent argument validation. </summary>
+        ///
+        /// <typeparam name="T">    Generic type parameter of the arguments value. </typeparam>
+        /// <param name="value">        The value to check. </param>
+        /// <param name="paramName">    Name of the <paramref name="value"/> parameter. </param>
+        ///
+        /// <returns>   An Argument&lt;T&gt; </returns>
+        ///-------------------------------------------------------------------------------------------------
+        public static Argument<T> Argument<T>(T value, string paramName)
+        {
+            return new Argument<T>(value, paramName);
+        }
     }
 }

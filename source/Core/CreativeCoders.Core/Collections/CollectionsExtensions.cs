@@ -81,6 +81,13 @@ namespace CreativeCoders.Core.Collections
             return count;
         }
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   An IEnumerable extension method that fast empty. </summary>
+        ///
+        /// <param name="items">    The items to act on. </param>
+        ///
+        /// <returns>   True if it succeeds, false if it fails. </returns>
+        ///-------------------------------------------------------------------------------------------------
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public static bool FastEmpty(this IEnumerable items)
         {
