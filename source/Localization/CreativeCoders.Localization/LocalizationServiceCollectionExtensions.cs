@@ -39,16 +39,5 @@ namespace CreativeCoders.Localization
             services.AddSingleton(typeof(IExtendedStringLocalizer<>),
                 typeof(DefaultExtendedStringLocalizer<>));
         }
-
-        ///-------------------------------------------------------------------------------------------------
-        /// <summary>   Adds services required for default application localization. </summary>
-        ///
-        /// <param name="services">         The services to act on. </param>
-        /// <param name="resourcesPath">    Pathname of the resources file in the assembly. </param>
-        ///-------------------------------------------------------------------------------------------------
-        public static void SetupLocalization(this IServiceCollection services, string resourcesPath)
-        {
-            services.SetupLocalization(resourcesPath, _ => { });
-        }
     }
 }
