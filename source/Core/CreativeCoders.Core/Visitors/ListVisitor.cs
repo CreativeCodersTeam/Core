@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CreativeCoders.Core.Collections;
 
 namespace CreativeCoders.Core.Visitors
 {

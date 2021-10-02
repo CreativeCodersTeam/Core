@@ -5,7 +5,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Core
+namespace CreativeCoders.Core.Collections
 {
     [PublicAPI]
     public class ObservableCollectionSynchronizer<TMasterElement, TSlaveElement> : IDisposable

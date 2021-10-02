@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace CreativeCoders.Core.Collections
+namespace CreativeCoders.Core.Threading
 {
     public class SimpleMonitor : IDisposable
     {

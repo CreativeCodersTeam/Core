@@ -1,7 +1,7 @@
-﻿using CreativeCoders.Core.Collections;
+﻿using CreativeCoders.Core.Threading;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.Collections
+namespace CreativeCoders.Core.UnitTests.Threading
 {
     public class SimpleMonitorTests
     {

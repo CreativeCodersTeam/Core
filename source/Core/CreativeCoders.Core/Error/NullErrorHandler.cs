@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Core
+namespace CreativeCoders.Core.Error
 {
     ///-------------------------------------------------------------------------------------------------
     /// <summary>   An error handler which simply does nothing. </summary>

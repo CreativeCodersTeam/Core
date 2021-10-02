@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Core
+namespace CreativeCoders.Core.Error
 {
     [PublicAPI]
     public class DelegateErrorHandler : IErrorHandler

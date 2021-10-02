@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Net.Http.Auth;
 using CreativeCoders.Net.Http.Auth.Jwt;
 using Microsoft.Extensions.DependencyInjection;

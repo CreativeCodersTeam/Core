@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CreativeCoders.Core
+namespace CreativeCoders.Core.Error
 {
     /// <summary>   Interface for an error handler. </summary>
     public interface IErrorHandler

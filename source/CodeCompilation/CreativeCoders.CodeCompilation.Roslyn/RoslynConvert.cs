@@ -1,5 +1,6 @@
 ﻿using System;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Text;
 using Microsoft.CodeAnalysis;
 
 namespace CreativeCoders.CodeCompilation.Roslyn

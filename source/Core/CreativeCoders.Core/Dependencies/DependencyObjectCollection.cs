@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using CreativeCoders.Core.Collections;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Dependencies

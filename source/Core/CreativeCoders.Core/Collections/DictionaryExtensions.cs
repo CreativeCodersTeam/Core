@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace CreativeCoders.Core
+namespace CreativeCoders.Core.Collections
 {
     public static class DictionaryExtensions
     {

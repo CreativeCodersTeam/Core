@@ -5,6 +5,7 @@ using System.Text;
 using CreativeCoders.Core;
 using CreativeCoders.Core.IO;
 using CreativeCoders.Core.SysEnvironment;
+using CreativeCoders.Core.Text;
 using CreativeCoders.Daemon.Base.Info;
 
 namespace CreativeCoders.Daemon.Windows

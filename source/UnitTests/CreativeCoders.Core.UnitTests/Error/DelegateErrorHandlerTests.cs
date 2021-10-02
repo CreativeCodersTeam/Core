@@ -1,7 +1,8 @@
 ﻿using System;
+using CreativeCoders.Core.Error;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests
+namespace CreativeCoders.Core.UnitTests.Error
 {
     public class DelegateErrorHandlerTests
     {

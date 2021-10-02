@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Core
+namespace CreativeCoders.Core.Text
 {
     /// <summary>   Representing a text span. </summary>
     [PublicAPI]

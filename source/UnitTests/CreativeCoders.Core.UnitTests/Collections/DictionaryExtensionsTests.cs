@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using CreativeCoders.Core.Collections;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests
+namespace CreativeCoders.Core.UnitTests.Collections
 {
     public class DictionaryExtensionsTests
     {

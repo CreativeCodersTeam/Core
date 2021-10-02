@@ -5,7 +5,7 @@ using System.Security;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Core
+namespace CreativeCoders.Core.Text
 {
     [PublicAPI]
     public static class StringExtension

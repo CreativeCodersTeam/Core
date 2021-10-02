@@ -1,7 +1,8 @@
 ﻿using System;
+using CreativeCoders.Core.Text;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests
+namespace CreativeCoders.Core.UnitTests.Text
 {
     public class TextSpanTests
     {

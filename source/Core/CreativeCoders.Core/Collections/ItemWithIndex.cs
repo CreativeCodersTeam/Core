@@ -1,4 +1,4 @@
-﻿namespace CreativeCoders.Core
+﻿namespace CreativeCoders.Core.Collections
 {
     public class ItemWithIndex<T>
     {

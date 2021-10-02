@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Comparing;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests
+namespace CreativeCoders.Core.UnitTests.Collections
 {
     public class EnumerableExtensionTest
     {

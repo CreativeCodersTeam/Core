@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Scripting.Base;
 
 namespace CreativeCoders.Scripting.CSharp

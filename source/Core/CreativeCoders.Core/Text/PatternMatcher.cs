@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace CreativeCoders.Core
+namespace CreativeCoders.Core.Text
 {
     public static class PatternMatcher
     {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CreativeCoders.Core.Collections;
 
 namespace CreativeCoders.Core.Dependencies
 {

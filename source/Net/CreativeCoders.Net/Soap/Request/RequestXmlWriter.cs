@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 
 namespace CreativeCoders.Net.Soap.Request
 {

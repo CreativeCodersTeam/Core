@@ -1,8 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using CreativeCoders.Core.Collections;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests
+namespace CreativeCoders.Core.UnitTests.Collections
 {
     public class ObservableCollectionSynchronizerTests
     {

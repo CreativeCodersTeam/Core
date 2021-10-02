@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Core
+namespace CreativeCoders.Core.Text
 {
     /// <summary>   A static class for creating a random string. </summary>
     [PublicAPI]

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net.Http;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Text;
 
 namespace CreativeCoders.UnitTests.Net.Http
 {

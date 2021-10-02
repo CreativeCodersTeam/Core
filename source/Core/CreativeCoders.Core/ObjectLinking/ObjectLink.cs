@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using CreativeCoders.Core.Collections;
 
 namespace CreativeCoders.Core.ObjectLinking
 {
