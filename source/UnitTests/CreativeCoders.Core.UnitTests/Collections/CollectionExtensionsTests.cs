@@ -106,12 +106,12 @@ namespace CreativeCoders.Core.UnitTests.Collections
         [Fact]
         public void FastCount_WithFiledCollectionsAndMaxCount_ReturnMaxCount()
         {
-            TestFastCount(new[] { "1234", "Test", "abcd" }, 2, 2);
-            TestFastCount(new[] { 1, 2 ,3}, 2, 2);
-            TestFastCount(new[] { DateTime.Now, DateTime.MinValue, DateTime.MaxValue,  }, 2, 2);
-            TestFastCount("123", 2, 2);
-            TestFastCount(new[] { 1, 2, 3 }.ToImmutableList(), 2, 2);
-            TestFastCount(new List<ulong> { 3, 4, 5 }, 2, 2);
+            TestFastCount(new[] { "1234", "Test", "abcd" }, 3, 2);
+            TestFastCount(new[] { 1, 2 ,3}, 3, 2);
+            TestFastCount(new[] { DateTime.Now, DateTime.MinValue, DateTime.MaxValue,  }, 3, 2);
+            TestFastCount("123", 3, 2);
+            TestFastCount(new[] { 1, 2, 3 }.ToImmutableList(), 3, 2);
+            TestFastCount(new List<ulong> { 3, 4, 5 }, 3, 2);
             TestFastCount(new[] { 1, 2, 3 }.Where(x => true), 2, 2);
         }
 
