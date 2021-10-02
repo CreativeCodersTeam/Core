@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -25,7 +26,7 @@ namespace CreativeCoders.Net.XmlRpc.Reader
             var methodResponseElement = xmlDoc.XPathSelectElement(XmlRpcTags.MethodResponse);
             if (methodResponseElement == null)
             {
-                return new XmlRpcResponse(new XmlRpcMethodResult[0], false);
+                return new XmlRpcResponse(Array.Empty<XmlRpcMethodResult>(), false);
             }
 
             var methodResult = ReadMethodResponse(methodResponseElement);

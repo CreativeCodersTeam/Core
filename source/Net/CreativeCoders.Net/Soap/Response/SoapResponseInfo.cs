@@ -1,10 +1,12 @@
-﻿namespace CreativeCoders.Net.Soap.Response
+﻿using System;
+
+namespace CreativeCoders.Net.Soap.Response
 {
     public class SoapResponseInfo
     {
         public SoapResponseInfo()
         {
-            PropertyMappings = new PropertyFieldMapping[0];
+            PropertyMappings = Array.Empty<PropertyFieldMapping>();
         }
 
         public string Name { get; set; }

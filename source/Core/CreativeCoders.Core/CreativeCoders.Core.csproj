@@ -8,8 +8,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
-		<PackageReference Include="System.IO.Abstractions" Version="13.2.5" />
+		<PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
+		<PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Async\" />
 	</ItemGroup>
 
 </Project>

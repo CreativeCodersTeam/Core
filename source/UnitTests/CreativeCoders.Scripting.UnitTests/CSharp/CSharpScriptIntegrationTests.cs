@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CreativeCoders.CodeCompilation;
 using CreativeCoders.Core.SysEnvironment;
@@ -140,7 +141,7 @@ namespace CreativeCoders.Scripting.UnitTests.CSharp
             
             var scriptPackage = new ScriptPackage("Script0", "TestScript", new StringSourceCode(scriptSourceCode));
             
-            var runtime = new CSharpScriptRuntime<TestScriptImplementation>(new TestScriptImplementation(new ISourcePreprocessor[0], testApi, false)) as IScriptRuntime;
+            var runtime = new CSharpScriptRuntime<TestScriptImplementation>(new TestScriptImplementation(Array.Empty<ISourcePreprocessor>(), testApi, false)) as IScriptRuntime;
 
             var runtimeSpace = runtime.CreateSpace("CreativeCoders.TestScripts");
 

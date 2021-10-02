@@ -26,7 +26,7 @@ namespace CreativeCoders.Net.Http
             HttpCompletionOption completionOption, CancellationToken cancellationToken)
         {
             using var request = new HttpRequestMessage(HttpMethod.Post, requestUri)
-                {Content = new ByteArrayContent(new byte[0])};
+                {Content = new ByteArrayContent(Array.Empty<byte>())};
             
             return httpClient.SendAsync(request, completionOption, cancellationToken);
         }

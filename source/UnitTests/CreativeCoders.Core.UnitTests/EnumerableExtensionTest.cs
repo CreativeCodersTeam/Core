@@ -120,7 +120,7 @@ namespace CreativeCoders.Core.UnitTests
         [Fact]
         public void TakeUntil_EmptyList_ReturnsEmptyList()
         {
-            var items = new int[0];
+            var items = Array.Empty<int>();
 
             var result = items.TakeUntil(x => x == 4);
 
@@ -167,7 +167,7 @@ namespace CreativeCoders.Core.UnitTests
         [Fact]
         public void Single_ListWithNoItems_ReturnsFalse()
         {
-            var items = new string[0];
+            var items = Array.Empty<string>();
             
             Assert.False(items.IsSingle());
         }

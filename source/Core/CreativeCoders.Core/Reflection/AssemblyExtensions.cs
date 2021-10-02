@@ -16,7 +16,7 @@ namespace CreativeCoders.Core.Reflection
             }
             catch (ReflectionTypeLoadException)
             {
-                return new Type[0];
+                return Type.EmptyTypes;
             }
         }
     }

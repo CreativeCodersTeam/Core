@@ -43,11 +43,11 @@ namespace CreativeCoders.AspNetCore.Blazor.Components
 
             _observeProperties = new List<string>(
                 ObserveProperties?.Split(new[] { ' ', ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
-                    .WhereNotNull() ?? new string[0]);
+                    .WhereNotNull() ?? Array.Empty<string>());
 
             _excludeProperties = new List<string>(
                 ExcludeProperties?.Split(new[] { ' ', ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
-                    .WhereNotNull() ?? new string[0]);
+                    .WhereNotNull() ?? Array.Empty<string>());
         }
 
         private void ViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)

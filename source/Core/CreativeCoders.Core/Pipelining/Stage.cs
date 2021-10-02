@@ -8,11 +8,11 @@ namespace CreativeCoders.Core.Pipelining
 
         public object ProcessData(object inputData)
         {
-            if (!(inputData is TInput))
+            if (inputData is not TInput data)
             {
                 throw new InvalidOperationException();
             }
-            return StageWorker((TInput)inputData);
+            return StageWorker(data);
         }
 
         public bool OutputIsOfType(Type type)
