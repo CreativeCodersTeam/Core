@@ -182,7 +182,7 @@ namespace CreativeCoders.Mvvm.Wpf.Commands
         {
             var element = GetAssociatedObject();
 
-            return AssociatedObject == null || element != null && !element.IsEnabled;
+            return AssociatedObject == null || element is { IsEnabled: false };
         }
 
         private ICommand GetCommand()

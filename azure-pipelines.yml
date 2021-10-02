@@ -1,0 +1,74 @@
+trigger:
+  branches:
+    include:
+    - master
+    - develop
+    - fix/*
+    - feature/*
+pr:
+  branches:
+    include:
+    - master
+    - develop
+
+variables:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+  DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+  IsMasterBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+
+stages:
+- stage: Build
+  displayName: 'Build'
+  jobs:
+  - job: Build
+    strategy:
+      matrix:
+        'Windows':
+          VM_IMAGE: 'windows-latest'
+    pool:
+      vmImage: $(VM_IMAGE)
+    steps:
+    - pwsh: ./build.ps1 CreateNuGetPackages
+      displayName: '[Nuke Build]'
+
+    - task: PublishTestResults@2
+      displayName: 'Publish test results'
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFormat: XUnit
+        testResultsFiles: '$(Build.SourcesDirectory)/.tests/results/*.xml'
+
+    - task: reportgenerator@4
+      displayName: 'Merge code coverage reports'
+      inputs:
+        reports: '$(Build.SourcesDirectory)/.tests/coverage/*.xml'
+        targetdir: '$(Pipeline.Workspace)/coverlet'
+        reporttypes: 'Cobertura'
+        verbosity: 'Verbose'
+
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish code coverage'
+      inputs:
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: '$(Pipeline.Workspace)/coverlet/Cobertura.xml'
+
+    - task: DotNetCoreCLI@2
+      displayName: "Publish NuGet packages"
+      condition: and(succeeded(), eq(variables.IsMasterBranch, 'true'))
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.SourcesDirectory)/.artifacts/*.nupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: 'Core/testing'  
+        
+    #- task: NuGetAuthenticate@0
+    #  displayName: 'NuGet.org Auth'
+    #  condition: 
+    #  inputs:
+    #    nuGetServiceConnections: 'CreativeCodersNuGet'
+    #- task: NuGetCommand@2
+    #  displayName: 'NuGet.org Push'
+    #  inputs:
+    #    command: push
+    #    nuGetFeedType: external
+    #    packagesToPush: '$(Build.SourcesDirectory)/artifacts/*.nupkg'

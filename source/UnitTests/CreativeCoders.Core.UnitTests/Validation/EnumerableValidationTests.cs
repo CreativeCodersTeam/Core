@@ -13,8 +13,8 @@ namespace CreativeCoders.Core.UnitTests.Validation
         [Fact]
         public void IsEmpty_EmptyList_Valid()
         {
-            Assert.True(IsValid(rb => rb.IsEmpty(), new string[0]));
-            Assert.True(IsValidList(rb => rb.IsEmpty(), new string[0]));
+            Assert.True(IsValid(rb => rb.IsEmpty(), Array.Empty<string>()));
+            Assert.True(IsValidList(rb => rb.IsEmpty(), Array.Empty<string>()));
         }
 
         [Theory]
@@ -29,8 +29,8 @@ namespace CreativeCoders.Core.UnitTests.Validation
         [Fact]
         public void IsNotEmpty_EmptyList_Invalid()
         {
-            Assert.False(IsValid(rb => rb.IsNotEmpty(), new string[0]));
-            Assert.False(IsValidList(rb => rb.IsNotEmpty(), new string[0]));
+            Assert.False(IsValid(rb => rb.IsNotEmpty(), Array.Empty<string>()));
+            Assert.False(IsValidList(rb => rb.IsNotEmpty(), Array.Empty<string>()));
         }
 
         [Theory]
@@ -184,7 +184,7 @@ namespace CreativeCoders.Core.UnitTests.Validation
         [Fact]
         public void Single_EmptyList_Invalid()
         {
-            var items = new string[0];
+            var items = Array.Empty<string>();
             
             Assert.False(IsValidList(rb => rb.Single(), items));
             Assert.False(IsValid(rb => rb.Single(), items));

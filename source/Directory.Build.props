@@ -1,0 +1,6 @@
+<Project>
+	<PropertyGroup>
+		<Authors>CreativeCoders</Authors>
+		<IsPackable>true</IsPackable>
+	</PropertyGroup>
+</Project>

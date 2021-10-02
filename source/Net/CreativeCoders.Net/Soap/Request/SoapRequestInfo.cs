@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 
 namespace CreativeCoders.Net.Soap.Request
 {
@@ -6,7 +7,7 @@ namespace CreativeCoders.Net.Soap.Request
     {
         public SoapRequestInfo()
         {
-            PropertyMappings = new PropertyFieldMapping[0];
+            PropertyMappings = Array.Empty<PropertyFieldMapping>();
         }
 
         public string Url { get; set; }

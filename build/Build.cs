@@ -8,6 +8,7 @@ using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.GitVersion;
 
 [PublicAPI]
@@ -37,13 +38,26 @@ class Build : NukeBuild, IBuildInfo
 
     AbsolutePath SourceDirectory => RootDirectory / "source";
 
-    AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+    AbsolutePath ArtifactsDirectory => RootDirectory / ".artifacts";
+
+    AbsolutePath TestBaseDirectory => RootDirectory / ".tests";
+
+    AbsolutePath TestResultsDirectory => TestBaseDirectory  / "results";
+
+    AbsolutePath TestProjectsBasePath => SourceDirectory / "UnitTests";
+
+    AbsolutePath CoverageDirectory => TestBaseDirectory / "coverage";
+
+    AbsolutePath TempNukeDirectory => RootDirectory / ".nuke" / "temp";
 
     const string PackageProjectUrl = "https://github.com/CreativeCodersTeam/Core"; 
 
     Target Clean => _ => _
         .Before(Restore)
-        .UseBuildAction<CleanBuildAction>(this);
+        .UseBuildAction<CleanBuildAction>(this,
+            x => x
+                .AddDirectoryForClean(ArtifactsDirectory)
+                .AddDirectoryForClean(TestBaseDirectory));
 
     Target Restore => _ => _
         .Before(Compile)
@@ -55,19 +69,23 @@ class Build : NukeBuild, IBuildInfo
 
     Target Test => _ => _
         .After(Compile)
-        .UseBuildAction<UnitTestAction>(this,
+        .UseBuildAction<DotNetTestAction>(this,
             x => x
-                .SetUnitTestsBasePath("UnitTests")
+                .SetTestProjectsBaseDirectory(TestProjectsBasePath)
                 .SetProjectsPattern("**/*.csproj")
-                .SetResultsDirectory(ArtifactsDirectory / "test_results"));
+                .SetResultsDirectory(TestResultsDirectory)
+                .EnableCoverage()
+                .SetCoverageDirectory(CoverageDirectory)
+                .SetCoverageFormat(CoverletOutputFormat.cobertura));
 
     Target Pack => _ => _
         .After(Compile)
-        .UseBuildAction<PackBuildAction>(this, x => x
-            .SetPackageLicenseExpression(PackageLicenseExpressions.ApacheLicense20)
-            .SetPackageProjectUrl(PackageProjectUrl)
-            .SetCopyright($"{DateTime.Now.Year} CreativeCoders")
-            .SetEnableNoBuild(false));
+        .UseBuildAction<PackBuildAction>(this,
+            x => x
+                .SetPackageLicenseExpression(PackageLicenseExpressions.ApacheLicense20)
+                .SetPackageProjectUrl(PackageProjectUrl)
+                .SetCopyright($"{DateTime.Now.Year} CreativeCoders")
+                .SetEnableNoBuild(false));
 
     Target PushToDevNuGet => _ => _
         .Requires(() => DevNuGetSource)

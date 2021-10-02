@@ -23,7 +23,7 @@ namespace CreativeCoders.Config.Base
 
         public static void InitializeFromAssembly(this IConfiguration configuration, Assembly assembly, params object[] args)
         {
-            ReflectionUtils.GetAllTypes()
+            assembly.GetTypesSafe()
                 .Where(x => !x.IsAbstract && x.GetInterfaces().Contains(typeof(IConfigurationInitializer)))
                 .Select(configurationInitializerType => Activator.CreateInstance(configurationInitializerType, args))
                 .Cast<IConfigurationInitializer>()

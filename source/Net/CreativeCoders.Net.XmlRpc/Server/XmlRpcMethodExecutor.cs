@@ -53,7 +53,7 @@ namespace CreativeCoders.Net.XmlRpc.Server
         {
             if (!parameterInfos.Any())
             {
-                return new object[0];
+                return Array.Empty<object>();
             }
 
             if (parameters.Count != parameterInfos.Count)

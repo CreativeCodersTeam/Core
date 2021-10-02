@@ -320,3 +320,7 @@ ASALocalRun/
 *.binlog
 
 .vscode
+
+.artifacts
+
+.tests

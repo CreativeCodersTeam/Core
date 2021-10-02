@@ -31,7 +31,7 @@ namespace CreativeCoders.Core.Collections
         private readonly SimpleMonitor _reentrancyMonitor;
 
         public ExtendedObservableCollection()
-            : this(SynchronizationContext.Current, SynchronizationMethod.Send, () => new LockSlimLockingMechanism(), new T[0])
+            : this(SynchronizationContext.Current, SynchronizationMethod.Send, () => new LockSlimLockingMechanism(), Array.Empty<T>())
         {
         }
 
@@ -42,7 +42,7 @@ namespace CreativeCoders.Core.Collections
 
         public ExtendedObservableCollection(SynchronizationContext synchronizationContext,
             SynchronizationMethod synchronizationMethod, Func<ILockingMechanism> lockingMechanism)
-            : this(synchronizationContext, synchronizationMethod, lockingMechanism, new T[0]) { }
+            : this(synchronizationContext, synchronizationMethod, lockingMechanism, Array.Empty<T>()) { }
 
         public ExtendedObservableCollection(SynchronizationContext synchronizationContext,
             SynchronizationMethod synchronizationMethod, Func<ILockingMechanism> lockingMechanism, IEnumerable<T> items)

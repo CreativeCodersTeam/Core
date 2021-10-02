@@ -65,7 +65,7 @@ namespace CreativeCoders.Di.SimpleInjector
         {
             return TryGetInstance<IEnumerable<T>>(out var instances)
                 ? instances
-                : new T[0];
+                : Array.Empty<T>();
         }
 
         private bool TryGetServiceByNameFactory(Type serviceType, out IServiceByNameFactory serviceByNameFactory)
@@ -89,7 +89,7 @@ namespace CreativeCoders.Di.SimpleInjector
             }
             catch (ActivationException)
             {
-                return new object[0];
+                return Array.Empty<object>();
             }
         }
 

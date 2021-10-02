@@ -13,7 +13,7 @@ namespace CreativeCoders.Mvvm.Wpf
             var xaml =
                 $"<DataTemplate DataType=\"{{x:Type vm:{viewModelType.Name}}}\"><v:{viewType.Name} /></DataTemplate>";
 
-            var context = new ParserContext {XamlTypeMapper = new XamlTypeMapper(new string[0])};
+            var context = new ParserContext {XamlTypeMapper = new XamlTypeMapper(Array.Empty<string>())};
 
             context.XamlTypeMapper.AddMappingProcessingInstruction("vm",
                 viewModelType.Namespace ?? throw new InvalidOperationException(), viewModelType.Assembly.FullName ?? throw new InvalidOperationException());

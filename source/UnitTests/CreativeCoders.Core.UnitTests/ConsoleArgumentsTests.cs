@@ -14,8 +14,8 @@ namespace CreativeCoders.Core.UnitTests
             Assert.Throws<ArgumentNullException>(() => new ConsoleArguments(null, false));
             var consoleArgs0 = new ConsoleArguments(new[] {"test"}, false);
             var consoleArgs1 = new ConsoleArguments(new[] {"test"}, true);
-            var consoleArgs2 = new ConsoleArguments(new string[0], false);
-            var consoleArgs3 = new ConsoleArguments(new string[0], true);
+            var consoleArgs2 = new ConsoleArguments(Array.Empty<string>(), false);
+            var consoleArgs3 = new ConsoleArguments(Array.Empty<string>(), true);
         }
 
         [Fact]
