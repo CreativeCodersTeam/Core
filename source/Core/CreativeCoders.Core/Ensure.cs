@@ -9,6 +9,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Core
 {
     /// <summary>   Static class with methods for parameter checking. </summary>
+    [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "<Pending>")]
     [SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Global")]
     [PublicAPI]
     public static class Ensure

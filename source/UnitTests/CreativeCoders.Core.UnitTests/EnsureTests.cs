@@ -69,7 +69,7 @@ namespace CreativeCoders.Core.UnitTests
         public void IsNotNullOrEmpty_AssertIsNotNullOrEmptyExceptionTestException(string? value)
         {
             var enumerable = value as IEnumerable<char>;
-            Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrEmpty(enumerable, "value"));
+            Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrEmpty(enumerable, nameof(value)));
         }
 
         [Theory]
@@ -78,7 +78,7 @@ namespace CreativeCoders.Core.UnitTests
         public void IsNotNullOrEmpty_AssertIsNotNullOrEmptyExceptionTest(string value)
         {
             var enumerable = value as IEnumerable<char>;
-            Ensure.IsNotNullOrEmpty(enumerable, "value");
+            Ensure.IsNotNullOrEmpty(enumerable, nameof(value));
         }
 
         [Fact]

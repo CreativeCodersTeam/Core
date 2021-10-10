@@ -6,12 +6,12 @@ using System.Reflection;
 #nullable enable
 namespace CreativeCoders.Core.Collections
 {
-    public static class CollectionUtils<T>
+    public static class CollectionCounter<T>
         where T : IEnumerable
     {
-        public static Func<T, int, int> CountMax = GetCountFunc();
+        public static Func<T, int, int> CountMax { get; } = GetCountFunc();
 
-        public static Func<T, int> Count = items => CountMax(items, 0);
+        public static Func<T, int> Count { get; } = items => CountMax(items, 0);
 
         private static Func<T, int, int> GetCountFunc()
         {
@@ -33,9 +33,7 @@ namespace CreativeCoders.Core.Collections
         {
             var property = typeof(T).GetProperty("Count");
 
-            return property == null
-                ? null
-                : property.GetMethod;
+            return property?.GetMethod;
         }
     }
 }

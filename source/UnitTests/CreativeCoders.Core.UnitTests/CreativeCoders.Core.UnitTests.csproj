@@ -48,8 +48,4 @@
 		<ProjectReference Include="..\CreativeCoders.UnitTests\CreativeCoders.UnitTests.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="EnsureArguments\Extensions\" />
-	</ItemGroup>
-
 </Project>

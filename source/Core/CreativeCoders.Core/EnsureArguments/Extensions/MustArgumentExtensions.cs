@@ -21,7 +21,7 @@ namespace CreativeCoders.Core
         public static ref readonly Argument<T> MustNot<T>(in this Argument<T> argument, Func<T?, bool> predicate,
             string? message = null)
         {
-            if (argument.HasValue() && predicate(argument.Value))
+            if (predicate(argument.Value))
             {
                 throw new ArgumentException(message ?? $"Argument must not '{predicate}'", argument.Name);
             }

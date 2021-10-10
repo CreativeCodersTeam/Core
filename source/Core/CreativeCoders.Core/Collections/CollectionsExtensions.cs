@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 #nullable enable
 namespace CreativeCoders.Core.Collections
 {
+    [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "<Pending>")]
     public static class CollectionsExtensions
     {
         ///-------------------------------------------------------------------------------------------------
