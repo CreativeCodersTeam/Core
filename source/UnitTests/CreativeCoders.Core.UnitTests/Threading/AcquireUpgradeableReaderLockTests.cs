@@ -5,6 +5,7 @@ using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Threading
 {
+    [Collection("Locking")]
     public class AcquireUpgradeableReaderLockTests
     {
         [Fact]
@@ -38,7 +39,7 @@ namespace CreativeCoders.Core.UnitTests.Threading
         [Fact]
         public async Task Ctor_EnterUpgradeableWhenLockIsAlreadyInWrite_ThrowsException()
         {
-            using var slimLock = new ReaderWriterLockSlim();
+            var slimLock = new ReaderWriterLockSlim();
 
             slimLock.EnterWriteLock();
 
@@ -54,7 +55,7 @@ namespace CreativeCoders.Core.UnitTests.Threading
         {
             var executed = false;
 
-            using var slimLock = new ReaderWriterLockSlim();
+            var slimLock = new ReaderWriterLockSlim();
 
             slimLock.EnterReadLock();
 
@@ -75,7 +76,7 @@ namespace CreativeCoders.Core.UnitTests.Threading
         {
             var executed = false;
 
-            using var slimLock = new ReaderWriterLockSlim();
+            var slimLock = new ReaderWriterLockSlim();
 
             slimLock.EnterReadLock();
 

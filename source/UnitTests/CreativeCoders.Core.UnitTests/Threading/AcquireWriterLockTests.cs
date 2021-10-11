@@ -36,7 +36,7 @@ namespace CreativeCoders.Core.UnitTests.Threading
         [Fact]
         public async Task AcquireWriterLockTestLockFailed()
         {
-            using var slimLock = new ReaderWriterLockSlim();
+            var slimLock = new ReaderWriterLockSlim();
 
             slimLock.EnterReadLock();
 
