@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 #nullable enable
@@ -52,6 +53,7 @@ namespace CreativeCoders.Core
         ///
         /// <value> The value. </value>
         ///-------------------------------------------------------------------------------------------------
+        [NotNull]
         public T Value { get; }
 
         ///-------------------------------------------------------------------------------------------------

@@ -10,6 +10,7 @@ using Xunit;
 #nullable enable
 namespace CreativeCoders.Core.UnitTests.EnsureArguments.Extensions
 {
+    [Collection("FileSys")]
     public class IoArgumentExtensionsTests
     {
         [Fact]
@@ -225,7 +226,7 @@ namespace CreativeCoders.Core.UnitTests.EnsureArguments.Extensions
         [Fact]
         public void DirectoryExists_NullDirectoryName_ThrowsException()
         {
-            const string directoryName = null;
+            const string? directoryName = null;
 
             var mockFileSystem = new MockFileSystemEx(
                 new Dictionary<string, MockFileData>(),
@@ -234,7 +235,7 @@ namespace CreativeCoders.Core.UnitTests.EnsureArguments.Extensions
             mockFileSystem.Install();
 
             // Act
-            Action act = () => Ensure.Argument(directoryName, nameof(directoryName)).FileExists();
+            Action act = () => Ensure.Argument(directoryName, nameof(directoryName)).DirectoryExists();
 
             // Assert
             act

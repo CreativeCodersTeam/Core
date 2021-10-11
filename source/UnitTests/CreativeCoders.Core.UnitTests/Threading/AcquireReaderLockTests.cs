@@ -6,13 +6,14 @@ using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Threading
 {
+    [Collection("Locking")]
     public class AcquireReaderLockTests
     {
         [Fact]
         public void AcquireReaderLockCtorTest()
         {
-            var slimLock = new ReaderWriterLockSlim();
-            var _ = new AcquireReaderLock(slimLock);
+            using var slimLock = new ReaderWriterLockSlim();
+            using var _ = new AcquireReaderLock(slimLock);
 
             Assert.Throws<ArgumentNullException>(() => new AcquireReaderLock(null));
         }
@@ -20,23 +21,26 @@ namespace CreativeCoders.Core.UnitTests.Threading
         [Fact]
         public void AcquireReaderLockTestUsing()
         {
-            var slimLock = new ReaderWriterLockSlim();
+            using var slimLock = new ReaderWriterLockSlim();
+
             using (new AcquireReaderLock(slimLock))
             {
                 Assert.True(slimLock.IsReadLockHeld);
                 Assert.False(slimLock.IsWriteLockHeld);
             }
+
             Assert.False(slimLock.IsReadLockHeld);
             Assert.False(slimLock.IsWriteLockHeld);
         }
 
         [Fact]
-        public void AcquireReaderLockTestLockFailed()
+        public async Task AcquireReaderLockTestLockFailed()
         {
-            var slimLock = new ReaderWriterLockSlim();
+            using var slimLock = new ReaderWriterLockSlim();
+
             slimLock.EnterWriteLock();
-            var task = Task.Run(() => Assert.Throws<AcquireLockFailedException>(() => new AcquireReaderLock(slimLock, 1)));
-            task.Wait();
+
+            await Task.Run(() => Assert.Throws<AcquireLockFailedException>(() => new AcquireReaderLock(slimLock, 1)));
         }
 
 

@@ -36,35 +36,12 @@ namespace CreativeCoders.Core
 
             return ref argument;
         }
-        
-        public static ref readonly ArgumentNotNull<ICollection<T>> NotEmpty<T>(in this ArgumentNotNull<ICollection<T>> argument,
-            string? message = null)
-        {
-            if (argument.Value.Count == 0)
-            {
-                throw new ArgumentException(message ?? "Argument is empty", argument.Name);
-            }
-
-            return ref argument;
-        }
 
         public static ref readonly ArgumentNotNull<T> MinCount<T>(in this ArgumentNotNull<T> argument, int minCount,
             string? message = null)
             where T : IEnumerable
         {
             if (argument.Value.FastCount(minCount) < minCount)
-            {
-                throw new ArgumentException(message ?? $"Must have length greater or equal {minCount}", argument.Name);
-            }
-
-            return ref argument;
-        }
-
-        public static ref readonly ArgumentNotNull<ICollection<T>> MinCount<T>(
-            in this ArgumentNotNull<ICollection<T>> argument, int minCount,
-            string? message = null)
-        {
-            if (argument.Value.Count < minCount)
             {
                 throw new ArgumentException(message ?? $"Must have length greater or equal {minCount}", argument.Name);
             }
@@ -84,35 +61,11 @@ namespace CreativeCoders.Core
             return ref argument;
         }
 
-        public static ref readonly ArgumentNotNull<ICollection<T>> MaxCount<T>(
-            in this ArgumentNotNull<ICollection<T>> argument, int maxCount,
-            string? message = null)
-        {
-            if (argument.Value.Count > maxCount)
-            {
-                throw new ArgumentException(message ?? $"Must have length lesser or equal {maxCount}", argument.Name);
-            }
-
-            return ref argument;
-        }
-
         public static ref readonly ArgumentNotNull<T> InRange<T>(in this ArgumentNotNull<T> argument, int minCount,
             int maxCount, string? message = null)
             where T : IEnumerable
         {
             if (!argument.Value.FastCountInRange(minCount, maxCount))
-            {
-                throw new ArgumentException(message ?? $"Must be withing range {minCount} - {maxCount}", argument.Name);
-            }
-
-            return ref argument;
-        }
-
-        public static ref readonly ArgumentNotNull<ICollection<T>> InRange<T>(
-            in this ArgumentNotNull<ICollection<T>> argument, int minCount, int maxCount,
-            string? message = null)
-        {
-            if (argument.Value.Count < minCount || argument.Value.Count > maxCount)
             {
                 throw new ArgumentException(message ?? $"Must be withing range {minCount} - {maxCount}", argument.Name);
             }

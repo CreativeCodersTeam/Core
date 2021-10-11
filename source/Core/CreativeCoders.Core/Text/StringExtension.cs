@@ -10,11 +10,26 @@ namespace CreativeCoders.Core.Text
     [PublicAPI]
     public static class StringExtension
     {
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   A string extension method that converts a text to a secure string. </summary>
+        ///
+        /// <param name="text"> The text to convert. </param>
+        ///
+        /// <returns>   Text as a SecureString. </returns>
+        ///-------------------------------------------------------------------------------------------------
         public static SecureString ToSecureString(this string text)
         {
             return ToSecureString(text, false);
         }
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   A string extension method that converts a text to a secure string. </summary>
+        ///
+        /// <param name="text">         The text to convert. </param>
+        /// <param name="makeReadOnly"> True to make the SecureString read only. </param>
+        ///
+        /// <returns>   Text as a readonly SecureString. </returns>
+        ///-------------------------------------------------------------------------------------------------
         public static SecureString ToSecureString(this string text, bool makeReadOnly)
         {
             var result = new SecureString();
@@ -35,6 +50,15 @@ namespace CreativeCoders.Core.Text
             return result;
         }
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     A SecureString extension method that converts a SecureString to a normal string.
+        /// </summary>
+        ///
+        /// <param name="secureString"> The secureString to convert. </param>
+        ///
+        /// <returns>   SecureString as a string. </returns>
+        ///-------------------------------------------------------------------------------------------------
         public static string ToNormalString(this SecureString secureString)
         {
             if (secureString == null || secureString.Length == 0)

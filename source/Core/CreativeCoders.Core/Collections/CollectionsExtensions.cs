@@ -93,7 +93,7 @@ namespace CreativeCoders.Core.Collections
         public static bool FastEmpty(this IEnumerable items)
         {
             return items.TryGetCollectionCount(out var count)
-                ? count > 0
+                ? count == 0
                 : !items.GetEnumerator().MoveNext();
         }
 

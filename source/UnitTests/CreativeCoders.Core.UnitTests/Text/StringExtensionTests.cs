@@ -2,6 +2,7 @@
 using System.Text;
 using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.Core.Text;
+using FluentAssertions;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Text
@@ -168,6 +169,66 @@ namespace CreativeCoders.Core.UnitTests.Text
             SecureString secureString = null;
 
             Assert.Equal(string.Empty, secureString.ToNormalString());
+        }
+
+        [Fact]
+        public void AppendLineIf_AppendToTrue_LineIsAppended()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("Test");
+
+            // Act
+            sb.AppendLineIf(true, "1234");
+
+            // Assert
+            sb.ToString()
+                .Should()
+                .Be($"Test{Env.NewLine}1234{Env.NewLine}");
+        }
+
+        [Fact]
+        public void AppendLineIf_AppendToFalse_LineIsNotAppended()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("Test");
+
+            // Act
+            sb.AppendLineIf(false, "1234");
+
+            // Assert
+            sb.ToString()
+                .Should()
+                .Be($"Test{Env.NewLine}");
+        }
+
+        [Fact]
+        public void AppendIf_AppendToTrue_TextIsAppended()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("Test");
+
+            // Act
+            sb.AppendIf(true, "1234");
+
+            // Assert
+            sb.ToString()
+                .Should()
+                .Be($"Test{Env.NewLine}1234");
+        }
+
+        [Fact]
+        public void AppendIf_AppendToFalse_TextIsNotAppended()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("Test");
+
+            // Act
+            sb.AppendLineIf(false, "1234");
+
+            // Assert
+            sb.ToString()
+                .Should()
+                .Be($"Test{Env.NewLine}");
         }
     }
 }
