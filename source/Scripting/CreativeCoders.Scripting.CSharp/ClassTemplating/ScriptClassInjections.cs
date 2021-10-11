@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 
 namespace CreativeCoders.Scripting.CSharp.ClassTemplating {
     public class ScriptClassInjections

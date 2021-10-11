@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CreativeCoders.Core.Error;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Threading

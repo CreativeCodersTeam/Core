@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.Scripting.Base;
 

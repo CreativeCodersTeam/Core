@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using CreativeCoders.Core.Caching;
 using CreativeCoders.Core.Caching.Default;
+using CreativeCoders.Core.Collections;
 
 namespace CreativeCoders.Core.Enums
 {

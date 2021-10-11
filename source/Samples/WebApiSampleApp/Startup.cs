@@ -1,6 +1,6 @@
 using CreativeCoders.AspNetCore.Jwt;
 using CreativeCoders.AspNetCore.TokenAuth;
-using CreativeCoders.Core;
+using CreativeCoders.Core.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

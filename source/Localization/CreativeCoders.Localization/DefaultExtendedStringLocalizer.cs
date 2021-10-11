@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Extensions.Localization;
 
+#nullable enable
 namespace CreativeCoders.Localization
 {
     internal class DefaultExtendedStringLocalizer<T> : IExtendedStringLocalizer<T>

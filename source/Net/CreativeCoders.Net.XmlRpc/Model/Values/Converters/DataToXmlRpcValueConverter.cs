@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Net.XmlRpc.Definition;
 
 namespace CreativeCoders.Net.XmlRpc.Model.Values.Converters

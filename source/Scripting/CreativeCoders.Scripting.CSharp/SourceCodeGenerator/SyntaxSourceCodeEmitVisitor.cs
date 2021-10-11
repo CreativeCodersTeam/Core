@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Visitors;
 using CreativeCoders.Scripting.CSharp.SourceCodeGenerator.Nodes;
 

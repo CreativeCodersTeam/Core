@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Scripting.CSharp.ClassTemplating;
 using CreativeCoders.Scripting.CSharp.SourceCodeGenerator.Nodes;
 

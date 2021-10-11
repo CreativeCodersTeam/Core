@@ -1,5 +1,6 @@
 ﻿using CreativeCoders.AspNetCore.Blazor.Components.Base;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Text;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;

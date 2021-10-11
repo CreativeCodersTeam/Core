@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions.TestingHelpers;
 using CreativeCoders.UnitTests;
+using FluentAssertions;
 using Xunit;
 
+#nullable enable
 namespace CreativeCoders.Core.UnitTests
 {
     [Collection("FileSys")]
@@ -54,7 +56,7 @@ namespace CreativeCoders.Core.UnitTests
         [Fact]
         public void IsNotNull_AssertIsNotNullExceptionTest()
         {
-            object obj = null;
+            object? obj = null;
             Assert.Throws<InvalidOperationException>(() => Ensure.IsNotNull(obj, () => new InvalidOperationException("test")));
 
             obj = new object();
@@ -64,10 +66,10 @@ namespace CreativeCoders.Core.UnitTests
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        public void IsNotNullOrEmpty_AssertIsNotNullOrEmptyExceptionTestException(string value)
+        public void IsNotNullOrEmpty_AssertIsNotNullOrEmptyExceptionTestException(string? value)
         {
             var enumerable = value as IEnumerable<char>;
-            Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrEmpty(enumerable, "value"));
+            Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrEmpty(enumerable, nameof(value)));
         }
 
         [Theory]
@@ -76,7 +78,7 @@ namespace CreativeCoders.Core.UnitTests
         public void IsNotNullOrEmpty_AssertIsNotNullOrEmptyExceptionTest(string value)
         {
             var enumerable = value as IEnumerable<char>;
-            Ensure.IsNotNullOrEmpty(enumerable, "value");
+            Ensure.IsNotNullOrEmpty(enumerable, nameof(value));
         }
 
         [Fact]
@@ -189,6 +191,41 @@ namespace CreativeCoders.Core.UnitTests
             mockFileSystem.Install();
             
             Assert.Throws<DirectoryNotFoundException>(() => Ensure.DirectoryExists(Path.GetDirectoryName(fileName)));
+        }
+
+        [Theory]
+        [InlineData("Test")]
+        [InlineData("")]
+        [InlineData(null)]
+        public void Argument_DifferentValues_ValueAndNameAndHasValueAreCorrect(string? textValue)
+        {
+            // Act
+            var argument = Ensure.Argument(textValue, nameof(textValue));
+
+            // Assert
+            argument.Name
+                .Should()
+                .Be(nameof(textValue));
+
+            argument.Value
+                .Should()
+                .Be(textValue);
+
+            argument.HasValue()
+                .Should()
+                .Be(textValue != null);
+        }
+
+        [Fact]
+        public void Argument_ParamNameIsNull_ThrowsException()
+        {
+            // Act
+            Action act = () => Ensure.Argument("Test", null);
+
+            // Assert
+            act
+                .Should()
+                .Throw<ArgumentNullException>();
         }
     }
 }

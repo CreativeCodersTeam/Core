@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Di.Building;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
