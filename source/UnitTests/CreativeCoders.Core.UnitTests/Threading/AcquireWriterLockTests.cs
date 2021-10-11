@@ -38,9 +38,16 @@ namespace CreativeCoders.Core.UnitTests.Threading
         {
             using var slimLock = new ReaderWriterLockSlim();
 
-            slimLock.EnterReadLock();
+            try
+            {
+                slimLock.EnterReadLock();
 
-            await Task.Run(() => Assert.Throws<AcquireLockFailedException>(() => new AcquireWriterLock(slimLock, 1)));
+                await Task.Run(() => Assert.Throws<AcquireLockFailedException>(() => new AcquireWriterLock(slimLock, 1)));
+            }
+            finally
+            {
+                slimLock.ExitReadLock();
+            }
         }
     }
 }
