@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Logging;
 using CreativeCoders.Net.Servers.Http;
 using CreativeCoders.Net.XmlRpc.Model;

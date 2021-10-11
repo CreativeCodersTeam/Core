@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using CreativeCoders.Core.Collections;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Visitors
 {

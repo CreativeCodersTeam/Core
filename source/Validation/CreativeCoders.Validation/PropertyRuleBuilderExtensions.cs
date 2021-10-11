@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Validation.Rules;
 using CreativeCoders.Validation.ValidationSteps;
 using CreativeCoders.Validation.ValidationSteps.TextValidations;

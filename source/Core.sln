@@ -215,6 +215,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{2A7105
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Localization.UnitTests", "UnitTests\CreativeCoders.Localization.UnitTests\CreativeCoders.Localization.UnitTests.csproj", "{FB495C0A-C1EE-4711-8817-E26077B55E54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -503,6 +505,10 @@ Global
 		{007E2B41-126E-4E9F-8FF5-5766B39BFFE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{007E2B41-126E-4E9F-8FF5-5766B39BFFE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{007E2B41-126E-4E9F-8FF5-5766B39BFFE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB495C0A-C1EE-4711-8817-E26077B55E54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB495C0A-C1EE-4711-8817-E26077B55E54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB495C0A-C1EE-4711-8817-E26077B55E54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB495C0A-C1EE-4711-8817-E26077B55E54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -603,6 +609,7 @@ Global
 		{FD4A5D95-4752-472A-914B-F44C907C5F81} = {E3663C3B-6BD5-4FC4-8799-3265C8423530}
 		{036E33EC-60A3-4C06-95DB-F98FFB7B2A46} = {2A7105AA-05B6-469A-93F5-719723A4D90D}
 		{007E2B41-126E-4E9F-8FF5-5766B39BFFE9} = {036E33EC-60A3-4C06-95DB-F98FFB7B2A46}
+		{FB495C0A-C1EE-4711-8817-E26077B55E54} = {9A3F55B8-E867-4EA2-B1FA-0C01DE79463E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}

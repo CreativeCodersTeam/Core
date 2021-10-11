@@ -5,12 +5,13 @@ using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Threading
 {
+    [Collection("Locking")]
     public class AcquireUpgradeableReaderLockTests
     {
         [Fact]
         public void AcquireUpgradeableReaderLock_Using_LockIsInReadMode()
         {
-            var slimLock = new ReaderWriterLockSlim();
+            using var slimLock = new ReaderWriterLockSlim();
 
             using (new AcquireUpgradeableReaderLock(slimLock))
             {
@@ -22,17 +23,16 @@ namespace CreativeCoders.Core.UnitTests.Threading
         [Fact]
         public void UseWriteLock_UpgradeFromReadToWrite_Success()
         {
-            var slimLock = new ReaderWriterLockSlim();
+            using var slimLock = new ReaderWriterLockSlim();
 
-            using (var upgradeableLock = new AcquireUpgradeableReaderLock(slimLock))
+            using var upgradeableLock = new AcquireUpgradeableReaderLock(slimLock);
+
+            Assert.True(slimLock.IsUpgradeableReadLockHeld);
+            Assert.False(slimLock.IsWriteLockHeld);
+
+            using (upgradeableLock.UseWriteLock())
             {
-                Assert.True(slimLock.IsUpgradeableReadLockHeld);
-                Assert.False(slimLock.IsWriteLockHeld);
-
-                using (upgradeableLock.UseWriteLock())
-                {
-                    Assert.True(slimLock.IsWriteLockHeld);
-                }
+                Assert.True(slimLock.IsWriteLockHeld);
             }
         }
 
@@ -40,20 +40,23 @@ namespace CreativeCoders.Core.UnitTests.Threading
         public async Task Ctor_EnterUpgradeableWhenLockIsAlreadyInWrite_ThrowsException()
         {
             var slimLock = new ReaderWriterLockSlim();
+
             slimLock.EnterWriteLock();
 
             await Task.Run(() =>
             {
-                Assert.Throws<AcquireLockFailedException>(() => new AcquireUpgradeableReaderLock(slimLock, 1));
+                Assert.Throws<AcquireLockFailedException>(() =>
+                    new AcquireUpgradeableReaderLock(slimLock, 1));
             });
         }
-        
+
         [Fact]
         public async Task Ctor_EnterUpgradeableWhenLockIsAlreadyInRead_LockIsInUpgradeableMode()
         {
             var executed = false;
-            
+
             var slimLock = new ReaderWriterLockSlim();
+
             slimLock.EnterReadLock();
 
             await Task.Run(() =>
@@ -64,16 +67,17 @@ namespace CreativeCoders.Core.UnitTests.Threading
                     executed = true;
                 }
             });
-            
+
             Assert.True(executed);
         }
-        
+
         [Fact]
         public async Task Ctor_EnterUpgradeableWhenLockIsAlreadyInReadAndUpgrade_ThrowsException()
         {
             var executed = false;
-            
+
             var slimLock = new ReaderWriterLockSlim();
+
             slimLock.EnterReadLock();
 
             await Task.Run(() =>
@@ -84,11 +88,11 @@ namespace CreativeCoders.Core.UnitTests.Threading
                     {
                         executed = true;
                         var _ = upgradeableLock.UseWriteLock(1);
-                    }); 
-                    
+                    });
+
                 }
             });
-            
+
             Assert.True(executed);
         }
     }

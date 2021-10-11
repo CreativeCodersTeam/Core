@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Text;
 
 namespace CreativeCoders.UnitTests.Net.Http
 {

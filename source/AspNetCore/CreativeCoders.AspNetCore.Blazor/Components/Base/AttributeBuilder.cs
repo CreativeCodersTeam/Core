@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.AspNetCore.Blazor.Components.Base

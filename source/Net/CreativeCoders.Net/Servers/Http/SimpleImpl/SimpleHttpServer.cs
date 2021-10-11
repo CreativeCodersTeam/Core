@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Net.Servers.Http.SimpleImpl

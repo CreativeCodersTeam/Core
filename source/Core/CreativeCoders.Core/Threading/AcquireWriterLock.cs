@@ -22,6 +22,7 @@ namespace CreativeCoders.Core.Threading
             Ensure.IsNotNull(lockSlim, nameof(lockSlim));
 
             _lockSlim = lockSlim;
+
             if (!_lockSlim.TryEnterWriteLock(timeout))
             {
                 throw new AcquireLockFailedException("Acquire writer lock failed", timeout);

@@ -1,4 +1,5 @@
 ﻿using CreativeCoders.Core;
+using CreativeCoders.Core.Text;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.CodeCompilation

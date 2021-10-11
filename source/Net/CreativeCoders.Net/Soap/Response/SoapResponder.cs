@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 
 namespace CreativeCoders.Net.Soap.Response
 {
@@ -48,19 +49,22 @@ namespace CreativeCoders.Net.Soap.Response
         private static void MapProperty(TResponse responseData, PropertyFieldMapping mapping, XContainer contentElement)
         {
             var fieldNode = contentElement.Elements(XName.Get(mapping.FieldName)).FirstOrDefault();
-            if (fieldNode is { FirstNode: null })
+
+            switch (fieldNode)
             {
-                var propValue = mapping.Property.PropertyType == typeof(string) ? string.Empty : null;
-                mapping.Property.SetValue(responseData, propValue);
-                return;
-            }
-            
-            // ReSharper disable once InvertIf
-            if (fieldNode is { FirstNode: { NodeType: XmlNodeType.Text } })
-            {
-                var fieldValue = (fieldNode.FirstNode as XText)?.Value;
-                var propValue = Convert.ChangeType(fieldValue, mapping.Property.PropertyType);
-                mapping.Property.SetValue(responseData, propValue);
+                case { FirstNode: null }:
+                {
+                    var propValue = mapping.Property.PropertyType == typeof(string) ? string.Empty : null;
+                    mapping.Property.SetValue(responseData, propValue);
+                    return;
+                }
+                case { FirstNode: { NodeType: XmlNodeType.Text } }:
+                {
+                    var fieldValue = (fieldNode.FirstNode as XText)?.Value;
+                    var propValue = Convert.ChangeType(fieldValue, mapping.Property.PropertyType);
+                    mapping.Property.SetValue(responseData, propValue);
+                    return;
+                }
             }
         }
     }

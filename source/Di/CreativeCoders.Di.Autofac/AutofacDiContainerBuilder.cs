@@ -4,6 +4,7 @@ using Autofac;
 using Autofac.Builder;
 using Autofac.Features.ResolveAnything;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Di.Building;
 
 namespace CreativeCoders.Di.Autofac
