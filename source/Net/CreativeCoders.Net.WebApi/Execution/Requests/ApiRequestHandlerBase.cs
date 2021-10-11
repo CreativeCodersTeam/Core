@@ -3,7 +3,6 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Net.WebApi.Definition;
 using CreativeCoders.Net.WebApi.Serialization;

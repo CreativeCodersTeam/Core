@@ -1,5 +1,4 @@
 ﻿using System;
-using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Windows.Window;
 

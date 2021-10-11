@@ -43,7 +43,7 @@ namespace CreativeCoders.Core
         ///-------------------------------------------------------------------------------------------------
         public TValue Cast<TValue>()
         {
-            object objectValue = Value!;
+            object objectValue = Value;
             
             return (TValue) objectValue;
         }

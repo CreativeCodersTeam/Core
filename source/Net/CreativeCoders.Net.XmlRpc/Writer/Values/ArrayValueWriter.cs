@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
-using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Net.XmlRpc.Model;
 

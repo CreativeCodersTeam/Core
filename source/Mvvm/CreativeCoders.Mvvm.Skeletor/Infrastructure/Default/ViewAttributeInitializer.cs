@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Reflection;
 using JetBrains.Annotations;

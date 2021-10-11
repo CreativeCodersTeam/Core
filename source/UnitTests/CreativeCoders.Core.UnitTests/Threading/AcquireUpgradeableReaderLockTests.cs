@@ -40,21 +40,15 @@ namespace CreativeCoders.Core.UnitTests.Threading
         {
             using var slimLock = new ReaderWriterLockSlim();
 
-            try {
-                slimLock.EnterWriteLock();
+            slimLock.EnterWriteLock();
 
-                await Task.Run(() =>
-                {
-                    Assert.Throws<AcquireLockFailedException>(() => new AcquireUpgradeableReaderLock(slimLock, 1));
-                });
-            }
-            finally
+            await Task.Run(() =>
             {
-                slimLock.ExitWriteLock();
-            }
-            
+                Assert.Throws<AcquireLockFailedException>(() =>
+                    new AcquireUpgradeableReaderLock(slimLock, 1));
+            });
         }
-        
+
         [Fact]
         public async Task Ctor_EnterUpgradeableWhenLockIsAlreadyInRead_LockIsInUpgradeableMode()
         {
@@ -62,27 +56,20 @@ namespace CreativeCoders.Core.UnitTests.Threading
 
             using var slimLock = new ReaderWriterLockSlim();
 
-            try
-            {
-                slimLock.EnterReadLock();
+            slimLock.EnterReadLock();
 
-                await Task.Run(() =>
-                {
-                    using (new AcquireUpgradeableReaderLock(slimLock))
-                    {
-                        Assert.True(slimLock.IsUpgradeableReadLockHeld);
-                        executed = true;
-                    }
-                });
-            }
-            finally
+            await Task.Run(() =>
             {
-                slimLock.ExitReadLock();
-            }
-            
+                using (new AcquireUpgradeableReaderLock(slimLock))
+                {
+                    Assert.True(slimLock.IsUpgradeableReadLockHeld);
+                    executed = true;
+                }
+            });
+
             Assert.True(executed);
         }
-        
+
         [Fact]
         public async Task Ctor_EnterUpgradeableWhenLockIsAlreadyInReadAndUpgrade_ThrowsException()
         {
@@ -90,27 +77,21 @@ namespace CreativeCoders.Core.UnitTests.Threading
 
             using var slimLock = new ReaderWriterLockSlim();
 
-            try {
-                slimLock.EnterReadLock();
+            slimLock.EnterReadLock();
 
-                await Task.Run(() =>
-                {
-                    using (var upgradeableLock = new AcquireUpgradeableReaderLock(slimLock))
-                    {
-                        Assert.Throws<AcquireLockFailedException>(() =>
-                        {
-                            executed = true;
-                            var _ = upgradeableLock.UseWriteLock(1);
-                        });
-
-                    }
-                });
-            }
-            finally
+            await Task.Run(() =>
             {
-                slimLock.ExitReadLock();
-            }
-            
+                using (var upgradeableLock = new AcquireUpgradeableReaderLock(slimLock))
+                {
+                    Assert.Throws<AcquireLockFailedException>(() =>
+                    {
+                        executed = true;
+                        var _ = upgradeableLock.UseWriteLock(1);
+                    });
+
+                }
+            });
+
             Assert.True(executed);
         }
     }

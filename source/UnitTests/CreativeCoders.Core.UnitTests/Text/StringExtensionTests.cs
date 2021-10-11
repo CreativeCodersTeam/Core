@@ -168,6 +168,7 @@ namespace CreativeCoders.Core.UnitTests.Text
         {
             SecureString secureString = null;
 
+            // ReSharper disable once ExpressionIsAlwaysNull
             Assert.Equal(string.Empty, secureString.ToNormalString());
         }
 

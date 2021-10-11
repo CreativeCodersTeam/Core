@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CreativeCoders.CodeCompilation.Roslyn;
-using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Scripting.CSharp;
 using CreativeCoders.Scripting.CSharp.ClassTemplating;

@@ -88,7 +88,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             TestFastCount(new List<ulong>(), 0, 1);
             TestFastCount(new List<uint>(), 0, 1);
             TestFastCount(new List<ushort>(), 0, 1);
-            TestFastCount(Array.Empty<int>().Where(x => true), 0, 1);
+            TestFastCount(Array.Empty<int>().Where(_ => true), 0, 1);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             TestFastCount("12", 2, 0);
             TestFastCount(new []{1, 2}.ToImmutableList(), 2, 0);
             TestFastCount(new List<ulong>{3, 4}, 2, 0);
-            TestFastCount(new[]{1, 2}.Where(x => true), 2, 0);
+            TestFastCount(new[]{1, 2}.Where(_ => true), 2, 0);
         }
 
         [Fact]
@@ -112,7 +112,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
             TestFastCount("123", 3, 2);
             TestFastCount(new[] { 1, 2, 3 }.ToImmutableList(), 3, 2);
             TestFastCount(new List<ulong> { 3, 4, 5 }, 3, 2);
-            TestFastCount(new[] { 1, 2, 3 }.Where(x => true), 2, 2);
+            TestFastCount(new[] { 1, 2, 3 }.Where(_ => true), 2, 2);
         }
 
         private static void TestFastCount(IEnumerable items, int expectedCount, int maxCount)

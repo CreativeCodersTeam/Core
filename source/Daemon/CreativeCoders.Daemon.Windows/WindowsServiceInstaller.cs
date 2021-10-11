@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
-using CreativeCoders.Core;
 using CreativeCoders.Core.IO;
 using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.Core.Text;

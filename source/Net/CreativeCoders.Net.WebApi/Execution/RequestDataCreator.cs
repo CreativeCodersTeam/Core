@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
-using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Net.WebApi.Specification;
 

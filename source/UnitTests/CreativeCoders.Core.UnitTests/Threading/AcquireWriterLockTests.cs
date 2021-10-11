@@ -38,16 +38,12 @@ namespace CreativeCoders.Core.UnitTests.Threading
         {
             using var slimLock = new ReaderWriterLockSlim();
 
-            try
-            {
-                slimLock.EnterReadLock();
+            slimLock.EnterReadLock();
 
-                await Task.Run(() => Assert.Throws<AcquireLockFailedException>(() => new AcquireWriterLock(slimLock, 1)));
-            }
-            finally
-            {
-                slimLock.ExitReadLock();
-            }
+            await Task.Run(() =>
+                    // ReSharper disable once AccessToDisposedClosure
+                    Assert.Throws<AcquireLockFailedException>(() => new AcquireWriterLock(slimLock, 1)))
+                .ConfigureAwait(true);
         }
     }
 }

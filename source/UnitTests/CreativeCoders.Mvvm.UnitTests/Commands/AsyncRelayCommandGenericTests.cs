@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using CreativeCoders.Core;
 using CreativeCoders.Core.Error;
 using CreativeCoders.Mvvm.Commands;
 using FakeItEasy;
