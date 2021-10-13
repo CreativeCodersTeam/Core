@@ -15,8 +15,17 @@ namespace CreativeCoders.Core.UnitTests
         [Fact]
         public void IsNotNull_AssertTestIsNotNull()
         {
-            Assert.Throws<ArgumentNullException>(() => Ensure.IsNotNull(null, "param"));
-            Ensure.IsNotNull(new object(), "param");
+            var instance = new object();
+
+            object nullObject = null!;
+
+            Assert.Throws<ArgumentNullException>(() => Ensure.IsNotNull(nullObject, "param"));
+            Ensure.IsNotNull(instance, nameof(instance));
+            var obj = Ensure.NotNull(instance, nameof(instance));
+
+            obj
+                .Should()
+                .BeSameAs(instance);
         }
 
         [Fact]
@@ -24,7 +33,11 @@ namespace CreativeCoders.Core.UnitTests
         {
             Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrEmpty(null, "string"));
             Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrEmpty(string.Empty, "string"));
-            Ensure.IsNotNullOrEmpty("test", "string");
+            var value = Ensure.IsNotNullOrEmpty("test", "string");
+
+            value
+                .Should()
+                .Be("test");
         }
 
         [Fact]
@@ -34,7 +47,11 @@ namespace CreativeCoders.Core.UnitTests
             Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrWhitespace(string.Empty, "string"));
             Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrWhitespace(" ", "string"));
 
-            Ensure.IsNotNullOrWhitespace("test", "string");
+            var value = Ensure.IsNotNullOrWhitespace("test", "string");
+
+            value
+                .Should()
+                .Be("test");
         }
 
         [Fact]
