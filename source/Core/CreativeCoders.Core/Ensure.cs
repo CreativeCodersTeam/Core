@@ -17,15 +17,30 @@ namespace CreativeCoders.Core
         ///-------------------------------------------------------------------------------------------------
         /// <summary>   Ensures that <paramref name="value"/> is not null. </summary>
         ///
-        /// <exception cref="ArgumentNullException">    Thrown when <paramref name="value"/> is null. </exception>
+        /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+        ///                                             null. </exception>
         ///
+        /// <typeparam name="T">    Generic type parameter. </typeparam>
         /// <param name="value">        The value to check. </param>
         /// <param name="paramName">    Name of the <paramref name="value"/> parameter. </param>
+        ///
+        /// <returns>   The <paramref name="value"/>. </returns>
         ///-------------------------------------------------------------------------------------------------
-        [ContractAnnotation("halt <= value: null")]
+        [ContractAnnotation("value: null => halt; value: notnull => notnull")]
+        public static T NotNull<T>(T value, string paramName)
+        {
+            if (value is null)
+            {
+                throw new ArgumentNullException(paramName);
+            }
+
+            return value;
+        }
+
+        [ContractAnnotation("value: null => halt")]
         public static void IsNotNull(object value, string paramName)
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(paramName);
             }
@@ -56,14 +71,18 @@ namespace CreativeCoders.Core
         ///
         /// <param name="value">        The value to check. </param>
         /// <param name="paramName">    Name of the <paramref name="value"/>  parameter. </param>
+        ///
+        /// <returns>   The <paramref name="value"/>. </returns>
         ///-------------------------------------------------------------------------------------------------
-        [ContractAnnotation("halt <= value: null")]
-        public static void IsNotNullOrEmpty(string value, string paramName)
+        [ContractAnnotation("halt <= value: null; value: notnull => notnull")]
+        public static string IsNotNullOrEmpty(string value, string paramName)
         {
             if (string.IsNullOrEmpty(value))
             {
                 throw new ArgumentException("Must not be null or empty", paramName);
             }
+
+            return value;
         }
 
         ///-------------------------------------------------------------------------------------------------
@@ -93,14 +112,18 @@ namespace CreativeCoders.Core
         ///
         /// <param name="value">        The value to check. </param>
         /// <param name="paramName">    Name of the <paramref name="value"/> parameter. </param>
+        ///
+        /// <returns>   The <paramref name="value"/>. </returns>
         ///-------------------------------------------------------------------------------------------------
-        [ContractAnnotation("halt <= value: null")]
-        public static void IsNotNullOrWhitespace(string value, string paramName)
+        [ContractAnnotation("halt <= value: null; value: notnull => notnull")]
+        public static string IsNotNullOrWhitespace(string value, string paramName)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
                 throw new ArgumentException("Must not be null or whitespace", paramName);
             }
+
+            return value;
         }
 
         ///-------------------------------------------------------------------------------------------------
