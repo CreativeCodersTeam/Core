@@ -57,7 +57,7 @@ namespace CreativeCoders.Core.UnitTests.Collections
         [Fact]
         public void TryGetCollectionCount_DateTimeFilledCollections_CountIsReadAndEqualsCount()
         {
-            TestTryGetCollectionCount(new DateTime[]{DateTime.Now, DateTime.MinValue}, true, 2);
+            TestTryGetCollectionCount(new[] { DateTime.Now, DateTime.MinValue }, true, 2);
         }
 
         [Fact]
