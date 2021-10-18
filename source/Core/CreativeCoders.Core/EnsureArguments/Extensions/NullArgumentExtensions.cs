@@ -18,7 +18,7 @@ namespace CreativeCoders.Core
 
         public static T? Null<T>(in this Argument<T> argument, string? message = null)
         {
-            if (!(argument.Value is null))
+            if (argument.Value is not null)
             {
                 throw new ArgumentException(message ?? "Argument is not null", argument.Name);
             }

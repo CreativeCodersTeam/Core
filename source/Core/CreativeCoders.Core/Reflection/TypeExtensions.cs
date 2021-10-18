@@ -4,12 +4,13 @@ using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
 
+#nullable enable
 namespace CreativeCoders.Core.Reflection
 {
     [PublicAPI]
     public static class TypeExtensions
     {
-        public static object CreateGenericInstance(this Type type, Type typeArgument, params object[] constructorParameters)
+        public static object? CreateGenericInstance(this Type type, Type typeArgument, params object[] constructorParameters)
         {
             Ensure.That(type.IsGenericType, nameof(type));
             Ensure.IsNotNull(typeArgument, nameof(typeArgument));
@@ -20,7 +21,7 @@ namespace CreativeCoders.Core.Reflection
             return instance;
         }
 
-        public static object GetDefault(this Type type)
+        public static object? GetDefault(this Type type)
         {
             return type.IsValueType
                 ? Activator.CreateInstance(type)
@@ -69,11 +70,9 @@ namespace CreativeCoders.Core.Reflection
                 .Select(x =>
                 {
                     var index = argList.FindIndex(argType =>
-                    {
-                        return x.ParameterType == argType.GetType()
-                               || (argType.GetType().GetInterfaces()
-                                   .Any(interfaceType => interfaceType == x.ParameterType));
-                    });
+                        x.ParameterType == argType.GetType()
+                        || (argType.GetType().GetInterfaces()
+                            .Any(interfaceType => interfaceType == x.ParameterType)));
 
                     if (index == -1)
                     {

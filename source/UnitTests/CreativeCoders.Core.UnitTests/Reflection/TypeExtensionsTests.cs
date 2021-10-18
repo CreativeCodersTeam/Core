@@ -16,8 +16,9 @@ namespace CreativeCoders.Core.UnitTests.Reflection
         {
             var instance = typeof(GenericClass<>).CreateGenericInstance(typeof(int));
 
+            Assert.NotNull(instance);
             Assert.IsType<GenericClass<int>>(instance);
-            Assert.Equal(0, ((GenericClass<int>)instance).Data);
+            Assert.Equal(0, ((GenericClass<int>)instance!).Data);
         }
 
         [Fact]
@@ -25,8 +26,9 @@ namespace CreativeCoders.Core.UnitTests.Reflection
         {
             var instance = typeof(GenericClass<>).CreateGenericInstance(typeof(int), 1234);
 
+            Assert.NotNull(instance);
             Assert.IsType<GenericClass<int>>(instance);
-            Assert.Equal(1234, ((GenericClass<int>)instance).Data);
+            Assert.Equal(1234, ((GenericClass<int>)instance!).Data);
         }
 
         [Fact]
@@ -34,11 +36,11 @@ namespace CreativeCoders.Core.UnitTests.Reflection
         {
             var value = typeof(int).GetDefault();
 
-            Assert.IsType<int>(value);
-
-            var intValue = (int) value;
-            
-            Assert.Equal(0, intValue);
+            value
+                .Should()
+                .BeOfType<int>()
+                .And
+                .Be(0);
         }
         
         [Fact]
@@ -46,11 +48,11 @@ namespace CreativeCoders.Core.UnitTests.Reflection
         {
             var value = typeof(bool).GetDefault();
 
-            Assert.IsType<bool>(value);
-
-            var boolValue = (bool) value;
-            
-            Assert.False(boolValue);
+            value
+                .Should()
+                .BeOfType<bool>()
+                .And
+                .Be(false);
         }
         
         [Fact]
