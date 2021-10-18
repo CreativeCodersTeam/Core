@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -18,12 +18,11 @@ namespace CreativeCoders.Core.Collections
             throw new KeyNotFoundException();
         }
 
-        [SuppressMessage("ReSharper", "CompareNonConstrainedGenericWithNull")]
         public static bool TryGetKeyByValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TValue value,
             out TKey key)
         {
             foreach (var dictEntry in dictionary.Where(dictEntry =>
-                dictEntry.Value == null && value == null || dictEntry.Value?.Equals(value) == true))
+                dictEntry.Value is null && value is null || dictEntry.Value?.Equals(value) == true))
             {
                 key = dictEntry.Key;
                 return true;
@@ -39,7 +38,7 @@ namespace CreativeCoders.Core.Collections
 
             foreach (DictionaryEntry dictionaryEntry in dictionary)
             {
-                if (!(dictionaryEntry.Key is TKey key))
+                if (dictionaryEntry.Key is not TKey key)
                 {
                     if (skipNotMatchingEntries)
                     {
@@ -49,7 +48,7 @@ namespace CreativeCoders.Core.Collections
                     throw new InvalidCastException("Base dictionary key has wrong type");
                 }
 
-                if (!(dictionaryEntry.Value is TValue value))
+                if (dictionaryEntry.Value is not TValue value)
                 {
                     if (skipNotMatchingEntries)
                     {
@@ -71,7 +70,7 @@ namespace CreativeCoders.Core.Collections
 
             foreach (DictionaryEntry dictionaryEntry in dictionary)
             {
-                if (!(dictionaryEntry.Key is TKey key))
+                if (dictionaryEntry.Key is not TKey key)
                 {
                     if (skipNotMatchingEntries)
                     {
