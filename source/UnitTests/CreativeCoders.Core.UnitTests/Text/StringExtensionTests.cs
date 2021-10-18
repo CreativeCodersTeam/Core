@@ -148,7 +148,7 @@ namespace CreativeCoders.Core.UnitTests.Text
         [Fact]
         public void ToNormalString_TestText_ReturnsEncryptedText()
         {
-            var expectedText = "TestText";
+            const string expectedText = "TestText";
 
             var secureString = expectedText.ToSecureString();
             
