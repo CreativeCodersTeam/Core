@@ -2,7 +2,7 @@
 
 namespace CreativeCoders.SysConsole.App
 {
-    public interface IConsoleApplication
+    public interface IConsoleApp
     {
         Task<int> RunAsync();
     }

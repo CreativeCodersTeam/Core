@@ -19,7 +19,7 @@ namespace CreativeCoders.Mvvm.Wpf.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(value is Enum enumValue))
+            if (value is not Enum enumValue)
             {
                 return Binding.DoNothing;
             }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 #nullable enable
@@ -41,6 +40,45 @@ namespace CreativeCoders.Core.Comparing
         {
             // ReSharper disable once NonReadonlyMemberInGetHashCode
             return GetHashCodeFunc((T)this);
+        }
+    }
+
+    public class ComparableObject<TObject, TInterface, TProperty> : IEquatable<TInterface>, IComparable<TInterface>
+        where TObject : ComparableObject<TObject, TInterface, TProperty>, TInterface
+        where TInterface : class
+    {
+        private static IEqualityComparer<TInterface> EqualityComparer = EqualityComparer<TInterface>.Default;
+
+        private static IComparer<TInterface> Comparer =
+            new FuncComparer<TInterface, string?>(x => x?.ToString(), SortOrder.Ascending);
+
+        private static Func<TInterface, int> GetHashCodeFunc = RuntimeHelpers.GetHashCode;
+
+        protected static void InitComparableObject(Func<TInterface, TProperty> getCompareProperty)
+        {
+            EqualityComparer = new FuncEqualityComparer<TInterface, TProperty>(getCompareProperty);
+
+            Comparer = new FuncComparer<TInterface, TProperty>(getCompareProperty, SortOrder.Ascending);
+
+            GetHashCodeFunc = x => EqualityComparer.GetHashCode(x);
+        }
+
+        public bool Equals(TInterface? other)
+        {
+            return EqualityComparer.Equals((TInterface)(object)this, other);
+        }
+
+        public int CompareTo(TInterface? other)
+        {
+            return Comparer.Compare((TInterface)(object)this, other);
+        }
+
+        public override bool Equals(object? obj) => Equals(obj as TInterface);
+
+        public override int GetHashCode()
+        {
+            // ReSharper disable once NonReadonlyMemberInGetHashCode
+            return GetHashCodeFunc((TInterface)(object)this);
         }
     }
 }

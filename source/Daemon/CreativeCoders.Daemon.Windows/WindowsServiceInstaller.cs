@@ -59,7 +59,7 @@ namespace CreativeCoders.Daemon.Windows
 
             process?.WaitForExit();
 
-            if (process == null || process.ExitCode != 0)
+            if (process is not { ExitCode: 0 })
             {
                 Console.WriteLine("Service creation failed!");
             }

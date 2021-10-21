@@ -61,7 +61,7 @@ namespace CreativeCoders.Net.XmlRpc.Model.Values.Converters
 
         private object ConvertToEnumerable(Type targetType, XmlRpcValue xmlRpcValue)
         {
-            if (!(xmlRpcValue is ArrayValue arrayValue))
+            if (xmlRpcValue is not ArrayValue arrayValue)
             {
                 throw new InvalidOperationException($"Xml rpc value must be an array value. Current type '{xmlRpcValue.GetType().Name}'");
             }
@@ -83,7 +83,7 @@ namespace CreativeCoders.Net.XmlRpc.Model.Values.Converters
 
             var values = arrayValue.Value.Select(v => Convert(v, elementType));
 
-            if (!(array is IList list))
+            if (array is not IList list)
             {
                 throw new InvalidOperationException("Array type does not implement IList");
             }
@@ -95,7 +95,7 @@ namespace CreativeCoders.Net.XmlRpc.Model.Values.Converters
 
         private object ConvertToDictionary(Type targetType, XmlRpcValue xmlRpcValue)
         {
-            if (!(xmlRpcValue is StructValue structValue))
+            if (xmlRpcValue is not StructValue structValue)
             {
                 throw new InvalidOperationException($"Xml rpc value must be an struct value. Current type '{xmlRpcValue.GetType().Name}'");
             }

@@ -18,7 +18,7 @@ namespace CreativeCoders.Core.Visitors
 
         public void Accept(TVisitor visitor)
         {
-            if (!(this is TVisitableObject self))
+            if (this is not TVisitableObject self)
             {
                 return;
             }
@@ -27,7 +27,7 @@ namespace CreativeCoders.Core.Visitors
 
         public void Accept(object visitor)
         {
-            if (!(this is TVisitableObject self))
+            if (this is not TVisitableObject self)
             {
                 return;
             }

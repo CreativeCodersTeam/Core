@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.App.UnitTests.TestData;
+using CreativeCoders.SysConsole.App.VerbObjects;
+using CreativeCoders.SysConsole.App.Verbs;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Xunit;
@@ -13,7 +15,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         [Fact]
         public void Build_NoVerbAndProgramMainGiven_ThrowsException()
         {
-            var builder = new ConsoleApplicationBuilder(Array.Empty<string>());
+            var builder = new ConsoleAppBuilder(Array.Empty<string>());
 
             // Act
             Action act = () => builder.Build();
@@ -27,7 +29,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         [Fact]
         public void Build_ProgramMainHasInvalidCtorArgs_ThrowsException()
         {
-            var builder = new ConsoleApplicationBuilder(Array.Empty<string>());
+            var builder = new ConsoleAppBuilder(Array.Empty<string>());
 
             builder.UseProgramMain<TestProgramMainWithInvalidCtorArgs>();
 
@@ -43,7 +45,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         [Fact]
         public async Task RunAsync_ProgramMainGiven_RunsProgramMain()
         {
-            var builder = new ConsoleApplicationBuilder(Array.Empty<string>());
+            var builder = new ConsoleAppBuilder(Array.Empty<string>());
 
             builder.UseProgramMain<TestProgramMain>();
 
@@ -61,7 +63,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         [Fact]
         public void Build_WithStartup_StartupCreatedAndCalled()
         {
-            var builder = new ConsoleApplicationBuilder(Array.Empty<string>());
+            var builder = new ConsoleAppBuilder(Array.Empty<string>());
 
             builder.UseProgramMain<TestProgramMain>();
             builder.UseStartup<TestStartup>();
@@ -78,7 +80,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         [Fact]
         public void Build_ProgramMainHasPrivateCtor_ThrowsException()
         {
-            var builder = new ConsoleApplicationBuilder(Array.Empty<string>());
+            var builder = new ConsoleAppBuilder(Array.Empty<string>());
 
             builder.UseProgramMain<TestProgramMainWithPrivateCtor>();
 
@@ -96,7 +98,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         {
             var args = new[] { "test", "arg0" };
 
-            var consoleApp = new ConsoleApplicationBuilder(args)
+            var consoleApp = new ConsoleAppBuilder(args)
                 .UseVerbs(x => x
                     .AddVerb<TestVerb>())
                 .Build();
@@ -119,7 +121,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         {
             var args = new[] { "test1", "arg0" };
 
-            var consoleApp = new ConsoleApplicationBuilder(args)
+            var consoleApp = new ConsoleAppBuilder(args)
                 .UseVerbs(x => x
                     .AddVerb<TestVerb>())
                 .Build();
@@ -138,7 +140,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         {
             var args = new[] { "test1", "arg0" };
 
-            var consoleApp = new ConsoleApplicationBuilder(args)
+            var consoleApp = new ConsoleAppBuilder(args)
                 .UseVerbs(x => x
                     .AddVerb<TestVerb>()
                     .AddErrors<TestVerbErrorHandler>())
@@ -158,7 +160,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         {
             var args = new[] { "test1", "arg0" };
 
-            var consoleApp = new ConsoleApplicationBuilder(args)
+            var consoleApp = new ConsoleAppBuilder(args)
                 .UseProgramMain<TestErrorProgramMain>()
                 .UseVerbs(x => x
                     .AddVerb<TestVerb>())
@@ -178,7 +180,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         {
             const int returnCode = 4567;
 
-            var consoleApp = new ConsoleApplicationBuilder(Array.Empty<string>())
+            var consoleApp = new ConsoleAppBuilder(Array.Empty<string>())
                 .UseProgramMain<TestProgramMainWithConfiguration>()
                 .UseConfiguration(x => x.AddInMemoryCollection(new Dictionary<string, string>
                 {
@@ -193,6 +195,98 @@ namespace CreativeCoders.SysConsole.App.UnitTests
             result
                 .Should()
                 .Be(returnCode);
+        }
+
+        [Fact]
+        public async Task UseVerbObjects_CallDemoVerbObjectWithTest_VerbIsExecuted()
+        {
+            var args = new [] { "demo", "test" };
+
+            var consoleApp = new ConsoleAppBuilder(args)
+                .UseVerbObjects(x =>
+                    x.AddObjects<TestVerbObject>(verbs =>
+                        verbs.AddVerb<TestVerbObjectTestVerb>()))
+                .Build();
+
+            // Act
+            var result = await consoleApp.RunAsync().ConfigureAwait(false);
+
+            // Assert
+            result
+                .Should()
+                .Be(TestVerbObjectTestVerb.ReturnCode);
+        }
+
+        [Fact]
+        public async Task UseVerbObjects_NoObjectFound_MatchingPureVerbIsCalled()
+        {
+            var args = new [] { "test", "something" };
+
+            var consoleApp = new ConsoleAppBuilder(args)
+                .UseVerbObjects(x =>
+                    x.AddObjects<TestVerbObject>(verbs =>
+                        verbs.AddVerb<TestVerbObjectTestVerb>()))
+                .UseVerbs(x => x.AddVerb<TestFallbackVerb>())
+                .Build();
+
+            // Act
+            var result = await consoleApp.RunAsync().ConfigureAwait(false);
+
+            // Assert
+            result
+                .Should()
+                .Be(TestFallbackVerb.ReturnCode);
+        }
+
+        [Fact]
+        public async Task UseVerbObjects_NoObjectFoundNoVerbMatches_ProgramMainIsCalled()
+        {
+            var args = new[] { "test1", "something" };
+
+            var consoleApp = new ConsoleAppBuilder(args)
+                .UseVerbObjects(x =>
+                    x.AddObjects<TestVerbObject>(verbs =>
+                        verbs.AddVerb<TestVerbObjectTestVerb>()))
+                .UseVerbs(x => x.AddVerb<TestFallbackVerb>())
+                .UseProgramMain<TestProgramMain>()
+                .Build();
+
+            // Act
+            var result = await consoleApp.RunAsync().ConfigureAwait(false);
+
+            // Assert
+            result
+                .Should()
+                .Be(TestProgramMain.ReturnCode);
+        }
+    }
+
+    public class TestFallbackVerb : VerbBase<TestVerbOptions>
+    {
+        public const int ReturnCode = 2468;
+
+        public TestFallbackVerb(TestVerbOptions options) : base(options) { }
+
+        public override Task<int> ExecuteAsync()
+        {
+            return Task.FromResult(ReturnCode);
+        }
+    }
+
+    public class TestVerbObject : VerbObjectBase
+    {
+        public override string Name => "Demo";
+    }
+
+    public class TestVerbObjectTestVerb : VerbBase<TestVerbOptions>
+    {
+        public const int ReturnCode = 1357;
+
+        public TestVerbObjectTestVerb(TestVerbOptions options) : base(options) { }
+
+        public override Task<int> ExecuteAsync()
+        {
+            return Task.FromResult(ReturnCode);
         }
     }
 }

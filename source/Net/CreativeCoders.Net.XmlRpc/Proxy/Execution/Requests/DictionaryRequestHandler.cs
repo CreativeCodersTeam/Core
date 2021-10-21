@@ -33,7 +33,7 @@ namespace CreativeCoders.Net.XmlRpc.Proxy.Execution.Requests
         {
             var xmlRpcResponse = await requestData.Client.InvokeExAsync(requestData.MethodName, requestData.Arguments).ConfigureAwait(false);
 
-            if (!(xmlRpcResponse.Results.First().Values.First() is StructValue xmlRpcValue))
+            if (xmlRpcResponse.Results.First().Values.First() is not StructValue xmlRpcValue)
             {
                 throw new InvalidOperationException("Xml rpc result must be a struct");
             }
