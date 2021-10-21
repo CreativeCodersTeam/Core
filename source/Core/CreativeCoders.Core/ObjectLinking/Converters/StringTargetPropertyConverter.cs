@@ -11,7 +11,7 @@ namespace CreativeCoders.Core.ObjectLinking.Converters
 
         public object ConvertBack(object value, object parameter)
         {
-            if (!(value is string text))
+            if (value is not string text)
             {
                 return PropertyLink.DoNothing;
             }

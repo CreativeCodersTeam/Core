@@ -61,7 +61,7 @@ namespace CreativeCoders.Net.XmlRpc.Reader
                 return null;
             }
 
-            if (!(ReadXmlRpcValue(faultElement) is StructValue faultStruct))
+            if (ReadXmlRpcValue(faultElement) is not StructValue faultStruct)
             {
                 throw new ParserException("No fault struct found inside fault xml element");
             }

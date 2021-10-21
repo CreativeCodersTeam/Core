@@ -4,11 +4,11 @@ using CreativeCoders.Core;
 
 namespace CreativeCoders.SysConsole.App
 {
-    internal class DefaultConsoleApplication : IConsoleApplication
+    internal class DefaultConsoleApp : IConsoleApp
     {
         private readonly IMain _main;
 
-        public DefaultConsoleApplication(IMain main)
+        public DefaultConsoleApp(IMain main)
         {
             _main = Ensure.NotNull(main, nameof(main));
         }

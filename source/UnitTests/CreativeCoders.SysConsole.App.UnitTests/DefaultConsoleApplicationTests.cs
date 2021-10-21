@@ -17,7 +17,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
 
             A.CallTo(() => main.ExecuteAsync()).Returns(Task.FromResult(expectedResult));
 
-            var consoleApp = new DefaultConsoleApplication(main);
+            var consoleApp = new DefaultConsoleApp(main);
 
             // Act
             var result = await consoleApp.RunAsync();
@@ -37,7 +37,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
 
             A.CallTo(() => main.ExecuteAsync()).Throws(_ => new ConsoleException(expectedResult));
 
-            var consoleApp = new DefaultConsoleApplication(main);
+            var consoleApp = new DefaultConsoleApp(main);
 
             // Act
             var result = await consoleApp.RunAsync();
@@ -55,7 +55,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
 
             A.CallTo(() => main.ExecuteAsync()).Throws(_ => new ArgumentException());
 
-            var consoleApp = new DefaultConsoleApplication(main);
+            var consoleApp = new DefaultConsoleApp(main);
 
             // Act
             var result = await consoleApp.RunAsync();

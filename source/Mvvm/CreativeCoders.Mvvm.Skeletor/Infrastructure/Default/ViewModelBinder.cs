@@ -16,7 +16,7 @@ namespace CreativeCoders.Mvvm.Skeletor.Infrastructure.Default
 
         public void BindWindow(Window window, object viewModel)
         {
-            if (!(viewModel is IWindowViewModel windowViewModel))
+            if (viewModel is not IWindowViewModel windowViewModel)
             {
                 return;
             }

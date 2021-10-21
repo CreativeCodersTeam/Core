@@ -5,7 +5,7 @@
     {
         public object Convert(object value, object parameter)
         {
-            if (!(value is T structValue))
+            if (value is not T structValue)
             {
                 return null;
             }

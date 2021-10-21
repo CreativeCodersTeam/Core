@@ -4,21 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Reflection;
 
 namespace CreativeCoders.SysConsole.App.Verbs
 {
-    internal class DefaultConsoleApplicationVerbBuilder : IConsoleApplicationVerbBuilder
+    internal class DefaultConsoleAppVerbBuilder : IConsoleAppVerbBuilder
     {
         private readonly IList<Type> _verbTypes;
 
         private Type? _errorHandlerType;
 
-        public DefaultConsoleApplicationVerbBuilder()
+        public DefaultConsoleAppVerbBuilder()
         {
             _verbTypes = new List<Type>();
         }
         
-        public IConsoleApplicationVerbBuilder AddVerb<TVerb>()
+        public IConsoleAppVerbBuilder AddVerb<TVerb>()
             where TVerb : class, IVerb
         {
             _verbTypes.Add(typeof(TVerb));
@@ -26,7 +27,7 @@ namespace CreativeCoders.SysConsole.App.Verbs
             return this;
         }
 
-        public IConsoleApplicationVerbBuilder AddErrors<TErrorHandler>() where TErrorHandler : IVerbParserErrorHandler
+        public IConsoleAppVerbBuilder AddErrors<TErrorHandler>() where TErrorHandler : IVerbParserErrorHandler
         {
             _errorHandlerType = typeof(TErrorHandler);
 

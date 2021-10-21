@@ -7,7 +7,7 @@ namespace CreativeCoders.Mvvm.Ribbon.FluentRibbon.LinkConverters
     {
         public object Convert(object value, object parameter)
         {
-            if (!(value is bool isVisible))
+            if (value is not bool isVisible)
             {
                 return PropertyLink.DoNothing;
             }
@@ -17,7 +17,7 @@ namespace CreativeCoders.Mvvm.Ribbon.FluentRibbon.LinkConverters
 
         public object ConvertBack(object value, object parameter)
         {
-            if (!(value is Visibility visibility))
+            if (value is not Visibility visibility)
             {
                 return PropertyLink.DoNothing;
             }
