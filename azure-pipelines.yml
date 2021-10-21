@@ -60,7 +60,7 @@ stages:
         summaryFileLocation: '$(Pipeline.Workspace)/coverlet/Cobertura.xml'
 
     - task: DotNetCoreCLI@2
-      displayName: "Publish NuGet packages"
+      displayName: "Publish testing NuGet packages"
       condition: and(succeeded(), eq(variables.IsMasterBranch, 'false'), eq(variables.IsPullRequest, 'false'))
       inputs:
         command: 'push'
