@@ -44,8 +44,8 @@ namespace CreativeCoders.Net.Soap
         {
             var responseType = typeof(TResponse);
 
-            if (!(responseType.GetCustomAttributes(typeof(SoapResponseAttribute), false).FirstOrDefault() is
-                SoapResponseAttribute soapResponseAttribute))
+            if (responseType.GetCustomAttributes(typeof(SoapResponseAttribute), false).FirstOrDefault() is
+                not SoapResponseAttribute soapResponseAttribute)
             {
                 throw new SoapResponseAttributeNotFoundException(responseType);
             }
@@ -70,8 +70,8 @@ namespace CreativeCoders.Net.Soap
         {
             var requestType = typeof(TRequest);
 
-            if (!(requestType.GetCustomAttributes(typeof(SoapRequestAttribute), false)
-                .FirstOrDefault() is SoapRequestAttribute soapRequestAttribute))
+            if (requestType.GetCustomAttributes(typeof(SoapRequestAttribute), false)
+                .FirstOrDefault() is not SoapRequestAttribute soapRequestAttribute)
             {
                 throw new SoapRequestAttributeNotFoundException(requestType);
             }

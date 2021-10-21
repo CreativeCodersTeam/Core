@@ -31,7 +31,7 @@ namespace CreativeCoders.Net.XmlRpc.Proxy.Execution.Requests
         {
             var xmlRpcResponse = await requestData.Client.InvokeExAsync(requestData.MethodName, requestData.Arguments).ConfigureAwait(false);
 
-            if (!(xmlRpcResponse.Results.First().Values.First() is ArrayValue xmlRpcValue))
+            if (xmlRpcResponse.Results.First().Values.First() is not ArrayValue xmlRpcValue)
             {
                 throw new InvalidOperationException("Xml rpc result must be an array");
             }

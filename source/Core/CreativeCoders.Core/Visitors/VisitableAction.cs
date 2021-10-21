@@ -13,7 +13,7 @@ namespace CreativeCoders.Core.Visitors
 
         public void Accept(object visitor)
         {
-            if (!(visitor is TVisitor theVisitor))
+            if (visitor is not TVisitor theVisitor)
             {
                 return;
             }

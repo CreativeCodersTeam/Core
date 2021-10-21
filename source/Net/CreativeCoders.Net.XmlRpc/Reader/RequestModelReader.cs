@@ -40,7 +40,7 @@ namespace CreativeCoders.Net.XmlRpc.Reader
         {
             var callsParameter = methodCall.Parameters.FirstOrDefault();
 
-            if (!(callsParameter is ArrayValue arrayValue))
+            if (callsParameter is not ArrayValue arrayValue)
             {
                 throw new InvalidOperationException();
             }
