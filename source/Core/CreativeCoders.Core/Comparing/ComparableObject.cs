@@ -43,8 +43,8 @@ namespace CreativeCoders.Core.Comparing
         }
     }
 
-    public class ComparableObject<TObject, TInterface, TProperty> : IEquatable<TInterface>, IComparable<TInterface>
-        where TObject : ComparableObject<TObject, TInterface, TProperty>, TInterface
+    public class ComparableObject<TObject, TInterface> : IEquatable<TInterface>, IComparable<TInterface>
+        where TObject : ComparableObject<TObject, TInterface>, TInterface
         where TInterface : class
     {
         private static IEqualityComparer<TInterface> EqualityComparer = EqualityComparer<TInterface>.Default;
@@ -54,7 +54,7 @@ namespace CreativeCoders.Core.Comparing
 
         private static Func<TInterface, int> GetHashCodeFunc = RuntimeHelpers.GetHashCode;
 
-        protected static void InitComparableObject(Func<TInterface, TProperty> getCompareProperty)
+        protected static void InitComparableObject<TProperty>(Func<TInterface, TProperty> getCompareProperty)
         {
             EqualityComparer = new FuncEqualityComparer<TInterface, TProperty>(getCompareProperty);
 
