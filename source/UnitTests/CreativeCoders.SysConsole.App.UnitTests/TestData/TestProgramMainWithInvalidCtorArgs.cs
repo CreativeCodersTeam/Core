@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using CreativeCoders.Core;
+using CreativeCoders.SysConsole.App.MainProgram;
 
 namespace CreativeCoders.SysConsole.App.UnitTests.TestData
 {
@@ -10,7 +11,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests.TestData
             Ensure.NotNull(text, nameof(text));
         }
 
-        public Task<int> ExecuteAsync()
+        public Task<int> ExecuteAsync(string[] args)
         {
             return Task.FromResult(0);
         }
@@ -23,7 +24,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests.TestData
             
         }
 
-        public Task<int> ExecuteAsync()
+        public Task<int> ExecuteAsync(string[] args)
         {
             return Task.FromResult(0);
         }

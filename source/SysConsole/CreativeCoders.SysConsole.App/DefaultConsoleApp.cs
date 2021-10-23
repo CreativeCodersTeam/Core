@@ -1,23 +1,27 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
+using CreativeCoders.SysConsole.App.Execution;
 
 namespace CreativeCoders.SysConsole.App
 {
     internal class DefaultConsoleApp : IConsoleApp
     {
-        private readonly IMain _main;
+        private readonly ICommandExecutor _commandExecutor;
 
-        public DefaultConsoleApp(IMain main)
+        private readonly string[] _args;
+
+        public DefaultConsoleApp(ICommandExecutor commandExecutor, string[] args)
         {
-            _main = Ensure.NotNull(main, nameof(main));
+            _commandExecutor = Ensure.NotNull(commandExecutor, nameof(commandExecutor));
+            _args = Ensure.NotNull(args, nameof(args));
         }
 
         public async Task<int> RunAsync()
         {
             try
             {
-                var result = await _main.ExecuteAsync().ConfigureAwait(false);
+                var result = await _commandExecutor.Execute(_args).ConfigureAwait(false);
 
                 return result;
             }

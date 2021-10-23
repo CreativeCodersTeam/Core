@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using CreativeCoders.Core.Comparing;
+using CreativeCoders.Core.UnitTests.Comparing.TestData;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Comparing

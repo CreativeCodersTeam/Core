@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.App.Verbs;
@@ -7,16 +7,16 @@ namespace CreativeCoders.SysConsole.App.VerbObjects
 {
     internal class VerbObjectExecutor
     {
-        private readonly Action<IConsoleAppVerbBuilder> _verbBuilder;
+        private readonly Action<IConsoleAppVerbsBuilder> _setupVerbBuilder;
 
         private readonly string[] _arguments;
 
         private readonly IServiceProvider _serviceProvider;
 
-        public VerbObjectExecutor(IVerbObject? verbObject, Action<IConsoleAppVerbBuilder> verbBuilder,
+        public VerbObjectExecutor(IVerbObject? verbObject, Action<IConsoleAppVerbsBuilder> setupVerbBuilder,
             string[] arguments, IServiceProvider serviceProvider)
         {
-            _verbBuilder = verbBuilder;
+            _setupVerbBuilder = setupVerbBuilder;
             _arguments = arguments;
             _serviceProvider = serviceProvider;
             Name = verbObject?.Name ?? string.Empty;
@@ -24,14 +24,15 @@ namespace CreativeCoders.SysConsole.App.VerbObjects
 
         public async Task<int> ExecuteAsync()
         {
-            var verbBuilder = new DefaultConsoleAppVerbBuilder();
+            var verbBuilder = new DefaultConsoleAppVerbsBuilder();
 
-            _verbBuilder(verbBuilder);
+            _setupVerbBuilder(verbBuilder);
 
-            return await verbBuilder
-                .BuildMain(
-                    new DelegateMain(() => Task.FromResult(-1)), _arguments.Skip(1).ToArray(), _serviceProvider)
-                .ExecuteAsync();
+            var executor = verbBuilder.CreateExecutor(_serviceProvider);
+
+            var executorResult = await executor.TryExecuteAsync(_arguments.Skip(1).ToArray()).ConfigureAwait(false);
+
+            return executorResult.ReturnCode;
         }
 
         public string Name { get; }
