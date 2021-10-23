@@ -1,11 +1,11 @@
 ﻿namespace CreativeCoders.SysConsole.App.Verbs
 {
-    public interface IConsoleAppVerbBuilder
+    public interface IConsoleAppVerbsBuilder
     {
-        IConsoleAppVerbBuilder AddVerb<TVerb>()
+        IConsoleAppVerbsBuilder AddVerb<TVerb>()
             where TVerb : class, IVerb;
 
-        IConsoleAppVerbBuilder AddErrors<TErrorHandler>()
+        IConsoleAppVerbsBuilder AddErrors<TErrorHandler>()
             where TErrorHandler : IVerbParserErrorHandler;
     }
 }

@@ -16,6 +16,8 @@ variables:
   DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
   NUKE_TELEMETRY_OPTOUT: '1'
   IsMasterBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  IsPullRequest: $[eq(variables['Build.Reason'], 'PullRequest')]
+  IsTag: $[startsWith(variables['Build.SourceBranch'], 'refs/tags')]
 
 stages:
 - stage: Build
@@ -29,6 +31,10 @@ stages:
     pool:
       vmImage: $(VM_IMAGE)
     steps:
+    - pwsh: |
+        Write-Host 'IsMasterBranch Branch $(IsMasterBranch)'
+        Write-Host 'IsPullRequest Branch $(IsPullRequest)'
+        Write-Host 'IsTag Branch $(IsTag)'
     - pwsh: ./build.ps1 CreateNuGetPackages
       displayName: '[Nuke Build]'
 
@@ -54,22 +60,23 @@ stages:
         summaryFileLocation: '$(Pipeline.Workspace)/coverlet/Cobertura.xml'
 
     - task: DotNetCoreCLI@2
-      displayName: "Publish NuGet packages"
-      condition: and(succeeded(), eq(variables.IsMasterBranch, 'false'))
+      displayName: "Publish testing NuGet packages"
+      condition: and(succeeded(), eq(variables.IsMasterBranch, 'false'), eq(variables.IsPullRequest, 'false'))
       inputs:
         command: 'push'
         packagesToPush: '$(Build.SourcesDirectory)/.artifacts/*.nupkg'
         nuGetFeedType: 'internal'
         publishVstsFeed: 'Core/testing'  
         
-    #- task: NuGetAuthenticate@0
-    #  displayName: 'NuGet.org Auth'
-    #  condition: 
-    #  inputs:
-    #    nuGetServiceConnections: 'CreativeCodersNuGet'
-    #- task: NuGetCommand@2
-    #  displayName: 'NuGet.org Push'
-    #  inputs:
-    #    command: push
-    #    nuGetFeedType: external
-    #    packagesToPush: '$(Build.SourcesDirectory)/artifacts/*.nupkg'
+    - task: NuGetAuthenticate@0
+      displayName: 'NuGet.org Auth'
+      condition: and(succeeded(), eq(variables.IsTag, 'true'))
+      inputs:
+        nuGetServiceConnections: 'CreativeCodersNuGet'
+    - task: NuGetCommand@2
+      displayName: 'NuGet.org Push'
+      condition: and(succeeded(), eq(variables.IsTag, 'true'))
+      inputs:
+        command: push
+        nuGetFeedType: external
+        packagesToPush: '$(Build.SourcesDirectory)/artifacts/*.nupkg'

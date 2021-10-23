@@ -1,6 +1,7 @@
 ﻿using System;
 using CreativeCoders.Core;
-using CreativeCoders.Core.Reflection;
+using CreativeCoders.SysConsole.App.Execution;
+using CreativeCoders.SysConsole.App.MainProgram;
 using CreativeCoders.SysConsole.App.VerbObjects;
 using CreativeCoders.SysConsole.App.Verbs;
 using Microsoft.Extensions.Configuration;
@@ -16,11 +17,13 @@ namespace CreativeCoders.SysConsole.App
 
         private Type? _programMainType;
         
-        private Action<IConsoleAppVerbBuilder>? _setupVerbBuilder;
+        private Action<IConsoleAppVerbsBuilder>? _setupVerbsBuilder;
 
         private Action<ConfigurationBuilder>? _setupConfiguration;
 
         private Action<IConsoleAppVerbObjectsBuilder>? _setupVerbObjectsBuilder;
+
+        private Action<IServiceCollection>? _configureServices;
 
         public ConsoleAppBuilder(string[]? arguments)
         {
@@ -36,9 +39,9 @@ namespace CreativeCoders.SysConsole.App
         }
 
         public ConsoleAppBuilder UseVerbs(
-            Action<IConsoleAppVerbBuilder> verbBuilder)
+            Action<IConsoleAppVerbsBuilder> verbBuilder)
         {
-            _setupVerbBuilder = Ensure.Argument(verbBuilder, nameof(verbBuilder)).NotNull();
+            _setupVerbsBuilder = Ensure.Argument(verbBuilder, nameof(verbBuilder)).NotNull();
 
             return this;
         }
@@ -59,31 +62,42 @@ namespace CreativeCoders.SysConsole.App
         }
 
         public ConsoleAppBuilder UseProgramMain<TProgramMain>()
+            where TProgramMain : IMain
         {
             _programMainType = typeof(TProgramMain);
 
             return this;
         }
 
+        public ConsoleAppBuilder Configure(Action<IServiceCollection> configureServices)
+        {
+            _configureServices = configureServices;
+
+            return this;
+        }
+
         public IConsoleApp Build()
         {
-            if (_setupVerbBuilder == null && _setupVerbObjectsBuilder == null && _programMainType == null)
+            if (_setupVerbsBuilder == null && _setupVerbObjectsBuilder == null && _programMainType == null)
             {
                 throw new ArgumentException("No program main or verb defined");
             }
 
-            var serviceProvider = GetServiceProvider();
+            var serviceProvider = CreateServiceProvider();
 
-            var main = CreateCombinedMain(CreateMain(serviceProvider), serviceProvider);
+            var executorChain = new ExecutorChain(_programMainType, _setupVerbsBuilder,
+                _setupVerbObjectsBuilder, serviceProvider);
 
-            return new DefaultConsoleApp(main);
+            var commandExecutor = new CommandExecutor(executorChain);
+
+            return new DefaultConsoleApp(commandExecutor, _arguments);
         }
 
-        private IServiceProvider GetServiceProvider()
+        private void ConfigureStartup(IServiceCollection services, IConfiguration configuration)
         {
             if (_startupType == null)
             {
-                return CreateServiceProvider(null);
+                return;
             }
 
             if (Activator.CreateInstance(_startupType) is not IStartup startup)
@@ -91,69 +105,10 @@ namespace CreativeCoders.SysConsole.App
                 throw new ArgumentException("Startup could not be created", nameof(_startupType));
             }
 
-            return CreateServiceProvider(startup);
+            startup.ConfigureServices(services, configuration);
         }
 
-        private IMain CreateMain(IServiceProvider serviceProvider)
-        {
-            var main = _programMainType?.CreateInstance<IMain>(serviceProvider);
-
-            if (_setupVerbBuilder == null && _setupVerbObjectsBuilder == null)
-            {
-                if (main == null)
-                {
-                    throw new ArgumentException("Program main could not be created");
-                }
-
-                return main;
-            }
-
-            if (_setupVerbBuilder != null)
-            {
-                var verbBuilder = new DefaultConsoleAppVerbBuilder();
-
-                _setupVerbBuilder(verbBuilder);
-
-                main = verbBuilder.BuildMain(main, _arguments, serviceProvider);
-            }
-
-            main = CreateCombinedMain(main, serviceProvider);
-
-            return main;
-        }
-
-        private IMain CreateCombinedMain(IMain? defaultMain, IServiceProvider serviceProvider)
-        {
-            if (_setupVerbObjectsBuilder == null)
-            {
-                if (defaultMain == null)
-                {
-                    throw new ArgumentException("Program main could not be created");
-                }
-
-                return defaultMain;
-            }
-
-            var verbObjectsBuilder = new DefaultConsoleAppVerbObjectsBuilder();
-
-            _setupVerbObjectsBuilder(verbObjectsBuilder);
-
-            return new DelegateMain(async () =>
-            {
-                var executionResult = await verbObjectsBuilder.TryExecute(serviceProvider, _arguments);
-
-                if (executionResult.HasBeenExecuted)
-                {
-                    return executionResult.ReturnCode;
-                }
-
-                return defaultMain != null
-                    ? await defaultMain.ExecuteAsync()
-                    : int.MinValue;
-            });
-        }
-
-        private IServiceProvider CreateServiceProvider(IStartup? startup)
+        private IServiceProvider CreateServiceProvider()
         {
             var services = new ServiceCollection();
 
@@ -161,7 +116,9 @@ namespace CreativeCoders.SysConsole.App
 
             var configuration = AddConfiguration(services);
 
-            startup?.ConfigureServices(services, configuration);
+            _configureServices?.Invoke(services);
+
+            ConfigureStartup(services, configuration);
 
             return services.BuildServiceProvider();
         }
