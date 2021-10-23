@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using CreativeCoders.SysConsole.App.Execution;
 using CreativeCoders.SysConsole.App.Verbs;

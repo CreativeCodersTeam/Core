@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using CreativeCoders.Core;
 using CreativeCoders.SysConsole.App.Execution;
 using CreativeCoders.SysConsole.App.MainProgram;

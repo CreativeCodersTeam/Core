@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.App.Execution;
 using CreativeCoders.SysConsole.App.MainProgram;

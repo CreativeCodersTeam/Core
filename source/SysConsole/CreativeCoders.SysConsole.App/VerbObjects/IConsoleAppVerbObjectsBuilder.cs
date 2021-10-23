@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using CreativeCoders.SysConsole.App.Verbs;
 
 namespace CreativeCoders.SysConsole.App.VerbObjects
