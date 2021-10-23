@@ -8,11 +8,11 @@ namespace CreativeCoders.SysConsole.App.VerbObjects
     {
         private readonly Type _verbObjectType;
 
-        private readonly Action<IConsoleAppVerbBuilder> _verbBuilder;
+        private readonly Action<IConsoleAppVerbsBuilder> _verbBuilder;
 
         private IVerbObject? _verbObject;
 
-        public VerbObjectDefinition(Type verbObjectType, Action<IConsoleAppVerbBuilder> verbBuilder)
+        public VerbObjectDefinition(Type verbObjectType, Action<IConsoleAppVerbsBuilder> verbBuilder)
         {
             _verbObjectType = verbObjectType;
             _verbBuilder = verbBuilder;

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CreativeCoders.SysConsole.App.MainProgram;
 using Microsoft.Extensions.Configuration;
 
 namespace CreativeCoders.SysConsole.App.UnitTests.TestData
@@ -12,7 +13,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests.TestData
             _returnCode = int.Parse(configuration["ReturnCode"]);
         }
 
-        public Task<int> ExecuteAsync()
+        public Task<int> ExecuteAsync(string[] args)
         {
             return Task.FromResult(_returnCode);
         }

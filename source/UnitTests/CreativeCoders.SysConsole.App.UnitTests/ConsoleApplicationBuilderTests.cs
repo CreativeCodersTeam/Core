@@ -27,7 +27,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         }
 
         [Fact]
-        public void Build_ProgramMainHasInvalidCtorArgs_ThrowsException()
+        public void Build_ProgramMainHasInvalidCtorArgs_ReturnsIntMinValue()
         {
             var builder = new ConsoleAppBuilder(Array.Empty<string>());
 

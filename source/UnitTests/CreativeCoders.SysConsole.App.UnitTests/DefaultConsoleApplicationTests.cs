@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CreativeCoders.SysConsole.App.Execution;
+using CreativeCoders.SysConsole.App.MainProgram;
 using FakeItEasy;
 using FluentAssertions;
 using Xunit;
@@ -13,11 +15,11 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         {
             const int expectedResult = 1234;
 
-            var main = A.Fake<IMain>();
+            var executor = A.Fake<ICommandExecutor>();
 
-            A.CallTo(() => main.ExecuteAsync()).Returns(Task.FromResult(expectedResult));
+            A.CallTo(() => executor.Execute(A<string[]>.Ignored)).Returns(Task.FromResult(expectedResult));
 
-            var consoleApp = new DefaultConsoleApp(main);
+            var consoleApp = new DefaultConsoleApp(executor, Array.Empty<string>());
 
             // Act
             var result = await consoleApp.RunAsync();
@@ -33,11 +35,11 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         {
             const int expectedResult = -1234;
 
-            var main = A.Fake<IMain>();
+            var executor = A.Fake<ICommandExecutor>();
 
-            A.CallTo(() => main.ExecuteAsync()).Throws(_ => new ConsoleException(expectedResult));
+            A.CallTo(() => executor.Execute(A<string[]>.Ignored)).Throws(_ => new ConsoleException(expectedResult));
 
-            var consoleApp = new DefaultConsoleApp(main);
+            var consoleApp = new DefaultConsoleApp(executor, Array.Empty<string>());
 
             // Act
             var result = await consoleApp.RunAsync();
@@ -51,11 +53,11 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         [Fact]
         public async Task RunAsync_MainThrowsArgumentException_ReturnCodeIsMinInt()
         {
-            var main = A.Fake<IMain>();
+            var executor = A.Fake<ICommandExecutor>();
 
-            A.CallTo(() => main.ExecuteAsync()).Throws(_ => new ArgumentException());
+            A.CallTo(() => executor.Execute(A<string[]>.Ignored)).Throws(_ => new ArgumentException());
 
-            var consoleApp = new DefaultConsoleApp(main);
+            var consoleApp = new DefaultConsoleApp(executor, Array.Empty<string>());
 
             // Act
             var result = await consoleApp.RunAsync();
