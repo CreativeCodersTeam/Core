@@ -8,11 +8,6 @@ trigger:
   tags:
     include:
     - '*'
-pr:
-  branches:
-    include:
-    - master
-    - develop
 
 variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
@@ -73,6 +68,7 @@ stages:
        
     - task: NuGetCommand@2
       displayName: 'Push NuGet Package'
+      condition: and(succeeded(), eq(variables.IsTag, 'true'))
       inputs:
         command: 'push'
         packagesToPush: '$(Build.SourcesDirectory)/.artifacts/*.nupkg'
