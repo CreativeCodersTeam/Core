@@ -70,16 +70,25 @@ stages:
         packagesToPush: '$(Build.SourcesDirectory)/.artifacts/*.nupkg'
         nuGetFeedType: 'internal'
         publishVstsFeed: 'Core/testing'  
-        
-    - task: NuGetAuthenticate@0
-      displayName: 'NuGet.org Auth'
-      condition: and(succeeded(), eq(variables.IsTag, 'true'))
-      inputs:
-        nuGetServiceConnections: 'CreativeCodersNuGet'
-    - task: NuGetCommand@2
+       
+    - task: DotNetCoreCLI@2
       displayName: 'NuGet.org Push'
       condition: and(succeeded(), eq(variables.IsTag, 'true'))
       inputs:
-        command: push
-        nuGetFeedType: external
-        packagesToPush: '$(Build.SourcesDirectory)/artifacts/*.nupkg'
+        command: 'push'
+        packagesToPush: '$(Build.SourcesDirectory)/.artifacts/*.nupkg'
+        nugetFeedType: 'external'
+        externalEndPoint: 'CreativeCodersNuGet'
+
+    #- task: NuGetAuthenticate@0
+    #  displayName: 'NuGet.org Auth'
+    #  condition: and(succeeded(), eq(variables.IsTag, 'true'))
+    #  inputs:
+    #    nuGetServiceConnections: 'CreativeCodersNuGet'
+    #- task: NuGetCommand@2
+    #  displayName: 'NuGet.org Push'
+    #  condition: and(succeeded(), eq(variables.IsTag, 'true'))
+    #  inputs:
+    #    command: push
+    #    nuGetFeedType: external
+    #    packagesToPush: '$(Build.SourcesDirectory)/artifacts/*.nupkg'
