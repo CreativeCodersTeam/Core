@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-    - master
+    - main
     - develop
     - fix/*
     - feature/*
@@ -13,7 +13,7 @@ variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
   DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
   NUKE_TELEMETRY_OPTOUT: '1'
-  IsMasterBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  IsMainBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   IsPullRequest: $[eq(variables['Build.Reason'], 'PullRequest')]
   IsTag: $[startsWith(variables['Build.SourceBranch'], 'refs/tags')]
 
@@ -30,9 +30,9 @@ stages:
       vmImage: $(VM_IMAGE)
     steps:
     - pwsh: |
-        Write-Host 'IsMasterBranch Branch $(IsMasterBranch)'
-        Write-Host 'IsPullRequest Branch $(IsPullRequest)'
-        Write-Host 'IsTag Branch $(IsTag)'
+        Write-Host 'IsMainBranch  $(IsMainBranch)'
+        Write-Host 'IsPullRequest $(IsPullRequest)'
+        Write-Host 'IsTag Branch  $(IsTag)'
     - pwsh: ./build.ps1 CreateNuGetPackages
       displayName: '[Nuke Build]'
 
@@ -59,7 +59,7 @@ stages:
 
     - task: DotNetCoreCLI@2
       displayName: "Publish testing NuGet packages"
-      condition: and(succeeded(), eq(variables.IsMasterBranch, 'false'), eq(variables.IsPullRequest, 'false'))
+      condition: and(succeeded(), eq(variables.IsMainBranch, 'false'), eq(variables.IsPullRequest, 'false'), eq(variables.IsTag, 'false'))
       inputs:
         command: 'push'
         packagesToPush: '$(Build.SourcesDirectory)/.artifacts/*.nupkg'
@@ -74,25 +74,3 @@ stages:
         packagesToPush: '$(Build.SourcesDirectory)/.artifacts/*.nupkg'
         nuGetFeedType: 'external'
         publishFeedCredentials: 'CreativeCodersNuGet'
-
-    #- task: DotNetCoreCLI@2
-    #  displayName: 'NuGet.org Push'
-    #  condition: and(succeeded(), eq(variables.IsTag, 'true'))
-    #  inputs:
-    #    command: 'push'
-    #    packagesToPush: '$(Build.SourcesDirectory)/.artifacts/*.nupkg'
-    #    nugetFeedType: 'external'
-    #    externalEndPoint: 'CreativeCodersNuGet'
-
-    #- task: NuGetAuthenticate@0
-    #  displayName: 'NuGet.org Auth'
-    #  condition: and(succeeded(), eq(variables.IsTag, 'true'))
-    #  inputs:
-    #    nuGetServiceConnections: 'CreativeCodersNuGet'
-    #- task: NuGetCommand@2
-    #  displayName: 'NuGet.org Push'
-    #  condition: and(succeeded(), eq(variables.IsTag, 'true'))
-    #  inputs:
-    #    command: push
-    #    nuGetFeedType: external
-    #    packagesToPush: '$(Build.SourcesDirectory)/artifacts/*.nupkg'
