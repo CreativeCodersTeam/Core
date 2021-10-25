@@ -20,6 +20,6 @@ namespace CreativeCoders.SysConsole.CliArguments.Commands
 
         public Type OptionsType => typeof(TOptions);
 
-        public string Name { get; set; } = string.Empty;
+        public abstract string Name { get; set; }
     }
 }

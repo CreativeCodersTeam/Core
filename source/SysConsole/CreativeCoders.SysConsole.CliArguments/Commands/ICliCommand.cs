@@ -17,9 +17,4 @@ namespace CreativeCoders.SysConsole.CliArguments.Commands
     {
         Task<CliCommandResult> ExecuteAsync(TOptions options);
     }
-
-    public class CliCommandResult
-    {
-        public int ReturnCode { get; set; }
-    }
 }

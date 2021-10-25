@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using CreativeCoders.Core;
 using CreativeCoders.SysConsole.CliArguments.Building;
 using CreativeCoders.SysConsole.CliArguments.Commands;
 using FluentAssertions;
@@ -24,7 +23,7 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
                 {
                     x.Name = "command";
                     x.OnExecuteAsync = _ =>
-                        Task.FromResult(new CliCommandResult {ReturnCode = expectedReturnCode});
+                        Task.FromResult(new CliCommandResult(expectedReturnCode));
                 });
 
             var executor = builder.BuildExecutor();
@@ -36,6 +35,51 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
             result
                 .Should()
                 .Be(expectedReturnCode);
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_CommandWithOptions_ReturnsCommandResult()
+        {
+            const int expectedReturnCode = 1234;
+
+            var args = new[] { "command", "param1" };
+
+            var builder = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider());
+
+            builder
+                .AddCommand<TestCommandOptions>("command",
+                    _ => Task.FromResult(new CliCommandResult(expectedReturnCode)));
+
+            var executor = builder.BuildExecutor();
+
+            // Act
+            var result = await executor.ExecuteAsync(args);
+
+            // Assert
+            result
+                .Should()
+                .Be(expectedReturnCode);
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_CommandClass_ReturnsCommandResult()
+        {
+            var args = new[] { "command", "param1" };
+
+            var builder = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider());
+
+            builder
+                .AddCommand<TestCommand>();
+
+            var executor = builder.BuildExecutor();
+
+            // Act
+            var result = await executor.ExecuteAsync(args);
+
+            // Assert
+            result
+                .Should()
+                .Be(TestCommand.ReturnCode);
         }
 
         [Fact]
@@ -51,7 +95,7 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
                 .AddCommand<DelegateCliCommand<TestCommandOptions>, TestCommandOptions>(x =>
                 {
                     x.Name = "command";
-                    x.OnExecuteAsync = _ => Task.FromResult(new CliCommandResult {ReturnCode = 1234});
+                    x.OnExecuteAsync = _ => Task.FromResult(new CliCommandResult(1234));
                 })
                 .AddCommandGroup(new CliCommandGroup
                 {
@@ -61,8 +105,7 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
                         new DelegateCliCommand<TestCommandOptions>
                         {
                             Name = "command",
-                            OnExecuteAsync = _ => Task.FromResult(new CliCommandResult
-                                {ReturnCode = expectedReturnCode})
+                            OnExecuteAsync = _ => Task.FromResult(new CliCommandResult(expectedReturnCode))
                         }
                     }
                 });
@@ -91,7 +134,7 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
                 .AddCommand<DelegateCliCommand<TestCommandOptions>, TestCommandOptions>(x =>
                 {
                     x.Name = "command";
-                    x.OnExecuteAsync = _ => Task.FromResult(new CliCommandResult {ReturnCode = 1234});
+                    x.OnExecuteAsync = _ => Task.FromResult(new CliCommandResult(1234));
                 })
                 .AddCommandGroup(new CliCommandGroup
                 {
@@ -101,7 +144,7 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
                         new DelegateCliCommand<TestCommandOptions>
                         {
                             Name = "command",
-                            OnExecuteAsync = _ => Task.FromResult(new CliCommandResult {ReturnCode = 4321})
+                            OnExecuteAsync = _ => Task.FromResult(new CliCommandResult(4321))
                         }
                     }
                 })
@@ -109,7 +152,7 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
                 {
                     x.Name = "";
                     x.OnExecuteAsync = _ =>
-                        Task.FromResult(new CliCommandResult {ReturnCode = expectedReturnCode});
+                        Task.FromResult(new CliCommandResult(expectedReturnCode));
                 });
 
             var executor = builder.BuildExecutor();

@@ -31,8 +31,15 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
             where TCommand : class, ICliCommand<TOptions>
             where TOptions : class, new()
         {
-
             _commandCreators.Add(() => CreateCommand<TCommand, TOptions>(configureCommand));
+
+            return this;
+        }
+
+        public ICliBuilder AddCommand<TCommand>()
+            where TCommand : class, ICliCommand
+        {
+            _commandCreators.Add(CreateCommand<TCommand>);
 
             return this;
         }
@@ -51,6 +58,19 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
             return this;
         }
 
+        private ICliCommand CreateCommand<TCommand>()
+            where TCommand : class, ICliCommand
+        {
+            var command = typeof(TCommand).CreateInstance<ICliCommand>(_serviceProvider);
+
+            if (command == null)
+            {
+                throw new CliCommandCreationFailedException(typeof(TCommand));
+            }
+
+            return command;
+        }
+
         private ICliCommand CreateCommand<TCommand, TOptions>(Action<TCommand> configureCommand)
             where TCommand : class, ICliCommand<TOptions>
             where TOptions : class, new()
@@ -59,7 +79,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
 
             if (command == null)
             {
-                throw new CliArgumentsException($"Command '{typeof(TCommand)}' can not be created");
+                throw new CliCommandCreationFailedException(typeof(TCommand));
             }
 
             configureCommand(command);

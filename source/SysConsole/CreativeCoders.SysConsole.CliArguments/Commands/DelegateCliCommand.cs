@@ -13,6 +13,8 @@ namespace CreativeCoders.SysConsole.CliArguments.Commands
                    ?? throw new CliArgumentsException("No command execution function defined");
         }
 
+        public override string Name { get; set; } = string.Empty;
+
         public Func<TOptions, Task<CliCommandResult>> OnExecuteAsync { get; set; } =
             _ => throw new NotImplementedException();
     }
