@@ -122,6 +122,45 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
         }
 
         [Fact]
+        public async Task ExecuteAsync_CommandGroupWithBuilder_ReturnsGroupCommandResult()
+        {
+            const int expectedReturnCode = 4321;
+
+            var args = new[] { "group", "command", "param1" };
+
+            var builder = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider());
+
+            builder
+                .AddCommand<DelegateCliCommand<TestCommandOptions>, TestCommandOptions>(x =>
+                {
+                    x.Name = "command";
+                    x.OnExecuteAsync = _ => Task.FromResult(new CliCommandResult(1234));
+                })
+                .AddCommandGroup(x =>
+                {
+                    x
+                        .SetName("group")
+                        .AddCommand<DelegateCliCommand<TestCommandOptions>, TestCommandOptions>(cmd =>
+                        {
+                            cmd.Name = "command";
+                            cmd.OnExecuteAsync = _ =>
+                                Task.FromResult(new CliCommandResult(expectedReturnCode));
+                        });
+
+                });
+
+            var executor = builder.BuildExecutor();
+
+            // Act
+            var result = await executor.ExecuteAsync(args);
+
+            // Assert
+            result
+                .Should()
+                .Be(expectedReturnCode);
+        }
+
+        [Fact]
         public async Task ExecuteAsync_DefaultCommand_ReturnsDefaultCommandResult()
         {
             const int expectedReturnCode = 3456;

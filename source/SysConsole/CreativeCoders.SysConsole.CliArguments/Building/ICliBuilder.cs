@@ -15,19 +15,14 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
 
         ICliBuilder AddCommandGroup(ICliCommandGroup commandGroup);
 
+        ICliBuilder AddCommandGroup(Action<ICliCommandGroupBuilder> configureGroupBuilder);
+
         ICliBuilder AddDefaultCommand<TCommand, TOptions>(Action<TCommand> configureCommand)
             where TCommand : class, ICliCommand<TOptions>
             where TOptions : class, new();
 
+        ICliBuilder AddModule(ICliModule cliModule);
+
         ICliExecutor BuildExecutor();
-    }
-
-    public interface ICliCommandGroupBuilder
-    {
-        ICliCommandGroupBuilder SetName(string name);
-
-        ICliCommandGroupBuilder AddCommand<TCommand, TOptions>(Action<TCommand> configureCommand)
-            where TCommand : class, ICliCommand<TOptions>
-            where TOptions : class, new();
     }
 }
