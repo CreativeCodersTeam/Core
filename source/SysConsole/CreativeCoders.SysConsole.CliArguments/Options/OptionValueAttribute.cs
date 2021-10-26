@@ -2,6 +2,7 @@
 
 namespace CreativeCoders.SysConsole.CliArguments.Options
 {
+    [AttributeUsage(AttributeTargets.Property)]
     public class OptionValueAttribute : Attribute
     {
         public OptionValueAttribute(int index)
@@ -10,5 +11,9 @@ namespace CreativeCoders.SysConsole.CliArguments.Options
         }
 
         public int Index { get; }
+
+        public object? DefaultValue { get; set; }
+
+        public bool IsRequired { get; set; }
     }
 }

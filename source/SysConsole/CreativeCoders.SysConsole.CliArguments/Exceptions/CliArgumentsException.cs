@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.CliArguments.Exceptions
 {
+    [PublicAPI]
     public class CliArgumentsException : Exception
     {
         public CliArgumentsException()

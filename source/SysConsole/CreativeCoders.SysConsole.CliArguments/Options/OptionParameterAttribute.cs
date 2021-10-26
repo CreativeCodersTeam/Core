@@ -2,6 +2,7 @@
 
 namespace CreativeCoders.SysConsole.CliArguments.Options
 {
+    [AttributeUsage(AttributeTargets.Property)]
     public class OptionParameterAttribute : Attribute
     {
         public OptionParameterAttribute(char shortName, string longName)
@@ -13,5 +14,9 @@ namespace CreativeCoders.SysConsole.CliArguments.Options
         public char ShortName { get; }
 
         public string LongName { get; }
+
+        public object? DefaultValue { get; set; }
+
+        public bool IsRequired { get; set; }
     }
 }

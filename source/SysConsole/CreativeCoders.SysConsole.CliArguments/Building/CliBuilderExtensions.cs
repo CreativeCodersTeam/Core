@@ -38,7 +38,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
             return cliBuilder;
         }
 
-        public static ICliBuilder AddModule(this ICliBuilder cliBuilder, Assembly assembly)
+        public static ICliBuilder AddModules(this ICliBuilder cliBuilder, Assembly assembly)
         {
             Ensure.NotNull(assembly, nameof(assembly));
 

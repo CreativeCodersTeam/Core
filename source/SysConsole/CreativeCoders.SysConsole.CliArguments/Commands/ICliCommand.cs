@@ -12,7 +12,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Commands
         Type OptionsType { get; }
     }
 
-    public interface ICliCommand<TOptions> : ICliCommand
+    public interface ICliCommand<in TOptions> : ICliCommand
         where TOptions : class, new()
     {
         Task<CliCommandResult> ExecuteAsync(TOptions options);
