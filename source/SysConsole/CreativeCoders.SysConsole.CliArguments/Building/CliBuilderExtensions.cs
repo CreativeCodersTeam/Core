@@ -26,6 +26,15 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
             return cliBuilder;
         }
 
+        public static ICliBuilder AddModule(this ICliBuilder cliBuilder, ICliModule cliModule)
+        {
+            Ensure.NotNull(cliModule, nameof(cliModule));
+
+            cliModule.Configure(cliBuilder);
+
+            return cliBuilder;
+        }
+
         public static ICliBuilder AddModule(this ICliBuilder cliBuilder, Type cliModuleType)
         {
             Ensure.NotNull(cliModuleType, nameof(cliModuleType));

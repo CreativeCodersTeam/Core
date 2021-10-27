@@ -12,7 +12,8 @@ namespace CreativeCoders.SysConsole.CliArguments.Commands
         {
             if (options is not TOptions commandOptions)
             {
-                throw new InvalidOperationException();
+                throw new InvalidCastException(
+                    $"Option must be of type '{typeof(TOptions).Name}' (type = '{options?.GetType().Name}')");
             }
 
             return ExecuteAsync(commandOptions);

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CreativeCoders.SysConsole.CliArguments.Building;
 using CreativeCoders.SysConsole.CliArguments.Commands;
 using FluentAssertions;
@@ -198,6 +199,56 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
 
             // Act
             var result = await executor.ExecuteAsync(args);
+
+            // Assert
+            result
+                .Should()
+                .Be(expectedReturnCode);
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_WithOptions_OptionsArePassedToExecute()
+        {
+            var args = new[] { "command", "-t", "param1" };
+
+            TestCommandOptions options = null;
+
+            var executor = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider())
+                .AddCommand<TestCommandOptions>("command", x =>
+                {
+                    options = x;
+                    return Task.FromResult(new CliCommandResult(1357));
+                })
+                .BuildExecutor();
+
+            // Act
+            var result = await executor.ExecuteAsync(args);
+
+            // Assert
+            result
+                .Should()
+                .Be(1357);
+
+            options
+                .Should()
+                .NotBeNull();
+
+            options.Text
+                .Should()
+                .Be("param1");
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_NoCommands_DefaultErrorReturnCodeIsReturned()
+        {
+            const int expectedReturnCode = -12345;
+
+            var executor = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider())
+                .SetDefaultErrorReturnCode(expectedReturnCode)
+                .BuildExecutor();
+
+            // Act
+            var result = await executor.ExecuteAsync(Array.Empty<string>());
 
             // Assert
             result

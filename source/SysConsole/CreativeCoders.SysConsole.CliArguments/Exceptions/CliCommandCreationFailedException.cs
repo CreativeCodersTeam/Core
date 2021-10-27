@@ -7,8 +7,8 @@ namespace CreativeCoders.SysConsole.CliArguments.Exceptions
     [PublicAPI]
     public class CliCommandCreationFailedException : CliArgumentsException
     {
-        public CliCommandCreationFailedException(Type commandType)
-            : this($"Command '{commandType.Name}' can not be created")
+        public CliCommandCreationFailedException(Type commandType, Exception innerException)
+            : this($"Command '{commandType.Name}' can not be created", innerException)
         {
         }
 

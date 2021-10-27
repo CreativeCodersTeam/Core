@@ -10,7 +10,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
     {
         private string? _name;
 
-        private readonly CliCommandCreator _commandCreator;
+        private readonly CliCommandFactory _commandFactory;
 
         private readonly IList<Func<ICliCommand>> _commandCreators;
 
@@ -19,7 +19,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
             Ensure.NotNull(serviceProvider, nameof(serviceProvider));
 
             _commandCreators = new List<Func<ICliCommand>>();
-            _commandCreator = new CliCommandCreator(serviceProvider);
+            _commandFactory = new CliCommandFactory(serviceProvider);
         }
 
         public ICliCommandGroupBuilder SetName(string name)
@@ -35,7 +35,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
         {
             Ensure.NotNull(configureCommand, nameof(configureCommand));
 
-            _commandCreators.Add(() => _commandCreator.CreateCommand<TCommand, TOptions>(configureCommand));
+            _commandCreators.Add(() => _commandFactory.CreateCommand<TCommand, TOptions>(configureCommand));
 
             return this;
         }

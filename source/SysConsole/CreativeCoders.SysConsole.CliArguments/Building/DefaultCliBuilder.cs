@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CreativeCoders.Core;
-using CreativeCoders.Core.Reflection;
 using CreativeCoders.SysConsole.CliArguments.Commands;
-using CreativeCoders.SysConsole.CliArguments.Exceptions;
 using CreativeCoders.SysConsole.CliArguments.Execution;
 
 namespace CreativeCoders.SysConsole.CliArguments.Building
@@ -19,7 +17,9 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
 
         private Func<ICliCommand>? _defaultCommandCreator;
 
-        private readonly CliCommandCreator _commandCreator;
+        private readonly CliCommandFactory _commandFactory;
+
+        private int _defaultErrorReturnCode = int.MinValue;
 
         public DefaultCliBuilder(IServiceProvider serviceProvider)
         {
@@ -28,14 +28,14 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
             _commandCreators = new List<Func<ICliCommand>>();
             _commandGroupCreators = new List<Func<ICliCommandGroup>>();
 
-            _commandCreator = new CliCommandCreator(serviceProvider);
+            _commandFactory = new CliCommandFactory(serviceProvider);
         }
 
         public ICliBuilder AddCommand<TCommand, TOptions>(Action<TCommand> configureCommand)
             where TCommand : class, ICliCommand<TOptions>
             where TOptions : class, new()
         {
-            _commandCreators.Add(() => _commandCreator.CreateCommand<TCommand, TOptions>(configureCommand));
+            _commandCreators.Add(() => _commandFactory.CreateCommand<TCommand, TOptions>(configureCommand));
 
             return this;
         }
@@ -43,7 +43,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
         public ICliBuilder AddCommand<TCommand>()
             where TCommand : class, ICliCommand
         {
-            _commandCreators.Add(_commandCreator.CreateCommand<TCommand>);
+            _commandCreators.Add(_commandFactory.CreateCommand<TCommand>);
 
             return this;
         }
@@ -81,16 +81,14 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
         {
             Ensure.NotNull(configureCommand, nameof(configureCommand));
 
-            _defaultCommandCreator = () => _commandCreator.CreateCommand<TCommand, TOptions>(configureCommand);
+            _defaultCommandCreator = () => _commandFactory.CreateCommand<TCommand, TOptions>(configureCommand);
 
             return this;
         }
 
-        public ICliBuilder AddModule(ICliModule cliModule)
+        public ICliBuilder SetDefaultErrorReturnCode(int errorReturnCode)
         {
-            Ensure.NotNull(cliModule, nameof(cliModule));
-
-            cliModule.Configure(this);
+            _defaultErrorReturnCode = errorReturnCode;
 
             return this;
         }
@@ -101,9 +99,10 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
 
             var commandGroups = _commandGroupCreators.Select(x => x());
 
-            var context = new ExecutionContext(commandGroups, commands, _defaultCommandCreator?.Invoke());
+            var context = new ExecutionContext(commandGroups, commands,
+                _defaultCommandCreator?.Invoke(), _defaultErrorReturnCode);
 
-            return new DefaultCliExecutor(context, _serviceProvider);
+            return new DefaultCliExecutor(context);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
             where TCommand : class, ICliCommand<TOptions>
             where TOptions : class, new();
 
-        ICliBuilder AddModule(ICliModule cliModule);
+        ICliBuilder SetDefaultErrorReturnCode(int errorReturnCode);
 
         ICliExecutor BuildExecutor();
     }

@@ -4,19 +4,14 @@ namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties.ValueConvert
 {
     public class BooleanValueConverter : ICliValueConverter
     {
-        public object? Convert(object? value, Type targetType)
+        public object Convert(object? value, Type targetType)
         {
             if (value == null || string.IsNullOrEmpty(value.ToString()))
             {
                 return true;
             }
 
-            if (bool.TryParse(value.ToString(), out var boolValue))
-            {
-                return boolValue;
-            }
-
-            return false;
+            return bool.TryParse(value.ToString(), out var boolValue) && boolValue;
         }
     }
 }

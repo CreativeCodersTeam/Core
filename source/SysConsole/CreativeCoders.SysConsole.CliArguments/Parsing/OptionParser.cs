@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
@@ -16,11 +15,20 @@ namespace CreativeCoders.SysConsole.CliArguments.Parsing
         {
             Ensure.NotNull(optionType, nameof(optionType));
 
-            var option = Activator.CreateInstance(optionType);
+            object? option;
 
-            if (option == null)
+            try
             {
-                throw new CliArgumentsException();
+                option = Activator.CreateInstance(optionType);
+
+                if (option == null)
+                {
+                    throw new OptionCreationFailedException(optionType);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new OptionCreationFailedException(optionType, e);
             }
 
             var optionArguments = new ArgsToOptionArgumentsConverter(args).ReadOptionArguments();

@@ -1,7 +1,7 @@
 ﻿using System;
 using CreativeCoders.SysConsole.CliArguments.Exceptions;
-using CreativeCoders.SysConsole.CliArguments.Options;
 using CreativeCoders.SysConsole.CliArguments.Parsing;
+using CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing.TestData;
 using FluentAssertions;
 using Xunit;
 
@@ -157,35 +157,101 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
                 .Should()
                 .BeTrue();
         }
-    }
 
-    public class TestOptionForParser
-    {
-        [OptionValue(0)]
-        public string HelloWorld { get; set; }
+        [Fact]
+        public void Parse_BoolValuesInvalidFormat_PropertyIsSetFalse()
+        {
+            var args = new[] { "-v", "--bold", "1234" };
 
-        [OptionParameter('t', "text")]
-        public string TextValue { get; set; }
-    }
+            var parser = new OptionParser();
 
-    public class TestOptionWithInt
-    {
-        [OptionParameter('i', "integer", IsRequired = true)]
-        public int IntValue { get; set; }
+            // Act
+            var option = parser.Parse(typeof(TestOptionWithBool), args) as TestOptionWithBool;
 
-        [OptionParameter('j', "integer2")]
-        public int IntValue2 { get; set; }
+            // Assert
+            option
+                .Should()
+                .NotBeNull();
 
-        [OptionParameter('d', "default", DefaultValue = 1357)]
-        public int DefIntValue { get; set; }
-    }
+            option!.Verbose
+                .Should()
+                .BeTrue();
 
-    public class TestOptionWithBool
-    {
-        [OptionParameter('v', "verbose")]
-        public bool Verbose { get; set; }
+            option.Bold
+                .Should()
+                .BeFalse();
+        }
 
-        [OptionParameter('b', "bold")]
-        public bool Bold { get; set; }
+        [Fact]
+        public void Parse_RequiredValueMissing_ThrowsException()
+        {
+            var args = Array.Empty<string>();
+
+            var parser = new OptionParser();
+
+            // Act
+            Action act = () => parser.Parse(typeof(TestOptionWithValueOption), args);
+
+            // Assert
+            act
+                .Should()
+                .Throw<RequiredArgumentMissingException>();
+        }
+
+        [Fact]
+        public void Parse_ValueDefaultValue_DefaultValueIsSet()
+        {
+            var args = Array.Empty<string>();
+
+            var parser = new OptionParser();
+
+            // Act
+            var options = parser.Parse(typeof(TestOptionWithTwoValues), args) as TestOptionWithTwoValues;
+
+            // Assert
+            options
+                .Should()
+                .NotBeNull();
+
+            options!.FirstValue
+                .Should()
+                .Be(null);
+
+            options.SecondValue
+                .Should()
+                .Be("Fallback");
+        }
+
+        [Fact]
+        public void Parse_OptionCtorWithArgs_ThrowsException()
+        {
+            var args = Array.Empty<string>();
+
+            var parser = new OptionParser();
+
+            // Act
+            Action act = () => parser.Parse(typeof(TestOptionWithInvalidCtor), args);
+
+            // Assert
+            act
+                .Should()
+                .Throw<OptionCreationFailedException>();
+        }
+
+        [Fact]
+        public void Parse_OptionNull_ThrowsException()
+        {
+            var args = Array.Empty<string>();
+
+            var parser = new OptionParser();
+
+            // Act
+            Action act = () => parser.Parse(typeof(int?), args);
+
+            // Assert
+            act
+                .Should()
+                .Throw<OptionCreationFailedException>();
+        }
     }
 }

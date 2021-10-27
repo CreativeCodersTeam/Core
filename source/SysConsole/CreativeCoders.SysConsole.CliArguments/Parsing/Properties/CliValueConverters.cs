@@ -6,7 +6,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties
 {
     public class CliValueConverters : ICliValueConverter
     {
-        private IDictionary<Type, ICliValueConverter> _converters;
+        private readonly IDictionary<Type, ICliValueConverter> _converters;
 
         private CliValueConverters()
         {
@@ -18,12 +18,9 @@ namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties
 
         public object? Convert(object? value, Type targetType)
         {
-            if (_converters.TryGetValue(targetType, out var converter))
-            {
-                return converter.Convert(value, targetType);
-            }
-
-            return System.Convert.ChangeType(value, targetType);
+            return _converters.TryGetValue(targetType, out var converter)
+                ? converter.Convert(value, targetType)
+                : System.Convert.ChangeType(value, targetType);
         }
     }
 }

@@ -6,11 +6,11 @@ using CreativeCoders.SysConsole.CliArguments.Exceptions;
 
 namespace CreativeCoders.SysConsole.CliArguments.Building
 {
-    public class CliCommandCreator
+    public class CliCommandFactory
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public CliCommandCreator(IServiceProvider serviceProvider)
+        public CliCommandFactory(IServiceProvider serviceProvider)
         {
             _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
         }
@@ -18,14 +18,16 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
         public ICliCommand CreateCommand<TCommand>()
             where TCommand : class, ICliCommand
         {
-            var command = typeof(TCommand).CreateInstance<ICliCommand>(_serviceProvider);
-
-            if (command == null)
+            try
             {
-                throw new CliCommandCreationFailedException(typeof(TCommand));
-            }
+                var command = typeof(TCommand).CreateInstance<ICliCommand>(_serviceProvider);
 
-            return command;
+                return command!;
+            }
+            catch (Exception e)
+            {
+                throw new CliCommandCreationFailedException(typeof(TCommand), e);
+            }
         }
 
         public ICliCommand CreateCommand<TCommand, TOptions>(Action<TCommand> configureCommand)
@@ -34,16 +36,18 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
         {
             Ensure.NotNull(configureCommand, nameof(configureCommand));
 
-            var command = typeof(TCommand).CreateInstance<TCommand>(_serviceProvider);
-
-            if (command == null)
+            try
             {
-                throw new CliCommandCreationFailedException(typeof(TCommand));
+                var command = typeof(TCommand).CreateInstance<TCommand>(_serviceProvider)!;
+
+                configureCommand(command);
+
+                return command;
             }
-
-            configureCommand(command);
-
-            return command;
+            catch (Exception e)
+            {
+                throw new CliCommandCreationFailedException(typeof(TCommand), e);
+            }
         }
     }
 }

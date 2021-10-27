@@ -1,22 +1,18 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
-using CreativeCoders.Core.Reflection;
 using CreativeCoders.SysConsole.CliArguments.Commands;
+using CreativeCoders.SysConsole.CliArguments.Parsing;
 
 namespace CreativeCoders.SysConsole.CliArguments.Execution
 {
     public class DefaultCliExecutor : ICliExecutor
     {
-        private readonly IServiceProvider _serviceProvider;
-
         private readonly ExecutionContext _context;
 
-        public DefaultCliExecutor(ExecutionContext context, IServiceProvider serviceProvider)
+        public DefaultCliExecutor(ExecutionContext context)
         {
             _context = Ensure.NotNull(context, nameof(context));
-            _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
         }
 
         public async Task<int> ExecuteAsync(string[] args)
@@ -27,27 +23,22 @@ namespace CreativeCoders.SysConsole.CliArguments.Execution
 
             if (groupCommandIsExecuted)
             {
-                return groupCommandResult?.ReturnCode ?? int.MinValue;
+                return groupCommandResult?.ReturnCode ?? _context.DefaultErrorReturnCode;
             }
 
             var (commandIsExecuted, commandResult) = await TryExecuteCommandAsync(args);
 
             if (commandIsExecuted)
             {
-                return commandResult?.ReturnCode ?? int.MinValue;
+                return commandResult?.ReturnCode ?? _context.DefaultErrorReturnCode;
             }
 
             if (_context.DefaultCommand == null)
             {
-                return int.MinValue;
+                return _context.DefaultErrorReturnCode;
             }
 
-            var defaultOptions = _context.DefaultCommand.OptionsType.CreateInstance<object>(_serviceProvider);
-
-            if (defaultOptions == null)
-            {
-                throw new InvalidOperationException();
-            }
+            var defaultOptions = new OptionParser().Parse(_context.DefaultCommand.OptionsType, args);
 
             var defaultCommandResult = await _context.DefaultCommand.ExecuteAsync(defaultOptions);
 
@@ -63,12 +54,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Execution
                 return (false, null);
             }
 
-            var options = command.OptionsType.CreateInstance<object>(_serviceProvider);
-
-            if (options == null)
-            {
-                throw new InvalidOperationException();
-            }
+            var options = new OptionParser().Parse(command.OptionsType, args.Skip(1).ToArray());
 
             var commandResult = await command.ExecuteAsync(options);
 
@@ -86,12 +72,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Execution
                 return (false, null);
             }
 
-            var options = groupCommand.OptionsType.CreateInstance<object>(_serviceProvider);
-
-            if (options == null)
-            {
-                throw new InvalidOperationException();
-            }
+            var options = new OptionParser().Parse(groupCommand.OptionsType, args.Skip(2).ToArray());
 
             return (true, await groupCommand.ExecuteAsync(options));
         }
