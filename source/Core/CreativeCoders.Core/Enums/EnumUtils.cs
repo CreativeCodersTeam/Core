@@ -49,10 +49,13 @@ namespace CreativeCoders.Core.Enums
             return enumType.GetField(enumValue.ToString());
         }
 
-        public static IDictionary<Enum, FieldInfo> GetEnumFieldInfos<T>()
-            where T : Enum
+        public static IDictionary<Enum, FieldInfo> GetEnumFieldInfos(Type enumType)
         {
-            var enumType = typeof(T);
+            if (!enumType.IsEnum)
+            {
+                return new Dictionary<Enum, FieldInfo>();
+            }
+
             var enumValues = Enum.GetValues(enumType);
 
             var enumFieldInfos = new Dictionary<Enum, FieldInfo>();
@@ -68,6 +71,12 @@ namespace CreativeCoders.Core.Enums
             }
 
             return enumFieldInfos;
+        }
+
+        public static IDictionary<Enum, FieldInfo> GetEnumFieldInfos<T>()
+            where T : Enum
+        {
+            return EnumUtils.GetEnumFieldInfos(typeof(T));
         }
     }
 }

@@ -47,7 +47,8 @@ namespace CreativeCoders.SysConsole.CliArguments.Execution
 
         private async Task<(bool IsExecuted, CliCommandResult? CommandResult)> TryExecuteCommandAsync(string[] args)
         {
-            var command = _context.Commands.FirstOrDefault(x => x.Name == args.First());
+            var command = _context.Commands.FirstOrDefault(x => x.Name == args.FirstOrDefault())
+                ?? _context.Commands.FirstOrDefault(x => x.IsDefault);
 
             if (command == null)
             {
@@ -63,9 +64,10 @@ namespace CreativeCoders.SysConsole.CliArguments.Execution
 
         private async Task<(bool IsExecuted, CliCommandResult? CommandResult)> TryExecuteGroupCommandAsync(string[] args)
         {
-            var group = _context.CommandGroups.FirstOrDefault(x => x.Name == args.First());
+            var group = _context.CommandGroups.FirstOrDefault(x => x.Name == args.FirstOrDefault());
 
-            var groupCommand = group?.Commands.FirstOrDefault(x => x.Name == args.Skip(1).First());
+            var groupCommand = group?.Commands.FirstOrDefault(x => x.Name == args.Skip(1).FirstOrDefault())
+                ?? group?.Commands.FirstOrDefault(x => x.IsDefault);
 
             if (groupCommand == null)
             {

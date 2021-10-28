@@ -12,6 +12,8 @@ namespace CreativeCoders.SysConsole.CliArguments.Commands
         Task<CliCommandResult> ExecuteAsync(object options);
 
         Type OptionsType { get; }
+
+        bool IsDefault { get; set; }
     }
 
     [PublicAPI]

@@ -40,6 +40,14 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
             return this;
         }
 
+        public ICliCommandGroupBuilder AddCommand<TCommand>()
+            where TCommand : class, ICliCommand
+        {
+            _commandCreators.Add(() => _commandFactory.CreateCommand<TCommand>());
+
+            return this;
+        }
+
         public ICliCommandGroup CreateGroup()
         {
             return new CliCommandGroup

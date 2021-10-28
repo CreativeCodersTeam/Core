@@ -38,7 +38,12 @@ namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties
                 ? _optionParameterAttribute.DefaultValue
                 : optionArgument.Value;
 
-            Info.SetValue(optionObject, CliValueConverters.Default.Convert(value, Info.PropertyType));
+            var propertyValue = CliValueConverters.Default.Convert(value, Info.PropertyType);
+
+            if (propertyValue != ConverterAction.DoNothing)
+            {
+                Info.SetValue(optionObject, propertyValue);
+            }
 
             return true;
         }

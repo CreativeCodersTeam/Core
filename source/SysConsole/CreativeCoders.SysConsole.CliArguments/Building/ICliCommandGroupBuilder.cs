@@ -12,5 +12,8 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
         ICliCommandGroupBuilder AddCommand<TCommand, TOptions>(Action<TCommand> configureCommand)
             where TCommand : class, ICliCommand<TOptions>
             where TOptions : class, new();
+
+        ICliCommandGroupBuilder AddCommand<TCommand>()
+            where TCommand : class, ICliCommand;
     }
 }

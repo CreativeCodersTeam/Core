@@ -280,5 +280,35 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
                 .Should()
                 .Be(typeof(int?));
         }
+
+        [Theory]
+        [InlineData("Ok", TestEnum.Ok)]
+        [InlineData("OK", TestEnum.OK)]
+        [InlineData("Default", TestEnum.Default)]
+        [InlineData("default", TestEnum.Default)]
+        [InlineData("Custom", TestEnum.Custom)]
+        [InlineData("CUSTOM", TestEnum.Custom)]
+        [InlineData("Failed", TestEnum.Failed)]
+        [InlineData("failED", TestEnum.Failed)]
+        [InlineData("None", TestEnum.None)]
+        [InlineData("nONe", TestEnum.None)]
+        public void Parse_EnumValue_PropertyIsSetCorrect(string argValue, TestEnum enumValue)
+        {
+            var args = new[] { "-e", argValue };
+
+            var parser = new OptionParser();
+
+            // Act
+            var option = parser.Parse(typeof(TestOptionWithEnum), args) as TestOptionWithEnum;
+
+            // Assert
+            option
+                .Should()
+                .NotBeNull();
+
+            option!.EnumValue
+                .Should()
+                .Be(enumValue);
+        }
     }
 }

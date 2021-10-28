@@ -24,6 +24,8 @@ namespace CreativeCoders.SysConsole.CliArguments.Commands
 
         public Type OptionsType => typeof(TOptions);
 
+        public bool IsDefault { get; set; }
+
         public abstract string Name { get; set; }
     }
 }

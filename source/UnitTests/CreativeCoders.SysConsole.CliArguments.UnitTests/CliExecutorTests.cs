@@ -200,5 +200,43 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
                 .Should()
                 .Be(expectedReturnCode);
         }
+
+        [Fact]
+        public async Task ExecuteAsync_NoGroupCommandArgGiven_DefaultCommandInGroupIsExecuted()
+        {
+            var args = new[] {"group"};
+
+            var executor = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider())
+                .AddCommandGroup(x => x
+                    .SetName("group")
+                    .AddCommand<TestDefaultCommand>())
+                .BuildExecutor();
+
+            // Act
+            var result = await executor.ExecuteAsync(args);
+
+            // Assert
+            result
+                .Should()
+                .Be(TestDefaultCommand.ReturnCode);
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_NoCommandArgGiven_DefaultCommandIsExecuted()
+        {
+            var args = new[] { "group" };
+
+            var executor = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider())
+                .AddCommand<TestDefaultCommand>()
+                .BuildExecutor();
+
+            // Act
+            var result = await executor.ExecuteAsync(args);
+
+            // Assert
+            result
+                .Should()
+                .Be(TestDefaultCommand.ReturnCode);
+        }
     }
 }
