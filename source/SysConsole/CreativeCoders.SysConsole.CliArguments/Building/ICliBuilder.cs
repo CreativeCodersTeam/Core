@@ -1,9 +1,11 @@
 ﻿using System;
 using CreativeCoders.SysConsole.CliArguments.Commands;
 using CreativeCoders.SysConsole.CliArguments.Execution;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.CliArguments.Building
 {
+    [PublicAPI]
     public interface ICliBuilder
     {
         ICliBuilder AddCommand<TCommand, TOptions>(Action<TCommand> configureCommand)

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.CliArguments.Building;
 using CreativeCoders.SysConsole.CliArguments.Commands;
+using CreativeCoders.SysConsole.CliArguments.UnitTests.TestData;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -26,30 +27,6 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
                     x.OnExecuteAsync = _ =>
                         Task.FromResult(new CliCommandResult(expectedReturnCode));
                 });
-
-            var executor = builder.BuildExecutor();
-
-            // Act
-            var result = await executor.ExecuteAsync(args);
-
-            // Assert
-            result
-                .Should()
-                .Be(expectedReturnCode);
-        }
-
-        [Fact]
-        public async Task ExecuteAsync_CommandWithOptions_ReturnsCommandResult()
-        {
-            const int expectedReturnCode = 1234;
-
-            var args = new[] { "command", "param1" };
-
-            var builder = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider());
-
-            builder
-                .AddCommand<TestCommandOptions>("command",
-                    _ => Task.FromResult(new CliCommandResult(expectedReturnCode)));
 
             var executor = builder.BuildExecutor();
 
@@ -137,18 +114,14 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
                     x.Name = "command";
                     x.OnExecuteAsync = _ => Task.FromResult(new CliCommandResult(1234));
                 })
-                .AddCommandGroup(x =>
-                {
-                    x
-                        .SetName("group")
-                        .AddCommand<DelegateCliCommand<TestCommandOptions>, TestCommandOptions>(cmd =>
-                        {
-                            cmd.Name = "command";
-                            cmd.OnExecuteAsync = _ =>
-                                Task.FromResult(new CliCommandResult(expectedReturnCode));
-                        });
-
-                });
+                .AddCommandGroup(x => x
+                    .SetName("group")
+                    .AddCommand<DelegateCliCommand<TestCommandOptions>, TestCommandOptions>(cmd =>
+                    {
+                        cmd.Name = "command";
+                        cmd.OnExecuteAsync = _ =>
+                            Task.FromResult(new CliCommandResult(expectedReturnCode));
+                    }));
 
             var executor = builder.BuildExecutor();
 
@@ -207,38 +180,6 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
         }
 
         [Fact]
-        public async Task ExecuteAsync_WithOptions_OptionsArePassedToExecute()
-        {
-            var args = new[] { "command", "-t", "param1" };
-
-            TestCommandOptions options = null;
-
-            var executor = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider())
-                .AddCommand<TestCommandOptions>("command", x =>
-                {
-                    options = x;
-                    return Task.FromResult(new CliCommandResult(1357));
-                })
-                .BuildExecutor();
-
-            // Act
-            var result = await executor.ExecuteAsync(args);
-
-            // Assert
-            result
-                .Should()
-                .Be(1357);
-
-            options
-                .Should()
-                .NotBeNull();
-
-            options.Text
-                .Should()
-                .Be("param1");
-        }
-
-        [Fact]
         public async Task ExecuteAsync_NoCommands_DefaultErrorReturnCodeIsReturned()
         {
             const int expectedReturnCode = -12345;
@@ -251,6 +192,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
             var result = await executor.ExecuteAsync(Array.Empty<string>());
 
             // Assert
+            executor.DefaultErrorReturnCode
+                .Should()
+                .Be(expectedReturnCode);
+
             result
                 .Should()
                 .Be(expectedReturnCode);

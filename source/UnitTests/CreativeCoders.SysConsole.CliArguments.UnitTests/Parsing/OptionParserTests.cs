@@ -1,5 +1,6 @@
 ﻿using System;
 using CreativeCoders.SysConsole.CliArguments.Exceptions;
+using CreativeCoders.SysConsole.CliArguments.Options;
 using CreativeCoders.SysConsole.CliArguments.Parsing;
 using CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing.TestData;
 using FluentAssertions;
@@ -129,9 +130,18 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
             Action act = () => parser.Parse(typeof(TestOptionWithInt), args);
 
             // Assert
-            act
+            var exception = act
                 .Should()
-                .Throw<RequiredArgumentMissingException>();
+                .Throw<RequiredArgumentMissingException>()
+                .Which;
+
+            exception.MissingProperty
+                .Should()
+                .BeSameAs(typeof(TestOptionWithInt).GetProperty(nameof(TestOptionWithInt.IntValue)));
+
+            exception.ParameterAttribute
+                .Should()
+                .BeEquivalentTo(new OptionParameterAttribute('i', "integer"){IsRequired = true});
         }
 
         [Fact]
@@ -193,9 +203,18 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
             Action act = () => parser.Parse(typeof(TestOptionWithValueOption), args);
 
             // Assert
-            act
+            var exception = act
                 .Should()
-                .Throw<RequiredArgumentMissingException>();
+                .Throw<RequiredArgumentMissingException>()
+                .Which;
+
+            exception.MissingProperty
+                .Should()
+                .BeSameAs(typeof(TestOptionWithValueOption).GetProperty(nameof(TestOptionWithValueOption.TestValue)));
+
+            exception.ValueAttribute
+                .Should()
+                .BeEquivalentTo(new OptionValueAttribute(0) { IsRequired = true });
         }
 
         [Fact]
@@ -235,7 +254,11 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
             // Assert
             act
                 .Should()
-                .Throw<OptionCreationFailedException>();
+                .Throw<OptionCreationFailedException>()
+                .Which
+                .OptionType
+                .Should()
+                .Be(typeof(TestOptionWithInvalidCtor));
         }
 
         [Fact]
@@ -251,7 +274,11 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
             // Assert
             act
                 .Should()
-                .Throw<OptionCreationFailedException>();
+                .Throw<OptionCreationFailedException>()
+                .Which
+                .OptionType
+                .Should()
+                .Be(typeof(int?));
         }
     }
 }

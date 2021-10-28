@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.SysConsole.CliArguments.Commands;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.CliArguments.Building
 {
+    [PublicAPI]
     public static class CliBuilderExtensions
     {
         public static ICliBuilder AddCommand<TOptions>(this ICliBuilder cliBuilder,
@@ -41,10 +43,16 @@ namespace CreativeCoders.SysConsole.CliArguments.Building
 
             if (Activator.CreateInstance(cliModuleType) is ICliModule cliModule)
             {
-                cliModule.Configure(cliBuilder);
+                return cliBuilder.AddModule(cliModule);
             }
 
             return cliBuilder;
+        }
+
+        public static ICliBuilder AddModule<TModule>(this ICliBuilder cliBuilder)
+            where TModule : class, ICliModule
+        {
+            return cliBuilder.AddModule(typeof(TModule));
         }
 
         public static ICliBuilder AddModules(this ICliBuilder cliBuilder, Assembly assembly)

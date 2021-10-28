@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace CreativeCoders.SysConsole.CliArguments.Commands
@@ -8,6 +9,8 @@ namespace CreativeCoders.SysConsole.CliArguments.Commands
     {
         public abstract Task<CliCommandResult> ExecuteAsync(TOptions options);
 
+        [SuppressMessage("ReSharper", "ConstantConditionalAccessQualifier")]
+        [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "<Pending>")]
         public Task<CliCommandResult> ExecuteAsync(object options)
         {
             if (options is not TOptions commandOptions)

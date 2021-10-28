@@ -1,8 +1,10 @@
 ﻿using System;
 using CreativeCoders.SysConsole.CliArguments.Commands;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.CliArguments.Building
 {
+    [PublicAPI]
     public interface ICliCommandGroupBuilder
     {
         ICliCommandGroupBuilder SetName(string name);

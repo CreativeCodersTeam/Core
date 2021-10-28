@@ -76,5 +76,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Execution
 
             return (true, await groupCommand.ExecuteAsync(options));
         }
+
+        public int DefaultErrorReturnCode => _context.DefaultErrorReturnCode;
     }
 }

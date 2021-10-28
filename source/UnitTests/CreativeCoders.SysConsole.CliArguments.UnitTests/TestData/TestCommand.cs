@@ -2,7 +2,7 @@
 using CreativeCoders.SysConsole.CliArguments.Commands;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.CliArguments.UnitTests
+namespace CreativeCoders.SysConsole.CliArguments.UnitTests.TestData
 {
     [UsedImplicitly]
     public class TestCommand : CliCommandBase<TestCommandOptions>

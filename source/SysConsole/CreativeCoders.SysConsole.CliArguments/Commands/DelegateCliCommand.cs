@@ -1,17 +1,16 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using CreativeCoders.SysConsole.CliArguments.Exceptions;
 
 namespace CreativeCoders.SysConsole.CliArguments.Commands
 {
     public class DelegateCliCommand<TOptions> : CliCommandBase<TOptions>
         where TOptions : class, new()
     {
-        public override Task<CliCommandResult> ExecuteAsync(TOptions options)
-        {
-            return OnExecuteAsync?.Invoke(options)
-                   ?? throw new CliArgumentsException("No command execution function defined");
-        }
+        [SuppressMessage("ReSharper", "ConstantConditionalAccessQualifier")]
+        [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "<Pending>")]
+        public override Task<CliCommandResult> ExecuteAsync(TOptions options) =>
+            OnExecuteAsync?.Invoke(options) ?? throw new NotImplementedException();
 
         public override string Name { get; set; } = string.Empty;
 

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.CliArguments.Commands
 {
+    [PublicAPI]
     public interface ICliCommand
     {
         public string Name { get; set; }
@@ -12,6 +14,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Commands
         Type OptionsType { get; }
     }
 
+    [PublicAPI]
     public interface ICliCommand<in TOptions> : ICliCommand
         where TOptions : class, new()
     {
