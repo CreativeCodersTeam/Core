@@ -14,18 +14,22 @@ namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties.ValueConvert
                 return ConverterAction.DoNothing;
             }
 
-            var enumFields = EnumUtils.GetEnumFieldInfos(targetType);
+            var allEnumFields = EnumUtils.GetEnumFieldInfos(targetType);
 
-            var enumField = enumFields.Values.FirstOrDefault(x => x.Name == value?.ToString());
+            var enumField = allEnumFields.Values.FirstOrDefault(x => x.Name == value?.ToString());
 
-            if (enumField != null && enumFields.TryGetKeyByValue(enumField, out var enumValue))
+            if (enumField != null && allEnumFields.TryGetKeyByValue(enumField, out var enumValue))
             {
                 return enumValue;
             }
 
-            enumField = enumFields.Values.SingleOrDefault(x => x.Name.Equals(value?.ToString(), StringComparison.InvariantCultureIgnoreCase));
+            var enumFields = allEnumFields
+                .Values
+                .Where(x =>
+                    x.Name.Equals(value?.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                .ToArray();
 
-            if (enumField != null && enumFields.TryGetKeyByValue(enumField, out enumValue))
+            if (enumFields.IsSingle() && allEnumFields.TryGetKeyByValue(enumFields.First(), out enumValue))
             {
                 return enumValue;
             }

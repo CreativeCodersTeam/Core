@@ -22,19 +22,16 @@ namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties
 
         public object? Convert(object? value, Type targetType)
         {
-            if (targetType.IsEnum)
-            {
-                var targetValue = _enumConverter.Convert(value, targetType);
+            return targetType.IsEnum
+                ? _enumConverter.Convert(value, targetType)
+                : InternalConvert(value, targetType);
+        }
 
-                if (targetValue != ConverterAction.DoNothing)
-                {
-                    return targetValue;
-                }
-            }
-            
+        private object? InternalConvert(object? value, Type targetType)
+        {
             return _converters.TryGetValue(targetType, out var converter)
-                ? converter.Convert(value, targetType)
-                : System.Convert.ChangeType(value, targetType);
+                            ? converter.Convert(value, targetType)
+                            : System.Convert.ChangeType(value, targetType);
         }
     }
 }

@@ -284,6 +284,7 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
         [Theory]
         [InlineData("Ok", TestEnum.Ok)]
         [InlineData("OK", TestEnum.OK)]
+        [InlineData("ok", TestEnum.Default)]
         [InlineData("Default", TestEnum.Default)]
         [InlineData("default", TestEnum.Default)]
         [InlineData("Custom", TestEnum.Custom)]
