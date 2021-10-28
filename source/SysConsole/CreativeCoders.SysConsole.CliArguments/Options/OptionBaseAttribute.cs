@@ -7,5 +7,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Options
         public object? DefaultValue { get; set; }
 
         public bool IsRequired { get; set; }
+
+        public Type? Converter { get; set; }
     }
 }

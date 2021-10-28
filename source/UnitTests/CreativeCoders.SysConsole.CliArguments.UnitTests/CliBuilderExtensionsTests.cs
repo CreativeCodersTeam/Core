@@ -39,7 +39,7 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
         {
             var args = new[] { "command", "-t", "param1" };
 
-            TestCommandOptions options = null;
+            TestCommandOptions? options = null;
 
             var executor = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider())
                 .AddCommand<TestCommandOptions>("command", x =>
@@ -61,7 +61,7 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests
                 .Should()
                 .NotBeNull();
 
-            options.Text
+            options!.Text
                 .Should()
                 .Be("param1");
         }

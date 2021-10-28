@@ -5,24 +5,19 @@ namespace CreativeCoders.SysConsole.CliArguments.Exceptions
 {
     public class RequiredArgumentMissingException : CliArgumentsException
     {
-        public RequiredArgumentMissingException(PropertyInfo missingProperty,
-            OptionValueAttribute valueAttribute)
-        {
-            MissingProperty = missingProperty;
-            ValueAttribute = valueAttribute;
-        }
+        private readonly OptionBaseAttribute _optionAttribute;
 
         public RequiredArgumentMissingException(PropertyInfo missingProperty,
-            OptionParameterAttribute parameterAttribute)
+            OptionBaseAttribute optionAttribute)
         {
             MissingProperty = missingProperty;
-            ParameterAttribute = parameterAttribute;
+            _optionAttribute = optionAttribute;
         }
 
         public PropertyInfo MissingProperty { get; }
 
-        public OptionParameterAttribute? ParameterAttribute { get; }
+        public OptionParameterAttribute? ParameterAttribute => _optionAttribute as OptionParameterAttribute;
 
-        public OptionValueAttribute? ValueAttribute { get; }
+        public OptionValueAttribute? ValueAttribute => _optionAttribute as OptionValueAttribute;
     }
 }

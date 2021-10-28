@@ -310,5 +310,29 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
                 .Should()
                 .Be(enumValue);
         }
+
+        [Theory]
+        [InlineData("Hello", "World")]
+        [InlineData("World", "Hello")]
+        [InlineData("Abc", "ABC")]
+        [InlineData("qwertz", "QWERTZ")]
+        public void Parse_PropertyWithConverter_PropertyIsSetCorrect(string argValue, string propertyValue)
+        {
+            var args = new[] { "-t", argValue };
+
+            var parser = new OptionParser();
+
+            // Act
+            var option = parser.Parse(typeof(TestOptionWithConverter), args) as TestOptionWithConverter;
+
+            // Assert
+            option
+                .Should()
+                .NotBeNull();
+
+            option!.Text
+                .Should()
+                .Be(propertyValue);
+        }
     }
 }

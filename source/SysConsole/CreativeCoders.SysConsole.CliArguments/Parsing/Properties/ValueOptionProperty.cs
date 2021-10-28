@@ -10,7 +10,8 @@ namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties
     {
         private readonly OptionValueAttribute _optionValueAttribute;
 
-        public ValueOptionProperty(PropertyInfo propertyInfo, OptionValueAttribute optionValueAttribute) : base(propertyInfo)
+        public ValueOptionProperty(PropertyInfo propertyInfo, OptionValueAttribute optionValueAttribute)
+            : base(propertyInfo, optionValueAttribute)
         {
             _optionValueAttribute = optionValueAttribute;
         }
@@ -22,29 +23,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties
                 .Skip(_optionValueAttribute.Index)
                 .FirstOrDefault();
 
-            if (optionArgument == null && _optionValueAttribute.DefaultValue == null)
-            {
-                if (_optionValueAttribute.IsRequired)
-                {
-                    throw new RequiredArgumentMissingException(Info, _optionValueAttribute);
-                }
-
-                return false;
-            }
-
-            var value = optionArgument == null
-                ? _optionValueAttribute.DefaultValue
-                : optionArgument.Value;
-
-            var propertyValue = CliValueConverters.Default.Convert(value, Info.PropertyType);
-
-            if (propertyValue != ConverterAction.DoNothing)
-            {
-                Info.SetValue(optionObject, propertyValue);
-            }
-            
-
-            return true;
+            return SetPropertyValue(optionArgument, optionObject);
         }
     }
 }
