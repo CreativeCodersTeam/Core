@@ -1,9 +1,8 @@
 using System;
-using CreativeCoders.Core;
+using CreativeCoders.Core.Reflection;
 using CreativeCoders.SysConsole.App.Execution;
 using CreativeCoders.SysConsole.App.MainProgram;
-using CreativeCoders.SysConsole.App.VerbObjects;
-using CreativeCoders.SysConsole.App.Verbs;
+using CreativeCoders.SysConsole.CliArguments.Building;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,13 +16,11 @@ namespace CreativeCoders.SysConsole.App
 
         private Type? _programMainType;
         
-        private Action<IConsoleAppVerbsBuilder>? _setupVerbsBuilder;
-
         private Action<ConfigurationBuilder>? _setupConfiguration;
 
-        private Action<IConsoleAppVerbObjectsBuilder>? _setupVerbObjectsBuilder;
-
         private Action<IServiceCollection>? _configureServices;
+
+        private Action<ICliBuilder>? _setupCliBuilder;
 
         public ConsoleAppBuilder(string[]? arguments)
         {
@@ -34,21 +31,6 @@ namespace CreativeCoders.SysConsole.App
             where TStartup : IStartup, new()
         {
             _startupType = typeof(TStartup);
-
-            return this;
-        }
-
-        public ConsoleAppBuilder UseVerbs(
-            Action<IConsoleAppVerbsBuilder> verbBuilder)
-        {
-            _setupVerbsBuilder = Ensure.Argument(verbBuilder, nameof(verbBuilder)).NotNull();
-
-            return this;
-        }
-
-        public ConsoleAppBuilder UseVerbObjects(Action<IConsoleAppVerbObjectsBuilder> verbObjectsBuilder)
-        {
-            _setupVerbObjectsBuilder = verbObjectsBuilder;
 
             return this;
         }
@@ -64,6 +46,11 @@ namespace CreativeCoders.SysConsole.App
         public ConsoleAppBuilder UseProgramMain<TProgramMain>()
             where TProgramMain : IMain
         {
+            if (_setupCliBuilder != null)
+            {
+                throw new InvalidOperationException("CLI builder is already configured");
+            }
+
             _programMainType = typeof(TProgramMain);
 
             return this;
@@ -76,19 +63,30 @@ namespace CreativeCoders.SysConsole.App
             return this;
         }
 
+        public ConsoleAppBuilder UseCli(Action<ICliBuilder> setupCliBuilder)
+        {
+            if (_programMainType != null)
+            {
+                throw new InvalidOperationException("Program main is already set");
+            }
+
+            _setupCliBuilder = setupCliBuilder;
+
+            return this;
+        }
+
         public IConsoleApp Build()
         {
-            if (_setupVerbsBuilder == null && _setupVerbObjectsBuilder == null && _programMainType == null)
+            if (_programMainType == null && _setupCliBuilder == null)
             {
-                throw new ArgumentException("No program main or verb defined");
+                throw new InvalidOperationException("No program main and no CLI builder defined");
             }
 
             var serviceProvider = CreateServiceProvider();
 
-            var executorChain = new ExecutorChain(_programMainType, _setupVerbsBuilder,
-                _setupVerbObjectsBuilder, serviceProvider);
-
-            var commandExecutor = new CommandExecutor(executorChain);
+            ICommandExecutor commandExecutor = _programMainType != null
+                ? new MainExecutor(_programMainType!.CreateInstance<IMain>(serviceProvider))
+                : new CliBuilderExecutor(_setupCliBuilder!, serviceProvider);
 
             return new DefaultConsoleApp(commandExecutor, _arguments);
         }

@@ -21,7 +21,7 @@ namespace CreativeCoders.SysConsole.App
         {
             try
             {
-                var result = await _commandExecutor.Execute(_args).ConfigureAwait(false);
+                var result = await _commandExecutor.ExecuteAsync(_args).ConfigureAwait(false);
 
                 return result;
             }

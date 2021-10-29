@@ -4,6 +4,6 @@ namespace CreativeCoders.SysConsole.App.Execution
 {
     public interface ICommandExecutor
     {
-        Task<int> Execute(string[] args);
+        Task<int> ExecuteAsync(string[] args);
     }
 }

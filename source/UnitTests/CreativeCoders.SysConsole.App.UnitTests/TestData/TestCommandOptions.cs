@@ -1,11 +1,10 @@
-﻿using CommandLine;
+﻿using CreativeCoders.SysConsole.CliArguments.Options;
 
 namespace CreativeCoders.SysConsole.App.UnitTests.TestData
 {
-    [Verb("test")]
-    public class TestVerbOptions
+    public class TestCommandOptions
     {
-        [Value(0)]
+        [OptionValue(0)]
         public string? FirstArg { get; set; }
     }
 }

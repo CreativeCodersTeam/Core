@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.App.Execution;
-using CreativeCoders.SysConsole.App.MainProgram;
 using FakeItEasy;
 using FluentAssertions;
 using Xunit;
@@ -17,7 +16,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
 
             var executor = A.Fake<ICommandExecutor>();
 
-            A.CallTo(() => executor.Execute(A<string[]>.Ignored)).Returns(Task.FromResult(expectedResult));
+            A.CallTo(() => executor.ExecuteAsync(A<string[]>.Ignored)).Returns(Task.FromResult(expectedResult));
 
             var consoleApp = new DefaultConsoleApp(executor, Array.Empty<string>());
 
@@ -37,7 +36,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
 
             var executor = A.Fake<ICommandExecutor>();
 
-            A.CallTo(() => executor.Execute(A<string[]>.Ignored)).Throws(_ => new ConsoleException(expectedResult));
+            A.CallTo(() => executor.ExecuteAsync(A<string[]>.Ignored)).Throws(_ => new ConsoleException(expectedResult));
 
             var consoleApp = new DefaultConsoleApp(executor, Array.Empty<string>());
 
@@ -55,7 +54,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         {
             var executor = A.Fake<ICommandExecutor>();
 
-            A.CallTo(() => executor.Execute(A<string[]>.Ignored)).Throws(_ => new ArgumentException());
+            A.CallTo(() => executor.ExecuteAsync(A<string[]>.Ignored)).Throws(_ => new ArgumentException());
 
             var consoleApp = new DefaultConsoleApp(executor, Array.Empty<string>());
 
