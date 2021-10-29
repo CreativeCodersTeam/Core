@@ -33,6 +33,9 @@ stages:
         Write-Host 'IsMainBranch  $(IsMainBranch)'
         Write-Host 'IsPullRequest $(IsPullRequest)'
         Write-Host 'IsTag Branch  $(IsTag)'
+    - pwsh: |
+        dotnet tool install --global GitVersion.Tool
+        dotnet-gitversion
     - pwsh: ./build.ps1 CreateNuGetPackages
       displayName: '[Nuke Build]'
 

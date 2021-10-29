@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Comparing;
+using FluentAssertions;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace CreativeCoders.Core.UnitTests.Collections
 {
@@ -795,6 +797,29 @@ namespace CreativeCoders.Core.UnitTests.Collections
             var items = Enumerable.Range(0, 10) as IEnumerable;
             
             items.ForEach((item, index) => Assert.Equal(item, index));
+        }
+
+        [Theory]
+        [InlineData(new object[] {1, 2, 3, 4, 5}, 5, typeof(IEnumerable<int>), typeof(int))]
+        [InlineData(new object[] {"1", "2", "3", "4", "5"}, 5, typeof(IEnumerable<string>), typeof(string))]
+        public void OfType_ObjectEnumerableWithIntegers_ReturnsIEnumerableOfInt(IEnumerable dataArray,
+            int expectedCount, Type targetType, Type itemType)
+        {
+            // Act
+            var result = dataArray.OfType(itemType) as IEnumerable;
+
+            // Assert
+            result
+                .Should()
+                .NotBeNull();
+
+            result!
+                .Should()
+                .BeAssignableTo(targetType);
+
+            result.FastCount()
+                .Should()
+                .Be(expectedCount);
         }
 
         private class TestData

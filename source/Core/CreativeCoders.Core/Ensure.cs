@@ -27,6 +27,7 @@ namespace CreativeCoders.Core
         /// <returns>   The <paramref name="value"/>. </returns>
         ///-------------------------------------------------------------------------------------------------
         [ContractAnnotation("value: null => halt; value: notnull => notnull")]
+        [return: System.Diagnostics.CodeAnalysis.NotNull]
         public static T NotNull<T>(T value, string paramName)
         {
             if (value is null)
@@ -75,6 +76,7 @@ namespace CreativeCoders.Core
         /// <returns>   The <paramref name="value"/>. </returns>
         ///-------------------------------------------------------------------------------------------------
         [ContractAnnotation("halt <= value: null; value: notnull => notnull")]
+        [return: System.Diagnostics.CodeAnalysis.NotNull]
         public static string IsNotNullOrEmpty(string value, string paramName)
         {
             if (string.IsNullOrEmpty(value))
@@ -116,6 +118,7 @@ namespace CreativeCoders.Core
         /// <returns>   The <paramref name="value"/>. </returns>
         ///-------------------------------------------------------------------------------------------------
         [ContractAnnotation("halt <= value: null; value: notnull => notnull")]
+        [return: System.Diagnostics.CodeAnalysis.NotNull]
         public static string IsNotNullOrWhitespace(string value, string paramName)
         {
             if (string.IsNullOrWhiteSpace(value))

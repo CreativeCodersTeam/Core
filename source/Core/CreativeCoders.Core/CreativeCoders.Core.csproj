@@ -8,12 +8,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
-		<PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
+	  <Compile Remove="Async\**" />
+	  <EmbeddedResource Remove="Async\**" />
+	  <None Remove="Async\**" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Async\" />
+		<PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
+		<PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
 	</ItemGroup>
 
 </Project>
