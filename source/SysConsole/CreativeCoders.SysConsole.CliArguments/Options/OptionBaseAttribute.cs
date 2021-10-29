@@ -9,5 +9,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Options
         public bool IsRequired { get; set; }
 
         public Type? Converter { get; set; }
+
+        public char Separator { get; set; } = ',';
     }
 }

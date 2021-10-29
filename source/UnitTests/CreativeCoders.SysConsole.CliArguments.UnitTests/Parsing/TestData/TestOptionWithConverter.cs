@@ -14,7 +14,7 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing.TestData
 
     public class TestTextConverter : ICliValueConverter
     {
-        public object Convert(object? value, Type targetType)
+        public object Convert(object? value, Type targetType, OptionBaseAttribute optionAttribute)
         {
             var text = value?.ToString();
 

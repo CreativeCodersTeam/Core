@@ -37,7 +37,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties
                 : CliValueConverters.Default)
                 ?? CliValueConverters.Default;
 
-            var propertyValue = converter.Convert(value, Info.PropertyType);
+            var propertyValue = converter.Convert(value, Info.PropertyType, _optionAttribute);
 
             if (propertyValue != ConverterAction.DoNothing)
             {

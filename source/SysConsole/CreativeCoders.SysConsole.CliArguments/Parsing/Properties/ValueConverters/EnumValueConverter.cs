@@ -2,12 +2,13 @@
 using System.Linq;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Enums;
+using CreativeCoders.SysConsole.CliArguments.Options;
 
 namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties.ValueConverters
 {
     public class EnumValueConverter : ICliValueConverter
     {
-        public object? Convert(object? value, Type targetType)
+        public object? Convert(object? value, Type targetType, OptionBaseAttribute optionAttribute)
         {
             if (!targetType.IsEnum)
             {
