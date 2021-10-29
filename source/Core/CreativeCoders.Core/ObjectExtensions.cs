@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
@@ -12,6 +13,7 @@ namespace CreativeCoders.Core
             return obj?.ToString() ?? defaultValue;
         }
 
+        [return: System.Diagnostics.CodeAnalysis.NotNull]
         public static string ToStringSafe(this object obj)
         {
             return obj.ToStringSafe(string.Empty);

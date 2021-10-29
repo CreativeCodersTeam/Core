@@ -10,9 +10,11 @@ namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties
     {
         private readonly OptionBaseAttribute _optionAttribute;
 
+        private readonly PropertyInfo _propertyInfo;
+
         protected OptionPropertyBase(PropertyInfo propertyInfo, OptionBaseAttribute optionAttribute)
         {
-            Info = propertyInfo;
+            _propertyInfo = propertyInfo;
             _optionAttribute = optionAttribute;
         }
 
@@ -22,7 +24,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties
             {
                 if (_optionAttribute.IsRequired)
                 {
-                    throw new RequiredArgumentMissingException(Info, _optionAttribute);
+                    throw new RequiredArgumentMissingException(_propertyInfo, _optionAttribute);
                 }
 
                 return false;
@@ -37,17 +39,15 @@ namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties
                 : CliValueConverters.Default)
                 ?? CliValueConverters.Default;
 
-            var propertyValue = converter.Convert(value, Info.PropertyType, _optionAttribute);
+            var propertyValue = converter.Convert(value, _propertyInfo.PropertyType, _optionAttribute);
 
             if (propertyValue != ConverterAction.DoNothing)
             {
-                Info.SetValue(optionObject, propertyValue);
+                _propertyInfo.SetValue(optionObject, propertyValue);
             }
 
             return true;
         }
-
-        protected PropertyInfo Info { get; }
 
         public abstract bool Read(IEnumerable<OptionArgument> optionArguments, object optionObject);
     }

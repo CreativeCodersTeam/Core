@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using CreativeCoders.SysConsole.CliArguments.Exceptions;
 using CreativeCoders.SysConsole.CliArguments.Options;
 
 namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties

@@ -65,7 +65,7 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing.Properties.Va
 
             result
                 .Should()
-                .ContainInOrder(new[] {1, 2, 3, 4, 5});
+                .ContainInOrder(1, 2, 3, 4, 5);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CreativeCoders.SysConsole.CliArguments.Exceptions;
 using CreativeCoders.SysConsole.CliArguments.Options;
 using CreativeCoders.SysConsole.CliArguments.Parsing;
@@ -334,6 +335,54 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
             option!.Text
                 .Should()
                 .Be(propertyValue);
+        }
+
+        [Theory]
+        [InlineData("1,2,3,4,5", new []{1,2,3,4,5})]
+        [InlineData("1", new[] { 1 })]
+        public void Parse_PropertyIsIEnumerableOfInt_PropertyIsSetCorrect(string argValue,
+            IEnumerable<int> intValues)
+        {
+            var args = new[] { "-i", argValue };
+
+            var parser = new OptionParser();
+
+            // Act
+            var option =
+                parser.Parse(typeof(TestOptionWithIntEnumerable), args) as TestOptionWithIntEnumerable;
+
+            // Assert
+            option
+                .Should()
+                .NotBeNull();
+
+            option!.IntValues
+                .Should()
+                .ContainInOrder(intValues);
+        }
+
+        [Theory]
+        [InlineData("Failed,Ok", TestEnumWithFlags.Ok | TestEnumWithFlags.Failed)]
+        [InlineData("Ok", TestEnumWithFlags.Ok)]
+        [InlineData("None,Custom,Ok", TestEnumWithFlags.Ok | TestEnumWithFlags.Custom | TestEnumWithFlags.None)]
+        public void Parse_PropertyIsEnumWithFlags_EnumFlagsAreSetCorrect(string argValue,
+            TestEnumWithFlags enumWithFlags)
+        {
+            var args = new[] {"-e", argValue};
+
+            var parser = new OptionParser();
+
+            // Act
+            var option = parser.Parse(typeof(TestOptionWithEnumFlags), args) as TestOptionWithEnumFlags;
+
+            // Assert
+            option
+                .Should()
+                .NotBeNull();
+
+            option!.EnumValue
+                .Should()
+                .Be(enumWithFlags);
         }
     }
 }
