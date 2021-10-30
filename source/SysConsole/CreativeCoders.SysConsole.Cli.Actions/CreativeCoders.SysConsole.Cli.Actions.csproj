@@ -6,11 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Routing\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+    <ProjectReference Include="..\CreativeCoders.SysConsole.App\CreativeCoders.SysConsole.App.csproj" />
   </ItemGroup>
 
 </Project>

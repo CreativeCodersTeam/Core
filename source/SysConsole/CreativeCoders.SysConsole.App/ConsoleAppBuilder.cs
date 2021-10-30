@@ -83,6 +83,8 @@ namespace CreativeCoders.SysConsole.App
             }
 
             startup.ConfigureServices(services, configuration);
+
+            services.AddSingleton(startup);
         }
 
         private IServiceProvider CreateServiceProvider()

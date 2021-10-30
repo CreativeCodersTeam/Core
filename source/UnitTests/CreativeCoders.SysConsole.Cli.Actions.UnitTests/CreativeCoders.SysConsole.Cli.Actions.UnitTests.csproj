@@ -28,6 +28,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Runtime\" />
 	  <Folder Include="TestData\" />
 	</ItemGroup>
 

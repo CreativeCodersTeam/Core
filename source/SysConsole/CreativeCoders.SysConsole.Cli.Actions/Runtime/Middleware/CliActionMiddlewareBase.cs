@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace CreativeCoders.SysConsole.Cli.Actions.Execution
+namespace CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware
 {
-    public abstract class CliActionExecutionMiddlewareBase
+    public abstract class CliActionMiddlewareBase
     {
-        protected CliActionExecutionMiddlewareBase(Func<CliActionContext, Task> next)
+        protected CliActionMiddlewareBase(Func<CliActionContext, Task> next)
         {
             Next = next;
         }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CreativeCoders.SysConsole.Cli.Actions.Execution
+namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 {
     public class CliActionRequest
     {
@@ -9,6 +9,6 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Execution
             Arguments = args;
         }
 
-        public IList<string> Arguments { get; set; }
+        public string[] Arguments { get; set; }
     }
 }
