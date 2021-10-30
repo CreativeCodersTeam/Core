@@ -1,8 +1,4 @@
 using System;
-using CreativeCoders.Core.Reflection;
-using CreativeCoders.SysConsole.App.Execution;
-using CreativeCoders.SysConsole.App.MainProgram;
-using CreativeCoders.SysConsole.CliArguments.Building;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,13 +10,11 @@ namespace CreativeCoders.SysConsole.App
 
         private Type? _startupType;
 
-        private Type? _programMainType;
-        
         private Action<ConfigurationBuilder>? _setupConfiguration;
 
         private Action<IServiceCollection>? _configureServices;
 
-        private Action<ICliBuilder>? _setupCliBuilder;
+        private Func<IServiceProvider, ICommandExecutor>? _createExecutor;
 
         public ConsoleAppBuilder(string[]? arguments)
         {
@@ -43,50 +37,35 @@ namespace CreativeCoders.SysConsole.App
             return this;
         }
 
-        public ConsoleAppBuilder UseProgramMain<TProgramMain>()
-            where TProgramMain : IMain
-        {
-            if (_setupCliBuilder != null)
-            {
-                throw new InvalidOperationException("CLI builder is already configured");
-            }
-
-            _programMainType = typeof(TProgramMain);
-
-            return this;
-        }
-
-        public ConsoleAppBuilder Configure(Action<IServiceCollection> configureServices)
+        public ConsoleAppBuilder ConfigureServices(Action<IServiceCollection> configureServices)
         {
             _configureServices = configureServices;
 
             return this;
         }
 
-        public ConsoleAppBuilder UseCli(Action<ICliBuilder> setupCliBuilder)
+        public ConsoleAppBuilder UseExecutor(Func<IServiceProvider, ICommandExecutor> createExecutor)
         {
-            if (_programMainType != null)
+            if (_createExecutor != null)
             {
-                throw new InvalidOperationException("Program main is already set");
+                throw new InvalidOperationException("Executor already set");
             }
 
-            _setupCliBuilder = setupCliBuilder;
+            _createExecutor = createExecutor;
 
             return this;
         }
 
         public IConsoleApp Build()
         {
-            if (_programMainType == null && _setupCliBuilder == null)
+            if (_createExecutor == null)
             {
-                throw new InvalidOperationException("No program main and no CLI builder defined");
+                throw new InvalidOperationException("No executor defined");
             }
 
             var serviceProvider = CreateServiceProvider();
 
-            ICommandExecutor commandExecutor = _programMainType != null
-                ? new MainExecutor(_programMainType!.CreateInstance<IMain>(serviceProvider))
-                : new CliBuilderExecutor(_setupCliBuilder!, serviceProvider);
+            var commandExecutor = _createExecutor(serviceProvider);
 
             return new DefaultConsoleApp(commandExecutor, _arguments);
         }

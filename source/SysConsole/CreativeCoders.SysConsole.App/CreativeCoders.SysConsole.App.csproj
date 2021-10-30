@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-    <ProjectReference Include="..\CreativeCoders.SysConsole.CliArguments\CreativeCoders.SysConsole.CliArguments.csproj" />
     <ProjectReference Include="..\CreativeCoders.SysConsole.Core\CreativeCoders.SysConsole.Core.csproj" />
   </ItemGroup>
 

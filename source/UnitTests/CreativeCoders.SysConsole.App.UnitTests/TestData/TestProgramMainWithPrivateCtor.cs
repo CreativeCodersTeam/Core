@@ -5,13 +5,16 @@ using JetBrains.Annotations;
 namespace CreativeCoders.SysConsole.App.UnitTests.TestData
 {
     [PublicAPI]
-    public class TestErrorProgramMain : IMain
+    public class TestProgramMainWithPrivateCtor : IMain
     {
-        public const int ReturnCode = -3456;
+        private TestProgramMainWithPrivateCtor()
+        {
+            
+        }
 
         public Task<int> ExecuteAsync(string[] args)
         {
-            return Task.FromResult(ReturnCode);
+            return Task.FromResult(0);
         }
     }
 }

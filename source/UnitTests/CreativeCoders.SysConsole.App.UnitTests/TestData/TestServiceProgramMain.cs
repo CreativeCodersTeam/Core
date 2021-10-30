@@ -1,23 +1,25 @@
 ﻿using System.Threading.Tasks;
 using CreativeCoders.SysConsole.App.MainProgram;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Configuration;
 
 namespace CreativeCoders.SysConsole.App.UnitTests.TestData
 {
-    [PublicAPI]
-    public class TestProgramMainWithConfiguration : IMain
+    [UsedImplicitly]
+    public class TestServiceProgramMain : IMain
     {
         private readonly int _returnCode;
 
-        public TestProgramMainWithConfiguration(IConfiguration configuration)
+        public TestServiceProgramMain(ITestService testService)
         {
-            _returnCode = int.Parse(configuration["ReturnCode"]);
+            TextValue = testService.TextValue;
+            _returnCode = testService.ReturnCode;
         }
 
         public Task<int> ExecuteAsync(string[] args)
         {
             return Task.FromResult(_returnCode);
         }
+
+        public static string? TextValue { get; private set; }
     }
 }

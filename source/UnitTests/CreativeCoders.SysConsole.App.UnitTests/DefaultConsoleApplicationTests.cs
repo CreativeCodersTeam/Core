@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using CreativeCoders.SysConsole.App.Execution;
 using FakeItEasy;
 using FluentAssertions;
 using Xunit;

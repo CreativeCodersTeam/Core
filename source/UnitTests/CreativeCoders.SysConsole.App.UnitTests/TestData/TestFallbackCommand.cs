@@ -5,19 +5,15 @@ using JetBrains.Annotations;
 namespace CreativeCoders.SysConsole.App.UnitTests.TestData
 {
     [UsedImplicitly]
-    public class TestCommand : CliCommandBase<TestCommandOptions>
+    public class TestFallbackCommand : CliCommandBase<TestCommandOptions>
     {
-        public const int ReturnCode = 123;
+        public const int ReturnCode = 2468;
 
         public override Task<CliCommandResult> ExecuteAsync(TestCommandOptions options)
         {
-            OptionsFirstArg = options.FirstArg;
-
             return Task.FromResult(new CliCommandResult(ReturnCode));
         }
 
         public override string Name { get; set; } = "test";
-
-        public static string? OptionsFirstArg { get; private set; }
     }
 }

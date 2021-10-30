@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
+using CreativeCoders.SysConsole.App;
 using CreativeCoders.SysConsole.CliArguments.Building;
 
-namespace CreativeCoders.SysConsole.App.Execution
+namespace CreativeCoders.SysConsole.CliArguments
 {
     public class CliBuilderExecutor : ICommandExecutor
     {

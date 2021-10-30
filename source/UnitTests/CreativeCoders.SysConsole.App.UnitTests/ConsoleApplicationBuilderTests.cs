@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CreativeCoders.SysConsole.App.MainProgram;
 using CreativeCoders.SysConsole.App.UnitTests.TestData;
-using CreativeCoders.SysConsole.CliArguments.Commands;
+using CreativeCoders.SysConsole.CliArguments;
+using FakeItEasy;
 using FluentAssertions;
-using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace CreativeCoders.SysConsole.App.UnitTests
@@ -90,7 +92,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
             // Assert
             act
                 .Should()
-                .Throw<ArgumentException>();
+                .Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -196,7 +198,8 @@ namespace CreativeCoders.SysConsole.App.UnitTests
 
             var consoleApp = new ConsoleAppBuilder(args)
                 .UseCli(x =>
-                    x.AddCommandGroup(x => { x.SetName("demo").AddCommand<DemoGroupTestCommand>();}))
+                    x.AddCommandGroup(groupBuilder =>
+                        groupBuilder.SetName("demo").AddCommand<DemoGroupTestCommand>()))
                 .Build();
 
             // Act
@@ -208,77 +211,53 @@ namespace CreativeCoders.SysConsole.App.UnitTests
                 .Be(DemoGroupTestCommand.ReturnCode);
         }
 
-        //[Fact]
-        //public async Task UseVerbObjects_NoObjectFound_MatchingPureVerbIsCalled()
-        //{
-        //    var args = new [] { "test", "something" };
-
-        //    var consoleApp = new ConsoleAppBuilder(args)
-        //        .UseVerbObjects(x =>
-        //            x.AddObjects<TestVerbObject>(verbs =>
-        //                verbs.AddVerb<TestVerbObjectTestVerb>()))
-        //        .UseVerbs(x => x.AddVerb<TestFallbackVerb>())
-        //        .Build();
-
-        //    // Act
-        //    var result = await consoleApp.RunAsync().ConfigureAwait(false);
-
-        //    // Assert
-        //    result
-        //        .Should()
-        //        .Be(TestFallbackVerb.ReturnCode);
-        //}
-
-        //[Fact]
-        //public async Task UseVerbObjects_NoObjectFoundNoVerbMatches_ProgramMainIsCalled()
-        //{
-        //    var args = new[] { "test1", "something" };
-
-        //    var consoleApp = new ConsoleAppBuilder(args)
-        //        .UseVerbObjects(x =>
-        //            x.AddObjects<TestVerbObject>(verbs =>
-        //                verbs.AddVerb<TestVerbObjectTestVerb>()))
-        //        .UseVerbs(x => x.AddVerb<TestFallbackVerb>())
-        //        .UseProgramMain<TestProgramMain>()
-        //        .Build();
-
-        //    // Act
-        //    var result = await consoleApp.RunAsync().ConfigureAwait(false);
-
-        //    // Assert
-        //    result
-        //        .Should()
-        //        .Be(TestProgramMain.ReturnCode);
-        //}
-    }
-
-    //public class TestFallbackVerb : VerbBase<TestVerbOptions>
-    //{
-    //    public const int ReturnCode = 2468;
-
-    //    public TestFallbackVerb(TestVerbOptions options) : base(options) { }
-
-    //    public override Task<int> ExecuteAsync()
-    //    {
-    //        return Task.FromResult(ReturnCode);
-    //    }
-    //}
-
-    //public class TestVerbObject : VerbObjectBase
-    //{
-    //    public override string Name => "Demo";
-    //}
-
-    [UsedImplicitly]
-    public class DemoGroupTestCommand : CliCommandBase<TestCommandOptions>
-    {
-        public const int ReturnCode = 1357;
-
-        public override Task<CliCommandResult> ExecuteAsync(TestCommandOptions options)
+        [Fact]
+        public async Task UseVerbObjects_NoObjectFound_MatchingPureVerbIsCalled()
         {
-            return Task.FromResult(new CliCommandResult(ReturnCode));
+            var args = new[] {"test", "something"};
+
+            var consoleApp = new ConsoleAppBuilder(args)
+                .UseCli(x => x
+                    .AddCommandGroup(groupBuilder => groupBuilder.SetName("demo").AddCommand<DemoGroupTestCommand>())
+                    .AddCommand<TestFallbackCommand>())
+                .Build();
+
+            // Act
+            var result = await consoleApp.RunAsync().ConfigureAwait(false);
+
+            // Assert
+            result
+                .Should()
+                .Be(TestFallbackCommand.ReturnCode);
         }
 
-        public override string Name { get; set; } = "test";
+        [Fact]
+        public async Task ConfigureServices_()
+        {
+            const int expectedReturnCode = 123456;
+            const string expectedTextValue = "TestText";
+
+            var testService = A.Fake<ITestService>();
+
+            A.CallTo(() => testService.ReturnCode).Returns(expectedReturnCode);
+            A.CallTo(() => testService.TextValue).Returns(expectedTextValue);
+
+            var consoleApp = new ConsoleAppBuilder(Array.Empty<string>())
+                .ConfigureServices(x => x.AddTransient(_ => testService))
+                .UseProgramMain<TestServiceProgramMain>()
+                .Build();
+
+            // Act
+            var result = await consoleApp.RunAsync();
+
+            // Assert
+            result
+                .Should()
+                .Be(expectedReturnCode);
+
+            TestServiceProgramMain.TextValue
+                .Should()
+                .Be(expectedTextValue);
+        }
     }
 }
