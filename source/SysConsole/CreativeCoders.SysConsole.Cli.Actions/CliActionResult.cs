@@ -2,6 +2,6 @@
 {
     public class CliActionResult
     {
-        
+        public int ReturnCode { get; init; }
     }
 }

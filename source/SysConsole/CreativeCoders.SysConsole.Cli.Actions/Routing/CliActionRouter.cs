@@ -1,22 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using CreativeCoders.SysConsole.Cli.Actions.Exceptions;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Routing
 {
     public class CliActionRouter : ICliActionRouter
     {
-        private readonly IEnumerable<CliActionRoute> _routes;
+        private readonly IList<CliActionRoute> _actionRoutes;
 
-        public CliActionRouter(IEnumerable<CliActionRoute> routes)
+        public CliActionRouter()
         {
-            _routes = routes;
+            _actionRoutes = new List<CliActionRoute>();
         }
 
         public CliActionRoute? FindRoute(IEnumerable<string> args)
         {
-            var routes = _routes
+            var routes = _actionRoutes
                 .Where(x =>
                     x.RouteParts.SequenceEqual(args.Take(x.RouteParts.Length)))
                 .ToArray();
@@ -33,5 +32,12 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
         {
             throw new System.NotImplementedException();
         }
+
+        public void AddRoute(CliActionRoute actionRoute)
+        {
+            _actionRoutes.Add(actionRoute);
+        }
+
+        public IEnumerable<CliActionRoute> ActionRoutes => _actionRoutes;
     }
 }

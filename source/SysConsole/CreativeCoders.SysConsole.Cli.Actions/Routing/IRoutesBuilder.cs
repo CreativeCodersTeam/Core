@@ -6,9 +6,9 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
 {
     public interface IRoutesBuilder
     {
-        RoutesBuilder AddController(Type controllerType);
+        void AddController(Type controllerType);
 
-        RoutesBuilder AddControllers(Assembly assembly);
+        void AddControllers(Assembly assembly);
 
         IEnumerable<CliActionRoute> BuildRoutes();
     }

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 {
+    [PublicAPI]
     public class CliActionContext
     {
         public CliActionContext(CliActionRequest request)

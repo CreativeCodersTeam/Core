@@ -7,5 +7,9 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
         CliActionRoute? FindRoute(IEnumerable<string> args);
 
         CliActionRoute? GetDefaultRoute();
+
+        void AddRoute(CliActionRoute actionRoute);
+
+        IEnumerable<CliActionRoute> ActionRoutes { get; }
     }
 }

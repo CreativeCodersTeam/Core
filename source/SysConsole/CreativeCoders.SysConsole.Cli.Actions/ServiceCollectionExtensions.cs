@@ -9,9 +9,11 @@ namespace CreativeCoders.SysConsole.Cli.Actions
     {
         public static void AddCliActions(this IServiceCollection services)
         {
-            services.TryAddTransient<ICliActionRuntimeBuilder, CliActionRuntimeBuilder>();
+            services.TryAddSingleton<ICliActionRuntimeBuilder, CliActionRuntimeBuilder>();
 
-            services.TryAddTransient<IRoutesBuilder, RoutesBuilder>();
+            services.TryAddSingleton<IRoutesBuilder, RoutesBuilder>();
+
+            services.TryAddSingleton<ICliActionRouter, CliActionRouter>();
         }
     }
 }

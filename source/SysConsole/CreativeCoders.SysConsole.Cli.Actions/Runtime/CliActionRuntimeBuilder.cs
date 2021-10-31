@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Reflection;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware;
@@ -12,14 +13,18 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 {
     public class CliActionRuntimeBuilder : ICliActionRuntimeBuilder
     {
+        private readonly ICliActionRouter _actionRouter;
+
         private readonly IRoutesBuilder _routesBuilder;
 
         private readonly IServiceProvider _serviceProvider;
 
         private readonly IList<Type> _middlewareTypes;
 
-        public CliActionRuntimeBuilder(IRoutesBuilder routesBuilder, IServiceProvider serviceProvider)
+        public CliActionRuntimeBuilder(ICliActionRouter actionRouter,
+            IRoutesBuilder routesBuilder, IServiceProvider serviceProvider)
         {
+            _actionRouter = Ensure.NotNull(actionRouter, nameof(actionRouter));
             _routesBuilder = Ensure.NotNull(routesBuilder, nameof(routesBuilder));
             _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
 
@@ -60,9 +65,11 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 
         public ICliActionRuntime Build()
         {
-            var runtime = new CliActionRuntime();
+            var runtime = new CliActionRuntime(_serviceProvider);
 
-            runtime.Init(CreateMiddlewarePipeline, _routesBuilder.BuildRoutes());
+            _routesBuilder.BuildRoutes().ForEach(x => _actionRouter.AddRoute(x));
+
+            runtime.Init(CreateMiddlewarePipeline);
 
             return runtime;
         }

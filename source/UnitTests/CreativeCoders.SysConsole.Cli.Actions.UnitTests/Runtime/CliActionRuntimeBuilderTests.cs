@@ -1,27 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware;
+using CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
+using FakeItEasy;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
-using Xunit;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
 {
     public class CliActionRuntimeBuilderTests
     {
-        [Fact]
+        //[Fact]
         public async Task Test()
         {
+            var route = new CliActionRoute(typeof(DemoCliController),
+                typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync)), new[] {"test"});
+
             var args = new[] {"test"};
 
-            var builder = new CliActionRuntimeBuilder(new RoutesBuilder(), new ServiceCollection().BuildServiceProvider());
+            var router = A.Fake<ICliActionRouter>();
+
+            A.CallTo(() => router.FindRoute(A<IEnumerable<string>>.Ignored)).Returns(route);
+
+            var builder = new CliActionRuntimeBuilder(router, new RoutesBuilder(),
+                new ServiceCollection().BuildServiceProvider());
 
             var runtime = builder
                 .UseMiddleware<FirstTestMiddleware>()
                 .UseMiddleware<SecondTestMiddleware>()
+                .UseMiddleware<CliRoutingMiddleware>()
                 .Build();
 
             // Act

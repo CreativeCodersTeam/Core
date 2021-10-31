@@ -16,23 +16,19 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
             _controllerTypes = new List<Type>();
         }
 
-        public RoutesBuilder AddController(Type controllerType)
+        public void AddController(Type controllerType)
         {
             if (!_controllerTypes.Contains(controllerType))
             {
                 _controllerTypes.Add(controllerType);
             }
-
-            return this;
         }
 
-        public RoutesBuilder AddControllers(Assembly assembly)
+        public void AddControllers(Assembly assembly)
         {
             assembly.GetExportedTypes()
                 .Where(x => x.GetCustomAttribute(typeof(CliControllerAttribute)) != null)
-                .ForEach(x => AddController(x));
-
-            return this;
+                .ForEach(AddController);
         }
 
         public IEnumerable<CliActionRoute> BuildRoutes()

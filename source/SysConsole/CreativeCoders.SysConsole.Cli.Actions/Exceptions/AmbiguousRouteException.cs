@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Exceptions
 {
+    [PublicAPI]
     public class AmbiguousRouteException : CliActionException
     {
         public AmbiguousRouteException(IEnumerable<string> args, IEnumerable<CliActionRoute> routes)

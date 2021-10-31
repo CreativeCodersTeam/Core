@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Exceptions
 {
+    [PublicAPI]
     public class CliActionException : Exception
     {
         public CliActionException()

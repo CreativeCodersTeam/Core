@@ -1,4 +1,5 @@
 using System;
+using CreativeCoders.SysConsole.Core.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -67,7 +68,7 @@ namespace CreativeCoders.SysConsole.App
 
             var commandExecutor = _createExecutor(serviceProvider);
 
-            return new DefaultConsoleApp(commandExecutor, _arguments);
+            return new DefaultConsoleApp(commandExecutor, _arguments, serviceProvider.GetRequiredService<ISysConsole>());
         }
 
         private void ConfigureStartup(IServiceCollection services, IConfiguration configuration)
