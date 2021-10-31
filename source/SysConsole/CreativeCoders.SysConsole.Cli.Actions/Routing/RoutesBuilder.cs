@@ -7,7 +7,7 @@ using CreativeCoders.SysConsole.Cli.Actions.Definition;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Routing
 {
-    public class RoutesBuilder
+    public class RoutesBuilder : IRoutesBuilder
     {
         private readonly IList<Type> _controllerTypes;
 

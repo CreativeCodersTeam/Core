@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CreativeCoders.SysConsole.Cli.Actions.Exceptions;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Routing
 {
@@ -22,7 +23,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
 
             if (routes.Length > 1)
             {
-                throw new AmbiguousMatchException();
+                throw new AmbiguousRouteException(args, routes);
             }
 
             return routes.FirstOrDefault();

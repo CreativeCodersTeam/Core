@@ -11,9 +11,10 @@ namespace CreativeCoders.SysConsole.Cli.Actions
         {
             return consoleAppBuilder
                 .UseStartup<TCliStartup>()
+                .ConfigureServices(services => services.AddCliActions())
                 .UseExecutor(sp =>
                 {
-                    var runtimeBuilder = new CliActionRuntimeBuilder();
+                    var runtimeBuilder = sp.GetRequiredService<ICliActionRuntimeBuilder>();
 
                     var startup = sp.GetRequiredService<IStartup>() as ICliStartup;
 
@@ -24,5 +25,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions
                     return new CliActionExecutor(runtime);
                 });
         }
+
+        
     }
 }

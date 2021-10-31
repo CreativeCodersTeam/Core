@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware;
 using FluentAssertions;
 using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
@@ -15,7 +17,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
         {
             var args = new[] {"test"};
 
-            var builder = new CliActionRuntimeBuilder();
+            var builder = new CliActionRuntimeBuilder(new RoutesBuilder(), new ServiceCollection().BuildServiceProvider());
 
             var runtime = builder
                 .UseMiddleware<FirstTestMiddleware>()
