@@ -12,9 +12,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
         [InlineData(new[] { "demo" }, new[] { "demo", "command", "test1" })]
         public void FindRoute_RouteIsMatched_ReturnsRoute(string[] routeParts, string[] args)
         {
-            var route0 = new CliActionRoute(typeof(DemoCliController),
-                typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync)),
-                routeParts);
+            var route0 = CreateActionRoute<DemoCliController>(nameof(DemoCliController.DoAsync), routeParts);
 
             var router = new CliActionRouter();
 
@@ -34,9 +32,9 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
         {
             var args = new[] {"demo"};
 
-            var route0 = new CliActionRoute(typeof(DefaultCliController),
-                typeof(DefaultCliController).GetMethod(nameof(DefaultCliController.DoDefaultAsync)),
-                new[] {"demo", ""});
+            var route0 =
+                CreateActionRoute<DefaultCliController>(nameof(DefaultCliController.DoDefaultAsync),
+                    "demo", "");
 
             var router = new CliActionRouter();
 
@@ -56,9 +54,8 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
         {
             var args = new[] { "command" };
 
-            var route0 = new CliActionRoute(typeof(DefaultCliController),
-                typeof(DefaultCliController).GetMethod(nameof(DefaultCliController.DoDefaultAsync)),
-                new[] { "", "command" });
+            var route0 = CreateActionRoute<DefaultCliController>(nameof(DefaultCliController.DoDefaultAsync),
+                "", "command");
 
             var router = new CliActionRouter();
 
@@ -78,9 +75,8 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
         {
             var args = new[] { "option" };
 
-            var route0 = new CliActionRoute(typeof(DefaultCliController),
-                typeof(DefaultCliController).GetMethod(nameof(DefaultCliController.DoDefaultAsync)),
-                new[] { "", "" });
+            var route0 = CreateActionRoute<DefaultCliController>(nameof(DefaultCliController.DoDefaultAsync),
+                "", "");
 
             var router = new CliActionRouter();
 
@@ -93,6 +89,12 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
             foundRoute
                 .Should()
                 .BeSameAs(route0);
+        }
+
+        private static CliActionRoute CreateActionRoute<TController>(string methodName, params string[] routeParts)
+        {
+            return new CliActionRoute(typeof(TController), typeof(TController).GetMethod(methodName),
+                routeParts);
         }
     }
 }
