@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime;
@@ -24,7 +23,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
 
             var router = A.Fake<ICliActionRouter>();
 
-            A.CallTo(() => router.FindRoute(A<IEnumerable<string>>.Ignored)).Returns(route);
+            A.CallTo(() => router.FindRoute(A<string[]>.Ignored)).Returns(route);
 
             var builder = new CliActionRuntimeBuilder(router, new RoutesBuilder(),
                 new ServiceCollection().BuildServiceProvider());

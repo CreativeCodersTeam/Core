@@ -28,5 +28,71 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
                 .Should()
                 .Be(route0);
         }
+
+        [Fact]
+        public void FindRoute_RouteWithEmptyActionRoute_ReturnsDefaultDemoRoute()
+        {
+            var args = new[] {"demo"};
+
+            var route0 = new CliActionRoute(typeof(DefaultCliController),
+                typeof(DefaultCliController).GetMethod(nameof(DefaultCliController.DoDefaultAsync)),
+                new[] {"demo", ""});
+
+            var router = new CliActionRouter();
+
+            router.AddRoute(route0);
+
+            // Act
+            var foundRoute = router.FindRoute(args);
+
+            // Assert
+            foundRoute
+                .Should()
+                .BeSameAs(route0);
+        }
+
+        [Fact]
+        public void FindRoute_RouteActionRouteInDefaultController_ReturnsDefaultDemoRoute()
+        {
+            var args = new[] { "command" };
+
+            var route0 = new CliActionRoute(typeof(DefaultCliController),
+                typeof(DefaultCliController).GetMethod(nameof(DefaultCliController.DoDefaultAsync)),
+                new[] { "", "command" });
+
+            var router = new CliActionRouter();
+
+            router.AddRoute(route0);
+
+            // Act
+            var foundRoute = router.FindRoute(args);
+
+            // Assert
+            foundRoute
+                .Should()
+                .BeSameAs(route0);
+        }
+
+        [Fact]
+        public void FindRoute_DefaultAction_ReturnsDefaultDemoRoute()
+        {
+            var args = new[] { "option" };
+
+            var route0 = new CliActionRoute(typeof(DefaultCliController),
+                typeof(DefaultCliController).GetMethod(nameof(DefaultCliController.DoDefaultAsync)),
+                new[] { "", "" });
+
+            var router = new CliActionRouter();
+
+            router.AddRoute(route0);
+
+            // Act
+            var foundRoute = router.FindRoute(args);
+
+            // Assert
+            foundRoute
+                .Should()
+                .BeSameAs(route0);
+        }
     }
 }

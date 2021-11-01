@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CreativeCoders.SysConsole.Cli.Actions.Exceptions;
 
@@ -13,11 +14,34 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
             _actionRoutes = new List<CliActionRoute>();
         }
 
-        public CliActionRoute? FindRoute(IEnumerable<string> args)
+        public CliActionRoute? FindRoute(string[] args)
+        {
+            return FindRoute(args, x => x.RouteParts.SequenceEqual(args.Take(x.RouteParts.Length)))
+                   ?? GetDefaultRoute(args);
+        }
+
+        private CliActionRoute? GetDefaultRoute(string[] args)
+        {
+            return FindRoute(args, x =>
+                   {
+                       var routeLength = x.RouteParts.Length - 1;
+                       return x.RouteParts.Take(routeLength).SequenceEqual(args.Take(routeLength));
+                   })
+                   ??
+                   FindRoute(args, x =>
+                   {
+                       var routeLength = x.RouteParts.Length - 1;
+                       return x.RouteParts.FirstOrDefault() == string.Empty
+                              && x.RouteParts.Skip(1).Take(routeLength).SequenceEqual(args.Take(routeLength));
+                   })
+                   ??
+                   FindRoute(args, x => x.RouteParts.Take(2).All(string.IsNullOrEmpty));
+        }
+
+        private CliActionRoute? FindRoute(IEnumerable<string> args, Func<CliActionRoute, bool> routeFilter)
         {
             var routes = _actionRoutes
-                .Where(x =>
-                    x.RouteParts.SequenceEqual(args.Take(x.RouteParts.Length)))
+                .Where(routeFilter)
                 .ToArray();
 
             if (routes.Length > 1)
@@ -26,11 +50,6 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
             }
 
             return routes.FirstOrDefault();
-        }
-
-        public CliActionRoute? GetDefaultRoute()
-        {
-            throw new System.NotImplementedException();
         }
 
         public void AddRoute(CliActionRoute actionRoute)

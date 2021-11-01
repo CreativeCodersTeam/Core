@@ -1,21 +1,19 @@
 ﻿using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Cli.Actions.Definition;
-using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData
 {
-    [PublicAPI]
-    [CliController("demo")]
-    public class DemoCliController
+    [CliController]
+    public class DefaultCliController
     {
-        [CliAction("test")]
-        public Task<CliActionResult> DoAsync()
+        [CliAction]
+        public Task<CliActionResult> DoDefaultAsync()
         {
             return Task.FromResult(new CliActionResult());
         }
 
-        [CliAction("more/command")]
-        public Task<CliActionResult> DoMoreAsync(DoCmdOptions options)
+        [CliAction("command")]
+        public Task<CliActionResult> DoCommandAsync()
         {
             return Task.FromResult(new CliActionResult());
         }
