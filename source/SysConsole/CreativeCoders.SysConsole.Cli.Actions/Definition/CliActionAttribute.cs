@@ -2,7 +2,8 @@
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Definition
 {
-    public class CliActionAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    public sealed class CliActionAttribute : Attribute
     {
         public CliActionAttribute() : this(string.Empty)
         {

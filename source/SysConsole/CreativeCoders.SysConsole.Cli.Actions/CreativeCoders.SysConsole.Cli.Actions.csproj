@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
     <ProjectReference Include="..\CreativeCoders.SysConsole.App\CreativeCoders.SysConsole.App.csproj" />
+    <ProjectReference Include="..\CreativeCoders.SysConsole.CliArguments\CreativeCoders.SysConsole.CliArguments.csproj" />
   </ItemGroup>
 
   <ItemGroup>

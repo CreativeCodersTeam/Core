@@ -14,42 +14,59 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
             _actionRoutes = new List<CliActionRoute>();
         }
 
-        public CliActionRoute? FindRoute(string[] args)
+        public CliActionRoute? FindRoute(IList<string> args)
         {
-            return FindRoute(args, x => x.RouteParts.SequenceEqual(args.Take(x.RouteParts.Length)))
+            return FindRoute(args, x =>
+                       x.RouteParts.SequenceEqual(args.Take(x.RouteParts.Length)), x => x.RouteParts.Length)
                    ?? GetDefaultRoute(args);
         }
 
-        private CliActionRoute? GetDefaultRoute(string[] args)
+        private CliActionRoute? GetDefaultRoute(IList<string> args)
         {
             return FindRoute(args, x =>
                    {
                        var routeLength = x.RouteParts.Length - 1;
                        return x.RouteParts.Take(routeLength).SequenceEqual(args.Take(routeLength));
-                   })
+                   }, x => x.RouteParts.Length - 1)
                    ??
                    FindRoute(args, x =>
                    {
                        var routeLength = x.RouteParts.Length - 1;
                        return x.RouteParts.FirstOrDefault() == string.Empty
                               && x.RouteParts.Skip(1).Take(routeLength).SequenceEqual(args.Take(routeLength));
-                   })
+                   }, x => x.RouteParts.Length - 1)
                    ??
-                   FindRoute(args, x => x.RouteParts.Take(2).All(string.IsNullOrEmpty));
+                   FindRoute(args, x => x.RouteParts.Take(2).All(string.IsNullOrEmpty), _ => 0);
         }
 
-        private CliActionRoute? FindRoute(IEnumerable<string> args, Func<CliActionRoute, bool> routeFilter)
+        private CliActionRoute? FindRoute(IList<string> args, Func<CliActionRoute, bool> routeFilter, Func<CliActionRoute, int> getRouteCount)
         {
             var routes = _actionRoutes
                 .Where(routeFilter)
                 .ToArray();
 
-            if (routes.Length > 1)
+            if (routes.Length > 1 && routes.Select(x => x.ActionMethod).Distinct().Count() > 1)
             {
                 throw new AmbiguousRouteException(args, routes);
             }
 
-            return routes.FirstOrDefault();
+            var route = routes.FirstOrDefault();
+
+            if (route == null)
+            {
+                return null;
+            }
+
+            var routeCount = getRouteCount(route);
+
+            while (routeCount > 0 && args.Count > 0)
+            {
+                args.RemoveAt(0);
+
+                routeCount--;
+            }
+
+            return route;
         }
 
         public void AddRoute(CliActionRoute actionRoute)

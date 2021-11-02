@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Reflection;
 using CreativeCoders.SysConsole.Cli.Actions.Exceptions;
+using CreativeCoders.SysConsole.CliArguments.Parsing;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 {
@@ -36,13 +39,34 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
         {
             var controller = context.ActionRoute!.ControllerType.CreateInstance<object>(_serviceProvider);
 
-            var result = context.ActionRoute.ActionMethod!.Invoke(controller, Array.Empty<object>());
+            var actionArguments = CreateActionArguments(context);
+
+            var result = context.ActionRoute.ActionMethod!.Invoke(controller, actionArguments);
 
             if (result?.GetType() == typeof(Task<CliActionResult>))
             {
                 var actionResult = await (Task<CliActionResult>)result;
 
                 context.ReturnCode = actionResult.ReturnCode;
+            }
+        }
+
+        private object[] CreateActionArguments(CliActionContext context)
+        {
+            var parameters = context.ActionRoute!.ActionMethod!.GetParameters();
+
+            switch (parameters.Length)
+            {
+                case 0:
+                    return Array.Empty<object>();
+                case > 1:
+                    throw new TargetParameterCountException("Action argument count must be 0 or 1");
+                default:
+                {
+                    var option = new OptionParser().Parse(parameters.First().ParameterType, context.Arguments.ToArray());
+
+                    return new[] {option};
+                }
             }
         }
 

@@ -38,28 +38,40 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
 
         private IEnumerable<CliActionRoute> CreateRouteForController(Type controllerType)
         {
-            var actionMethods =
-                from method in controllerType.GetMethods()
-                let actionAttribute =
-                    method.GetCustomAttribute(typeof(CliActionAttribute)) as CliActionAttribute
-                where actionAttribute != null
-                select new {Attribute = actionAttribute, Method = method};
+            var controllerAttributes =
+                controllerType
+                    .GetCustomAttributes(typeof(CliControllerAttribute))
+                    .OfType<CliControllerAttribute>()
+                    .ToArray();
 
-            return actionMethods.Select(x => CreateRoute(controllerType, x.Method, x.Attribute));
+            if (controllerAttributes.Length == 0)
+            {
+                return Array.Empty<CliActionRoute>();
+            }
+
+            var actionMethods =
+                (from method in controllerType.GetMethods()
+                let actionAttributes =
+                    method.GetCustomAttributes(typeof(CliActionAttribute)).OfType<CliActionAttribute>().ToArray()
+                where actionAttributes.Length > 0
+                select new {Attributes = actionAttributes, Method = method})
+                .SelectMany(x =>
+                    x.Attributes.Select(attr => new {Attribute = attr, x.Method}));
+
+            return controllerAttributes
+                .SelectMany(attr =>
+                    actionMethods.Select(x =>
+                        CreateRoute(controllerType, attr, x.Method, x.Attribute)));
         }
 
-        private CliActionRoute CreateRoute(Type controllerType, MethodInfo actionMethod,
+        private CliActionRoute CreateRoute(Type controllerType, CliControllerAttribute controllerAttribute, MethodInfo actionMethod,
             CliActionAttribute actionAttribute)
         {
             var routeParts = new List<string>();
 
-            if (controllerType.GetCustomAttribute(typeof(CliControllerAttribute)) is CliControllerAttribute
-                controllerAttribute)
-            {
-                routeParts.AddRange(controllerAttribute.Route.Split("/"));
-            }
+            routeParts.AddRange(controllerAttribute.Route.Split("/"));
 
-            routeParts.AddRange(actionAttribute.Route.Split("/"));
+            routeParts.AddRange(actionAttribute.Route.Split("/").Where(x => !string.IsNullOrEmpty(x)));
 
             return new CliActionRoute(controllerType, actionMethod, routeParts);
         }

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Exceptions
 {
     [PublicAPI]
+    [ExcludeFromCodeCoverage]
     public class CliActionException : Exception
     {
         public CliActionException()

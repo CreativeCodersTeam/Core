@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
+using CreativeCoders.SysConsole.Cli.Actions.Definition;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
 using FluentAssertions;
@@ -46,6 +48,31 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
             routes.Last().ActionMethod
                 .Should()
                 .BeSameAs(typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoMoreAsync)));
+        }
+
+        [Fact]
+        public void BuildRoutes_ForControllerClassWithoutControllerAttribute_ReturnsEmptyRoutes()
+        {
+            var builder = new RoutesBuilder();
+
+            builder.AddController(typeof(TestNoneController));
+
+            // Act
+            var routes = builder.BuildRoutes();
+
+            // Assert
+            routes
+                .Should()
+                .BeEmpty();
+        }
+    }
+
+    public class TestNoneController
+    {
+        [CliAction]
+        public Task<CliActionResult> TestAsync()
+        {
+            return Task.FromResult(new CliActionResult());
         }
     }
 }

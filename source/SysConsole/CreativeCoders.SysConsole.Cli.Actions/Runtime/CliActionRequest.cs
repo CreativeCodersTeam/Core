@@ -1,4 +1,6 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 {
@@ -7,9 +9,9 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
     {
         public CliActionRequest(string[] args)
         {
-            Arguments = args;
+            Arguments = args.ToList();
         }
 
-        public string[] Arguments { get; set; }
+        public IList<string> Arguments { get; set; }
     }
 }
