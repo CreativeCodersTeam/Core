@@ -8,13 +8,14 @@ using FakeItEasy;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
+using Xunit;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
 {
     public class CliActionRuntimeBuilderTests
     {
-        //[Fact]
-        public async Task Test()
+        [Fact]
+        public async Task ExecuteAsync_MiddlewareIsRegistered_MiddlewareIsCalled()
         {
             var route = new CliActionRoute(typeof(DemoCliController),
                 typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync)), new[] {"test"});
@@ -26,7 +27,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
             A.CallTo(() => router.FindRoute(A<string[]>.Ignored)).Returns(route);
 
             var builder = new CliActionRuntimeBuilder(router, new RoutesBuilder(),
-                new ServiceCollection().BuildServiceProvider());
+                new ServiceCollection().AddSingleton<ICliActionRouter>(_ => router).BuildServiceProvider());
 
             var runtime = builder
                 .UseMiddleware<FirstTestMiddleware>()
@@ -50,6 +51,50 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
                 .Should()
                 .Be(SecondTestMiddleware.ReturnCode);
         }
+
+        //[Fact]
+        public async Task ExecuteAsync_StringMiddlewareIsRegistered_MiddlewareIsCalled()
+        {
+            var route = new CliActionRoute(typeof(DemoCliController),
+                typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync)), new[] { "test" });
+
+            var args = new[] { "test" };
+
+            var router = A.Fake<ICliActionRouter>();
+
+            A.CallTo(() => router.FindRoute(A<string[]>.Ignored)).Returns(route);
+
+            var builder = new CliActionRuntimeBuilder(router, new RoutesBuilder(),
+                new ServiceCollection().AddSingleton<ICliActionRouter>(_ => router).BuildServiceProvider());
+
+            var runtime = builder
+                .UseMiddleware<StringTestMiddleware>("TestText")
+                .UseMiddleware<CliRoutingMiddleware>()
+                .Build();
+
+            // Act
+            var result = await runtime.ExecuteAsync(args);
+
+            // Assert
+            result
+                .Should()
+                .Be("TestText".GetHashCode());
+        }
+    }
+
+    public class StringTestMiddleware : CliActionMiddlewareBase
+    {
+        private readonly string _text;
+
+        public StringTestMiddleware(Func<CliActionContext, Task> next, string text) : base(next)
+        {
+            _text = text;
+        }
+
+        public override Task InvokeAsync(CliActionContext context)
+        {
+            return Task.FromResult(new CliActionResult(_text?.GetHashCode() ?? 0));
+        }
     }
 
     [UsedImplicitly]
@@ -57,7 +102,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
     {
         public const int ReturnCode = 1357;
 
-        public FirstTestMiddleware([NotNull] Func<CliActionContext, Task> next) : base(next) { }
+        public FirstTestMiddleware(Func<CliActionContext, Task> next) : base(next) { }
 
         public override async Task InvokeAsync(CliActionContext context)
         {
@@ -68,7 +113,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
             await Next(context);
         }
 
-        public static bool IsCalled { get; set; }
+        public static bool IsCalled { get; private set; }
     }
 
     [UsedImplicitly]
@@ -76,7 +121,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
     {
         public const int ReturnCode = 2345;
 
-        public SecondTestMiddleware([NotNull] Func<CliActionContext, Task> next) : base(next) { }
+        public SecondTestMiddleware(Func<CliActionContext, Task> next) : base(next) { }
 
         public override async Task InvokeAsync(CliActionContext context)
         {
@@ -90,6 +135,6 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
             await Next(context);
         }
 
-        public static bool IsCalled { get; set; }
+        public static bool IsCalled { get; private set; }
     }
 }

@@ -69,7 +69,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
         {
             var routeParts = new List<string>();
 
-            routeParts.AddRange(controllerAttribute.Route.Split("/"));
+            routeParts.AddRange(controllerAttribute.Route.Split("/").Where(x => !string.IsNullOrEmpty(x)));
 
             routeParts.AddRange(actionAttribute.Route.Split("/").Where(x => !string.IsNullOrEmpty(x)));
 
