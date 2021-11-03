@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using CreativeCoders.SysConsole.CliArguments.Options;
-using CreativeCoders.SysConsole.CliArguments.Parsing.Properties;
-using CreativeCoders.SysConsole.CliArguments.Parsing.Properties.ValueConverters;
+using CreativeCoders.SysConsole.Cli.Parsing;
+using CreativeCoders.SysConsole.Cli.Parsing.Properties;
+using CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters;
 using FluentAssertions;
 using Xunit;
 

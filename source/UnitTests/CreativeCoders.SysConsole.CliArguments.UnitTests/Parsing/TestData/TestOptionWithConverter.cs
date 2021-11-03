@@ -1,6 +1,6 @@
 ﻿using System;
-using CreativeCoders.SysConsole.CliArguments.Options;
-using CreativeCoders.SysConsole.CliArguments.Parsing.Properties;
+using CreativeCoders.SysConsole.Cli.Parsing;
+using CreativeCoders.SysConsole.Cli.Parsing.Properties;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing.TestData

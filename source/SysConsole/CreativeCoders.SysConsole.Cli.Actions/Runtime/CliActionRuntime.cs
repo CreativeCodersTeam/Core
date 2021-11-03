@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Reflection;
 using CreativeCoders.SysConsole.Cli.Actions.Exceptions;
-using CreativeCoders.SysConsole.CliArguments.Parsing;
+using CreativeCoders.SysConsole.Cli.Parsing;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 {
@@ -51,7 +51,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
             }
         }
 
-        private object[] CreateActionArguments(CliActionContext context)
+        private static object[] CreateActionArguments(CliActionContext context)
         {
             var parameters = context.ActionRoute!.ActionMethod!.GetParameters();
 
@@ -63,7 +63,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
                     throw new TargetParameterCountException("Action argument count must be 0 or 1");
                 default:
                 {
-                    var option = new OptionParser().Parse(parameters.First().ParameterType, context.Arguments.ToArray());
+                    var option = new OptionParser(parameters.First().ParameterType).Parse(context.Arguments.ToArray());
 
                     return new[] {option};
                 }

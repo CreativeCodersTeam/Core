@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CreativeCoders.SysConsole.CliArguments.Options
+namespace CreativeCoders.SysConsole.Cli.Parsing
 {
     public abstract class OptionBaseAttribute : Attribute
     {

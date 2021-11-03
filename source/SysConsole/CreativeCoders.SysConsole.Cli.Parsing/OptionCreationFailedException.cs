@@ -1,10 +1,10 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.CliArguments.Exceptions
+namespace CreativeCoders.SysConsole.Cli.Parsing
 {
     [PublicAPI]
-    public class OptionCreationFailedException : CliArgumentsException
+    public class OptionCreationFailedException : Exception
     {
         public OptionCreationFailedException(Type optionType)
             : base($"Option of type '{optionType.Name}' cannot be created")

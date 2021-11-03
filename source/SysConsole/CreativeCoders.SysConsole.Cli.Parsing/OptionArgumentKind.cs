@@ -1,4 +1,4 @@
-﻿namespace CreativeCoders.SysConsole.CliArguments.Parsing
+﻿namespace CreativeCoders.SysConsole.Cli.Parsing
 {
     public enum OptionArgumentKind
     {

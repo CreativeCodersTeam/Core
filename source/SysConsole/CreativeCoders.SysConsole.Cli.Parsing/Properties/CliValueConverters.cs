@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using CreativeCoders.SysConsole.CliArguments.Options;
-using CreativeCoders.SysConsole.CliArguments.Parsing.Properties.ValueConverters;
+using CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters;
 
-namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties
+namespace CreativeCoders.SysConsole.Cli.Parsing.Properties
 {
     public class CliValueConverters : ICliValueConverter
     {

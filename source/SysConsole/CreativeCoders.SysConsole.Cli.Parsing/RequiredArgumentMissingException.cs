@@ -1,9 +1,9 @@
-﻿using System.Reflection;
-using CreativeCoders.SysConsole.CliArguments.Options;
+﻿using System;
+using System.Reflection;
 
-namespace CreativeCoders.SysConsole.CliArguments.Exceptions
+namespace CreativeCoders.SysConsole.Cli.Parsing
 {
-    public class RequiredArgumentMissingException : CliArgumentsException
+    public class RequiredArgumentMissingException : Exception
     {
         private readonly OptionBaseAttribute _optionAttribute;
 

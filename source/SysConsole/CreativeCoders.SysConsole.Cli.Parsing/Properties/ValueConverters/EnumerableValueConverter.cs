@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
-using CreativeCoders.SysConsole.CliArguments.Options;
 
-namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties.ValueConverters
+namespace CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters
 {
     public class EnumerableValueConverter : ICliValueConverter
     {

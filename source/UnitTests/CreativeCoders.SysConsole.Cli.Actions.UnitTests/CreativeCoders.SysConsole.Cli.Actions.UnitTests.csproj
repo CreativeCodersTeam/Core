@@ -33,7 +33,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\SysConsole\CreativeCoders.SysConsole.Cli.Actions\CreativeCoders.SysConsole.Cli.Actions.csproj" />
-	  <ProjectReference Include="..\..\SysConsole\CreativeCoders.SysConsole.CliArguments\CreativeCoders.SysConsole.CliArguments.csproj" />
 	</ItemGroup>
 
 </Project>

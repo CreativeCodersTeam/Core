@@ -36,7 +36,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
             return _controllerTypes.SelectMany(CreateRouteForController).ToArray();
         }
 
-        private IEnumerable<CliActionRoute> CreateRouteForController(Type controllerType)
+        private static IEnumerable<CliActionRoute> CreateRouteForController(Type controllerType)
         {
             var controllerAttributes =
                 controllerType
@@ -64,7 +64,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
                         CreateRoute(controllerType, attr, x.Method, x.Attribute)));
         }
 
-        private CliActionRoute CreateRoute(Type controllerType, CliControllerAttribute controllerAttribute, MethodInfo actionMethod,
+        private static CliActionRoute CreateRoute(Type controllerType, CliControllerAttribute controllerAttribute, MethodInfo actionMethod,
             CliActionAttribute actionAttribute)
         {
             var routeParts = new List<string>();

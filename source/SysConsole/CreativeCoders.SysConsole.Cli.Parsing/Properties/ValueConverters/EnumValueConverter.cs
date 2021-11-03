@@ -5,9 +5,8 @@ using System.Reflection;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Enums;
-using CreativeCoders.SysConsole.CliArguments.Options;
 
-namespace CreativeCoders.SysConsole.CliArguments.Parsing.Properties.ValueConverters
+namespace CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters
 {
     public class EnumValueConverter : ICliValueConverter
     {

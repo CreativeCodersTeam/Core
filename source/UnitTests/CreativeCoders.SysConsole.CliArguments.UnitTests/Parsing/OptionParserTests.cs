@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CreativeCoders.SysConsole.CliArguments.Exceptions;
-using CreativeCoders.SysConsole.CliArguments.Options;
-using CreativeCoders.SysConsole.CliArguments.Parsing;
+using CreativeCoders.SysConsole.Cli.Parsing;
 using CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing.TestData;
 using FluentAssertions;
 using Xunit;
@@ -16,10 +14,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
         {
             var args = new[] { "hello", "--text", "TestText" };
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(TestOptionForParser));
 
             // Act
-            var option = parser.Parse(typeof(TestOptionForParser), args) as TestOptionForParser;
+            var option = parser.Parse(args) as TestOptionForParser;
 
             // Assert
             option
@@ -40,10 +38,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
         {
             var args = new[] { "hello", "-t", "TestText" };
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(TestOptionForParser));
 
             // Act
-            var option = parser.Parse(typeof(TestOptionForParser), args) as TestOptionForParser;
+            var option = parser.Parse(args) as TestOptionForParser;
 
             // Assert
             option
@@ -68,10 +66,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
             var args = new[]
                 {"hello", "--integer2", expectedValue1.ToString(), "--integer", expectedValue0.ToString()};
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(TestOptionWithInt));
 
             // Act
-            var option = parser.Parse(typeof(TestOptionWithInt), args) as TestOptionWithInt;
+            var option = parser.Parse(args) as TestOptionWithInt;
 
             // Assert
             option
@@ -95,10 +93,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
 
             var args = new[] { "hello", "-j", expectedValue1.ToString(), "-i", expectedValue0.ToString() };
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(TestOptionWithInt));
 
             // Act
-            var option = parser.Parse(typeof(TestOptionWithInt), args) as TestOptionWithInt;
+            var option = parser.Parse(args) as TestOptionWithInt;
 
             // Assert
             option
@@ -125,10 +123,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
 
             var args = new[] { "hello", "-j", expectedValue1.ToString() };
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(TestOptionWithInt));
 
             // Act
-            Action act = () => parser.Parse(typeof(TestOptionWithInt), args);
+            Action act = () => parser.Parse(args);
 
             // Assert
             var exception = act
@@ -150,10 +148,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
         {
             var args = new[] { "-v", "--bold", "true" };
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(TestOptionWithBool));
 
             // Act
-            var option = parser.Parse(typeof(TestOptionWithBool), args) as TestOptionWithBool;
+            var option = parser.Parse(args) as TestOptionWithBool;
 
             // Assert
             option
@@ -174,10 +172,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
         {
             var args = new[] { "-v", "--bold", "1234" };
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(TestOptionWithBool));
 
             // Act
-            var option = parser.Parse(typeof(TestOptionWithBool), args) as TestOptionWithBool;
+            var option = parser.Parse(args) as TestOptionWithBool;
 
             // Assert
             option
@@ -198,10 +196,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
         {
             var args = Array.Empty<string>();
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(TestOptionWithValueOption));
 
             // Act
-            Action act = () => parser.Parse(typeof(TestOptionWithValueOption), args);
+            Action act = () => parser.Parse(args);
 
             // Assert
             var exception = act
@@ -223,10 +221,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
         {
             var args = Array.Empty<string>();
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(TestOptionWithTwoValues));
 
             // Act
-            var options = parser.Parse(typeof(TestOptionWithTwoValues), args) as TestOptionWithTwoValues;
+            var options = parser.Parse(args) as TestOptionWithTwoValues;
 
             // Assert
             options
@@ -247,10 +245,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
         {
             var args = Array.Empty<string>();
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(TestOptionWithInvalidCtor));
 
             // Act
-            Action act = () => parser.Parse(typeof(TestOptionWithInvalidCtor), args);
+            Action act = () => parser.Parse(args);
 
             // Assert
             act
@@ -267,10 +265,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
         {
             var args = Array.Empty<string>();
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(int?));
 
             // Act
-            Action act = () => parser.Parse(typeof(int?), args);
+            Action act = () => parser.Parse(args);
 
             // Assert
             act
@@ -298,10 +296,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
         {
             var args = new[] { "-e", argValue };
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(TestOptionWithEnum));
 
             // Act
-            var option = parser.Parse(typeof(TestOptionWithEnum), args) as TestOptionWithEnum;
+            var option = parser.Parse(args) as TestOptionWithEnum;
 
             // Assert
             option
@@ -322,10 +320,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
         {
             var args = new[] { "-t", argValue };
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(TestOptionWithConverter));
 
             // Act
-            var option = parser.Parse(typeof(TestOptionWithConverter), args) as TestOptionWithConverter;
+            var option = parser.Parse(args) as TestOptionWithConverter;
 
             // Assert
             option
@@ -345,11 +343,11 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
         {
             var args = new[] { "-i", argValue };
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(TestOptionWithIntEnumerable));
 
             // Act
             var option =
-                parser.Parse(typeof(TestOptionWithIntEnumerable), args) as TestOptionWithIntEnumerable;
+                parser.Parse(args) as TestOptionWithIntEnumerable;
 
             // Assert
             option
@@ -370,10 +368,10 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
         {
             var args = new[] {"-e", argValue};
 
-            var parser = new OptionParser();
+            var parser = new OptionParser(typeof(TestOptionWithEnumFlags));
 
             // Act
-            var option = parser.Parse(typeof(TestOptionWithEnumFlags), args) as TestOptionWithEnumFlags;
+            var option = parser.Parse(args) as TestOptionWithEnumFlags;
 
             // Assert
             option

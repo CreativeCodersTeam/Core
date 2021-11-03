@@ -3,37 +3,42 @@ using System.Collections.Generic;
 using System.Reflection;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
-using CreativeCoders.SysConsole.CliArguments.Exceptions;
-using CreativeCoders.SysConsole.CliArguments.Options;
-using CreativeCoders.SysConsole.CliArguments.Parsing.Properties;
+using CreativeCoders.SysConsole.Cli.Parsing.Properties;
 
-namespace CreativeCoders.SysConsole.CliArguments.Parsing
+namespace CreativeCoders.SysConsole.Cli.Parsing
 {
     public class OptionParser
     {
-        public object Parse(Type optionType, string[] args)
+        private readonly Type _optionType;
+
+        public OptionParser(Type optionType)
         {
-            Ensure.NotNull(optionType, nameof(optionType));
+            _optionType = Ensure.NotNull(optionType, nameof(optionType));
+        }
+
+        public object Parse(string[] args)
+        {
+            Ensure.NotNull(_optionType, nameof(_optionType));
 
             object? option;
 
             try
             {
-                option = Activator.CreateInstance(optionType);
+                option = Activator.CreateInstance(_optionType);
 
                 if (option == null)
                 {
-                    throw new OptionCreationFailedException(optionType);
+                    throw new OptionCreationFailedException(_optionType);
                 }
             }
             catch (Exception e)
             {
-                throw new OptionCreationFailedException(optionType, e);
+                throw new OptionCreationFailedException(_optionType, e);
             }
 
             var optionArguments = new ArgsToOptionArgumentsConverter(args).ReadOptionArguments();
 
-            ReadOptionProperties(option).ForEach(x =>
+            ReadOptionProperties().ForEach(x =>
             {
                 if (!x.Read(optionArguments, option))
                 {
@@ -44,9 +49,9 @@ namespace CreativeCoders.SysConsole.CliArguments.Parsing
             return option;
         }
         
-        private IEnumerable<OptionPropertyBase> ReadOptionProperties(object optionObject)
+        private IEnumerable<OptionPropertyBase> ReadOptionProperties()
         {
-            foreach (var propertyInfo in optionObject.GetType().GetProperties())
+            foreach (var propertyInfo in _optionType.GetProperties())
             {
                 if (propertyInfo.GetCustomAttribute(typeof(OptionValueAttribute)) is OptionValueAttribute valueAttribute)
                 {

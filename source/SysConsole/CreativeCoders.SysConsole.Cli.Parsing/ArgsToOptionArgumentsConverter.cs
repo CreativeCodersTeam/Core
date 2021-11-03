@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CreativeCoders.SysConsole.CliArguments.Parsing
+namespace CreativeCoders.SysConsole.Cli.Parsing
 {
     public class ArgsToOptionArgumentsConverter
     {

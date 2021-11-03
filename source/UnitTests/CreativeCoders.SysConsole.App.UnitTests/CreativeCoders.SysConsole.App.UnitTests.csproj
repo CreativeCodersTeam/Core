@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SysConsole\CreativeCoders.SysConsole.App\CreativeCoders.SysConsole.App.csproj" />
+    <ProjectReference Include="..\..\SysConsole\CreativeCoders.SysConsole.Cli.Parsing\CreativeCoders.SysConsole.Cli.Parsing.csproj" />
     <ProjectReference Include="..\..\SysConsole\CreativeCoders.SysConsole.CliArguments\CreativeCoders.SysConsole.CliArguments.csproj" />
   </ItemGroup>
 

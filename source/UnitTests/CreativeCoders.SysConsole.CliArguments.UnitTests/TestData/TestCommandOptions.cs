@@ -1,4 +1,4 @@
-﻿using CreativeCoders.SysConsole.CliArguments.Options;
+﻿using CreativeCoders.SysConsole.Cli.Parsing;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.CliArguments.UnitTests.TestData
