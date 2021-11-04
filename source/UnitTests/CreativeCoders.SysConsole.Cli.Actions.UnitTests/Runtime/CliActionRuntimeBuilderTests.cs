@@ -1,12 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware;
 using CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
 using FakeItEasy;
 using FluentAssertions;
-using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -80,62 +78,5 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
                 .Should()
                 .Be("TestText".GetHashCode());
         }
-    }
-
-    public class StringTestMiddleware : CliActionMiddlewareBase
-    {
-        private readonly string _text;
-
-        public StringTestMiddleware(Func<CliActionContext, Task> next, string text) : base(next)
-        {
-            _text = text;
-        }
-
-        public override Task InvokeAsync(CliActionContext context)
-        {
-            context.ReturnCode = _text?.GetHashCode() ?? 0;
-            return Task.CompletedTask;
-        }
-    }
-
-    [UsedImplicitly]
-    public class FirstTestMiddleware : CliActionMiddlewareBase
-    {
-        public const int ReturnCode = 1357;
-
-        public FirstTestMiddleware(Func<CliActionContext, Task> next) : base(next) { }
-
-        public override async Task InvokeAsync(CliActionContext context)
-        {
-            context.ReturnCode = ReturnCode;
-
-            IsCalled = true;
-
-            await Next(context);
-        }
-
-        public static bool IsCalled { get; private set; }
-    }
-
-    [UsedImplicitly]
-    public class SecondTestMiddleware : CliActionMiddlewareBase
-    {
-        public const int ReturnCode = 2345;
-
-        public SecondTestMiddleware(Func<CliActionContext, Task> next) : base(next) { }
-
-        public override async Task InvokeAsync(CliActionContext context)
-        {
-            if (context.ReturnCode == FirstTestMiddleware.ReturnCode)
-            {
-                context.ReturnCode = ReturnCode;
-            }
-
-            IsCalled = true;
-
-            await Next(context);
-        }
-
-        public static bool IsCalled { get; private set; }
     }
 }
