@@ -19,7 +19,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 
         private readonly IServiceProvider _serviceProvider;
 
-        private readonly IList<Type> _middlewareTypes;
+        private readonly IList<MiddlewareRegistration> _middlewareRegistrations;
 
         public CliActionRuntimeBuilder(ICliActionRouter actionRouter,
             IRoutesBuilder routesBuilder, IServiceProvider serviceProvider)
@@ -28,13 +28,13 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
             _routesBuilder = Ensure.NotNull(routesBuilder, nameof(routesBuilder));
             _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
 
-            _middlewareTypes = new List<Type>();
+            _middlewareRegistrations = new List<MiddlewareRegistration>();
         }
 
         public ICliActionRuntimeBuilder UseMiddleware<TMiddleware>(params object[]? arguments)
             where TMiddleware : CliActionMiddlewareBase
         {
-            _middlewareTypes.Add(typeof(TMiddleware));
+            _middlewareRegistrations.Add(new MiddlewareRegistration(typeof(TMiddleware), arguments));
 
             return this;
         }
@@ -79,11 +79,11 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
         {
             CliActionMiddlewareBase? lastMiddleware = null;
 
-            foreach (var middlewareType in _middlewareTypes.Reverse())
+            foreach (var middlewareRegistration in _middlewareRegistrations.Reverse())
             {
                 Func<CliActionContext, Task> next = CreateNext(lastMiddleware, executeActionAsync);
 
-                lastMiddleware = CreateMiddleware(middlewareType, next);
+                lastMiddleware = middlewareRegistration.CreateMiddleware(next, _serviceProvider);
             }
 
             return CreateNext(lastMiddleware, executeActionAsync);
@@ -98,11 +98,25 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 
             return next;
         }
+    }
 
-        private CliActionMiddlewareBase CreateMiddleware(Type middlewareType,
-            Func<CliActionContext, Task> next)
+    internal class MiddlewareRegistration
+    {
+        private readonly Type _middlewareType;
+
+        private readonly object[]? _args;
+
+        public MiddlewareRegistration(Type middlewareType, object[]? args)
         {
-            var middleware = middlewareType.CreateInstance<CliActionMiddlewareBase>(_serviceProvider, next);
+            _middlewareType = middlewareType;
+            _args = args;
+        }
+
+        public CliActionMiddlewareBase CreateMiddleware(Func<CliActionContext, Task> next, IServiceProvider serviceProvider)
+        {
+            var args = new List<object>(_args ?? Array.Empty<object>()) {next};
+
+            var middleware = _middlewareType.CreateInstance<CliActionMiddlewareBase>(serviceProvider, args.ToArray());
 
             if (middleware == null)
             {

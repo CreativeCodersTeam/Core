@@ -52,7 +52,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
                 .Be(SecondTestMiddleware.ReturnCode);
         }
 
-        //[Fact]
+        [Fact]
         public async Task ExecuteAsync_StringMiddlewareIsRegistered_MiddlewareIsCalled()
         {
             var route = new CliActionRoute(typeof(DemoCliController),
@@ -93,7 +93,8 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
 
         public override Task InvokeAsync(CliActionContext context)
         {
-            return Task.FromResult(new CliActionResult(_text?.GetHashCode() ?? 0));
+            context.ReturnCode = _text?.GetHashCode() ?? 0;
+            return Task.CompletedTask;
         }
     }
 
