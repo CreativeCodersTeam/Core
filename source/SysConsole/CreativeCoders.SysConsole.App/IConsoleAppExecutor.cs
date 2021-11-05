@@ -1,16 +1,16 @@
 ﻿using System.Threading.Tasks;
 
-namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
+namespace CreativeCoders.SysConsole.App
 {
-    /// <summary>   Interface for CLI action runtime. </summary>
-    public interface ICliActionRuntime
+    /// <summary>   Interface for console application executor. </summary>
+    public interface IConsoleAppExecutor
     {
         ///-------------------------------------------------------------------------------------------------
-        /// <summary>   Asynchronously executes the the action for the arguments. </summary>
+        /// <summary>   Asynchronously executes the console app program. </summary>
         ///
         /// <param name="args"> The command line arguments. </param>
         ///
-        /// <returns>   Returns the exit code for the program. </returns>
+        /// <returns>   Returns the return code which should be returned as program exit code. </returns>
         ///-------------------------------------------------------------------------------------------------
         Task<int> ExecuteAsync(string[] args);
     }

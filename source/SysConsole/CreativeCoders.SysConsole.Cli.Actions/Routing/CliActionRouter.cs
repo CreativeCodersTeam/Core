@@ -5,7 +5,7 @@ using CreativeCoders.SysConsole.Cli.Actions.Exceptions;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Routing
 {
-    public class CliActionRouter : ICliActionRouter
+    internal class CliActionRouter : ICliActionRouter
     {
         private readonly IList<CliActionRoute> _actionRoutes;
 

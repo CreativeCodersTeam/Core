@@ -6,7 +6,7 @@ using CreativeCoders.SysConsole.CliArguments.Building;
 
 namespace CreativeCoders.SysConsole.CliArguments
 {
-    public class CliBuilderExecutor : ICommandExecutor
+    public class CliBuilderExecutor : IConsoleAppExecutor
     {
         private readonly Action<ICliBuilder> _setupCliBuilder;
 

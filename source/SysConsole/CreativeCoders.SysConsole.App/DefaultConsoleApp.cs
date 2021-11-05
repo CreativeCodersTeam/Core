@@ -9,15 +9,15 @@ namespace CreativeCoders.SysConsole.App
     {
         private readonly ISysConsole _sysConsole;
 
-        private readonly ICommandExecutor _commandExecutor;
+        private readonly IConsoleAppExecutor _consoleAppExecutor;
 
         private readonly string[] _args;
 
         private bool _reThrow;
 
-        public DefaultConsoleApp(ICommandExecutor commandExecutor, string[] args, ISysConsole sysConsole)
+        public DefaultConsoleApp(IConsoleAppExecutor consoleAppExecutor, string[] args, ISysConsole sysConsole)
         {
-            _commandExecutor = Ensure.NotNull(commandExecutor, nameof(commandExecutor));
+            _consoleAppExecutor = Ensure.NotNull(consoleAppExecutor, nameof(consoleAppExecutor));
             _args = Ensure.NotNull(args, nameof(args));
             _sysConsole = Ensure.NotNull(sysConsole, nameof(sysConsole));
         }
@@ -33,7 +33,7 @@ namespace CreativeCoders.SysConsole.App
         {
             try
             {
-                var result = await _commandExecutor.ExecuteAsync(_args).ConfigureAwait(false);
+                var result = await _consoleAppExecutor.ExecuteAsync(_args).ConfigureAwait(false);
 
                 return result;
             }

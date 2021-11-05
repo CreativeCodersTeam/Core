@@ -16,7 +16,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
 
             var sysConsole = A.Fake<ISysConsole>();
 
-            var executor = A.Fake<ICommandExecutor>();
+            var executor = A.Fake<IConsoleAppExecutor>();
 
             A.CallTo(() => executor.ExecuteAsync(A<string[]>.Ignored)).Returns(Task.FromResult(expectedResult));
 
@@ -38,7 +38,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
 
             var sysConsole = A.Fake<ISysConsole>();
 
-            var executor = A.Fake<ICommandExecutor>();
+            var executor = A.Fake<IConsoleAppExecutor>();
 
             A.CallTo(() => executor.ExecuteAsync(A<string[]>.Ignored)).Throws(_ => new ConsoleException(expectedResult));
 
@@ -58,7 +58,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         {
             var sysConsole = A.Fake<ISysConsole>();
 
-            var executor = A.Fake<ICommandExecutor>();
+            var executor = A.Fake<IConsoleAppExecutor>();
 
             A.CallTo(() => executor.ExecuteAsync(A<string[]>.Ignored)).Throws(_ => new ArgumentException());
 

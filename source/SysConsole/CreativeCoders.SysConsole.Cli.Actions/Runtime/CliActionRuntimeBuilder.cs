@@ -5,13 +5,12 @@ using System.Reflection;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
-using CreativeCoders.Core.Reflection;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 {
-    public class CliActionRuntimeBuilder : ICliActionRuntimeBuilder
+    internal class CliActionRuntimeBuilder : ICliActionRuntimeBuilder
     {
         private readonly ICliActionRouter _actionRouter;
 
@@ -97,33 +96,6 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
                 : executeActionAsync;
 
             return next;
-        }
-    }
-
-    internal class MiddlewareRegistration
-    {
-        private readonly Type _middlewareType;
-
-        private readonly object[]? _args;
-
-        public MiddlewareRegistration(Type middlewareType, object[]? args)
-        {
-            _middlewareType = middlewareType;
-            _args = args;
-        }
-
-        public CliActionMiddlewareBase CreateMiddleware(Func<CliActionContext, Task> next, IServiceProvider serviceProvider)
-        {
-            var args = new List<object>(_args ?? Array.Empty<object>()) {next};
-
-            var middleware = _middlewareType.CreateInstance<CliActionMiddlewareBase>(serviceProvider, args.ToArray());
-
-            if (middleware == null)
-            {
-                throw new InvalidOperationException();
-            }
-
-            return middleware;
         }
     }
 }

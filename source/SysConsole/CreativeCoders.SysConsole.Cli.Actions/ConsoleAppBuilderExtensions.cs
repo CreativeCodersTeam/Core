@@ -6,8 +6,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CreativeCoders.SysConsole.Cli.Actions
 {
+    /// <summary>   A console application builder extensions. </summary>
     public static class ConsoleAppBuilderExtensions
     {
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Setups the ConsoleAppBuilder to use CLI actions for execution. </summary>
+        ///
+        /// <typeparam name="TCliStartup">  Type of the CLI startup. </typeparam>
+        /// <param name="consoleAppBuilder">    The consoleAppBuilder to act on. </param>
+        ///
+        /// <returns>   A ConsoleAppBuilder. </returns>
+        ///-------------------------------------------------------------------------------------------------
         public static ConsoleAppBuilder UseActions<TCliStartup>(this ConsoleAppBuilder consoleAppBuilder)
             where TCliStartup : class, ICliStartup, new()
         {
@@ -28,6 +37,15 @@ namespace CreativeCoders.SysConsole.Cli.Actions
                 });
         }
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Setups the ConsoleAppBuilder to use CLI actions for execution. </summary>
+        ///
+        /// <typeparam name="TCliStartup">  Type of the CLI startup. </typeparam>
+        /// <param name="consoleAppBuilder">    The consoleAppBuilder to act on. </param>
+        /// <param name="setupRuntime">         Action for setting up the runtime. </param>
+        ///
+        /// <returns>   A ConsoleAppBuilder. </returns>
+        ///-------------------------------------------------------------------------------------------------
         public static ConsoleAppBuilder UseActions<TCliStartup>(this ConsoleAppBuilder consoleAppBuilder,
             Action<ICliActionRuntimeBuilder> setupRuntime)
             where TCliStartup : class, ICliStartup, new()
@@ -53,6 +71,15 @@ namespace CreativeCoders.SysConsole.Cli.Actions
                 });
         }
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Setups the ConsoleAppBuilder to use CLI actions for execution. </summary>
+        ///
+        /// <typeparam name="TStartup"> Type of the startup. </typeparam>
+        /// <param name="consoleAppBuilder">    The consoleAppBuilder to act on. </param>
+        /// <param name="setupRuntime">         Action for setting up the runtime. </param>
+        ///
+        /// <returns>   A ConsoleAppBuilder. </returns>
+        ///-------------------------------------------------------------------------------------------------
         public static ConsoleAppBuilder UseSimpleActions<TStartup>(this ConsoleAppBuilder consoleAppBuilder,
             Action<ICliActionRuntimeBuilder> setupRuntime)
             where TStartup : class, IStartup, new()
@@ -74,6 +101,14 @@ namespace CreativeCoders.SysConsole.Cli.Actions
                 });
         }
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Setups the ConsoleAppBuilder to use CLI actions for execution. </summary>
+        ///
+        /// <param name="consoleAppBuilder">    The consoleAppBuilder to act on. </param>
+        /// <param name="setupRuntime">         Action for setting up the runtime. </param>
+        ///
+        /// <returns>   A ConsoleAppBuilder. </returns>
+        ///-------------------------------------------------------------------------------------------------
         public static ConsoleAppBuilder UseActions(this ConsoleAppBuilder consoleAppBuilder,
             Action<ICliActionRuntimeBuilder> setupRuntime)
         {

@@ -4,7 +4,7 @@ using CreativeCoders.SysConsole.Cli.Actions.Runtime;
 
 namespace CreativeCoders.SysConsole.Cli.Actions
 {
-    public class CliActionExecutor : ICommandExecutor
+    internal class CliActionExecutor : IConsoleAppExecutor
     {
         private readonly ICliActionRuntime _runtime;
 

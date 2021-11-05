@@ -9,7 +9,7 @@ using CreativeCoders.SysConsole.Cli.Parsing;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 {
-    public class CliActionRuntime : ICliActionRuntime
+    internal class CliActionRuntime : ICliActionRuntime
     {
         private readonly IServiceProvider _serviceProvider;
 

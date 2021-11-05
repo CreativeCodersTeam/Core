@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Routing
 {
-    public interface IRoutesBuilder
+    internal interface IRoutesBuilder
     {
         void AddController(Type controllerType);
 

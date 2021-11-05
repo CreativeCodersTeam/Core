@@ -3,7 +3,7 @@ using CreativeCoders.Core;
 
 namespace CreativeCoders.SysConsole.App.MainProgram
 {
-    public class MainExecutor : ICommandExecutor
+    internal class MainExecutor : IConsoleAppExecutor
     {
         private readonly IMain _main;
 
