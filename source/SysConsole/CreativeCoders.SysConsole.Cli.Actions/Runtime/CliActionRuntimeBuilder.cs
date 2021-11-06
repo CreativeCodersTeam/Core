@@ -12,6 +12,8 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 {
     internal class CliActionRuntimeBuilder : ICliActionRuntimeBuilder
     {
+        private readonly ICliActionExecutor _actionExecutor;
+
         private readonly ICliActionRouter _actionRouter;
 
         private readonly IRoutesBuilder _routesBuilder;
@@ -21,11 +23,13 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
         private readonly IList<MiddlewareRegistration> _middlewareRegistrations;
 
         public CliActionRuntimeBuilder(ICliActionRouter actionRouter,
-            IRoutesBuilder routesBuilder, IServiceProvider serviceProvider)
+            IRoutesBuilder routesBuilder, IServiceProvider serviceProvider,
+            ICliActionExecutor actionExecutor)
         {
             _actionRouter = Ensure.NotNull(actionRouter, nameof(actionRouter));
             _routesBuilder = Ensure.NotNull(routesBuilder, nameof(routesBuilder));
             _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+            _actionExecutor = Ensure.NotNull(actionExecutor, nameof(actionExecutor));
 
             _middlewareRegistrations = new List<MiddlewareRegistration>();
         }
@@ -64,7 +68,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 
         public ICliActionRuntime Build()
         {
-            var runtime = new CliActionRuntime(_serviceProvider);
+            var runtime = new CliActionRuntime(_actionExecutor);
 
             _routesBuilder.BuildRoutes().ForEach(x => _actionRouter.AddRoute(x));
 

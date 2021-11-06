@@ -4,11 +4,11 @@ using CreativeCoders.SysConsole.Cli.Actions.Runtime;
 
 namespace CreativeCoders.SysConsole.Cli.Actions
 {
-    internal class CliActionExecutor : IConsoleAppExecutor
+    internal class CliActionsExecutor : IConsoleAppExecutor
     {
         private readonly ICliActionRuntime _runtime;
 
-        public CliActionExecutor(ICliActionRuntime runtime)
+        public CliActionsExecutor(ICliActionRuntime runtime)
         {
             _runtime = runtime;
         }

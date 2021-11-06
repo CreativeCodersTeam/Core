@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using JetBrains.Annotations;
 
@@ -52,5 +53,14 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
         /// <value> The return code. </value>
         ///-------------------------------------------------------------------------------------------------
         public int ReturnCode { get; set; }
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Gets or sets the exception for exception handling in the execution pipeline.
+        /// </summary>
+        ///
+        /// <value> The exception. </value>
+        ///-------------------------------------------------------------------------------------------------
+        public Exception? Exception { get; set; }
     }
 }

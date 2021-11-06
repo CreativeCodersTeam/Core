@@ -20,6 +20,8 @@ namespace CreativeCoders.SysConsole.Cli.Actions
             services.TryAddSingleton<IRoutesBuilder, RoutesBuilder>();
 
             services.TryAddSingleton<ICliActionRouter, CliActionRouter>();
+
+            services.TryAddSingleton<ICliActionExecutor, CliActionExecutor>();
         }
     }
 }

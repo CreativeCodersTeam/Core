@@ -20,7 +20,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
 
             var route0 = CreateActionRoute<DemoCliController>(nameof(DemoCliController.DoAsync), routeParts);
 
-            var router = new CliActionRouter();
+            var router = new CliActionRouter() as ICliActionRouter;
 
             router.AddRoute(route0);
 
@@ -52,7 +52,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
                 CreateActionRoute<DefaultCliController>(nameof(DefaultCliController.DoCommandAsync),
                     "command");
 
-            var router = new CliActionRouter();
+            var router = new CliActionRouter() as ICliActionRouter;
 
             router.AddRoute(route1);
             router.AddRoute(route0);
@@ -84,7 +84,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
             var route0 = CreateActionRoute<DefaultCliController>(nameof(DefaultCliController.DoDefaultAsync),
                 "", "command");
 
-            var router = new CliActionRouter();
+            var router = new CliActionRouter() as ICliActionRouter;
 
             router.AddRoute(route0);
 
@@ -105,7 +105,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
             var route0 = CreateActionRoute<DefaultCliController>(nameof(DefaultCliController.DoDefaultAsync),
                 "", "");
 
-            var router = new CliActionRouter();
+            var router = new CliActionRouter() as ICliActionRouter;
 
             router.AddRoute(route0);
 

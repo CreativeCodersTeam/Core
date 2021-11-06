@@ -15,7 +15,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData
         {
             runtimeBuilder.AddController<ConsoleAppTestController>();
 
-            runtimeBuilder.UseMiddleware<CliRoutingMiddleware>();
+            runtimeBuilder.UseRouting();
         }
     }
 }

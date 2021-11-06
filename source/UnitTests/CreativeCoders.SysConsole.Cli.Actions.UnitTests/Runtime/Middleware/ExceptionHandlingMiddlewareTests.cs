@@ -1,64 +1,24 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware;
 using CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
 using FakeItEasy;
 using FluentAssertions;
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
-namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
+namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime.Middleware
 {
-    public class CliActionRuntimeBuilderTests
+    public class ExceptionHandlingMiddlewareTests
     {
         [Fact]
-        public async Task ExecuteAsync_MiddlewareIsRegistered_MiddlewareIsCalled()
+        public async Task ExecuteAsync_MiddlewareThrowsException_ReturnCodeIsExceptionReturnCode()
         {
-            var route = new CliActionRoute(typeof(DemoCliController),
-                typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync)), new[] {"test"});
+            const int expectedReturnCode = -1357;
 
-            var args = new[] {"test"};
-
-            var executor = A.Fake<ICliActionExecutor>();
-
-            var router = A.Fake<ICliActionRouter>();
-
-            A.CallTo(() => router.FindRoute(A<string[]>.Ignored)).Returns(route);
-
-            var serviceProvider = new ServiceCollection()
-                .AddSingleton(_ => router)
-                .BuildServiceProvider();
-
-            var builder = new CliActionRuntimeBuilder(router, new RoutesBuilder(),
-                serviceProvider, executor) as ICliActionRuntimeBuilder;
-
-            var runtime = builder
-                .UseMiddleware<FirstTestMiddleware>()
-                .UseMiddleware<SecondTestMiddleware>()
-                .UseMiddleware<CliRoutingMiddleware>()
-                .Build();
-
-            // Act
-            var result = await runtime.ExecuteAsync(args);
-
-            // Assert
-            FirstTestMiddleware.IsCalled
-                .Should()
-                .BeTrue();
-
-            SecondTestMiddleware.IsCalled
-                .Should()
-                .BeTrue();
-
-            result
-                .Should()
-                .Be(SecondTestMiddleware.ReturnCode);
-        }
-
-        [Fact]
-        public async Task ExecuteAsync_StringMiddlewareIsRegistered_MiddlewareIsCalled()
-        {
             var route = new CliActionRoute(typeof(DemoCliController),
                 typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync)), new[] { "test" });
 
@@ -78,8 +38,8 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
                 serviceProvider, executor) as ICliActionRuntimeBuilder;
 
             var runtime = builder
-                .UseMiddleware<StringTestMiddleware>("TestText")
-                .UseMiddleware<CliRoutingMiddleware>()
+                .UseExceptionHandling(expectedReturnCode)
+                .UseMiddleware<TestErrorMiddleware>()
                 .Build();
 
             // Act
@@ -88,7 +48,72 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
             // Assert
             result
                 .Should()
-                .Be("TestText".GetHashCode());
+                .Be(expectedReturnCode);
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_MiddlewareThrowsException_ExceptionInContextIsSet()
+        {
+            const int expectedReturnCode = -1357;
+
+            var route = new CliActionRoute(typeof(DemoCliController),
+                typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync)), new[] { "test" });
+
+            var args = new[] { "test" };
+
+            Exception? exception = null;
+
+            void ErrorHandler (CliActionContext x)
+            {
+                exception = x.Exception;
+            }
+
+            var router = A.Fake<ICliActionRouter>();
+
+            A.CallTo(() => router.FindRoute(A<string[]>.Ignored)).Returns(route);
+
+            var executor = A.Fake<ICliActionExecutor>();
+
+            var serviceProvider = new ServiceCollection()
+                .AddSingleton(_ => router)
+                .BuildServiceProvider();
+
+            var builder = new CliActionRuntimeBuilder(router, new RoutesBuilder(),
+                serviceProvider, executor) as ICliActionRuntimeBuilder;
+
+            var runtime = builder
+                .UseExceptionHandling(ErrorHandler, expectedReturnCode)
+                .UseMiddleware<TestErrorMiddleware>()
+                .Build();
+
+            // Act
+            var result = await runtime.ExecuteAsync(args);
+
+            // Assert
+            result
+                .Should()
+                .Be(expectedReturnCode);
+
+            exception
+                .Should()
+                .BeOfType<ApplicationException>();
+
+            exception!.Message
+                .Should()
+                .Be(TestErrorMiddleware.ErrorMessage);
+        }
+    }
+
+    [UsedImplicitly]
+    public class TestErrorMiddleware : CliActionMiddlewareBase
+    {
+        public const string ErrorMessage = "Error message";
+
+        public TestErrorMiddleware(Func<CliActionContext, Task> next) : base(next) { }
+
+        public override Task InvokeAsync(CliActionContext context)
+        {
+            throw new ApplicationException(ErrorMessage);
         }
     }
 }

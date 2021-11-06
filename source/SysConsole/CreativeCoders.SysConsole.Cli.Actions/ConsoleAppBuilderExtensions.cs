@@ -33,7 +33,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions
 
                     var runtime = runtimeBuilder.Build();
 
-                    return new CliActionExecutor(runtime);
+                    return new CliActionsExecutor(runtime);
                 });
         }
 
@@ -67,7 +67,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions
 
                     var runtime = runtimeBuilder.Build();
 
-                    return new CliActionExecutor(runtime);
+                    return new CliActionsExecutor(runtime);
                 });
         }
 
@@ -97,7 +97,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions
 
                     var runtime = runtimeBuilder.Build();
 
-                    return new CliActionExecutor(runtime);
+                    return new CliActionsExecutor(runtime);
                 });
         }
 
@@ -124,7 +124,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions
 
                     var runtime = runtimeBuilder.Build();
 
-                    return new CliActionExecutor(runtime);
+                    return new CliActionsExecutor(runtime);
                 });
         }
     }
