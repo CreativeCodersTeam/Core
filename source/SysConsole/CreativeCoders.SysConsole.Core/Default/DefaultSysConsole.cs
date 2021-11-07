@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.SysConsole.Core.Abstractions;
 
@@ -83,7 +86,6 @@ namespace CreativeCoders.SysConsole.Core.Default
         public ConsoleColor ErrorForegroundColor { get; set; } = ConsoleColor.Gray;
 
         public ConsoleColor ErrorBackgroundColor { get; set; } = ConsoleColor.Red;
-
 
         [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         public string Title
