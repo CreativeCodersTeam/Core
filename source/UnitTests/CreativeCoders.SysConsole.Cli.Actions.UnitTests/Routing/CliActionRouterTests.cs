@@ -118,6 +118,31 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
                 .BeSameAs(route0);
         }
 
+        [Fact]
+        public void FindRoute()
+        {
+            var args = new List<string> { "controller", "action" };
+
+            var route0 = CreateActionRoute<DefaultCliController>(nameof(DefaultCliController.DoDefaultAsync),
+                "controller");
+
+            var route1 = CreateActionRoute<DefaultCliController>(nameof(DefaultCliController.DoCommandAsync),
+                "controller", "action");
+
+            var router = new CliActionRouter() as ICliActionRouter;
+
+            router.AddRoute(route0);
+            router.AddRoute(route1);
+
+            // Act
+            var foundRoute = router.FindRoute(args);
+
+            // Assert
+            foundRoute
+                .Should()
+                .BeSameAs(route1);
+        }
+
         private static CliActionRoute CreateActionRoute<TController>(string methodName,
             params string[] routeParts)
         {

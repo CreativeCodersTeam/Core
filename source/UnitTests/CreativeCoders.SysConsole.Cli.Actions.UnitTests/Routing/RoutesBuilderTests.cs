@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Cli.Actions.Definition;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
@@ -64,6 +65,45 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
             routes
                 .Should()
                 .BeEmpty();
+        }
+
+        [Fact]
+        public void BuildRoutes_ControllerWithDefault_ReturnRoutesWithDefault()
+        {
+            var expectedRouteParts = new[]
+            {
+                Array.Empty<string>(),
+                new[] {"help"},
+                new[] {"setup"},
+                new[] {"config"},
+                new[] {"config", "help"},
+                new[] {"config", "setup"}
+            };
+
+            var builder = new RoutesBuilder();
+
+            builder.AddController(typeof(TestControllerWithDefault));
+
+            // Act
+            var routes = builder.BuildRoutes().ToArray();
+
+            // Assert
+            routes
+                .Should()
+                .HaveCount(expectedRouteParts.Length);
+
+            var routeParts = routes.Select(x => x.RouteParts).ToArray();
+
+            var index = 0;
+
+            foreach (var routePart in routeParts)
+            {
+                routePart
+                    .Should()
+                    .ContainInOrder(expectedRouteParts[index]);
+
+                index++;
+            }
         }
     }
 

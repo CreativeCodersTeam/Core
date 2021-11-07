@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.SysConsole.Cli.Actions.Exceptions;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Routing
@@ -43,14 +44,18 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
         {
             var routes = _actionRoutes
                 .Where(routeFilter)
+                .Distinct(x => x.ActionMethod)
                 .ToArray();
 
-            if (routes.Length > 1 && routes.Select(x => x.ActionMethod).Distinct().Count() > 1)
+            if (routes.Length > 1)
             {
-                throw new AmbiguousRouteException(args, routes);
+                if (routes.Select(x => x.RouteParts.Length).Distinct().Count() == 1)
+                {
+                    throw new AmbiguousRouteException(args, routes);
+                }
             }
 
-            var route = routes.FirstOrDefault();
+            var route = routes.OrderByDescending(x => x.RouteParts.Length).FirstOrDefault();
 
             if (route == null)
             {
