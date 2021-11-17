@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
+using CreativeCoders.SysConsole.Cli.Parsing.Exceptions;
 using CreativeCoders.SysConsole.Cli.Parsing.Properties;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing
@@ -46,7 +48,27 @@ namespace CreativeCoders.SysConsole.Cli.Parsing
                 }
             });
 
+            CheckAllArguments(optionArguments, option);
+
             return option;
+        }
+
+        private static void CheckAllArguments(IEnumerable<OptionArgument> optionArguments, object option)
+        {
+            var optionsAttribute =
+                option.GetType().GetCustomAttribute(typeof(OptionsAttribute)) as OptionsAttribute;
+
+            if (optionsAttribute?.AllArgsMustMatch != true)
+            {
+                return;
+            }
+
+            var notMatchedArgs = optionArguments.Where(x => !x.IsProcessed).ToArray();
+
+            if (notMatchedArgs.Any())
+            {
+                throw new NotAllArgumentsMatchException(notMatchedArgs);
+            }
         }
         
         private IEnumerable<OptionPropertyBase> ReadOptionProperties()

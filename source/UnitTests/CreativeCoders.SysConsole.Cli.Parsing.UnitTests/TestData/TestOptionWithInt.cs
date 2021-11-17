@@ -1,7 +1,6 @@
-﻿using CreativeCoders.SysConsole.Cli.Parsing;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing.TestData
+namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData
 {
     public class TestOptionWithInt
     {

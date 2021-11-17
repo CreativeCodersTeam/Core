@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using CreativeCoders.SysConsole.Cli.Parsing;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing.TestData
+namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData
 {
     [PublicAPI]
     public class TestOptionWithIntEnumerable

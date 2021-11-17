@@ -1,9 +1,8 @@
 ﻿using System;
-using CreativeCoders.SysConsole.Cli.Parsing;
 using CreativeCoders.SysConsole.Cli.Parsing.Properties;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing.TestData
+namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData
 {
     public class TestOptionWithConverter
     {

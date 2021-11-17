@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using CreativeCoders.SysConsole.Cli.Parsing;
-using CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing.TestData;
+using CreativeCoders.SysConsole.Cli.Parsing.Exceptions;
+using CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData;
 using FluentAssertions;
 using Xunit;
 
-namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
+namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests
 {
     public class OptionParserTests
     {
@@ -381,6 +381,31 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing
             option!.EnumValue
                 .Should()
                 .Be(enumWithFlags);
+        }
+
+        [Theory]
+        [InlineData("test")]
+        [InlineData("test", "-f", "value0")]
+        [InlineData("-f", "value0", "test")]
+        [InlineData("test", "-f", "value0", "--second", "value1")]
+        [InlineData("--second", "value1", "-f", "value0", "test")]
+        public void Parse_NotAllArgsMatch_ThrowsException(params string[] args)
+        {
+            var parser = new OptionParser(typeof(TestOptionAllArgsMustMatch));
+
+            // Act
+            Action act = () => parser.Parse(args);
+
+            // Assert
+            act
+                .Should()
+                .Throw<NotAllArgumentsMatchException>()
+                .Which
+                .NotMatchedArgs
+                .Should()
+                .HaveCount(1)
+                .And
+                .BeEquivalentTo(new []{new OptionArgument(){Kind = OptionArgumentKind.Value, Value = "test"}});
         }
     }
 }

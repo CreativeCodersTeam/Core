@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing
+namespace CreativeCoders.SysConsole.Cli.Parsing.Exceptions
 {
     public class RequiredArgumentMissingException : Exception
     {

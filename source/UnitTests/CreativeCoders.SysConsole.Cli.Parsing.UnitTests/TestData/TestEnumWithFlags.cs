@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing.TestData
+namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData
 {
     [PublicAPI]
     [Flags]

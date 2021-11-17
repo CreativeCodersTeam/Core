@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing
+namespace CreativeCoders.SysConsole.Cli.Parsing.Exceptions
 {
     [PublicAPI]
     public class OptionCreationFailedException : Exception

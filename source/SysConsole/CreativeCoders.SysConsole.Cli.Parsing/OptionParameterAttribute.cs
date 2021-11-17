@@ -11,8 +11,18 @@ namespace CreativeCoders.SysConsole.Cli.Parsing
             LongName = longName;
         }
 
-        public char ShortName { get; }
+        public OptionParameterAttribute(char shortName)
+        {
+            ShortName = shortName;
+        }
 
-        public string LongName { get; }
+        public OptionParameterAttribute(string longName)
+        {
+            LongName = longName;
+        }
+
+        public char? ShortName { get; }
+
+        public string? LongName { get; }
     }
 }

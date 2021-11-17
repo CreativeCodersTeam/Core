@@ -1,4 +1,4 @@
-﻿namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing.TestData
+﻿namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData
 {
     public class TestOptionWithInvalidCtor
     {

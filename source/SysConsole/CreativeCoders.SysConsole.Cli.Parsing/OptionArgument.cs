@@ -7,5 +7,7 @@
         public string? OptionName { get; init; }
 
         public string? Value { get; init; }
+
+        public bool IsProcessed { get; set; }
     }
 }

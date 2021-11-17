@@ -11,5 +11,9 @@ namespace CreativeCoders.SysConsole.Cli.Parsing
         public Type? Converter { get; init; }
 
         public char Separator { get; init; } = ',';
+
+        public string? HelpText { get; set; }
+
+        public string? Name { get; set; }
     }
 }

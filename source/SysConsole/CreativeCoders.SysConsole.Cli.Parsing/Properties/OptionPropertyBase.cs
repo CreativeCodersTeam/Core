@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using CreativeCoders.SysConsole.Cli.Parsing.Exceptions;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing.Properties
 {
@@ -36,6 +37,11 @@ namespace CreativeCoders.SysConsole.Cli.Parsing.Properties
                 ? Activator.CreateInstance(_optionAttribute.Converter) as ICliValueConverter
                 : CliValueConverters.Default)
                 ?? CliValueConverters.Default;
+
+            if (optionArgument != null)
+            {
+                optionArgument.IsProcessed = true;
+            }
 
             var propertyValue = converter.Convert(value, _propertyInfo.PropertyType, _optionAttribute);
 

@@ -1,10 +1,9 @@
-﻿using CreativeCoders.SysConsole.Cli.Parsing;
-using CreativeCoders.SysConsole.Cli.Parsing.Properties;
+﻿using CreativeCoders.SysConsole.Cli.Parsing.Properties;
 using CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters;
 using FluentAssertions;
 using Xunit;
 
-namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Parsing.Properties.ValueConverters
+namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.Properties.ValueConverters
 {
     public class EnumValueConverterTests
     {
