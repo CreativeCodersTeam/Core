@@ -16,6 +16,7 @@ variables:
   IsMainBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   IsPullRequest: $[eq(variables['Build.Reason'], 'PullRequest')]
   IsTag: $[startsWith(variables['Build.SourceBranch'], 'refs/tags')]
+  disable.coverage.autogenerate: 'true'
 
 stages:
 - stage: Build
@@ -51,13 +52,14 @@ stages:
       inputs:
         reports: '$(Build.SourcesDirectory)/.tests/coverage/**/*.xml'
         targetdir: '$(Pipeline.Workspace)/coverlet'
-        reporttypes: 'Cobertura'
+        reporttypes: 'HtmlInline_AzurePipelines_Dark;Cobertura'
         verbosity: 'Verbose'
 
     - task: PublishCodeCoverageResults@1
       displayName: 'Publish code coverage'
       inputs:
         codeCoverageTool: 'Cobertura'
+        reportDirectory: '$(Pipeline.Workspace)/coverlet'
         summaryFileLocation: '$(Pipeline.Workspace)/coverlet/Cobertura.xml'
 
     - task: DotNetCoreCLI@2
