@@ -49,7 +49,7 @@ stages:
     - task: reportgenerator@4
       displayName: 'Merge code coverage reports'
       inputs:
-        reports: '$(Build.SourcesDirectory)/.tests/coverage/*.xml'
+        reports: '$(Build.SourcesDirectory)/.tests/coverage/**/*.xml'
         targetdir: '$(Pipeline.Workspace)/coverlet'
         reporttypes: 'Cobertura'
         verbosity: 'Verbose'

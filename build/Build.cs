@@ -75,8 +75,7 @@ class Build : NukeBuild, IBuildInfo
                 .SetProjectsPattern("**/*.csproj")
                 .SetResultsDirectory(TestResultsDirectory)
                 .EnableCoverage()
-                .SetCoverageDirectory(CoverageDirectory)
-                .SetCoverageFormat(CoverletOutputFormat.cobertura));
+                .SetCoverageDirectory(CoverageDirectory));
 
     Target Pack => _ => _
         .After(Compile)
