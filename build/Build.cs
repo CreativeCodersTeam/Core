@@ -8,7 +8,6 @@ using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.GitVersion;
 
 [PublicAPI]
@@ -48,7 +47,9 @@ class Build : NukeBuild, IBuildInfo
 
     AbsolutePath CoverageDirectory => TestBaseDirectory / "coverage";
 
+#pragma warning disable IDE0051 // Mark members as static
     AbsolutePath TempNukeDirectory => RootDirectory / ".nuke" / "temp";
+#pragma warning restore IDE0051 // Mark members as static
 
     const string PackageProjectUrl = "https://github.com/CreativeCodersTeam/Core"; 
 
@@ -76,6 +77,13 @@ class Build : NukeBuild, IBuildInfo
                 .SetResultsDirectory(TestResultsDirectory)
                 .EnableCoverage()
                 .SetCoverageDirectory(CoverageDirectory));
+
+    Target CreateCoverageReport => _ => _
+        .After(Test)
+        .UseBuildAction<CreateCoverageReportAction>(this,
+            x => x
+                .SetReports(CoverageDirectory / "**/coverage.cobertura.xml")
+                .SetTargetPath(CoverageDirectory / "report"));
 
     Target Pack => _ => _
         .After(Compile)
@@ -108,7 +116,8 @@ class Build : NukeBuild, IBuildInfo
 
     Target RunTest => _ => _
         .DependsOn(RunBuild)
-        .Executes(Test);
+        .DependsOn(Test)
+        .Executes(CreateCoverageReport);
 
     Target CreateNuGetPackages => _ => _
         .DependsOn(RunTest)
