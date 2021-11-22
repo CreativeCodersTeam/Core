@@ -60,7 +60,7 @@ stages:
       inputs:
         codeCoverageTool: 'Cobertura'
         reportDirectory: '$(Build.SourcesDirectory)/.tests/coverage/report'
-        summaryFileLocation: '$(Pipeline.Workspace)/coverlet/Cobertura.xml'
+        summaryFileLocation: '$(Build.SourcesDirectory)/.tests/coverage/report/index.html'
 
     - task: DotNetCoreCLI@2
       displayName: "Publish testing NuGet packages"
