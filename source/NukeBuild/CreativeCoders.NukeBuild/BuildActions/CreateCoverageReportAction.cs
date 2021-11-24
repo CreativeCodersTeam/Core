@@ -20,7 +20,7 @@ namespace CreativeCoders.NukeBuild.BuildActions
                         .GetPackageExecutable("ReportGenerator", "ReportGenerator.exe", null, "net5.0"))
                     .SetReports(_reportsPath)
                     .SetTargetDirectory(_targetPath)
-                    .SetReportTypes(ReportTypes.HtmlInline_AzurePipelines_Dark, ReportTypes.Cobertura)
+                    .SetReportTypes(ReportTypes.Cobertura)
             );
         }
 
