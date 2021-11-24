@@ -1,7 +1,9 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing
 {
+    [PublicAPI]
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class OptionParameterAttribute : OptionBaseAttribute
     {

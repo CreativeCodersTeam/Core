@@ -2,8 +2,8 @@
 {
     public class HelpEntry
     {
-        public string? ArgumentName { get; set; }
+        public string? ArgumentName { get; init; }
 
-        public string? HelpText { get; set; }
+        public string? HelpText { get; init; }
     }
 }

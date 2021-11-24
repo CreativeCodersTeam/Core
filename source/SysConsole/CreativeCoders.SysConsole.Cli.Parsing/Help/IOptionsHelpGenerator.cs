@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CreativeCoders.SysConsole.Cli.Parsing.Help
+﻿namespace CreativeCoders.SysConsole.Cli.Parsing.Help
 {
     public interface IOptionsHelpGenerator
     {

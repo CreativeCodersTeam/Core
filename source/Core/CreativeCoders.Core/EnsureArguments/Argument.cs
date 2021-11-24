@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 #nullable enable
 // ReSharper disable once CheckNamespace
@@ -10,6 +11,7 @@ namespace CreativeCoders.Core
     ///
     /// <typeparam name="T">    Generic type parameter. </typeparam>
     ///-------------------------------------------------------------------------------------------------
+    [PublicAPI]
     public readonly struct Argument<T>
     {
         internal Argument(T? value, string name)

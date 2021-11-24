@@ -1,7 +1,9 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware
 {
+    [PublicAPI]
     public static class CliActionRuntimeBuilderExtensions
     {
         public static ICliActionRuntimeBuilder UseRouting(this ICliActionRuntimeBuilder runtimeBuilder)

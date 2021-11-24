@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.Core.Abstractions
@@ -34,14 +33,6 @@ namespace CreativeCoders.SysConsole.Core.Abstractions
         ConsoleColor ErrorForegroundColor { get; set; }
 
         ConsoleColor ErrorBackgroundColor { get; set; }
-
-        //TItem? SelectItem<TItem>(IEnumerable<TItem> items);
-
-        //TItem? SelectItem<TItem>(IEnumerable<TItem> items, Func<TItem, string?> getCaption);
-
-        //TItem? SelectItem<TItem>(IEnumerable<TItem> items, TItem? defaultItem);
-
-        //TItem? SelectItem<TItem>(IEnumerable<TItem> items, Func<TItem, string?> getCaption, TItem? defaultItem);
 
         string Title { get; set; }
 
