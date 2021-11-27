@@ -14,7 +14,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware
         public static ICliActionRuntimeBuilder UseExceptionHandling(this ICliActionRuntimeBuilder runtimeBuilder,
             int errorReturnCode = ExceptionHandlerMiddleware.DefaultErrorReturnCode)
         {
-            void Nop(CliActionContext _) { }
+            static void Nop(CliActionContext _) { }
 
             return runtimeBuilder.UseMiddleware<ExceptionHandlerMiddleware>((Action<CliActionContext>) Nop,
                 errorReturnCode);

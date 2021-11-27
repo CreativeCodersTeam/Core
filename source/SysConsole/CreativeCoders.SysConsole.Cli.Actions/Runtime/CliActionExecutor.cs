@@ -82,14 +82,12 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
                 return;
             }
 
-            if (resultType == typeof(CliActionResult))
+            if (resultType != typeof(CliActionResult))
             {
-                context.ReturnCode = ((CliActionResult)result).ReturnCode;
-
-                return;
+                throw new ActionReturnTypeNotSupportedException(resultType);
             }
-
-            throw new ActionReturnTypeNotSupportedException(resultType);
+                
+            context.ReturnCode = ((CliActionResult)result).ReturnCode;
         }
 
         private static object[] CreateActionArguments(CliActionContext context)

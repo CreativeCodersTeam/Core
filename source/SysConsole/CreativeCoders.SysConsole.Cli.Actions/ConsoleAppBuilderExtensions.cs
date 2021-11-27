@@ -2,11 +2,13 @@
 using CreativeCoders.Core;
 using CreativeCoders.SysConsole.App;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime;
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CreativeCoders.SysConsole.Cli.Actions
 {
     /// <summary>   A console application builder extensions. </summary>
+    [PublicAPI]
     public static class ConsoleAppBuilderExtensions
     {
         ///-------------------------------------------------------------------------------------------------

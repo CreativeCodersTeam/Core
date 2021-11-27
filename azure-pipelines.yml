@@ -47,15 +47,6 @@ stages:
         testResultsFormat: XUnit
         testResultsFiles: '$(Build.SourcesDirectory)/.tests/results/*.xml'
 
-    #- task: reportgenerator@4
-    #  displayName: 'Merge code coverage reports'
-    #  inputs:
-    #    reports: '$(Build.SourcesDirectory)/.tests/coverage/**/*.xml'
-    #    targetdir: '$(Pipeline.Workspace)/coverlet'
-    #    reporttypes: 'HtmlInline_AzurePipelines_Dark;Cobertura'
-    #    verbosity: 'Verbose'
-
-    
     - task: PublishCodeCoverageResults@1
       displayName: 'Publish code coverage'
       inputs:
