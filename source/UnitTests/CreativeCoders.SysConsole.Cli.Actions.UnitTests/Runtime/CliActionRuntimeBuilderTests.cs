@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware;
@@ -15,8 +16,10 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
         [Fact]
         public async Task ExecuteAsync_MiddlewareIsRegistered_MiddlewareIsCalled()
         {
-            var route = new CliActionRoute(typeof(DemoCliController),
-                typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync)), new[] {"test"});
+            var route = new CliActionRoute(
+                typeof(DemoCliController),
+                typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync))
+                ?? throw new InvalidOperationException(), new[] {"test"});
 
             var args = new[] {"test"};
 
@@ -59,8 +62,10 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
         [Fact]
         public async Task ExecuteAsync_StringMiddlewareIsRegistered_MiddlewareIsCalled()
         {
-            var route = new CliActionRoute(typeof(DemoCliController),
-                typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync)), new[] { "test" });
+            var route = new CliActionRoute(
+                typeof(DemoCliController),
+                typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync)) ?? throw new InvalidOperationException(),
+                new[] { "test" });
 
             var args = new[] { "test" };
 

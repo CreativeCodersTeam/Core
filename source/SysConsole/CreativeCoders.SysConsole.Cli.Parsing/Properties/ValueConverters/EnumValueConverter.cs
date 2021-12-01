@@ -19,12 +19,12 @@ namespace CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters
 
             var allEnumFields = EnumUtils.GetEnumFieldInfos(targetType);
 
-            return targetType.GetCustomAttribute(typeof(FlagsAttribute)) == null
-            ? ConvertEnum(allEnumFields, value)
-            : ConvertEnumFlags(allEnumFields, value, targetType);
+            return targetType.GetCustomAttribute<FlagsAttribute>() == null
+                ? ConvertEnum(allEnumFields, value)
+                : ConvertEnumFlags(allEnumFields, value, targetType);
         }
 
-        private object ConvertEnumFlags(IDictionary<Enum, FieldInfo> allEnumFields, object? value,
+        private static object ConvertEnumFlags(IDictionary<Enum, FieldInfo> allEnumFields, object? value,
             Type targetType)
         {
             var values = value.ToStringSafe().Split(',');
@@ -38,7 +38,7 @@ namespace CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters
             return Enum.ToObject(targetType, result);
         }
 
-        private object ConvertEnum(IDictionary<Enum, FieldInfo> allEnumFields, object? value)
+        private static object ConvertEnum(IDictionary<Enum, FieldInfo> allEnumFields, object? value)
         {
             var enumField = allEnumFields.Values.FirstOrDefault(x => x.Name == value?.ToString());
 

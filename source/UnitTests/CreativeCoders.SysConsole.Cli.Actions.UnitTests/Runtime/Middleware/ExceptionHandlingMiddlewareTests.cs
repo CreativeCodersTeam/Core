@@ -19,8 +19,10 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime.Middleware
         {
             const int expectedReturnCode = -1357;
 
-            var route = new CliActionRoute(typeof(DemoCliController),
-                typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync)), new[] { "test" });
+            var route = new CliActionRoute(
+                typeof(DemoCliController),
+                typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync))
+                ?? throw new InvalidOperationException(), new[] { "test" });
 
             var args = new[] { "test" };
 
@@ -56,8 +58,10 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime.Middleware
         {
             const int expectedReturnCode = -1357;
 
-            var route = new CliActionRoute(typeof(DemoCliController),
-                typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync)), new[] { "test" });
+            var route = new CliActionRoute(
+                typeof(DemoCliController),
+                typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync))
+                ?? throw new InvalidOperationException(), new[] { "test" });
 
             var args = new[] { "test" };
 

@@ -1,5 +1,7 @@
-﻿using CreativeCoders.SysConsole.Cli.Actions.Routing;
+﻿using CreativeCoders.SysConsole.Cli.Actions.Help;
+using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime;
+using CreativeCoders.SysConsole.Cli.Parsing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -22,6 +24,12 @@ namespace CreativeCoders.SysConsole.Cli.Actions
             services.TryAddSingleton<ICliActionRouter, CliActionRouter>();
 
             services.TryAddSingleton<ICliActionExecutor, CliActionExecutor>();
+
+            services.AddOptionsHelpGenerator();
+
+            services.AddSysConsole();
+
+            services.TryAddSingleton<ICliActionHelpGenerator, CliActionHelpGenerator>();
         }
     }
 }

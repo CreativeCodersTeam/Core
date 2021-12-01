@@ -27,7 +27,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
         public void AddControllers(Assembly assembly)
         {
             assembly.GetExportedTypes()
-                .Where(x => x.GetCustomAttribute(typeof(CliControllerAttribute)) != null)
+                .Where(x => x.GetCustomAttribute<CliControllerAttribute>() != null)
                 .ForEach(AddController);
         }
 
@@ -40,8 +40,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
         {
             var controllerAttributes =
                 controllerType
-                    .GetCustomAttributes(typeof(CliControllerAttribute))
-                    .OfType<CliControllerAttribute>()
+                    .GetCustomAttributes<CliControllerAttribute>()
                     .ToArray();
 
             if (controllerAttributes.Length == 0)
@@ -52,7 +51,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
             var actionMethods =
                 (from method in controllerType.GetMethods()
                 let actionAttributes =
-                    method.GetCustomAttributes(typeof(CliActionAttribute)).OfType<CliActionAttribute>().ToArray()
+                    method.GetCustomAttributes<CliActionAttribute>().ToArray()
                 where actionAttributes.Length > 0
                 select new {Attributes = actionAttributes, Method = method})
                 .SelectMany(x =>

@@ -8,21 +8,18 @@ namespace CreativeCoders.SysConsole.Cli.Parsing.Help
 {
     public class OptionsHelpGenerator : IOptionsHelpGenerator
     {
-        private readonly Type _optionsType;
-
-        public OptionsHelpGenerator(Type optionsType)
+        public OptionsHelp CreateHelp(Type optionsType)
         {
-            _optionsType = Ensure.NotNull(optionsType, nameof(optionsType));
+            Ensure.NotNull(optionsType, nameof(optionsType));
+
+            return new OptionsHelp(
+                CreateValueHelpEntries(optionsType),
+                CreateParameterHelpEntries(optionsType));
         }
 
-        public OptionsHelp CreateHelp()
+        private static IEnumerable<HelpEntry> CreateValueHelpEntries(Type optionsType)
         {
-            return new OptionsHelp(CreateValueHelpEntries(), CreateParameterHelpEntries());
-        }
-
-        private IEnumerable<HelpEntry> CreateValueHelpEntries()
-        {
-            var valueAttributes = GetOptionValues();
+            var valueAttributes = GetOptionValues(optionsType);
 
             return valueAttributes.Select(x =>
                 new HelpEntry
@@ -32,9 +29,9 @@ namespace CreativeCoders.SysConsole.Cli.Parsing.Help
                 });
         }
 
-        private IEnumerable<HelpEntry> CreateParameterHelpEntries()
+        private static IEnumerable<HelpEntry> CreateParameterHelpEntries(Type optionsType)
         {
-            var parameterAttributes = GetOptionParameters();
+            var parameterAttributes = GetOptionParameters(optionsType);
 
             return parameterAttributes.Select(x =>
                 new HelpEntry
@@ -63,22 +60,22 @@ namespace CreativeCoders.SysConsole.Cli.Parsing.Help
             return argName.Trim();
         }
 
-        private IEnumerable<OptionValueAttribute> GetOptionValues()
+        private static IEnumerable<OptionValueAttribute> GetOptionValues(Type optionsType)
         {
             return
-                from property in _optionsType.GetProperties()
+                from property in optionsType.GetProperties()
                 let attribute =
-                    property.GetCustomAttribute(typeof(OptionValueAttribute)) as OptionValueAttribute
+                    property.GetCustomAttribute<OptionValueAttribute>()
                 where attribute != null
                 select attribute;
         }
 
-        private IEnumerable<OptionParameterAttribute> GetOptionParameters()
+        private static IEnumerable<OptionParameterAttribute> GetOptionParameters(Type optionsType)
         {
             return
-                from property in _optionsType.GetProperties()
+                from property in optionsType.GetProperties()
                 let attribute =
-                    property.GetCustomAttribute(typeof(OptionParameterAttribute)) as OptionParameterAttribute
+                    property.GetCustomAttribute<OptionParameterAttribute>()
                 where attribute != null
                 select attribute;
         }

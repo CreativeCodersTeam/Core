@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CreativeCoders.Core;
 using CreativeCoders.SysConsole.Cli.Actions.Definition;
 using JetBrains.Annotations;
 
@@ -17,6 +18,8 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData
         [CliAction("more/command")]
         public Task<CliActionResult> DoMoreAsync(DoCmdOptions options)
         {
+            Ensure.NotNull(options, nameof(options));
+
             return Task.FromResult(new CliActionResult());
         }
     }

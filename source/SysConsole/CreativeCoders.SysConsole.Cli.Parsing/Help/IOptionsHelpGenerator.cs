@@ -1,7 +1,9 @@
-﻿namespace CreativeCoders.SysConsole.Cli.Parsing.Help
+﻿using System;
+
+namespace CreativeCoders.SysConsole.Cli.Parsing.Help
 {
     public interface IOptionsHelpGenerator
     {
-        OptionsHelp CreateHelp();
+        OptionsHelp CreateHelp(Type optionsType);
     }
 }

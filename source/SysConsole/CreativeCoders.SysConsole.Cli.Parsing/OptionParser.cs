@@ -56,7 +56,7 @@ namespace CreativeCoders.SysConsole.Cli.Parsing
         private static void CheckAllArguments(IEnumerable<OptionArgument> optionArguments, object option)
         {
             var optionsAttribute =
-                option.GetType().GetCustomAttribute(typeof(OptionsAttribute)) as OptionsAttribute;
+                option.GetType().GetCustomAttribute<OptionsAttribute>();
 
             if (optionsAttribute?.AllArgsMustMatch != true)
             {
@@ -75,13 +75,14 @@ namespace CreativeCoders.SysConsole.Cli.Parsing
         {
             foreach (var propertyInfo in _optionType.GetProperties())
             {
-                if (propertyInfo.GetCustomAttribute(typeof(OptionValueAttribute)) is OptionValueAttribute valueAttribute)
+                var valueAttribute = propertyInfo.GetCustomAttribute<OptionValueAttribute>();
+                if (valueAttribute != null)
                 {
                     yield return new ValueOptionProperty(propertyInfo, valueAttribute);
                 }
 
-                if (propertyInfo.GetCustomAttribute(typeof(OptionParameterAttribute)) is OptionParameterAttribute
-                    optionAttribute)
+                var optionAttribute = propertyInfo.GetCustomAttribute<OptionParameterAttribute>();
+                if (optionAttribute != null)
                 {
                     yield return new OptionParameterProperty(propertyInfo, optionAttribute);
                 }

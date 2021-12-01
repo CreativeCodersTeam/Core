@@ -13,8 +13,8 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData
             
         }
 
-        [CliAction("setup")]
-        public void Setup()
+        [CliAction("setup", HelpText = "Setups the config")]
+        public void Setup(OptionsForHelp options)
         {
 
         }

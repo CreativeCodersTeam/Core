@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
@@ -146,7 +147,10 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
         private static CliActionRoute CreateActionRoute<TController>(string methodName,
             params string[] routeParts)
         {
-            return new CliActionRoute(typeof(TController), typeof(TController).GetMethod(methodName),
+            return new CliActionRoute(
+                typeof(TController),
+                typeof(TController).GetMethod(methodName)
+                ?? throw new InvalidOperationException(),
                 routeParts);
         }
     }

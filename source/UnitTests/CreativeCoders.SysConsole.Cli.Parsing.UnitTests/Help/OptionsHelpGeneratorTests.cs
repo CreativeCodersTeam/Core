@@ -11,10 +11,10 @@ namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.Help
         [Fact]
         public void CreateHelp_OptionWithParameters_ParametersHelpIsCreatedCorrect()
         {
-            var helpGenerator = new OptionsHelpGenerator(typeof(TestOptionForHelp)) as IOptionsHelpGenerator;
+            var helpGenerator = new OptionsHelpGenerator() as IOptionsHelpGenerator;
 
             // Act
-            var help = helpGenerator.CreateHelp();
+            var help = helpGenerator.CreateHelp(typeof(TestOptionForHelp));
 
             // Assert
             help.ParameterHelpEntries

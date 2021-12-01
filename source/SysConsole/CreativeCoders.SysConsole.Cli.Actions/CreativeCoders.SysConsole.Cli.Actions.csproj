@@ -11,4 +11,8 @@
     <ProjectReference Include="..\CreativeCoders.SysConsole.Cli.Parsing\CreativeCoders.SysConsole.Cli.Parsing.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Help\" />
+  </ItemGroup>
+
 </Project>

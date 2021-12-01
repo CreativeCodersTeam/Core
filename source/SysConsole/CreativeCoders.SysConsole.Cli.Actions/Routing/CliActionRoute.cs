@@ -19,7 +19,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
         /// <param name="actionMethod">     The action method. </param>
         /// <param name="routeParts">       The route parts. </param>
         ///-------------------------------------------------------------------------------------------------
-        public CliActionRoute(Type controllerType, MethodInfo? actionMethod,
+        public CliActionRoute(Type controllerType, MethodInfo actionMethod,
             IEnumerable<string> routeParts)
         {
             ControllerType = Ensure.NotNull(controllerType, nameof(controllerType));
@@ -46,6 +46,6 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing
         ///
         /// <value> The action method. </value>
         ///-------------------------------------------------------------------------------------------------
-        public MethodInfo? ActionMethod { get; }
+        public MethodInfo ActionMethod { get; }
     }
 }

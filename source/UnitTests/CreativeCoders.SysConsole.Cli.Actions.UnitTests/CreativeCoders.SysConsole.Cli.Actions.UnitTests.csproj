@@ -29,6 +29,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Help\" />
 	  <Folder Include="Runtime\Middleware\" />
 	</ItemGroup>
 

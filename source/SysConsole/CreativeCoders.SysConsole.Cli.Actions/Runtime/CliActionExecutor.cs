@@ -34,7 +34,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 
             var actionArguments = CreateActionArguments(context);
 
-            var result = context.ActionRoute.ActionMethod!.Invoke(controller, actionArguments);
+            var result = context.ActionRoute.ActionMethod.Invoke(controller, actionArguments);
 
             var isVoid = context.ActionRoute.ActionMethod.ReturnType == typeof(void);
 
@@ -92,7 +92,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 
         private static object[] CreateActionArguments(CliActionContext context)
         {
-            var parameters = context.ActionRoute!.ActionMethod!.GetParameters();
+            var parameters = context.ActionRoute!.ActionMethod.GetParameters();
 
             switch (parameters.Length)
             {

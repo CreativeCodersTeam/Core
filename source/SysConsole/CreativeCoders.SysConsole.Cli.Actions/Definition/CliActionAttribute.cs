@@ -40,5 +40,12 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Definition
         /// <value> The route. </value>
         ///-------------------------------------------------------------------------------------------------
         public string Route { get; }
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Gets or sets the help text. </summary>
+        ///
+        /// <value> The help text. </value>
+        ///-------------------------------------------------------------------------------------------------
+        public string? HelpText { get; set; }
     }
 }

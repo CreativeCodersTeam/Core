@@ -170,62 +170,13 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
         {
             var context = new CliActionContext(new CliActionRequest(Array.Empty<string>()))
             {
-                ActionRoute = new CliActionRoute(typeof(ActionExecutorTestClass),
-                    typeof(ActionExecutorTestClass).GetMethod(methodName), Array.Empty<string>())
+                ActionRoute = new CliActionRoute(
+                    typeof(ActionExecutorTestClass),
+                    typeof(ActionExecutorTestClass).GetMethod(methodName)
+                    ?? throw new InvalidOperationException(), Array.Empty<string>())
             };
 
             return context;
-        }
-    }
-
-    public class ActionExecutorTestClass
-    {
-        public const int AsyncActionResultReturnCode = 1234;
-
-        public const int AsyncIntReturnCode = 2345;
-
-        public const int ActionResultReturnCode = 3456;
-
-        public const int IntReturnCode = 4567;
-
-        public object? ExecuteNull()
-        {
-            return null;
-        }
-
-        public Task<CliActionResult> ExecuteWithActionResultAsync()
-        {
-            return Task.FromResult(new CliActionResult(AsyncActionResultReturnCode));
-        }
-
-        public Task<int> ExecuteWithIntAsync()
-        {
-            return Task.FromResult(AsyncIntReturnCode);
-        }
-
-        public Task ExecuteAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        public CliActionResult ExecuteWithActionResult()
-        {
-            return new CliActionResult(ActionResultReturnCode);
-        }
-
-        public int ExecuteWithInt()
-        {
-            return IntReturnCode;
-        }
-
-        public void Execute()
-        {
-            // Do Nothing
-        }
-
-        public string ExecuteInvalidReturnType()
-        {
-            return string.Empty;
         }
     }
 }
