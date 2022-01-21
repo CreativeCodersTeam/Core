@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using CreativeCoders.Core;
@@ -31,7 +32,11 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
                 throw new InvalidOperationException();
             }
 
+            Debug.WriteLine($"Find help for action method{route.ActionMethod.DeclaringType?.Name}.{route.ActionMethod.Name}");
+
             var actionAttribute = route.ActionMethod.GetCustomAttribute<CliActionAttribute>();
+
+            Debug.WriteLine("After GetCustomAttribute");
 
             if (actionAttribute == null)
             {
