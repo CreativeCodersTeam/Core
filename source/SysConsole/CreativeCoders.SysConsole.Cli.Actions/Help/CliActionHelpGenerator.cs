@@ -32,11 +32,11 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
                 throw new InvalidOperationException();
             }
 
-            Debug.WriteLine($"Find help for action method{route.ActionMethod.DeclaringType?.Name}.{route.ActionMethod.Name}");
+            Console.WriteLine($"Find help for action method{route.ActionMethod.DeclaringType?.Name}.{route.ActionMethod.Name}");
 
             var actionAttribute = route.ActionMethod.GetCustomAttribute<CliActionAttribute>();
 
-            Debug.WriteLine("After GetCustomAttribute");
+            Console.WriteLine("After GetCustomAttribute");
 
             if (actionAttribute == null)
             {
