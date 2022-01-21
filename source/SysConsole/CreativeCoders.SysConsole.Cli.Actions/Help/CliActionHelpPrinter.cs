@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
@@ -42,7 +44,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
             _sysConsole.WriteLine();
         }
 
-        private void PrintHelpEntries(IEnumerable<HelpEntry> helpEntries)
+        private void PrintHelpEntries(IImmutableList<HelpEntry> helpEntries)
         {
             var firstColumnWidth = helpEntries.Select(x => x.ArgumentName?.Length ?? 0).Max() + 3;
 

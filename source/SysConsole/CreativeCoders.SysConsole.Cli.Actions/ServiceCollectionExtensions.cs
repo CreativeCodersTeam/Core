@@ -30,6 +30,8 @@ namespace CreativeCoders.SysConsole.Cli.Actions
             services.AddSysConsole();
 
             services.TryAddSingleton<ICliActionHelpGenerator, CliActionHelpGenerator>();
+
+            services.TryAddSingleton<ICliActionHelpPrinter, CliActionHelpPrinter>();
         }
     }
 }

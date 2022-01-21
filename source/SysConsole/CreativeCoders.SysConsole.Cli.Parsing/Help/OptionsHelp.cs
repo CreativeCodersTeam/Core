@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing.Help
 {
@@ -7,12 +8,12 @@ namespace CreativeCoders.SysConsole.Cli.Parsing.Help
         public OptionsHelp(IEnumerable<HelpEntry> valueHelpEntries,
             IEnumerable<HelpEntry> parameterHelpEntries)
         {
-            ValueHelpEntries = valueHelpEntries;
-            ParameterHelpEntries = parameterHelpEntries;
+            ValueHelpEntries = valueHelpEntries.ToImmutableArray();
+            ParameterHelpEntries = parameterHelpEntries.ToImmutableArray();
         }
 
-        public IEnumerable<HelpEntry> ValueHelpEntries { get; }
+        public IImmutableList<HelpEntry> ValueHelpEntries { get; }
 
-        public IEnumerable<HelpEntry> ParameterHelpEntries { get; }
+        public IImmutableList<HelpEntry> ParameterHelpEntries { get; }
     }
 }
