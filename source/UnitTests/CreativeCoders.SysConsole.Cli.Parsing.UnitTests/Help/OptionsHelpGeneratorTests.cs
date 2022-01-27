@@ -21,7 +21,7 @@ namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.Help
                 .Should()
                 .HaveCount(2);
 
-            var firstHelpParameter = help.ParameterHelpEntries.First();
+            var firstHelpParameter = help.ParameterHelpEntries[0];
 
             firstHelpParameter.ArgumentName
                 .Should()

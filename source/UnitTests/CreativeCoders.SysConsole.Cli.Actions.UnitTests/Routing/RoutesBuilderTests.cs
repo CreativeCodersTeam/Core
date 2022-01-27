@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Cli.Actions.Definition;
@@ -110,6 +111,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
     public class TestNoneController
     {
         [CliAction]
+        // ReSharper disable once UnusedMember.Global
         public Task<CliActionResult> TestAsync()
         {
             return Task.FromResult(new CliActionResult());

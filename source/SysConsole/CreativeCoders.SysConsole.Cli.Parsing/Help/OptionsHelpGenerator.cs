@@ -24,8 +24,8 @@ namespace CreativeCoders.SysConsole.Cli.Parsing.Help
             return valueAttributes.Select(x =>
                 new HelpEntry
                 {
-                    ArgumentName = string.IsNullOrEmpty(x.Name) ? string.Empty : $"<{x.Name.ToUpper()}>",
-                    HelpText = x.HelpText
+                    ArgumentName = string.IsNullOrEmpty(x.Option.Name) ? x.OptionProperty.Name : $"<{x.Option.Name.ToUpper()}>",
+                    HelpText = x.Option.HelpText
                 });
         }
 
@@ -60,14 +60,14 @@ namespace CreativeCoders.SysConsole.Cli.Parsing.Help
             return argName.Trim();
         }
 
-        private static IEnumerable<OptionValueAttribute> GetOptionValues(Type optionsType)
+        private static IEnumerable<(OptionValueAttribute Option, PropertyInfo OptionProperty)> GetOptionValues(Type optionsType)
         {
             return
                 from property in optionsType.GetProperties()
                 let attribute =
                     property.GetCustomAttribute<OptionValueAttribute>()
                 where attribute != null
-                select attribute;
+                select (attribute, property);
         }
 
         private static IEnumerable<OptionParameterAttribute> GetOptionParameters(Type optionsType)

@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Cli.Actions.Definition;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData
 {
     [CliController]
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
     public class DefaultCliController
     {
         [CliAction]

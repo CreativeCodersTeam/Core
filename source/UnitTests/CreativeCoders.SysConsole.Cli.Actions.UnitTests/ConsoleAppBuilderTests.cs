@@ -93,7 +93,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests
         [InlineData("controller")]
         [InlineData("controller", "execute")]
         [InlineData("controller", "execute", "this")]
-        [InlineData(new object[0])]
+        [InlineData]
         public async Task RunSync_DifferentRoutesToDefaultAction_ActionIsExecuted(params string[] args)
         {
             var consoleApp = new ConsoleAppBuilder(args)
