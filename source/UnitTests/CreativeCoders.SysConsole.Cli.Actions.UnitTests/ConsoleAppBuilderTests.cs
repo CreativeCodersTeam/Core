@@ -111,6 +111,29 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests
         }
 
         [Theory]
+        [InlineData("execute")]
+        [InlineData("execute", "this")]
+        [InlineData("controller")]
+        [InlineData("controller", "execute")]
+        [InlineData("controller", "execute", "this")]
+        [InlineData]
+        public async Task RunSync_AddControllerWithTypeParamDifferentRoutesToDefaultAction_ActionIsExecuted(params string[] args)
+        {
+            var consoleApp = new ConsoleAppBuilder(args)
+                .UseActions(x =>
+                    x.AddController(typeof(TestMultiRouteCliController)).UseMiddleware<CliRoutingMiddleware>())
+                .Build();
+
+            // Act
+            var result = await consoleApp.RunAsync();
+
+            // Assert
+            result
+                .Should()
+                .Be(TestMultiRouteCliController.ExecuteReturnCode);
+        }
+
+        [Theory]
         [InlineData("execute", "-t", "HelloWorld")]
         [InlineData("execute", "this", "--text", "HelloWorld")]
         [InlineData("controller", "-t", "HelloWorld")]

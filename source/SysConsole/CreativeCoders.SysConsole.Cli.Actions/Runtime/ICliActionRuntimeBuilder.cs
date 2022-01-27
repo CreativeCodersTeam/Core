@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
 {
     /// <summary>   Interface for CLI action runtime builder. </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public interface ICliActionRuntimeBuilder
     {
         ///-------------------------------------------------------------------------------------------------
@@ -50,6 +52,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
         ///
         /// <returns>   This ICliActionRuntimeBuilder. </returns>
         ///-------------------------------------------------------------------------------------------------
+        [SuppressMessage("ReSharper", "UnusedMemberInSuper.Global")]
         ICliActionRuntimeBuilder AddControllers(Assembly assembly);
 
         ///-------------------------------------------------------------------------------------------------

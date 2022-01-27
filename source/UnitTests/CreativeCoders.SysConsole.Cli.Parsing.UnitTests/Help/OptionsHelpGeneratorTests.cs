@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using CreativeCoders.SysConsole.Cli.Parsing.Help;
+﻿using CreativeCoders.SysConsole.Cli.Parsing.Help;
 using CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData;
 using FluentAssertions;
 using Xunit;

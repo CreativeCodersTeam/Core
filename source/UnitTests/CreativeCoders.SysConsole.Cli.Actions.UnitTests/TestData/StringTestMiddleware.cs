@@ -18,7 +18,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData
 
         public override Task InvokeAsync(CliActionContext context)
         {
-            context.ReturnCode = _text?.GetHashCode() ?? 0;
+            context.ReturnCode = _text.GetHashCode();
             return Task.CompletedTask;
         }
     }
