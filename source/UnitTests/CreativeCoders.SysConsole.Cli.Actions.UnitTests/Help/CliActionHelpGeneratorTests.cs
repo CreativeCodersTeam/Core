@@ -13,7 +13,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Help
     public class CliActionHelpGeneratorTests
     {
         [Fact]
-        public void Test()
+        public void CreateHelp_GivenActionViaRouter_HelpTextAndOptionsHelpCorrect()
         {
             var expectedOptionsHelp = new OptionsHelp(
                 Array.Empty<HelpEntry>(),
@@ -51,6 +51,12 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Help
 
             A.CallTo(() => optionsHelpGenerator.CreateHelp(typeof(OptionsForHelp)))
                 .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public void Test()
+        {
+
         }
     }
 }

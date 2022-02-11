@@ -6,6 +6,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData
 {
     [CliController]
     [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+    [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression")]
     public class DefaultCliController
     {
         [CliAction]

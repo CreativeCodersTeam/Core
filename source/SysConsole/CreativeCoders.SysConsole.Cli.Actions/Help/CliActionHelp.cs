@@ -4,14 +4,15 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
 {
     public class CliActionHelp
     {
-        public CliActionHelp(string helpText, OptionsHelp optionsHelp)
+        public CliActionHelp(OptionsHelp optionsHelp)
         {
-            HelpText = helpText;
             OptionsHelp = optionsHelp;
         }
 
-        public string HelpText { get; }
+        public string HelpText { get; init; } = string.Empty;
 
+        public string Syntax { get; init; } = string.Empty;
+        
         public OptionsHelp OptionsHelp { get; }
     }
 }

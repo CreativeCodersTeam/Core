@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CreativeCoders.Core;
+using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.SysConsole.Cli.Actions.Definition;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Parsing.Help;
@@ -44,9 +45,16 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
                 ? _optionsHelpGenerator.CreateHelp(parameterInfo.ParameterType)
                 : new OptionsHelp(Array.Empty<HelpEntry>(), Array.Empty<HelpEntry>());
 
-            return new CliActionHelp(
-                actionAttribute.HelpText ?? route.ActionMethod.Name,
-                optionsHelp);
+            return new CliActionHelp(optionsHelp)
+            {
+                HelpText = actionAttribute.HelpText ?? route.ActionMethod.Name,
+                Syntax = GetSyntax()
+            };
+        }
+
+        private static string GetSyntax()
+        {
+            return $"{Env.GetAppFileName()} [OPTIONS] [ARGUMENTS]";
         }
     }
 }
