@@ -28,6 +28,9 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
                 .WriteLine()
                 .WriteLine(help.HelpText)
                 .WriteLine()
+                .WriteLine("Syntax:")
+                .WriteLine($"  {help.Syntax}")
+                .WriteLine()
                 .WriteLine("Arguments:")
                 .WriteLine();
 
@@ -35,7 +38,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
 
             _sysConsole
                 .WriteLine()
-                .WriteLine("Parameters:")
+                .WriteLine("Options:")
                 .WriteLine();
 
             PrintHelpEntries(help.OptionsHelp.ParameterHelpEntries);
@@ -49,7 +52,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
 
             helpEntries
                 .ForEach(x =>
-                    _sysConsole.WriteLine($" {x.ArgumentName?.PadRight(firstColumnWidth)}{x.HelpText}"));
+                    _sysConsole.WriteLine($"  {x.ArgumentName?.PadRight(firstColumnWidth)}{x.HelpText}"));
         }
     }
 }

@@ -54,7 +54,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
 
         private static string GetSyntax()
         {
-            return $"{Env.GetAppFileName()} [OPTIONS] [ARGUMENTS]";
+            return $"{Env.GetAppFileName()} [ARGUMENTS] [OPTIONS]";
         }
     }
 }
