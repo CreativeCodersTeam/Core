@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CreativeCoders.Core;
+using CreativeCoders.Core.IO;
 using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.SysConsole.Cli.Actions.Definition;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
@@ -52,9 +53,11 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
             };
         }
 
-        private static string GetSyntax()
+        private static string GetSyntax(IEnumerable<string> actionRouteParts)
         {
-            return $"{Env.GetAppFileName()} [ARGUMENTS] [OPTIONS]";
+            var appName = FileSys.Path.GetFileNameWithoutExtension(Env.GetAppFileName());
+            var action = $"{string.Join(" ", actionRouteParts)}";
+            return $"{appName} {action} [ARGUMENTS] [OPTIONS]";
         }
     }
 }
