@@ -35,7 +35,10 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
                 throw new InvalidOperationException();
             }
 
-            var actionAttribute = route.ActionMethod.GetCustomAttribute<CliActionAttribute>();
+            var actionAttribute = route
+                .ActionMethod
+                .GetCustomAttributes<CliActionAttribute>()
+                .FirstOrDefault(x => !string.IsNullOrEmpty(x.Route));
 
             if (actionAttribute == null)
             {
