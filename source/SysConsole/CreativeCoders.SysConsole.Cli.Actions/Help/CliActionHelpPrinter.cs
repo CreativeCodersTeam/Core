@@ -29,29 +29,26 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
                 .WriteLine(help.HelpText)
                 .WriteLine()
                 .WriteLine("Syntax:")
-                .WriteLine($"  {help.Syntax}")
-                .WriteLine()
-                .WriteLine("Arguments:")
-                .WriteLine();
+                .WriteLine($"  {help.Syntax}");
 
-            PrintHelpEntries(help.OptionsHelp.ValueHelpEntries);
+            PrintHelpEntries(help.OptionsHelp.ValueHelpEntries, "Arguments:");
 
-            _sysConsole
-                .WriteLine()
-                .WriteLine("Options:")
-                .WriteLine();
-
-            PrintHelpEntries(help.OptionsHelp.ParameterHelpEntries);
+            PrintHelpEntries(help.OptionsHelp.ParameterHelpEntries, "Options:");
 
             _sysConsole.WriteLine();
         }
 
-        private void PrintHelpEntries(IImmutableList<HelpEntry> helpEntries)
+        private void PrintHelpEntries(IImmutableList<HelpEntry> helpEntries, string entriesHeader)
         {
             if (!helpEntries.Any())
             {
                 return;
             }
+
+            _sysConsole
+                .WriteLine()
+                .WriteLine(entriesHeader)
+                .WriteLine();
 
             var firstColumnWidth = helpEntries.Select(x => x.ArgumentName?.Length ?? 0).Max() + 3;
 
