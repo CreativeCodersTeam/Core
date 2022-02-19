@@ -48,6 +48,11 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
 
         private void PrintHelpEntries(IImmutableList<HelpEntry> helpEntries)
         {
+            if (!helpEntries.Any())
+            {
+                return;
+            }
+
             var firstColumnWidth = helpEntries.Select(x => x.ArgumentName?.Length ?? 0).Max() + 3;
 
             helpEntries
