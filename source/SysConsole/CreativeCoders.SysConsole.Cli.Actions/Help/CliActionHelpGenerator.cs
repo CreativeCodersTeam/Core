@@ -28,7 +28,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
         {
             var actionParts = actionRouteParts.ToList();
 
-            var route = _actionRouter.FindRoute(actionParts);
+            var route = _actionRouter.FindRoute(actionParts.ToList());
 
             if (route == null)
             {
