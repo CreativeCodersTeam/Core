@@ -20,7 +20,10 @@ namespace CreativeCoders.SysConsole.Cli.Parsing
 
         public object Parse(string[] args)
         {
-            Ensure.NotNull(_optionType, nameof(_optionType));
+            if (_optionType == typeof(string[]) || _optionType == typeof(IEnumerable<string>))
+            {
+                return args.ToArray();
+            }
 
             object? option;
 

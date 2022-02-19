@@ -407,5 +407,23 @@ namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests
                 .And
                 .BeEquivalentTo(new []{new OptionArgument(){Kind = OptionArgumentKind.Value, Value = "test"}});
         }
+
+        [Theory]
+        [InlineData(typeof(string[]))]
+        [InlineData(typeof(IEnumerable<string>))]
+        public void Parse_ParameterTypeIsArrayOfString_ArgsAreReturned(Type optionType)
+        {
+            var parser = new OptionParser(optionType);
+
+            var args = new[] {"first", "second", "some", "more"};
+
+            // Act
+            var option = parser.Parse(args) as string[];
+
+            // Assert
+            option
+                .Should()
+                .Equal(args);
+        }
     }
 }
