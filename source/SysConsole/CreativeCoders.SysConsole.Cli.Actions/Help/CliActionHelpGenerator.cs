@@ -26,7 +26,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
 
         public CliActionHelp CreateHelp(IEnumerable<string> actionRouteParts)
         {
-            var actionParts = actionRouteParts.ToArray();
+            var actionParts = actionRouteParts.ToList();
 
             var route = _actionRouter.FindRoute(actionParts);
 
