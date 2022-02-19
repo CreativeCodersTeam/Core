@@ -26,7 +26,9 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
 
         public CliActionHelp CreateHelp(IEnumerable<string> actionRouteParts)
         {
-            var route = _actionRouter.FindRoute(actionRouteParts.ToList());
+            var actionParts = actionRouteParts.ToArray();
+
+            var route = _actionRouter.FindRoute(actionParts);
 
             if (route == null)
             {
@@ -49,15 +51,36 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help
             return new CliActionHelp(optionsHelp)
             {
                 HelpText = actionAttribute.HelpText ?? route.ActionMethod.Name,
-                Syntax = GetSyntax()
+                Syntax = GetSyntax(actionParts, optionsHelp)
             };
         }
 
-        private static string GetSyntax(IEnumerable<string> actionRouteParts)
+        private static string GetSyntax(IEnumerable<string> actionRouteParts, OptionsHelp optionsHelp)
         {
             var appName = FileSys.Path.GetFileNameWithoutExtension(Env.GetAppFileName());
-            var action = $"{string.Join(" ", actionRouteParts)}";
-            return $"{appName} {action} [ARGUMENTS] [OPTIONS]";
+
+            var action = string.Join(" ", actionRouteParts);
+
+            var arguments = string.Join(" ", optionsHelp.ValueHelpEntries.Select(x => $"[{x.ArgumentName}]"));
+
+            var syntaxParts = new List<string> {appName};
+
+            if (!string.IsNullOrEmpty(action))
+            {
+                syntaxParts.Add(action);
+            }
+            
+            if (!string.IsNullOrEmpty(arguments))
+            {
+                syntaxParts.Add(arguments);
+            }
+            
+            if (optionsHelp.ParameterHelpEntries.Any())
+            {
+                syntaxParts.Add("[OPTIONS]");
+            }
+
+            return string.Join(" ", syntaxParts);
         }
     }
 }
