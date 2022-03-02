@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28729.10
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{D0A3F2FC-664B-4A9D-ACF9-F00EF8E9DFE1}"
 EndProject
@@ -150,6 +150,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__global", "__global", "{92
 		..\.gitattributes = ..\.gitattributes
 		..\.gitignore = ..\.gitignore
 		..\azure-pipelines.yml = ..\azure-pipelines.yml
+		..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
 		..\LICENSE = ..\LICENSE
 	EndProjectSection
 EndProject
@@ -224,7 +225,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.SysConsole.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.SysConsole.CliArguments", "SysConsole\CreativeCoders.SysConsole.CliArguments\CreativeCoders.SysConsole.CliArguments.csproj", "{41795D90-8921-49AF-AF0D-CF4191F6D098}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.SysConsole.CliArguments.UnitTests", "UnitTests\CreativeCoders.SysConsole.CliArguments.UnitTests\CreativeCoders.SysConsole.CliArguments.UnitTests.csproj", "{1F40FBE3-F1E5-4A69-A3CB-0F0ECF0D43D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.SysConsole.CliArguments.UnitTests", "UnitTests\CreativeCoders.SysConsole.CliArguments.UnitTests\CreativeCoders.SysConsole.CliArguments.UnitTests.csproj", "{1F40FBE3-F1E5-4A69-A3CB-0F0ECF0D43D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
