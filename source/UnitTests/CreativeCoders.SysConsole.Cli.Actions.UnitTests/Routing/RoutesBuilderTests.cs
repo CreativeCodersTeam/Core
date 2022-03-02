@@ -101,7 +101,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
             {
                 routePart
                     .Should()
-                    .Equal(expectedRouteParts[index]);
+                    .ContainInOrder(expectedRouteParts[index]);
 
                 index++;
             }

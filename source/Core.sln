@@ -151,6 +151,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__global", "__global", "{92
 		..\.gitignore = ..\.gitignore
 		..\azure-pipelines.yml = ..\azure-pipelines.yml
 		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RibbonSampleApp", "Samples\RibbonSampleApp\RibbonSampleApp.csproj", "{5424651E-ACDD-4C7F-BE70-819A89308152}"
@@ -232,7 +233,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.SysConsole.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.SysConsole.Cli.Parsing", "SysConsole\CreativeCoders.SysConsole.Cli.Parsing\CreativeCoders.SysConsole.Cli.Parsing.csproj", "{F67BD1DC-64E3-4558-979C-4A202EFF49A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.SysConsole.Cli.Parsing.UnitTests", "UnitTests\CreativeCoders.SysConsole.Cli.Parsing.UnitTests\CreativeCoders.SysConsole.Cli.Parsing.UnitTests.csproj", "{5A1DEACE-E03B-4CFB-93D6-875B63B6CE34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.SysConsole.Cli.Parsing.UnitTests", "UnitTests\CreativeCoders.SysConsole.Cli.Parsing.UnitTests\CreativeCoders.SysConsole.Cli.Parsing.UnitTests.csproj", "{5A1DEACE-E03B-4CFB-93D6-875B63B6CE34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
