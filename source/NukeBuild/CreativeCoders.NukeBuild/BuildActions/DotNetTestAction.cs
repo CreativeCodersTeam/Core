@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using JetBrains.Annotations;
 using Nuke.Common.IO;
 using Nuke.Common.Tools.Coverlet;
@@ -24,6 +25,10 @@ namespace CreativeCoders.NukeBuild.BuildActions
 
         private CoverletOutputFormat _coverageOutputFormat = CoverletOutputFormat.cobertura;
 
+        private string _logger = "xunit";
+
+        private string _resultFileExt = "xml";
+
         protected override void OnExecute()
         {
             if (!Directory.Exists(_testProjectsBaseDirectory))
@@ -39,7 +44,7 @@ namespace CreativeCoders.NukeBuild.BuildActions
             {
                 var projectName = Path.GetFileNameWithoutExtension(unitTestProject);
 
-                var testResultFile = $"results_{projectName}.trx";// Path.Combine(_resultsDirectory, $"results_{projectName}.trx");
+                var testResultFile = $"{projectName}.{_resultFileExt}";
 
                 var coverageResultFile = _coverageDirectory / $"coverage_{ projectName}.xml";
 
@@ -49,7 +54,7 @@ namespace CreativeCoders.NukeBuild.BuildActions
                         x => x
                             .SetProjectFile(unitTestProject)
                             .SetConfiguration(BuildInfo.Configuration)
-                            .SetLoggers($"trx;LogFilePath={testResultFile}")
+                            .SetLoggers($"{_logger};LogFileName={testResultFile}")
                             .SetResultsDirectory(_resultsDirectory)
                             .SetCollectCoverage(_enableCodeCoverage)
                             .SetCoverletOutput(coverageResultFile)
@@ -105,6 +110,20 @@ namespace CreativeCoders.NukeBuild.BuildActions
         public DotNetTestAction SetCoverageFormat(CoverletOutputFormat coverageOutputFormat)
         {
             _coverageOutputFormat = coverageOutputFormat;
+
+            return this;
+        }
+
+        public DotNetTestAction UseLogger(string logger)
+        {
+            _logger = logger;
+
+            return this;
+        }
+
+        public DotNetTestAction SetResultFileExt(string resultFileExt)
+        {
+            _resultFileExt = resultFileExt;
 
             return this;
         }
