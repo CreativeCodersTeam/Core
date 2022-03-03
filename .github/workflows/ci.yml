@@ -28,11 +28,11 @@ jobs:
         shell: pwsh
         run: ./build.ps1 CreateNuGetPackages
 
-#      - name: Publish Test Results
-      
-      
+      - name: Show dir
+        run: ls
+            
       - name: Publish the package to GPR
-        run: dotnet nuget push ./.artifacts/*.nupkg --skip-duplicate --no-symbols -k ${{secrets.GITHUB_TOKEN}}
+        run: dotnet nuget push "./.artifacts/*.nupkg" --skip-duplicate --no-symbols -k ${{secrets.GITHUB_TOKEN}}
 
       #- name: list sources
       #  run: dotnet-gitversion
