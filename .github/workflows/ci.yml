@@ -23,9 +23,9 @@ jobs:
         run: |
           dotnet tool install --global GitVersion.Tool
 
-      #- name: Build Solution
-      #  shell: pwsh
-      #  run: ./build.ps1 CreateNuGetPackages
+      - name: Build Solution
+        shell: pwsh
+        run: ./build.ps1 CreateNuGetPackages
 
 #      - name: Publish Test Results
       
@@ -33,5 +33,5 @@ jobs:
       #- name: Publish the package to GPR
       #  run: dotnet nuget push ./.artifacts/*.nupkg --skip-duplicate --no-symbols -k ${{secrets.GITHUB_TOKEN}}
 
-      - name: list sources
-        run: dotnet-gitversion
+      #- name: list sources
+      #  run: dotnet-gitversion
