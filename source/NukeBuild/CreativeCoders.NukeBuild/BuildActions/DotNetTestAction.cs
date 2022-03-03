@@ -39,7 +39,7 @@ namespace CreativeCoders.NukeBuild.BuildActions
             {
                 var projectName = Path.GetFileNameWithoutExtension(unitTestProject);
 
-                var testResultFile = Path.Combine(_resultsDirectory, $"results_{projectName}.xml");
+                var testResultFile = Path.Combine(_resultsDirectory, $"results_{projectName}.trx");
 
                 var coverageResultFile = _coverageDirectory / $"coverage_{ projectName}.xml";
 
@@ -49,7 +49,7 @@ namespace CreativeCoders.NukeBuild.BuildActions
                         x => x
                             .SetProjectFile(unitTestProject)
                             .SetConfiguration(BuildInfo.Configuration)
-                            .SetLoggers($"xunit;LogFilePath={testResultFile}")
+                            .SetLoggers($"trx;LogFilePath={testResultFile}")
                             .SetResultsDirectory(_resultsDirectory)
                             .SetCollectCoverage(_enableCodeCoverage)
                             .SetCoverletOutput(coverageResultFile)
