@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
-          source-url: https://nuget.pkg.github.com/darthsharp/index.json
+          source-url: https://nuget.pkg.github.com/CreativeCodersTeam/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
@@ -28,11 +28,8 @@ jobs:
         shell: pwsh
         run: ./build.ps1 CreateNuGetPackages
 
-      - name: Show dir
-        run: ls
-            
       - name: Publish the package to GPR
-        run: dotnet nuget push ".artifacts/**/*.nupkg" --skip-duplicate --no-symbols -k ${{secrets.GITHUB_TOKEN}}
+        run: dotnet nuget push .artifacts/**/*.nupkg --skip-duplicate -k ${{secrets.GITHUB_TOKEN}}
 
       #- name: list sources
       #  run: dotnet-gitversion
