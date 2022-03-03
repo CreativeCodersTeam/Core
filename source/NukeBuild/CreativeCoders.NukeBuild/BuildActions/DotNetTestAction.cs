@@ -39,7 +39,7 @@ namespace CreativeCoders.NukeBuild.BuildActions
             {
                 var projectName = Path.GetFileNameWithoutExtension(unitTestProject);
 
-                var testResultFile = Path.Combine(_resultsDirectory, $"results_{projectName}.trx");
+                var testResultFile = $"results_{projectName}.trx";// Path.Combine(_resultsDirectory, $"results_{projectName}.trx");
 
                 var coverageResultFile = _coverageDirectory / $"coverage_{ projectName}.xml";
 
