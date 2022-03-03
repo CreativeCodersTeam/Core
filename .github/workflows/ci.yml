@@ -3,7 +3,8 @@ name: CI pipeline
 on: [push]
 
 jobs:
-  deploy:
+  build:
+    name: Build, test and deploy to github pkg
     runs-on: windows-latest
     permissions:
       packages: write
@@ -30,8 +31,8 @@ jobs:
 #      - name: Publish Test Results
       
       
-      #- name: Publish the package to GPR
-      #  run: dotnet nuget push ./.artifacts/*.nupkg --skip-duplicate --no-symbols -k ${{secrets.GITHUB_TOKEN}}
+      - name: Publish the package to GPR
+        run: dotnet nuget push ./.artifacts/*.nupkg --skip-duplicate --no-symbols -k ${{secrets.GITHUB_TOKEN}}
 
       #- name: list sources
       #  run: dotnet-gitversion
