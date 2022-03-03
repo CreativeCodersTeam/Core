@@ -105,23 +105,23 @@ class Build : NukeBuild, IBuildInfo
     Target RunBuild => _ => _
         .DependsOn(Clean)
         .DependsOn(Restore)
-        .Executes(Compile);
+        .DependsOn(Compile);
 
     Target RunTest => _ => _
         .DependsOn(RunBuild)
-        .Executes(Test);
+        .DependsOn(Test);
 
     Target CreateNuGetPackages => _ => _
         .DependsOn(RunTest)
-        .Executes(Pack);
+        .DependsOn(Pack);
 
     Target DeployToDevNuGet => _ => _
         .DependsOn(CreateNuGetPackages)
-        .Executes(PushToDevNuGet);
+        .DependsOn(PushToDevNuGet);
 
     Target DeployToNuGet => _ => _
         .DependsOn(CreateNuGetPackages)
-        .Executes(PushToNuGet);
+        .DependsOn(PushToNuGet);
 
     string IBuildInfo.Configuration => Configuration;
 

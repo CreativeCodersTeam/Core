@@ -49,7 +49,7 @@ namespace CreativeCoders.NukeBuild.BuildActions
                         x => x
                             .SetProjectFile(unitTestProject)
                             .SetConfiguration(BuildInfo.Configuration)
-                            .SetLogger($"xunit;LogFilePath={testResultFile}")
+                            .SetLoggers($"xunit;LogFilePath={testResultFile}")
                             .SetResultsDirectory(_resultsDirectory)
                             .SetCollectCoverage(_enableCodeCoverage)
                             .SetCoverletOutput(coverageResultFile)

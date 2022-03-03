@@ -20,7 +20,7 @@ namespace CreativeCoders.NukeBuild.BuildActions
         
         protected override void OnExecute()
         {
-            foreach (var packagePath in BuildInfo.ArtifactsDirectory.GlobFiles("*.nupkg").NotEmpty())
+            foreach (var packagePath in BuildInfo.ArtifactsDirectory.GlobFiles("*.nupkg"))
             {
                 PushPackage(packagePath);
             }
