@@ -5,6 +5,7 @@
 		<TargetFramework>net5.0</TargetFramework>
 		<Authors>CreativeCoders</Authors>
 		<Description>Base classes and types for a generic data repository</Description>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -5,6 +5,7 @@
 		<TargetFramework>net5.0</TargetFramework>
 		<Authors>CreativeCoders</Authors>
 		<Description>Configuration sources implementation for CreativeCoders.Config</Description>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

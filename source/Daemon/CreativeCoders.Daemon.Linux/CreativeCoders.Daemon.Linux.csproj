@@ -6,6 +6,7 @@
 		<Authors>CreativeCoders</Authors>
 		<Description>Linux implementation of a daemon for CreativeCoders.Daemon.Base.DaemonBase</Description>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

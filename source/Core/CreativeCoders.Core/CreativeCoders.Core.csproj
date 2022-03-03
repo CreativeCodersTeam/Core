@@ -5,6 +5,7 @@
 		<TargetFramework>net5.0</TargetFramework>
 		<Authors>CreativeCoders</Authors>
 		<Description>Basic core classes and types</Description>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

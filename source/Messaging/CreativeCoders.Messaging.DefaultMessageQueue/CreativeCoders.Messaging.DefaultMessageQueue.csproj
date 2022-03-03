@@ -5,6 +5,7 @@
         <TargetFramework>net5.0</TargetFramework>
         <Authors>CreativeCoders</Authors>
         <Description>Default message queue implementation for CreativeCoders.Messaging.Core</Description>
+	    <RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>

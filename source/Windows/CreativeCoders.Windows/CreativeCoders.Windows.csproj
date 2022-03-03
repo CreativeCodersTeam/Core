@@ -5,6 +5,7 @@
 		<TargetFramework>net5.0-windows</TargetFramework>
 		<Authors>CreativeCoders</Authors>
 		<Description>Windows specific classes and types</Description>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

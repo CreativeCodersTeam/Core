@@ -6,6 +6,7 @@
 		<Authors>CreativeCoders</Authors>
 		<UseWPF>true</UseWPF>
 		<Description>Sekeltor framework for WPF MVVM applications </Description>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
