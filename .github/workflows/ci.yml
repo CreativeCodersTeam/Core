@@ -34,7 +34,7 @@ jobs:
         with:
           name: Unit Tests            # Name of the check run which will be created
           path: .tests/results/results_*.xml    # Path to test results
-          reporter: jest-junit        # Format of test results
+          reporter: dotnet-trx        # Format of test results
 
       - name: Publish the package to GPR
         run: dotnet nuget push .artifacts/**/*.nupkg --skip-duplicate -k ${{secrets.GITHUB_TOKEN}}
