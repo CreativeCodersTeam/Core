@@ -1,35 +1,42 @@
 using System;
-using CreativeCoders.Core;
-using CreativeCoders.SysConsole.App.Execution;
-using CreativeCoders.SysConsole.App.MainProgram;
-using CreativeCoders.SysConsole.App.VerbObjects;
-using CreativeCoders.SysConsole.App.Verbs;
+using CreativeCoders.SysConsole.Core.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CreativeCoders.SysConsole.App
 {
+    /// <summary>   A console application builder. </summary>
     public class ConsoleAppBuilder
     {
         private readonly string[] _arguments;
 
         private Type? _startupType;
 
-        private Type? _programMainType;
-        
-        private Action<IConsoleAppVerbsBuilder>? _setupVerbsBuilder;
-
         private Action<ConfigurationBuilder>? _setupConfiguration;
-
-        private Action<IConsoleAppVerbObjectsBuilder>? _setupVerbObjectsBuilder;
 
         private Action<IServiceCollection>? _configureServices;
 
+        private Func<IServiceProvider, IConsoleAppExecutor>? _createExecutor;
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Initializes a new instance of the CreativeCoders.SysConsole.App.ConsoleAppBuilder class.
+        /// </summary>
+        ///
+        /// <param name="arguments">    The command line arguments. </param>
+        ///-------------------------------------------------------------------------------------------------
         public ConsoleAppBuilder(string[]? arguments)
         {
             _arguments = arguments ?? Array.Empty<string>();
         }
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Use startup class for adding services to dependency injection container. </summary>
+        ///
+        /// <typeparam name="TStartup"> Type of the startup class. </typeparam>
+        ///
+        /// <returns>   This ConsoleAppBuilder. </returns>
+        ///-------------------------------------------------------------------------------------------------
         public ConsoleAppBuilder UseStartup<TStartup>()
             where TStartup : IStartup, new()
         {
@@ -38,21 +45,13 @@ namespace CreativeCoders.SysConsole.App
             return this;
         }
 
-        public ConsoleAppBuilder UseVerbs(
-            Action<IConsoleAppVerbsBuilder> verbBuilder)
-        {
-            _setupVerbsBuilder = Ensure.Argument(verbBuilder, nameof(verbBuilder)).NotNull();
-
-            return this;
-        }
-
-        public ConsoleAppBuilder UseVerbObjects(Action<IConsoleAppVerbObjectsBuilder> verbObjectsBuilder)
-        {
-            _setupVerbObjectsBuilder = verbObjectsBuilder;
-
-            return this;
-        }
-
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Setup configuration system. </summary>
+        ///
+        /// <param name="setupConfiguration">   Action for setting up the configuration system. </param>
+        ///
+        /// <returns>   This ConsoleAppBuilder. </returns>
+        ///-------------------------------------------------------------------------------------------------
         public ConsoleAppBuilder UseConfiguration(
             Action<ConfigurationBuilder> setupConfiguration)
         {
@@ -61,36 +60,62 @@ namespace CreativeCoders.SysConsole.App
             return this;
         }
 
-        public ConsoleAppBuilder UseProgramMain<TProgramMain>()
-            where TProgramMain : IMain
-        {
-            _programMainType = typeof(TProgramMain);
-
-            return this;
-        }
-
-        public ConsoleAppBuilder Configure(Action<IServiceCollection> configureServices)
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Configure services. </summary>
+        ///
+        /// <param name="configureServices">    Action for configuring services. </param>
+        ///
+        /// <returns>   This ConsoleAppBuilder. </returns>
+        ///-------------------------------------------------------------------------------------------------
+        public ConsoleAppBuilder ConfigureServices(Action<IServiceCollection> configureServices)
         {
             _configureServices = configureServices;
 
             return this;
         }
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     Specify the function for creating the executor which should be used for the console app.
+        /// </summary>
+        ///
+        /// <exception cref="InvalidOperationException">    Thrown when an executor is already registered. </exception>
+        ///
+        /// <param name="createExecutor">   The function for creating the executor. </param>
+        ///
+        /// <returns>   This ConsoleAppBuilder. </returns>
+        ///-------------------------------------------------------------------------------------------------
+        public ConsoleAppBuilder UseExecutor(Func<IServiceProvider, IConsoleAppExecutor> createExecutor)
+        {
+            if (_createExecutor != null)
+            {
+                throw new InvalidOperationException("Executor already set");
+            }
+
+            _createExecutor = createExecutor;
+
+            return this;
+        }
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Builds the console app. </summary>
+        ///
+        /// <exception cref="InvalidOperationException">    Thrown when no executor is registered. </exception>
+        ///
+        /// <returns>   The console app <see cref="IConsoleApp"/>. </returns>
+        ///-------------------------------------------------------------------------------------------------
         public IConsoleApp Build()
         {
-            if (_setupVerbsBuilder == null && _setupVerbObjectsBuilder == null && _programMainType == null)
+            if (_createExecutor == null)
             {
-                throw new ArgumentException("No program main or verb defined");
+                throw new InvalidOperationException("No executor defined");
             }
 
             var serviceProvider = CreateServiceProvider();
 
-            var executorChain = new ExecutorChain(_programMainType, _setupVerbsBuilder,
-                _setupVerbObjectsBuilder, serviceProvider);
+            var commandExecutor = _createExecutor(serviceProvider);
 
-            var commandExecutor = new CommandExecutor(executorChain);
-
-            return new DefaultConsoleApp(commandExecutor, _arguments);
+            return new DefaultConsoleApp(commandExecutor, _arguments, serviceProvider.GetRequiredService<ISysConsole>());
         }
 
         private void ConfigureStartup(IServiceCollection services, IConfiguration configuration)
@@ -106,6 +131,8 @@ namespace CreativeCoders.SysConsole.App
             }
 
             startup.ConfigureServices(services, configuration);
+
+            services.AddSingleton(startup);
         }
 
         private IServiceProvider CreateServiceProvider()

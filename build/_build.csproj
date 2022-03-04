@@ -15,6 +15,10 @@
 		<PackageReference Include="ReportGenerator" Version="5.0.4" />
 		<PackageDownload Include="GitVersion.Tool" Version="[5.8.0]" />
 		<!--<PackageDownload Include="dotnet-reportgenerator-globaltool" Version="[5.0.4]" />-->
+		<PackageReference Include="Nuke.Common" Version="5.2.0" />
+		<PackageReference Include="GitVersion.CommandLine.DotNetCore" Version="5.0.1" />
+		<PackageDownload Include="GitVersion.Tool" Version="[5.1.1]" />
+		<PackageDownload Include="ReportGenerator" Version="[5.0.0]" />
 	</ItemGroup>
 
 	<ItemGroup>

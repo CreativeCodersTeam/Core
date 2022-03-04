@@ -9,7 +9,6 @@ using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.GitVersion;
 
 [PublicAPI]
@@ -49,7 +48,9 @@ class Build : NukeBuild, IBuildInfo
 
     AbsolutePath CoverageDirectory => TestBaseDirectory / "coverage";
 
+#pragma warning disable IDE0051 // Mark members as static
     AbsolutePath TempNukeDirectory => RootDirectory / ".nuke" / "temp";
+#pragma warning restore IDE0051 // Mark members as static
 
     const string PackageProjectUrl = "https://github.com/CreativeCodersTeam/Core"; 
 

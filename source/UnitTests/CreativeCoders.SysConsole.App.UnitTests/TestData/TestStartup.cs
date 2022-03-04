@@ -10,6 +10,6 @@ namespace CreativeCoders.SysConsole.App.UnitTests.TestData
             ConfigureServicesIsCalled = services != null && configuration != null;
         }
 
-        public static bool ConfigureServicesIsCalled { get; set; }
+        public static bool ConfigureServicesIsCalled { get; private set; }
     }
 }

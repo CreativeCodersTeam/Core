@@ -1,27 +1,39 @@
 using System;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
-using CreativeCoders.SysConsole.App.Execution;
+using CreativeCoders.SysConsole.Core.Abstractions;
 
 namespace CreativeCoders.SysConsole.App
 {
     internal class DefaultConsoleApp : IConsoleApp
     {
-        private readonly ICommandExecutor _commandExecutor;
+        private readonly ISysConsole _sysConsole;
+
+        private readonly IConsoleAppExecutor _consoleAppExecutor;
 
         private readonly string[] _args;
 
-        public DefaultConsoleApp(ICommandExecutor commandExecutor, string[] args)
+        private bool _reThrow;
+
+        public DefaultConsoleApp(IConsoleAppExecutor consoleAppExecutor, string[] args, ISysConsole sysConsole)
         {
-            _commandExecutor = Ensure.NotNull(commandExecutor, nameof(commandExecutor));
+            _consoleAppExecutor = Ensure.NotNull(consoleAppExecutor, nameof(consoleAppExecutor));
             _args = Ensure.NotNull(args, nameof(args));
+            _sysConsole = Ensure.NotNull(sysConsole, nameof(sysConsole));
+        }
+
+        public IConsoleApp ReThrowExceptions(bool reThrow)
+        {
+            _reThrow = reThrow;
+
+            return this;
         }
 
         public async Task<int> RunAsync()
         {
             try
             {
-                var result = await _commandExecutor.Execute(_args).ConfigureAwait(false);
+                var result = await _consoleAppExecutor.ExecuteAsync(_args).ConfigureAwait(false);
 
                 return result;
             }
@@ -31,7 +43,12 @@ namespace CreativeCoders.SysConsole.App
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _sysConsole.WriteLineError(e.Message);
+
+                if (_reThrow)
+                {
+                    throw;
+                }
 
                 return int.MinValue;
             }

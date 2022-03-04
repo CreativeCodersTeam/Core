@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
 using Nuke.Common.IO;
-using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.BuildActions
@@ -69,6 +68,25 @@ namespace CreativeCoders.NukeBuild.BuildActions
             {
                 throw failedTests.First().Exception;
             }
+        }
+
+        private DotNetTestSettings CreateTestSettings(string unitTestProject, string testResultFile,
+            string coverageDirectory)
+        {
+            var settings = new DotNetTestSettings()
+                .SetProjectFile(unitTestProject)
+                .SetConfiguration(BuildInfo.Configuration)
+                .SetLogger($"xunit;LogFilePath={testResultFile}")
+                .SetResultsDirectory(_resultsDirectory);
+
+            if (_enableCodeCoverage)
+            {
+                return settings
+                    .SetDataCollector("XPlat Code Coverage")
+                    .SetResultsDirectory(coverageDirectory);
+            }
+
+            return settings;
         }
 
         public DotNetTestAction SetTestProjectsBaseDirectory(AbsolutePath testProjectsBaseDirectory)

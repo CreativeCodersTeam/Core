@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Comparing;
 using JetBrains.Annotations;
@@ -385,13 +384,15 @@ namespace CreativeCoders.Core.Collections
                 .Select(x => x.Value);
         }
 
+#nullable enable
         public static object OfType(this IEnumerable source, Type itemType)
         {
             var ofTypeMethod = typeof(Enumerable).GetMethod(nameof(Enumerable.OfType))?.MakeGenericMethod(itemType);
 
             return ofTypeMethod != null
-                ? ofTypeMethod.Invoke(null, new object?[] { source })
+                ? ofTypeMethod.Invoke(null, new object?[] { source })!
                 : throw new MissingMethodException(nameof(Enumerable), nameof(Enumerable.OfType));
         }
+#nullable restore
     }
 }

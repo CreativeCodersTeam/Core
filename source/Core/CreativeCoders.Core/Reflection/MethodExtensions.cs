@@ -135,6 +135,7 @@ namespace CreativeCoders.Core.Reflection
             return methodParamTypes.SequenceEqual(parameterTypes);
         }
 
+        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         private static bool ParameterMatchWithParams(MethodInfo method, Type[] methodParamTypes, Type[] genericTypeArguments)
         {
             throw new NotSupportedException("Dynamic invocation of methods with params argument ist currently not supported");

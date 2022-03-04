@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CreativeCoders.SysConsole.App.MainProgram;
 using CreativeCoders.SysConsole.App.UnitTests.TestData;
-using CreativeCoders.SysConsole.App.VerbObjects;
-using CreativeCoders.SysConsole.App.Verbs;
+using CreativeCoders.SysConsole.CliArguments;
+using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace CreativeCoders.SysConsole.App.UnitTests
@@ -13,7 +15,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
     public class ConsoleApplicationBuilderTests
     {
         [Fact]
-        public void Build_NoVerbAndProgramMainGiven_ThrowsException()
+        public void Build_NoCommandAndProgramMainGiven_ThrowsException()
         {
             var builder = new ConsoleAppBuilder(Array.Empty<string>());
 
@@ -23,7 +25,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests
             // Assert
             act
                 .Should()
-                .Throw<ArgumentException>();
+                .Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -90,17 +92,17 @@ namespace CreativeCoders.SysConsole.App.UnitTests
             // Assert
             act
                 .Should()
-                .Throw<ArgumentException>();
+                .Throw<InvalidOperationException>();
         }
 
         [Fact]
-        public async Task RunAsync_WithVerb_VerbIsExecuted()
+        public async Task RunAsync_WithCommand_CommandIsExecuted()
         {
             var args = new[] { "test", "arg0" };
 
             var consoleApp = new ConsoleAppBuilder(args)
-                .UseVerbs(x => x
-                    .AddVerb<TestVerb>())
+                .UseCli(x => x
+                    .AddCommand<TestCommand>())
                 .Build();
 
             // Act
@@ -109,21 +111,23 @@ namespace CreativeCoders.SysConsole.App.UnitTests
             // Assert
             result
                 .Should()
-                .Be(TestVerb.ReturnCode);
+                .Be(TestCommand.ReturnCode);
 
-            TestVerb.OptionsFirstArg
+            TestCommand.OptionsFirstArg
                 .Should()
                 .Be("arg0");
         }
 
         [Fact]
-        public async Task RunAsync_WithVerbNotMatchingVerb_ReturnsMinInt()
+        public async Task RunAsync_WithCommandNotMatchingCommand_ReturnsDefaultErrorReturnCode()
         {
+            const int expectedReturnCode = -1357;
             var args = new[] { "test1", "arg0" };
 
             var consoleApp = new ConsoleAppBuilder(args)
-                .UseVerbs(x => x
-                    .AddVerb<TestVerb>())
+                .UseCli(x => x
+                    .SetDefaultErrorReturnCode(expectedReturnCode)
+                    .AddCommand<TestCommand>())
                 .Build();
 
             // Act
@@ -132,47 +136,37 @@ namespace CreativeCoders.SysConsole.App.UnitTests
             // Assert
             result
                 .Should()
-                .Be(int.MinValue);
+                .Be(expectedReturnCode);
         }
 
         [Fact]
-        public async Task RunAsync_WithVerbAndErrorHandlerNotMatchingVerb_ExecutesErrorHandler()
+        public void UseCli_ProgramMainAlreadySet_ThrowsException()
         {
             var args = new[] { "test1", "arg0" };
 
-            var consoleApp = new ConsoleAppBuilder(args)
-                .UseVerbs(x => x
-                    .AddVerb<TestVerb>()
-                    .AddErrors<TestVerbErrorHandler>())
-                .Build();
-
-            // Act
-            var result = await consoleApp.RunAsync();
-
-            // Assert
-            result
-                .Should()
-                .Be(TestVerbErrorHandler.ReturnCode);
-        }
-
-        [Fact]
-        public async Task RunAsync_WithVerbAndProgramMainNotMatchingVerb_ExecutesProgramMain()
-        {
-            var args = new[] { "test1", "arg0" };
-
-            var consoleApp = new ConsoleAppBuilder(args)
+            Action act = () => new ConsoleAppBuilder(args)
                 .UseProgramMain<TestErrorProgramMain>()
-                .UseVerbs(x => x
-                    .AddVerb<TestVerb>())
-                .Build();
-
-            // Act
-            var result = await consoleApp.RunAsync();
+                .UseCli(_ => {});
 
             // Assert
-            result
+            act
                 .Should()
-                .Be(TestErrorProgramMain.ReturnCode);
+                .Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void UseProgramMain_CliBuilderAlreadySet_ThrowsException()
+        {
+            var args = new[] { "test1", "arg0" };
+
+            Action act = () => new ConsoleAppBuilder(args)
+                .UseCli(_ => { })
+                .UseProgramMain<TestErrorProgramMain>();
+
+            // Assert
+            act
+                .Should()
+                .Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -198,14 +192,14 @@ namespace CreativeCoders.SysConsole.App.UnitTests
         }
 
         [Fact]
-        public async Task UseVerbObjects_CallDemoVerbObjectWithTest_VerbIsExecuted()
+        public async Task UseCli_CallDemoGroupsCommand_CommandIsExecuted()
         {
-            var args = new [] { "demo", "test" };
+            var args = new[] { "demo", "test" };
 
             var consoleApp = new ConsoleAppBuilder(args)
-                .UseVerbObjects(x =>
-                    x.AddObjects<TestVerbObject>(verbs =>
-                        verbs.AddVerb<TestVerbObjectTestVerb>()))
+                .UseCli(x =>
+                    x.AddCommandGroup(groupBuilder =>
+                        groupBuilder.SetName("demo").AddCommand<DemoGroupTestCommand>()))
                 .Build();
 
             // Act
@@ -214,19 +208,18 @@ namespace CreativeCoders.SysConsole.App.UnitTests
             // Assert
             result
                 .Should()
-                .Be(TestVerbObjectTestVerb.ReturnCode);
+                .Be(DemoGroupTestCommand.ReturnCode);
         }
 
         [Fact]
         public async Task UseVerbObjects_NoObjectFound_MatchingPureVerbIsCalled()
         {
-            var args = new [] { "test", "something" };
+            var args = new[] {"test", "something"};
 
             var consoleApp = new ConsoleAppBuilder(args)
-                .UseVerbObjects(x =>
-                    x.AddObjects<TestVerbObject>(verbs =>
-                        verbs.AddVerb<TestVerbObjectTestVerb>()))
-                .UseVerbs(x => x.AddVerb<TestFallbackVerb>())
+                .UseCli(x => x
+                    .AddCommandGroup(groupBuilder => groupBuilder.SetName("demo").AddCommand<DemoGroupTestCommand>())
+                    .AddCommand<TestFallbackCommand>())
                 .Build();
 
             // Act
@@ -235,58 +228,36 @@ namespace CreativeCoders.SysConsole.App.UnitTests
             // Assert
             result
                 .Should()
-                .Be(TestFallbackVerb.ReturnCode);
+                .Be(TestFallbackCommand.ReturnCode);
         }
 
         [Fact]
-        public async Task UseVerbObjects_NoObjectFoundNoVerbMatches_ProgramMainIsCalled()
+        public async Task ConfigureServices_()
         {
-            var args = new[] { "test1", "something" };
+            const int expectedReturnCode = 123456;
+            const string expectedTextValue = "TestText";
 
-            var consoleApp = new ConsoleAppBuilder(args)
-                .UseVerbObjects(x =>
-                    x.AddObjects<TestVerbObject>(verbs =>
-                        verbs.AddVerb<TestVerbObjectTestVerb>()))
-                .UseVerbs(x => x.AddVerb<TestFallbackVerb>())
-                .UseProgramMain<TestProgramMain>()
+            var testService = A.Fake<ITestService>();
+
+            A.CallTo(() => testService.ReturnCode).Returns(expectedReturnCode);
+            A.CallTo(() => testService.TextValue).Returns(expectedTextValue);
+
+            var consoleApp = new ConsoleAppBuilder(Array.Empty<string>())
+                .ConfigureServices(x => x.AddTransient(_ => testService))
+                .UseProgramMain<TestServiceProgramMain>()
                 .Build();
 
             // Act
-            var result = await consoleApp.RunAsync().ConfigureAwait(false);
+            var result = await consoleApp.RunAsync();
 
             // Assert
             result
                 .Should()
-                .Be(TestProgramMain.ReturnCode);
-        }
-    }
+                .Be(expectedReturnCode);
 
-    public class TestFallbackVerb : VerbBase<TestVerbOptions>
-    {
-        public const int ReturnCode = 2468;
-
-        public TestFallbackVerb(TestVerbOptions options) : base(options) { }
-
-        public override Task<int> ExecuteAsync()
-        {
-            return Task.FromResult(ReturnCode);
-        }
-    }
-
-    public class TestVerbObject : VerbObjectBase
-    {
-        public override string Name => "Demo";
-    }
-
-    public class TestVerbObjectTestVerb : VerbBase<TestVerbOptions>
-    {
-        public const int ReturnCode = 1357;
-
-        public TestVerbObjectTestVerb(TestVerbOptions options) : base(options) { }
-
-        public override Task<int> ExecuteAsync()
-        {
-            return Task.FromResult(ReturnCode);
+            TestServiceProgramMain.TextValue
+                .Should()
+                .Be(expectedTextValue);
         }
     }
 }

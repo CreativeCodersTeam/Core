@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
+using CreativeCoders.SysConsole.Cli.Parsing;
 using CreativeCoders.SysConsole.CliArguments.Commands;
-using CreativeCoders.SysConsole.CliArguments.Parsing;
 
 namespace CreativeCoders.SysConsole.CliArguments.Execution
 {
@@ -38,7 +38,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Execution
                 return _context.DefaultErrorReturnCode;
             }
 
-            var defaultOptions = new OptionParser().Parse(_context.DefaultCommand.OptionsType, args);
+            var defaultOptions = new OptionParser(_context.DefaultCommand.OptionsType).Parse(args);
 
             var defaultCommandResult = await _context.DefaultCommand.ExecuteAsync(defaultOptions);
 
@@ -55,7 +55,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Execution
                 return (false, null);
             }
 
-            var options = new OptionParser().Parse(command.OptionsType, args.Skip(1).ToArray());
+            var options = new OptionParser(command.OptionsType).Parse(args.Skip(1).ToArray());
 
             var commandResult = await command.ExecuteAsync(options);
 
@@ -74,7 +74,7 @@ namespace CreativeCoders.SysConsole.CliArguments.Execution
                 return (false, null);
             }
 
-            var options = new OptionParser().Parse(groupCommand.OptionsType, args.Skip(2).ToArray());
+            var options = new OptionParser(groupCommand.OptionsType).Parse(args.Skip(2).ToArray());
 
             return (true, await groupCommand.ExecuteAsync(options));
         }
