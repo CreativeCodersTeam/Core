@@ -118,8 +118,8 @@ class Build : NukeBuild, IBuildInfo
         .DependsOn(Compile);
 
     Target RunTest => _ => _
-        //.DependsOn(RunBuild)
-        //.DependsOn(Test)
+        .DependsOn(RunBuild)
+        .DependsOn(Test)
         .DependsOn(CoverageReport);
 
     Target CreateNuGetPackages => _ => _
