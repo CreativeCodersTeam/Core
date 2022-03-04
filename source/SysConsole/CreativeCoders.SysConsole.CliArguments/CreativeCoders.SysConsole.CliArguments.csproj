@@ -1,19 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <Nullable>enable</Nullable>
-	<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-    <ProjectReference Include="..\CreativeCoders.SysConsole.App\CreativeCoders.SysConsole.App.csproj" />
-    <ProjectReference Include="..\CreativeCoders.SysConsole.Cli.Parsing\CreativeCoders.SysConsole.Cli.Parsing.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+		<ProjectReference Include="..\CreativeCoders.SysConsole.App\CreativeCoders.SysConsole.App.csproj" />
+		<ProjectReference Include="..\CreativeCoders.SysConsole.Cli.Parsing\CreativeCoders.SysConsole.Cli.Parsing.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Execution\HelpTest\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Execution\HelpTest\" />
+	</ItemGroup>
 
 </Project>
