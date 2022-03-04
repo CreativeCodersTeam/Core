@@ -13,10 +13,8 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
     {
         private readonly ObjectCache _cache;
 
-        public SystemRuntimeCache() : this(MemoryCache.Default)
-        {
-        }
-        
+        public SystemRuntimeCache() : this(MemoryCache.Default) { }
+
         private SystemRuntimeCache(ObjectCache cache)
         {
             _cache = cache;
@@ -24,18 +22,20 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
 
         public static SystemRuntimeCache<TKey, TValue> UsingCache(ObjectCache cache) =>
             new(cache);
-        
+
         public TValue GetOrAdd(TKey key, Func<TValue> getValue, string regionName = null)
         {
             return GetOrAddInternal(key, getValue, new CacheItemPolicy(), regionName);
         }
 
-        public TValue GetOrAdd(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy, string regionName = null)
+        public TValue GetOrAdd(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy,
+            string regionName = null)
         {
             return GetOrAddInternal(key, getValue, CreateCacheItemPolicy(expirationPolicy), regionName);
         }
-        
-        private TValue GetOrAddInternal(TKey key, Func<TValue> getValue, CacheItemPolicy cacheItemPolicy, string regionName = null)
+
+        private TValue GetOrAddInternal(TKey key, Func<TValue> getValue, CacheItemPolicy cacheItemPolicy,
+            string regionName = null)
         {
             var cacheItem = _cache.GetCacheItem(KeyToString(key, regionName));
 
@@ -43,7 +43,7 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
             {
                 return (TValue) cacheItem.Value;
             }
-            
+
             var addedValue = getValue();
             var newValue = _cache.AddOrGetExisting(KeyToString(key, regionName), addedValue, cacheItemPolicy);
             return (TValue) newValue ?? addedValue;
@@ -54,12 +54,14 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
             return GetOrAddAsyncInternal(key, getValue, new CacheItemPolicy(), regionName);
         }
 
-        public Task<TValue> GetOrAddAsync(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy, string regionName = null)
+        public Task<TValue> GetOrAddAsync(TKey key, Func<TValue> getValue,
+            ICacheExpirationPolicy expirationPolicy, string regionName = null)
         {
             return GetOrAddAsyncInternal(key, getValue, CreateCacheItemPolicy(expirationPolicy), regionName);
         }
-        
-        private Task<TValue> GetOrAddAsyncInternal(TKey key, Func<TValue> getValue, CacheItemPolicy cacheItemPolicy, string regionName = null)
+
+        private Task<TValue> GetOrAddAsyncInternal(TKey key, Func<TValue> getValue,
+            CacheItemPolicy cacheItemPolicy, string regionName = null)
         {
             return Task.FromResult(GetOrAddInternal(key, getValue, cacheItemPolicy, regionName));
         }
@@ -70,7 +72,7 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
 
             if (cacheItem != null)
             {
-                value = (TValue )cacheItem.Value;
+                value = (TValue) cacheItem.Value;
                 return true;
             }
 
@@ -81,7 +83,7 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
         public Task<CacheRequestResult<TValue>> TryGetAsync(TKey key, string regionName = null)
         {
             var entryExists = TryGet(key, out var value, regionName);
-            
+
             return Task.FromResult(new CacheRequestResult<TValue>(entryExists, value));
         }
 
@@ -90,12 +92,14 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
             AddOrUpdateInternal(key, value, new CacheItemPolicy(), regionName);
         }
 
-        public void AddOrUpdate(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy, string regionName = null)
+        public void AddOrUpdate(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy,
+            string regionName = null)
         {
             AddOrUpdateInternal(key, value, CreateCacheItemPolicy(expirationPolicy), regionName);
         }
-        
-        private void AddOrUpdateInternal(TKey key, TValue value, CacheItemPolicy cacheItemPolicy, string regionName = null)
+
+        private void AddOrUpdateInternal(TKey key, TValue value, CacheItemPolicy cacheItemPolicy,
+            string regionName = null)
         {
             _cache.Set(KeyToString(key, regionName), value, cacheItemPolicy);
         }
@@ -106,7 +110,8 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
             return Task.CompletedTask;
         }
 
-        public Task AddOrUpdateAsync(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy, string regionName = null)
+        public Task AddOrUpdateAsync(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy,
+            string regionName = null)
         {
             AddOrUpdate(key, value, expirationPolicy, regionName);
             return Task.CompletedTask;
@@ -119,7 +124,7 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
                 _cache.ForEach(entry => _cache.Remove(entry.Key));
                 return;
             }
-            
+
             _cache
                 .Where(entry => entry.Key.StartsWith(regionName + "_", StringComparison.Ordinal))
                 .ForEach(entry => _cache.Remove(entry.Key));
@@ -148,6 +153,7 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
             {
                 return key?.ToString();
             }
+
             return regionName + "_" + key;
         }
 
@@ -164,7 +170,8 @@ namespace CreativeCoders.Caching.SystemRuntimeCaching
                 {
                     AbsoluteExpiration = expirationPolicy.AbsoluteDateTime
                 },
-                _ => throw new ArgumentOutOfRangeException()
+                _ => throw new ArgumentOutOfRangeException(nameof(expirationPolicy), expirationPolicy,
+                    "Unexpected enum value")
             };
         }
     }

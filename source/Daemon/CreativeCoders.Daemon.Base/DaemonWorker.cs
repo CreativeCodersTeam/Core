@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Hosting;
 
 namespace CreativeCoders.Daemon.Base
@@ -9,6 +10,7 @@ namespace CreativeCoders.Daemon.Base
     ///
     /// <seealso cref="BackgroundService"/>
     ///-------------------------------------------------------------------------------------------------
+    [UsedImplicitly]
     public class DaemonWorker : BackgroundService
     {
         private readonly IDaemonService _daemonService;

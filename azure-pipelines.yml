@@ -16,6 +16,7 @@ variables:
   IsMainBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   IsPullRequest: $[eq(variables['Build.Reason'], 'PullRequest')]
   IsTag: $[startsWith(variables['Build.SourceBranch'], 'refs/tags')]
+  disable.coverage.autogenerate: 'true'
 
 stages:
 - stage: Build
@@ -46,19 +47,12 @@ stages:
         testResultsFormat: XUnit
         testResultsFiles: '$(Build.SourcesDirectory)/.tests/results/*.xml'
 
-    - task: reportgenerator@4
-      displayName: 'Merge code coverage reports'
-      inputs:
-        reports: '$(Build.SourcesDirectory)/.tests/coverage/*.xml'
-        targetdir: '$(Pipeline.Workspace)/coverlet'
-        reporttypes: 'Cobertura'
-        verbosity: 'Verbose'
-
     - task: PublishCodeCoverageResults@1
       displayName: 'Publish code coverage'
       inputs:
         codeCoverageTool: 'Cobertura'
-        summaryFileLocation: '$(Pipeline.Workspace)/coverlet/Cobertura.xml'
+        reportDirectory: '$(Build.SourcesDirectory)/.tests/coverage/report'
+        summaryFileLocation: '$(Build.SourcesDirectory)/.tests/coverage/report/Cobertura.xml'
 
     - task: DotNetCoreCLI@2
       displayName: "Publish testing NuGet packages"

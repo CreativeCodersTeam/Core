@@ -2,5 +2,6 @@
 	<PropertyGroup>
 		<Authors>CreativeCoders</Authors>
 		<IsPackable>true</IsPackable>
+		<NoWarn>$(NoWarn);IDE0079</NoWarn>
 	</PropertyGroup>
 </Project>

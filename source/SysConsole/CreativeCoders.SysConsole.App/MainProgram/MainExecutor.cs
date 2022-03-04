@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using CreativeCoders.Core;
-using CreativeCoders.SysConsole.App.Execution;
 
 namespace CreativeCoders.SysConsole.App.MainProgram
 {
-    public class MainExecutor : IExecutor
+    internal class MainExecutor : IConsoleAppExecutor
     {
         private readonly IMain _main;
 
@@ -13,9 +12,9 @@ namespace CreativeCoders.SysConsole.App.MainProgram
             _main = Ensure.NotNull(main, nameof(main));
         }
 
-        public async Task<ExecutorResult> TryExecuteAsync(string[] args)
+        public async Task<int> ExecuteAsync(string[] args)
         {
-            return new ExecutorResult(true, await _main.ExecuteAsync(args).ConfigureAwait(false));
+            return await _main.ExecuteAsync(args).ConfigureAwait(false);
         }
     }
 }

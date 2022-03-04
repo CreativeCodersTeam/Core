@@ -84,7 +84,6 @@ namespace CreativeCoders.SysConsole.Core.Default
 
         public ConsoleColor ErrorBackgroundColor { get; set; } = ConsoleColor.Red;
 
-
         [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         public string Title
         {

@@ -1,7 +1,9 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Pipelining
 {
+    [PublicAPI]
     public interface IStage
     {
         object ProcessData(object inputData);

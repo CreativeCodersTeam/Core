@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
 using Nuke.Common.IO;
-using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.BuildActions
@@ -21,8 +20,6 @@ namespace CreativeCoders.NukeBuild.BuildActions
         private AbsolutePath _coverageDirectory;
 
         private bool _enableCodeCoverage;
-
-        private CoverletOutputFormat _coverageOutputFormat = CoverletOutputFormat.cobertura;
 
         protected override void OnExecute()
         {
@@ -41,19 +38,15 @@ namespace CreativeCoders.NukeBuild.BuildActions
 
                 var testResultFile = Path.Combine(_resultsDirectory, $"results_{projectName}.xml");
 
-                var coverageResultFile = _coverageDirectory / $"coverage_{ projectName}.xml";
+                var coverageDirectory = _coverageDirectory / projectName;
 
                 try
                 {
-                    DotNetTasks.DotNetTest(
-                        x => x
-                            .SetProjectFile(unitTestProject)
-                            .SetConfiguration(BuildInfo.Configuration)
-                            .SetLogger($"xunit;LogFilePath={testResultFile}")
-                            .SetResultsDirectory(_resultsDirectory)
-                            .SetCollectCoverage(_enableCodeCoverage)
-                            .SetCoverletOutput(coverageResultFile)
-                            .SetCoverletOutputFormat(_coverageOutputFormat));
+                    Console.WriteLine(unitTestProject);
+
+                    var testSettings = CreateTestSettings(unitTestProject, testResultFile, coverageDirectory);
+
+                    DotNetTasks.DotNetTest(testSettings);
                 }
                 catch (Exception e)
                 {
@@ -65,6 +58,25 @@ namespace CreativeCoders.NukeBuild.BuildActions
             {
                 throw failedTests.First().Exception;
             }
+        }
+
+        private DotNetTestSettings CreateTestSettings(string unitTestProject, string testResultFile,
+            string coverageDirectory)
+        {
+            var settings = new DotNetTestSettings()
+                .SetProjectFile(unitTestProject)
+                .SetConfiguration(BuildInfo.Configuration)
+                .SetLogger($"xunit;LogFilePath={testResultFile}")
+                .SetResultsDirectory(_resultsDirectory);
+
+            if (_enableCodeCoverage)
+            {
+                return settings
+                    .SetDataCollector("XPlat Code Coverage")
+                    .SetResultsDirectory(coverageDirectory);
+            }
+
+            return settings;
         }
 
         public DotNetTestAction SetTestProjectsBaseDirectory(AbsolutePath testProjectsBaseDirectory)
@@ -98,13 +110,6 @@ namespace CreativeCoders.NukeBuild.BuildActions
         public DotNetTestAction EnableCoverage()
         {
             _enableCodeCoverage = true;
-
-            return this;
-        }
-
-        public DotNetTestAction SetCoverageFormat(CoverletOutputFormat coverageOutputFormat)
-        {
-            _coverageOutputFormat = coverageOutputFormat;
 
             return this;
         }

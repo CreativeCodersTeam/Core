@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 #nullable enable
 // ReSharper disable once CheckNamespace
@@ -13,6 +13,7 @@ namespace CreativeCoders.Core
     ///
     /// <typeparam name="T">    Generic type parameter. </typeparam>
     ///-------------------------------------------------------------------------------------------------
+    [PublicAPI]
     public readonly struct ArgumentNotNull<T>
     {
         internal ArgumentNotNull(T value, string name)
@@ -53,7 +54,7 @@ namespace CreativeCoders.Core
         ///
         /// <value> The value. </value>
         ///-------------------------------------------------------------------------------------------------
-        [NotNull]
+        [System.Diagnostics.CodeAnalysis.NotNull]
         public T Value { get; }
 
         ///-------------------------------------------------------------------------------------------------

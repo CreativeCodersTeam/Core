@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28729.10
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{D0A3F2FC-664B-4A9D-ACF9-F00EF8E9DFE1}"
 EndProject
@@ -151,6 +151,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__global", "__global", "{92
 		..\.gitignore = ..\.gitignore
 		..\azure-pipelines.yml = ..\azure-pipelines.yml
 		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RibbonSampleApp", "Samples\RibbonSampleApp\RibbonSampleApp.csproj", "{5424651E-ACDD-4C7F-BE70-819A89308152}"
@@ -224,7 +225,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.SysConsole.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.SysConsole.CliArguments", "SysConsole\CreativeCoders.SysConsole.CliArguments\CreativeCoders.SysConsole.CliArguments.csproj", "{41795D90-8921-49AF-AF0D-CF4191F6D098}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.SysConsole.CliArguments.UnitTests", "UnitTests\CreativeCoders.SysConsole.CliArguments.UnitTests\CreativeCoders.SysConsole.CliArguments.UnitTests.csproj", "{1F40FBE3-F1E5-4A69-A3CB-0F0ECF0D43D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.SysConsole.CliArguments.UnitTests", "UnitTests\CreativeCoders.SysConsole.CliArguments.UnitTests\CreativeCoders.SysConsole.CliArguments.UnitTests.csproj", "{1F40FBE3-F1E5-4A69-A3CB-0F0ECF0D43D9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.SysConsole.Cli.Actions", "SysConsole\CreativeCoders.SysConsole.Cli.Actions\CreativeCoders.SysConsole.Cli.Actions.csproj", "{9293B5B8-C4AD-4124-8962-79202417148E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.SysConsole.Cli.Actions.UnitTests", "UnitTests\CreativeCoders.SysConsole.Cli.Actions.UnitTests\CreativeCoders.SysConsole.Cli.Actions.UnitTests.csproj", "{46F17928-17FD-478A-9D53-0300824BBBD9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.SysConsole.Cli.Parsing", "SysConsole\CreativeCoders.SysConsole.Cli.Parsing\CreativeCoders.SysConsole.Cli.Parsing.csproj", "{F67BD1DC-64E3-4558-979C-4A202EFF49A1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.SysConsole.Cli.Parsing.UnitTests", "UnitTests\CreativeCoders.SysConsole.Cli.Parsing.UnitTests\CreativeCoders.SysConsole.Cli.Parsing.UnitTests.csproj", "{5A1DEACE-E03B-4CFB-93D6-875B63B6CE34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -538,6 +547,22 @@ Global
 		{1F40FBE3-F1E5-4A69-A3CB-0F0ECF0D43D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F40FBE3-F1E5-4A69-A3CB-0F0ECF0D43D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F40FBE3-F1E5-4A69-A3CB-0F0ECF0D43D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9293B5B8-C4AD-4124-8962-79202417148E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9293B5B8-C4AD-4124-8962-79202417148E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9293B5B8-C4AD-4124-8962-79202417148E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9293B5B8-C4AD-4124-8962-79202417148E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46F17928-17FD-478A-9D53-0300824BBBD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46F17928-17FD-478A-9D53-0300824BBBD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46F17928-17FD-478A-9D53-0300824BBBD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46F17928-17FD-478A-9D53-0300824BBBD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F67BD1DC-64E3-4558-979C-4A202EFF49A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F67BD1DC-64E3-4558-979C-4A202EFF49A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F67BD1DC-64E3-4558-979C-4A202EFF49A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F67BD1DC-64E3-4558-979C-4A202EFF49A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A1DEACE-E03B-4CFB-93D6-875B63B6CE34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A1DEACE-E03B-4CFB-93D6-875B63B6CE34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A1DEACE-E03B-4CFB-93D6-875B63B6CE34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A1DEACE-E03B-4CFB-93D6-875B63B6CE34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -645,6 +670,10 @@ Global
 		{2D77D6A4-E105-46A4-A7C4-AEDEABD09B57} = {9A3F55B8-E867-4EA2-B1FA-0C01DE79463E}
 		{41795D90-8921-49AF-AF0D-CF4191F6D098} = {746BF851-4217-4CF8-835E-45257D95CDCB}
 		{1F40FBE3-F1E5-4A69-A3CB-0F0ECF0D43D9} = {9A3F55B8-E867-4EA2-B1FA-0C01DE79463E}
+		{9293B5B8-C4AD-4124-8962-79202417148E} = {746BF851-4217-4CF8-835E-45257D95CDCB}
+		{46F17928-17FD-478A-9D53-0300824BBBD9} = {9A3F55B8-E867-4EA2-B1FA-0C01DE79463E}
+		{F67BD1DC-64E3-4558-979C-4A202EFF49A1} = {746BF851-4217-4CF8-835E-45257D95CDCB}
+		{5A1DEACE-E03B-4CFB-93D6-875B63B6CE34} = {9A3F55B8-E867-4EA2-B1FA-0C01DE79463E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}
