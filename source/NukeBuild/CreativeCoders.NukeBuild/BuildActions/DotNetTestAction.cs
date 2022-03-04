@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
 using Nuke.Common.IO;
+using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.BuildActions
@@ -76,7 +77,7 @@ namespace CreativeCoders.NukeBuild.BuildActions
             var settings = new DotNetTestSettings()
                 .SetProjectFile(unitTestProject)
                 .SetConfiguration(BuildInfo.Configuration)
-                .SetLogger($"xunit;LogFilePath={testResultFile}")
+                .SetLoggers($"xunit;LogFilePath={testResultFile}")
                 .SetResultsDirectory(_resultsDirectory);
 
             if (_enableCodeCoverage)
