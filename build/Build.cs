@@ -87,7 +87,7 @@ class Build : NukeBuild, IBuildInfo
         .After(Test)
         .UseBuildAction<CoverageReportAction>(this,
             x => x
-                .SetReports(TestBaseDirectory / "coverage" / "*.xml")
+                .SetReports(TestBaseDirectory / "coverage" / "**" / "*.xml")
                 .SetTargetDirectory(TestBaseDirectory / "coverage_report"));
 
     Target Pack => _ => _

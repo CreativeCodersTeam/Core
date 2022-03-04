@@ -43,21 +43,14 @@ namespace CreativeCoders.NukeBuild.BuildActions
             {
                 var projectName = Path.GetFileNameWithoutExtension(unitTestProject);
 
-                var testResultFile = $"{projectName}.{_resultFileExt}";
+                var testResultFile = Path.Combine(_resultsDirectory, $"{projectName}.{_resultFileExt}");
 
-                var coverageResultFile = _coverageDirectory / $"coverage_{ projectName}.xml";
-                
                 try
                 {
-                    DotNetTasks.DotNetTest(
-                        x => x
-                            .SetProjectFile(unitTestProject)
-                            .SetConfiguration(BuildInfo.Configuration)
-                            .SetLoggers($"{_logger};LogFileName={testResultFile}")
-                            .SetResultsDirectory(_resultsDirectory)
-                            .SetCollectCoverage(_enableCodeCoverage)
-                            .SetCoverletOutput(coverageResultFile)
-                            .SetCoverletOutputFormat(_coverageOutputFormat));
+                    var testSettings =
+                        CreateTestSettings(unitTestProject, testResultFile);
+
+                    DotNetTasks.DotNetTest(testSettings);
                 }
                 catch (Exception e)
                 {
@@ -71,20 +64,18 @@ namespace CreativeCoders.NukeBuild.BuildActions
             }
         }
 
-        private DotNetTestSettings CreateTestSettings(string unitTestProject, string testResultFile,
-            string coverageDirectory)
+        private DotNetTestSettings CreateTestSettings(string unitTestProject, string testResultFile)
         {
             var settings = new DotNetTestSettings()
                 .SetProjectFile(unitTestProject)
                 .SetConfiguration(BuildInfo.Configuration)
-                .SetLoggers($"xunit;LogFilePath={testResultFile}")
-                .SetResultsDirectory(_resultsDirectory);
+                .SetLoggers($"{_logger};LogFileName={testResultFile}");
 
             if (_enableCodeCoverage)
             {
                 return settings
                     .SetDataCollector("XPlat Code Coverage")
-                    .SetResultsDirectory(coverageDirectory);
+                    .SetResultsDirectory(_coverageDirectory);
             }
 
             return settings;
