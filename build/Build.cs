@@ -4,6 +4,7 @@ using CreativeCoders.NukeBuild;
 using CreativeCoders.NukeBuild.BuildActions;
 using JetBrains.Annotations;
 using Nuke.Common;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
@@ -80,6 +81,13 @@ class Build : NukeBuild, IBuildInfo
                 .SetCoverageDirectory(CoverageDirectory)
                 .SetCoverageFormat(CoverletOutputFormat.cobertura));
 
+    Target CoverageReport => _ => _
+        .After(Test)
+        .UseBuildAction<CoverageReportAction>(this,
+            x => x
+                .SetReports(TestBaseDirectory / "coverage" / "*.xml")
+                .SetTargetDirectory(TestBaseDirectory / "coverage_report"));
+
     Target Pack => _ => _
         .After(Compile)
         .UseBuildAction<PackBuildAction>(this,
@@ -110,8 +118,9 @@ class Build : NukeBuild, IBuildInfo
         .DependsOn(Compile);
 
     Target RunTest => _ => _
-        .DependsOn(RunBuild)
-        .DependsOn(Test);
+        //.DependsOn(RunBuild)
+        //.DependsOn(Test)
+        .DependsOn(CoverageReport);
 
     Target CreateNuGetPackages => _ => _
         .DependsOn(RunTest)

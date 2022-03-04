@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection.Metadata;
 using JetBrains.Annotations;
 using Nuke.Common.IO;
 using Nuke.Common.Tools.Coverlet;
@@ -47,7 +46,7 @@ namespace CreativeCoders.NukeBuild.BuildActions
                 var testResultFile = $"{projectName}.{_resultFileExt}";
 
                 var coverageResultFile = _coverageDirectory / $"coverage_{ projectName}.xml";
-
+                
                 try
                 {
                     DotNetTasks.DotNetTest(
