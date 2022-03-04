@@ -45,5 +45,5 @@ jobs:
           path: .tests/coverage_report/*.*
 
       - name: Publish the package to GPR
-        if: github.ref != ‘refs/heads/main’
+        if: github.ref != 'refs/heads/main'
         run: dotnet nuget push .artifacts/**/*.nupkg --skip-duplicate -k ${{secrets.GITHUB_TOKEN}}
