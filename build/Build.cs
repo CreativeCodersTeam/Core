@@ -9,6 +9,7 @@ using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.GitVersion;
 
 [PublicAPI]
