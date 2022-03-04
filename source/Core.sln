@@ -1,6 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.1.32210.238
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{D0A3F2FC-664B-4A9D-ACF9-F00EF8E9DFE1}"
@@ -150,7 +149,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__global", "__global", "{92
 		.editorconfig = .editorconfig
 		..\.gitattributes = ..\.gitattributes
 		..\.gitignore = ..\.gitignore
-		..\azure-pipelines.yml = ..\azure-pipelines.yml
 		..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
 		..\LICENSE = ..\LICENSE
 		..\README.md = ..\README.md
