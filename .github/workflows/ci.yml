@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: Build, test and deploy to github pkg
+    name: CI/CD build
     runs-on: windows-latest
     permissions:
       packages: write
@@ -23,7 +23,8 @@ jobs:
 
       - name: Prepare environment
         run: |
-          dotnet tool install --global GitVersion.Tool
+          dotnet tool install --global GitVersion.Tooldotnet nuget list
+
 
       - name: Build Solution
         shell: pwsh
@@ -47,3 +48,7 @@ jobs:
       - name: Publish the package to GPR
         if: github.ref != 'refs/heads/main'
         run: dotnet nuget push .artifacts/**/*.nupkg --skip-duplicate -k ${{secrets.GITHUB_TOKEN}}
+
+      - name: Publish the package to nuget.org
+        if: github.ref == 'refs/heads/main'
+        run: dotnet nuget push .artifacts/**/*.nupkg --skip-duplicate -k ${{secrets.NUGET_ORG_TOKEN}} -s NuGet

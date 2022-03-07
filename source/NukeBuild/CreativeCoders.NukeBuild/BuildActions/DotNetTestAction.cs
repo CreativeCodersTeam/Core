@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
 using Nuke.Common.IO;
-using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.BuildActions
@@ -21,8 +20,6 @@ namespace CreativeCoders.NukeBuild.BuildActions
         private AbsolutePath _coverageDirectory;
 
         private bool _enableCodeCoverage;
-
-        private CoverletOutputFormat _coverageOutputFormat = CoverletOutputFormat.cobertura;
 
         private string _logger = "xunit";
 
@@ -112,13 +109,6 @@ namespace CreativeCoders.NukeBuild.BuildActions
         public DotNetTestAction EnableCoverage()
         {
             _enableCodeCoverage = true;
-
-            return this;
-        }
-
-        public DotNetTestAction SetCoverageFormat(CoverletOutputFormat coverageOutputFormat)
-        {
-            _coverageOutputFormat = coverageOutputFormat;
 
             return this;
         }

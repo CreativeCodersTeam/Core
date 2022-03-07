@@ -1,7 +1,6 @@
 ﻿using System;
 using CreativeCoders.Core;
 using JetBrains.Annotations;
-using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.Tools.DotNet;
 

@@ -1,21 +1,17 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.NukeBuild;
 using CreativeCoders.NukeBuild.BuildActions;
 using JetBrains.Annotations;
 using Nuke.Common;
-using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.GitVersion;
 
 [PublicAPI]
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
-[SuppressMessage("ReSharper", "ConvertToAutoProperty")]
 class Build : NukeBuild, IBuildInfo
 {
     public static int Main () => Execute<Build>(x => x.RunBuild);
@@ -49,9 +45,7 @@ class Build : NukeBuild, IBuildInfo
 
     AbsolutePath CoverageDirectory => TestBaseDirectory / "coverage";
 
-#pragma warning disable IDE0051 // Mark members as static
     AbsolutePath TempNukeDirectory => RootDirectory / ".nuke" / "temp";
-#pragma warning restore IDE0051 // Mark members as static
 
     const string PackageProjectUrl = "https://github.com/CreativeCodersTeam/Core"; 
 
@@ -80,8 +74,7 @@ class Build : NukeBuild, IBuildInfo
                 .UseLogger("trx")
                 .SetResultFileExt("trx")
                 .EnableCoverage()
-                .SetCoverageDirectory(CoverageDirectory)
-                .SetCoverageFormat(CoverletOutputFormat.cobertura));
+                .SetCoverageDirectory(CoverageDirectory));
 
     Target CoverageReport => _ => _
         .After(Test)
