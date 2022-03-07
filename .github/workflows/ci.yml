@@ -23,8 +23,7 @@ jobs:
 
       - name: Prepare environment
         run: |
-          dotnet tool install --global GitVersion.Tooldotnet nuget list
-
+          dotnet tool install --global GitVersion.Tool
 
       - name: Build Solution
         shell: pwsh
