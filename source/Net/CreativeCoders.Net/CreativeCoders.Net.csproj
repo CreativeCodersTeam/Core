@@ -5,6 +5,7 @@
 		<TargetFramework>net5.0</TargetFramework>
 		<Authors>CreativeCoders</Authors>
 		<Description>Network relatived classes and types. HttpClient extensions. Basic Soap support. Base classes and types for Http server abstraction.</Description>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

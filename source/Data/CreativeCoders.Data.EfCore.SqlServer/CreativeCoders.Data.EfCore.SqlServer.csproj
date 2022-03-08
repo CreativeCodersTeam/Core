@@ -5,6 +5,7 @@
 		<TargetFramework>net5.0</TargetFramework>
 		<Authors>CreativeCoders</Authors>
 		<Description>Entity Framework Core Sql Server implementation of a data repository for CreativeCoders.Data</Description>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

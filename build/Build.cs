@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.NukeBuild;
 using CreativeCoders.NukeBuild.BuildActions;
 using JetBrains.Annotations;
@@ -13,7 +12,6 @@ using Nuke.Common.Tools.GitVersion;
 [PublicAPI]
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
-[SuppressMessage("ReSharper", "ConvertToAutoProperty")]
 class Build : NukeBuild, IBuildInfo
 {
     public static int Main () => Execute<Build>(x => x.RunBuild);
@@ -47,9 +45,7 @@ class Build : NukeBuild, IBuildInfo
 
     AbsolutePath CoverageDirectory => TestBaseDirectory / "coverage";
 
-#pragma warning disable IDE0051 // Mark members as static
     AbsolutePath TempNukeDirectory => RootDirectory / ".nuke" / "temp";
-#pragma warning restore IDE0051 // Mark members as static
 
     const string PackageProjectUrl = "https://github.com/CreativeCodersTeam/Core"; 
 
@@ -75,15 +71,17 @@ class Build : NukeBuild, IBuildInfo
                 .SetTestProjectsBaseDirectory(TestProjectsBasePath)
                 .SetProjectsPattern("**/*.csproj")
                 .SetResultsDirectory(TestResultsDirectory)
+                .UseLogger("trx")
+                .SetResultFileExt("trx")
                 .EnableCoverage()
                 .SetCoverageDirectory(CoverageDirectory));
 
-    Target CreateCoverageReport => _ => _
+    Target CoverageReport => _ => _
         .After(Test)
-        .UseBuildAction<CreateCoverageReportAction>(this,
+        .UseBuildAction<CoverageReportAction>(this,
             x => x
-                .SetReports(CoverageDirectory / "**/coverage.cobertura.xml")
-                .SetTargetPath(CoverageDirectory / "report"));
+                .SetReports(TestBaseDirectory / "coverage" / "**" / "*.xml")
+                .SetTargetDirectory(TestBaseDirectory / "coverage_report"));
 
     Target Pack => _ => _
         .After(Compile)
@@ -112,24 +110,24 @@ class Build : NukeBuild, IBuildInfo
     Target RunBuild => _ => _
         .DependsOn(Clean)
         .DependsOn(Restore)
-        .Executes(Compile);
+        .DependsOn(Compile);
 
     Target RunTest => _ => _
         .DependsOn(RunBuild)
         .DependsOn(Test)
-        .Executes(CreateCoverageReport);
+        .DependsOn(CoverageReport);
 
     Target CreateNuGetPackages => _ => _
         .DependsOn(RunTest)
-        .Executes(Pack);
+        .DependsOn(Pack);
 
     Target DeployToDevNuGet => _ => _
         .DependsOn(CreateNuGetPackages)
-        .Executes(PushToDevNuGet);
+        .DependsOn(PushToDevNuGet);
 
     Target DeployToNuGet => _ => _
         .DependsOn(CreateNuGetPackages)
-        .Executes(PushToNuGet);
+        .DependsOn(PushToNuGet);
 
     string IBuildInfo.Configuration => Configuration;
 

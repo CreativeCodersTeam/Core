@@ -1,20 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>Library</OutputType>
-        <TargetFramework>net5.0-windows</TargetFramework>
-        <Authors>CreativeCoders</Authors>
-        <UseWPF>true</UseWPF>
-        <Description>FluentRibbon implementation for CreativeCoders.Mvvm.Ribbon</Description>
-    </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<Authors>CreativeCoders</Authors>
+		<UseWPF>true</UseWPF>
+		<Description>FluentRibbon implementation for CreativeCoders.Mvvm.Ribbon</Description>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
+	</PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Fluent.Ribbon" Version="8.0.3" />
-      <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.37" />
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Fluent.Ribbon" Version="8.0.3" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.37" />
+	</ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\CreativeCoders.Mvvm.Wpf\CreativeCoders.Mvvm.Wpf.csproj" />
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CreativeCoders.Mvvm.Wpf\CreativeCoders.Mvvm.Wpf.csproj" />
+	</ItemGroup>
 
 </Project>

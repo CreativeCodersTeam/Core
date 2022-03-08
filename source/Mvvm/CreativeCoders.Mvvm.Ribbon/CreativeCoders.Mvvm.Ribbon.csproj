@@ -6,6 +6,7 @@
 		<Authors>CreativeCoders</Authors>
 		<UseWPF>true</UseWPF>
 		<Description>Base classes and types for MVVM Ribbon support</Description>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

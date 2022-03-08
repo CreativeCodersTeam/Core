@@ -6,6 +6,7 @@
 		<Authors>CreativeCoders</Authors>
 		<Description>Windows implementation of a daemon runner for CreativeCoders.Daemon.Runner.Base</Description>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

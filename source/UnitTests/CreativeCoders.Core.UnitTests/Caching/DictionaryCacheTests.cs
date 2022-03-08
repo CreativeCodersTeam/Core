@@ -248,9 +248,9 @@ namespace CreativeCoders.Core.UnitTests.Caching
         }
 
         [Fact]
-        public void TryGet_AfterExpiration_ReturnsFalse()
+        public async Task TryGet_AfterExpiration_ReturnsFalse()
         {
-            TestCaching.TryGet_AfterExpiration_ReturnsFalse(CreateCache<int, string>());
+            await TestCaching.TryGet_AfterExpiration_ReturnsFalse(CreateCache<int, string>());
         }
         
         [Fact]
@@ -260,9 +260,9 @@ namespace CreativeCoders.Core.UnitTests.Caching
         }
         
         [Fact]
-        public void TryGet_AfterExpirationTimeSpan_ReturnsFalse()
+        public async Task TryGet_AfterExpirationTimeSpan_ReturnsFalse()
         {
-            TestCaching.TryGet_AfterExpirationTimeSpan_ReturnsFalse(CreateCache<int, string>());
+            await TestCaching.TryGet_AfterExpirationTimeSpan_ReturnsFalse(CreateCache<int, string>());
         }
         
         [Fact]
@@ -306,30 +306,30 @@ namespace CreativeCoders.Core.UnitTests.Caching
         }
 
         [Fact]
-        public void GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
+        public async Task GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
         {
-            TestCaching.GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
+            await TestCaching.GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
                 CreateCache<int, string>());
         }
 
         [Fact]
-        public void GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        public async Task GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
         {
-            TestCaching.GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+            await TestCaching.GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
                 CreateCache<int, string>());
         }
 
         [Fact]
-        public void GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes()
+        public async Task GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes()
         {
-            TestCaching.GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes(
+            await TestCaching.GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes(
                 CreateCache<int, string>());
         }
 
         [Fact]
-        public void GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+        public async Task GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
         {
-            TestCaching.GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+            await TestCaching.GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
                 CreateCache<int, string>());
         }
 

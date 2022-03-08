@@ -21,6 +21,10 @@ namespace CreativeCoders.NukeBuild.BuildActions
 
         private bool _enableCodeCoverage;
 
+        private string _logger = "xunit";
+
+        private string _resultFileExt = "xml";
+
         protected override void OnExecute()
         {
             if (!Directory.Exists(_testProjectsBaseDirectory))
@@ -36,15 +40,12 @@ namespace CreativeCoders.NukeBuild.BuildActions
             {
                 var projectName = Path.GetFileNameWithoutExtension(unitTestProject);
 
-                var testResultFile = Path.Combine(_resultsDirectory, $"results_{projectName}.xml");
-
-                var coverageDirectory = _coverageDirectory / projectName;
+                var testResultFile = Path.Combine(_resultsDirectory, $"{projectName}.{_resultFileExt}");
 
                 try
                 {
-                    Console.WriteLine(unitTestProject);
-
-                    var testSettings = CreateTestSettings(unitTestProject, testResultFile, coverageDirectory);
+                    var testSettings =
+                        CreateTestSettings(unitTestProject, testResultFile);
 
                     DotNetTasks.DotNetTest(testSettings);
                 }
@@ -60,20 +61,18 @@ namespace CreativeCoders.NukeBuild.BuildActions
             }
         }
 
-        private DotNetTestSettings CreateTestSettings(string unitTestProject, string testResultFile,
-            string coverageDirectory)
+        private DotNetTestSettings CreateTestSettings(string unitTestProject, string testResultFile)
         {
             var settings = new DotNetTestSettings()
                 .SetProjectFile(unitTestProject)
                 .SetConfiguration(BuildInfo.Configuration)
-                .SetLogger($"xunit;LogFilePath={testResultFile}")
-                .SetResultsDirectory(_resultsDirectory);
+                .SetLoggers($"{_logger};LogFileName={testResultFile}");
 
             if (_enableCodeCoverage)
             {
                 return settings
                     .SetDataCollector("XPlat Code Coverage")
-                    .SetResultsDirectory(coverageDirectory);
+                    .SetResultsDirectory(_coverageDirectory);
             }
 
             return settings;
@@ -110,6 +109,20 @@ namespace CreativeCoders.NukeBuild.BuildActions
         public DotNetTestAction EnableCoverage()
         {
             _enableCodeCoverage = true;
+
+            return this;
+        }
+
+        public DotNetTestAction UseLogger(string logger)
+        {
+            _logger = logger;
+
+            return this;
+        }
+
+        public DotNetTestAction SetResultFileExt(string resultFileExt)
+        {
+            _resultFileExt = resultFileExt;
 
             return this;
         }

@@ -5,10 +5,11 @@
         <TargetFramework>net5.0</TargetFramework>
         <Authors>CreativeCoders</Authors>
         <Description>Base classes and types for scripting</Description>
+	    <RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+        <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
     </ItemGroup>
 
 </Project>

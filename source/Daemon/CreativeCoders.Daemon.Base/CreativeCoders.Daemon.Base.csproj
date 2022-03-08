@@ -6,6 +6,7 @@
 		<Authors>CreativeCoders</Authors>
 		<Description>Base classes and types for daemon services</Description>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

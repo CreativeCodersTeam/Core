@@ -85,7 +85,7 @@
             "enum": [
               "Clean",
               "Compile",
-              "CreateCoverageReport",
+              "CoverageReport",
               "CreateNuGetPackages",
               "DeployToDevNuGet",
               "DeployToNuGet",
@@ -111,7 +111,7 @@
             "enum": [
               "Clean",
               "Compile",
-              "CreateCoverageReport",
+              "CoverageReport",
               "CreateNuGetPackages",
               "DeployToDevNuGet",
               "DeployToNuGet",

@@ -6,10 +6,11 @@
 		<Authors>CreativeCoders</Authors>
 		<Description>Nuke build extensions</Description>
 		<IsPackable>true</IsPackable>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Nuke.Common" Version="5.2.0" />
+		<PackageReference Include="Nuke.Common" Version="6.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -45,5 +45,10 @@ namespace CreativeCoders.NukeBuild
                     configureAction(x);
                 });
         }
+
+        public static ITargetDefinition ExecuteTarget(this ITargetDefinition targetDefinition, Target target)
+        {
+            return targetDefinition.Executes(() => target.Invoke(targetDefinition));
+        }
     }
 }

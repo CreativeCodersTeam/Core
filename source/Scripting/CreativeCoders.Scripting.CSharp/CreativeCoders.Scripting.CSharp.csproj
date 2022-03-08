@@ -1,14 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>Library</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
-        <Authors>CreativeCoders</Authors>
-    </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<Authors>CreativeCoders</Authors>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
+	</PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\CodeCompilation\CreativeCoders.CodeCompilation\CreativeCoders.CodeCompilation.csproj" />
-      <ProjectReference Include="..\CreativeCoders.Scripting.Base\CreativeCoders.Scripting.Base.csproj" />
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference
+			Include="..\..\CodeCompilation\CreativeCoders.CodeCompilation\CreativeCoders.CodeCompilation.csproj" />
+		<ProjectReference Include="..\CreativeCoders.Scripting.Base\CreativeCoders.Scripting.Base.csproj" />
+	</ItemGroup>
 
 </Project>

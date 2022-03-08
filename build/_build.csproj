@@ -5,16 +5,15 @@
 		<TargetFramework>net5.0</TargetFramework>
 		<RootNamespace></RootNamespace>
 		<IsPackable>False</IsPackable>
-		<NoWarn>CS0649;CS0169</NoWarn>
+		<NoWarn>CS0649;CS0169;IDE0044;IDE0051;CA1822</NoWarn>
 		<NukeRootDirectory>..</NukeRootDirectory>
 		<NukeScriptDirectory>..</NukeScriptDirectory>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Nuke.Common" Version="5.2.0" />
-		<PackageReference Include="GitVersion.CommandLine.DotNetCore" Version="5.0.1" />
-		<PackageDownload Include="GitVersion.Tool" Version="[5.1.1]" />
-		<PackageDownload Include="ReportGenerator" Version="[5.0.0]" />
+		<PackageReference Include="Nuke.Common" Version="6.0.1" />
+		<PackageReference Include="ReportGenerator" Version="5.0.4" />
+		<PackageDownload Include="GitVersion.Tool" Version="[5.8.0]" />
 	</ItemGroup>
 
 	<ItemGroup>
