@@ -96,22 +96,11 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
 
             var routeParts = routes.Select(x => x.RouteParts).ToArray();
 
-            var index = 0;
-
-            Print("RouteParts");
-            routeParts.ForEach(x => Print(string.Join(", ", x)));
-
-            foreach (var routePart in routeParts)
+            foreach (var expectedRoutePart in expectedRouteParts)
             {
-                
-                Print($"RoutePart[{index}]: {string.Join(", ", routePart)}");
-                Print($"Should be = {string.Join(", ", expectedRouteParts[index])}");
-
-                routePart
+                routeParts
                     .Should()
-                    .ContainInOrder(expectedRouteParts[index]);
-
-                index++;
+                    .ContainEquivalentOf(expectedRoutePart);
             }
         }
 
