@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.SysConsole.Cli.Actions.Definition;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
@@ -95,16 +96,17 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
 
             var routeParts = routes.Select(x => x.RouteParts).ToArray();
 
-            var index = 0;
-
-            foreach (var routePart in routeParts)
+            foreach (var expectedRoutePart in expectedRouteParts)
             {
-                routePart
+                routeParts
                     .Should()
-                    .ContainInOrder(expectedRouteParts[index]);
-
-                index++;
+                    .ContainEquivalentOf(expectedRoutePart);
             }
+        }
+
+        private static void Print(string text)
+        {
+            Console.WriteLine(text);
         }
     }
 
