@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.SysConsole.Cli.Actions.Definition;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
@@ -97,9 +98,13 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
 
             var index = 0;
 
+            Print("RouteParts");
+            routeParts.ForEach(x => Print(string.Join(", ", x)));
+
             foreach (var routePart in routeParts)
             {
-                Print($"RoutePart[{routePart}]: {string.Join(", ", routePart)}");
+                
+                Print($"RoutePart[{index}]: {string.Join(", ", routePart)}");
                 Print($"Should be = {string.Join(", ", expectedRouteParts[index])}");
 
                 routePart
