@@ -99,12 +99,20 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing
 
             foreach (var routePart in routeParts)
             {
+                Print($"RoutePart[{routePart}]: {string.Join(", ", routePart)}");
+                Print($"Should be = {string.Join(", ", expectedRouteParts[index])}");
+
                 routePart
                     .Should()
                     .ContainInOrder(expectedRouteParts[index]);
 
                 index++;
             }
+        }
+
+        private static void Print(string text)
+        {
+            Console.WriteLine(text);
         }
     }
 
