@@ -13,7 +13,7 @@ namespace CreativeCoders.NukeBuild.BuildActions
             DotNetTasks.DotNetPublish(x => x
                 .SetProject(_projectFile)
                 .SetConfiguration(BuildInfo.Configuration)
-                .SetOutput(BuildInfo.ArtifactsDirectory)
+                .SetOutput(_output)
                 .SetVersion(BuildInfo.VersionInfo.NuGetVersionV2));
         }
 
