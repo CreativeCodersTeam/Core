@@ -6,6 +6,8 @@ namespace CreativeCoders.NukeBuild.BuildActions
     {
         private string _projectFile;
 
+        private string _output;
+
         protected override void OnExecute()
         {
             DotNetTasks.DotNetPublish(x => x
@@ -15,9 +17,16 @@ namespace CreativeCoders.NukeBuild.BuildActions
                 .SetVersion(BuildInfo.VersionInfo.NuGetVersionV2));
         }
 
-        public DotNetPublishBuildAction AddProject(string projectFile)
+        public DotNetPublishBuildAction SetProject(string projectFile)
         {
             _projectFile = projectFile;
+
+            return this;
+        }
+
+        public DotNetPublishBuildAction SetOutput(string output)
+        {
+            _output = output;
 
             return this;
         }
