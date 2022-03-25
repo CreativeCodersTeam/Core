@@ -2,6 +2,10 @@ name: CI pipeline
 
 on: [push, pull_request]
 
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  NUKE_TELEMETRY_OPTOUT: 1
+
 jobs:
   build:
     name: CI/CD build
