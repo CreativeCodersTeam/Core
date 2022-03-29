@@ -22,7 +22,9 @@ public static class WindowsButtonUtils
 
         var sb = new StringBuilder(1024);
 
-        return User32Api.LoadString(handle, (uint)buttonCaption, sb, 1024) > 0 ? sb.ToString() : string.Empty;
+        return User32Api.LoadString(handle, (uint) buttonCaption, sb, 1024) > 0
+            ? sb.ToString()
+            : string.Empty;
     }
 
     ///-------------------------------------------------------------------------------------------------

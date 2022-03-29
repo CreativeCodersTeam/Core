@@ -16,7 +16,7 @@ public class WinApiUtils
     ///-------------------------------------------------------------------------------------------------
     public static ushort MakeLangId(CultureInfo cultureInfo)
     {
-        return (ushort)MakeLangId(PrimaryLangId(cultureInfo.LCID), SubLangId(cultureInfo.LCID));
+        return (ushort) MakeLangId(PrimaryLangId(cultureInfo.LCID), SubLangId(cultureInfo.LCID));
     }
 
     ///-------------------------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ public class WinApiUtils
     ///-------------------------------------------------------------------------------------------------
     public static int MakeLangId(int primary, int sub)
     {
-        return ((ushort)sub << 10) | (ushort)primary;
+        return ((ushort) sub << 10) | (ushort) primary;
     }
 
     ///-------------------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ public class WinApiUtils
     ///-------------------------------------------------------------------------------------------------
     private static int PrimaryLangId(int lcid)
     {
-        return (ushort)lcid & 0x3ff;
+        return (ushort) lcid & 0x3ff;
     }
 
     ///-------------------------------------------------------------------------------------------------
@@ -53,6 +53,6 @@ public class WinApiUtils
     ///-------------------------------------------------------------------------------------------------
     private static int SubLangId(int lcid)
     {
-        return (ushort)lcid >> 10;
+        return (ushort) lcid >> 10;
     }
 }

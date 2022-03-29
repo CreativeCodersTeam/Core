@@ -6,14 +6,8 @@ namespace CreativeCoders.Windows.Shell;
 public static class ShellCommands
 {
     // ReSharper disable once UnusedParameter.Global
-    public static void Register(ShellCommand shellCommand)
-    {
-            
-    }
+    public static void Register(ShellCommand shellCommand) { }
 
     // ReSharper disable once UnusedParameter.Global
-    public static void Unregister(ShellCommand shellCommand)
-    {
-            
-    }
+    public static void Unregister(ShellCommand shellCommand) { }
 }

@@ -25,7 +25,8 @@ public static class User32Api
     /// <summary>   User32.dll SetWindowPos function. See Microsoft WinApi documentation. </summary>
     ///-------------------------------------------------------------------------------------------------
     [DllImport(User32DllName, SetLastError = true)]
-    public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
+    public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy,
+        SetWindowPosFlags uFlags);
 
     ///-------------------------------------------------------------------------------------------------
     /// <summary>   User32.dll EnumChildWindows function. See Microsoft WinApi documentation. </summary>

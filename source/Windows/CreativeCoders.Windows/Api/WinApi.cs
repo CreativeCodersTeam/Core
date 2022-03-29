@@ -21,7 +21,7 @@ public static class WinApi
 
     [DllImport(Kernel32Dll, CharSet = CharSet.Auto)]
     public static extern IntPtr LoadLibrary(string lpFileName);
-        
+
     [DllImport(Advapi32Dll, SetLastError = true, CharSet = CharSet.Unicode)]
     public static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword,
         int dwLogonType, int dwLogonProvider, out SafeAccessTokenHandle phToken);
