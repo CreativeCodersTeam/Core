@@ -14,17 +14,17 @@ using Nuke.Common.Tools.GitVersion;
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild, IBuildInfo
 {
-    public static int Main () => Execute<Build>(x => x.RunBuild);
+    public static int Main() => Execute<Build>(x => x.RunBuild);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
-    
+
     [Parameter] string DevNuGetSource;
-    
+
     [Parameter] string DevNuGetApiKey;
-    
+
     [Parameter] string NuGetSource;
-    
+
     [Parameter] string NuGetApiKey;
 
     [Solution] readonly Solution Solution;
@@ -39,7 +39,7 @@ class Build : NukeBuild, IBuildInfo
 
     AbsolutePath TestBaseDirectory => RootDirectory / ".tests";
 
-    AbsolutePath TestResultsDirectory => TestBaseDirectory  / "results";
+    AbsolutePath TestResultsDirectory => TestBaseDirectory / "results";
 
     AbsolutePath TestProjectsBasePath => SourceDirectory / "UnitTests";
 
@@ -47,7 +47,7 @@ class Build : NukeBuild, IBuildInfo
 
     AbsolutePath TempNukeDirectory => RootDirectory / ".nuke" / "temp";
 
-    const string PackageProjectUrl = "https://github.com/CreativeCodersTeam/Core"; 
+    const string PackageProjectUrl = "https://github.com/CreativeCodersTeam/Core";
 
     Target Clean => _ => _
         .Before(Restore)
