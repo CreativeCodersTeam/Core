@@ -50,7 +50,8 @@ public class MessageTopic<TMessage> : IMessageTopic<TMessage>
         return Register().ObserveOn(scheduler);
     }
 
-    public IObservable<TRegisterMessage> Register<TRegisterMessage>(IScheduler scheduler) where TRegisterMessage : TMessage
+    public IObservable<TRegisterMessage> Register<TRegisterMessage>(IScheduler scheduler)
+        where TRegisterMessage : TMessage
     {
         Ensure.IsNotNull(scheduler, nameof(scheduler));
 

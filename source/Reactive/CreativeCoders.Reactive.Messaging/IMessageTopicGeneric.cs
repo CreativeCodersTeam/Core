@@ -12,7 +12,7 @@ public interface IMessageTopic<TMessage>
     IObservable<TMessage> Register();
 
     IObservable<TRegisterMessage> Register<TRegisterMessage>()
-        where TRegisterMessage: TMessage;
+        where TRegisterMessage : TMessage;
 
     IObservable<TMessage> Register(IScheduler scheduler);
 
