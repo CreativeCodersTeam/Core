@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
 
 namespace CreativeCoders.AspNetCore.Blazor.Components.Base;
@@ -8,6 +9,7 @@ namespace CreativeCoders.AspNetCore.Blazor.Components.Base;
 ///
 /// <seealso cref="ComponentBase"/>
 ///-------------------------------------------------------------------------------------------------
+[PublicAPI]
 public class ControlBase : ComponentBase
 {
     public ControlBase()

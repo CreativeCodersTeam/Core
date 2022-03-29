@@ -6,7 +6,7 @@ namespace CreativeCoders.Net.Http.Auth;
 
 public class NullHttpClientAuthenticator : IHttpClientAuthenticator
 {
-    public static IHttpClientAuthenticator Default = new NullHttpClientAuthenticator();
+    public static readonly IHttpClientAuthenticator Default = new NullHttpClientAuthenticator();
 
     public Task AuthenticateAsync(Uri requestUri)
     {

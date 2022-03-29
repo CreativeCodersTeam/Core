@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.Net.Avm;
+﻿using JetBrains.Annotations;
 
+namespace CreativeCoders.Net.Avm;
+
+[PublicAPI]
 public class HostEntry
 {
     public string IpAddress { get; set; }

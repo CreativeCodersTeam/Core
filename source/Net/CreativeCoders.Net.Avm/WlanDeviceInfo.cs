@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.Net.Avm;
+﻿using JetBrains.Annotations;
 
+namespace CreativeCoders.Net.Avm;
+
+[PublicAPI]
 public class WlanDeviceInfo
 {
     public string MacAddress { get; set; }

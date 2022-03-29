@@ -10,7 +10,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-		<PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
+		<PackageReference Include="System.IO.Abstractions" Version="16.1.25" />
 	</ItemGroup>
 
 </Project>

@@ -5,21 +5,21 @@ namespace CreativeCoders.Core.ObjectLinking;
 
 public class PropertyLinkDefinition
 {
-    public object Source { get; set; }
+    public object Source { get; init; }
 
-    public object Target { get; set; }
+    public object Target { get; init; }
 
-    public Type TargetType { get; set; }
+    public Type TargetType { get; init; }
 
-    public PropertyInfo SourceProperty { get; set; }
+    public PropertyInfo SourceProperty { get; init; }
 
-    public string TargetPropertyName { get; set; }
+    public string TargetPropertyName { get; init; }
 
-    public LinkDirection LinkDirection { get; set; }
+    public LinkDirection LinkDirection { get; init; }
 
-    public Type Converter { get; set; }
+    public Type Converter { get; init; }
 
-    public object ConverterParameter { get; set; }
+    public object ConverterParameter { get; init; }
 
-    public bool InitWithTargetValue { get; set; }
+    public bool InitWithTargetValue { get; init; }
 }

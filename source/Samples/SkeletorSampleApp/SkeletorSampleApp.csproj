@@ -9,14 +9,13 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Di\CreativeCoders.Di.SimpleInjector\CreativeCoders.Di.SimpleInjector.csproj" />
-		<ProjectReference
-			Include="..\..\Mvvm\CreativeCoders.Mvvm.FileDialogService\CreativeCoders.Mvvm.FileDialogService.csproj" />
+		<ProjectReference Include="..\..\Mvvm\CreativeCoders.Mvvm.FileDialogService\CreativeCoders.Mvvm.FileDialogService.csproj" />
 		<ProjectReference Include="..\..\Mvvm\CreativeCoders.Mvvm.Skeletor\CreativeCoders.Mvvm.Skeletor.csproj" />
 		<ProjectReference Include="..\..\Mvvm\CreativeCoders.Mvvm\CreativeCoders.Mvvm.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="SimpleInjector" Version="5.3.2" />
+		<PackageReference Include="SimpleInjector" Version="5.3.3" />
 	</ItemGroup>
 
 </Project>

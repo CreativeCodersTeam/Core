@@ -2,5 +2,5 @@
 
 public class SqlServerConnectionString
 {
-    public string ConnectionString { get; set; }
+    public string ConnectionString { get; init; }
 }
