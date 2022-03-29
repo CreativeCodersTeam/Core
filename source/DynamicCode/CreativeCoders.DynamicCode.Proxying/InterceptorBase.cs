@@ -65,8 +65,5 @@ public class InterceptorBase<T> : IInterceptor
         return propertyInfo.PropertyType.GetDefault();
     }
 
-    protected virtual void ExecuteMethod(IInvocation invocation)
-    {
-
-    }
+    protected virtual void ExecuteMethod(IInvocation invocation) { }
 }

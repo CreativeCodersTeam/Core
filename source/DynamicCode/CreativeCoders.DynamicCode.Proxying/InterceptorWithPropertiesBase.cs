@@ -31,6 +31,6 @@ public class InterceptorWithPropertiesBase<T> : InterceptorBase<T>
         propertyValue = base.GetProperty(propertyInfo);
         _propertyValues[propertyInfo] = propertyValue;
 
-        return propertyValue;            
+        return propertyValue;
     }
 }
