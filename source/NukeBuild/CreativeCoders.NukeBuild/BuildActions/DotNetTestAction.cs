@@ -12,7 +12,7 @@ namespace CreativeCoders.NukeBuild.BuildActions;
 public class DotNetTestAction : BuildActionBase<DotNetTestAction>
 {
     private string _projectsPattern;
-        
+
     private string _resultsDirectory;
 
     private AbsolutePath _testProjectsBaseDirectory;
@@ -31,7 +31,7 @@ public class DotNetTestAction : BuildActionBase<DotNetTestAction>
         {
             return;
         }
-            
+
         var unitTestProjects = _testProjectsBaseDirectory.GlobFiles(_projectsPattern);
 
         var failedTests = new List<(string UnitTestProject, Exception Exception)>();
@@ -84,7 +84,7 @@ public class DotNetTestAction : BuildActionBase<DotNetTestAction>
 
         return this;
     }
-        
+
     public DotNetTestAction SetProjectsPattern(string projectsPattern)
     {
         _projectsPattern = projectsPattern;

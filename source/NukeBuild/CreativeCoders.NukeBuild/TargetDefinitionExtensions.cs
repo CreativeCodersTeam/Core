@@ -16,7 +16,8 @@ public static class TargetDefinitionExtensions
         return action.Setup(targetDefinition);
     }
 
-    public static ITargetDefinition UseBuildAction<TBuildAction>(this ITargetDefinition targetDefinition, Action<TBuildAction> configureAction)
+    public static ITargetDefinition UseBuildAction<TBuildAction>(this ITargetDefinition targetDefinition,
+        Action<TBuildAction> configureAction)
         where TBuildAction : IBuildAction<TBuildAction>, new()
     {
         var action = new TBuildAction();
@@ -24,7 +25,8 @@ public static class TargetDefinitionExtensions
         return action.Setup(targetDefinition, configureAction);
     }
 
-    public static ITargetDefinition UseBuildAction<TBuildAction>(this ITargetDefinition targetDefinition, IBuildInfo buildInfo)
+    public static ITargetDefinition UseBuildAction<TBuildAction>(this ITargetDefinition targetDefinition,
+        IBuildInfo buildInfo)
         where TBuildAction : IBuildAction<TBuildAction>, new()
     {
         var action = new TBuildAction();
@@ -32,7 +34,8 @@ public static class TargetDefinitionExtensions
         return action.Setup(targetDefinition, x => x.SetBuildInfo(buildInfo));
     }
 
-    public static ITargetDefinition UseBuildAction<TBuildAction>(this ITargetDefinition targetDefinition, IBuildInfo buildInfo, Action<TBuildAction> configureAction)
+    public static ITargetDefinition UseBuildAction<TBuildAction>(this ITargetDefinition targetDefinition,
+        IBuildInfo buildInfo, Action<TBuildAction> configureAction)
         where TBuildAction : IBuildAction<TBuildAction>, new()
     {
         var action = new TBuildAction();

@@ -21,7 +21,7 @@ public abstract class BuildActionBase<TBuildAction> : IBuildAction<TBuildAction>
     private void ExecuteAction(Action<TBuildAction> configureAction)
     {
         configureAction((TBuildAction) this);
-            
+
         OnExecute();
     }
 

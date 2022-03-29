@@ -12,11 +12,11 @@ public class PushBuildAction : BuildActionBase<PushBuildAction>
     private string _apiKey;
 
     private string _source;
-        
+
     private string _symbolSource;
-        
+
     private string _symbolApiKey;
-        
+
     protected override void OnExecute()
     {
         foreach (var packagePath in BuildInfo.ArtifactsDirectory.GlobFiles("*.nupkg"))
@@ -54,14 +54,14 @@ public class PushBuildAction : BuildActionBase<PushBuildAction>
 
         return this;
     }
-        
+
     public PushBuildAction SetSymbolSource(string symbolSource)
     {
         _symbolSource = symbolSource;
 
         return this;
     }
-        
+
     public PushBuildAction SetSymbolApiKey(string symbolApiKey)
     {
         _symbolApiKey = symbolApiKey;

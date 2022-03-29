@@ -8,13 +8,13 @@ namespace CreativeCoders.NukeBuild.BuildActions;
 public class PackBuildAction : BuildActionBase<PackBuildAction>
 {
     private DotNetSymbolPackageFormat _symbolPackageFormat;
-        
+
     private string _packageLicenseUrl;
-        
+
     private string _packageLicenseExpression;
-        
+
     private string _packageProjectUrl;
-        
+
     private string _copyright;
 
     private bool _enableNoBuild;
@@ -36,8 +36,10 @@ public class PackBuildAction : BuildActionBase<PackBuildAction>
             .SetVersion(BuildInfo.VersionInfo.NuGetVersionV2)
             .FluentIf(_enableNoBuild, x => x.EnableNoBuild())
             .FluentIf(!string.IsNullOrWhiteSpace(_copyright), x => x.SetCopyright(_copyright))
-            .FluentIf(!string.IsNullOrWhiteSpace(_packageProjectUrl), x => x.SetPackageProjectUrl(_packageProjectUrl))
-            .FluentIf(!string.IsNullOrEmpty(_packageLicenseUrl), x => x.SetPackageLicenseUrl(_packageLicenseUrl))
+            .FluentIf(!string.IsNullOrWhiteSpace(_packageProjectUrl),
+                x => x.SetPackageProjectUrl(_packageProjectUrl))
+            .FluentIf(!string.IsNullOrEmpty(_packageLicenseUrl),
+                x => x.SetPackageLicenseUrl(_packageLicenseUrl))
             .FluentIf(!string.IsNullOrWhiteSpace(_packageLicenseExpression),
                 x => x.SetProperty("PackageLicenseExpression", _packageLicenseExpression))
         );
