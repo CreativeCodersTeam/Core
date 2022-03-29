@@ -32,7 +32,8 @@ public class ItemTypeTemplateSelector : DataTemplateSelector
 
     public override DataTemplate SelectTemplate(object item, DependencyObject container)
     {
-        var typeTemplate = _typeTemplates.FirstOrDefault(templateItem => templateItem.Key.IsInstanceOfType(item));
+        var typeTemplate =
+            _typeTemplates.FirstOrDefault(templateItem => templateItem.Key.IsInstanceOfType(item));
         return typeTemplate.Value != null ? typeTemplate.Value() : base.SelectTemplate(item, container);
     }
 }

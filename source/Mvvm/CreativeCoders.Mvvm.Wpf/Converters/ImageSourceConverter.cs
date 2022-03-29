@@ -21,14 +21,14 @@ public class ImageSourceConverter : IValueConverter
         {
             return imageUrl;
         }
-            
+
         var url = imageUrl.Substring(6);
         var asmIndex = url.IndexOf("/", StringComparison.InvariantCultureIgnoreCase);
         if (asmIndex < 0)
         {
             return imageUrl;
         }
-            
+
         var assemblyName = url.Substring(0, asmIndex);
         var path = url.Substring(asmIndex);
         return $"pack://application:,,,/{assemblyName};component{path}";

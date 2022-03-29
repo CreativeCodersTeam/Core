@@ -8,15 +8,16 @@ namespace CreativeCoders.Mvvm.Wpf;
 public class ObjectLinkViewModelBase : ViewModelBase
 {
     private string _name;
-        
+
     private ObjectLink _elementLink;
-        
+
     public void ConnectTo(DependencyObject element)
     {
         if (element is FrameworkElement frameworkElement)
         {
             frameworkElement.Name = Name;
         }
+
         _elementLink = new ObjectLinkBuilder(this, element).Build();
     }
 
@@ -25,7 +26,7 @@ public class ObjectLinkViewModelBase : ViewModelBase
         _elementLink?.Dispose();
         _elementLink = null;
     }
-        
+
     public string Name
     {
         get => _name;

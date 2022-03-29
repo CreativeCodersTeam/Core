@@ -10,7 +10,8 @@ public static class ElementProperties
         "ObjectLink", typeof(ObjectLinkViewModelBase), typeof(ElementProperties),
         new PropertyMetadata(default(ObjectLinkViewModelBase), ObjectLinkPropertyChangedCallback));
 
-    private static void ObjectLinkPropertyChangedCallback(DependencyObject element, DependencyPropertyChangedEventArgs e)
+    private static void ObjectLinkPropertyChangedCallback(DependencyObject element,
+        DependencyPropertyChangedEventArgs e)
     {
         var oldLinkObject = e.OldValue as ObjectLinkViewModelBase;
         oldLinkObject?.Disconnect();

@@ -16,10 +16,12 @@ public class DataTemplateGenerator : IDataTemplateGenerator
         var context = new ParserContext {XamlTypeMapper = new XamlTypeMapper(Array.Empty<string>())};
 
         context.XamlTypeMapper.AddMappingProcessingInstruction("vm",
-            viewModelType.Namespace ?? throw new InvalidOperationException(), viewModelType.Assembly.FullName ?? throw new InvalidOperationException());
+            viewModelType.Namespace ?? throw new InvalidOperationException(),
+            viewModelType.Assembly.FullName ?? throw new InvalidOperationException());
 
         context.XamlTypeMapper.AddMappingProcessingInstruction("v",
-            viewType.Namespace ?? throw new InvalidOperationException(), viewType.Assembly.FullName ?? throw new InvalidOperationException());
+            viewType.Namespace ?? throw new InvalidOperationException(),
+            viewType.Assembly.FullName ?? throw new InvalidOperationException());
 
         context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
         context.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");

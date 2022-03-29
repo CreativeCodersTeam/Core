@@ -17,7 +17,8 @@ public class WindowHelper : IWindowHelper
 
     public Window FindOwnerWindow(object viewModel)
     {
-        var owner = Application.Current.Windows.Cast<Window>().SingleOrDefault(x => x.DataContext == viewModel);
+        var owner = Application.Current.Windows.Cast<Window>()
+            .SingleOrDefault(x => x.DataContext == viewModel);
 
         if (owner == null)
         {

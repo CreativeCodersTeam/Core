@@ -47,7 +47,8 @@ public class EventToCommand : TriggerAction<DependencyObject>
             }));
 
     public static readonly DependencyProperty EventArgsConverterParameterProperty =
-        DependencyProperty.Register(EventArgsConverterParameterPropertyName, typeof(object), typeof(EventToCommand),
+        DependencyProperty.Register(EventArgsConverterParameterPropertyName, typeof(object),
+            typeof(EventToCommand),
             new PropertyMetadata(null));
 
     public static readonly DependencyProperty AlwaysInvokeCommandProperty =
@@ -182,7 +183,7 @@ public class EventToCommand : TriggerAction<DependencyObject>
     {
         var element = GetAssociatedObject();
 
-        return AssociatedObject == null || element is { IsEnabled: false };
+        return AssociatedObject == null || element is {IsEnabled: false};
     }
 
     private ICommand GetCommand()

@@ -17,6 +17,7 @@ public class InverseBooleanToVisibilityConverter : IValueConverter
         {
             boolValue = b;
         }
+
         return boolValue ? Visibility.Collapsed : Visibility.Visible;
     }
 
@@ -26,6 +27,7 @@ public class InverseBooleanToVisibilityConverter : IValueConverter
         {
             return visibility != Visibility.Visible;
         }
+
         return false;
     }
 }
