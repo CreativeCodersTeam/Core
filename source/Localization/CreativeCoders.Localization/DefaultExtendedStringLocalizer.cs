@@ -26,7 +26,8 @@ internal class DefaultExtendedStringLocalizer<T> : IExtendedStringLocalizer<T>
         return MergeStrings(globalStrings, strings);
     }
 
-    private static IEnumerable<LocalizedString> MergeStrings(IEnumerable<LocalizedString> globalStrings, IEnumerable<LocalizedString> strings)
+    private static IEnumerable<LocalizedString> MergeStrings(IEnumerable<LocalizedString> globalStrings,
+        IEnumerable<LocalizedString> strings)
     {
         var mergedStrings = new List<LocalizedString>(globalStrings);
 

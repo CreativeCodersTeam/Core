@@ -10,7 +10,8 @@ internal class DefaultStringLocalizer : IStringLocalizer
 {
     private readonly IStringLocalizer _localizer;
 
-    public DefaultStringLocalizer(IStringLocalizerFactory factory, IOptions<ExtendedLocalizationOptions> options)
+    public DefaultStringLocalizer(IStringLocalizerFactory factory,
+        IOptions<ExtendedLocalizationOptions> options)
     {
         var location = new AssemblyName(
                            options.Value.Assembly.FullName ??

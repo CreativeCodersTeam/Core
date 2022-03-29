@@ -28,7 +28,7 @@ public static class LocalizationServiceCollectionExtensions
         services.Configure<ExtendedLocalizationOptions>(options =>
         {
             options.Assembly = Assembly.GetCallingAssembly();
-                
+
             setupOptions(options);
         });
 
