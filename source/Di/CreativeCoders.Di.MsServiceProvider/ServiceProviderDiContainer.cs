@@ -29,8 +29,9 @@ public class ServiceProviderDiContainer : DiContainerBase, IDiContainer
     public T GetInstance<T>()
         where T : class
     {
-        return Resolve<T, InvalidOperationException>(() => ActivatorUtilities.GetServiceOrCreateInstance<T>(_serviceProvider));
-    }        
+        return Resolve<T, InvalidOperationException>(() =>
+            ActivatorUtilities.GetServiceOrCreateInstance<T>(_serviceProvider));
+    }
 
     public object GetInstance(Type serviceType)
     {
@@ -42,7 +43,7 @@ public class ServiceProviderDiContainer : DiContainerBase, IDiContainer
         where T : class
     {
         var factory = GetInstance<IServiceByNameFactory<T>>();
-        var service = Resolve<T, KeyNotFoundException>(() => factory.GetInstance(this, name));            
+        var service = Resolve<T, KeyNotFoundException>(() => factory.GetInstance(this, name));
 
         return service;
     }
@@ -51,8 +52,10 @@ public class ServiceProviderDiContainer : DiContainerBase, IDiContainer
     {
         if (TryGetServiceByNameFactory(serviceType, out var serviceByNameFactory))
         {
-            return Resolve<KeyNotFoundException>(serviceType, () => serviceByNameFactory.GetServiceInstance(this, name));
+            return Resolve<KeyNotFoundException>(serviceType,
+                () => serviceByNameFactory.GetServiceInstance(this, name));
         }
+
         throw new ResolveFailedException(serviceType, null);
     }
 

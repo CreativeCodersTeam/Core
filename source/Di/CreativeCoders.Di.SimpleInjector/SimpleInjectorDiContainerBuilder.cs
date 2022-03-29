@@ -26,10 +26,11 @@ public class SimpleInjectorDiContainerBuilder : DiContainerBuilderBase
         Ensure.IsNotNull(beginScope, nameof(beginScope));
 
         _container = container;
-            
+
         _scopedLifestyle = Lifestyle.CreateHybrid(new AsyncScopedLifestyle(), Lifestyle.Singleton);
 
-        if (_container.Options.DefaultScopedLifestyle == null && _container.GetCurrentRegistrations().Length == 0)
+        if (_container.Options.DefaultScopedLifestyle == null &&
+            _container.GetCurrentRegistrations().Length == 0)
         {
             _container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
         }
@@ -47,7 +48,8 @@ public class SimpleInjectorDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddTransient<TService>(Func<IDiContainer, TService> implementationFactory)
+    public override IDiContainerBuilder AddTransient<TService>(
+        Func<IDiContainer, TService> implementationFactory)
     {
         _container.Register(() => implementationFactory(_container.GetInstance<IDiContainer>()));
         return this;
@@ -59,9 +61,11 @@ public class SimpleInjectorDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddScoped<TService>(Func<IDiContainer, TService> implementationFactory)
+    public override IDiContainerBuilder AddScoped<TService>(
+        Func<IDiContainer, TService> implementationFactory)
     {
-        _container.Register(() => implementationFactory(_container.GetInstance<IDiContainer>()), _scopedLifestyle);
+        _container.Register(() => implementationFactory(_container.GetInstance<IDiContainer>()),
+            _scopedLifestyle);
         return this;
     }
 
@@ -71,13 +75,15 @@ public class SimpleInjectorDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddSingleton<TService>(Func<IDiContainer, TService> implementationFactory)
+    public override IDiContainerBuilder AddSingleton<TService>(
+        Func<IDiContainer, TService> implementationFactory)
     {
         _container.RegisterSingleton(() => implementationFactory(_container.GetInstance<IDiContainer>()));
         return this;
     }
 
-    public override IDiContainerBuilder AddTransientCollection<TService>(params Func<IDiContainer, TService>[] implementationFactories)
+    public override IDiContainerBuilder AddTransientCollection<TService>(
+        params Func<IDiContainer, TService>[] implementationFactories)
     {
         var registrations = implementationFactories.Select(implementationFactory =>
             Lifestyle.Transient.CreateRegistration(typeof(TService),
@@ -87,13 +93,15 @@ public class SimpleInjectorDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddTransientCollection(Type serviceType, params Type[] implementationTypes)
+    public override IDiContainerBuilder AddTransientCollection(Type serviceType,
+        params Type[] implementationTypes)
     {
         _container.Collection.Register(serviceType, implementationTypes);
         return this;
     }
 
-    public override IDiContainerBuilder AddScopedCollection<TService>(params Func<IDiContainer, TService>[] implementationFactories)
+    public override IDiContainerBuilder AddScopedCollection<TService>(
+        params Func<IDiContainer, TService>[] implementationFactories)
     {
         var registrations = implementationFactories.Select(implementationFactory =>
             _scopedLifestyle.CreateRegistration(typeof(TService),
@@ -103,7 +111,8 @@ public class SimpleInjectorDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddScopedCollection(Type serviceType, params Type[] implementationTypes)
+    public override IDiContainerBuilder AddScopedCollection(Type serviceType,
+        params Type[] implementationTypes)
     {
         var registrations = implementationTypes.Select(implementationType =>
             _scopedLifestyle.CreateRegistration(implementationType, _container));
@@ -112,7 +121,8 @@ public class SimpleInjectorDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddSingletonCollection<TService>(params Func<IDiContainer, TService>[] implementationFactories)
+    public override IDiContainerBuilder AddSingletonCollection<TService>(
+        params Func<IDiContainer, TService>[] implementationFactories)
     {
         var registrations = implementationFactories.Select(implementationFactory =>
             Lifestyle.Singleton.CreateRegistration(typeof(TService),
@@ -122,12 +132,13 @@ public class SimpleInjectorDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddSingletonCollection(Type serviceType, params Type[] implementationTypes)
+    public override IDiContainerBuilder AddSingletonCollection(Type serviceType,
+        params Type[] implementationTypes)
     {
         var registrations = implementationTypes.Select(implementationType =>
             Lifestyle.Singleton.CreateRegistration(implementationType, _container));
         _container.Collection.Register(serviceType, registrations);
-            
+
         return this;
     }
 
@@ -151,7 +162,8 @@ public class SimpleInjectorDiContainerBuilder : DiContainerBuilderBase
 
     // ReSharper disable once MemberCanBeMadeStatic.Local
     private void AddNamed<TService>(IDictionary<string, Type> nameMap,
-        Action<Func<IDiContainer, IServiceByNameFactory<TService>>> addFactory, Action<Type> addImplementation)
+        Action<Func<IDiContainer, IServiceByNameFactory<TService>>> addFactory,
+        Action<Type> addImplementation)
         where TService : class
     {
         nameMap.Values.ForEach(addImplementation);
@@ -165,7 +177,7 @@ public class SimpleInjectorDiContainerBuilder : DiContainerBuilderBase
         _container.Register<IDiContainer, SimpleInjectorDiContainerForRegistration>(
             _scopedLifestyle);
         RegisterDefault();
-            
+
         if (_verifyOnBuild)
         {
             _container.Verify();

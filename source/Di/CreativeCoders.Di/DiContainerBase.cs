@@ -29,5 +29,5 @@ public abstract class DiContainerBase
         {
             throw new ResolveFailedException(serviceType, ex);
         }
-    }        
+    }
 }

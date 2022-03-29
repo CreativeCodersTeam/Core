@@ -15,7 +15,8 @@ public class SimpleInjectorDiContainer : DiContainerBase, IDiContainer
 
     private readonly Func<Container, Scope> _beginScope;
 
-    public SimpleInjectorDiContainer(Container container) : this(container, AsyncScopedLifestyle.BeginScope) { }
+    public SimpleInjectorDiContainer(Container container) :
+        this(container, AsyncScopedLifestyle.BeginScope) { }
 
     public SimpleInjectorDiContainer(Container container, Func<Container, Scope> beginScope)
     {
@@ -47,7 +48,7 @@ public class SimpleInjectorDiContainer : DiContainerBase, IDiContainer
     {
         var factory = GetInstance<IServiceByNameFactory<T>>();
         var service = Resolve<T, KeyNotFoundException>(() => factory.GetInstance(this, name));
-            
+
         return service;
     }
 
@@ -55,8 +56,10 @@ public class SimpleInjectorDiContainer : DiContainerBase, IDiContainer
     {
         if (TryGetServiceByNameFactory(serviceType, out var serviceByNameFactory))
         {
-            return Resolve<KeyNotFoundException>(serviceType, () => serviceByNameFactory.GetServiceInstance(this, name));
+            return Resolve<KeyNotFoundException>(serviceType,
+                () => serviceByNameFactory.GetServiceInstance(this, name));
         }
+
         throw new ResolveFailedException(serviceType, null);
     }
 
@@ -82,7 +85,7 @@ public class SimpleInjectorDiContainer : DiContainerBase, IDiContainer
     }
 
     public IEnumerable<object> GetInstances(Type serviceType)
-    {            
+    {
         try
         {
             return _container.GetAllInstances(serviceType);
@@ -108,7 +111,8 @@ public class SimpleInjectorDiContainer : DiContainerBase, IDiContainer
     public IDiContainerScope CreateScope()
     {
         var scope = _beginScope(_container);
-        var containerScope = new DiContainerScope(new SimpleInjectorDiContainer(scope.Container, _beginScope), () => scope.Dispose());
+        var containerScope = new DiContainerScope(new SimpleInjectorDiContainer(scope.Container, _beginScope),
+            () => scope.Dispose());
         return containerScope;
     }
 }

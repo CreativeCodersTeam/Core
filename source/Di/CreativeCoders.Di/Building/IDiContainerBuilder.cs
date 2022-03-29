@@ -51,7 +51,8 @@ public interface IDiContainerBuilder
     IDiContainerBuilder AddTransientCollection<TService>(params Type[] implementationTypes)
         where TService : class;
 
-    IDiContainerBuilder AddTransientCollection<TService>(params Func<IDiContainer, TService>[] implementationFactories)
+    IDiContainerBuilder AddTransientCollection<TService>(
+        params Func<IDiContainer, TService>[] implementationFactories)
         where TService : class;
 
     IDiContainerBuilder AddTransientCollection(Type serviceType, params Type[] implementationTypes);
@@ -59,7 +60,8 @@ public interface IDiContainerBuilder
     IDiContainerBuilder AddScopedCollection<TService>(params Type[] implementationTypes)
         where TService : class;
 
-    IDiContainerBuilder AddScopedCollection<TService>(params Func<IDiContainer, TService>[] implementationFactories)
+    IDiContainerBuilder AddScopedCollection<TService>(
+        params Func<IDiContainer, TService>[] implementationFactories)
         where TService : class;
 
     IDiContainerBuilder AddScopedCollection(Type serviceType, params Type[] implementationTypes);
@@ -67,7 +69,8 @@ public interface IDiContainerBuilder
     IDiContainerBuilder AddSingletonCollection<TService>(params Type[] implementationTypes)
         where TService : class;
 
-    IDiContainerBuilder AddSingletonCollection<TService>(params Func<IDiContainer, TService>[] implementationFactories)
+    IDiContainerBuilder AddSingletonCollection<TService>(
+        params Func<IDiContainer, TService>[] implementationFactories)
         where TService : class;
 
     IDiContainerBuilder AddSingletonCollection(Type serviceType, params Type[] implementationTypes);

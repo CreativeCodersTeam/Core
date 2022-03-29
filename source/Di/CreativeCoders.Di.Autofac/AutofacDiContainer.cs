@@ -70,7 +70,8 @@ public class AutofacDiContainer : DiContainerBase, IDiContainer
     public IDiContainerScope CreateScope()
     {
         var lifetimeScope = _container.BeginLifetimeScope();
-        var containerScope = new DiContainerScope(new AutofacDiContainer(lifetimeScope), () => lifetimeScope.Dispose());
+        var containerScope =
+            new DiContainerScope(new AutofacDiContainer(lifetimeScope), () => lifetimeScope.Dispose());
         return containerScope;
     }
 }

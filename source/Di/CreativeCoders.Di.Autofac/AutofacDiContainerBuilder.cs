@@ -16,7 +16,7 @@ public class AutofacDiContainerBuilder : DiContainerBuilderBase
     public AutofacDiContainerBuilder(ContainerBuilder containerBuilder)
     {
         Ensure.IsNotNull(containerBuilder, nameof(containerBuilder));
-            
+
         _containerBuilder = containerBuilder;
     }
 
@@ -36,11 +36,12 @@ public class AutofacDiContainerBuilder : DiContainerBuilderBase
                 .As(serviceType)
                 .InstancePerDependency();
         }
-            
+
         return this;
     }
 
-    public override IDiContainerBuilder AddTransient<TService>(Func<IDiContainer, TService> implementationFactory)
+    public override IDiContainerBuilder AddTransient<TService>(
+        Func<IDiContainer, TService> implementationFactory)
     {
         _containerBuilder
             .Register((c, _) => implementationFactory(c.Resolve<IDiContainer>()))
@@ -70,7 +71,8 @@ public class AutofacDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddScoped<TService>(Func<IDiContainer, TService> implementationFactory)
+    public override IDiContainerBuilder AddScoped<TService>(
+        Func<IDiContainer, TService> implementationFactory)
     {
         _containerBuilder
             .Register((c, _) => implementationFactory(c.Resolve<IDiContainer>()))
@@ -100,7 +102,8 @@ public class AutofacDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddSingleton<TService>(Func<IDiContainer, TService> implementationFactory)
+    public override IDiContainerBuilder AddSingleton<TService>(
+        Func<IDiContainer, TService> implementationFactory)
     {
         _containerBuilder
             .Register((c, _) => implementationFactory(c.Resolve<IDiContainer>()))
@@ -110,7 +113,8 @@ public class AutofacDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddTransientCollection<TService>(params Func<IDiContainer, TService>[] implementationFactories)
+    public override IDiContainerBuilder AddTransientCollection<TService>(
+        params Func<IDiContainer, TService>[] implementationFactories)
     {
         implementationFactories
             .ForEach(implementationFactory =>
@@ -119,7 +123,8 @@ public class AutofacDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddTransientCollection(Type serviceType, params Type[] implementationTypes)
+    public override IDiContainerBuilder AddTransientCollection(Type serviceType,
+        params Type[] implementationTypes)
     {
         implementationTypes
             .ForEach(implementationType =>
@@ -128,7 +133,8 @@ public class AutofacDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddScopedCollection<TService>(params Func<IDiContainer, TService>[] implementationFactories)
+    public override IDiContainerBuilder AddScopedCollection<TService>(
+        params Func<IDiContainer, TService>[] implementationFactories)
     {
         implementationFactories
             .ForEach(implementationFactory =>
@@ -137,7 +143,8 @@ public class AutofacDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddScopedCollection(Type serviceType, params Type[] implementationTypes)
+    public override IDiContainerBuilder AddScopedCollection(Type serviceType,
+        params Type[] implementationTypes)
     {
         implementationTypes
             .ForEach(implementationType =>
@@ -146,7 +153,8 @@ public class AutofacDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddSingletonCollection<TService>(params Func<IDiContainer, TService>[] implementationFactories)
+    public override IDiContainerBuilder AddSingletonCollection<TService>(
+        params Func<IDiContainer, TService>[] implementationFactories)
     {
         implementationFactories
             .ForEach(implementationFactory =>
@@ -155,10 +163,11 @@ public class AutofacDiContainerBuilder : DiContainerBuilderBase
         return this;
     }
 
-    public override IDiContainerBuilder AddSingletonCollection(Type serviceType, params Type[] implementationTypes)
+    public override IDiContainerBuilder AddSingletonCollection(Type serviceType,
+        params Type[] implementationTypes)
     {
         implementationTypes
-            .ForEach(implementationType => 
+            .ForEach(implementationType =>
                 AddSingleton(serviceType, implementationType));
 
         return this;
@@ -183,7 +192,8 @@ public class AutofacDiContainerBuilder : DiContainerBuilderBase
     }
 
     private void AddNamed<TService>(IDictionary<string, Type> nameMap,
-        Action<IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle>> setupLifetime)
+        Action<IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle>>
+            setupLifetime)
         where TService : class
     {
         nameMap

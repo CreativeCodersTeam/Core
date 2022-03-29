@@ -22,7 +22,7 @@ public class AutoRegisterImplementations
     public AutoRegisterImplementations ForTypesInAllAssemblies()
     {
         var types = ReflectionUtils.GetAllTypes(assembly => !assembly.IsDynamic);
-            
+
         return ForTypes(types);
     }
 
@@ -53,7 +53,8 @@ public class AutoRegisterImplementations
         }
     }
 
-    private void RegisterImplementation(Type implementationType, Type serviceType, ImplementationLifecycle lifecycle)
+    private void RegisterImplementation(Type implementationType, Type serviceType,
+        ImplementationLifecycle lifecycle)
     {
         switch (lifecycle)
         {
