@@ -11,27 +11,32 @@ namespace CreativeCoders.Config.Base;
 [PublicAPI]
 public static class ConfigurationExtensions
 {
-    public static void Initialize(this IConfiguration configuration, IConfigurationInitializer configurationInitializer)
+    public static void Initialize(this IConfiguration configuration,
+        IConfigurationInitializer configurationInitializer)
     {
         configurationInitializer.Configure(configuration);
     }
 
-    public static void Initialize(this IConfiguration configuration, IEnumerable<IConfigurationInitializer> configurationInitializers)
+    public static void Initialize(this IConfiguration configuration,
+        IEnumerable<IConfigurationInitializer> configurationInitializers)
     {
         configurationInitializers.ForEach(configuration.Initialize);
     }
 
-    public static void InitializeFromAssembly(this IConfiguration configuration, Assembly assembly, params object[] args)
+    public static void InitializeFromAssembly(this IConfiguration configuration, Assembly assembly,
+        params object[] args)
     {
         assembly.GetTypesSafe()
             .Where(x => !x.IsAbstract && x.GetInterfaces().Contains(typeof(IConfigurationInitializer)))
-            .Select(configurationInitializerType => Activator.CreateInstance(configurationInitializerType, args))
+            .Select(configurationInitializerType =>
+                Activator.CreateInstance(configurationInitializerType, args))
             .Cast<IConfigurationInitializer>()
             .WhereNotNull()
             .ForEach(configuration.Initialize);
     }
-        
-    public static void InitializeFromAssemblies(this IConfiguration configuration, IEnumerable<Assembly> assemblies, params object[] args)
+
+    public static void InitializeFromAssemblies(this IConfiguration configuration,
+        IEnumerable<Assembly> assemblies, params object[] args)
     {
         assemblies.ForEach(assembly => configuration.InitializeFromAssembly(assembly, args));
     }

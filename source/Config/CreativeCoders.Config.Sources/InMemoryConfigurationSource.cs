@@ -11,7 +11,8 @@ public class InMemoryConfigurationSource<T> : ConfigurationSource<T>
         Ensure.IsNotNull(data, nameof(data));
     }
 
-    public InMemoryConfigurationSource(T data, Func<T> getDefaultSettingObject) : base(() => data, getDefaultSettingObject)
+    public InMemoryConfigurationSource(T data, Func<T> getDefaultSettingObject) : base(() => data,
+        getDefaultSettingObject)
     {
         Ensure.IsNotNull(data, nameof(data));
     }

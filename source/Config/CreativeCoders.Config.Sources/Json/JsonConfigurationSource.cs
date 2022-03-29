@@ -56,7 +56,7 @@ public class JsonConfigurationSource<T> : IConfigurationSource<T>
         return jsonFileNames.Select(fileName => new JsonConfigurationSource<T>(fileName, getDefaultSetting))
             .ToArray();
     }
-        
+
     public virtual object GetSettingObject()
     {
         return LoadSettingFromFile(_jsonFileName);

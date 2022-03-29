@@ -17,5 +17,6 @@ public interface IConfiguration
     IEnumerable<T> GetItems<T>()
         where T : class;
 
-    void OnSourceException(Action<IConfigurationSource, Exception, SourceExceptionHandleResult> onSourceException);
+    void OnSourceException(
+        Action<IConfigurationSource, Exception, SourceExceptionHandleResult> onSourceException);
 }

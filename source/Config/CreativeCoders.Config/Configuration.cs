@@ -12,12 +12,14 @@ public class Configuration : IConfiguration
 {
     private readonly IList<SourceRegistration> _sourceRegistrations;
 
-    private readonly IList<Action<IConfigurationSource, Exception, SourceExceptionHandleResult>> _onSourceExceptions;
+    private readonly IList<Action<IConfigurationSource, Exception, SourceExceptionHandleResult>>
+        _onSourceExceptions;
 
     public Configuration()
     {
         _sourceRegistrations = new ConcurrentList<SourceRegistration>();
-        _onSourceExceptions = new ConcurrentList<Action<IConfigurationSource, Exception, SourceExceptionHandleResult>>();
+        _onSourceExceptions =
+            new ConcurrentList<Action<IConfigurationSource, Exception, SourceExceptionHandleResult>>();
     }
 
     public IConfiguration AddSource<T>(IConfigurationSource<T> source)
@@ -41,7 +43,8 @@ public class Configuration : IConfiguration
     public T GetItem<T>()
         where T : class
     {
-        var registration = _sourceRegistrations.FirstOrDefault(reg => typeof(T).IsAssignableFrom(reg.DataType));
+        var registration =
+            _sourceRegistrations.FirstOrDefault(reg => typeof(T).IsAssignableFrom(reg.DataType));
         return InvokeWithExceptionHandling(registration?.Source, source => source.GetSettingObject() as T);
     }
 
@@ -55,7 +58,8 @@ public class Configuration : IConfiguration
             .ToArray();
     }
 
-    private T InvokeWithExceptionHandling<T>(IConfigurationSource source, Func<IConfigurationSource, T> function)
+    private T InvokeWithExceptionHandling<T>(IConfigurationSource source,
+        Func<IConfigurationSource, T> function)
         where T : class
     {
         try
@@ -77,7 +81,8 @@ public class Configuration : IConfiguration
         }
     }
 
-    public void OnSourceException(Action<IConfigurationSource, Exception, SourceExceptionHandleResult> onSourceException)
+    public void OnSourceException(
+        Action<IConfigurationSource, Exception, SourceExceptionHandleResult> onSourceException)
     {
         Ensure.IsNotNull(onSourceException, nameof(onSourceException));
 

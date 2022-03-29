@@ -45,8 +45,7 @@ public class ControlBase : ComponentBase
 
     public StyleAttributeBuilder Styles { get; }
 
-    [Parameter]
-    public string Id { get; set; }
+    [Parameter] public string Id { get; set; }
 
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object> CustomAttributes { get; set; }
