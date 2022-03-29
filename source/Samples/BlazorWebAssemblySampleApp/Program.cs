@@ -15,10 +15,12 @@ public class Program
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
         builder.RootComponents.Add<App>("app");
 
-        builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+        builder.Services.AddTransient(sp => new HttpClient
+            {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
         builder.Services.AddSingleton<TestViewModel>();
 
-        builder.Services.AddOidcAuthentication(options => builder.Configuration.Bind("Local", options.ProviderOptions));
+        builder.Services.AddOidcAuthentication(options =>
+            builder.Configuration.Bind("Local", options.ProviderOptions));
 
         await builder.Build().RunAsync();
     }

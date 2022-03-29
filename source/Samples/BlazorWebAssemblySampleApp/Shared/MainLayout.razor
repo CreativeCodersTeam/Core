@@ -3,17 +3,17 @@
 @inject TestViewModel ViewModel
 
 <div class="sidebar">
-    <NavMenu />
+    <NavMenu/>
 </div>
 
 <div class="main">
     <div class="top-row px-4 auth">
-        <LoginDisplay />
+        <LoginDisplay/>
 
         <ViewModelArea TViewModel="TestViewModel" ViewModel="@ViewModel" ObserveProperties="Text">
             <div>@ViewModel.Text</div>
         </ViewModelArea>
-        
+
         <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
     </div>
 
