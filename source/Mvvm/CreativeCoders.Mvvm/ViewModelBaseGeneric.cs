@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Mvvm;
 
 [PublicAPI]
-public class ViewModelBase<TModel> : ViewModelBase where TModel: class
+public class ViewModelBase<TModel> : ViewModelBase where TModel : class
 {
     public ViewModelBase(TModel model)
     {

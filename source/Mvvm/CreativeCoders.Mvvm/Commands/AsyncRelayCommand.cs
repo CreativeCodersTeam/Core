@@ -11,34 +11,32 @@ namespace CreativeCoders.Mvvm.Commands;
 public class AsyncRelayCommand : AsyncCommandBase
 {
     private readonly Func<object, Task> _execute;
-        
+
     private readonly Func<object, bool> _canExecute;
-        
+
     private readonly IErrorHandler _errorHandler;
 
-    public AsyncRelayCommand(Func<object, Task> execute) : this(execute, _ => true, NullErrorHandler.Instance)
-    {
-    }
-        
-    public AsyncRelayCommand(Func<object, Task> execute, IErrorHandler errorHandler) : this(execute, _ => true, errorHandler)
-    {
-    }
+    public AsyncRelayCommand(Func<object, Task> execute) :
+        this(execute, _ => true, NullErrorHandler.Instance) { }
 
-    public AsyncRelayCommand(Func<object, Task> execute, Func<object, bool> canExecute) : this(execute, canExecute, NullErrorHandler.Instance)
-    {
-    }
-        
-    public AsyncRelayCommand(Func<object, Task> execute, Func<object, bool> canExecute, IErrorHandler errorHandler)
+    public AsyncRelayCommand(Func<object, Task> execute, IErrorHandler errorHandler) : this(execute,
+        _ => true, errorHandler) { }
+
+    public AsyncRelayCommand(Func<object, Task> execute, Func<object, bool> canExecute) : this(execute,
+        canExecute, NullErrorHandler.Instance) { }
+
+    public AsyncRelayCommand(Func<object, Task> execute, Func<object, bool> canExecute,
+        IErrorHandler errorHandler)
     {
         Ensure.IsNotNull(execute, nameof(execute));
         Ensure.IsNotNull(canExecute, nameof(canExecute));
         Ensure.IsNotNull(errorHandler, nameof(errorHandler));
-            
+
         _execute = execute;
         _canExecute = canExecute;
         _errorHandler = errorHandler;
     }
-        
+
     public override bool CanExecute(object parameter)
     {
         return _canExecute(parameter);
@@ -57,7 +55,7 @@ public class AsyncRelayCommand : AsyncCommandBase
         }
 
         await _execute(parameter);
-            
+
         RaiseCanExecuteChanged();
     }
 }

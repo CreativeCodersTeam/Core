@@ -31,9 +31,9 @@ public class RelayCommand<T> : CommandBase
         {
             return;
         }
-            
+
         _execute(parameter.As<T>());
-            
+
         RaiseCanExecuteChanged();
     }
 }

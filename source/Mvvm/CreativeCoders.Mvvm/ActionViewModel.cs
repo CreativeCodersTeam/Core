@@ -24,15 +24,12 @@ public class ActionViewModel : ViewModelBase
 
     private bool? _isChecked;
 
-    public ActionViewModel()
-    {
-    }
-        
-    public ActionViewModel(Action executeAction) : this(executeAction, () => true) {}
+    public ActionViewModel() { }
 
-    public ActionViewModel(Action executeAction, Func<bool> canExecuteAction) : this(new SimpleRelayCommand(executeAction, canExecuteAction))
-    {
-    }
+    public ActionViewModel(Action executeAction) : this(executeAction, () => true) { }
+
+    public ActionViewModel(Action executeAction, Func<bool> canExecuteAction) : this(
+        new SimpleRelayCommand(executeAction, canExecuteAction)) { }
 
     public ActionViewModel(ICommand command)
     {

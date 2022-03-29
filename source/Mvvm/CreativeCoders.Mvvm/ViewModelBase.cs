@@ -7,7 +7,7 @@ public class ViewModelBase : ObservableObject
 {
     private IMessenger _messenger;
 
-    public ViewModelBase() {}
+    public ViewModelBase() { }
 
     public ViewModelBase(IMessenger messenger)
     {

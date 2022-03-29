@@ -43,7 +43,7 @@ public abstract class CommandBase : ICommandEx
         {
             return;
         }
-            
+
         _synchronizationContext.Post(_ => handler.Invoke(this, EventArgs.Empty), null);
     }
 }

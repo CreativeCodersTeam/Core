@@ -11,7 +11,7 @@ public class RelayCommand : CommandBase
 
     private readonly Predicate<object> _canExecute;
 
-    public RelayCommand(Action<object> execute) : this(execute, _ => true) {}
+    public RelayCommand(Action<object> execute) : this(execute, _ => true) { }
 
     public RelayCommand(Action<object> execute, Predicate<object> canExecute)
     {
@@ -33,9 +33,9 @@ public class RelayCommand : CommandBase
         {
             return;
         }
-            
+
         _execute(parameter);
-            
+
         RaiseCanExecuteChanged();
-    }        
+    }
 }

@@ -31,9 +31,9 @@ public class SimpleRelayCommand : CommandBase
         {
             return;
         }
-            
+
         _execute();
-            
+
         RaiseCanExecuteChanged();
-    }        
+    }
 }
