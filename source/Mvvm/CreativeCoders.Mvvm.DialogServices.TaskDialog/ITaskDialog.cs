@@ -10,9 +10,12 @@ public interface ITaskDialog
 {
     Window GetOwnerForViewModel(object viewModel);
 
-    TaskDialogButton ShowDialog(TaskDialogPage page, TaskDialogStartupLocation startupLocation = TaskDialogStartupLocation.CenterOwner);
+    TaskDialogButton ShowDialog(TaskDialogPage page,
+        TaskDialogStartupLocation startupLocation = TaskDialogStartupLocation.CenterOwner);
 
-    TaskDialogButton ShowDialog(IntPtr hwndOwner, TaskDialogPage page, TaskDialogStartupLocation startupLocation = TaskDialogStartupLocation.CenterOwner);
+    TaskDialogButton ShowDialog(IntPtr hwndOwner, TaskDialogPage page,
+        TaskDialogStartupLocation startupLocation = TaskDialogStartupLocation.CenterOwner);
 
-    TaskDialogButton ShowDialog(IWin32Window owner, TaskDialogPage page, TaskDialogStartupLocation startupLocation = TaskDialogStartupLocation.CenterOwner);
+    TaskDialogButton ShowDialog(IWin32Window owner, TaskDialogPage page,
+        TaskDialogStartupLocation startupLocation = TaskDialogStartupLocation.CenterOwner);
 }

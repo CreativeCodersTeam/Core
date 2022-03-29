@@ -26,7 +26,8 @@ public static class TaskDialogExtensions
         taskDialog.ShowDialog(taskDialog.GetOwnerForViewModel(ownerViewModel), text, caption);
     }
 
-    public static void ShowDialog(this ITaskDialog taskDialog, Window owner, string text, string caption = null)
+    public static void ShowDialog(this ITaskDialog taskDialog, Window owner, string text,
+        string caption = null)
     {
         taskDialog.ShowDialog(new WindowInteropHelper(owner).Handle, text, caption);
     }
@@ -65,7 +66,8 @@ public static class TaskDialogExtensions
             });
     }
 
-    public static void ShowDialog(this ITaskDialog taskDialog, TaskDialogIcon taskDialogIcon, object ownerViewModel,
+    public static void ShowDialog(this ITaskDialog taskDialog, TaskDialogIcon taskDialogIcon,
+        object ownerViewModel,
         string text, string caption = null)
     {
         taskDialog.ShowDialog(taskDialogIcon, taskDialog.GetOwnerForViewModel(ownerViewModel), text, caption);
@@ -77,7 +79,8 @@ public static class TaskDialogExtensions
         taskDialog.ShowDialog(taskDialogIcon, new WindowInteropHelper(owner).Handle, text, caption);
     }
 
-    public static void ShowDialog(this ITaskDialog taskDialog, TaskDialogIcon taskDialogIcon, IWin32Window owner,
+    public static void ShowDialog(this ITaskDialog taskDialog, TaskDialogIcon taskDialogIcon,
+        IWin32Window owner,
         string text, string caption = null)
     {
         taskDialog.ShowDialog(owner,
@@ -89,7 +92,8 @@ public static class TaskDialogExtensions
             });
     }
 
-    public static void ShowDialog(this ITaskDialog taskDialog, TaskDialogIcon taskDialogIcon, IntPtr hwndOwner,
+    public static void ShowDialog(this ITaskDialog taskDialog, TaskDialogIcon taskDialogIcon,
+        IntPtr hwndOwner,
         string text, string caption = null)
     {
         taskDialog.ShowDialog(hwndOwner,
