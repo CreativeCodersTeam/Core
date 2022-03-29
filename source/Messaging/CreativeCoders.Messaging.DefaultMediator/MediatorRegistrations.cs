@@ -26,13 +26,13 @@ internal class MediatorRegistrations
         });
     }
 
-    public IDisposable RegisterAsyncHandler<TMessage>(object target, Func<TMessage,Task> asyncAction)
+    public IDisposable RegisterAsyncHandler<TMessage>(object target, Func<TMessage, Task> asyncAction)
     {
         var registration = new AsyncMediatorRegistration<TMessage>(target, asyncAction);
 
         var typeRegistrations = GetRegistrationList<TMessage>();
         typeRegistrations.Add(registration);
-            
+
         return new DelegateDisposable(
             () =>
             {
@@ -45,7 +45,8 @@ internal class MediatorRegistrations
 
     private IList<IMediatorRegistration> GetRegistrationList<TMessage>()
     {
-        var typeRegistrations = _registrations.GetOrAdd(typeof(TMessage), _ => new ConcurrentList<IMediatorRegistration>());
+        var typeRegistrations =
+            _registrations.GetOrAdd(typeof(TMessage), _ => new ConcurrentList<IMediatorRegistration>());
         typeRegistrations.Remove(registration => !registration.IsAlive());
 
         return typeRegistrations;
@@ -63,7 +64,7 @@ internal class MediatorRegistrations
             typeRegistrations.Value.Remove(registration => registration.Target == target);
         }
     }
-        
+
     public void UnregisterHandler<TMessage>(object target)
     {
         var typeRegistrations = GetRegistrationList<TMessage>();

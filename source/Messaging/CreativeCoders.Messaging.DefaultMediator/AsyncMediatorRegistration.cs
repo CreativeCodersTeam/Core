@@ -13,12 +13,12 @@ internal class AsyncMediatorRegistration<T> : IMediatorRegistration
         Target = target;
         _weakAsyncAction = new WeakFunc<T, Task>(target, asyncAction);
     }
-        
+
     public Task ExecuteAsync(object message) => _weakAsyncAction.Execute((T) message);
 
     public bool IsAlive() => _weakAsyncAction.IsAlive();
 
     public void Dispose() => _weakAsyncAction?.Dispose();
-        
+
     public object Target { get; }
 }

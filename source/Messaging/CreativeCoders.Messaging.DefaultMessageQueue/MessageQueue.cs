@@ -9,7 +9,7 @@ namespace CreativeCoders.Messaging.DefaultMessageQueue;
 public class MessageQueue<T> : IMessageQueue<T>
 {
     private readonly BufferBlock<T> _bufferBlock;
-        
+
     private readonly CancellationTokenSource _cancellationTokenSource;
 
     public MessageQueue()
@@ -26,11 +26,11 @@ public class MessageQueue<T> : IMessageQueue<T>
     private MessageQueue(int maxQueueLength)
     {
         _cancellationTokenSource = new CancellationTokenSource();
-            
+
         _bufferBlock = new BufferBlock<T>(
             new DataflowBlockOptions
             {
-                BoundedCapacity = maxQueueLength, 
+                BoundedCapacity = maxQueueLength,
                 CancellationToken = _cancellationTokenSource.Token
             });
     }
@@ -39,7 +39,7 @@ public class MessageQueue<T> : IMessageQueue<T>
     {
         return new(maxQueueLength);
     }
-        
+
     public async Task EnqueueAsync(T message)
     {
         var messageEnqueued = await _bufferBlock.SendAsync(message);
@@ -58,7 +58,7 @@ public class MessageQueue<T> : IMessageQueue<T>
     public void Enqueue(T message)
     {
         var messageEnqueued = _bufferBlock.Post(message);
-            
+
         if (!messageEnqueued)
         {
             throw new MessageEnqueueFailedException();

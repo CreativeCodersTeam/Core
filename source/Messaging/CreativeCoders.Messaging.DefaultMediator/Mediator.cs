@@ -18,7 +18,8 @@ public class Mediator : IMediator
 
     public void UnregisterHandler(object target) => _registrations.UnregisterHandler(target);
 
-    public void UnregisterHandler<TMessage>(object target) => _registrations.UnregisterHandler<TMessage>(target);
+    public void UnregisterHandler<TMessage>(object target) =>
+        _registrations.UnregisterHandler<TMessage>(target);
 
     public async Task SendAsync<TMessage>(TMessage message)
     {
