@@ -32,6 +32,7 @@ public abstract class BootStrapperBase
         {
             return;
         }
+
         _isInitialized = true;
 
         Application = Application.Current;
@@ -42,7 +43,8 @@ public abstract class BootStrapperBase
 
     private void ExecuteConfigure()
     {
-        var configureMethod = GetType().GetMethod("Configure", BindingFlags.NonPublic | BindingFlags.Instance);
+        var configureMethod =
+            GetType().GetMethod("Configure", BindingFlags.NonPublic | BindingFlags.Instance);
         if (configureMethod != null)
         {
             MethodExecutor.Execute(DiContainer, this, configureMethod);
@@ -81,6 +83,7 @@ public abstract class BootStrapperBase
         {
             shellFrameworkElement.Loaded += (_, _) => OnShellLoaded();
         }
+
         // ReSharper disable once InvertIf
         if (AutoShowShellWindow)
         {
@@ -89,15 +92,15 @@ public abstract class BootStrapperBase
         }
     }
 
-    protected virtual void OnShellLoaded() {}
+    protected virtual void OnShellLoaded() { }
 
-    protected virtual void OnStartUp(StartupEventArgs e) {}
+    protected virtual void OnStartUp(StartupEventArgs e) { }
 
-    protected virtual void OnExit(ExitEventArgs e) {}
+    protected virtual void OnExit(ExitEventArgs e) { }
 
-    protected virtual void OnUnhandledException(DispatcherUnhandledExceptionEventArgs e) {}
+    protected virtual void OnUnhandledException(DispatcherUnhandledExceptionEventArgs e) { }
 
-    protected virtual void ConfigureDiContainer(IDiContainerBuilder containerBuilder) {}
+    protected virtual void ConfigureDiContainer(IDiContainerBuilder containerBuilder) { }
 
     protected abstract DependencyObject CreateShell();
 
@@ -117,11 +120,11 @@ public abstract class BootStrapperBase<TMainViewModel> : BootStrapperBase
     protected sealed override DependencyObject CreateShell()
     {
         var mainViewModel = DiContainer.GetInstance<TMainViewModel>();
-            
+
         _configureMainViewModel?.Invoke(mainViewModel);
-            
+
         var mainWindow = DiContainer.GetInstance<IWindowManager>().CreateWindow(mainViewModel);
-            
+
         return mainWindow;
     }
 

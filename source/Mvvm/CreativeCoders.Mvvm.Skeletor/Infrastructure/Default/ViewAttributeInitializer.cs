@@ -33,7 +33,7 @@ public class ViewAttributeInitializer : IViewAttributeInitializer
             {
                 throw new ArgumentException("No view model type declared");
             }
-                
+
             _viewModelToViewMappings.AddMapping(viewModelType, x.ViewType);
         });
     }

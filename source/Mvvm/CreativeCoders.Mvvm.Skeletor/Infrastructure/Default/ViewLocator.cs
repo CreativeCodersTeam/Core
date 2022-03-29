@@ -56,10 +56,8 @@ public class ViewLocator : IViewLocator
     private static string TransformViewModelTypeName(string viewModelTypeName, object context)
     {
         var viewTypeName = viewModelTypeName.Replace("Model", string.Empty);
-        if (context != null)
-        {
-                
-        }
+        if (context != null) { }
+
         return viewTypeName;
     }
 }

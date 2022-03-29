@@ -35,5 +35,5 @@ public class ViewModelTemplateSelector : DataTemplateSelector
         return viewType != null
             ? _dataTemplateGenerator.CreateDataTemplate(item.GetType(), viewType)
             : base.SelectTemplate(item, container);
-    }        
+    }
 }

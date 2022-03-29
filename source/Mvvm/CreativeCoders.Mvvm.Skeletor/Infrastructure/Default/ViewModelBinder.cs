@@ -11,7 +11,7 @@ public class ViewModelBinder : IViewModelBinder
         if (view is FrameworkElement frameworkElement)
         {
             frameworkElement.DataContext = viewModel;
-        }            
+        }
     }
 
     public void BindWindow(Window window, object viewModel)

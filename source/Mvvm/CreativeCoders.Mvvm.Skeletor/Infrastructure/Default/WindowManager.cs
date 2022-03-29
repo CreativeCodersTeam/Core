@@ -14,7 +14,8 @@ public class WindowManager : IWindowManager
 
     private readonly IWindowHelper _windowHelper;
 
-    public WindowManager(IViewLocator viewLocator, IViewModelBinder viewModelBinder, IWindowHelper windowHelper)
+    public WindowManager(IViewLocator viewLocator, IViewModelBinder viewModelBinder,
+        IWindowHelper windowHelper)
     {
         Ensure.IsNotNull(viewLocator, nameof(viewLocator));
         Ensure.IsNotNull(viewModelBinder, nameof(viewModelBinder));
@@ -100,6 +101,7 @@ public class WindowManager : IWindowManager
         {
             return;
         }
+
         window.DialogResult = dialogResult;
     }
 }

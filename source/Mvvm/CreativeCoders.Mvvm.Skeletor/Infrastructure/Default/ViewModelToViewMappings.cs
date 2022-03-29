@@ -35,6 +35,7 @@ public class ViewModelToViewMappings : IViewModelToViewMappings
             Log.Warn("Existing view registration gets replaced");
             _mappings.Remove(existingMapping);
         }
+
         var mapping = new ViewModelToViewMapping(typeof(TViewModel), typeof(TView), name);
         _mappings.Add(mapping);
     }
@@ -47,6 +48,7 @@ public class ViewModelToViewMappings : IViewModelToViewMappings
             Log.Warn("Existing view registration gets replaced");
             _mappings.Remove(existingMapping);
         }
+
         var mapping = new ViewModelToViewMapping(viewModelType, viewType, null);
         _mappings.Add(mapping);
     }
