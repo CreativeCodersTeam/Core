@@ -6,40 +6,39 @@ using CreativeCoders.Net.XmlRpc.Model.Values;
 using CreativeCoders.Net.XmlRpc.Writer.Values;
 using Xunit;
 
-namespace CreativeCoders.Net.UnitTests.XmlRpc.Writer.Values
+namespace CreativeCoders.Net.UnitTests.XmlRpc.Writer.Values;
+
+public class Base64ValueWriterTests
 {
-    public class Base64ValueWriterTests
+    [Fact]
+    public void HandlesType_MatchingType_ReturnsTrue()
     {
-        [Fact]
-        public void HandlesType_MatchingType_ReturnsTrue()
-        {
-            var writer = new Base64ValueWriter();
+        var writer = new Base64ValueWriter();
 
-            Assert.True(writer.HandlesType(typeof(Base64Value)));
-        }
+        Assert.True(writer.HandlesType(typeof(Base64Value)));
+    }
 
-        [Fact]
-        public void HandlesType_NotMatchingType_ReturnsFalse()
-        {
-            var writer = new Base64ValueWriter();
+    [Fact]
+    public void HandlesType_NotMatchingType_ReturnsFalse()
+    {
+        var writer = new Base64ValueWriter();
 
-            Assert.False(writer.HandlesType(typeof(StringValue)));
-        }
+        Assert.False(writer.HandlesType(typeof(StringValue)));
+    }
 
-        [Fact]
-        public void WriteTo_PassMatchingValue_ValueElementIsWrittenToParamElement()
-        {
-            var writer = new Base64ValueWriter();
-            var data = Encoding.UTF8.GetBytes("Test1234");
-            var value = new Base64Value(data, Encoding.UTF8);
-            var xmlElement = new XElement("param");
+    [Fact]
+    public void WriteTo_PassMatchingValue_ValueElementIsWrittenToParamElement()
+    {
+        var writer = new Base64ValueWriter();
+        var data = Encoding.UTF8.GetBytes("Test1234");
+        var value = new Base64Value(data, Encoding.UTF8);
+        var xmlElement = new XElement("param");
 
-            writer.WriteTo(xmlElement, value);
+        writer.WriteTo(xmlElement, value);
 
-            var valueElement = xmlElement.XPathSelectElement("value/base64");
+        var valueElement = xmlElement.XPathSelectElement("value/base64");
 
-            Assert.NotNull(valueElement);
-            Assert.Equal(Convert.ToBase64String(data), valueElement.Value);
-        }
+        Assert.NotNull(valueElement);
+        Assert.Equal(Convert.ToBase64String(data), valueElement.Value);
     }
 }

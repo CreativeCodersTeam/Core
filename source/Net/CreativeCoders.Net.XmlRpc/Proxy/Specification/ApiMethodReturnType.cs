@@ -1,13 +1,12 @@
-﻿namespace CreativeCoders.Net.XmlRpc.Proxy.Specification
+﻿namespace CreativeCoders.Net.XmlRpc.Proxy.Specification;
+
+public enum ApiMethodReturnType
 {
-    public enum ApiMethodReturnType
-    {
-        Void,
-        XmlRpcValue,
-        Value,
-        ObjectValue,
-        GenericValue,
-        Enumerable,
-        Dictionary
-    }
+    Void,
+    XmlRpcValue,
+    Value,
+    ObjectValue,
+    GenericValue,
+    Enumerable,
+    Dictionary
 }

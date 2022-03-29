@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Net.Http.Auth
+﻿namespace CreativeCoders.Net.Http.Auth;
+
+public interface IHttpClientAuthenticationProvider
 {
-    public interface IHttpClientAuthenticationProvider
-    {
-        IHttpClientAuthenticator ClientAuthenticator { get; }
-    }
+    IHttpClientAuthenticator ClientAuthenticator { get; }
 }

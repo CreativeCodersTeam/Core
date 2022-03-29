@@ -1,8 +1,7 @@
-﻿namespace CreativeCoders.Config.Base
+﻿namespace CreativeCoders.Config.Base;
+
+public interface ISettingsTransient<out T> : ISettings<T>
+    where T : class
 {
-    public interface ISettingsTransient<out T> : ISettings<T>
-        where T : class
-    {
         
-    }
 }

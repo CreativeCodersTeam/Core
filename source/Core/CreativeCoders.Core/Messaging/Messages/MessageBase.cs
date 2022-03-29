@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Core.Messaging.Messages
+﻿namespace CreativeCoders.Core.Messaging.Messages;
+
+public class MessageBase
 {
-    public class MessageBase
-    {
-        public bool IsHandled { get; set; }
-    }
+    public bool IsHandled { get; set; }
 }

@@ -2,45 +2,44 @@
 using System.Net.Http;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.WebApi.Definition
+namespace CreativeCoders.Net.WebApi.Definition;
+
+[PublicAPI]
+[AttributeUsage(AttributeTargets.Method)]
+public abstract class ApiMethodBaseAttribute : Attribute
 {
-    [PublicAPI]
-    [AttributeUsage(AttributeTargets.Method)]
-    public abstract class ApiMethodBaseAttribute : Attribute
+    private HttpCompletionOption _completionOption;
+
+    private bool _completionOptionIsSet;
+
+    protected ApiMethodBaseAttribute(HttpRequestMethod requestMethod, string uri)
     {
-        private HttpCompletionOption _completionOption;
+        RequestMethod = requestMethod;
+        Uri = uri;
+    }
 
-        private bool _completionOptionIsSet;
+    public HttpRequestMethod RequestMethod { get; }
 
-        protected ApiMethodBaseAttribute(HttpRequestMethod requestMethod, string uri)
+    public string Uri { get; }
+
+    public Type ResponseDataFormatterType { get; set; }
+
+    public string ResponseDataFormat { get; set; }
+
+    public HttpCompletionOption CompletionOption
+    {
+        get => _completionOption;
+        set
         {
-            RequestMethod = requestMethod;
-            Uri = uri;
+            _completionOption = value;
+            _completionOptionIsSet = true;
         }
+    }
 
-        public HttpRequestMethod RequestMethod { get; }
-
-        public string Uri { get; }
-
-        public Type ResponseDataFormatterType { get; set; }
-
-        public string ResponseDataFormat { get; set; }
-
-        public HttpCompletionOption CompletionOption
-        {
-            get => _completionOption;
-            set
-            {
-                _completionOption = value;
-                _completionOptionIsSet = true;
-            }
-        }
-
-        public HttpCompletionOption GetCompletionOption(HttpCompletionOption defaultCompletionOption)
-        {
-            return _completionOptionIsSet
-                ? _completionOption
-                : defaultCompletionOption;
-        }
+    public HttpCompletionOption GetCompletionOption(HttpCompletionOption defaultCompletionOption)
+    {
+        return _completionOptionIsSet
+            ? _completionOption
+            : defaultCompletionOption;
     }
 }

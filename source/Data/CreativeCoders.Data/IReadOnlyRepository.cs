@@ -2,23 +2,22 @@
 using System.Linq.Expressions;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Data
+namespace CreativeCoders.Data;
+
+[PublicAPI]
+public interface IReadOnlyRepository<TEntity>
+    where TEntity : class
 {
-    [PublicAPI]
-    public interface IReadOnlyRepository<TEntity>
-        where TEntity : class
-    {
-        IIncludableDataQueryable<TEntity> QueryAll();
+    IIncludableDataQueryable<TEntity> QueryAll();
 
-        IIncludableDataQueryable<TEntity> Query(Expression<Func<TEntity, bool>> expression);
+    IIncludableDataQueryable<TEntity> Query(Expression<Func<TEntity, bool>> expression);
 
-        TEntity Get(Expression<Func<TEntity, bool>> expression);
-    }
+    TEntity Get(Expression<Func<TEntity, bool>> expression);
+}
 
-    [PublicAPI]
-    public interface IReadOnlyRepository<in TKey, TEntity> : IReadOnlyRepository<TEntity>
-        where TEntity : class, IEntityKey<TKey>
-    {
-        TEntity Get(TKey id);
-    }
+[PublicAPI]
+public interface IReadOnlyRepository<in TKey, TEntity> : IReadOnlyRepository<TEntity>
+    where TEntity : class, IEntityKey<TKey>
+{
+    TEntity Get(TKey id);
 }

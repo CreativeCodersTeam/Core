@@ -4,50 +4,49 @@ using CreativeCoders.Config.Base;
 using FakeItEasy;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.Config
+namespace CreativeCoders.Core.UnitTests.Config;
+
+public class SettingFactoryTests
 {
-    public class SettingFactoryTests
+    [Fact]
+    public void CtorTest()
     {
-        [Fact]
-        public void CtorTest()
-        {
-            Assert.Throws<ArgumentNullException>(() => new SettingFactory<object>(null));
+        Assert.Throws<ArgumentNullException>(() => new SettingFactory<object>(null));
 
-            var config = A.Fake<IConfiguration>();
-            var factory = new SettingFactory<object>(config);
+        var config = A.Fake<IConfiguration>();
+        var factory = new SettingFactory<object>(config);
 
-            Assert.NotNull(factory);
-        }
+        Assert.NotNull(factory);
+    }
 
-        [Fact]
-        public void CreateTest()
-        {
-            _objectsCreated = 0;
+    [Fact]
+    public void CreateTest()
+    {
+        _objectsCreated = 0;
 
-            var config = A.Fake<IConfiguration>();
-            A.CallTo(() => config.GetItem<object>())
-                .Returns(CreateNewObject())
-                .NumberOfTimes(1)
-                .Then
-                .Returns(CreateNewObject());
+        var config = A.Fake<IConfiguration>();
+        A.CallTo(() => config.GetItem<object>())
+            .Returns(CreateNewObject())
+            .NumberOfTimes(1)
+            .Then
+            .Returns(CreateNewObject());
 
-            var factory = new SettingFactory<object>(config);
+        var factory = new SettingFactory<object>(config);
 
-            var obj0 = factory.Create();
-            var obj1 = factory.Create();
+        var obj0 = factory.Create();
+        var obj1 = factory.Create();
 
-            Assert.Equal(2, _objectsCreated);
-            Assert.Equal("c", obj0);
-            Assert.Equal("cc", obj1);
-            Assert.NotSame(obj0, obj1);
-        }
+        Assert.Equal(2, _objectsCreated);
+        Assert.Equal("c", obj0);
+        Assert.Equal("cc", obj1);
+        Assert.NotSame(obj0, obj1);
+    }
 
-        private int _objectsCreated;
+    private int _objectsCreated;
 
-        private object CreateNewObject()
-        {
-            _objectsCreated++;
-            return new string('c', _objectsCreated);
-        }
+    private object CreateNewObject()
+    {
+        _objectsCreated++;
+        return new string('c', _objectsCreated);
     }
 }

@@ -3,55 +3,54 @@ using System.Threading.Tasks;
 using CreativeCoders.Core;
 using CreativeCoders.SysConsole.Core.Abstractions;
 
-namespace CreativeCoders.SysConsole.App
+namespace CreativeCoders.SysConsole.App;
+
+internal class DefaultConsoleApp : IConsoleApp
 {
-    internal class DefaultConsoleApp : IConsoleApp
+    private readonly ISysConsole _sysConsole;
+
+    private readonly IConsoleAppExecutor _consoleAppExecutor;
+
+    private readonly string[] _args;
+
+    private bool _reThrow;
+
+    public DefaultConsoleApp(IConsoleAppExecutor consoleAppExecutor, string[] args, ISysConsole sysConsole)
     {
-        private readonly ISysConsole _sysConsole;
+        _consoleAppExecutor = Ensure.NotNull(consoleAppExecutor, nameof(consoleAppExecutor));
+        _args = Ensure.NotNull(args, nameof(args));
+        _sysConsole = Ensure.NotNull(sysConsole, nameof(sysConsole));
+    }
 
-        private readonly IConsoleAppExecutor _consoleAppExecutor;
+    public IConsoleApp ReThrowExceptions(bool reThrow)
+    {
+        _reThrow = reThrow;
 
-        private readonly string[] _args;
+        return this;
+    }
 
-        private bool _reThrow;
-
-        public DefaultConsoleApp(IConsoleAppExecutor consoleAppExecutor, string[] args, ISysConsole sysConsole)
+    public async Task<int> RunAsync()
+    {
+        try
         {
-            _consoleAppExecutor = Ensure.NotNull(consoleAppExecutor, nameof(consoleAppExecutor));
-            _args = Ensure.NotNull(args, nameof(args));
-            _sysConsole = Ensure.NotNull(sysConsole, nameof(sysConsole));
+            var result = await _consoleAppExecutor.ExecuteAsync(_args).ConfigureAwait(false);
+
+            return result;
         }
-
-        public IConsoleApp ReThrowExceptions(bool reThrow)
+        catch (ConsoleException e)
         {
-            _reThrow = reThrow;
-
-            return this;
+            return e.ReturnCode;
         }
-
-        public async Task<int> RunAsync()
+        catch (Exception e)
         {
-            try
-            {
-                var result = await _consoleAppExecutor.ExecuteAsync(_args).ConfigureAwait(false);
+            _sysConsole.WriteLineError(e.Message);
 
-                return result;
-            }
-            catch (ConsoleException e)
+            if (_reThrow)
             {
-                return e.ReturnCode;
+                throw;
             }
-            catch (Exception e)
-            {
-                _sysConsole.WriteLineError(e.Message);
 
-                if (_reThrow)
-                {
-                    throw;
-                }
-
-                return int.MinValue;
-            }
+            return int.MinValue;
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.AspNetCore.TokenAuth
+﻿namespace CreativeCoders.AspNetCore.TokenAuth;
+
+public interface IUserAuthProvider
 {
-    public interface IUserAuthProvider
-    {
-        bool CheckUser(string userName, string password, string domain);
-    }
+    bool CheckUser(string userName, string password, string domain);
 }

@@ -2,16 +2,15 @@
 using CreativeCoders.SysConsole.App.MainProgram;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.App.UnitTests.TestData
-{
-    [PublicAPI]
-    public class TestProgramMain : IMain
-    {
-        public const int ReturnCode = 123;
+namespace CreativeCoders.SysConsole.App.UnitTests.TestData;
 
-        public Task<int> ExecuteAsync(string[] args)
-        {
-            return Task.FromResult(ReturnCode);
-        }
+[PublicAPI]
+public class TestProgramMain : IMain
+{
+    public const int ReturnCode = 123;
+
+    public Task<int> ExecuteAsync(string[] args)
+    {
+        return Task.FromResult(ReturnCode);
     }
 }

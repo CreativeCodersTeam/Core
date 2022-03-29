@@ -3,363 +3,362 @@ using CreativeCoders.Core.Reflection;
 using FakeItEasy;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.Reflection
+namespace CreativeCoders.Core.UnitTests.Reflection;
+
+public class MethodExtensionsTests
 {
-    public class MethodExtensionsTests
+    [Fact]
+    public void ExecuteMethod_ExistingMethod_MethodIsCalled()
     {
-        [Fact]
-        public void ExecuteMethod_ExistingMethod_MethodIsCalled()
-        {
-            var testObject = A.Fake<IReflectionTestObject>();
+        var testObject = A.Fake<IReflectionTestObject>();
             
-            testObject.ExecuteMethod(nameof(testObject.Execute));
+        testObject.ExecuteMethod(nameof(testObject.Execute));
 
-            A.CallTo(() => testObject.Execute()).MustHaveHappenedOnceExactly();
-        }
+        A.CallTo(() => testObject.Execute()).MustHaveHappenedOnceExactly();
+    }
         
-        [Fact]
-        public void ExecuteMethod_NotExistingMethod_ThrowsException()
-        {
-            var testObject = A.Fake<IReflectionTestObject>();
+    [Fact]
+    public void ExecuteMethod_NotExistingMethod_ThrowsException()
+    {
+        var testObject = A.Fake<IReflectionTestObject>();
             
-            Assert.Throws<MissingMethodException>(() => testObject.ExecuteMethod(nameof(testObject.Execute) + "1234"));
-        }
+        Assert.Throws<MissingMethodException>(() => testObject.ExecuteMethod(nameof(testObject.Execute) + "1234"));
+    }
         
-        [Fact]
-        public void ExecuteMethod_OverloadedExistingMethod_MethodIsCalled()
-        {
-            var testObject = A.Fake<IReflectionTestObject>();
+    [Fact]
+    public void ExecuteMethod_OverloadedExistingMethod_MethodIsCalled()
+    {
+        var testObject = A.Fake<IReflectionTestObject>();
             
-            testObject.ExecuteMethod(nameof(testObject.ExecuteEx));
+        testObject.ExecuteMethod(nameof(testObject.ExecuteEx));
 
-            A.CallTo(() => testObject.ExecuteEx()).MustHaveHappenedOnceExactly();
-        }
+        A.CallTo(() => testObject.ExecuteEx()).MustHaveHappenedOnceExactly();
+    }
         
-        [Fact]
-        public void ExecuteMethod_OverloadedExistingMethodWithOneArgument_MethodIsCalled()
-        {
-            var testObject = A.Fake<IReflectionTestObject>();
+    [Fact]
+    public void ExecuteMethod_OverloadedExistingMethodWithOneArgument_MethodIsCalled()
+    {
+        var testObject = A.Fake<IReflectionTestObject>();
             
-            testObject.ExecuteMethod(nameof(testObject.ExecuteEx), 1234);
+        testObject.ExecuteMethod(nameof(testObject.ExecuteEx), 1234);
 
-            A.CallTo(() => testObject.ExecuteEx(1234)).MustHaveHappenedOnceExactly();
-        }
+        A.CallTo(() => testObject.ExecuteEx(1234)).MustHaveHappenedOnceExactly();
+    }
         
-        [Fact]
-        public void ExecuteMethod_OverloadedExistingMethodWithTwoArgument_MethodIsCalled()
-        {
-            var testObject = A.Fake<IReflectionTestObject>();
+    [Fact]
+    public void ExecuteMethod_OverloadedExistingMethodWithTwoArgument_MethodIsCalled()
+    {
+        var testObject = A.Fake<IReflectionTestObject>();
             
-            testObject.ExecuteMethod(nameof(testObject.ExecuteEx), 1234, "Test");
+        testObject.ExecuteMethod(nameof(testObject.ExecuteEx), 1234, "Test");
 
-            A.CallTo(() => testObject.ExecuteEx(1234, "Test")).MustHaveHappenedOnceExactly();
-        }
+        A.CallTo(() => testObject.ExecuteEx(1234, "Test")).MustHaveHappenedOnceExactly();
+    }
         
-        [Fact]
-        public void ExecuteMethod_OverloadedExistingMethodWithThreeArgument_MethodIsCalled()
-        {
-            var testObject = A.Fake<IReflectionTestObject>();
+    [Fact]
+    public void ExecuteMethod_OverloadedExistingMethodWithThreeArgument_MethodIsCalled()
+    {
+        var testObject = A.Fake<IReflectionTestObject>();
             
-            testObject.ExecuteMethod(nameof(testObject.ExecuteEx), 1234, "Test", true);
+        testObject.ExecuteMethod(nameof(testObject.ExecuteEx), 1234, "Test", true);
 
-            A.CallTo(() => testObject.ExecuteEx(1234, "Test", true)).MustHaveHappenedOnceExactly();
-        }
+        A.CallTo(() => testObject.ExecuteEx(1234, "Test", true)).MustHaveHappenedOnceExactly();
+    }
         
-        [Fact]
-        public void ExecuteMethod_ExistingMethodWithReturnValue_MethodIsCalled()
-        {
-            var testObject = A.Fake<IReflectionTestObject>();
+    [Fact]
+    public void ExecuteMethod_ExistingMethodWithReturnValue_MethodIsCalled()
+    {
+        var testObject = A.Fake<IReflectionTestObject>();
 
-            A.CallTo(() => testObject.Calculate()).Returns(1234);
+        A.CallTo(() => testObject.Calculate()).Returns(1234);
             
-            var result = testObject.ExecuteMethod<int>(nameof(testObject.Calculate));
+        var result = testObject.ExecuteMethod<int>(nameof(testObject.Calculate));
 
-            A.CallTo(() => testObject.Calculate()).MustHaveHappenedOnceExactly();
-            Assert.Equal(1234, result);
-        }
+        A.CallTo(() => testObject.Calculate()).MustHaveHappenedOnceExactly();
+        Assert.Equal(1234, result);
+    }
         
-        [Fact]
-        public void ExecuteMethod_NotExistingMethodWithReturnValue_ThrowsException()
-        {
-            var testObject = A.Fake<IReflectionTestObject>();
+    [Fact]
+    public void ExecuteMethod_NotExistingMethodWithReturnValue_ThrowsException()
+    {
+        var testObject = A.Fake<IReflectionTestObject>();
             
-            Assert.Throws<MissingMethodException>(() => testObject.ExecuteMethod<int>(nameof(testObject.Calculate) + "1234"));
-        }
+        Assert.Throws<MissingMethodException>(() => testObject.ExecuteMethod<int>(nameof(testObject.Calculate) + "1234"));
+    }
         
-        [Fact]
-        public void ExecuteMethod_OverloadedExistingMethodWithOneArgumentWithReturnValue_MethodIsCalled()
-        {
-            var testObject = A.Fake<IReflectionTestObject>();
+    [Fact]
+    public void ExecuteMethod_OverloadedExistingMethodWithOneArgumentWithReturnValue_MethodIsCalled()
+    {
+        var testObject = A.Fake<IReflectionTestObject>();
             
-            A.CallTo(() => testObject.Calculate(3456)).Returns(1234);
+        A.CallTo(() => testObject.Calculate(3456)).Returns(1234);
             
-            var result = testObject.ExecuteMethod<int>(nameof(testObject.Calculate), 3456);
+        var result = testObject.ExecuteMethod<int>(nameof(testObject.Calculate), 3456);
 
-            A.CallTo(() => testObject.Calculate(3456)).MustHaveHappenedOnceExactly();
-            Assert.Equal(1234, result);
-        }
+        A.CallTo(() => testObject.Calculate(3456)).MustHaveHappenedOnceExactly();
+        Assert.Equal(1234, result);
+    }
         
-        [Fact]
-        public void ExecuteMethod_OverloadedExistingMethodWithTwoArgumentWithReturnValue_MethodIsCalled()
-        {
-            var testObject = A.Fake<IReflectionTestObject>();
+    [Fact]
+    public void ExecuteMethod_OverloadedExistingMethodWithTwoArgumentWithReturnValue_MethodIsCalled()
+    {
+        var testObject = A.Fake<IReflectionTestObject>();
             
-            A.CallTo(() => testObject.Calculate(3456, "Test")).Returns(1234);
+        A.CallTo(() => testObject.Calculate(3456, "Test")).Returns(1234);
             
-            var result = testObject.ExecuteMethod<int>(nameof(testObject.Calculate), 3456, "Test");
+        var result = testObject.ExecuteMethod<int>(nameof(testObject.Calculate), 3456, "Test");
 
-            A.CallTo(() => testObject.Calculate(3456, "Test")).MustHaveHappenedOnceExactly();
-            Assert.Equal(1234, result);
-        }
+        A.CallTo(() => testObject.Calculate(3456, "Test")).MustHaveHappenedOnceExactly();
+        Assert.Equal(1234, result);
+    }
         
-        [Fact]
-        public void ExecuteGenericMethod_CallVoidMethod_MethodWasCalled()
-        {
-            const int value = 1234;
-            var instance = new GenericMethodTestClass();
+    [Fact]
+    public void ExecuteGenericMethod_CallVoidMethod_MethodWasCalled()
+    {
+        const int value = 1234;
+        var instance = new GenericMethodTestClass();
 
-            instance.ExecuteGenericMethod(nameof(GenericMethodTestClass.DoSomething),
-                new [] {new GenericArgument("T", typeof(int))}, value);
+        instance.ExecuteGenericMethod(nameof(GenericMethodTestClass.DoSomething),
+            new [] {new GenericArgument("T", typeof(int))}, value);
 
-            Assert.Equal(value.ToString(), instance.Data);
-        }
+        Assert.Equal(value.ToString(), instance.Data);
+    }
 
-        [Fact]
-        public void ExecuteGenericMethod_CallVoidMethodWithType_MethodWasCalled()
-        {
-            const int value = 1234;
-            var instance = new GenericMethodTestClass();
+    [Fact]
+    public void ExecuteGenericMethod_CallVoidMethodWithType_MethodWasCalled()
+    {
+        const int value = 1234;
+        var instance = new GenericMethodTestClass();
 
-            instance.ExecuteGenericMethod(nameof(GenericMethodTestClass.DoSomething),
-                new[] { typeof(int) }, value);
+        instance.ExecuteGenericMethod(nameof(GenericMethodTestClass.DoSomething),
+            new[] { typeof(int) }, value);
 
-            Assert.Equal(value.ToString(), instance.Data);
-        }
+        Assert.Equal(value.ToString(), instance.Data);
+    }
 
-        [Fact]
-        public void ExecuteGenericMethod_CallMethodWithResult_MethodReturnsResult()
-        {
-            const int value = 12345;
-            var instance = new GenericMethodTestClass();
+    [Fact]
+    public void ExecuteGenericMethod_CallMethodWithResult_MethodReturnsResult()
+    {
+        const int value = 12345;
+        var instance = new GenericMethodTestClass();
 
-            var result = instance.ExecuteGenericMethod<int>(nameof(GenericMethodTestClass.GetData),
-                new[] { new GenericArgument("T", typeof(int)) }, value);
+        var result = instance.ExecuteGenericMethod<int>(nameof(GenericMethodTestClass.GetData),
+            new[] { new GenericArgument("T", typeof(int)) }, value);
 
-            Assert.Equal(value, result);
-        }
+        Assert.Equal(value, result);
+    }
 
-        [Fact]
-        public void ExecuteGenericMethod_CallMethodWithResultAndType_MethodReturnsResult()
-        {
-            const int value = 12345;
-            var instance = new GenericMethodTestClass();
+    [Fact]
+    public void ExecuteGenericMethod_CallMethodWithResultAndType_MethodReturnsResult()
+    {
+        const int value = 12345;
+        var instance = new GenericMethodTestClass();
 
-            var result = instance.ExecuteGenericMethod<int>(nameof(GenericMethodTestClass.GetData),
-                new[] { typeof(int) }, value);
+        var result = instance.ExecuteGenericMethod<int>(nameof(GenericMethodTestClass.GetData),
+            new[] { typeof(int) }, value);
 
-            Assert.Equal(value, result);
-        }
+        Assert.Equal(value, result);
+    }
 
-        [Fact]
-        public void ExecuteGenericMethod_CallMethodWithResultAndTwoGenericTypeParameters_MethodReturnsResult()
-        {
-            const int value = 12345;
-            var dateTime = DateTime.Now;
+    [Fact]
+    public void ExecuteGenericMethod_CallMethodWithResultAndTwoGenericTypeParameters_MethodReturnsResult()
+    {
+        const int value = 12345;
+        var dateTime = DateTime.Now;
 
-            var instance = new GenericMethodTestClass();
+        var instance = new GenericMethodTestClass();
 
-            var result = instance.ExecuteGenericMethod<string>(nameof(GenericMethodTestClass.GetData),
+        var result = instance.ExecuteGenericMethod<string>(nameof(GenericMethodTestClass.GetData),
+            new[]
+            {
+                new GenericArgument("T1", typeof(int)),
+                new GenericArgument("T2", typeof(DateTime))
+            },
+            value,
+            dateTime);
+
+        Assert.Equal(value.ToString() + dateTime, result);
+    }
+
+    [Fact]
+    public void ExecuteGenericMethod_CallMethodWithResultAndTwoGenericTypeParametersAndType_MethodReturnsResult()
+    {
+        const int value = 12345;
+        var dateTime = DateTime.Now;
+
+        var instance = new GenericMethodTestClass();
+
+        var result = instance.ExecuteGenericMethod<string>(nameof(GenericMethodTestClass.GetData),
+            new[]
+            {
+                typeof(int),
+                typeof(DateTime)
+            },
+            value,
+            dateTime);
+
+        Assert.Equal(value.ToString() + dateTime, result);
+    }
+
+    [Fact]
+    public void ExecuteGenericMethod_CallMethodWithResultAndTwoGenericTypeParametersAndTypeNotExactlyMatching_MethodReturnsResult()
+    {
+        var value = new TestDataClassSpecial();
+        var dateTime = DateTime.Now;
+
+        var instance = new GenericMethodTestClass();
+
+        var result = instance.ExecuteGenericMethod<string>(nameof(GenericMethodTestClass.GetData),
+            new[]
+            {
+                typeof(TestDataClassBase),
+                typeof(DateTime)
+            },
+            value,
+            dateTime);
+
+        Assert.Equal(value.ToString() + dateTime, result);
+    }
+
+    [Fact]
+    public void ExecuteGenericMethod_CallNotExistingMethod_ThrowsException()
+    {
+        var instance = new GenericMethodTestClass();
+
+        Assert.Throws<MissingMethodException>(() => instance.ExecuteGenericMethod("NotExisting",
+            new[] {new GenericArgument("T", typeof(int))}, 1234));
+
+        Assert.Throws<MissingMethodException>(() =>
+            instance.ExecuteGenericMethod<string>(nameof(GenericMethodTestClass.GetData),
                 new[]
                 {
-                    new GenericArgument("T1", typeof(int)),
-                    new GenericArgument("T2", typeof(DateTime))
+                    new GenericArgument("T2", typeof(int)),
+                    new GenericArgument("T3", typeof(DateTime))
                 },
-                value,
-                dateTime);
+                123,
+                345));
+    }
 
-            Assert.Equal(value.ToString() + dateTime, result);
-        }
+    [Fact]
+    public void ExecuteGenericMethod_CallNotExistingMethodAndType_ThrowsException()
+    {
+        var instance = new GenericMethodTestClass();
 
-        [Fact]
-        public void ExecuteGenericMethod_CallMethodWithResultAndTwoGenericTypeParametersAndType_MethodReturnsResult()
-        {
-            const int value = 12345;
-            var dateTime = DateTime.Now;
+        Assert.Throws<MissingMethodException>(() => instance.ExecuteGenericMethod("NotExisting",
+            new[] { new GenericArgument("T", typeof(int)) }, 1234));
 
-            var instance = new GenericMethodTestClass();
-
-            var result = instance.ExecuteGenericMethod<string>(nameof(GenericMethodTestClass.GetData),
+        Assert.Throws<MissingMethodException>(() =>
+            instance.ExecuteGenericMethod<string>(nameof(GenericMethodTestClass.GetData),
                 new[]
                 {
                     typeof(int),
-                    typeof(DateTime)
+                    typeof(DateTime),
+                    typeof(string)
                 },
-                value,
-                dateTime);
+                123,
+                345));
+    }
 
-            Assert.Equal(value.ToString() + dateTime, result);
-        }
+    //[Fact]
+    //public void ExecuteGenericMethod_CallMethodWithParamsEmpty_CallSucceeded()
+    //{
+    //    var instance = new GenericMethodTestClass();
 
-        [Fact]
-        public void ExecuteGenericMethod_CallMethodWithResultAndTwoGenericTypeParametersAndTypeNotExactlyMatching_MethodReturnsResult()
-        {
-            var value = new TestDataClassSpecial();
-            var dateTime = DateTime.Now;
+    //    instance.ExecuteGenericMethod(nameof(GenericMethodTestClass.SetDataWithParam), new[] { typeof(int) });
 
-            var instance = new GenericMethodTestClass();
+    //    Xunit.Assert.Equal(typeof(int).Name, instance.Data);
+    //}
 
-            var result = instance.ExecuteGenericMethod<string>(nameof(GenericMethodTestClass.GetData),
-                new[]
-                {
-                    typeof(TestDataClassBase),
-                    typeof(DateTime)
-                },
-                value,
-                dateTime);
+    //[Fact]
+    //public void ExecuteGenericMethod_CallMethodWithParams_CallSucceeded()
+    //{
+    //    var instance = new GenericMethodTestClass();
 
-            Assert.Equal(value.ToString() + dateTime, result);
-        }
+    //    instance.ExecuteGenericMethod(nameof(GenericMethodTestClass.SetDataWithParam), new[] {typeof(int)}, "Test");
 
-        [Fact]
-        public void ExecuteGenericMethod_CallNotExistingMethod_ThrowsException()
-        {
-            var instance = new GenericMethodTestClass();
+    //    Xunit.Assert.Equal(typeof(int).Name + "Test", instance.Data);
+    //}
 
-            Assert.Throws<MissingMethodException>(() => instance.ExecuteGenericMethod("NotExisting",
-                new[] {new GenericArgument("T", typeof(int))}, 1234));
+    [Fact]
+    public void CreateGenericMethodFunc_NoneGenericFunc_CallSucceeded()
+    {
+        const int value = 1234;
+        var dateTimeNow = DateTime.Now;
 
-            Assert.Throws<MissingMethodException>(() =>
-                instance.ExecuteGenericMethod<string>(nameof(GenericMethodTestClass.GetData),
-                    new[]
-                    {
-                        new GenericArgument("T2", typeof(int)),
-                        new GenericArgument("T3", typeof(DateTime))
-                    },
-                    123,
-                    345));
-        }
+        var instance = new GenericMethodTestClass();
 
-        [Fact]
-        public void ExecuteGenericMethod_CallNotExistingMethodAndType_ThrowsException()
-        {
-            var instance = new GenericMethodTestClass();
+        var func = instance.CreateGenericMethodFunc<string>(nameof(GenericMethodTestClass.GetData),
+            new [] {typeof(int), typeof(DateTime)}, typeof(int), typeof(DateTime));
 
-            Assert.Throws<MissingMethodException>(() => instance.ExecuteGenericMethod("NotExisting",
-                new[] { new GenericArgument("T", typeof(int)) }, 1234));
+        var result = func(new object[] {value, dateTimeNow});
 
-            Assert.Throws<MissingMethodException>(() =>
-                instance.ExecuteGenericMethod<string>(nameof(GenericMethodTestClass.GetData),
-                    new[]
-                    {
-                        typeof(int),
-                        typeof(DateTime),
-                        typeof(string)
-                    },
-                    123,
-                    345));
-        }
+        Assert.Equal(value.ToString() + dateTimeNow, result);
+    }
 
-        //[Fact]
-        //public void ExecuteGenericMethod_CallMethodWithParamsEmpty_CallSucceeded()
-        //{
-        //    var instance = new GenericMethodTestClass();
-
-        //    instance.ExecuteGenericMethod(nameof(GenericMethodTestClass.SetDataWithParam), new[] { typeof(int) });
-
-        //    Xunit.Assert.Equal(typeof(int).Name, instance.Data);
-        //}
-
-        //[Fact]
-        //public void ExecuteGenericMethod_CallMethodWithParams_CallSucceeded()
-        //{
-        //    var instance = new GenericMethodTestClass();
-
-        //    instance.ExecuteGenericMethod(nameof(GenericMethodTestClass.SetDataWithParam), new[] {typeof(int)}, "Test");
-
-        //    Xunit.Assert.Equal(typeof(int).Name + "Test", instance.Data);
-        //}
-
-        [Fact]
-        public void CreateGenericMethodFunc_NoneGenericFunc_CallSucceeded()
-        {
-            const int value = 1234;
-            var dateTimeNow = DateTime.Now;
-
-            var instance = new GenericMethodTestClass();
-
-            var func = instance.CreateGenericMethodFunc<string>(nameof(GenericMethodTestClass.GetData),
-                new [] {typeof(int), typeof(DateTime)}, typeof(int), typeof(DateTime));
-
-            var result = func(new object[] {value, dateTimeNow});
-
-            Assert.Equal(value.ToString() + dateTimeNow, result);
-        }
-
-        [Fact]
-        public void CreateGenericMethodFunc_FuncWithOneGenericParameters_CallSucceeded()
-        {
-            const int value = 1234;
+    [Fact]
+    public void CreateGenericMethodFunc_FuncWithOneGenericParameters_CallSucceeded()
+    {
+        const int value = 1234;
             
-            var instance = new GenericMethodTestClass();
+        var instance = new GenericMethodTestClass();
 
-            var func = instance.CreateGenericMethodFunc<int, string>(nameof(GenericMethodTestClass.GetDataText), new []{ typeof(int) }, typeof(int));
+        var func = instance.CreateGenericMethodFunc<int, string>(nameof(GenericMethodTestClass.GetDataText), new []{ typeof(int) }, typeof(int));
 
-            var result = func(value);
+        var result = func(value);
 
-            Assert.Equal(value.ToString(), result);
-        }
+        Assert.Equal(value.ToString(), result);
+    }
 
-        [Fact]
-        public void CreateGenericMethodFunc_FuncWithTwoGenericParameters_CallSucceeded()
-        {
-            const int value = 1234;
-            var dateTimeNow = DateTime.Now;
+    [Fact]
+    public void CreateGenericMethodFunc_FuncWithTwoGenericParameters_CallSucceeded()
+    {
+        const int value = 1234;
+        var dateTimeNow = DateTime.Now;
 
-            var instance = new GenericMethodTestClass();
+        var instance = new GenericMethodTestClass();
 
-            var func = instance.CreateGenericMethodFunc<int, DateTime, string>(nameof(GenericMethodTestClass.GetData),
-                new[] {typeof(int), typeof(DateTime)}, typeof(int), typeof(DateTime));
+        var func = instance.CreateGenericMethodFunc<int, DateTime, string>(nameof(GenericMethodTestClass.GetData),
+            new[] {typeof(int), typeof(DateTime)}, typeof(int), typeof(DateTime));
 
-            var result = func(value, dateTimeNow);
+        var result = func(value, dateTimeNow);
 
-            Assert.Equal(value.ToString() + dateTimeNow, result);
-        }
+        Assert.Equal(value.ToString() + dateTimeNow, result);
+    }
 
-        [Fact]
-        public void CreateGenericMethodFunc_FuncWithThreeGenericParameters_CallSucceeded()
-        {
-            const int value = 1234;
-            var dateTimeNow = DateTime.Now;
-            const bool boolValue = true;
+    [Fact]
+    public void CreateGenericMethodFunc_FuncWithThreeGenericParameters_CallSucceeded()
+    {
+        const int value = 1234;
+        var dateTimeNow = DateTime.Now;
+        const bool boolValue = true;
 
-            var instance = new GenericMethodTestClass();
+        var instance = new GenericMethodTestClass();
 
-            var func = instance.CreateGenericMethodFunc<int, DateTime, bool, string>(
-                nameof(GenericMethodTestClass.GetData3), new[] { typeof(int), typeof(DateTime), typeof(bool) },
-                typeof(int), typeof(DateTime), typeof(bool));
+        var func = instance.CreateGenericMethodFunc<int, DateTime, bool, string>(
+            nameof(GenericMethodTestClass.GetData3), new[] { typeof(int), typeof(DateTime), typeof(bool) },
+            typeof(int), typeof(DateTime), typeof(bool));
 
-            var result = func(value, dateTimeNow, boolValue);
+        var result = func(value, dateTimeNow, boolValue);
 
-            Assert.Equal(value.ToString() + dateTimeNow + boolValue, result);
-        }
+        Assert.Equal(value.ToString() + dateTimeNow + boolValue, result);
+    }
 
-        [Fact]
-        public void CreateGenericMethodFunc_FuncWithFourGenericParameters_CallSucceeded()
-        {
-            const int value = 1234;
-            var dateTimeNow = DateTime.Now;
-            const bool boolValue = true;
-            const double doubleValue = 123.456;
+    [Fact]
+    public void CreateGenericMethodFunc_FuncWithFourGenericParameters_CallSucceeded()
+    {
+        const int value = 1234;
+        var dateTimeNow = DateTime.Now;
+        const bool boolValue = true;
+        const double doubleValue = 123.456;
 
-            var instance = new GenericMethodTestClass();
+        var instance = new GenericMethodTestClass();
 
-            var func = instance.CreateGenericMethodFunc<int, DateTime, bool, double, string>(
-                nameof(GenericMethodTestClass.GetData4), new[] { typeof(int), typeof(DateTime), typeof(bool), typeof(double) },
-                typeof(int), typeof(DateTime), typeof(bool), typeof(double));
+        var func = instance.CreateGenericMethodFunc<int, DateTime, bool, double, string>(
+            nameof(GenericMethodTestClass.GetData4), new[] { typeof(int), typeof(DateTime), typeof(bool), typeof(double) },
+            typeof(int), typeof(DateTime), typeof(bool), typeof(double));
 
-            var result = func(value, dateTimeNow, boolValue, doubleValue);
+        var result = func(value, dateTimeNow, boolValue, doubleValue);
 
-            Assert.Equal(value.ToString() + dateTimeNow + boolValue + doubleValue, result);
-        }
+        Assert.Equal(value.ToString() + dateTimeNow + boolValue + doubleValue, result);
     }
 }

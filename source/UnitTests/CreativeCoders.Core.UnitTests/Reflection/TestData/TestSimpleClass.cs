@@ -1,13 +1,12 @@
 ﻿#nullable enable
-namespace CreativeCoders.Core.UnitTests.Reflection.TestData
-{
-    public class TestSimpleClass
-    {
-        public TestSimpleClass(string text)
-        {
-            Text = text;
-        }
+namespace CreativeCoders.Core.UnitTests.Reflection.TestData;
 
-        public string Text { get; }
+public class TestSimpleClass
+{
+    public TestSimpleClass(string text)
+    {
+        Text = text;
     }
+
+    public string Text { get; }
 }

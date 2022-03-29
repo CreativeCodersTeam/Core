@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace CreativeCoders.Di.Exceptions
+namespace CreativeCoders.Di.Exceptions;
+
+public class ServiceLocatorAlreadyInitializedException : Exception
 {
-    public class ServiceLocatorAlreadyInitializedException : Exception
-    {
-        public ServiceLocatorAlreadyInitializedException() : base("Service locator is already initialized") {}
-    }
+    public ServiceLocatorAlreadyInitializedException() : base("Service locator is already initialized") {}
 }

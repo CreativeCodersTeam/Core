@@ -1,40 +1,39 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace CreativeCoders.Data.EfCore
+namespace CreativeCoders.Data.EfCore;
+
+[PublicAPI]
+public class EfCoreUnitOfWork : UnitOfWorkBase
 {
-    [PublicAPI]
-    public class EfCoreUnitOfWork : UnitOfWorkBase
+    private readonly DbContext _dbContext;
+
+    public EfCoreUnitOfWork(DbContext dbContext)
     {
-        private readonly DbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public EfCoreUnitOfWork(DbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
+    protected override void Dispose(bool disposing)
+    {
+        _dbContext.Dispose();
+    }
 
-        protected override void Dispose(bool disposing)
+    public override void Commit()
+    {
+        _dbContext.SaveChanges();
+        if (_dbContext.Database.CurrentTransaction != null)
         {
-            _dbContext.Dispose();
+            _dbContext.Database.CommitTransaction();
         }
+    }
 
-        public override void Commit()
-        {
-            _dbContext.SaveChanges();
-            if (_dbContext.Database.CurrentTransaction != null)
-            {
-                _dbContext.Database.CommitTransaction();
-            }
-        }
+    public override void Rollback()
+    {
+        _dbContext.Database.RollbackTransaction();
+    }
 
-        public override void Rollback()
-        {
-            _dbContext.Database.RollbackTransaction();
-        }
-
-        protected override IRepository<TKey, TEntity> CreateRepository<TKey, TEntity>()
-        {
-            return new EfCoreRepository<TKey, TEntity>(_dbContext);
-        }
+    protected override IRepository<TKey, TEntity> CreateRepository<TKey, TEntity>()
+    {
+        return new EfCoreRepository<TKey, TEntity>(_dbContext);
     }
 }

@@ -7,88 +7,87 @@ using CreativeCoders.Core.Collections;
 using CreativeCoders.SysConsole.Cli.Parsing.Exceptions;
 using CreativeCoders.SysConsole.Cli.Parsing.Properties;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing
+namespace CreativeCoders.SysConsole.Cli.Parsing;
+
+public class OptionParser
 {
-    public class OptionParser
+    private readonly Type _optionType;
+
+    public OptionParser(Type optionType)
     {
-        private readonly Type _optionType;
+        _optionType = Ensure.NotNull(optionType, nameof(optionType));
+    }
 
-        public OptionParser(Type optionType)
+    public object Parse(string[] args)
+    {
+        if (_optionType == typeof(string[]) || _optionType == typeof(IEnumerable<string>))
         {
-            _optionType = Ensure.NotNull(optionType, nameof(optionType));
+            return args.ToArray();
         }
 
-        public object Parse(string[] args)
+        object? option;
+
+        try
         {
-            if (_optionType == typeof(string[]) || _optionType == typeof(IEnumerable<string>))
+            option = Activator.CreateInstance(_optionType);
+
+            if (option == null)
             {
-                return args.ToArray();
+                throw new OptionCreationFailedException(_optionType);
             }
+        }
+        catch (Exception e)
+        {
+            throw new OptionCreationFailedException(_optionType, e);
+        }
 
-            object? option;
+        var optionArguments = new ArgsToOptionArgumentsConverter(args).ReadOptionArguments();
 
-            try
+        ReadOptionProperties().ForEach(x =>
+        {
+            if (!x.Read(optionArguments, option))
             {
-                option = Activator.CreateInstance(_optionType);
-
-                if (option == null)
-                {
-                    throw new OptionCreationFailedException(_optionType);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new OptionCreationFailedException(_optionType, e);
-            }
-
-            var optionArguments = new ArgsToOptionArgumentsConverter(args).ReadOptionArguments();
-
-            ReadOptionProperties().ForEach(x =>
-            {
-                if (!x.Read(optionArguments, option))
-                {
                     
-                }
-            });
+            }
+        });
 
-            CheckAllArguments(optionArguments, option);
+        CheckAllArguments(optionArguments, option);
 
-            return option;
-        }
+        return option;
+    }
 
-        private static void CheckAllArguments(IEnumerable<OptionArgument> optionArguments, object option)
+    private static void CheckAllArguments(IEnumerable<OptionArgument> optionArguments, object option)
+    {
+        var optionsAttribute =
+            option.GetType().GetCustomAttribute<OptionsAttribute>();
+
+        if (optionsAttribute?.AllArgsMustMatch != true)
         {
-            var optionsAttribute =
-                option.GetType().GetCustomAttribute<OptionsAttribute>();
-
-            if (optionsAttribute?.AllArgsMustMatch != true)
-            {
-                return;
-            }
-
-            var notMatchedArgs = optionArguments.Where(x => !x.IsProcessed).ToArray();
-
-            if (notMatchedArgs.Any())
-            {
-                throw new NotAllArgumentsMatchException(notMatchedArgs);
-            }
+            return;
         }
+
+        var notMatchedArgs = optionArguments.Where(x => !x.IsProcessed).ToArray();
+
+        if (notMatchedArgs.Any())
+        {
+            throw new NotAllArgumentsMatchException(notMatchedArgs);
+        }
+    }
         
-        private IEnumerable<OptionPropertyBase> ReadOptionProperties()
+    private IEnumerable<OptionPropertyBase> ReadOptionProperties()
+    {
+        foreach (var propertyInfo in _optionType.GetProperties())
         {
-            foreach (var propertyInfo in _optionType.GetProperties())
+            var valueAttribute = propertyInfo.GetCustomAttribute<OptionValueAttribute>();
+            if (valueAttribute != null)
             {
-                var valueAttribute = propertyInfo.GetCustomAttribute<OptionValueAttribute>();
-                if (valueAttribute != null)
-                {
-                    yield return new ValueOptionProperty(propertyInfo, valueAttribute);
-                }
+                yield return new ValueOptionProperty(propertyInfo, valueAttribute);
+            }
 
-                var optionAttribute = propertyInfo.GetCustomAttribute<OptionParameterAttribute>();
-                if (optionAttribute != null)
-                {
-                    yield return new OptionParameterProperty(propertyInfo, optionAttribute);
-                }
+            var optionAttribute = propertyInfo.GetCustomAttribute<OptionParameterAttribute>();
+            if (optionAttribute != null)
+            {
+                yield return new OptionParameterProperty(propertyInfo, optionAttribute);
             }
         }
     }

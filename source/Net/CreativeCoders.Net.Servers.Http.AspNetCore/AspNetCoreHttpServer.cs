@@ -6,61 +6,60 @@ using CreativeCoders.Core.Logging;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 
-namespace CreativeCoders.Net.Servers.Http.AspNetCore
+namespace CreativeCoders.Net.Servers.Http.AspNetCore;
+
+[PublicAPI]
+public class AspNetCoreHttpServer : HttpServerBase<HttpContext>, IWebHostConfig, IDisposable
 {
-    [PublicAPI]
-    public class AspNetCoreHttpServer : HttpServerBase<HttpContext>, IWebHostConfig, IDisposable
+    private static readonly ILogger Log = LogManager.GetLogger<AspNetCoreHttpServer>();
+        
+    private readonly AspNetCoreWebHost _aspNetCoreWebHost;
+
+    public AspNetCoreHttpServer()
     {
-        private static readonly ILogger Log = LogManager.GetLogger<AspNetCoreHttpServer>();
-        
-        private readonly AspNetCoreWebHost _aspNetCoreWebHost;
+        _aspNetCoreWebHost = new AspNetCoreWebHost(HandleRequestAsync);
 
-        public AspNetCoreHttpServer()
-        {
-            _aspNetCoreWebHost = new AspNetCoreWebHost(HandleRequestAsync);
+        DisableLogging = true;
+    }
 
-            DisableLogging = true;
-        }
+    protected override Task FlushAndCloseOutputStreamAsync(HttpContext httpContext)
+    {
+        return httpContext.Response.Body.FlushAsync();
+    }
 
-        protected override Task FlushAndCloseOutputStreamAsync(HttpContext httpContext)
-        {
-            return httpContext.Response.Body.FlushAsync();
-        }
+    protected override IHttpRequest GetRequest(HttpContext httpContext)
+    {
+        return new AspNetCoreHttpRequestWrapper(httpContext.Request);
+    }
 
-        protected override IHttpRequest GetRequest(HttpContext httpContext)
-        {
-            return new AspNetCoreHttpRequestWrapper(httpContext.Request);
-        }
+    protected override IHttpResponse GetResponse(HttpContext httpContext)
+    {
+        return new AspNetCoreHttpResponseWrapper(httpContext.Response);
+    }
 
-        protected override IHttpResponse GetResponse(HttpContext httpContext)
-        {
-            return new AspNetCoreHttpResponseWrapper(httpContext.Response);
-        }
-
-        public override Task StartAsync()
-        {
-            Log.Debug("Starting asp.net core http server");
-            Log.Debug($"Listing urls: {string.Join(";",Urls)}");
+    public override Task StartAsync()
+    {
+        Log.Debug("Starting asp.net core http server");
+        Log.Debug($"Listing urls: {string.Join(";",Urls)}");
             
-            return _aspNetCoreWebHost.StartAsync(this);
-        }
+        return _aspNetCoreWebHost.StartAsync(this);
+    }
 
-        public override Task StopAsync()
-        {
-            Log.Debug("Stopping asp.net core http server");
+    public override Task StopAsync()
+    {
+        Log.Debug("Stopping asp.net core http server");
             
-            return _aspNetCoreWebHost.StopAsync();
-        }
+        return _aspNetCoreWebHost.StopAsync();
+    }
 
-        IReadOnlyCollection<string> IWebHostConfig.Urls => Urls.ToImmutableArray();
+    IReadOnlyCollection<string> IWebHostConfig.Urls => Urls.ToImmutableArray();
         
-        public bool DisableLogging { get; set; }
+    public bool DisableLogging { get; set; }
 
-        public bool AllowSynchronousIO { get; set; }
+    public bool AllowSynchronousIO { get; set; }
 
-        public void Dispose()
-        {
-            _aspNetCoreWebHost?.Dispose();
-        }
+    public void Dispose()
+    {
+        _aspNetCoreWebHost?.Dispose();
     }
 }

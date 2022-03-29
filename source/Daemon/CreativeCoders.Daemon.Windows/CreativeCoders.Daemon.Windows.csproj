@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<Authors>CreativeCoders</Authors>
 		<Description>Windows implementation of a daemon runner for CreativeCoders.Daemon.Runner.Base</Description>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>

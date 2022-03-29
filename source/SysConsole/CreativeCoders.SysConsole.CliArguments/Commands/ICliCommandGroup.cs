@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.CliArguments.Commands
-{
-    [PublicAPI]
-    public interface ICliCommandGroup
-    {
-        public string Name { get; set; }
+namespace CreativeCoders.SysConsole.CliArguments.Commands;
 
-        IEnumerable<ICliCommand> Commands { get; }
-    }
+[PublicAPI]
+public interface ICliCommandGroup
+{
+    public string Name { get; set; }
+
+    IEnumerable<ICliCommand> Commands { get; }
 }

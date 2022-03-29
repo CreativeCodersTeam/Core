@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Core.UnitTests.Di.Helper
+﻿namespace CreativeCoders.Core.UnitTests.Di.Helper;
+
+public interface IUnknownService
 {
-    public interface IUnknownService
-    {
         
-    }
 }

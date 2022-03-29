@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Config.Base
+﻿namespace CreativeCoders.Config.Base;
+
+public class SourceExceptionHandleResult
 {
-    public class SourceExceptionHandleResult
-    {
-        public bool IsHandled { get; set; }
-    }
+    public bool IsHandled { get; set; }
 }

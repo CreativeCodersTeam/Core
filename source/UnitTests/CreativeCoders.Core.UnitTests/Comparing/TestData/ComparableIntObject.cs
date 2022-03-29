@@ -1,14 +1,13 @@
 ﻿using CreativeCoders.Core.Comparing;
 
-namespace CreativeCoders.Core.UnitTests.Comparing.TestData
-{
-    public class ComparableIntObject : ComparableObject<ComparableIntObject>
-    {
-        static ComparableIntObject()
-        {
-            InitComparableObject(x => x.IntValue);
-        }
+namespace CreativeCoders.Core.UnitTests.Comparing.TestData;
 
-        public int IntValue { get; set; }
+public class ComparableIntObject : ComparableObject<ComparableIntObject>
+{
+    static ComparableIntObject()
+    {
+        InitComparableObject(x => x.IntValue);
     }
+
+    public int IntValue { get; set; }
 }

@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace CreativeCoders.Data.EfCore.Modeling
+namespace CreativeCoders.Data.EfCore.Modeling;
+
+public interface IEfCoreEntityModelBuilder
 {
-    public interface IEfCoreEntityModelBuilder
-    {
-        void BuildModel(ModelBuilder modelBuilder);
-    }
+    void BuildModel(ModelBuilder modelBuilder);
 }

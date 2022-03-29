@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Scripting.Base
-{
-    public interface IScriptContext
-    { 
-        void SetupScriptObject(object scriptObject);
-    }
+﻿namespace CreativeCoders.Scripting.Base;
+
+public interface IScriptContext
+{ 
+    void SetupScriptObject(object scriptObject);
 }

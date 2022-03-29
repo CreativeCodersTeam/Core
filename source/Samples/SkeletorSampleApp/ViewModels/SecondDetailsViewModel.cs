@@ -1,9 +1,8 @@
 ﻿using CreativeCoders.Mvvm;
 
-namespace SkeletorSampleApp.ViewModels
+namespace SkeletorSampleApp.ViewModels;
+
+public class SecondDetailsViewModel : ViewModelBase
 {
-    public class SecondDetailsViewModel : ViewModelBase
-    {
         
-    }
 }

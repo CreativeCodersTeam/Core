@@ -1,9 +1,8 @@
-﻿namespace CreativeCoders.Core.ObjectLinking
+﻿namespace CreativeCoders.Core.ObjectLinking;
+
+public static class PropertyLink
 {
-    public static class PropertyLink
-    {
-        public static object DoNothing { get; } = new();
+    public static object DoNothing { get; } = new();
         
-        public static object Error { get; } = new();
-    }
+    public static object Error { get; } = new();
 }

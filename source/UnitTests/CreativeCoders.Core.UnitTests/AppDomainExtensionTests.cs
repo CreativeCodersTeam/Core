@@ -1,15 +1,14 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Core.UnitTests
-{
-    public interface ITestIntf
-    {
-        int IntValue { get; }
-    }
+namespace CreativeCoders.Core.UnitTests;
 
-    [UsedImplicitly]
-    public class TestIntfClass : ITestIntf
-    {
-        public int IntValue => 11;
-    }
+public interface ITestIntf
+{
+    int IntValue { get; }
+}
+
+[UsedImplicitly]
+public class TestIntfClass : ITestIntf
+{
+    public int IntValue => 11;
 }

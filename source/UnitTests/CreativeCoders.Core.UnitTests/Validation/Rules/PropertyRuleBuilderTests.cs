@@ -3,21 +3,20 @@ using CreativeCoders.Validation.ValidationSteps;
 using FakeItEasy;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.Validation.Rules
+namespace CreativeCoders.Core.UnitTests.Validation.Rules;
+
+public class PropertyRuleBuilderTests
 {
-    public class PropertyRuleBuilderTests
+    [Fact]
+    public void AddValidationStep()
     {
-        [Fact]
-        public void AddValidationStep()
-        {
-            var propValidationRule = A.Fake<IPropertyValidationRule<TestDataObject, int>>();
-            var propValidationStep = A.Fake<IPropertyValidationStep<TestDataObject, int>>();
+        var propValidationRule = A.Fake<IPropertyValidationRule<TestDataObject, int>>();
+        var propValidationStep = A.Fake<IPropertyValidationStep<TestDataObject, int>>();
 
-            var builder = new PropertyRuleBuilder<TestDataObject, int>(propValidationRule);
+        var builder = new PropertyRuleBuilder<TestDataObject, int>(propValidationRule);
 
-            builder.AddValidationStep(propValidationStep);
+        builder.AddValidationStep(propValidationStep);
 
-            A.CallTo(() => propValidationRule.AddValidationStep(propValidationStep)).MustHaveHappenedOnceExactly();
-        }
+        A.CallTo(() => propValidationRule.AddValidationStep(propValidationStep)).MustHaveHappenedOnceExactly();
     }
 }

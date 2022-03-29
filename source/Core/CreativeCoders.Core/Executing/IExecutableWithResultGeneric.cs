@@ -1,10 +1,9 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Core.Executing
+namespace CreativeCoders.Core.Executing;
+
+[PublicAPI]
+public interface IExecutableWithResult<in TParameter, out TResult>
 {
-    [PublicAPI]
-    public interface IExecutableWithResult<in TParameter, out TResult>
-    {
-        TResult Execute(TParameter parameter);
-    }
+    TResult Execute(TParameter parameter);
 }

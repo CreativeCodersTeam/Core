@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace CreativeCoders.CodeCompilation
-{
-    public interface ICompilationResult
-    {
-        bool Success { get; }
+namespace CreativeCoders.CodeCompilation;
 
-        IEnumerable<CompilationMessage> Messages { get; }
-    }
+public interface ICompilationResult
+{
+    bool Success { get; }
+
+    IEnumerable<CompilationMessage> Messages { get; }
 }

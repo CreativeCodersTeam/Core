@@ -1,11 +1,10 @@
 ﻿using JetBrains.Annotations;
 
 #nullable enable
-namespace CreativeCoders.Core.UnitTests.Reflection.TestData
+namespace CreativeCoders.Core.UnitTests.Reflection.TestData;
+
+public interface ITestSimpleClassOptions
 {
-    public interface ITestSimpleClassOptions
-    {
-        [UsedImplicitly]
-        string? Value { get; }
-    }
+    [UsedImplicitly]
+    string? Value { get; }
 }

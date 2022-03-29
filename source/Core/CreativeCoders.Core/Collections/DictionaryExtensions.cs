@@ -3,88 +3,87 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CreativeCoders.Core.Collections
+namespace CreativeCoders.Core.Collections;
+
+public static class DictionaryExtensions
 {
-    public static class DictionaryExtensions
+    public static TKey GetKeyByValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TValue value)
     {
-        public static TKey GetKeyByValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TValue value)
+        if (TryGetKeyByValue(dictionary, value, out var key))
         {
-            if (TryGetKeyByValue(dictionary, value, out var key))
-            {
-                return key;
-            }
-
-            throw new KeyNotFoundException();
+            return key;
         }
 
-        public static bool TryGetKeyByValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TValue value,
-            out TKey key)
-        {
-            foreach (var dictEntry in dictionary.Where(dictEntry =>
-                dictEntry.Value is null && value is null || dictEntry.Value?.Equals(value) == true))
-            {
-                key = dictEntry.Key;
-                return true;
-            }
+        throw new KeyNotFoundException();
+    }
 
-            key = default;
-            return false;
+    public static bool TryGetKeyByValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TValue value,
+        out TKey key)
+    {
+        foreach (var dictEntry in dictionary.Where(dictEntry =>
+                     dictEntry.Value is null && value is null || dictEntry.Value?.Equals(value) == true))
+        {
+            key = dictEntry.Key;
+            return true;
         }
 
-        public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IDictionary dictionary, bool skipNotMatchingEntries)
-        {
-            var convertedDictionary = new Dictionary<TKey, TValue>();
+        key = default;
+        return false;
+    }
 
-            foreach (DictionaryEntry dictionaryEntry in dictionary)
+    public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IDictionary dictionary, bool skipNotMatchingEntries)
+    {
+        var convertedDictionary = new Dictionary<TKey, TValue>();
+
+        foreach (DictionaryEntry dictionaryEntry in dictionary)
+        {
+            if (dictionaryEntry.Key is not TKey key)
             {
-                if (dictionaryEntry.Key is not TKey key)
+                if (skipNotMatchingEntries)
                 {
-                    if (skipNotMatchingEntries)
-                    {
-                        continue;
-                    }
-
-                    throw new InvalidCastException("Base dictionary key has wrong type");
+                    continue;
                 }
 
-                if (dictionaryEntry.Value is not TValue value)
-                {
-                    if (skipNotMatchingEntries)
-                    {
-                        continue;
-                    }
-
-                    throw new InvalidCastException("Base dictionary value has wrong type");
-                }
-
-                convertedDictionary.Add(key, value);
+                throw new InvalidCastException("Base dictionary key has wrong type");
             }
 
-            return convertedDictionary;
-        }
-
-        public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IDictionary dictionary, Func<object, TValue> valueSelector, bool skipNotMatchingEntries)
-        {
-            var convertedDictionary = new Dictionary<TKey, TValue>();
-
-            foreach (DictionaryEntry dictionaryEntry in dictionary)
+            if (dictionaryEntry.Value is not TValue value)
             {
-                if (dictionaryEntry.Key is not TKey key)
+                if (skipNotMatchingEntries)
                 {
-                    if (skipNotMatchingEntries)
-                    {
-                        continue;
-                    }
-
-                    throw new InvalidCastException("Base dictionary key has wrong type");
+                    continue;
                 }
 
-                var value = valueSelector(dictionaryEntry.Value);
-
-                convertedDictionary.Add(key, value);
+                throw new InvalidCastException("Base dictionary value has wrong type");
             }
 
-            return convertedDictionary;
+            convertedDictionary.Add(key, value);
         }
+
+        return convertedDictionary;
+    }
+
+    public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IDictionary dictionary, Func<object, TValue> valueSelector, bool skipNotMatchingEntries)
+    {
+        var convertedDictionary = new Dictionary<TKey, TValue>();
+
+        foreach (DictionaryEntry dictionaryEntry in dictionary)
+        {
+            if (dictionaryEntry.Key is not TKey key)
+            {
+                if (skipNotMatchingEntries)
+                {
+                    continue;
+                }
+
+                throw new InvalidCastException("Base dictionary key has wrong type");
+            }
+
+            var value = valueSelector(dictionaryEntry.Value);
+
+            convertedDictionary.Add(key, value);
+        }
+
+        return convertedDictionary;
     }
 }

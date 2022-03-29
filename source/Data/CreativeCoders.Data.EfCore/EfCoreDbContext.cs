@@ -2,33 +2,32 @@
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace CreativeCoders.Data.EfCore
+namespace CreativeCoders.Data.EfCore;
+
+[PublicAPI]
+public class EfCoreDbContext : DbContext
 {
-    [PublicAPI]
-    public class EfCoreDbContext : DbContext
+    private readonly IEfCoreEntityModelBuilderSource _entityModelBuilderSource;
+
+    public EfCoreDbContext(IEfCoreEntityModelBuilderSource entityModelBuilderSource)
     {
-        private readonly IEfCoreEntityModelBuilderSource _entityModelBuilderSource;
+        _entityModelBuilderSource = entityModelBuilderSource;
+    }
 
-        public EfCoreDbContext(IEfCoreEntityModelBuilderSource entityModelBuilderSource)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        OnEntityModelBuilderSourceSetup(_entityModelBuilderSource);
+
+        var modelBuilders = _entityModelBuilderSource.GetEntityModelBuilders();
+
+        foreach (var entityModelBuilder in modelBuilders)
         {
-            _entityModelBuilderSource = entityModelBuilderSource;
+            entityModelBuilder.BuildModel(modelBuilder);
         }
+    }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            OnEntityModelBuilderSourceSetup(_entityModelBuilderSource);
+    protected virtual void OnEntityModelBuilderSourceSetup(IEfCoreEntityModelBuilderSource entityModelBuilderSource)
+    {
 
-            var modelBuilders = _entityModelBuilderSource.GetEntityModelBuilders();
-
-            foreach (var entityModelBuilder in modelBuilders)
-            {
-                entityModelBuilder.BuildModel(modelBuilder);
-            }
-        }
-
-        protected virtual void OnEntityModelBuilderSourceSetup(IEfCoreEntityModelBuilderSource entityModelBuilderSource)
-        {
-
-        }
     }
 }

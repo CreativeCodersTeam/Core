@@ -5,48 +5,47 @@ using System.Xml.Linq;
 using CreativeCoders.Net.XmlRpc.Exceptions;
 using CreativeCoders.Net.XmlRpc.Model;
 
-namespace CreativeCoders.Net.XmlRpc.Reader.Values
+namespace CreativeCoders.Net.XmlRpc.Reader.Values;
+
+public abstract class ValueReaderBase : IValueReader
 {
-    public abstract class ValueReaderBase : IValueReader
+    private readonly IEnumerable<string> _dataTypes;
+
+    private readonly Func<string, XmlRpcValue> _createValue;
+
+    private readonly Func<XElement, XmlRpcValue> _createValueFromXml;
+
+    protected ValueReaderBase(IEnumerable<string> dataTypes, Func<string, XmlRpcValue> createValue)
     {
-        private readonly IEnumerable<string> _dataTypes;
+        _dataTypes = dataTypes;
+        _createValue = createValue;
+    }
 
-        private readonly Func<string, XmlRpcValue> _createValue;
+    protected ValueReaderBase(IEnumerable<string> dataTypes, Func<XElement, XmlRpcValue> createValueFromXml)
+    {
+        _dataTypes = dataTypes;
+        _createValueFromXml = createValueFromXml;
+    }
 
-        private readonly Func<XElement, XmlRpcValue> _createValueFromXml;
-
-        protected ValueReaderBase(IEnumerable<string> dataTypes, Func<string, XmlRpcValue> createValue)
+    public XmlRpcValue ReadValue(XElement valueElement)
+    {
+        var dataType = valueElement.Name.LocalName;
+        if (!HandlesDataType(dataType))
         {
-            _dataTypes = dataTypes;
-            _createValue = createValue;
+            throw new ParserException($"Value has wrong data type '{dataType}'");
         }
 
-        protected ValueReaderBase(IEnumerable<string> dataTypes, Func<XElement, XmlRpcValue> createValueFromXml)
+        if (_createValueFromXml != null)
         {
-            _dataTypes = dataTypes;
-            _createValueFromXml = createValueFromXml;
+            return _createValueFromXml(valueElement);
         }
 
-        public XmlRpcValue ReadValue(XElement valueElement)
-        {
-            var dataType = valueElement.Name.LocalName;
-            if (!HandlesDataType(dataType))
-            {
-                throw new ParserException($"Value has wrong data type '{dataType}'");
-            }
+        var value = valueElement.Value;
+        return _createValue(value);
+    }
 
-            if (_createValueFromXml != null)
-            {
-                return _createValueFromXml(valueElement);
-            }
-
-            var value = valueElement.Value;
-            return _createValue(value);
-        }
-
-        public bool HandlesDataType(string dataType)
-        {
-            return _dataTypes.Any(dt => dt.Equals(dataType, StringComparison.CurrentCultureIgnoreCase));
-        }
+    public bool HandlesDataType(string dataType)
+    {
+        return _dataTypes.Any(dt => dt.Equals(dataType, StringComparison.CurrentCultureIgnoreCase));
     }
 }

@@ -1,20 +1,19 @@
 ﻿using JetBrains.Annotations;
 using Nuke.Common.Tools.MSBuild;
 
-namespace CreativeCoders.NukeBuild.BuildActions
+namespace CreativeCoders.NukeBuild.BuildActions;
+
+[PublicAPI]
+public class MsBuildCompileBuildAction : BuildActionBase<MsBuildCompileBuildAction>
 {
-    [PublicAPI]
-    public class MsBuildCompileBuildAction : BuildActionBase<MsBuildCompileBuildAction>
+    protected override void OnExecute()
     {
-        protected override void OnExecute()
-        {
-            MSBuildTasks.MSBuild(s => s
-                .SetProjectFile(BuildInfo.Solution)
-                .SetConfiguration(BuildInfo.Configuration)
-                .SetAssemblyVersion(BuildInfo.VersionInfo.GetAssemblySemVer())
-                .SetFileVersion(BuildInfo.VersionInfo.GetAssemblySemFileVer())
-                .SetInformationalVersion(BuildInfo.VersionInfo.InformationalVersion)
-                .DisableRestore());
-        }
+        MSBuildTasks.MSBuild(s => s
+            .SetProjectFile(BuildInfo.Solution)
+            .SetConfiguration(BuildInfo.Configuration)
+            .SetAssemblyVersion(BuildInfo.VersionInfo.GetAssemblySemVer())
+            .SetFileVersion(BuildInfo.VersionInfo.GetAssemblySemFileVer())
+            .SetInformationalVersion(BuildInfo.VersionInfo.InformationalVersion)
+            .DisableRestore());
     }
 }

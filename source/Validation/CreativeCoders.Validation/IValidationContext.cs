@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Validation
+namespace CreativeCoders.Validation;
+
+[PublicAPI]
+public interface IValidationContext<out T>
+    where T : class
 {
-    [PublicAPI]
-    public interface IValidationContext<out T>
-        where T : class
-    {
-        void AddFaults(IEnumerable<IValidationFault> faults);
+    void AddFaults(IEnumerable<IValidationFault> faults);
 
-        T InstanceForValidation { get; }
+    T InstanceForValidation { get; }
 
-        bool BreakRuleValidationAfterFirstFailedValidation { get; }
+    bool BreakRuleValidationAfterFirstFailedValidation { get; }
 
-        IEnumerable<IValidationFault> Faults { get; }
-    }
+    IEnumerable<IValidationFault> Faults { get; }
 }

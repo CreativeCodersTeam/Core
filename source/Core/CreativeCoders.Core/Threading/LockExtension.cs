@@ -1,88 +1,87 @@
 ﻿using System;
 using System.Threading;
 
-namespace CreativeCoders.Core.Threading
+namespace CreativeCoders.Core.Threading;
+
+public static class LockExtension
 {
-    public static class LockExtension
+    public static void Read(this ReaderWriterLockSlim self, Action action)
     {
-        public static void Read(this ReaderWriterLockSlim self, Action action)
+        using (new AcquireReaderLock(self))
         {
-            using (new AcquireReaderLock(self))
-            {
-                action();
-            }
+            action();
         }
+    }
 
-        public static void Read(this ReaderWriterLockSlim self, Action action, int timeout)
+    public static void Read(this ReaderWriterLockSlim self, Action action, int timeout)
+    {
+        using (new AcquireReaderLock(self, timeout))
         {
-            using (new AcquireReaderLock(self, timeout))
-            {
-                action();
-            }
+            action();
         }
+    }
 
-        public static T Read<T>(this ReaderWriterLockSlim self, Func<T> function)
+    public static T Read<T>(this ReaderWriterLockSlim self, Func<T> function)
+    {
+        using (new AcquireReaderLock(self))
         {
-            using (new AcquireReaderLock(self))
-            {
-                return function();
-            }
+            return function();
         }
+    }
 
-        public static T Read<T>(this ReaderWriterLockSlim self, Func<T> function, int timeout)
+    public static T Read<T>(this ReaderWriterLockSlim self, Func<T> function, int timeout)
+    {
+        using (new AcquireReaderLock(self, timeout))
         {
-            using (new AcquireReaderLock(self, timeout))
-            {
-                return function();
-            }
+            return function();
         }
+    }
 
-        public static void Write(this ReaderWriterLockSlim self, Action action)
+    public static void Write(this ReaderWriterLockSlim self, Action action)
+    {
+        using (new AcquireWriterLock(self))
         {
-            using (new AcquireWriterLock(self))
-            {
-                action();
-            }
+            action();
         }
+    }
 
-        public static void Write(this ReaderWriterLockSlim self, Action action, int timeout)
+    public static void Write(this ReaderWriterLockSlim self, Action action, int timeout)
+    {
+        using (new AcquireWriterLock(self, timeout))
         {
-            using (new AcquireWriterLock(self, timeout))
-            {
-                action();
-            }
+            action();
         }
+    }
 
-        public static T Write<T>(this ReaderWriterLockSlim self, Func<T> function)
+    public static T Write<T>(this ReaderWriterLockSlim self, Func<T> function)
+    {
+        using (new AcquireWriterLock(self))
         {
-            using (new AcquireWriterLock(self))
-            {
-                return function();
-            }
+            return function();
         }
+    }
 
-        public static T Write<T>(this ReaderWriterLockSlim self, Func<T> function, int timeout)
+    public static T Write<T>(this ReaderWriterLockSlim self, Func<T> function, int timeout)
+    {
+        using (new AcquireWriterLock(self, timeout))
         {
-            using (new AcquireWriterLock(self, timeout))
-            {
-                return function();
-            }
+            return function();
         }
+    }
 
-        public static void Lock(this object self, Action action)
+    public static void Lock(this object self, Action action)
+    {
+        lock (self)
         {
-            lock (self)
-            {
-                action();
-            }
+            action();
         }
+    }
 
-        public static T Lock<T>(this object self, Func<T> function)
+    public static T Lock<T>(this object self, Func<T> function)
+    {
+        lock (self)
         {
-            lock (self)
-            {
-                return function();
-            }
+            return function();
         }
     }
 }

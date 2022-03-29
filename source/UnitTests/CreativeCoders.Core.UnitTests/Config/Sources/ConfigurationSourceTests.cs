@@ -2,71 +2,70 @@
 using CreativeCoders.Config.Sources;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.Config.Sources
+namespace CreativeCoders.Core.UnitTests.Config.Sources;
+
+public class ConfigurationSourceTests
 {
-    public class ConfigurationSourceTests
+    [Fact]
+    public void CtorTest()
     {
-        [Fact]
-        public void CtorTest()
-        {
-            Assert.Throws<ArgumentNullException>(() => new ConfigurationSource<object>(null));
-            Assert.Throws<ArgumentNullException>(() => new ConfigurationSource<object>(() => new object(), null));
+        Assert.Throws<ArgumentNullException>(() => new ConfigurationSource<object>(null));
+        Assert.Throws<ArgumentNullException>(() => new ConfigurationSource<object>(() => new object(), null));
 
-            var obj = new object();
+        var obj = new object();
 
-            var source = new ConfigurationSource<object>(() => obj);
+        var source = new ConfigurationSource<object>(() => obj);
 
-            Assert.NotNull(source);
-        }
+        Assert.NotNull(source);
+    }
 
-        [Fact]
-        public void GetSettingObjectTest()
-        {
-            var obj = new object();
+    [Fact]
+    public void GetSettingObjectTest()
+    {
+        var obj = new object();
 
-            var source = new ConfigurationSource<object>(() => obj);
+        var source = new ConfigurationSource<object>(() => obj);
 
-            var settingObject = source.GetSettingObject();
+        var settingObject = source.GetSettingObject();
 
-            Assert.Same(obj, settingObject);
-        }
+        Assert.Same(obj, settingObject);
+    }
 
-        [Fact]
-        public void GetDefaultSettingObjectTest()
-        {
-            var obj = new object();
-            var defaultObj = new object();
+    [Fact]
+    public void GetDefaultSettingObjectTest()
+    {
+        var obj = new object();
+        var defaultObj = new object();
 
-            var source = new ConfigurationSource<object>(() => obj, () => defaultObj);
+        var source = new ConfigurationSource<object>(() => obj, () => defaultObj);
 
-            var defaultSettingObject = source.GetDefaultSettingObject();
-            var settingObject = source.GetSettingObject();
+        var defaultSettingObject = source.GetDefaultSettingObject();
+        var settingObject = source.GetSettingObject();
 
-            Assert.Same(defaultObj, defaultSettingObject);
-            Assert.Same(obj, settingObject);
-        }
+        Assert.Same(defaultObj, defaultSettingObject);
+        Assert.Same(obj, settingObject);
+    }
 
-        [Fact]
-        public void GetDefaultSettingObjectTestWithDefaultCtor()
-        {
-            var obj = new TestSetting {Text = "Test"};
+    [Fact]
+    public void GetDefaultSettingObjectTestWithDefaultCtor()
+    {
+        var obj = new TestSetting {Text = "Test"};
             
-            var source = new ConfigurationSource<TestSetting>(() => obj);
+        var source = new ConfigurationSource<TestSetting>(() => obj);
 
-            var settingObject = source.GetDefaultSettingObject() as TestSetting;
+        var settingObject = source.GetDefaultSettingObject() as TestSetting;
 
-            Assert.NotNull(settingObject);
-            Assert.Equal("DefaultCtorText", settingObject.Text);
-        }
+        Assert.NotNull(settingObject);
+        Assert.Equal("DefaultCtorText", settingObject.Text);
+    }
 
-        private class TestSetting
+    private class TestSetting
+    {
+        public TestSetting()
         {
-            public TestSetting()
-            {
-                Text = "DefaultCtorText";
-            }
-
-            public string Text { get; init; }
+            Text = "DefaultCtorText";
         }
+
+        public string Text { get; init; }
     }
 }

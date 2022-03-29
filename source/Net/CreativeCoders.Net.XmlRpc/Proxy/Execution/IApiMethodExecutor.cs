@@ -1,10 +1,9 @@
 ﻿using Castle.DynamicProxy;
 using CreativeCoders.Net.XmlRpc.Proxy.Specification;
 
-namespace CreativeCoders.Net.XmlRpc.Proxy.Execution
+namespace CreativeCoders.Net.XmlRpc.Proxy.Execution;
+
+public interface IApiMethodExecutor
 {
-    public interface IApiMethodExecutor
-    {
-        object Execute(ApiMethodInfo apiMethodInfo, IInvocation invocation);
-    }
+    object Execute(ApiMethodInfo apiMethodInfo, IInvocation invocation);
 }

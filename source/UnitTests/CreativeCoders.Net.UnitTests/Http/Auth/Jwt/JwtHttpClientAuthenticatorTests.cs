@@ -6,135 +6,134 @@ using CreativeCoders.Net.Http.Auth.Jwt;
 using FakeItEasy;
 using Xunit;
 
-namespace CreativeCoders.Net.UnitTests.Http.Auth.Jwt
+namespace CreativeCoders.Net.UnitTests.Http.Auth.Jwt;
+
+public class JwtHttpClientAuthenticatorTests
 {
-    public class JwtHttpClientAuthenticatorTests
+    [Fact]
+    public void CanAuthenticate_CredentialsIsNull_ReturnsFalse()
     {
-        [Fact]
-        public void CanAuthenticate_CredentialsIsNull_ReturnsFalse()
+        var jwtClientMock = A.Fake<IJwtClient>();
+
+        var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock);
+
+        Assert.False(jwtHttpClientAuthenticator.CanAuthenticate(new Uri("http://test.com")));
+    }
+
+    [Fact]
+    public void CanAuthenticate_CredentialsUserNameNull_ReturnsFalse()
+    {
+        var jwtClientMock = A.Fake<IJwtClient>();
+
+        var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock)
         {
-            var jwtClientMock = A.Fake<IJwtClient>();
+            Credentials = new NetworkCredential(null, "pass"),
+            TokenRequestUri = new Uri("http://test.com")
+        };
 
-            var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock);
+        Assert.False(jwtHttpClientAuthenticator.CanAuthenticate(new Uri("http://test.com")));
+    }
 
-            Assert.False(jwtHttpClientAuthenticator.CanAuthenticate(new Uri("http://test.com")));
-        }
+    [Fact]
+    public void CanAuthenticate_CredentialsPasswordNull_ReturnsFalse()
+    {
+        var jwtClientMock = A.Fake<IJwtClient>();
 
-        [Fact]
-        public void CanAuthenticate_CredentialsUserNameNull_ReturnsFalse()
+        var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock)
         {
-            var jwtClientMock = A.Fake<IJwtClient>();
+            Credentials = new NetworkCredential("user", (string) null),
+            TokenRequestUri = new Uri("http://test.com")
+        };
 
-            var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock)
-            {
-                Credentials = new NetworkCredential(null, "pass"),
-                TokenRequestUri = new Uri("http://test.com")
-            };
+        Assert.False(jwtHttpClientAuthenticator.CanAuthenticate(new Uri("http://test.com")));
+    }
 
-            Assert.False(jwtHttpClientAuthenticator.CanAuthenticate(new Uri("http://test.com")));
-        }
+    [Fact]
+    public void CanAuthenticate_CredentialsNotNullTokenRequestUriIsNull_ReturnsFalse()
+    {
+        var jwtClientMock = A.Fake<IJwtClient>();
 
-        [Fact]
-        public void CanAuthenticate_CredentialsPasswordNull_ReturnsFalse()
+        var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock)
         {
-            var jwtClientMock = A.Fake<IJwtClient>();
+            Credentials = new NetworkCredential("user", "pass")
+        };
 
-            var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock)
-            {
-                Credentials = new NetworkCredential("user", (string) null),
-                TokenRequestUri = new Uri("http://test.com")
-            };
+        Assert.False(jwtHttpClientAuthenticator.CanAuthenticate(new Uri("http://test.com")));
+    }
 
-            Assert.False(jwtHttpClientAuthenticator.CanAuthenticate(new Uri("http://test.com")));
-        }
+    [Fact]
+    public void CanAuthenticate_CredentialsNotNull_ReturnsTrue()
+    {
+        var jwtClientMock = A.Fake<IJwtClient>();
 
-        [Fact]
-        public void CanAuthenticate_CredentialsNotNullTokenRequestUriIsNull_ReturnsFalse()
+        var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock)
         {
-            var jwtClientMock = A.Fake<IJwtClient>();
+            Credentials = new NetworkCredential("user", "pass"),
+            TokenRequestUri = new Uri("http://test.com")
+        };
 
-            var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock)
-            {
-                Credentials = new NetworkCredential("user", "pass")
-            };
+        Assert.True(jwtHttpClientAuthenticator.CanAuthenticate(new Uri("http://test.com")));
+    }
 
-            Assert.False(jwtHttpClientAuthenticator.CanAuthenticate(new Uri("http://test.com")));
-        }
+    [Fact]
+    public async Task AuthenticateAsync_TokenRequestedAndPrepareRequest_RequestAuthHeaderIsSetCorrect()
+    {
+        const string expectedToken = "TokenData";
 
-        [Fact]
-        public void CanAuthenticate_CredentialsNotNull_ReturnsTrue()
+        var jwtClientMock = A.Fake<IJwtClient>();
+
+        A.CallTo(() => jwtClientMock.RequestTokenInfoAsync(new Uri("http://authtest.com/auth"), A<JwtTokenRequest>.Ignored))
+            .Returns(Task.FromResult(new JwtTokenInfo(expectedToken)));
+
+        var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock)
         {
-            var jwtClientMock = A.Fake<IJwtClient>();
+            Credentials = new NetworkCredential("user", "pass"),
+            TokenRequestUri = new Uri("http://authtest.com/auth")
+        };
 
-            var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock)
-            {
-                Credentials = new NetworkCredential("user", "pass"),
-                TokenRequestUri = new Uri("http://test.com")
-            };
+        await jwtHttpClientAuthenticator.AuthenticateAsync(new Uri("http://test.com"));
 
-            Assert.True(jwtHttpClientAuthenticator.CanAuthenticate(new Uri("http://test.com")));
-        }
+        var request = new HttpRequestMessage();
 
-        [Fact]
-        public async Task AuthenticateAsync_TokenRequestedAndPrepareRequest_RequestAuthHeaderIsSetCorrect()
-        {
-            const string expectedToken = "TokenData";
+        jwtHttpClientAuthenticator.PrepareHttpRequest(request);
 
-            var jwtClientMock = A.Fake<IJwtClient>();
+        var authHeader = request.Headers.Authorization;
 
-            A.CallTo(() => jwtClientMock.RequestTokenInfoAsync(new Uri("http://authtest.com/auth"), A<JwtTokenRequest>.Ignored))
-                .Returns(Task.FromResult(new JwtTokenInfo(expectedToken)));
+        Assert.NotNull(authHeader);
+        Assert.Equal("Bearer", authHeader.Scheme);
+        Assert.Equal(expectedToken, authHeader.Parameter);
+    }
 
-            var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock)
-            {
-                Credentials = new NetworkCredential("user", "pass"),
-                TokenRequestUri = new Uri("http://authtest.com/auth")
-            };
+    [Fact]
+    public async Task AuthenticateAsync_CanAuthenticateFalse_JwtClientIsNotCalled()
+    {
+        const string expectedToken = "TokenData";
 
-            await jwtHttpClientAuthenticator.AuthenticateAsync(new Uri("http://test.com"));
+        var jwtClientMock = A.Fake<IJwtClient>();
 
-            var request = new HttpRequestMessage();
+        A.CallTo(() => jwtClientMock.RequestTokenInfoAsync(new Uri("http://authtest.com/auth"),
+                A<JwtTokenRequest>.Ignored))
+            .Returns(Task.FromResult(new JwtTokenInfo(expectedToken)));
 
-            jwtHttpClientAuthenticator.PrepareHttpRequest(request);
+        var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock);
 
-            var authHeader = request.Headers.Authorization;
+        await jwtHttpClientAuthenticator.AuthenticateAsync(new Uri("http://test.com"));
 
-            Assert.NotNull(authHeader);
-            Assert.Equal("Bearer", authHeader.Scheme);
-            Assert.Equal(expectedToken, authHeader.Parameter);
-        }
+        A.CallTo(() => jwtClientMock.RequestTokenInfoAsync(A<Uri>.Ignored, A<JwtTokenRequest>.Ignored))
+            .MustNotHaveHappened();
+    }
 
-        [Fact]
-        public async Task AuthenticateAsync_CanAuthenticateFalse_JwtClientIsNotCalled()
-        {
-            const string expectedToken = "TokenData";
+    [Fact]
+    public void PrepareHttpRequest_NoToken_AuthHeaderOnRequestIsNotSet()
+    {
+        var jwtClientMock = A.Fake<IJwtClient>();
 
-            var jwtClientMock = A.Fake<IJwtClient>();
+        var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock);
 
-            A.CallTo(() => jwtClientMock.RequestTokenInfoAsync(new Uri("http://authtest.com/auth"),
-                    A<JwtTokenRequest>.Ignored))
-                .Returns(Task.FromResult(new JwtTokenInfo(expectedToken)));
+        var request = new HttpRequestMessage();
 
-            var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock);
+        jwtHttpClientAuthenticator.PrepareHttpRequest(request);
 
-            await jwtHttpClientAuthenticator.AuthenticateAsync(new Uri("http://test.com"));
-
-            A.CallTo(() => jwtClientMock.RequestTokenInfoAsync(A<Uri>.Ignored, A<JwtTokenRequest>.Ignored))
-                .MustNotHaveHappened();
-        }
-
-        [Fact]
-        public void PrepareHttpRequest_NoToken_AuthHeaderOnRequestIsNotSet()
-        {
-            var jwtClientMock = A.Fake<IJwtClient>();
-
-            var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock);
-
-            var request = new HttpRequestMessage();
-
-            jwtHttpClientAuthenticator.PrepareHttpRequest(request);
-
-            Assert.Null(request.Headers.Authorization);
-        }
+        Assert.Null(request.Headers.Authorization);
     }
 }

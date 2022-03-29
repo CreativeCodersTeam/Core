@@ -4,82 +4,81 @@ using CreativeCoders.Core;
 using CreativeCoders.Net.Avm.Tr064;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.Avm
+namespace CreativeCoders.Net.Avm;
+
+[PublicAPI]
+public class Hosts
 {
-    [PublicAPI]
-    public class Hosts
+    private readonly HostsApi _hostsApi;
+
+    public Hosts(string url, string userName, string password)
     {
-        private readonly HostsApi _hostsApi;
+        Ensure.IsNotNullOrWhitespace(url, nameof(url));
 
-        public Hosts(string url, string userName, string password)
+        _hostsApi = new HostsApi(url, userName, password);            
+    }
+
+    public HostEntry GetHostEntry(string macAddress)
+    {
+        Ensure.IsNotNullOrWhitespace(macAddress, nameof(macAddress));
+
+        var response = _hostsApi.GetSpecificHostEntry(macAddress);
+
+        var entry = new HostEntry
         {
-            Ensure.IsNotNullOrWhitespace(url, nameof(url));
+            MacAddress = macAddress,
+            IpAddress = response.IpAddress,
+            AddressSource = response.AddressSource,
+            LeaseTimeRemaining = response.LeaseTimeRemaining,
+            InterfaceType = response.InterfaceType,
+            IsActive = response.Active == 1,
+            HostName = response.HostName
+        };
 
-            _hostsApi = new HostsApi(url, userName, password);            
-        }
+        return entry;
+    }
 
-        public HostEntry GetHostEntry(string macAddress)
+    public int GetHostCount()
+    {
+        var response = _hostsApi.GetHostNumberOfEntries();
+        return response?.HostNumberOfEntries ?? 0;
+    }
+
+    public HostEntry GetHostEntry(int index)
+    {
+        var response = _hostsApi.GetGenericHostEntry(index);
+
+        var entry = new HostEntry
         {
-            Ensure.IsNotNullOrWhitespace(macAddress, nameof(macAddress));
+            MacAddress = response.MacAddress,
+            IpAddress = response.IpAddress,
+            AddressSource = response.AddressSource,
+            LeaseTimeRemaining = response.LeaseTimeRemaining,
+            InterfaceType = response.InterfaceType,
+            IsActive = response.Active == 1,
+            HostName = response.HostName
+        };
 
-            var response = _hostsApi.GetSpecificHostEntry(macAddress);
+        return entry;
+    }
 
-            var entry = new HostEntry
-            {
-                MacAddress = macAddress,
-                IpAddress = response.IpAddress,
-                AddressSource = response.AddressSource,
-                LeaseTimeRemaining = response.LeaseTimeRemaining,
-                InterfaceType = response.InterfaceType,
-                IsActive = response.Active == 1,
-                HostName = response.HostName
-            };
+    public IEnumerable<HostEntry> GetAllHostEntries()
+    {
+        return InternalGetAllHostEntries().ToArray();
+    }
 
-            return entry;
-        }
+    public IEnumerable<HostEntry> GetAllHostEntries(bool hostIsActive)
+    {
+        return InternalGetAllHostEntries().Where(host => host.IsActive == hostIsActive).ToArray();
+    }
 
-        public int GetHostCount()
+    private IEnumerable<HostEntry> InternalGetAllHostEntries()
+    {
+        var hostCount = GetHostCount();
+
+        for (var i = 0; i < hostCount; i++)
         {
-            var response = _hostsApi.GetHostNumberOfEntries();
-            return response?.HostNumberOfEntries ?? 0;
-        }
-
-        public HostEntry GetHostEntry(int index)
-        {
-            var response = _hostsApi.GetGenericHostEntry(index);
-
-            var entry = new HostEntry
-            {
-                MacAddress = response.MacAddress,
-                IpAddress = response.IpAddress,
-                AddressSource = response.AddressSource,
-                LeaseTimeRemaining = response.LeaseTimeRemaining,
-                InterfaceType = response.InterfaceType,
-                IsActive = response.Active == 1,
-                HostName = response.HostName
-            };
-
-            return entry;
-        }
-
-        public IEnumerable<HostEntry> GetAllHostEntries()
-        {
-            return InternalGetAllHostEntries().ToArray();
-        }
-
-        public IEnumerable<HostEntry> GetAllHostEntries(bool hostIsActive)
-        {
-            return InternalGetAllHostEntries().Where(host => host.IsActive == hostIsActive).ToArray();
-        }
-
-        private IEnumerable<HostEntry> InternalGetAllHostEntries()
-        {
-            var hostCount = GetHostCount();
-
-            for (var i = 0; i < hostCount; i++)
-            {
-                yield return GetHostEntry(i);
-            }
+            yield return GetHostEntry(i);
         }
     }
 }

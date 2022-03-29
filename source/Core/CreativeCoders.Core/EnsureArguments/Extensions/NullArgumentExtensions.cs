@@ -2,28 +2,27 @@ using System;
 
 #nullable enable
 // ReSharper disable once CheckNamespace
-namespace CreativeCoders.Core
+namespace CreativeCoders.Core;
+
+public static class NullArgumentExtensions
 {
-    public static class NullArgumentExtensions
+    public static ArgumentNotNull<T> NotNull<T>(in this Argument<T> argument, string? message = null)
     {
-        public static ArgumentNotNull<T> NotNull<T>(in this Argument<T> argument, string? message = null)
+        if (argument.Value is null)
         {
-            if (argument.Value is null)
-            {
-                ExceptionThrower.ThrowArgumentNullException(argument.Name, message);
-            }
-
-            return new ArgumentNotNull<T>(argument.Value, argument.Name);
+            ExceptionThrower.ThrowArgumentNullException(argument.Name, message);
         }
 
-        public static T? Null<T>(in this Argument<T> argument, string? message = null)
-        {
-            if (argument.Value is not null)
-            {
-                throw new ArgumentException(message ?? "Argument is not null", argument.Name);
-            }
+        return new ArgumentNotNull<T>(argument.Value, argument.Name);
+    }
 
-            return argument.Value;
+    public static T? Null<T>(in this Argument<T> argument, string? message = null)
+    {
+        if (argument.Value is not null)
+        {
+            throw new ArgumentException(message ?? "Argument is not null", argument.Name);
         }
+
+        return argument.Value;
     }
 }

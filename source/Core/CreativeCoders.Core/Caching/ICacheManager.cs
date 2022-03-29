@@ -1,10 +1,9 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Core.Caching
+namespace CreativeCoders.Core.Caching;
+
+[PublicAPI]
+public interface ICacheManager
 {
-    [PublicAPI]
-    public interface ICacheManager
-    {
-        ICache<TKey, TValue> GetCache<TKey, TValue>(string name);
-    }
+    ICache<TKey, TValue> GetCache<TKey, TValue>(string name);
 }

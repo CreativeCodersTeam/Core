@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Core.UnitTests.Comparing.TestData
+﻿namespace CreativeCoders.Core.UnitTests.Comparing.TestData;
+
+public interface IComparableIntInterfaceObject
 {
-    public interface IComparableIntInterfaceObject
-    {
-        int IntValue { get; set; }
-    }
+    int IntValue { get; set; }
 }

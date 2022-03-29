@@ -1,6 +1,5 @@
-﻿namespace CreativeCoders.Mvvm.Ribbon.Controls
+﻿namespace CreativeCoders.Mvvm.Ribbon.Controls;
+
+public abstract class RibbonControlViewModel : RibbonItemViewModel
 {
-    public abstract class RibbonControlViewModel : RibbonItemViewModel
-    {
-    }
 }

@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Net.XmlRpc.Definition
+﻿namespace CreativeCoders.Net.XmlRpc.Definition;
+
+public interface IMethodExceptionHandler
 {
-    public interface IMethodExceptionHandler
-    {
-        void HandleException(MethodExceptionHandlerArguments arguments);
-    }
+    void HandleException(MethodExceptionHandlerArguments arguments);
 }

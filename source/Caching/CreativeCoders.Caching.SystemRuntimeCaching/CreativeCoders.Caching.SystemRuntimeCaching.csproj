@@ -1,19 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>Library</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
-        <Authors>CreativeCoders</Authors>
-        <Description>SystemRuntimeCaching implementation for CreativeCoders.Core.Caching</Description>
-	    <RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
-    </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<Authors>CreativeCoders</Authors>
+		<Description>SystemRuntimeCaching implementation for CreativeCoders.Core.Caching</Description>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
+	</PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-    </ItemGroup>
-    
-    <ItemGroup>
-        <PackageReference Include="System.Runtime.Caching" Version="5.0.0" />
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.Runtime.Caching" Version="5.0.0" />
+	</ItemGroup>
 
 </Project>

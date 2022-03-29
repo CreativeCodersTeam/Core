@@ -1,18 +1,17 @@
 ﻿using System;
 
-namespace CreativeCoders.Net.Soap.Request
+namespace CreativeCoders.Net.Soap.Request;
+
+[AttributeUsage(AttributeTargets.Class)]
+public class SoapRequestAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class SoapRequestAttribute : Attribute
+    public SoapRequestAttribute(string name, string nameSpace)
     {
-        public SoapRequestAttribute(string name, string nameSpace)
-        {
-            Name = name;
-            NameSpace = nameSpace;
-        }
-
-        public string Name { get; }
-
-        public string NameSpace { get; }
+        Name = name;
+        NameSpace = nameSpace;
     }
+
+    public string Name { get; }
+
+    public string NameSpace { get; }
 }

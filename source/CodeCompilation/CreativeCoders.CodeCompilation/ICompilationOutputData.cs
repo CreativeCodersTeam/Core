@@ -1,9 +1,8 @@
 ﻿using System.IO;
 
-namespace CreativeCoders.CodeCompilation
+namespace CreativeCoders.CodeCompilation;
+
+public interface ICompilationOutputData
 {
-    public interface ICompilationOutputData
-    {
-        Stream GetPeStream();
-    }
+    Stream GetPeStream();
 }

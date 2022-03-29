@@ -6,125 +6,124 @@ using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Reflection;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Di.Building
+namespace CreativeCoders.Di.Building;
+
+[PublicAPI]
+public static class DiContainerBuilderExtensions
 {
-    [PublicAPI]
-    public static class DiContainerBuilderExtensions
+    public static IDiContainerBuilder RegisterImplementations(this IDiContainerBuilder builder,
+        IEnumerable<Type> types)
     {
-        public static IDiContainerBuilder RegisterImplementations(this IDiContainerBuilder builder,
-            IEnumerable<Type> types)
-        {
-            new AutoRegisterImplementations(builder).ForTypes(types).Register();
+        new AutoRegisterImplementations(builder).ForTypes(types).Register();
 
-            return builder;
+        return builder;
+    }
+
+    public static IDiContainerBuilder RegisterImplementations(this IDiContainerBuilder builder,
+        Assembly assembly)
+    {
+        new AutoRegisterImplementations(builder).ForTypesInAssembly(assembly).Register();
+
+        return builder;
+    }
+
+    public static IDiContainerBuilder RegisterImplementations(this IDiContainerBuilder builder,
+        IEnumerable<Assembly> assemblies)
+    {
+        var autoRegisterImplementations = new AutoRegisterImplementations(builder);
+
+        assemblies.ForEach(assembly => autoRegisterImplementations.ForTypesInAssembly(assembly));
+
+        autoRegisterImplementations.Register();
+
+        return builder;
+    }
+
+    public static IDiContainerBuilder RegisterImplementations(this IDiContainerBuilder builder)
+    {
+        new AutoRegisterImplementations(builder).ForTypesInAllAssemblies().Register();
+
+        return builder;
+    }
+
+    public static IDiContainerBuilder AddTransientCollectionFor<TService>(this IDiContainerBuilder builder)
+        where TService : class
+    {
+        AddCollection(typeof(TService), types => builder.AddTransientCollection<TService>(types));
+
+        return builder;
+    }
+
+    public static IDiContainerBuilder AddTransientCollectionFor<TService>(this IDiContainerBuilder builder,
+        bool withReflectionOnlyAssemblies)
+        where TService : class
+    {
+        AddCollection(typeof(TService), types => builder.AddTransientCollection<TService>(types),
+            withReflectionOnlyAssemblies);
+
+        return builder;
+    }
+
+    public static IDiContainerBuilder AddScopedCollectionFor<TService>(this IDiContainerBuilder builder)
+        where TService : class
+    {
+        AddCollection(typeof(TService), types => builder.AddScopedCollection<TService>(types));
+
+        return builder;
+    }
+
+    public static IDiContainerBuilder AddScopedCollectionFor<TService>(this IDiContainerBuilder builder,
+        bool withReflectionOnlyAssemblies)
+        where TService : class
+    {
+        AddCollection(typeof(TService), types => builder.AddScopedCollection<TService>(types),
+            withReflectionOnlyAssemblies);
+
+        return builder;
+    }
+
+    public static IDiContainerBuilder AddSingletonCollectionFor<TService>(this IDiContainerBuilder builder)
+        where TService : class
+    {
+        AddCollection(typeof(TService), types => builder.AddScopedCollection<TService>(types));
+
+        return builder;
+    }
+
+    public static IDiContainerBuilder AddSingletonCollectionFor<TService>(this IDiContainerBuilder builder,
+        bool withReflectionOnlyAssemblies)
+        where TService : class
+    {
+        AddCollection(typeof(TService), types => builder.AddScopedCollection<TService>(types),
+            withReflectionOnlyAssemblies);
+
+        return builder;
+    }
+
+    private static void AddCollection(Type serviceType, Action<Type[]> addImplementations)
+    {
+        if (!serviceType.IsInterface)
+        {
+            throw new NotSupportedException(
+                $"Service type must be an interface. Given service type = '{serviceType.FullName}'");
         }
 
-        public static IDiContainerBuilder RegisterImplementations(this IDiContainerBuilder builder,
-            Assembly assembly)
-        {
-            new AutoRegisterImplementations(builder).ForTypesInAssembly(assembly).Register();
+        var implementationTypes = serviceType.GetImplementations().ToArray();
 
-            return builder;
+        addImplementations(implementationTypes);
+    }
+
+    private static void AddCollection(Type serviceType, Action<Type[]> addImplementations,
+        bool withReflectionOnlyAssemblies)
+    {
+        if (!serviceType.IsInterface)
+        {
+            throw new NotSupportedException(
+                $"Service type must be an interface. Given service type = '{serviceType.FullName}'");
         }
 
-        public static IDiContainerBuilder RegisterImplementations(this IDiContainerBuilder builder,
-            IEnumerable<Assembly> assemblies)
-        {
-            var autoRegisterImplementations = new AutoRegisterImplementations(builder);
+        var implementationTypes = serviceType.GetImplementations(withReflectionOnlyAssemblies).ToArray();
 
-            assemblies.ForEach(assembly => autoRegisterImplementations.ForTypesInAssembly(assembly));
-
-            autoRegisterImplementations.Register();
-
-            return builder;
-        }
-
-        public static IDiContainerBuilder RegisterImplementations(this IDiContainerBuilder builder)
-        {
-            new AutoRegisterImplementations(builder).ForTypesInAllAssemblies().Register();
-
-            return builder;
-        }
-
-        public static IDiContainerBuilder AddTransientCollectionFor<TService>(this IDiContainerBuilder builder)
-            where TService : class
-        {
-            AddCollection(typeof(TService), types => builder.AddTransientCollection<TService>(types));
-
-            return builder;
-        }
-
-        public static IDiContainerBuilder AddTransientCollectionFor<TService>(this IDiContainerBuilder builder,
-            bool withReflectionOnlyAssemblies)
-            where TService : class
-        {
-            AddCollection(typeof(TService), types => builder.AddTransientCollection<TService>(types),
-                withReflectionOnlyAssemblies);
-
-            return builder;
-        }
-
-        public static IDiContainerBuilder AddScopedCollectionFor<TService>(this IDiContainerBuilder builder)
-            where TService : class
-        {
-            AddCollection(typeof(TService), types => builder.AddScopedCollection<TService>(types));
-
-            return builder;
-        }
-
-        public static IDiContainerBuilder AddScopedCollectionFor<TService>(this IDiContainerBuilder builder,
-            bool withReflectionOnlyAssemblies)
-            where TService : class
-        {
-            AddCollection(typeof(TService), types => builder.AddScopedCollection<TService>(types),
-                withReflectionOnlyAssemblies);
-
-            return builder;
-        }
-
-        public static IDiContainerBuilder AddSingletonCollectionFor<TService>(this IDiContainerBuilder builder)
-            where TService : class
-        {
-            AddCollection(typeof(TService), types => builder.AddScopedCollection<TService>(types));
-
-            return builder;
-        }
-
-        public static IDiContainerBuilder AddSingletonCollectionFor<TService>(this IDiContainerBuilder builder,
-            bool withReflectionOnlyAssemblies)
-            where TService : class
-        {
-            AddCollection(typeof(TService), types => builder.AddScopedCollection<TService>(types),
-                withReflectionOnlyAssemblies);
-
-            return builder;
-        }
-
-        private static void AddCollection(Type serviceType, Action<Type[]> addImplementations)
-        {
-            if (!serviceType.IsInterface)
-            {
-                throw new NotSupportedException(
-                    $"Service type must be an interface. Given service type = '{serviceType.FullName}'");
-            }
-
-            var implementationTypes = serviceType.GetImplementations().ToArray();
-
-            addImplementations(implementationTypes);
-        }
-
-        private static void AddCollection(Type serviceType, Action<Type[]> addImplementations,
-            bool withReflectionOnlyAssemblies)
-        {
-            if (!serviceType.IsInterface)
-            {
-                throw new NotSupportedException(
-                    $"Service type must be an interface. Given service type = '{serviceType.FullName}'");
-            }
-
-            var implementationTypes = serviceType.GetImplementations(withReflectionOnlyAssemblies).ToArray();
-
-            addImplementations(implementationTypes);
-        }
+        addImplementations(implementationTypes);
     }
 }

@@ -5,42 +5,41 @@ using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Reflection;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Skeletor.Infrastructure.Default
+namespace CreativeCoders.Mvvm.Skeletor.Infrastructure.Default;
+
+[PublicAPI]
+public class ViewAttributeInitializer : IViewAttributeInitializer
 {
-    [PublicAPI]
-    public class ViewAttributeInitializer : IViewAttributeInitializer
+    private readonly IViewModelToViewMappings _viewModelToViewMappings;
+
+    public ViewAttributeInitializer(IViewModelToViewMappings viewModelToViewMappings)
     {
-        private readonly IViewModelToViewMappings _viewModelToViewMappings;
+        _viewModelToViewMappings = viewModelToViewMappings;
+    }
 
-        public ViewAttributeInitializer(IViewModelToViewMappings viewModelToViewMappings)
+    public void InitFromAssembly(Assembly assembly)
+    {
+        var typesWithAttributes =
+            from type in assembly.GetTypesSafe()
+            let attribute = type.GetCustomAttribute<ViewAttribute>()
+            where attribute != null
+            select (ViewType: type, ViewAttribute: attribute);
+
+        typesWithAttributes.ForEach(x =>
         {
-            _viewModelToViewMappings = viewModelToViewMappings;
-        }
+            var viewModelType = x.ViewAttribute?.ViewModelType;
 
-        public void InitFromAssembly(Assembly assembly)
-        {
-            var typesWithAttributes =
-                from type in assembly.GetTypesSafe()
-                let attribute = type.GetCustomAttribute<ViewAttribute>()
-                where attribute != null
-                select (ViewType: type, ViewAttribute: attribute);
-
-            typesWithAttributes.ForEach(x =>
+            if (viewModelType == null)
             {
-                var viewModelType = x.ViewAttribute?.ViewModelType;
-
-                if (viewModelType == null)
-                {
-                    throw new ArgumentException("No view model type declared");
-                }
+                throw new ArgumentException("No view model type declared");
+            }
                 
-                _viewModelToViewMappings.AddMapping(viewModelType, x.ViewType);
-            });
-        }
+            _viewModelToViewMappings.AddMapping(viewModelType, x.ViewType);
+        });
+    }
 
-        public void InitFromAllAssemblies()
-        {
-            ReflectionUtils.GetAllAssemblies().ForEach(InitFromAssembly);
-        }
+    public void InitFromAllAssemblies()
+    {
+        ReflectionUtils.GetAllAssemblies().ForEach(InitFromAssembly);
     }
 }

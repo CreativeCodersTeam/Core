@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CreativeCoders.Net.Servers.Http
+namespace CreativeCoders.Net.Servers.Http;
+
+public interface IHttpServer
 {
-    public interface IHttpServer
-    {
-        Task StartAsync();
+    Task StartAsync();
 
-        Task StopAsync();
+    Task StopAsync();
 
-        void RegisterRequestHandler(IHttpRequestHandler requestHandler);
+    void RegisterRequestHandler(IHttpRequestHandler requestHandler);
 
-        IList<string> Urls { get; }
-    }
+    IList<string> Urls { get; }
 }

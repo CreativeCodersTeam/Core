@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Net.WebRequests
+﻿namespace CreativeCoders.Net.WebRequests;
+
+public interface IWebRequestFactory
 {
-    public interface IWebRequestFactory
-    {
-        IHttpWebRequest CreateHttpWebRequest(string url);
-    }
+    IHttpWebRequest CreateHttpWebRequest(string url);
 }

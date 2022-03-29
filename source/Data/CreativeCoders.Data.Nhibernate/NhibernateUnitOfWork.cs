@@ -4,58 +4,57 @@ using CreativeCoders.Core;
 using JetBrains.Annotations;
 using NHibernate;
 
-namespace CreativeCoders.Data.Nhibernate
+namespace CreativeCoders.Data.Nhibernate;
+
+[PublicAPI]
+public class NhibernateUnitOfWork : UnitOfWorkBase
 {
-    [PublicAPI]
-    public class NhibernateUnitOfWork : UnitOfWorkBase
+    private readonly ISession _session;
+
+    private readonly ITransaction _transaction;
+
+    public NhibernateUnitOfWork(ISessionFactory sessionFactory)
     {
-        private readonly ISession _session;
+        Ensure.IsNotNull(sessionFactory, "sessionFactory");
 
-        private readonly ITransaction _transaction;
+        _session = sessionFactory.OpenSession();
+        _transaction = _session.BeginTransaction(IsolationLevel.ReadCommitted);
+    }
 
-        public NhibernateUnitOfWork(ISessionFactory sessionFactory)
+    protected override IRepository<TKey, TEntity> CreateRepository<TKey, TEntity>()
+    {
+        return new NhibernateRepository<TKey, TEntity>(_session);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (!disposing)
         {
-            Ensure.IsNotNull(sessionFactory, "sessionFactory");
-
-            _session = sessionFactory.OpenSession();
-            _transaction = _session.BeginTransaction(IsolationLevel.ReadCommitted);
+            return;
         }
-
-        protected override IRepository<TKey, TEntity> CreateRepository<TKey, TEntity>()
-        {
-            return new NhibernateRepository<TKey, TEntity>(_session);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (!disposing)
-            {
-                return;
-            }
             
-            if (_session.IsOpen)
-            {
-                _session.Close();
-            }
+        if (_session.IsOpen)
+        {
+            _session.Close();
+        }
             
-            GC.SuppressFinalize(this);
-        }
+        GC.SuppressFinalize(this);
+    }
 
-        public override void Commit()
+    public override void Commit()
+    {
+        if (!_transaction.IsActive)
         {
-            if (!_transaction.IsActive)
-            {
-                throw new InvalidOperationException("Transaction is not active.");
-            }
-            _transaction.Commit();
+            throw new InvalidOperationException("Transaction is not active.");
         }
+        _transaction.Commit();
+    }
 
-        public override void Rollback()
+    public override void Rollback()
+    {
+        if (_transaction.IsActive)
         {
-            if (_transaction.IsActive)
-            {
-                _transaction.Rollback();
-            }
+            _transaction.Rollback();
         }
     }
 }

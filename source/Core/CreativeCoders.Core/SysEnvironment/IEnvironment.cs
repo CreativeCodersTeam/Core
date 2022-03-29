@@ -1,80 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CreativeCoders.Core.SysEnvironment
+namespace CreativeCoders.Core.SysEnvironment;
+
+public interface IEnvironment
 {
-    public interface IEnvironment
-    {
-        void Exit(int exitCode);
+    void Exit(int exitCode);
 
-        string ExpandEnvironmentVariables(string name);
+    string ExpandEnvironmentVariables(string name);
 
-        void FailFast(string message);
+    void FailFast(string message);
 
-        void FailFast(string message, Exception exception);
+    void FailFast(string message, Exception exception);
 
-        string[] GetCommandLineArgs();
+    string[] GetCommandLineArgs();
 
-        string GetEnvironmentVariable(string variable);
+    string GetEnvironmentVariable(string variable);
 
-        string GetEnvironmentVariable(string variable, EnvironmentVariableTarget target);
+    string GetEnvironmentVariable(string variable, EnvironmentVariableTarget target);
 
-        IDictionary<string, object> GetEnvironmentVariables();
+    IDictionary<string, object> GetEnvironmentVariables();
 
-        IDictionary<string, object> GetEnvironmentVariables(EnvironmentVariableTarget target);
+    IDictionary<string, object> GetEnvironmentVariables(EnvironmentVariableTarget target);
 
-        string GetFolderPath(Environment.SpecialFolder folder);
+    string GetFolderPath(Environment.SpecialFolder folder);
 
-        string GetFolderPath(Environment.SpecialFolder folder, Environment.SpecialFolderOption option);
+    string GetFolderPath(Environment.SpecialFolder folder, Environment.SpecialFolderOption option);
 
-        string[] GetLogicalDrives();
+    string[] GetLogicalDrives();
 
-        void SetEnvironmentVariable(string variable, string value);
+    void SetEnvironmentVariable(string variable, string value);
 
-        void SetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target);
+    void SetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target);
 
-        string GetAppDirectory();
+    string GetAppDirectory();
 
-        string GetAppFileName();
+    string GetAppFileName();
 
-        string CommandLine { get; }
+    string CommandLine { get; }
 
-        string CurrentDirectory { get; set; }
+    string CurrentDirectory { get; set; }
 
-        int CurrentManagedThreadId { get; }
+    int CurrentManagedThreadId { get; }
 
-        int ExitCode { get; set; }
+    int ExitCode { get; set; }
 
-        bool HasShutdownStarted { get; }
+    bool HasShutdownStarted { get; }
 
-        bool Is64BitOperatingSystem { get; }
+    bool Is64BitOperatingSystem { get; }
 
-        bool Is64BitProcess { get; }
+    bool Is64BitProcess { get; }
 
-        string MachineName { get; }
+    string MachineName { get; }
 
-        string NewLine { get; }
+    string NewLine { get; }
 
-        OperatingSystem OSVersion { get; }
+    OperatingSystem OSVersion { get; }
 
-        int ProcessorCount { get; }
+    int ProcessorCount { get; }
 
-        string StackTrace { get; }
+    string StackTrace { get; }
 
-        string SystemDirectory { get; }
+    string SystemDirectory { get; }
 
-        int SystemPageSize { get; }
+    int SystemPageSize { get; }
 
-        int TickCount { get; }
+    int TickCount { get; }
 
-        string UserDomainName { get; }
+    string UserDomainName { get; }
 
-        bool UserInteractive { get; }
+    bool UserInteractive { get; }
 
-        string UserName { get; }
+    string UserName { get; }
 
-        Version Version { get; }
+    Version Version { get; }
 
-        long WorkingSet { get; }        
-    }
+    long WorkingSet { get; }        
 }

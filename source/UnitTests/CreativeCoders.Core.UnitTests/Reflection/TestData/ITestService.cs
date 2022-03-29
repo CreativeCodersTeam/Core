@@ -1,8 +1,7 @@
 ﻿#nullable enable
-namespace CreativeCoders.Core.UnitTests.Reflection.TestData
-{
-    public interface ITestService
-    {
+namespace CreativeCoders.Core.UnitTests.Reflection.TestData;
 
-    }
+public interface ITestService
+{
+
 }

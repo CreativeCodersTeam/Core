@@ -1,19 +1,18 @@
 ﻿using System;
 
-namespace CreativeCoders.Di.Building
+namespace CreativeCoders.Di.Building;
+
+[AttributeUsage(AttributeTargets.Class)]
+public class ImplementsAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ImplementsAttribute : Attribute
+    public ImplementsAttribute(Type serviceType)
     {
-        public ImplementsAttribute(Type serviceType)
-        {
-            ServiceType = serviceType;
-        }
-
-        public Type ServiceType { get; }
-
-        public ImplementationLifecycle Lifecycle { get; set; } = ImplementationLifecycle.Transient;
-
-        //public string Name { get; set; } = string.Empty;
+        ServiceType = serviceType;
     }
+
+    public Type ServiceType { get; }
+
+    public ImplementationLifecycle Lifecycle { get; set; } = ImplementationLifecycle.Transient;
+
+    //public string Name { get; set; } = string.Empty;
 }

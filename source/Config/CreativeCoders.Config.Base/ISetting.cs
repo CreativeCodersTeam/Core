@@ -1,8 +1,7 @@
-﻿namespace CreativeCoders.Config.Base
+﻿namespace CreativeCoders.Config.Base;
+
+public interface ISetting<out T>
+    where T : class
 {
-    public interface ISetting<out T>
-        where T : class
-    {
-        T Value { get; }
-    }
+    T Value { get; }
 }

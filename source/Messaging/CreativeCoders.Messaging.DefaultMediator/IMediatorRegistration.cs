@@ -1,14 +1,13 @@
 using System;
 using System.Threading.Tasks;
 
-namespace CreativeCoders.Messaging.DefaultMediator
+namespace CreativeCoders.Messaging.DefaultMediator;
+
+internal interface IMediatorRegistration : IDisposable
 {
-    internal interface IMediatorRegistration : IDisposable
-    {
-        Task ExecuteAsync(object message);
+    Task ExecuteAsync(object message);
         
-        object Target { get; }
+    object Target { get; }
         
-        bool IsAlive();
-    }
+    bool IsAlive();
 }

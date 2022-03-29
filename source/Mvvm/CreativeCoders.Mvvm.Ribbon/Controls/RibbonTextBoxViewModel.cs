@@ -1,9 +1,8 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Ribbon.Controls
+namespace CreativeCoders.Mvvm.Ribbon.Controls;
+
+[PublicAPI]
+public class RibbonTextBoxViewModel : RibbonControlViewModel
 {
-    [PublicAPI]
-    public class RibbonTextBoxViewModel : RibbonControlViewModel
-    {
-    }
 }

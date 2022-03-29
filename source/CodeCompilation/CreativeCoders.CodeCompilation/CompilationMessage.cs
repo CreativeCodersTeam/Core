@@ -2,28 +2,27 @@
 using CreativeCoders.Core.Text;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.CodeCompilation
+namespace CreativeCoders.CodeCompilation;
+
+[PublicAPI]
+public class CompilationMessage
 {
-    [PublicAPI]
-    public class CompilationMessage
+    public CompilationMessage(CompilationMessageType messageType, TextSpan sourceSpan, string message)
     {
-        public CompilationMessage(CompilationMessageType messageType, TextSpan sourceSpan, string message)
-        {
-            Ensure.IsNotNull(messageType, nameof(messageType));
-            Ensure.IsNotNull(sourceSpan, nameof(sourceSpan));
+        Ensure.IsNotNull(messageType, nameof(messageType));
+        Ensure.IsNotNull(sourceSpan, nameof(sourceSpan));
             
-            MessageType = messageType;
-            SourceSpan = sourceSpan;
-            Message = message;
-            IsInSource = !SourceSpan.IsEmpty;
-        }
-
-        public CompilationMessageType MessageType { get; }
-
-        public bool IsInSource { get; }
-
-        public TextSpan SourceSpan { get; }
-
-        public string Message { get; }
+        MessageType = messageType;
+        SourceSpan = sourceSpan;
+        Message = message;
+        IsInSource = !SourceSpan.IsEmpty;
     }
+
+    public CompilationMessageType MessageType { get; }
+
+    public bool IsInSource { get; }
+
+    public TextSpan SourceSpan { get; }
+
+    public string Message { get; }
 }

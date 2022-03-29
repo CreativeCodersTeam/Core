@@ -4,29 +4,28 @@ using CreativeCoders.Core;
 using CreativeCoders.SysConsole.App;
 using CreativeCoders.SysConsole.CliArguments.Building;
 
-namespace CreativeCoders.SysConsole.CliArguments
+namespace CreativeCoders.SysConsole.CliArguments;
+
+public class CliBuilderExecutor : IConsoleAppExecutor
 {
-    public class CliBuilderExecutor : IConsoleAppExecutor
+    private readonly Action<ICliBuilder> _setupCliBuilder;
+
+    private readonly IServiceProvider _serviceProvider;
+
+    public CliBuilderExecutor(Action<ICliBuilder> setupCliBuilder, IServiceProvider serviceProvider)
     {
-        private readonly Action<ICliBuilder> _setupCliBuilder;
+        _setupCliBuilder = Ensure.NotNull(setupCliBuilder, nameof(setupCliBuilder));
+        _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+    }
 
-        private readonly IServiceProvider _serviceProvider;
+    public async Task<int> ExecuteAsync(string[] args)
+    {
+        var cliBuilder = new DefaultCliBuilder(_serviceProvider);
 
-        public CliBuilderExecutor(Action<ICliBuilder> setupCliBuilder, IServiceProvider serviceProvider)
-        {
-            _setupCliBuilder = Ensure.NotNull(setupCliBuilder, nameof(setupCliBuilder));
-            _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
-        }
+        _setupCliBuilder(cliBuilder);
 
-        public async Task<int> ExecuteAsync(string[] args)
-        {
-            var cliBuilder = new DefaultCliBuilder(_serviceProvider);
+        var cliExecutor = cliBuilder.BuildExecutor();
 
-            _setupCliBuilder(cliBuilder);
-
-            var cliExecutor = cliBuilder.BuildExecutor();
-
-            return await cliExecutor.ExecuteAsync(args).ConfigureAwait(false);
-        }
+        return await cliExecutor.ExecuteAsync(args).ConfigureAwait(false);
     }
 }

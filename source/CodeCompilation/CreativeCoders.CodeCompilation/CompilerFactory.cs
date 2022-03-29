@@ -2,23 +2,22 @@
 using CreativeCoders.Core;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.CodeCompilation
+namespace CreativeCoders.CodeCompilation;
+
+[PublicAPI]
+public class CompilerFactory : ICompilerFactory
 {
-    [PublicAPI]
-    public class CompilerFactory : ICompilerFactory
+    private readonly Func<ICompiler> _createCompiler;
+
+    public CompilerFactory(Func<ICompiler> createCompiler)
     {
-        private readonly Func<ICompiler> _createCompiler;
+        Ensure.IsNotNull(createCompiler, nameof(createCompiler));
 
-        public CompilerFactory(Func<ICompiler> createCompiler)
-        {
-            Ensure.IsNotNull(createCompiler, nameof(createCompiler));
+        _createCompiler = createCompiler;
+    }
 
-            _createCompiler = createCompiler;
-        }
-
-        public ICompiler CreateCompiler()
-        {
-            return _createCompiler();
-        }
+    public ICompiler CreateCompiler()
+    {
+        return _createCompiler();
     }
 }

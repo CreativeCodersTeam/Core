@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Data.EfCore.Modeling
+namespace CreativeCoders.Data.EfCore.Modeling;
+
+[PublicAPI]
+public interface IEfCoreEntityModelBuilderSource
 {
-    [PublicAPI]
-    public interface IEfCoreEntityModelBuilderSource
-    {
-        IEfCoreEntityModelBuilderSource Add(Type entityModelBuilderType);
+    IEfCoreEntityModelBuilderSource Add(Type entityModelBuilderType);
 
-        IEfCoreEntityModelBuilderSource Add(Assembly assembly);
+    IEfCoreEntityModelBuilderSource Add(Assembly assembly);
 
-        IEfCoreEntityModelBuilderSource Add(IEfCoreEntityModelBuilder entityModelBuilder);
+    IEfCoreEntityModelBuilderSource Add(IEfCoreEntityModelBuilder entityModelBuilder);
 
-        void AddFromAllAssemblies();
+    void AddFromAllAssemblies();
 
-        IEnumerable<IEfCoreEntityModelBuilder> GetEntityModelBuilders();
-    }
+    IEnumerable<IEfCoreEntityModelBuilder> GetEntityModelBuilders();
 }

@@ -3,57 +3,56 @@ using CreativeCoders.Core;
 using JetBrains.Annotations;
 using Microsoft.Win32;
 
-namespace CreativeCoders.Mvvm.FileDialogService
+namespace CreativeCoders.Mvvm.FileDialogService;
+
+[PublicAPI]
+public class Win32FileDialogService : IFileDialogService
 {
-    [PublicAPI]
-    public class Win32FileDialogService : IFileDialogService
+    private static readonly MapperConfiguration MapperConfig;
+
+    static Win32FileDialogService()
     {
-        private static readonly MapperConfiguration MapperConfig;
+        MapperConfig = new MapperConfiguration(CreateMaps);
+    }
 
-        static Win32FileDialogService()
-        {
-            MapperConfig = new MapperConfiguration(CreateMaps);            
-        }
+    private static void CreateMaps(IMapperConfigurationExpression cfg)
+    {
+        cfg.CreateMap<OpenFileDialogOptions, OpenFileDialog>();
+        cfg.CreateMap<SaveFileDialogOptions, SaveFileDialog>();
 
-        private static void CreateMaps(IMapperConfigurationExpression cfg)
-        {
-            cfg.CreateMap<OpenFileDialogOptions, OpenFileDialog>();
-            cfg.CreateMap<SaveFileDialogOptions, SaveFileDialog>();
+        cfg.CreateMap<OpenFileDialog, OpenFileDialogOptions>();
+        cfg.CreateMap<SaveFileDialog, SaveFileDialogOptions>();
+    }
 
-            cfg.CreateMap<OpenFileDialog, OpenFileDialogOptions>();
-            cfg.CreateMap<SaveFileDialog, SaveFileDialogOptions>();
-        }
+    bool IFileDialogService.ShowOpenFileDialog(OpenFileDialogOptions openDialogOptions)
+    {
+        Ensure.IsNotNull(openDialogOptions, nameof(openDialogOptions));
 
-        bool IFileDialogService.ShowOpenFileDialog(OpenFileDialogOptions openDialogOptions)
-        {
-            Ensure.IsNotNull(openDialogOptions, nameof(openDialogOptions));
+        var openFileDlg = new OpenFileDialog();
 
-            var openFileDlg = new OpenFileDialog();
+        var mapper = MapperConfig.CreateMapper();
+        mapper.Map(openDialogOptions, openFileDlg);
 
-            var mapper = MapperConfig.CreateMapper();
-            mapper.Map(openDialogOptions, openFileDlg);
+        var dialogResult = openFileDlg.ShowDialog() == true;
 
-            var dialogResult = openFileDlg.ShowDialog() == true;
+        mapper.Map(openFileDlg, openDialogOptions);
 
-            mapper.Map(openFileDlg, openDialogOptions);
+        return dialogResult;
+    }
 
-            return dialogResult;
-        }
+    bool IFileDialogService.ShowSaveFileDialog(SaveFileDialogOptions saveDialogOptions)
+    {
+        Ensure.IsNotNull(saveDialogOptions, nameof(saveDialogOptions));
 
-        bool IFileDialogService.ShowSaveFileDialog(SaveFileDialogOptions saveDialogOptions)
-        {
-            Ensure.IsNotNull(saveDialogOptions, nameof(saveDialogOptions));
+        var saveFileDlg = new SaveFileDialog();
 
-            var saveFileDlg = new SaveFileDialog();
+        var mapper = MapperConfig.CreateMapper();
+        mapper.Map(saveDialogOptions, saveFileDlg);
 
-            var mapper = MapperConfig.CreateMapper();
-            mapper.Map(saveDialogOptions, saveFileDlg);
+        var dialogResult = saveFileDlg.ShowDialog() == true;
 
-            var dialogResult = saveFileDlg.ShowDialog() == true;
+        mapper.Map(saveFileDlg, saveDialogOptions);
 
-            mapper.Map(saveFileDlg, saveDialogOptions);
-
-            return dialogResult;
-        }
+        return dialogResult;
     }
 }

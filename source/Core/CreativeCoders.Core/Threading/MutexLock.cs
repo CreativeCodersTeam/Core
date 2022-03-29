@@ -1,57 +1,56 @@
 ﻿using System;
 using System.Threading;
 
-namespace CreativeCoders.Core.Threading
+namespace CreativeCoders.Core.Threading;
+
+public class MutexLock : IDisposable
 {
-    public class MutexLock : IDisposable
+    private Mutex _mutex;
+
+    private bool _disposed;
+
+    private readonly bool _hasMutexLock;
+
+    public MutexLock(string mutexName)
     {
-        private Mutex _mutex;
+        Ensure.IsNotNullOrWhitespace(mutexName, nameof(mutexName));
 
-        private bool _disposed;
-
-        private readonly bool _hasMutexLock;
-
-        public MutexLock(string mutexName)
+        if (!Mutex.TryOpenExisting(mutexName, out _mutex))
         {
-            Ensure.IsNotNullOrWhitespace(mutexName, nameof(mutexName));
-
-            if (!Mutex.TryOpenExisting(mutexName, out _mutex))
+            try
             {
-                try
-                {
-                    _mutex = new Mutex(false, mutexName);
-                }
-                catch (Exception)
-                {
-                    _mutex = Mutex.OpenExisting(mutexName);
-                }
+                _mutex = new Mutex(false, mutexName);
             }
-            _hasMutexLock = _mutex.WaitOne();
+            catch (Exception)
+            {
+                _mutex = Mutex.OpenExisting(mutexName);
+            }
         }
+        _hasMutexLock = _mutex.WaitOne();
+    }
 
-        private void Dispose(bool disposing)
+    private void Dispose(bool disposing)
+    {
+        if (_disposed)
         {
-            if (_disposed)
-            {
-                return;
-            }
+            return;
+        }
             
-            if (disposing && _mutex != null)
-            {
-                if (_hasMutexLock)
-                {
-                    _mutex.ReleaseMutex();
-                }
-                _mutex.Dispose();
-                _mutex = null;
-            }
-
-            _disposed = true;
-        }
-
-        public void Dispose()
+        if (disposing && _mutex != null)
         {
-            Dispose(true);
+            if (_hasMutexLock)
+            {
+                _mutex.ReleaseMutex();
+            }
+            _mutex.Dispose();
+            _mutex = null;
         }
+
+        _disposed = true;
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
     }
 }

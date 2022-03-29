@@ -1,23 +1,22 @@
 ﻿using System;
 
-namespace CreativeCoders.Core.Visitors
+namespace CreativeCoders.Core.Visitors;
+
+public class VisitableAction<TVisitor> : IVisitable where TVisitor : class 
 {
-    public class VisitableAction<TVisitor> : IVisitable where TVisitor : class 
+    private readonly Action<TVisitor> _acceptAction;
+
+    public VisitableAction(Action<TVisitor> acceptAction)
     {
-        private readonly Action<TVisitor> _acceptAction;
+        _acceptAction = acceptAction;            
+    }
 
-        public VisitableAction(Action<TVisitor> acceptAction)
+    public void Accept(object visitor)
+    {
+        if (visitor is not TVisitor theVisitor)
         {
-            _acceptAction = acceptAction;            
+            return;
         }
-
-        public void Accept(object visitor)
-        {
-            if (visitor is not TVisitor theVisitor)
-            {
-                return;
-            }
-            _acceptAction?.Invoke(theVisitor);
-        }
+        _acceptAction?.Invoke(theVisitor);
     }
 }

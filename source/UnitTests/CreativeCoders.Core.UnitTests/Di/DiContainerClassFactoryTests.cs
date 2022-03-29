@@ -4,137 +4,136 @@ using CreativeCoders.Di.Exceptions;
 using FakeItEasy;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.Di
+namespace CreativeCoders.Core.UnitTests.Di;
+
+public class DiContainerClassFactoryTests
 {
-    public class DiContainerClassFactoryTests
+    [Fact]
+    public void Create_WithClassTypeAsParameter_ReturnsCorrectClass()
     {
-        [Fact]
-        public void Create_WithClassTypeAsParameter_ReturnsCorrectClass()
-        {
-            var testService = new TestService();
+        var testService = new TestService();
             
-            var diContainerMock = A.Fake<IDiContainer>();
-            A.CallTo(() => diContainerMock.GetInstance(typeof(ITestService))).Returns(testService);
+        var diContainerMock = A.Fake<IDiContainer>();
+        A.CallTo(() => diContainerMock.GetInstance(typeof(ITestService))).Returns(testService);
 
-            var classFactory = new DiContainerClassFactory(diContainerMock);
+        var classFactory = new DiContainerClassFactory(diContainerMock);
 
-            var instance = classFactory.Create(typeof(ITestService));
+        var instance = classFactory.Create(typeof(ITestService));
             
-            Assert.Same(testService, instance);
-        }
+        Assert.Same(testService, instance);
+    }
         
-        [Fact]
-        public void Create_WithWrongClassTypeAsParameter_ThrowsException()
-        {
-            var diContainerMock = A.Fake<IDiContainer>();
-            A.CallTo(() => diContainerMock.GetInstance(typeof(ITestService)))
-                .Throws(_ => new ResolveFailedException(typeof(ITestService), null));
+    [Fact]
+    public void Create_WithWrongClassTypeAsParameter_ThrowsException()
+    {
+        var diContainerMock = A.Fake<IDiContainer>();
+        A.CallTo(() => diContainerMock.GetInstance(typeof(ITestService)))
+            .Throws(_ => new ResolveFailedException(typeof(ITestService), null));
 
-            var classFactory = new DiContainerClassFactory(diContainerMock);
+        var classFactory = new DiContainerClassFactory(diContainerMock);
 
-            Assert.Throws<ResolveFailedException>(() => classFactory.Create(typeof(ITestService)));
-        }
+        Assert.Throws<ResolveFailedException>(() => classFactory.Create(typeof(ITestService)));
+    }
         
-        [Fact]
-        public void Create_WithSetupWithClassTypeAsParameter_ReturnsCorrectClass()
-        {
-            var testService = new TestService();
+    [Fact]
+    public void Create_WithSetupWithClassTypeAsParameter_ReturnsCorrectClass()
+    {
+        var testService = new TestService();
             
-            var diContainerMock = A.Fake<IDiContainer>();
-            A.CallTo(() => diContainerMock.GetInstance(typeof(ITestService))).Returns(testService);
+        var diContainerMock = A.Fake<IDiContainer>();
+        A.CallTo(() => diContainerMock.GetInstance(typeof(ITestService))).Returns(testService);
 
-            var classFactory = new DiContainerClassFactory(diContainerMock);
+        var classFactory = new DiContainerClassFactory(diContainerMock);
 
-            var instance = classFactory.Create(typeof(ITestService), x => ((ITestService) x).Text = "1234");
+        var instance = classFactory.Create(typeof(ITestService), x => ((ITestService) x).Text = "1234");
             
-            Assert.Same(testService, instance);
-            Assert.Equal("1234", ((ITestService) instance).Text);
-        }
+        Assert.Same(testService, instance);
+        Assert.Equal("1234", ((ITestService) instance).Text);
+    }
         
-        [Fact]
-        public void Create_WithClassTypeAsGenericParameter_ReturnsCorrectClass()
-        {
-            var testService = new TestService();
+    [Fact]
+    public void Create_WithClassTypeAsGenericParameter_ReturnsCorrectClass()
+    {
+        var testService = new TestService();
             
-            var diContainerMock = A.Fake<IDiContainer>();
-            A.CallTo(() => diContainerMock.GetInstance<ITestService>()).Returns(testService);
+        var diContainerMock = A.Fake<IDiContainer>();
+        A.CallTo(() => diContainerMock.GetInstance<ITestService>()).Returns(testService);
 
-            var classFactory = new DiContainerClassFactory(diContainerMock);
+        var classFactory = new DiContainerClassFactory(diContainerMock);
 
-            var instance = classFactory.Create<ITestService>();
+        var instance = classFactory.Create<ITestService>();
             
-            Assert.Same(testService, instance);
-        }
+        Assert.Same(testService, instance);
+    }
         
-        [Fact]
-        public void Create_WithSetupWithClassTypeAsGenericParameter_ReturnsCorrectClass()
-        {
-            var testService = new TestService();
+    [Fact]
+    public void Create_WithSetupWithClassTypeAsGenericParameter_ReturnsCorrectClass()
+    {
+        var testService = new TestService();
             
-            var diContainerMock = A.Fake<IDiContainer>();
-            A.CallTo(() => diContainerMock.GetInstance<ITestService>()).Returns(testService);
+        var diContainerMock = A.Fake<IDiContainer>();
+        A.CallTo(() => diContainerMock.GetInstance<ITestService>()).Returns(testService);
 
-            var classFactory = new DiContainerClassFactory(diContainerMock);
+        var classFactory = new DiContainerClassFactory(diContainerMock);
 
-            var instance = classFactory.Create<ITestService>(x => x.Text = "abcd");
+        var instance = classFactory.Create<ITestService>(x => x.Text = "abcd");
             
-            Assert.Same(testService, instance);
-            Assert.Equal("abcd", instance.Text);
-        }
+        Assert.Same(testService, instance);
+        Assert.Equal("abcd", instance.Text);
+    }
         
-        [Fact]
-        public void Create_GenericWithClassTypeAsGenericParameter_ReturnsCorrectClass()
-        {
-            var testService = new TestService();
+    [Fact]
+    public void Create_GenericWithClassTypeAsGenericParameter_ReturnsCorrectClass()
+    {
+        var testService = new TestService();
             
-            var diContainerMock = A.Fake<IDiContainer>();
-            A.CallTo(() => diContainerMock.GetInstance<ITestService>()).Returns(testService);
+        var diContainerMock = A.Fake<IDiContainer>();
+        A.CallTo(() => diContainerMock.GetInstance<ITestService>()).Returns(testService);
 
-            var classFactory = new DiContainerClassFactory<ITestService>(diContainerMock);
+        var classFactory = new DiContainerClassFactory<ITestService>(diContainerMock);
 
-            var instance = classFactory.Create();
+        var instance = classFactory.Create();
             
-            Assert.Same(testService, instance);
-        }
+        Assert.Same(testService, instance);
+    }
         
-        [Fact]
-        public void Create_GenericWithSetupWithClassTypeAsGenericParameter_ReturnsCorrectClass()
-        {
-            var testService = new TestService();
+    [Fact]
+    public void Create_GenericWithSetupWithClassTypeAsGenericParameter_ReturnsCorrectClass()
+    {
+        var testService = new TestService();
             
-            var diContainerMock = A.Fake<IDiContainer>();
-            A.CallTo(() => diContainerMock.GetInstance<ITestService>()).Returns(testService);
+        var diContainerMock = A.Fake<IDiContainer>();
+        A.CallTo(() => diContainerMock.GetInstance<ITestService>()).Returns(testService);
 
-            var classFactory = new DiContainerClassFactory<ITestService>(diContainerMock);
+        var classFactory = new DiContainerClassFactory<ITestService>(diContainerMock);
 
-            var instance = classFactory.Create(x => x.Text = "abcd");
+        var instance = classFactory.Create(x => x.Text = "abcd");
             
-            Assert.Same(testService, instance);
-            Assert.Equal("abcd", instance.Text);
-        }
+        Assert.Same(testService, instance);
+        Assert.Equal("abcd", instance.Text);
+    }
         
-        [Fact]
-        public void Create_GenericWithClassTypeAsGenericParameterForWrongType_ThrowsException()
-        {
-            var diContainerMock = A.Fake<IDiContainer>();
-            A.CallTo(() => diContainerMock.GetInstance<ITestService>())
-                .Throws(_ => new ResolveFailedException(typeof(ITestService), null));
+    [Fact]
+    public void Create_GenericWithClassTypeAsGenericParameterForWrongType_ThrowsException()
+    {
+        var diContainerMock = A.Fake<IDiContainer>();
+        A.CallTo(() => diContainerMock.GetInstance<ITestService>())
+            .Throws(_ => new ResolveFailedException(typeof(ITestService), null));
 
-            var classFactory = new DiContainerClassFactory<ITestService>(diContainerMock);
+        var classFactory = new DiContainerClassFactory<ITestService>(diContainerMock);
 
-            Assert.Throws<ResolveFailedException>(() => classFactory.Create());
-        }
+        Assert.Throws<ResolveFailedException>(() => classFactory.Create());
+    }
         
-        [Fact]
-        public void Create_GenericWithSetupWithClassTypeAsGenericParameterForWrongType_ThrowsException()
-        {
-            var diContainerMock = A.Fake<IDiContainer>();
-            A.CallTo(() => diContainerMock.GetInstance<ITestService>())
-                .Throws(_ => new ResolveFailedException(typeof(ITestService), null));
+    [Fact]
+    public void Create_GenericWithSetupWithClassTypeAsGenericParameterForWrongType_ThrowsException()
+    {
+        var diContainerMock = A.Fake<IDiContainer>();
+        A.CallTo(() => diContainerMock.GetInstance<ITestService>())
+            .Throws(_ => new ResolveFailedException(typeof(ITestService), null));
 
-            var classFactory = new DiContainerClassFactory<ITestService>(diContainerMock);
+        var classFactory = new DiContainerClassFactory<ITestService>(diContainerMock);
 
-            Assert.Throws<ResolveFailedException>(() => classFactory.Create(x => x.Text = "abcd"));
-        }
+        Assert.Throws<ResolveFailedException>(() => classFactory.Create(x => x.Text = "abcd"));
     }
 }

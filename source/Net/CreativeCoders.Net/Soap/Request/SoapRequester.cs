@@ -4,32 +4,32 @@ using System.Net;
 using CreativeCoders.Core;
 using CreativeCoders.Net.WebRequests;
 
-namespace CreativeCoders.Net.Soap.Request {
-    internal class SoapRequester
+namespace CreativeCoders.Net.Soap.Request;
+
+internal class SoapRequester
+{
+    private readonly SoapRequestInfo _soapRequestInfo;
+
+    private readonly Func<SoapRequestInfo, IHttpWebRequest> _createHttpWebRequest;
+
+    public SoapRequester(SoapRequestInfo soapRequestInfo, Func<SoapRequestInfo, IHttpWebRequest> createHttpWebRequest)
     {
-        private readonly SoapRequestInfo _soapRequestInfo;
+        Ensure.IsNotNull(soapRequestInfo, nameof(soapRequestInfo));
+        Ensure.IsNotNull(createHttpWebRequest, nameof(createHttpWebRequest));
 
-        private readonly Func<SoapRequestInfo, IHttpWebRequest> _createHttpWebRequest;
+        _soapRequestInfo = soapRequestInfo;
+        _createHttpWebRequest = createHttpWebRequest;
+    }
 
-        public SoapRequester(SoapRequestInfo soapRequestInfo, Func<SoapRequestInfo, IHttpWebRequest> createHttpWebRequest)
+    public WebResponse GetResponse()
+    {
+        var httpWebRequest = _createHttpWebRequest(_soapRequestInfo);
+
+        using (var writer = new StreamWriter(httpWebRequest.GetRequestStream()))
         {
-            Ensure.IsNotNull(soapRequestInfo, nameof(soapRequestInfo));
-            Ensure.IsNotNull(createHttpWebRequest, nameof(createHttpWebRequest));
-
-            _soapRequestInfo = soapRequestInfo;
-            _createHttpWebRequest = createHttpWebRequest;
+            new RequestXmlWriter(writer, _soapRequestInfo).Write();
         }
 
-        public WebResponse GetResponse()
-        {
-            var httpWebRequest = _createHttpWebRequest(_soapRequestInfo);
-
-            using (var writer = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                new RequestXmlWriter(writer, _soapRequestInfo).Write();
-            }
-
-            return httpWebRequest.GetResponse();
-        }
+        return httpWebRequest.GetResponse();
     }
 }

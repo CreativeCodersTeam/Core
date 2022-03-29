@@ -2,67 +2,66 @@
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Core
+namespace CreativeCoders.Core;
+
+[ExcludeFromCodeCoverage]
+[PublicAPI]
+public static class FluentInterfaceExtensions
 {
-    [ExcludeFromCodeCoverage]
-    [PublicAPI]
-    public static class FluentInterfaceExtensions
+    public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Action fluentAction)
     {
-        public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Action fluentAction)
-        {
-            fluentAction();
-            return fluentInterface;
-        }
+        fluentAction();
+        return fluentInterface;
+    }
         
-        public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Action<TFluent> fluentAction)
-        {
-            fluentAction(fluentInterface);
-            return fluentInterface;
-        }
+    public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Action<TFluent> fluentAction)
+    {
+        fluentAction(fluentInterface);
+        return fluentInterface;
+    }
         
-        // ReSharper disable once UnusedParameter.Global
-        public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Func<TFluent> fluentFunction)
-        {
-            return fluentFunction();
-        }
+    // ReSharper disable once UnusedParameter.Global
+    public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Func<TFluent> fluentFunction)
+    {
+        return fluentFunction();
+    }
         
-        public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Func<TFluent, TFluent> fluentFunction)
-        {
-            return fluentFunction(fluentInterface);
-        }
+    public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Func<TFluent, TFluent> fluentFunction)
+    {
+        return fluentFunction(fluentInterface);
+    }
         
-        public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Action fluentAction)
+    public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Action fluentAction)
+    {
+        if (condition)
         {
-            if (condition)
-            {
-                fluentAction();    
-            }
+            fluentAction();    
+        }
             
-            return fluentInterface;
-        }
+        return fluentInterface;
+    }
         
-        public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Action<TFluent> fluentAction)
+    public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Action<TFluent> fluentAction)
+    {
+        if (condition)
         {
-            if (condition)
-            {
-                fluentAction(fluentInterface);    
-            }
+            fluentAction(fluentInterface);    
+        }
             
-            return fluentInterface;
-        }
+        return fluentInterface;
+    }
         
-        public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Func<TFluent> fluentFunction)
-        {
-            return condition
-                ? fluentFunction()
-                : fluentInterface;
-        }
+    public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Func<TFluent> fluentFunction)
+    {
+        return condition
+            ? fluentFunction()
+            : fluentInterface;
+    }
         
-        public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Func<TFluent, TFluent> fluentFunction)
-        {
-            return condition
-                ? fluentFunction(fluentInterface)
-                : fluentInterface;
-        }
+    public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Func<TFluent, TFluent> fluentFunction)
+    {
+        return condition
+            ? fluentFunction(fluentInterface)
+            : fluentInterface;
     }
 }

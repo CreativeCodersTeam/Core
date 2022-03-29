@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Windows;
 
-namespace CreativeCoders.Mvvm.Wpf
+namespace CreativeCoders.Mvvm.Wpf;
+
+public interface IDataTemplateGenerator
 {
-    public interface IDataTemplateGenerator
-    {
-        DataTemplate CreateDataTemplate(Type viewModelType, Type viewType);
-    }
+    DataTemplate CreateDataTemplate(Type viewModelType, Type viewType);
 }

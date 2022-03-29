@@ -2,15 +2,14 @@
 using System.Windows;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Wpf
+namespace CreativeCoders.Mvvm.Wpf;
+
+[PublicAPI]
+public interface IWindowHelper
 {
-    [PublicAPI]
-    public interface IWindowHelper
-    {
-        Window GetActiveWindow();
+    Window GetActiveWindow();
 
-        Window FindOwnerWindow(object viewModel);
+    Window FindOwnerWindow(object viewModel);
 
-        IEnumerable<T> FindAllChildren<T>(DependencyObject container);
-    }
+    IEnumerable<T> FindAllChildren<T>(DependencyObject container);
 }

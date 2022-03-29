@@ -8,45 +8,44 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
-namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Building
+namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Building;
+
+public class CliCommandFactoryTests
 {
-    public class CliCommandFactoryTests
+    [Fact]
+    public void CreateCommand_WithCommandFailingCtor_ThrowsException()
     {
-        [Fact]
-        public void CreateCommand_WithCommandFailingCtor_ThrowsException()
-        {
-            var factory = new CliCommandFactory(new ServiceCollection().BuildServiceProvider());
+        var factory = new CliCommandFactory(new ServiceCollection().BuildServiceProvider());
 
-            // Act
-            Action act = () => factory.CreateCommand<CommandWithErrorCtor>();
+        // Act
+        Action act = () => factory.CreateCommand<CommandWithErrorCtor>();
 
-            // Assert
-            act
-                .Should()
-                .Throw<CliCommandCreationFailedException>();
-        }
-
-        [Fact]
-        public void CreateCommand_OptionWithCommandFailingCtor_ThrowsException()
-        {
-            var factory = new CliCommandFactory(new ServiceCollection().BuildServiceProvider());
-
-            // Act
-            Action act = () => factory.CreateCommand<CommandWithErrorCtor, TestOptionForCommand>(_ => { });
-
-            // Assert
-            act
-                .Should()
-                .Throw<CliCommandCreationFailedException>();
-        }
+        // Assert
+        act
+            .Should()
+            .Throw<CliCommandCreationFailedException>();
     }
 
-    [UsedImplicitly]
-    public class CommandWithErrorCtor : DelegateCliCommand<TestOptionForCommand>
+    [Fact]
+    public void CreateCommand_OptionWithCommandFailingCtor_ThrowsException()
     {
-        public CommandWithErrorCtor()
-        {
-            throw new ArgumentException();
-        }
+        var factory = new CliCommandFactory(new ServiceCollection().BuildServiceProvider());
+
+        // Act
+        Action act = () => factory.CreateCommand<CommandWithErrorCtor, TestOptionForCommand>(_ => { });
+
+        // Assert
+        act
+            .Should()
+            .Throw<CliCommandCreationFailedException>();
+    }
+}
+
+[UsedImplicitly]
+public class CommandWithErrorCtor : DelegateCliCommand<TestOptionForCommand>
+{
+    public CommandWithErrorCtor()
+    {
+        throw new ArgumentException();
     }
 }

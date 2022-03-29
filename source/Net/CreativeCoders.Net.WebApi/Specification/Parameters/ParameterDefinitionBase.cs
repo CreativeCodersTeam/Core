@@ -2,31 +2,30 @@
 using System.Reflection;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.WebApi.Specification.Parameters
+namespace CreativeCoders.Net.WebApi.Specification.Parameters;
+
+[PublicAPI]
+public abstract class ParameterDefinitionBase<TValue>
 {
-    [PublicAPI]
-    public abstract class ParameterDefinitionBase<TValue>
+    private readonly Func<object, TValue> _transformValue;
+
+    protected ParameterDefinitionBase(ParameterInfo parameterInfo, Func<object, TValue> transformValue)
     {
-        private readonly Func<object, TValue> _transformValue;
+        _transformValue = transformValue;
+        ParameterInfo = parameterInfo;
+    }
 
-        protected ParameterDefinitionBase(ParameterInfo parameterInfo, Func<object, TValue> transformValue)
+    public ParameterInfo ParameterInfo { get; }
+
+    public TValue GetValue(object[] arguments)
+    {
+        if (ParameterInfo.Position >= arguments.Length)
         {
-            _transformValue = transformValue;
-            ParameterInfo = parameterInfo;
+            throw new ArgumentOutOfRangeException();
         }
 
-        public ParameterInfo ParameterInfo { get; }
+        var value = arguments[ParameterInfo.Position];
 
-        public TValue GetValue(object[] arguments)
-        {
-            if (ParameterInfo.Position >= arguments.Length)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-
-            var value = arguments[ParameterInfo.Position];
-
-            return _transformValue(value);
-        }
+        return _transformValue(value);
     }
 }

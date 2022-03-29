@@ -1,13 +1,12 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.XmlRpc.Model.Values.Converters
-{
-    [PublicAPI]
-    public interface IXmlRpcValueToDataConverter
-    {
-        object Convert(XmlRpcValue xmlRpcValue, Type targetType);
+namespace CreativeCoders.Net.XmlRpc.Model.Values.Converters;
 
-        T Convert<T>(XmlRpcValue xmlRpcValue);
-    }
+[PublicAPI]
+public interface IXmlRpcValueToDataConverter
+{
+    object Convert(XmlRpcValue xmlRpcValue, Type targetType);
+
+    T Convert<T>(XmlRpcValue xmlRpcValue);
 }

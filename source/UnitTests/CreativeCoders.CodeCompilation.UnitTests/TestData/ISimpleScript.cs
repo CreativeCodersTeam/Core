@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.CodeCompilation.UnitTests.TestData
+﻿namespace CreativeCoders.CodeCompilation.UnitTests.TestData;
+
+public interface ISimpleScript
 {
-    public interface ISimpleScript
-    {
-        int AddIntegers(int value0, int value1);
-    }
+    int AddIntegers(int value0, int value1);
 }

@@ -6,55 +6,54 @@ using CreativeCoders.Core.Collections;
 using CreativeCoders.SysConsole.Cli.Parsing.Help;
 using CreativeCoders.SysConsole.Core.Abstractions;
 
-namespace CreativeCoders.SysConsole.Cli.Actions.Help
+namespace CreativeCoders.SysConsole.Cli.Actions.Help;
+
+public class CliActionHelpPrinter : ICliActionHelpPrinter
 {
-    public class CliActionHelpPrinter : ICliActionHelpPrinter
+    private readonly ISysConsole _sysConsole;
+
+    private readonly ICliActionHelpGenerator _helpGenerator;
+
+    public CliActionHelpPrinter(ICliActionHelpGenerator helpGenerator, ISysConsole sysConsole)
     {
-        private readonly ISysConsole _sysConsole;
+        _sysConsole = Ensure.NotNull(sysConsole, nameof(sysConsole));
+        _helpGenerator = Ensure.NotNull(helpGenerator, nameof(helpGenerator));
+    }
 
-        private readonly ICliActionHelpGenerator _helpGenerator;
+    public void PrintHelp(IEnumerable<string> actionRouteParts)
+    {
+        var help = _helpGenerator.CreateHelp(actionRouteParts);
 
-        public CliActionHelpPrinter(ICliActionHelpGenerator helpGenerator, ISysConsole sysConsole)
+        _sysConsole
+            .WriteLine()
+            .WriteLine(help.HelpText)
+            .WriteLine()
+            .WriteLine("Syntax:")
+            .WriteLine($"  {help.Syntax}");
+
+        PrintHelpEntries(help.OptionsHelp.ValueHelpEntries, "Arguments:");
+
+        PrintHelpEntries(help.OptionsHelp.ParameterHelpEntries, "Options:");
+
+        _sysConsole.WriteLine();
+    }
+
+    private void PrintHelpEntries(IImmutableList<HelpEntry> helpEntries, string entriesHeader)
+    {
+        if (!helpEntries.Any())
         {
-            _sysConsole = Ensure.NotNull(sysConsole, nameof(sysConsole));
-            _helpGenerator = Ensure.NotNull(helpGenerator, nameof(helpGenerator));
+            return;
         }
 
-        public void PrintHelp(IEnumerable<string> actionRouteParts)
-        {
-            var help = _helpGenerator.CreateHelp(actionRouteParts);
+        _sysConsole
+            .WriteLine()
+            .WriteLine(entriesHeader)
+            .WriteLine();
 
-            _sysConsole
-                .WriteLine()
-                .WriteLine(help.HelpText)
-                .WriteLine()
-                .WriteLine("Syntax:")
-                .WriteLine($"  {help.Syntax}");
+        var firstColumnWidth = helpEntries.Select(x => x.ArgumentName?.Length ?? 0).Max() + 3;
 
-            PrintHelpEntries(help.OptionsHelp.ValueHelpEntries, "Arguments:");
-
-            PrintHelpEntries(help.OptionsHelp.ParameterHelpEntries, "Options:");
-
-            _sysConsole.WriteLine();
-        }
-
-        private void PrintHelpEntries(IImmutableList<HelpEntry> helpEntries, string entriesHeader)
-        {
-            if (!helpEntries.Any())
-            {
-                return;
-            }
-
-            _sysConsole
-                .WriteLine()
-                .WriteLine(entriesHeader)
-                .WriteLine();
-
-            var firstColumnWidth = helpEntries.Select(x => x.ArgumentName?.Length ?? 0).Max() + 3;
-
-            helpEntries
-                .ForEach(x =>
-                    _sysConsole.WriteLine($"  {x.ArgumentName?.PadRight(firstColumnWidth)}{x.HelpText}"));
-        }
+        helpEntries
+            .ForEach(x =>
+                _sysConsole.WriteLine($"  {x.ArgumentName?.PadRight(firstColumnWidth)}{x.HelpText}"));
     }
 }

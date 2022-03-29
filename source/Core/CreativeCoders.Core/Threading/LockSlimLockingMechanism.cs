@@ -1,111 +1,110 @@
 ﻿using System;
 using System.Threading;
 
-namespace CreativeCoders.Core.Threading
+namespace CreativeCoders.Core.Threading;
+
+public class LockSlimLockingMechanism : IUpgradeableLockingMechanism
 {
-    public class LockSlimLockingMechanism : IUpgradeableLockingMechanism
+    private readonly ReaderWriterLockSlim _lock;
+
+    public LockSlimLockingMechanism() : this(new ReaderWriterLockSlim()) { }
+
+    public LockSlimLockingMechanism(ReaderWriterLockSlim lockSlim)
     {
-        private readonly ReaderWriterLockSlim _lock;
+        Ensure.IsNotNull(lockSlim, nameof(lockSlim));
 
-        public LockSlimLockingMechanism() : this(new ReaderWriterLockSlim()) { }
+        _lock = lockSlim;
+    }
 
-        public LockSlimLockingMechanism(ReaderWriterLockSlim lockSlim)
+    public void Read(Action action)
+    {
+        _lock.EnterReadLock();
+        try
         {
-            Ensure.IsNotNull(lockSlim, nameof(lockSlim));
-
-            _lock = lockSlim;
+            action();
         }
-
-        public void Read(Action action)
+        finally
         {
-            _lock.EnterReadLock();
-            try
-            {
-                action();
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
+            _lock.ExitReadLock();
         }
+    }
 
-        public T Read<T>(Func<T> function)
+    public T Read<T>(Func<T> function)
+    {
+        _lock.EnterReadLock();
+        try
         {
-            _lock.EnterReadLock();
-            try
-            {
-                return function();
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
+            return function();
         }
-
-        public void Write(Action action)
+        finally
         {
-            _lock.EnterWriteLock();
-            try
-            {
-                action();
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
+            _lock.ExitReadLock();
         }
+    }
 
-        public T Write<T>(Func<T> function)
+    public void Write(Action action)
+    {
+        _lock.EnterWriteLock();
+        try
         {
-            _lock.EnterWriteLock();
-            try
-            {
-                return function();
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
+            action();
         }
-
-        public void UpgradeableRead(UpgradeableReadAction action)
+        finally
         {
-            _lock.EnterUpgradeableReadLock();
-            try
-            {
-                action(
-                    () =>
-                    {
-                        _lock.EnterWriteLock();
-
-                        return new DelegateDisposable(() => _lock.ExitWriteLock(), true);
-                    }
-                );
-            }
-            finally
-            {
-                _lock.ExitUpgradeableReadLock();
-            }
+            _lock.ExitWriteLock();
         }
+    }
 
-        public T UpgradeableRead<T>(UpgradeableReadFunc<T> function)
+    public T Write<T>(Func<T> function)
+    {
+        _lock.EnterWriteLock();
+        try
         {
-            _lock.EnterUpgradeableReadLock();
-            try
-            {
-                return function(
-                    () =>
-                    {
-                        _lock.EnterWriteLock();
+            return function();
+        }
+        finally
+        {
+            _lock.ExitWriteLock();
+        }
+    }
+
+    public void UpgradeableRead(UpgradeableReadAction action)
+    {
+        _lock.EnterUpgradeableReadLock();
+        try
+        {
+            action(
+                () =>
+                {
+                    _lock.EnterWriteLock();
+
+                    return new DelegateDisposable(() => _lock.ExitWriteLock(), true);
+                }
+            );
+        }
+        finally
+        {
+            _lock.ExitUpgradeableReadLock();
+        }
+    }
+
+    public T UpgradeableRead<T>(UpgradeableReadFunc<T> function)
+    {
+        _lock.EnterUpgradeableReadLock();
+        try
+        {
+            return function(
+                () =>
+                {
+                    _lock.EnterWriteLock();
                         
-                        return new DelegateDisposable(() => _lock.ExitWriteLock(), true);
-                    }
-                );
-            }
-            finally
-            {
-                _lock.ExitUpgradeableReadLock();
-            }
+                    return new DelegateDisposable(() => _lock.ExitWriteLock(), true);
+                }
+            );
+        }
+        finally
+        {
+            _lock.ExitUpgradeableReadLock();
         }
     }
 }

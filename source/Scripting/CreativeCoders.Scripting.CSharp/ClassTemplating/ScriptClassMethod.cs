@@ -1,12 +1,11 @@
-﻿namespace CreativeCoders.Scripting.CSharp.ClassTemplating
-{
-    public class ScriptClassMethod : ScriptClassMember
-    {
-        internal ScriptClassMethod(string name, string sourceCode) : base(ScriptClassMemberType.Method, name)
-        {
-            SourceCode = sourceCode;
-        }
+﻿namespace CreativeCoders.Scripting.CSharp.ClassTemplating;
 
-        public string SourceCode { get; }            
+public class ScriptClassMethod : ScriptClassMember
+{
+    internal ScriptClassMethod(string name, string sourceCode) : base(ScriptClassMemberType.Method, name)
+    {
+        SourceCode = sourceCode;
     }
+
+    public string SourceCode { get; }            
 }

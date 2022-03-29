@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace MessagingSampleApp
+namespace MessagingSampleApp;
+
+internal static class Program
 {
-    internal static class Program
+    internal static async Task Main()
     {
-        internal static async Task Main()
-        {
-            //await new TestMediator().Run();
-            await TestMessageQueue.Run();
+        //await new TestMediator().Run();
+        await TestMessageQueue.Run();
             
-            Console.WriteLine("Press key to exit...");
-            Console.ReadKey();
-        }
+        Console.WriteLine("Press key to exit...");
+        Console.ReadKey();
     }
 }

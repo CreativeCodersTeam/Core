@@ -8,77 +8,76 @@ using CreativeCoders.Net.WebApi.Definition;
 using CreativeCoders.Net.WebApi.Serialization;
 using CreativeCoders.Net.WebApi.Specification;
 
-namespace CreativeCoders.Net.WebApi.Execution.Requests
+namespace CreativeCoders.Net.WebApi.Execution.Requests;
+
+public abstract class ApiRequestHandlerBase : IApiRequestHandler
 {
-    public abstract class ApiRequestHandlerBase : IApiRequestHandler
+    private readonly HttpClient _httpClient;
+
+    protected ApiRequestHandlerBase(ApiMethodReturnType methodReturnType, HttpClient httpClient)
     {
-        private readonly HttpClient _httpClient;
+        _httpClient = httpClient;
+        MethodReturnType = methodReturnType;
+    }
 
-        protected ApiRequestHandlerBase(ApiMethodReturnType methodReturnType, HttpClient httpClient)
+    public ApiMethodReturnType MethodReturnType { get; }
+
+    public abstract object SendRequest(RequestData requestData);
+
+    private static HttpMethod GetHttpMethod(HttpRequestMethod requestMethod)
+    {
+        return requestMethod switch
         {
-            _httpClient = httpClient;
-            MethodReturnType = methodReturnType;
+            HttpRequestMethod.Get => HttpMethod.Get,
+            HttpRequestMethod.Post => HttpMethod.Post,
+            HttpRequestMethod.Put => HttpMethod.Put,
+            HttpRequestMethod.Delete => HttpMethod.Delete,
+            _ => throw new ArgumentOutOfRangeException(nameof(requestMethod), requestMethod, null)
+        };
+    }
+
+    private static HttpContent GetBodyContent(RequestData requestData)
+    {
+        var bodyValue = requestData.GetBodyValue();
+
+        if (bodyValue == null)
+        {
+            return null;
         }
 
-        public ApiMethodReturnType MethodReturnType { get; }
-
-        public abstract object SendRequest(RequestData requestData);
-
-        private static HttpMethod GetHttpMethod(HttpRequestMethod requestMethod)
+        return bodyValue switch
         {
-            return requestMethod switch
-            {
-                HttpRequestMethod.Get => HttpMethod.Get,
-                HttpRequestMethod.Post => HttpMethod.Post,
-                HttpRequestMethod.Put => HttpMethod.Put,
-                HttpRequestMethod.Delete => HttpMethod.Delete,
-                _ => throw new ArgumentOutOfRangeException(nameof(requestMethod), requestMethod, null)
-            };
-        }
+            string bodyString => new StringContent(bodyString),
+            Stream bodyStream => new StreamContent(bodyStream),
+            HttpContent bodyContent => bodyContent,
+            byte[] bodyBytes => new ByteArrayContent(bodyBytes),
+            _ => new StringContent(requestData.DefaultDataFormatter.GetSerializer().Serialize(bodyValue),
+                Encoding.UTF8, requestData.DefaultDataFormatter.ContentMediaType)
+        };
+    }
 
-        private static HttpContent GetBodyContent(RequestData requestData)
+    private static HttpRequestMessage CreateRequestMessage(RequestData requestData)
+    {
+        var request = new HttpRequestMessage(GetHttpMethod(requestData.RequestMethod), requestData.RequestUri)
         {
-            var bodyValue = requestData.GetBodyValue();
+            Content = GetBodyContent(requestData)
+        };
 
-            if (bodyValue == null)
-            {
-                return null;
-            }
+        requestData.Headers.ForEach(h => request.Headers.Add(h.Name, h.Value));
 
-            return bodyValue switch
-            {
-                string bodyString => new StringContent(bodyString),
-                Stream bodyStream => new StreamContent(bodyStream),
-                HttpContent bodyContent => bodyContent,
-                byte[] bodyBytes => new ByteArrayContent(bodyBytes),
-                _ => new StringContent(requestData.DefaultDataFormatter.GetSerializer().Serialize(bodyValue),
-                    Encoding.UTF8, requestData.DefaultDataFormatter.ContentMediaType)
-            };
-        }
+        return request;
+    }
 
-        private static HttpRequestMessage CreateRequestMessage(RequestData requestData)
-        {
-            var request = new HttpRequestMessage(GetHttpMethod(requestData.RequestMethod), requestData.RequestUri)
-            {
-                Content = GetBodyContent(requestData)
-            };
+    protected Task<HttpResponseMessage> RequestResponseMessageAsync(RequestData requestData)
+    {
+        var httpRequest = CreateRequestMessage(requestData);
 
-            requestData.Headers.ForEach(h => request.Headers.Add(h.Name, h.Value));
+        return _httpClient.SendAsync(httpRequest, requestData.CompletionOption,
+            requestData.CancellationToken);
+    }
 
-            return request;
-        }
-
-        protected Task<HttpResponseMessage> RequestResponseMessageAsync(RequestData requestData)
-        {
-            var httpRequest = CreateRequestMessage(requestData);
-
-            return _httpClient.SendAsync(httpRequest, requestData.CompletionOption,
-                requestData.CancellationToken);
-        }
-
-        protected static IDataDeserializer GetResponseDeserializer(RequestData requestData)
-        {
-            return requestData.ResponseDeserializer ?? requestData.DefaultDataFormatter.GetDeserializer();
-        }
+    protected static IDataDeserializer GetResponseDeserializer(RequestData requestData)
+    {
+        return requestData.ResponseDeserializer ?? requestData.DefaultDataFormatter.GetDeserializer();
     }
 }

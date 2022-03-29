@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace CreativeCoders.Net.WebApi.Exceptions
+namespace CreativeCoders.Net.WebApi.Exceptions;
+
+public abstract class ApiException : Exception
 {
-    public abstract class ApiException : Exception
+    protected ApiException(string message) : base(message)
     {
-        protected ApiException(string message) : base(message)
-        {
-        }
     }
 }

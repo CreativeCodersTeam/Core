@@ -3,21 +3,20 @@ using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 
-namespace CreativeCoders.NukeBuild
+namespace CreativeCoders.NukeBuild;
+
+[PublicAPI]
+public interface IBuildInfo
 {
-    [PublicAPI]
-    public interface IBuildInfo
-    {
-        string Configuration { get; }
+    string Configuration { get; }
 
-        Solution Solution { get; }
+    Solution Solution { get; }
 
-        GitRepository GitRepository { get; }
+    GitRepository GitRepository { get; }
 
-        IVersionInfo VersionInfo { get; }
+    IVersionInfo VersionInfo { get; }
 
-        AbsolutePath SourceDirectory { get; }
+    AbsolutePath SourceDirectory { get; }
 
-        AbsolutePath ArtifactsDirectory { get; }
-    }
+    AbsolutePath ArtifactsDirectory { get; }
 }

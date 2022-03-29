@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Net.WebApi.Serialization
+﻿namespace CreativeCoders.Net.WebApi.Serialization;
+
+public interface IDataSerializer
 {
-    public interface IDataSerializer
-    {
-        string Serialize<T>(T data);
-    }
+    string Serialize<T>(T data);
 }

@@ -1,21 +1,21 @@
 ﻿using System;
 
-namespace CreativeCoders.Scripting.CSharp.ClassTemplating {
-    internal class PropertyInjection<T> : IScriptClassInjection {
-        private readonly string _propertyName;
+namespace CreativeCoders.Scripting.CSharp.ClassTemplating;
 
-        private readonly Func<T> _getInjectionData;
+internal class PropertyInjection<T> : IScriptClassInjection {
+    private readonly string _propertyName;
 
-        public PropertyInjection(string propertyName, Func<T> getInjectionData)
-        {
-            _propertyName = propertyName;
-            _getInjectionData = getInjectionData;
-        }
+    private readonly Func<T> _getInjectionData;
 
-        public void Inject(object scriptObject)
-        {
-            var property = scriptObject.GetType().GetProperty(_propertyName);
-            property?.SetValue(scriptObject, _getInjectionData());
-        }
+    public PropertyInjection(string propertyName, Func<T> getInjectionData)
+    {
+        _propertyName = propertyName;
+        _getInjectionData = getInjectionData;
+    }
+
+    public void Inject(object scriptObject)
+    {
+        var property = scriptObject.GetType().GetProperty(_propertyName);
+        property?.SetValue(scriptObject, _getInjectionData());
     }
 }

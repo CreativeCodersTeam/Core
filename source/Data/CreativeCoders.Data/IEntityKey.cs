@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Data
+﻿namespace CreativeCoders.Data;
+
+public interface IEntityKey<out TKey>
 {
-    public interface IEntityKey<out TKey>
-    {
-        TKey Id { get; }
-    }
+    TKey Id { get; }
 }

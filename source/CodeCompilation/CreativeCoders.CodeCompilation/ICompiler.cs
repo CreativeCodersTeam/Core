@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.CodeCompilation
+﻿namespace CreativeCoders.CodeCompilation;
+
+public interface ICompiler
 {
-    public interface ICompiler
-    {
-        ICompilationResult Compile(CompilationPackage compilationPackage, CompilationOutput compilationOutput);
-    }
+    ICompilationResult Compile(CompilationPackage compilationPackage, CompilationOutput compilationOutput);
 }

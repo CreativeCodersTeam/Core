@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Core.Visitors
+﻿namespace CreativeCoders.Core.Visitors;
+
+public interface IVisitorInfo
 {
-    public interface IVisitorInfo
-    {
-        bool ThrowIfNoAcceptMethod { get; }
-    }
+    bool ThrowIfNoAcceptMethod { get; }
 }

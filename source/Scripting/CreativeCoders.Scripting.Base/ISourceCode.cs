@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Scripting.Base
+﻿namespace CreativeCoders.Scripting.Base;
+
+public interface ISourceCode
 {
-    public interface ISourceCode
-    {
-        string Read();
-    }
+    string Read();
 }

@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace CreativeCoders.Core.Visitors
+namespace CreativeCoders.Core.Visitors;
+
+public interface IVisitableSubItems
 {
-    public interface IVisitableSubItems
-    {
-        IEnumerable<IVisitable> GetVisitableSubItems();
-    }
+    IEnumerable<IVisitable> GetVisitableSubItems();
 }

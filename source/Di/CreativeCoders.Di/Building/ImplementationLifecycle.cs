@@ -1,9 +1,8 @@
-﻿namespace CreativeCoders.Di.Building
+﻿namespace CreativeCoders.Di.Building;
+
+public enum ImplementationLifecycle
 {
-    public enum ImplementationLifecycle
-    {
-        Transient,
-        Scoped,
-        Singleton
-    }
+    Transient,
+    Scoped,
+    Singleton
 }

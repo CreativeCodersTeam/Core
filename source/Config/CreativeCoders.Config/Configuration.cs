@@ -6,82 +6,81 @@ using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Threading;
 
-namespace CreativeCoders.Config
+namespace CreativeCoders.Config;
+
+public class Configuration : IConfiguration
 {
-    public class Configuration : IConfiguration
+    private readonly IList<SourceRegistration> _sourceRegistrations;
+
+    private readonly IList<Action<IConfigurationSource, Exception, SourceExceptionHandleResult>> _onSourceExceptions;
+
+    public Configuration()
     {
-        private readonly IList<SourceRegistration> _sourceRegistrations;
+        _sourceRegistrations = new ConcurrentList<SourceRegistration>();
+        _onSourceExceptions = new ConcurrentList<Action<IConfigurationSource, Exception, SourceExceptionHandleResult>>();
+    }
 
-        private readonly IList<Action<IConfigurationSource, Exception, SourceExceptionHandleResult>> _onSourceExceptions;
+    public IConfiguration AddSource<T>(IConfigurationSource<T> source)
+        where T : class
+    {
+        Ensure.IsNotNull(source, nameof(source));
 
-        public Configuration()
+        _sourceRegistrations.Add(new SourceRegistration(typeof(T), source));
+        return this;
+    }
+
+    public IConfiguration AddSources<T>(IEnumerable<IConfigurationSource<T>> sources)
+        where T : class
+    {
+        Ensure.IsNotNull(sources, nameof(sources));
+
+        sources.ForEach(source => AddSource(source));
+        return this;
+    }
+
+    public T GetItem<T>()
+        where T : class
+    {
+        var registration = _sourceRegistrations.FirstOrDefault(reg => typeof(T).IsAssignableFrom(reg.DataType));
+        return InvokeWithExceptionHandling(registration?.Source, source => source.GetSettingObject() as T);
+    }
+
+    public IEnumerable<T> GetItems<T>()
+        where T : class
+    {
+        var registrations = _sourceRegistrations.Where(reg => typeof(T).IsAssignableFrom(reg.DataType));
+        return registrations
+            .Select(reg => InvokeWithExceptionHandling(reg.Source, source => source.GetSettingObject() as T))
+            .WhereNotNull()
+            .ToArray();
+    }
+
+    private T InvokeWithExceptionHandling<T>(IConfigurationSource source, Func<IConfigurationSource, T> function)
+        where T : class
+    {
+        try
         {
-            _sourceRegistrations = new ConcurrentList<SourceRegistration>();
-            _onSourceExceptions = new ConcurrentList<Action<IConfigurationSource, Exception, SourceExceptionHandleResult>>();
+            return function(source);
         }
-
-        public IConfiguration AddSource<T>(IConfigurationSource<T> source)
-            where T : class
+        catch (Exception ex)
         {
-            Ensure.IsNotNull(source, nameof(source));
+            var handleResult = new SourceExceptionHandleResult();
 
-            _sourceRegistrations.Add(new SourceRegistration(typeof(T), source));
-            return this;
-        }
+            _onSourceExceptions.ForEach(onSourceException => onSourceException(source, ex, handleResult));
 
-        public IConfiguration AddSources<T>(IEnumerable<IConfigurationSource<T>> sources)
-            where T : class
-        {
-            Ensure.IsNotNull(sources, nameof(sources));
-
-            sources.ForEach(source => AddSource(source));
-            return this;
-        }
-
-        public T GetItem<T>()
-            where T : class
-        {
-            var registration = _sourceRegistrations.FirstOrDefault(reg => typeof(T).IsAssignableFrom(reg.DataType));
-            return InvokeWithExceptionHandling(registration?.Source, source => source.GetSettingObject() as T);
-        }
-
-        public IEnumerable<T> GetItems<T>()
-            where T : class
-        {
-            var registrations = _sourceRegistrations.Where(reg => typeof(T).IsAssignableFrom(reg.DataType));
-            return registrations
-                .Select(reg => InvokeWithExceptionHandling(reg.Source, source => source.GetSettingObject() as T))
-                .WhereNotNull()
-                .ToArray();
-        }
-
-        private T InvokeWithExceptionHandling<T>(IConfigurationSource source, Func<IConfigurationSource, T> function)
-            where T : class
-        {
-            try
+            if (!handleResult.IsHandled)
             {
-                return function(source);
+                throw;
             }
-            catch (Exception ex)
-            {
-                var handleResult = new SourceExceptionHandleResult();
 
-                _onSourceExceptions.ForEach(onSourceException => onSourceException(source, ex, handleResult));
-
-                if (!handleResult.IsHandled)
-                {
-                    throw;
-                }
-
-                return source.GetDefaultSettingObject() as T;
-            }
+            return source.GetDefaultSettingObject() as T;
         }
+    }
 
-        public void OnSourceException(Action<IConfigurationSource, Exception, SourceExceptionHandleResult> onSourceException)
-        {
-            Ensure.IsNotNull(onSourceException, nameof(onSourceException));
+    public void OnSourceException(Action<IConfigurationSource, Exception, SourceExceptionHandleResult> onSourceException)
+    {
+        Ensure.IsNotNull(onSourceException, nameof(onSourceException));
 
-            _onSourceExceptions.Add(onSourceException);
-        }
+        _onSourceExceptions.Add(onSourceException);
     }
 }

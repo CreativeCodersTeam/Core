@@ -6,62 +6,61 @@ using CreativeCoders.Net.Http;
 using Microsoft.Win32.SafeHandles;
 using Xunit;
 
-namespace CreativeCoders.Net.UnitTests.Http
+namespace CreativeCoders.Net.UnitTests.Http;
+
+public class DelegateHttpMessageHandlerTests
 {
-    public class DelegateHttpMessageHandlerTests
+    [Fact]
+    public async Task SendAsync_WithCancellationToken_RequestResponseAndCancellationTokenCorrect()
     {
-        [Fact]
-        public async Task SendAsync_WithCancellationToken_RequestResponseAndCancellationTokenCorrect()
+        var expectedRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://test.com");
+
+        var expectedResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+
+        var expectedCancellationToken = new CancellationToken();
+
+        HttpRequestMessage actualRequestMessage = null;
+        SafeWaitHandle actualCancellationTokenWaitHandle = null;
+
+        var httpMessageHandler = new DelegateHttpMessageHandler((request, token) =>
         {
-            var expectedRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://test.com");
+            actualRequestMessage = request;
+            actualCancellationTokenWaitHandle = token.WaitHandle.SafeWaitHandle;
+            return Task.FromResult(expectedResponseMessage);
+        });
 
-            var expectedResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+        var httpClient = new HttpClient(httpMessageHandler);
 
-            var expectedCancellationToken = new CancellationToken();
+        var response = await httpClient.SendAsync(expectedRequestMessage, expectedCancellationToken);
 
-            HttpRequestMessage actualRequestMessage = null;
-            SafeWaitHandle actualCancellationTokenWaitHandle = null;
+        Assert.Same(expectedRequestMessage, actualRequestMessage);
+        Assert.True(expectedCancellationToken.WaitHandle.SafeWaitHandle.DangerousGetHandle()
+            .Equals(actualCancellationTokenWaitHandle.DangerousGetHandle()));
+        Assert.Same(expectedResponseMessage, response);
+    }
 
-            var httpMessageHandler = new DelegateHttpMessageHandler((request, token) =>
-            {
-                actualRequestMessage = request;
-                actualCancellationTokenWaitHandle = token.WaitHandle.SafeWaitHandle;
-                return Task.FromResult(expectedResponseMessage);
-            });
+    [Fact]
+    public async Task SendAsync_WithOutCancellationToken_RequestResponseAndCancellationTokenCorrect()
+    {
+        var expectedRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://test.com");
 
-            var httpClient = new HttpClient(httpMessageHandler);
+        var expectedResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
 
-            var response = await httpClient.SendAsync(expectedRequestMessage, expectedCancellationToken);
+        var expectedCancellationToken = new CancellationToken();
 
-            Assert.Same(expectedRequestMessage, actualRequestMessage);
-            Assert.True(expectedCancellationToken.WaitHandle.SafeWaitHandle.DangerousGetHandle()
-                .Equals(actualCancellationTokenWaitHandle.DangerousGetHandle()));
-            Assert.Same(expectedResponseMessage, response);
-        }
-
-        [Fact]
-        public async Task SendAsync_WithOutCancellationToken_RequestResponseAndCancellationTokenCorrect()
-        {
-            var expectedRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://test.com");
-
-            var expectedResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
-
-            var expectedCancellationToken = new CancellationToken();
-
-            HttpRequestMessage actualRequestMessage = null;
+        HttpRequestMessage actualRequestMessage = null;
             
-            var httpMessageHandler = new DelegateHttpMessageHandler(request =>
-            {
-                actualRequestMessage = request;
-                return Task.FromResult(expectedResponseMessage);
-            });
+        var httpMessageHandler = new DelegateHttpMessageHandler(request =>
+        {
+            actualRequestMessage = request;
+            return Task.FromResult(expectedResponseMessage);
+        });
 
-            var httpClient = new HttpClient(httpMessageHandler);
+        var httpClient = new HttpClient(httpMessageHandler);
 
-            var response = await httpClient.SendAsync(expectedRequestMessage, expectedCancellationToken);
+        var response = await httpClient.SendAsync(expectedRequestMessage, expectedCancellationToken);
 
-            Assert.Same(expectedRequestMessage, actualRequestMessage);
-            Assert.Same(expectedResponseMessage, response);
-        }
+        Assert.Same(expectedRequestMessage, actualRequestMessage);
+        Assert.Same(expectedResponseMessage, response);
     }
 }

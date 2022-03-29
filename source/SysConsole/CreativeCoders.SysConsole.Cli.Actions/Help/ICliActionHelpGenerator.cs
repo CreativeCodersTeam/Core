@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace CreativeCoders.SysConsole.Cli.Actions.Help
+namespace CreativeCoders.SysConsole.Cli.Actions.Help;
+
+public interface ICliActionHelpGenerator
 {
-    public interface ICliActionHelpGenerator
-    {
-        CliActionHelp CreateHelp(IEnumerable<string> actionRouteParts);
-    }
+    CliActionHelp CreateHelp(IEnumerable<string> actionRouteParts);
 }

@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Scripting.Base
+﻿namespace CreativeCoders.Scripting.Base;
+
+public interface IScriptRuntimeSpace
 {
-    public interface IScriptRuntimeSpace
-    {
-        IScript Build(ScriptPackage scriptPackage);
-    }
+    IScript Build(ScriptPackage scriptPackage);
 }

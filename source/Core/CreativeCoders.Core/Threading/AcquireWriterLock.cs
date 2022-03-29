@@ -3,46 +3,45 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Core.Threading
+namespace CreativeCoders.Core.Threading;
+
+[PublicAPI]
+public class AcquireWriterLock : IDisposable
 {
-    [PublicAPI]
-    public class AcquireWriterLock : IDisposable
+    private readonly ReaderWriterLockSlim _lockSlim;
+
+    private bool _disposed;
+
+    [ExcludeFromCodeCoverage]
+    public AcquireWriterLock() : this(new ReaderWriterLockSlim()) { }
+
+    public AcquireWriterLock(ReaderWriterLockSlim lockSlim) : this(lockSlim, Timeout.Infinite) { }
+
+    public AcquireWriterLock(ReaderWriterLockSlim lockSlim, int timeout)
     {
-        private readonly ReaderWriterLockSlim _lockSlim;
+        Ensure.IsNotNull(lockSlim, nameof(lockSlim));
 
-        private bool _disposed;
+        _lockSlim = lockSlim;
 
-        [ExcludeFromCodeCoverage]
-        public AcquireWriterLock() : this(new ReaderWriterLockSlim()) { }
-
-        public AcquireWriterLock(ReaderWriterLockSlim lockSlim) : this(lockSlim, Timeout.Infinite) { }
-
-        public AcquireWriterLock(ReaderWriterLockSlim lockSlim, int timeout)
+        if (!_lockSlim.TryEnterWriteLock(timeout))
         {
-            Ensure.IsNotNull(lockSlim, nameof(lockSlim));
+            throw new AcquireLockFailedException("Acquire writer lock failed", timeout);
+        }
+    }
 
-            _lockSlim = lockSlim;
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
-            if (!_lockSlim.TryEnterWriteLock(timeout))
-            {
-                throw new AcquireLockFailedException("Acquire writer lock failed", timeout);
-            }
+    protected void Dispose(bool disposing)
+    {
+        if (!_disposed && disposing)
+        {
+            _lockSlim.ExitWriteLock();
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected void Dispose(bool disposing)
-        {
-            if (!_disposed && disposing)
-            {
-                _lockSlim.ExitWriteLock();
-            }
-
-            _disposed = true;
-        }
+        _disposed = true;
     }
 }

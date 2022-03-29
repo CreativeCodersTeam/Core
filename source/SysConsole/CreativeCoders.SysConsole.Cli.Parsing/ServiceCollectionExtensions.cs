@@ -2,13 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing
+namespace CreativeCoders.SysConsole.Cli.Parsing;
+
+public static class ServiceCollectionExtensions
 {
-    public static class ServiceCollectionExtensions
+    public static void AddOptionsHelpGenerator(this IServiceCollection services)
     {
-        public static void AddOptionsHelpGenerator(this IServiceCollection services)
-        {
-            services.TryAddSingleton<IOptionsHelpGenerator, OptionsHelpGenerator>();
-        }
+        services.TryAddSingleton<IOptionsHelpGenerator, OptionsHelpGenerator>();
     }
 }

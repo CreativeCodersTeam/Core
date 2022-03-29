@@ -11,158 +11,157 @@ using CreativeCoders.Scripting.CSharp.Preprocessors;
 using FakeItEasy;
 using Xunit;
 
-namespace CreativeCoders.Scripting.UnitTests.CSharp
+namespace CreativeCoders.Scripting.UnitTests.CSharp;
+
+public class CSharpScriptIntegrationTests
 {
-    public class CSharpScriptIntegrationTests
+    [Fact]
+    public void CreateAction_TestApiInjectedViaClassTemplate_ExecutionSucceeded()
     {
-        [Fact]
-        public void CreateAction_TestApiInjectedViaClassTemplate_ExecutionSucceeded()
-        {
-            var scriptSourceCode =
-                "using CreativeCoders.Scripting.UnitTests.CSharp;" + Env.NewLine +
-                "public void Execute() { Api.DoSomething(\"Method executed\"); }";
+        var scriptSourceCode =
+            "using CreativeCoders.Scripting.UnitTests.CSharp;" + Env.NewLine +
+            "public void Execute() { Api.DoSomething(\"Method executed\"); }";
 
-            var testApi = A.Fake<ITestApi>();
+        var testApi = A.Fake<ITestApi>();
             
-            var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, false);
+        var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, false);
             
-            var action = script.CreateAction("Execute", null);
+        var action = script.CreateAction("Execute", null);
 
-            action();
+        action();
             
-            A.CallTo(() => testApi.DoSomething("Method executed")).MustHaveHappenedOnceExactly();
-        }
+        A.CallTo(() => testApi.DoSomething("Method executed")).MustHaveHappenedOnceExactly();
+    }
         
-        [Fact]
-        public void CreateAction_TestApiInjectedViaContext_ExecutionSucceeded()
-        {
-            var scriptSourceCode =
-                "using CreativeCoders.Scripting.UnitTests.CSharp;" + Env.NewLine +
-                "public void Execute() { Api.DoSomething(\"Method executed\"); }";
+    [Fact]
+    public void CreateAction_TestApiInjectedViaContext_ExecutionSucceeded()
+    {
+        var scriptSourceCode =
+            "using CreativeCoders.Scripting.UnitTests.CSharp;" + Env.NewLine +
+            "public void Execute() { Api.DoSomething(\"Method executed\"); }";
 
-            var testApi = A.Fake<ITestApi>();
-            var contextTestApi = A.Fake<ITestApi>();
+        var testApi = A.Fake<ITestApi>();
+        var contextTestApi = A.Fake<ITestApi>();
             
-            var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, false);
+        var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, false);
             
-            var scriptContext = new ScriptContext();
-            scriptContext.AddInjection(new ScriptPropertyInjection<ITestApi>("Api", () => contextTestApi));
+        var scriptContext = new ScriptContext();
+        scriptContext.AddInjection(new ScriptPropertyInjection<ITestApi>("Api", () => contextTestApi));
             
-            var action = script.CreateAction("Execute", scriptContext);
+        var action = script.CreateAction("Execute", scriptContext);
 
-            action();
+        action();
             
-            A.CallTo(() => testApi.DoSomething("Method executed")).MustNotHaveHappened();
-            A.CallTo(() => contextTestApi.DoSomething("Method executed")).MustHaveHappenedOnceExactly();
-        }
+        A.CallTo(() => testApi.DoSomething("Method executed")).MustNotHaveHappened();
+        A.CallTo(() => contextTestApi.DoSomething("Method executed")).MustHaveHappenedOnceExactly();
+    }
 
-        [Fact]
-        public void CreateAction_ForGeneratedMethod_ApiIsCalled()
-        {
-            var scriptSourceCode =
-                "using CreativeCoders.Scripting.UnitTests.CSharp;" + Env.NewLine +
-                "public void Execute() { Api.DoSomething(\"Method executed\"); }";
+    [Fact]
+    public void CreateAction_ForGeneratedMethod_ApiIsCalled()
+    {
+        var scriptSourceCode =
+            "using CreativeCoders.Scripting.UnitTests.CSharp;" + Env.NewLine +
+            "public void Execute() { Api.DoSomething(\"Method executed\"); }";
 
-            var testApi = A.Fake<ITestApi>();
+        var testApi = A.Fake<ITestApi>();
             
-            var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, false);
+        var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, false);
             
-            var action = script.CreateAction("CallApi", null);
+        var action = script.CreateAction("CallApi", null);
 
-            action();
+        action();
             
-            A.CallTo(() => testApi.DoSomething("Call")).MustHaveHappenedOnceExactly();
-        }
+        A.CallTo(() => testApi.DoSomething("Call")).MustHaveHappenedOnceExactly();
+    }
         
-        [Fact]
-        public void CreateObject_ForGeneratedProperty_ApiIsCalled()
-        {
-            var scriptSourceCode =
-                "using CreativeCoders.Scripting.UnitTests.CSharp;" + Env.NewLine +
-                "public void Execute() { Api.DoSomething(\"Method executed\"); }";
+    [Fact]
+    public void CreateObject_ForGeneratedProperty_ApiIsCalled()
+    {
+        var scriptSourceCode =
+            "using CreativeCoders.Scripting.UnitTests.CSharp;" + Env.NewLine +
+            "public void Execute() { Api.DoSomething(\"Method executed\"); }";
 
-            var testApi = A.Fake<ITestApi>();
+        var testApi = A.Fake<ITestApi>();
             
-            var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, true);
+        var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, true);
             
-            var scriptObject = script.CreateObject<ITextScript>();
+        var scriptObject = script.CreateObject<ITextScript>();
 
-            var result = scriptObject.TestText;
+        var result = scriptObject.TestText;
             
-            Assert.Equal("SomeText", result);
+        Assert.Equal("SomeText", result);
 
-            scriptObject.TestText = "MoreText";
+        scriptObject.TestText = "MoreText";
             
-            A.CallTo(() => testApi.DoSomething("MoreText")).MustHaveHappenedOnceExactly();
-        }
+        A.CallTo(() => testApi.DoSomething("MoreText")).MustHaveHappenedOnceExactly();
+    }
         
-        [Fact]
-        public void CreateObject_ForGeneratedProperty_GetReturnsValue()
-        {
-            var scriptSourceCode =
-                "using CreativeCoders.Scripting.UnitTests.CSharp;" + Env.NewLine +
-                "public void Execute() { Api.DoSomething(\"Method executed\"); }";
+    [Fact]
+    public void CreateObject_ForGeneratedProperty_GetReturnsValue()
+    {
+        var scriptSourceCode =
+            "using CreativeCoders.Scripting.UnitTests.CSharp;" + Env.NewLine +
+            "public void Execute() { Api.DoSomething(\"Method executed\"); }";
 
-            var testApi = A.Fake<ITestApi>();
+        var testApi = A.Fake<ITestApi>();
             
-            var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, true);
+        var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, true);
             
-            var scriptObject = script.CreateObject<ITextScript>();
+        var scriptObject = script.CreateObject<ITextScript>();
 
-            var result = scriptObject.IntValue;
+        var result = scriptObject.IntValue;
             
-            Assert.Equal(12345, result);
-        }
+        Assert.Equal(12345, result);
+    }
 
-        [Fact]
-        public void CSharpScriptMethodNames_Get_FilledWithMethods()
-        {
-            var scriptSourceCode =
-                "using CreativeCoders.Scripting.UnitTests.CSharp;" + Env.NewLine +
-                "public void Execute() { Api.DoSomething(\"Method executed\"); }";
+    [Fact]
+    public void CSharpScriptMethodNames_Get_FilledWithMethods()
+    {
+        var scriptSourceCode =
+            "using CreativeCoders.Scripting.UnitTests.CSharp;" + Env.NewLine +
+            "public void Execute() { Api.DoSomething(\"Method executed\"); }";
 
-            var testApi = A.Fake<ITestApi>();
+        var testApi = A.Fake<ITestApi>();
             
-            var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, true);
+        var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, true);
 
-            Assert.Equal(2, script.MethodNames.Count);
-            Assert.Contains(script.MethodNames, x => x == "Execute");
-            Assert.Contains(script.MethodNames, x => x == "CallApi");
-        }
+        Assert.Equal(2, script.MethodNames.Count);
+        Assert.Contains(script.MethodNames, x => x == "Execute");
+        Assert.Contains(script.MethodNames, x => x == "CallApi");
+    }
 
-        [Fact]
-        public void Build_IncorrectSyntax_ThrowsException()
-        {
-            var scriptSourceCode =
-                "using CreativeCoders.Scripting.UnitTests.CSharp;" + Env.NewLine +
-                "public void Exe cute() { Api.DoSomething(\"Method executed\"); }";
+    [Fact]
+    public void Build_IncorrectSyntax_ThrowsException()
+    {
+        var scriptSourceCode =
+            "using CreativeCoders.Scripting.UnitTests.CSharp;" + Env.NewLine +
+            "public void Exe cute() { Api.DoSomething(\"Method executed\"); }";
 
-            var testApi = A.Fake<ITestApi>();
+        var testApi = A.Fake<ITestApi>();
             
-            var scriptPackage = new ScriptPackage("Script0", "TestScript", new StringSourceCode(scriptSourceCode));
+        var scriptPackage = new ScriptPackage("Script0", "TestScript", new StringSourceCode(scriptSourceCode));
             
-            var runtime = new CSharpScriptRuntime<TestScriptImplementation>(new TestScriptImplementation(Array.Empty<ISourcePreprocessor>(), testApi, false)) as IScriptRuntime;
+        var runtime = new CSharpScriptRuntime<TestScriptImplementation>(new TestScriptImplementation(Array.Empty<ISourcePreprocessor>(), testApi, false)) as IScriptRuntime;
 
-            var runtimeSpace = runtime.CreateSpace("CreativeCoders.TestScripts");
+        var runtimeSpace = runtime.CreateSpace("CreativeCoders.TestScripts");
 
-            var exception = Assert.Throws<ScriptCompilationFailedException>(() => runtimeSpace.Build(scriptPackage));
+        var exception = Assert.Throws<ScriptCompilationFailedException>(() => runtimeSpace.Build(scriptPackage));
             
-            Assert.Same(scriptPackage, exception.ScriptPackage);
-            Assert.NotEmpty(exception.CompilationResultMessages.Where(x => x.MessageType == CompilationMessageType.Error));
-        }
+        Assert.Same(scriptPackage, exception.ScriptPackage);
+        Assert.NotEmpty(exception.CompilationResultMessages.Where(x => x.MessageType == CompilationMessageType.Error));
+    }
 
-        private static IScript CreateScript(string sourceCode, IEnumerable<ISourcePreprocessor> sourcePreprocessors,
-            ITestApi testApi, bool scriptObjectWithInterface)
-        {
-            var scriptPackage = new ScriptPackage("Script0", "TestScript", new StringSourceCode(sourceCode));
+    private static IScript CreateScript(string sourceCode, IEnumerable<ISourcePreprocessor> sourcePreprocessors,
+        ITestApi testApi, bool scriptObjectWithInterface)
+    {
+        var scriptPackage = new ScriptPackage("Script0", "TestScript", new StringSourceCode(sourceCode));
             
-            var runtime = new CSharpScriptRuntime<TestScriptImplementation>(new TestScriptImplementation(sourcePreprocessors, testApi, scriptObjectWithInterface)) as IScriptRuntime;
+        var runtime = new CSharpScriptRuntime<TestScriptImplementation>(new TestScriptImplementation(sourcePreprocessors, testApi, scriptObjectWithInterface)) as IScriptRuntime;
 
-            var runtimeSpace = runtime.CreateSpace("CreativeCoders.TestScripts");
+        var runtimeSpace = runtime.CreateSpace("CreativeCoders.TestScripts");
 
-            var script = runtimeSpace.Build(scriptPackage);
+        var script = runtimeSpace.Build(scriptPackage);
 
-            return script;
-        }
+        return script;
     }
 }

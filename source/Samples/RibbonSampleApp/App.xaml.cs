@@ -1,9 +1,8 @@
 ﻿using System.Windows;
 
-namespace RibbonSampleApp
+namespace RibbonSampleApp;
+
+// ReSharper disable once RedundantExtendsListEntry
+public partial class App : Application
 {
-    // ReSharper disable once RedundantExtendsListEntry
-    public partial class App : Application
-    {
-    }
 }

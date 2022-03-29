@@ -3,43 +3,42 @@ using CreativeCoders.Mvvm.UnitTests.TestObjects;
 using FakeItEasy;
 using Xunit;
 
-namespace CreativeCoders.Mvvm.UnitTests
+namespace CreativeCoders.Mvvm.UnitTests;
+
+public class ViewModelBaseTests
 {
-    public class ViewModelBaseTests
+    [Fact]
+    public void CtorTest()
     {
-        [Fact]
-        public void CtorTest()
-        {
-            var _ = new ViewModelBase();
-        }
+        var _ = new ViewModelBase();
+    }
 
-        [Fact]
-        public void CtorTestWithMessenger()
-        {
-            var messenger = A.Fake<IMessenger>();
-            var _ = new ViewModelBase(messenger);            
-        }
+    [Fact]
+    public void CtorTestWithMessenger()
+    {
+        var messenger = A.Fake<IMessenger>();
+        var _ = new ViewModelBase(messenger);            
+    }
 
-        [Fact]
-        public void CtorTestWithMessengerExposed()
-        {
-            var messenger = A.Fake<IMessenger>();
-            var viewModel = new ViewModelBaseWithPublicMessenger(messenger);
+    [Fact]
+    public void CtorTestWithMessengerExposed()
+    {
+        var messenger = A.Fake<IMessenger>();
+        var viewModel = new ViewModelBaseWithPublicMessenger(messenger);
 
-            Assert.Equal(messenger, viewModel.ExposedMessenger);
-        }
+        Assert.Equal(messenger, viewModel.ExposedMessenger);
+    }
 
-        [Fact]
-        public void TestWithMessengerExposedSet()
-        {
-            var messenger = A.Fake<IMessenger>();
-            var viewModel = new ViewModelBaseWithPublicMessenger();
+    [Fact]
+    public void TestWithMessengerExposedSet()
+    {
+        var messenger = A.Fake<IMessenger>();
+        var viewModel = new ViewModelBaseWithPublicMessenger();
 
-            Assert.Equal(Messenger.Default, viewModel.ExposedMessenger);
+        Assert.Equal(Messenger.Default, viewModel.ExposedMessenger);
 
-            viewModel.ExposedMessenger = messenger;
+        viewModel.ExposedMessenger = messenger;
 
-            Assert.Equal(messenger, viewModel.ExposedMessenger);
-        }
+        Assert.Equal(messenger, viewModel.ExposedMessenger);
     }
 }

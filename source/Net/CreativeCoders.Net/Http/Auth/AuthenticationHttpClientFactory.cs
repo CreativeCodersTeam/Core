@@ -2,27 +2,26 @@
 using CreativeCoders.Core;
 using Microsoft.Extensions.Options;
 
-namespace CreativeCoders.Net.Http.Auth
+namespace CreativeCoders.Net.Http.Auth;
+
+public class AuthenticationHttpClientFactory : IAuthenticationHttpClientFactory
 {
-    public class AuthenticationHttpClientFactory : IAuthenticationHttpClientFactory
+    private readonly IHttpMessageHandlerFactory _httpMessageHandlerFactory;
+
+    public AuthenticationHttpClientFactory(IHttpMessageHandlerFactory httpMessageHandlerFactory)
     {
-        private readonly IHttpMessageHandlerFactory _httpMessageHandlerFactory;
+        Ensure.IsNotNull(httpMessageHandlerFactory, nameof(httpMessageHandlerFactory));
 
-        public AuthenticationHttpClientFactory(IHttpMessageHandlerFactory httpMessageHandlerFactory)
-        {
-            Ensure.IsNotNull(httpMessageHandlerFactory, nameof(httpMessageHandlerFactory));
+        _httpMessageHandlerFactory = httpMessageHandlerFactory;
+    }
 
-            _httpMessageHandlerFactory = httpMessageHandlerFactory;
-        }
+    public AuthenticationHttpClient CreateClient(string name)
+    {
+        return new(_httpMessageHandlerFactory, name);
+    }
 
-        public AuthenticationHttpClient CreateClient(string name)
-        {
-            return new(_httpMessageHandlerFactory, name);
-        }
-
-        public AuthenticationHttpClient CreateClient()
-        {
-            return CreateClient(Options.DefaultName);
-        }
+    public AuthenticationHttpClient CreateClient()
+    {
+        return CreateClient(Options.DefaultName);
     }
 }

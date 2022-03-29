@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.SysConsole.Cli.Parsing.Properties
+﻿namespace CreativeCoders.SysConsole.Cli.Parsing.Properties;
+
+public static class ConverterAction
 {
-    public static class ConverterAction
-    {
-        public static object DoNothing { get; } = new ();
-    }
+    public static object DoNothing { get; } = new ();
 }

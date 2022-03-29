@@ -6,68 +6,67 @@ using Castle.DynamicProxy;
 using CreativeCoders.Core.Reflection;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.DynamicCode.Proxying
+namespace CreativeCoders.DynamicCode.Proxying;
+
+[PublicAPI]
+public class InterceptorBase<T> : IInterceptor
+    where T : class
 {
-    [PublicAPI]
-    public class InterceptorBase<T> : IInterceptor
-        where T : class
+    private readonly IDictionary<MethodInfo, PropertyInfo> _propertyGetterInfos;
+
+    private readonly IDictionary<MethodInfo, PropertyInfo> _propertySetterInfos;
+
+    public InterceptorBase()
     {
-        private readonly IDictionary<MethodInfo, PropertyInfo> _propertyGetterInfos;
+        _propertyGetterInfos = new ConcurrentDictionary<MethodInfo, PropertyInfo>();
+        _propertySetterInfos = new ConcurrentDictionary<MethodInfo, PropertyInfo>();
 
-        private readonly IDictionary<MethodInfo, PropertyInfo> _propertySetterInfos;
+        InitPropertyInfos();
+    }
 
-        public InterceptorBase()
+    private void InitPropertyInfos()
+    {
+        foreach (var propertyInfo in typeof(T).GetProperties())
         {
-            _propertyGetterInfos = new ConcurrentDictionary<MethodInfo, PropertyInfo>();
-            _propertySetterInfos = new ConcurrentDictionary<MethodInfo, PropertyInfo>();
-
-            InitPropertyInfos();
-        }
-
-        private void InitPropertyInfos()
-        {
-            foreach (var propertyInfo in typeof(T).GetProperties())
+            if (propertyInfo.GetMethod != null)
             {
-                if (propertyInfo.GetMethod != null)
-                {
-                    _propertyGetterInfos.Add(propertyInfo.GetMethod, propertyInfo);
-                }
-
-                if (propertyInfo.SetMethod != null)
-                {
-                    _propertySetterInfos.Add(propertyInfo.SetMethod, propertyInfo);
-                }
-            }
-        }
-
-        public void Intercept(IInvocation invocation)
-        {
-            if (_propertyGetterInfos.TryGetValue(invocation.Method, out var propertyInfoForGet))
-            {
-                var propertyValue = GetProperty(propertyInfoForGet);
-                invocation.ReturnValue = propertyValue;
-                return;
+                _propertyGetterInfos.Add(propertyInfo.GetMethod, propertyInfo);
             }
 
-            if (_propertySetterInfos.TryGetValue(invocation.Method, out var propertyInfoForSet))
+            if (propertyInfo.SetMethod != null)
             {
-                SetProperty(propertyInfoForSet, invocation.Arguments.First());
-                return;
+                _propertySetterInfos.Add(propertyInfo.SetMethod, propertyInfo);
             }
-
-            ExecuteMethod(invocation);
         }
+    }
 
-        protected virtual void SetProperty(PropertyInfo propertyInfo, object value) { }
-
-        protected virtual object GetProperty(PropertyInfo propertyInfo)
+    public void Intercept(IInvocation invocation)
+    {
+        if (_propertyGetterInfos.TryGetValue(invocation.Method, out var propertyInfoForGet))
         {
-            return propertyInfo.PropertyType.GetDefault();
+            var propertyValue = GetProperty(propertyInfoForGet);
+            invocation.ReturnValue = propertyValue;
+            return;
         }
 
-        protected virtual void ExecuteMethod(IInvocation invocation)
+        if (_propertySetterInfos.TryGetValue(invocation.Method, out var propertyInfoForSet))
         {
-
+            SetProperty(propertyInfoForSet, invocation.Arguments.First());
+            return;
         }
+
+        ExecuteMethod(invocation);
+    }
+
+    protected virtual void SetProperty(PropertyInfo propertyInfo, object value) { }
+
+    protected virtual object GetProperty(PropertyInfo propertyInfo)
+    {
+        return propertyInfo.PropertyType.GetDefault();
+    }
+
+    protected virtual void ExecuteMethod(IInvocation invocation)
+    {
+
     }
 }

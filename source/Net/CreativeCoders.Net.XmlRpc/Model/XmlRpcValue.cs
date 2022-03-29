@@ -1,32 +1,31 @@
-﻿namespace CreativeCoders.Net.XmlRpc.Model
+﻿namespace CreativeCoders.Net.XmlRpc.Model;
+
+public abstract class XmlRpcValue
 {
-    public abstract class XmlRpcValue
+    protected XmlRpcValue(object data)
     {
-        protected XmlRpcValue(object data)
-        {
-            Data = data;
-        }
-
-        public object Data { get; }
-
-        public T GetValue<T>()
-        {
-            if (Data is T data)
-            {
-                return data;
-            }
-
-            return default;
-        }
+        Data = data;
     }
 
-    public abstract class XmlRpcValue<T> : XmlRpcValue
+    public object Data { get; }
+
+    public T GetValue<T>()
     {
-        protected XmlRpcValue(T value) : base(value)
+        if (Data is T data)
         {
-            Value = value;
+            return data;
         }
 
-        public T Value { get; }
+        return default;
     }
+}
+
+public abstract class XmlRpcValue<T> : XmlRpcValue
+{
+    protected XmlRpcValue(T value) : base(value)
+    {
+        Value = value;
+    }
+
+    public T Value { get; }
 }

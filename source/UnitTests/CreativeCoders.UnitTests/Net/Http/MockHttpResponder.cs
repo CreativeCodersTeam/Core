@@ -8,115 +8,114 @@ using System.Threading.Tasks;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Text;
 
-namespace CreativeCoders.UnitTests.Net.Http
+namespace CreativeCoders.UnitTests.Net.Http;
+
+///<inheritdoc/>
+public class MockHttpResponder : IMockHttpResponder
 {
-    ///<inheritdoc/>
-    public class MockHttpResponder : IMockHttpResponder
+    private string _uriPattern;
+
+    private HttpMethod _httpMethod;
+
+    private Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> _requestHandler;
+
+    private MockHttpResponder _subResponder;
+
+    private bool _isAlreadyExecuted;
+
+    public IMockHttpResponder ForUri(string uriPattern)
     {
-        private string _uriPattern;
+        _uriPattern = uriPattern;
 
-        private HttpMethod _httpMethod;
+        return this;
+    }
 
-        private Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> _requestHandler;
+    public IMockHttpResponder WithVerb(HttpMethod httpMethod)
+    {
+        _httpMethod = httpMethod;
 
-        private MockHttpResponder _subResponder;
+        return this;
+    }
 
-        private bool _isAlreadyExecuted;
+    public IMockHttpResponder ReturnText(string content, HttpStatusCode statusCode)
+    {
+        return Return((_, _) => Task.FromResult(new HttpResponseMessage(statusCode)
+            {Content = new StringContent(content)}));
+    }
 
-        public IMockHttpResponder ForUri(string uriPattern)
+    public IMockHttpResponder ReturnText(string content)
+    {
+        return ReturnText(content, HttpStatusCode.OK);
+    }
+
+    public IMockHttpResponder Return(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> requestHandler)
+    {
+        _requestHandler = requestHandler;
+
+        return this;
+    }
+
+    public IMockHttpResponder ReturnJson<T>(T data, HttpStatusCode statusCode, JsonSerializerOptions jsonSerializerOptions = null)
+    {
+        return Return((_, _) => Task.FromResult(new HttpResponseMessage(statusCode)
+            { Content = JsonContent.Create(data, null, jsonSerializerOptions) }));
+    }
+
+    public IMockHttpResponder ReturnJson<T>(T data, JsonSerializerOptions jsonSerializerOptions = null)
+    {
+        return ReturnJson(data, HttpStatusCode.OK, jsonSerializerOptions);
+    }
+
+    public IMockHttpResponder Then()
+    {
+        var responder = new MockHttpResponder();
+
+        _subResponder = responder;
+
+        return responder;
+    }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// <summary>   Executes the responder. </summary>
+    ///
+    /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
+    ///                                                 invalid cause uri pattern or HTTP method is not
+    ///                                                 matching. </exception>
+    ///
+    /// <param name="requestMessage">       Message describing the request. </param>
+    /// <param name="cancellationToken">    A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    ///     An asynchronous result that yields the HttpResponseMessage for the request or null if
+    ///     responder is not responsible for this request.
+    /// </returns>
+    ///-------------------------------------------------------------------------------------------------
+    public Task<HttpResponseMessage> Execute(HttpRequestMessage requestMessage, CancellationToken cancellationToken)
+    {
+        Ensure.IsNotNull(requestMessage, nameof(requestMessage));
+
+        if (_requestHandler == null)
         {
-            _uriPattern = uriPattern;
-
-            return this;
+            throw new InvalidOperationException("Return() was not configured");
         }
 
-        public IMockHttpResponder WithVerb(HttpMethod httpMethod)
+        if (_uriPattern.IsNotNullOrEmpty() && !PatternMatcher.MatchesPattern(requestMessage.RequestUri.ToStringSafe(), _uriPattern))
         {
-            _httpMethod = httpMethod;
-
-            return this;
+            return Task.FromResult<HttpResponseMessage>(null);
         }
 
-        public IMockHttpResponder ReturnText(string content, HttpStatusCode statusCode)
+        if (_httpMethod != null && !requestMessage.Method.Equals(_httpMethod))
         {
-            return Return((_, _) => Task.FromResult(new HttpResponseMessage(statusCode)
-                {Content = new StringContent(content)}));
+            return Task.FromResult<HttpResponseMessage>(null);
         }
 
-        public IMockHttpResponder ReturnText(string content)
+        if (_subResponder != null && _isAlreadyExecuted)
         {
-            return ReturnText(content, HttpStatusCode.OK);
+            return _subResponder.Execute(requestMessage, cancellationToken);
         }
 
-        public IMockHttpResponder Return(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> requestHandler)
-        {
-            _requestHandler = requestHandler;
+        _isAlreadyExecuted = true;
 
-            return this;
-        }
-
-        public IMockHttpResponder ReturnJson<T>(T data, HttpStatusCode statusCode, JsonSerializerOptions jsonSerializerOptions = null)
-        {
-            return Return((_, _) => Task.FromResult(new HttpResponseMessage(statusCode)
-                { Content = JsonContent.Create(data, null, jsonSerializerOptions) }));
-        }
-
-        public IMockHttpResponder ReturnJson<T>(T data, JsonSerializerOptions jsonSerializerOptions = null)
-        {
-            return ReturnJson(data, HttpStatusCode.OK, jsonSerializerOptions);
-        }
-
-        public IMockHttpResponder Then()
-        {
-            var responder = new MockHttpResponder();
-
-            _subResponder = responder;
-
-            return responder;
-        }
-
-        ///-------------------------------------------------------------------------------------------------
-        /// <summary>   Executes the responder. </summary>
-        ///
-        /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
-        ///                                                 invalid cause uri pattern or HTTP method is not
-        ///                                                 matching. </exception>
-        ///
-        /// <param name="requestMessage">       Message describing the request. </param>
-        /// <param name="cancellationToken">    A token that allows processing to be cancelled. </param>
-        ///
-        /// <returns>
-        ///     An asynchronous result that yields the HttpResponseMessage for the request or null if
-        ///     responder is not responsible for this request.
-        /// </returns>
-        ///-------------------------------------------------------------------------------------------------
-        public Task<HttpResponseMessage> Execute(HttpRequestMessage requestMessage, CancellationToken cancellationToken)
-        {
-            Ensure.IsNotNull(requestMessage, nameof(requestMessage));
-
-            if (_requestHandler == null)
-            {
-                throw new InvalidOperationException("Return() was not configured");
-            }
-
-            if (_uriPattern.IsNotNullOrEmpty() && !PatternMatcher.MatchesPattern(requestMessage.RequestUri.ToStringSafe(), _uriPattern))
-            {
-                return Task.FromResult<HttpResponseMessage>(null);
-            }
-
-            if (_httpMethod != null && !requestMessage.Method.Equals(_httpMethod))
-            {
-                return Task.FromResult<HttpResponseMessage>(null);
-            }
-
-            if (_subResponder != null && _isAlreadyExecuted)
-            {
-                return _subResponder.Execute(requestMessage, cancellationToken);
-            }
-
-            _isAlreadyExecuted = true;
-
-            return _requestHandler(requestMessage, cancellationToken);
-        }
+        return _requestHandler(requestMessage, cancellationToken);
     }
 }

@@ -1,13 +1,12 @@
-﻿namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData
+﻿namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData;
+
+public enum TestEnum
 {
-    public enum TestEnum
-    {
-        Default,
-        None,
-        Ok,
-        Failed,
-        Custom,
-        // ReSharper disable once InconsistentNaming
-        OK
-    }
+    Default,
+    None,
+    Ok,
+    Failed,
+    Custom,
+    // ReSharper disable once InconsistentNaming
+    OK
 }

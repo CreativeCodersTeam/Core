@@ -1,11 +1,10 @@
 ﻿using System.Text;
 
-namespace CreativeCoders.Net.XmlRpc.Model.Values.Converters
-{
-    public interface IDataToXmlRpcValueConverter
-    {
-        XmlRpcValue Convert(object data);
+namespace CreativeCoders.Net.XmlRpc.Model.Values.Converters;
 
-        Encoding XmlEncoding { get; set; }
-    }
+public interface IDataToXmlRpcValueConverter
+{
+    XmlRpcValue Convert(object data);
+
+    Encoding XmlEncoding { get; set; }
 }

@@ -1,10 +1,9 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.CodeCompilation
+namespace CreativeCoders.CodeCompilation;
+
+[PublicAPI]
+public interface ICompilerFactory
 {
-    [PublicAPI]
-    public interface ICompilerFactory
-    {
-        ICompiler CreateCompiler();
-    }
+    ICompiler CreateCompiler();
 }

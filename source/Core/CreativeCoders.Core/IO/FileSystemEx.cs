@@ -2,30 +2,29 @@
 using System.IO.Abstractions;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Core.IO
+namespace CreativeCoders.Core.IO;
+
+[PublicAPI]
+[ExcludeFromCodeCoverage]
+public class FileSystemEx : FileSystem, IFileSystemEx
 {
-    [PublicAPI]
-    [ExcludeFromCodeCoverage]
-    public class FileSystemEx : FileSystem, IFileSystemEx
+    public void Install()
     {
-        public void Install()
-        {
-            FileSys.InstallFileSystemSupport(this);
-        }
+        FileSys.InstallFileSystemSupport(this);
+    }
 
-        public FileSystemWatcherBase CreateFileSystemWatcher()
-        {
-            return new FileSystemWatcherWrapper();
-        }
+    public FileSystemWatcherBase CreateFileSystemWatcher()
+    {
+        return new FileSystemWatcherWrapper();
+    }
 
-        public FileSystemWatcherBase CreateFileSystemWatcher(string path)
-        {
-            return new FileSystemWatcherWrapper(path);
-        }
+    public FileSystemWatcherBase CreateFileSystemWatcher(string path)
+    {
+        return new FileSystemWatcherWrapper(path);
+    }
 
-        public FileSystemWatcherBase CreateFileSystemWatcher(string path, string filter)
-        {
-            return new FileSystemWatcherWrapper(path, filter);
-        }
+    public FileSystemWatcherBase CreateFileSystemWatcher(string path, string filter)
+    {
+        return new FileSystemWatcherWrapper(path, filter);
     }
 }

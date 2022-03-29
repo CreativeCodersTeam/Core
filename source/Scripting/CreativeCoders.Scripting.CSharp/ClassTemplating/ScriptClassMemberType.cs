@@ -1,9 +1,8 @@
-﻿namespace CreativeCoders.Scripting.CSharp.ClassTemplating
+﻿namespace CreativeCoders.Scripting.CSharp.ClassTemplating;
+
+public enum ScriptClassMemberType
 {
-    public enum ScriptClassMemberType
-    {
-        Method,
-        Property,
-        Raw
-    }
+    Method,
+    Property,
+    Raw
 }

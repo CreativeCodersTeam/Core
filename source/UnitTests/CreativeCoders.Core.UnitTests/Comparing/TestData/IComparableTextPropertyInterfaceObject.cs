@@ -1,9 +1,8 @@
-﻿namespace CreativeCoders.Core.UnitTests.Comparing.TestData
-{
-    public interface IComparableTextPropertyInterfaceObject
-    {
-        string TextValue { get; set; }
+﻿namespace CreativeCoders.Core.UnitTests.Comparing.TestData;
 
-        string ToString();
-    }
+public interface IComparableTextPropertyInterfaceObject
+{
+    string TextValue { get; set; }
+
+    string ToString();
 }

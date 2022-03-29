@@ -2,22 +2,21 @@
 using CreativeCoders.Core;
 using CreativeCoders.Net.XmlRpc.Model;
 
-namespace CreativeCoders.Net.XmlRpc
-{
-    public class XmlRpcResponse
-    {        
-        private readonly IList<XmlRpcMethodResult> _results;
+namespace CreativeCoders.Net.XmlRpc;
 
-        public XmlRpcResponse(IEnumerable<XmlRpcMethodResult> results, bool isMultiCall)
-        {            
-            Ensure.IsNotNull(results, nameof(results));
+public class XmlRpcResponse
+{        
+    private readonly IList<XmlRpcMethodResult> _results;
 
-            _results = new List<XmlRpcMethodResult>(results);
-            IsMultiCall = isMultiCall;
-        }
+    public XmlRpcResponse(IEnumerable<XmlRpcMethodResult> results, bool isMultiCall)
+    {            
+        Ensure.IsNotNull(results, nameof(results));
 
-        public IEnumerable<XmlRpcMethodResult> Results => _results;
-
-        public bool IsMultiCall { get; }
+        _results = new List<XmlRpcMethodResult>(results);
+        IsMultiCall = isMultiCall;
     }
+
+    public IEnumerable<XmlRpcMethodResult> Results => _results;
+
+    public bool IsMultiCall { get; }
 }

@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Scripting.UnitTests.CSharp
+﻿namespace CreativeCoders.Scripting.UnitTests.CSharp;
+
+public interface ITestApi
 {
-    public interface ITestApi
-    {
-        void DoSomething(string text);
-    }
+    void DoSomething(string text);
 }

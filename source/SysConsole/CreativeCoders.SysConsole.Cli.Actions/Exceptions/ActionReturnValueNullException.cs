@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.SysConsole.Cli.Actions.Exceptions
+﻿namespace CreativeCoders.SysConsole.Cli.Actions.Exceptions;
+
+public class ActionReturnValueNullException : CliActionException
 {
-    public class ActionReturnValueNullException : CliActionException
-    {
         
-    }
 }

@@ -7,309 +7,308 @@ using System.Threading.Tasks;
 using CreativeCoders.UnitTests.Net.Http;
 using Xunit;
 
-namespace CreativeCoders.Net.UnitTests.UnitTests.Net.Http
+namespace CreativeCoders.Net.UnitTests.UnitTests.Net.Http;
+
+public class MockHttpResponderTests
 {
-    public class MockHttpResponderTests
+    [Fact]
+    public async Task Execute_NoReturn_ThrowsException()
     {
-        [Fact]
-        public async Task Execute_NoReturn_ThrowsException()
+        var requestMessage = new HttpRequestMessage()
         {
-            var requestMessage = new HttpRequestMessage()
-            {
-                RequestUri = new Uri("http://test.com")
-            };
+            RequestUri = new Uri("http://test.com")
+        };
 
-            var mockResponse = new MockHttpResponder();
+        var mockResponse = new MockHttpResponder();
 
-            await Assert.ThrowsAsync<InvalidOperationException>(() =>
-                mockResponse.Execute(requestMessage, CancellationToken.None)).ConfigureAwait(false);
-        }
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            mockResponse.Execute(requestMessage, CancellationToken.None)).ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task Execute_OnlyReturnText_AlwaysReturnTheSame()
+    [Fact]
+    public async Task Execute_OnlyReturnText_AlwaysReturnTheSame()
+    {
+        const string expectedContent = "TestData";
+        const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+
+        var requestMessage = new HttpRequestMessage()
         {
-            const string expectedContent = "TestData";
-            const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
-
-            var requestMessage = new HttpRequestMessage()
-            {
-                RequestUri = new Uri("http://test.com")
-            };
+            RequestUri = new Uri("http://test.com")
+        };
             
-            var mockResponse = new MockHttpResponder();
+        var mockResponse = new MockHttpResponder();
 
-            mockResponse.ReturnText(expectedContent);
+        mockResponse.ReturnText(expectedContent);
 
-            var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
-            Assert.Equal(expectedStatusCode, response.StatusCode);
+        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedStatusCode, response.StatusCode);
 
-            requestMessage.RequestUri = new Uri("https://nic.com");
-            var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+        requestMessage.RequestUri = new Uri("https://nic.com");
+        var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            Assert.Equal(expectedContent, await secondResponse.Content.ReadAsStringAsync().ConfigureAwait(false));
-            Assert.Equal(expectedStatusCode, secondResponse.StatusCode);
-        }
+        Assert.Equal(expectedContent, await secondResponse.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedStatusCode, secondResponse.StatusCode);
+    }
 
-        [Fact]
-        public async Task Execute_ReturnTextWithStatusCode_AlwaysReturnTheSameAndStatusCode()
+    [Fact]
+    public async Task Execute_ReturnTextWithStatusCode_AlwaysReturnTheSameAndStatusCode()
+    {
+        const string expectedContent = "TestData";
+        const HttpStatusCode expectedStatusCode = HttpStatusCode.Accepted;
+
+        var requestMessage = new HttpRequestMessage()
         {
-            const string expectedContent = "TestData";
-            const HttpStatusCode expectedStatusCode = HttpStatusCode.Accepted;
+            RequestUri = new Uri("http://test.com")
+        };
 
-            var requestMessage = new HttpRequestMessage()
-            {
-                RequestUri = new Uri("http://test.com")
-            };
+        var mockResponse = new MockHttpResponder();
 
-            var mockResponse = new MockHttpResponder();
+        mockResponse.ReturnText(expectedContent, expectedStatusCode);
 
-            mockResponse.ReturnText(expectedContent, expectedStatusCode);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedStatusCode, response.StatusCode);
 
-            Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
-            Assert.Equal(expectedStatusCode, response.StatusCode);
+        requestMessage.RequestUri = new Uri("https://nic.com");
+        var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            requestMessage.RequestUri = new Uri("https://nic.com");
-            var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+        Assert.Equal(expectedContent, await secondResponse.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedStatusCode, secondResponse.StatusCode);
+    }
 
-            Assert.Equal(expectedContent, await secondResponse.Content.ReadAsStringAsync().ConfigureAwait(false));
-            Assert.Equal(expectedStatusCode, secondResponse.StatusCode);
-        }
+    [Fact]
+    public async Task Execute_ReturnTextForUriMatching_ReturnsMockData()
+    {
+        const string expectedContent = "TestData";
+        const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
-        [Fact]
-        public async Task Execute_ReturnTextForUriMatching_ReturnsMockData()
+        var requestMessage = new HttpRequestMessage()
         {
-            const string expectedContent = "TestData";
-            const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+            RequestUri = new Uri("http://test.com")
+        };
 
-            var requestMessage = new HttpRequestMessage()
-            {
-                RequestUri = new Uri("http://test.com")
-            };
+        var mockResponse = new MockHttpResponder();
 
-            var mockResponse = new MockHttpResponder();
+        mockResponse
+            .ForUri("http://test.com/")
+            .ReturnText(expectedContent, expectedStatusCode);
 
-            mockResponse
-                .ForUri("http://test.com/")
-                .ReturnText(expectedContent, expectedStatusCode);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedStatusCode, response.StatusCode);
+    }
 
-            Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
-            Assert.Equal(expectedStatusCode, response.StatusCode);
-        }
+    [Fact]
+    public async Task Execute_ReturnTextForUriNotMatching_ReturnsNull()
+    {
+        const string expectedContent = "TestData";
+        const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
-        [Fact]
-        public async Task Execute_ReturnTextForUriNotMatching_ReturnsNull()
+        var requestMessage = new HttpRequestMessage()
         {
-            const string expectedContent = "TestData";
-            const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+            RequestUri = new Uri("http://nic.com")
+        };
 
-            var requestMessage = new HttpRequestMessage()
-            {
-                RequestUri = new Uri("http://nic.com")
-            };
+        var mockResponse = new MockHttpResponder();
 
-            var mockResponse = new MockHttpResponder();
+        mockResponse
+            .ForUri("http://test.com/")
+            .ReturnText(expectedContent, expectedStatusCode);
 
-            mockResponse
-                .ForUri("http://test.com/")
-                .ReturnText(expectedContent, expectedStatusCode);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+        Assert.Null(response);
+    }
 
-            Assert.Null(response);
-        }
+    [Fact]
+    public async Task Execute_ReturnTextForVerb_ReturnsMockData()
+    {
+        const string expectedContent = "TestData";
+        const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
-        [Fact]
-        public async Task Execute_ReturnTextForVerb_ReturnsMockData()
+        var requestMessage = new HttpRequestMessage()
         {
-            const string expectedContent = "TestData";
-            const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+            Method = HttpMethod.Get
+        };
 
-            var requestMessage = new HttpRequestMessage()
-            {
-                Method = HttpMethod.Get
-            };
+        var mockResponse = new MockHttpResponder();
 
-            var mockResponse = new MockHttpResponder();
+        mockResponse
+            .WithVerb(HttpMethod.Get)
+            .ReturnText(expectedContent, expectedStatusCode);
 
-            mockResponse
-                .WithVerb(HttpMethod.Get)
-                .ReturnText(expectedContent, expectedStatusCode);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedStatusCode, response.StatusCode);
+    }
 
-            Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
-            Assert.Equal(expectedStatusCode, response.StatusCode);
-        }
+    [Fact]
+    public async Task Execute_ReturnTextForVerbNotMatching_ReturnsNull()
+    {
+        const string expectedContent = "TestData";
+        const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
-        [Fact]
-        public async Task Execute_ReturnTextForVerbNotMatching_ReturnsNull()
+        var requestMessage = new HttpRequestMessage()
         {
-            const string expectedContent = "TestData";
-            const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+            Method = HttpMethod.Post
+        };
 
-            var requestMessage = new HttpRequestMessage()
-            {
-                Method = HttpMethod.Post
-            };
+        var mockResponse = new MockHttpResponder();
 
-            var mockResponse = new MockHttpResponder();
+        mockResponse
+            .WithVerb(HttpMethod.Get)
+            .ReturnText(expectedContent, expectedStatusCode);
 
-            mockResponse
-                .WithVerb(HttpMethod.Get)
-                .ReturnText(expectedContent, expectedStatusCode);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+        Assert.Null(response);
+    }
 
-            Assert.Null(response);
-        }
+    [Fact]
+    public async Task Execute_ReturnJson_ReturnsCorrectJsonData()
+    {
+        var expectedData = new { Text = "TestText"};
 
-        [Fact]
-        public async Task Execute_ReturnJson_ReturnsCorrectJsonData()
+        var requestMessage = new HttpRequestMessage()
         {
-            var expectedData = new { Text = "TestText"};
+            RequestUri = new Uri("http://test.com")
+        };
 
-            var requestMessage = new HttpRequestMessage()
-            {
-                RequestUri = new Uri("http://test.com")
-            };
+        var mockResponse = new MockHttpResponder();
 
-            var mockResponse = new MockHttpResponder();
+        mockResponse.ReturnJson(expectedData);
 
-            mockResponse.ReturnJson(expectedData);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(
+            JsonSerializer.Serialize(expectedData,
+                new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase}),
+            await response.Content.ReadAsStringAsync());
+    }
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(
-                JsonSerializer.Serialize(expectedData,
-                    new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase}),
-                await response.Content.ReadAsStringAsync());
-        }
+    [Fact]
+    public async Task Execute_ReturnJsonWithStatusCode_ReturnsCorrectJsonDataAndStatusCode()
+    {
+        const HttpStatusCode expectedStatusCode = HttpStatusCode.Accepted;
+        var expectedData = new { Text = "TestText" };
 
-        [Fact]
-        public async Task Execute_ReturnJsonWithStatusCode_ReturnsCorrectJsonDataAndStatusCode()
+        var requestMessage = new HttpRequestMessage()
         {
-            const HttpStatusCode expectedStatusCode = HttpStatusCode.Accepted;
-            var expectedData = new { Text = "TestText" };
+            RequestUri = new Uri("http://test.com")
+        };
 
-            var requestMessage = new HttpRequestMessage()
-            {
-                RequestUri = new Uri("http://test.com")
-            };
+        var mockResponse = new MockHttpResponder();
 
-            var mockResponse = new MockHttpResponder();
+        mockResponse.ReturnJson(expectedData, expectedStatusCode);
 
-            mockResponse.ReturnJson(expectedData, expectedStatusCode);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+        Assert.Equal(expectedStatusCode, response.StatusCode);
+        Assert.Equal(
+            JsonSerializer.Serialize(expectedData,
+                new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase}),
+            await response.Content.ReadAsStringAsync());
+    }
 
-            Assert.Equal(expectedStatusCode, response.StatusCode);
-            Assert.Equal(
-                JsonSerializer.Serialize(expectedData,
-                    new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase}),
-                await response.Content.ReadAsStringAsync());
-        }
+    [Fact]
+    public async Task Execute_ReturnJson_ReturnsCorrectContentType()
+    {
+        var expectedData = new { Text = "TestText" };
 
-        [Fact]
-        public async Task Execute_ReturnJson_ReturnsCorrectContentType()
+        var requestMessage = new HttpRequestMessage()
         {
-            var expectedData = new { Text = "TestText" };
+            RequestUri = new Uri("http://test.com")
+        };
 
-            var requestMessage = new HttpRequestMessage()
-            {
-                RequestUri = new Uri("http://test.com")
-            };
+        var mockResponse = new MockHttpResponder();
 
-            var mockResponse = new MockHttpResponder();
+        mockResponse.ReturnJson(expectedData);
 
-            mockResponse.ReturnJson(expectedData);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+        Assert.Equal(ContentMediaTypes.Application.Json, response.Content.Headers.ContentType?.MediaType);
+    }
 
-            Assert.Equal(ContentMediaTypes.Application.Json, response.Content.Headers.ContentType?.MediaType);
-        }
+    [Fact]
+    public async Task Then_SecondRequestForSameUri_RespondedBySecondResponder()
+    {
+        const string expectedContent = "TestData";
+        const string expectedSecondContent = "TestData2";
 
-        [Fact]
-        public async Task Then_SecondRequestForSameUri_RespondedBySecondResponder()
+        const HttpStatusCode expectedStatusCode = HttpStatusCode.Unauthorized;
+        const HttpStatusCode expectedSecondStatusCode = HttpStatusCode.OK;
+
+        var requestMessage = new HttpRequestMessage()
         {
-            const string expectedContent = "TestData";
-            const string expectedSecondContent = "TestData2";
+            RequestUri = new Uri("http://test.com/")
+        };
 
-            const HttpStatusCode expectedStatusCode = HttpStatusCode.Unauthorized;
-            const HttpStatusCode expectedSecondStatusCode = HttpStatusCode.OK;
+        var mockResponse = new MockHttpResponder();
 
-            var requestMessage = new HttpRequestMessage()
-            {
-                RequestUri = new Uri("http://test.com/")
-            };
+        mockResponse
+            .ForUri("http://test.com/")
+            .ReturnText(expectedContent, expectedStatusCode);
 
-            var mockResponse = new MockHttpResponder();
+        mockResponse
+            .Then()
+            .ReturnText(expectedSecondContent, expectedSecondStatusCode);
 
-            mockResponse
-                .ForUri("http://test.com/")
-                .ReturnText(expectedContent, expectedStatusCode);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            mockResponse
-                .Then()
-                .ReturnText(expectedSecondContent, expectedSecondStatusCode);
+        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedStatusCode, response.StatusCode);
 
-            var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+        requestMessage.RequestUri = new Uri("http://test.com/");
+        var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
-            Assert.Equal(expectedStatusCode, response.StatusCode);
+        Assert.Equal(expectedSecondContent, await secondResponse.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedSecondStatusCode, secondResponse.StatusCode);
+    }
 
-            requestMessage.RequestUri = new Uri("http://test.com/");
-            var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+    [Fact]
+    public async Task Then_SecondRequestForSameUriWithDifferentRequestBetween_RespondedBySecondResponder()
+    {
+        const string expectedContent = "TestData";
+        const string expectedSecondContent = "TestData2";
 
-            Assert.Equal(expectedSecondContent, await secondResponse.Content.ReadAsStringAsync().ConfigureAwait(false));
-            Assert.Equal(expectedSecondStatusCode, secondResponse.StatusCode);
-        }
+        const HttpStatusCode expectedStatusCode = HttpStatusCode.Unauthorized;
+        const HttpStatusCode expectedSecondStatusCode = HttpStatusCode.OK;
 
-        [Fact]
-        public async Task Then_SecondRequestForSameUriWithDifferentRequestBetween_RespondedBySecondResponder()
+        var requestMessage = new HttpRequestMessage()
         {
-            const string expectedContent = "TestData";
-            const string expectedSecondContent = "TestData2";
+            RequestUri = new Uri("http://test.com/")
+        };
 
-            const HttpStatusCode expectedStatusCode = HttpStatusCode.Unauthorized;
-            const HttpStatusCode expectedSecondStatusCode = HttpStatusCode.OK;
+        var mockResponse = new MockHttpResponder();
 
-            var requestMessage = new HttpRequestMessage()
-            {
-                RequestUri = new Uri("http://test.com/")
-            };
+        mockResponse
+            .ForUri("http://test.com/")
+            .ReturnText(expectedContent, expectedStatusCode);
 
-            var mockResponse = new MockHttpResponder();
+        mockResponse
+            .Then()
+            .ReturnText(expectedSecondContent, expectedSecondStatusCode);
 
-            mockResponse
-                .ForUri("http://test.com/")
-                .ReturnText(expectedContent, expectedStatusCode);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            mockResponse
-                .Then()
-                .ReturnText(expectedSecondContent, expectedSecondStatusCode);
+        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedStatusCode, response.StatusCode);
 
-            var response = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+        requestMessage.RequestUri = new Uri("http://test1.com/");
+        var otherResponse = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
-            Assert.Equal(expectedStatusCode, response.StatusCode);
+        Assert.Null(otherResponse);
 
-            requestMessage.RequestUri = new Uri("http://test1.com/");
-            var otherResponse = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
+        requestMessage.RequestUri = new Uri("http://test.com/");
+        var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            Assert.Null(otherResponse);
-
-            requestMessage.RequestUri = new Uri("http://test.com/");
-            var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None).ConfigureAwait(false);
-
-            Assert.Equal(expectedSecondContent, await secondResponse.Content.ReadAsStringAsync().ConfigureAwait(false));
-            Assert.Equal(expectedSecondStatusCode, secondResponse.StatusCode);
-        }
+        Assert.Equal(expectedSecondContent, await secondResponse.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedSecondStatusCode, secondResponse.StatusCode);
     }
 }

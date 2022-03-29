@@ -1,14 +1,13 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Core.Enums
-{
-    [PublicAPI]
-    public interface IEnumToStringConverter
-    {
-        string Convert(Enum enumValue);
+namespace CreativeCoders.Core.Enums;
 
-        T Convert<T>(string text)
-            where T : Enum;
-    }
+[PublicAPI]
+public interface IEnumToStringConverter
+{
+    string Convert(Enum enumValue);
+
+    T Convert<T>(string text)
+        where T : Enum;
 }

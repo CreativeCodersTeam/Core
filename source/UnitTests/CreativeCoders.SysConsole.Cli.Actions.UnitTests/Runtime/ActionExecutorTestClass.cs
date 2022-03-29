@@ -1,55 +1,54 @@
 ﻿using System.Threading.Tasks;
 
-namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime
+namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Runtime;
+
+public class ActionExecutorTestClass
 {
-    public class ActionExecutorTestClass
+    public const int AsyncActionResultReturnCode = 1234;
+
+    public const int AsyncIntReturnCode = 2345;
+
+    public const int ActionResultReturnCode = 3456;
+
+    public const int IntReturnCode = 4567;
+
+    public object? ExecuteNull()
     {
-        public const int AsyncActionResultReturnCode = 1234;
+        return null;
+    }
 
-        public const int AsyncIntReturnCode = 2345;
+    public Task<CliActionResult> ExecuteWithActionResultAsync()
+    {
+        return Task.FromResult(new CliActionResult(AsyncActionResultReturnCode));
+    }
 
-        public const int ActionResultReturnCode = 3456;
+    public Task<int> ExecuteWithIntAsync()
+    {
+        return Task.FromResult(AsyncIntReturnCode);
+    }
 
-        public const int IntReturnCode = 4567;
+    public Task ExecuteAsync()
+    {
+        return Task.CompletedTask;
+    }
 
-        public object? ExecuteNull()
-        {
-            return null;
-        }
+    public CliActionResult ExecuteWithActionResult()
+    {
+        return new CliActionResult(ActionResultReturnCode);
+    }
 
-        public Task<CliActionResult> ExecuteWithActionResultAsync()
-        {
-            return Task.FromResult(new CliActionResult(AsyncActionResultReturnCode));
-        }
+    public int ExecuteWithInt()
+    {
+        return IntReturnCode;
+    }
 
-        public Task<int> ExecuteWithIntAsync()
-        {
-            return Task.FromResult(AsyncIntReturnCode);
-        }
+    public void Execute()
+    {
+        // Do Nothing
+    }
 
-        public Task ExecuteAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        public CliActionResult ExecuteWithActionResult()
-        {
-            return new CliActionResult(ActionResultReturnCode);
-        }
-
-        public int ExecuteWithInt()
-        {
-            return IntReturnCode;
-        }
-
-        public void Execute()
-        {
-            // Do Nothing
-        }
-
-        public string ExecuteInvalidReturnType()
-        {
-            return string.Empty;
-        }
+    public string ExecuteInvalidReturnType()
+    {
+        return string.Empty;
     }
 }

@@ -1,39 +1,38 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
-namespace CreativeCoders.Net.Servers.Http
+namespace CreativeCoders.Net.Servers.Http;
+
+public class StreamResponseBody : IHttpResponseBody
 {
-    public class StreamResponseBody : IHttpResponseBody
+    private readonly Stream _stream;
+
+    private StreamWriter _streamWriter;
+
+    public StreamResponseBody(Stream stream)
     {
-        private readonly Stream _stream;
+        _stream = stream;
+    }
 
-        private StreamWriter _streamWriter;
-
-        public StreamResponseBody(Stream stream)
-        {
-            _stream = stream;
-        }
-
-        public Task WriteAsync(string content)
-        {
-            _streamWriter ??= new StreamWriter(_stream);
+    public Task WriteAsync(string content)
+    {
+        _streamWriter ??= new StreamWriter(_stream);
             
-            return _streamWriter.WriteAsync(content);
-        }
+        return _streamWriter.WriteAsync(content);
+    }
 
-        public async Task FlushAsync()
+    public async Task FlushAsync()
+    {
+        if (_streamWriter != null)
         {
-            if (_streamWriter != null)
-            {
-                await _streamWriter.FlushAsync().ConfigureAwait(false);
-            }
+            await _streamWriter.FlushAsync().ConfigureAwait(false);
+        }
             
-            await _stream.FlushAsync().ConfigureAwait(false);
-        }
+        await _stream.FlushAsync().ConfigureAwait(false);
+    }
 
-        public Stream GetStream()
-        {
-            return _stream;
-        }
+    public Stream GetStream()
+    {
+        return _stream;
     }
 }

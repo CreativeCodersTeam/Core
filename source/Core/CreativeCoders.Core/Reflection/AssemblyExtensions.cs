@@ -2,22 +2,21 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace CreativeCoders.Core.Reflection
+namespace CreativeCoders.Core.Reflection;
+
+[ExcludeFromCodeCoverage]
+public static class AssemblyExtensions
 {
-    [ExcludeFromCodeCoverage]
-    public static class AssemblyExtensions
+    // ReSharper disable once ReturnTypeCanBeEnumerable.Global
+    public static Type[] GetTypesSafe(this Assembly assembly)
     {
-        // ReSharper disable once ReturnTypeCanBeEnumerable.Global
-        public static Type[] GetTypesSafe(this Assembly assembly)
+        try
         {
-            try
-            {
-                return assembly.GetTypes();
-            }
-            catch (ReflectionTypeLoadException)
-            {
-                return Type.EmptyTypes;
-            }
+            return assembly.GetTypes();
+        }
+        catch (ReflectionTypeLoadException)
+        {
+            return Type.EmptyTypes;
         }
     }
 }

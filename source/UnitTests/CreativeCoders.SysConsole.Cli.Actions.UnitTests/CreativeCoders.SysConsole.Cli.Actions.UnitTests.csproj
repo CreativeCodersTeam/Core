@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;CA1822</NoWarn>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<NoWarn>1701;1702;CA1822</NoWarn>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="FakeItEasy" Version="7.2.0" />
@@ -29,12 +29,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Help\" />
-	  <Folder Include="Runtime\Middleware\" />
+		<Folder Include="Help\" />
+		<Folder Include="Runtime\Middleware\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\SysConsole\CreativeCoders.SysConsole.Cli.Actions\CreativeCoders.SysConsole.Cli.Actions.csproj" />
+		<ProjectReference
+			Include="..\..\SysConsole\CreativeCoders.SysConsole.Cli.Actions\CreativeCoders.SysConsole.Cli.Actions.csproj" />
 	</ItemGroup>
 
 </Project>

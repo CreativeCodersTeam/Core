@@ -1,10 +1,9 @@
 ﻿using CreativeCoders.Net.WebApi.Serialization;
 
-namespace CreativeCoders.Net.WebApi.Building
+namespace CreativeCoders.Net.WebApi.Building;
+
+public interface IApiBuilder
 {
-    public interface IApiBuilder
-    {
-        T BuildApi<T>(string baseUri, IDataFormatter defaultDataFormatter)
-            where T : class;
-    }
+    T BuildApi<T>(string baseUri, IDataFormatter defaultDataFormatter)
+        where T : class;
 }

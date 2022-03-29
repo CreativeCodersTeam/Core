@@ -1,14 +1,13 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Core.Caching
+namespace CreativeCoders.Core.Caching;
+
+[PublicAPI]
+public interface ICacheEntry<out TKey, TValue>
 {
-    [PublicAPI]
-    public interface ICacheEntry<out TKey, TValue>
-    {
-        TKey Key { get; }
+    TKey Key { get; }
         
-        TValue Value { get; set; }
+    TValue Value { get; set; }
         
-        ICacheExpirationPolicy ExpirationPolicy { get; }
-    }
+    ICacheExpirationPolicy ExpirationPolicy { get; }
 }

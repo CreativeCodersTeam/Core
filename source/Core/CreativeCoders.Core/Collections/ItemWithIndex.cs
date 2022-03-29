@@ -1,15 +1,14 @@
-﻿namespace CreativeCoders.Core.Collections
+﻿namespace CreativeCoders.Core.Collections;
+
+public class ItemWithIndex<T>
 {
-    public class ItemWithIndex<T>
+    public ItemWithIndex(int index, T data)
     {
-        public ItemWithIndex(int index, T data)
-        {
-            Index = index;
-            Data = data;
-        }
-
-        public int Index { get; }
-
-        public T Data { get; }
+        Index = index;
+        Data = data;
     }
+
+    public int Index { get; }
+
+    public T Data { get; }
 }

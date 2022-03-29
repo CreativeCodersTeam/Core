@@ -1,23 +1,22 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Ribbon.Controls
+namespace CreativeCoders.Mvvm.Ribbon.Controls;
+
+[PublicAPI]
+public class RibbonButtonPanelViewModel : RibbonControlViewModel
 {
-    [PublicAPI]
-    public class RibbonButtonPanelViewModel : RibbonControlViewModel
+    private bool _separatorIsVisible;
+
+    public RibbonButtonPanelViewModel()
     {
-        private bool _separatorIsVisible;
+        Items = new RibbonItemCollection<RibbonControlViewModel>();
+    }
 
-        public RibbonButtonPanelViewModel()
-        {
-            Items = new RibbonItemCollection<RibbonControlViewModel>();
-        }
+    public RibbonItemCollection<RibbonControlViewModel> Items { get; }
 
-        public RibbonItemCollection<RibbonControlViewModel> Items { get; }
-
-        public bool SeparatorIsVisible
-        {
-            get => _separatorIsVisible;
-            set => Set(ref _separatorIsVisible, value);
-        }
+    public bool SeparatorIsVisible
+    {
+        get => _separatorIsVisible;
+        set => Set(ref _separatorIsVisible, value);
     }
 }

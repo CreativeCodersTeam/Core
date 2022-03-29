@@ -2,17 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CreativeCoders.Data.EfCore.Modeling
-{
-    [PublicAPI]
-    public abstract class EfCoreEntityModelBuilderBase<TEntity> : IEfCoreEntityModelBuilder
-        where TEntity : class
-    {
-        public void BuildModel(ModelBuilder modelBuilder)
-        {
-            BuildEntity(modelBuilder.Entity<TEntity>());
-        }
+namespace CreativeCoders.Data.EfCore.Modeling;
 
-        protected abstract void BuildEntity(EntityTypeBuilder<TEntity> entity);
+[PublicAPI]
+public abstract class EfCoreEntityModelBuilderBase<TEntity> : IEfCoreEntityModelBuilder
+    where TEntity : class
+{
+    public void BuildModel(ModelBuilder modelBuilder)
+    {
+        BuildEntity(modelBuilder.Entity<TEntity>());
     }
+
+    protected abstract void BuildEntity(EntityTypeBuilder<TEntity> entity);
 }

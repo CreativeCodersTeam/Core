@@ -1,28 +1,27 @@
 ﻿using CreativeCoders.Net.Avm.Tr064;
 
-namespace CreativeCoders.Net.Avm
+namespace CreativeCoders.Net.Avm;
+
+public class Wlan
 {
-    public class Wlan
+    private readonly WlanApi _wlanApi;
+
+    public Wlan(string url, string userName, string password)
     {
-        private readonly WlanApi _wlanApi;
+        _wlanApi = new WlanApi(url, userName, password);
+    }
 
-        public Wlan(string url, string userName, string password)
-        {
-            _wlanApi = new WlanApi(url, userName, password);
-        }
-
-        public WlanDeviceInfo GetWlanDeviceInfo(string macAddress)
-        {
-            var response = _wlanApi.GetSpecificAssociatedDeviceInfo(macAddress);
+    public WlanDeviceInfo GetWlanDeviceInfo(string macAddress)
+    {
+        var response = _wlanApi.GetSpecificAssociatedDeviceInfo(macAddress);
             
-            return new WlanDeviceInfo
-            {
-                MacAddress = macAddress,
-                IpAddress = response.IpAddress,
-                DeviceAuthState = response.DeviceAuthState,
-                SignalStrength = response.SignalStrength,
-                Speed = response.Speed
-            };
-        }
+        return new WlanDeviceInfo
+        {
+            MacAddress = macAddress,
+            IpAddress = response.IpAddress,
+            DeviceAuthState = response.DeviceAuthState,
+            SignalStrength = response.SignalStrength,
+            Speed = response.Speed
+        };
     }
 }

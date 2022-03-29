@@ -3,80 +3,79 @@ using System.Linq;
 using Microsoft.Extensions.Localization;
 
 #nullable enable
-namespace CreativeCoders.Localization
+namespace CreativeCoders.Localization;
+
+internal class DefaultExtendedStringLocalizer<T> : IExtendedStringLocalizer<T>
 {
-    internal class DefaultExtendedStringLocalizer<T> : IExtendedStringLocalizer<T>
+    private readonly IStringLocalizer _globalLocalizer;
+
+    private readonly IStringLocalizer<T> _localizer;
+
+    public DefaultExtendedStringLocalizer(IStringLocalizer globalLocalizer, IStringLocalizer<T> localizer)
     {
-        private readonly IStringLocalizer _globalLocalizer;
+        _globalLocalizer = globalLocalizer;
+        _localizer = localizer;
+    }
 
-        private readonly IStringLocalizer<T> _localizer;
+    public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
+    {
+        var globalStrings = _globalLocalizer.GetAllStrings(includeParentCultures);
 
-        public DefaultExtendedStringLocalizer(IStringLocalizer globalLocalizer, IStringLocalizer<T> localizer)
+        var strings = _localizer.GetAllStrings(includeParentCultures);
+
+        return MergeStrings(globalStrings, strings);
+    }
+
+    private static IEnumerable<LocalizedString> MergeStrings(IEnumerable<LocalizedString> globalStrings, IEnumerable<LocalizedString> strings)
+    {
+        var mergedStrings = new List<LocalizedString>(globalStrings);
+
+        foreach (var localizedString in strings)
         {
-            _globalLocalizer = globalLocalizer;
-            _localizer = localizer;
-        }
+            var globalLocalizedString = mergedStrings.FirstOrDefault(x => x.Name == localizedString.Name);
 
-        public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
-        {
-            var globalStrings = _globalLocalizer.GetAllStrings(includeParentCultures);
-
-            var strings = _localizer.GetAllStrings(includeParentCultures);
-
-            return MergeStrings(globalStrings, strings);
-        }
-
-        private static IEnumerable<LocalizedString> MergeStrings(IEnumerable<LocalizedString> globalStrings, IEnumerable<LocalizedString> strings)
-        {
-            var mergedStrings = new List<LocalizedString>(globalStrings);
-
-            foreach (var localizedString in strings)
+            if (globalLocalizedString == null)
             {
-                var globalLocalizedString = mergedStrings.FirstOrDefault(x => x.Name == localizedString.Name);
-
-                if (globalLocalizedString == null)
-                {
-                    mergedStrings.Add(localizedString);
-                }
-                else if (globalLocalizedString.ResourceNotFound || !localizedString.ResourceNotFound)
-                {
-                    mergedStrings.Remove(globalLocalizedString);
-
-                    mergedStrings.Add(localizedString);
-                }
+                mergedStrings.Add(localizedString);
             }
-
-            return mergedStrings;
-        }
-
-        public LocalizedString this[string name]
-        {
-            get
+            else if (globalLocalizedString.ResourceNotFound || !localizedString.ResourceNotFound)
             {
-                var text = _localizer[name];
+                mergedStrings.Remove(globalLocalizedString);
 
-                if (text.ResourceNotFound)
-                {
-                    text = _globalLocalizer[name];
-                }
-
-                return text;
+                mergedStrings.Add(localizedString);
             }
         }
 
-        public LocalizedString this[string name, params object[] arguments]
+        return mergedStrings;
+    }
+
+    public LocalizedString this[string name]
+    {
+        get
         {
-            get
+            var text = _localizer[name];
+
+            if (text.ResourceNotFound)
             {
-                var text = _localizer[name, arguments];
-
-                if (text.ResourceNotFound)
-                {
-                    text = _globalLocalizer[name, arguments];
-                }
-
-                return text;
+                text = _globalLocalizer[name];
             }
+
+            return text;
+        }
+    }
+
+    public LocalizedString this[string name, params object[] arguments]
+    {
+        get
+        {
+            var text = _localizer[name, arguments];
+
+            if (text.ResourceNotFound)
+            {
+                text = _globalLocalizer[name, arguments];
+            }
+
+            return text;
         }
     }
 }

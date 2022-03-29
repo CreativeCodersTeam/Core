@@ -2,102 +2,101 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Core.Weak
+namespace CreativeCoders.Core.Weak;
+
+[PublicAPI]
+public class WeakBase<T> : IDisposable
+    where T : class
 {
-    [PublicAPI]
-    public class WeakBase<T> : IDisposable
-        where T : class
+    private WeakReference _ownerReference;
+        
+    private WeakReference<T> _dataReference;
+        
+    private object _owner;
+
+    private T _data;
+
+    public WeakBase(object owner, T data, KeepOwnerAliveMode keepOwnerAliveMode)
     {
-        private WeakReference _ownerReference;
-        
-        private WeakReference<T> _dataReference;
-        
-        private object _owner;
+        Ensure.IsNotNull(data, nameof(data));
 
-        private T _data;
-
-        public WeakBase(object owner, T data, KeepOwnerAliveMode keepOwnerAliveMode)
-        {
-            Ensure.IsNotNull(data, nameof(data));
-
-            KeepOwnerAlive = GetKeepAlive(keepOwnerAliveMode, owner);
+        KeepOwnerAlive = GetKeepAlive(keepOwnerAliveMode, owner);
             
-            if (owner != null)
-            {
-                _ownerReference = new WeakReference(owner);
-
-                if (KeepOwnerAlive)
-                {
-                    _owner = owner;
-                }
-
-                _data = data;
-            }
+        if (owner != null)
+        {
+            _ownerReference = new WeakReference(owner);
 
             if (KeepOwnerAlive)
             {
-                _data = data;
+                _owner = owner;
             }
-            
-            _dataReference = new WeakReference<T>(data);
+
+            _data = data;
         }
 
-        private static bool GetKeepAlive(KeepOwnerAliveMode keepOwnerAliveMode, object target)
+        if (KeepOwnerAlive)
         {
-            return keepOwnerAliveMode switch
-            {
-                KeepOwnerAliveMode.KeepAlive => true,
-                KeepOwnerAliveMode.AutoGuess => target?.GetType().Name.Contains("<>") == true,
-                _ => false
-            };
+            _data = data;
         }
-
-        public T GetData()
-        {
-            if (_ownerReference == null)
-            {
-                return _dataReference?.GetTarget();
-            }
             
-            var target = _ownerReference.Target;
+        _dataReference = new WeakReference<T>(data);
+    }
 
-            return target == null 
-                ? default
-                : _dataReference?.GetTarget();
+    private static bool GetKeepAlive(KeepOwnerAliveMode keepOwnerAliveMode, object target)
+    {
+        return keepOwnerAliveMode switch
+        {
+            KeepOwnerAliveMode.KeepAlive => true,
+            KeepOwnerAliveMode.AutoGuess => target?.GetType().Name.Contains("<>") == true,
+            _ => false
+        };
+    }
+
+    public T GetData()
+    {
+        if (_ownerReference == null)
+        {
+            return _dataReference?.GetTarget();
         }
+            
+        var target = _ownerReference.Target;
+
+        return target == null 
+            ? default
+            : _dataReference?.GetTarget();
+    }
         
-        public bool KeepOwnerAlive { get; }
+    public bool KeepOwnerAlive { get; }
 
-        public bool IsAlive()
+    public bool IsAlive()
+    {
+        return _ownerReference == null
+            ? _dataReference?.GetIsAlive() == true
+            : _ownerReference.IsAlive && _dataReference?.GetIsAlive() == true;
+    }
+
+    public object GetTarget()
+    {
+        return _owner ?? _ownerReference?.Target;
+    }
+
+    [ExcludeFromCodeCoverage]
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposing)
         {
-            return _ownerReference == null
-                ? _dataReference?.GetIsAlive() == true
-                : _ownerReference.IsAlive && _dataReference?.GetIsAlive() == true;
+            return;
         }
 
-        public object GetTarget()
-        {
-            return _owner ?? _ownerReference?.Target;
-        }
+        _owner = null;
+        _data = null;
+        _ownerReference = null;
+        _dataReference = null;
+    }
 
-        [ExcludeFromCodeCoverage]
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing)
-            {
-                return;
-            }
-
-            _owner = null;
-            _data = null;
-            _ownerReference = null;
-            _dataReference = null;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 }

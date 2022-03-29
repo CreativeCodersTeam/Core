@@ -10,66 +10,65 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace CreativeCoders.Net.Servers.Http.AspNetCore
+namespace CreativeCoders.Net.Servers.Http.AspNetCore;
+
+[PublicAPI]
+public class AspNetCoreWebHost : IDisposable
 {
-    [PublicAPI]
-    public class AspNetCoreWebHost : IDisposable
+    private IHost _webHost;
+
+    private readonly Func<HttpContext, Task> _handleRequest;
+
+    public AspNetCoreWebHost(Func<HttpContext, Task> handleRequest)
     {
-        private IHost _webHost;
-
-        private readonly Func<HttpContext, Task> _handleRequest;
-
-        public AspNetCoreWebHost(Func<HttpContext, Task> handleRequest)
-        {
-            Ensure.IsNotNull(handleRequest, nameof(handleRequest));
+        Ensure.IsNotNull(handleRequest, nameof(handleRequest));
             
-            _handleRequest = handleRequest;
-        }
+        _handleRequest = handleRequest;
+    }
 
-        public Task StartAsync(IWebHostConfig webHostConfig)
+    public Task StartAsync(IWebHostConfig webHostConfig)
+    {
+        Ensure.IsNotNull(webHostConfig, nameof(webHostConfig));
+
+        var webHostBuilder = CreateWebHostBuilder(webHostConfig.Urls, webHostConfig.AllowSynchronousIO);
+        if (webHostConfig.DisableLogging)
         {
-            Ensure.IsNotNull(webHostConfig, nameof(webHostConfig));
+            webHostBuilder = webHostBuilder.ConfigureLogging(x => x.ClearProviders());
+        }
+            
+        _webHost = webHostBuilder
+            .Build();
 
-            var webHostBuilder = CreateWebHostBuilder(webHostConfig.Urls, webHostConfig.AllowSynchronousIO);
-            if (webHostConfig.DisableLogging)
+        return _webHost.StartAsync();
+    }
+
+    public async Task StopAsync()
+    {
+        await _webHost.StopAsync();
+        _webHost.Dispose();
+    }
+
+    private IHostBuilder CreateWebHostBuilder(IReadOnlyCollection<string> urls, bool allowSynchronousIO)
+    {
+        var hostBuilder = Host.CreateDefaultBuilder()
+            .ConfigureWebHostDefaults(webBuilder =>
             {
-                webHostBuilder = webHostBuilder.ConfigureLogging(x => x.ClearProviders());
-            }
-            
-            _webHost = webHostBuilder
-                .Build();
-
-            return _webHost.StartAsync();
-        }
-
-        public async Task StopAsync()
-        {
-            await _webHost.StopAsync();
-            _webHost.Dispose();
-        }
-
-        private IHostBuilder CreateWebHostBuilder(IReadOnlyCollection<string> urls, bool allowSynchronousIO)
-        {
-            var hostBuilder = Host.CreateDefaultBuilder()
-                .ConfigureWebHostDefaults(webBuilder =>
+                if (allowSynchronousIO)
                 {
-                    if (allowSynchronousIO)
-                    {
-                        webBuilder.UseKestrel(options => options.AllowSynchronousIO = true);
-                    }
+                    webBuilder.UseKestrel(options => options.AllowSynchronousIO = true);
+                }
                     
-                    webBuilder.Configure(app =>
-                        app.Run(async context => await _handleRequest(context).ConfigureAwait(false)));
+                webBuilder.Configure(app =>
+                    app.Run(async context => await _handleRequest(context).ConfigureAwait(false)));
 
-                    webBuilder.UseUrls(urls.ToArray());
-                });
+                webBuilder.UseUrls(urls.ToArray());
+            });
 
-            return hostBuilder;
-        }
+        return hostBuilder;
+    }
             
-        public void Dispose()
-        {
-            _webHost?.Dispose();
-        }
+    public void Dispose()
+    {
+        _webHost?.Dispose();
     }
 }

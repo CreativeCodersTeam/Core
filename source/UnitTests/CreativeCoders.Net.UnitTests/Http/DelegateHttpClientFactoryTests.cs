@@ -2,20 +2,19 @@
 using CreativeCoders.Net.Http;
 using Xunit;
 
-namespace CreativeCoders.Net.UnitTests.Http
+namespace CreativeCoders.Net.UnitTests.Http;
+
+public class DelegateHttpClientFactoryTests
 {
-    public class DelegateHttpClientFactoryTests
+    [Fact]
+    public void Test()
     {
-        [Fact]
-        public void Test()
-        {
-            var expectedHttpClient = new HttpClient();
+        var expectedHttpClient = new HttpClient();
 
-            var httpClientFactory = new DelegateHttpClientFactory(_ => expectedHttpClient);
+        var httpClientFactory = new DelegateHttpClientFactory(_ => expectedHttpClient);
 
-            var httpClient = httpClientFactory.CreateClient(string.Empty);
+        var httpClient = httpClientFactory.CreateClient(string.Empty);
 
-            Assert.Same(expectedHttpClient, httpClient);
-        }
+        Assert.Same(expectedHttpClient, httpClient);
     }
 }

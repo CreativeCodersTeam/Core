@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Threading;
 
-namespace CreativeCoders.Core.Threading
+namespace CreativeCoders.Core.Threading;
+
+public class SimpleMonitor : IDisposable
 {
-    public class SimpleMonitor : IDisposable
+    private long _counter;
+
+    public void Enter()
     {
-        private long _counter;
-
-        public void Enter()
-        {
-            Interlocked.Increment(ref _counter);
-        }
-        
-        public void Dispose()
-        {
-            Interlocked.Decrement(ref _counter);
-        }
-
-        public bool Busy => Interlocked.Read(ref _counter) > 0;
+        Interlocked.Increment(ref _counter);
     }
+        
+    public void Dispose()
+    {
+        Interlocked.Decrement(ref _counter);
+    }
+
+    public bool Busy => Interlocked.Read(ref _counter) > 0;
 }

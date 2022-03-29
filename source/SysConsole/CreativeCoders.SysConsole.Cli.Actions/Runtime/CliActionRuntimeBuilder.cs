@@ -8,98 +8,97 @@ using CreativeCoders.Core.Collections;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware;
 
-namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
+namespace CreativeCoders.SysConsole.Cli.Actions.Runtime;
+
+internal class CliActionRuntimeBuilder : ICliActionRuntimeBuilder
 {
-    internal class CliActionRuntimeBuilder : ICliActionRuntimeBuilder
+    private readonly ICliActionExecutor _actionExecutor;
+
+    private readonly ICliActionRouter _actionRouter;
+
+    private readonly IRoutesBuilder _routesBuilder;
+
+    private readonly IServiceProvider _serviceProvider;
+
+    private readonly IList<MiddlewareRegistration> _middlewareRegistrations;
+
+    public CliActionRuntimeBuilder(ICliActionRouter actionRouter,
+        IRoutesBuilder routesBuilder, IServiceProvider serviceProvider,
+        ICliActionExecutor actionExecutor)
     {
-        private readonly ICliActionExecutor _actionExecutor;
+        _actionRouter = Ensure.NotNull(actionRouter, nameof(actionRouter));
+        _routesBuilder = Ensure.NotNull(routesBuilder, nameof(routesBuilder));
+        _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+        _actionExecutor = Ensure.NotNull(actionExecutor, nameof(actionExecutor));
 
-        private readonly ICliActionRouter _actionRouter;
+        _middlewareRegistrations = new List<MiddlewareRegistration>();
+    }
 
-        private readonly IRoutesBuilder _routesBuilder;
+    public ICliActionRuntimeBuilder UseMiddleware<TMiddleware>(params object[]? arguments)
+        where TMiddleware : CliActionMiddlewareBase
+    {
+        _middlewareRegistrations.Add(new MiddlewareRegistration(typeof(TMiddleware), arguments));
 
-        private readonly IServiceProvider _serviceProvider;
+        return this;
+    }
 
-        private readonly IList<MiddlewareRegistration> _middlewareRegistrations;
+    public ICliActionRuntimeBuilder AddControllers()
+    {
+        return AddControllers(Assembly.GetCallingAssembly());
+    }
 
-        public CliActionRuntimeBuilder(ICliActionRouter actionRouter,
-            IRoutesBuilder routesBuilder, IServiceProvider serviceProvider,
-            ICliActionExecutor actionExecutor)
+    public ICliActionRuntimeBuilder AddController(Type controllerType)
+    {
+        _routesBuilder.AddController(controllerType);
+
+        return this;
+    }
+
+    public ICliActionRuntimeBuilder AddController<TController>()
+    {
+        return AddController(typeof(TController));
+    }
+
+    public ICliActionRuntimeBuilder AddControllers(Assembly assembly)
+    {
+        _routesBuilder.AddControllers(assembly);
+
+        return this;
+    }
+
+    public ICliActionRuntime Build()
+    {
+        var runtime = new CliActionRuntime(_actionExecutor);
+
+        _routesBuilder.BuildRoutes().ForEach(x => _actionRouter.AddRoute(x));
+
+        runtime.Init(CreateMiddlewarePipeline);
+
+        return runtime;
+    }
+
+    private Func<CliActionContext, Task> CreateMiddlewarePipeline(
+        Func<CliActionContext, Task> executeActionAsync)
+    {
+        CliActionMiddlewareBase? lastMiddleware = null;
+
+        foreach (var middlewareRegistration in _middlewareRegistrations.Reverse())
         {
-            _actionRouter = Ensure.NotNull(actionRouter, nameof(actionRouter));
-            _routesBuilder = Ensure.NotNull(routesBuilder, nameof(routesBuilder));
-            _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
-            _actionExecutor = Ensure.NotNull(actionExecutor, nameof(actionExecutor));
+            Func<CliActionContext, Task> next = CreateNext(lastMiddleware, executeActionAsync);
 
-            _middlewareRegistrations = new List<MiddlewareRegistration>();
+            lastMiddleware = middlewareRegistration.CreateMiddleware(next, _serviceProvider);
         }
 
-        public ICliActionRuntimeBuilder UseMiddleware<TMiddleware>(params object[]? arguments)
-            where TMiddleware : CliActionMiddlewareBase
-        {
-            _middlewareRegistrations.Add(new MiddlewareRegistration(typeof(TMiddleware), arguments));
+        return CreateNext(lastMiddleware, executeActionAsync);
+    }
 
-            return this;
-        }
+    private static Func<CliActionContext, Task> CreateNext(CliActionMiddlewareBase? middleware,
+        Func<CliActionContext, Task> executeActionAsync)
+    {
+        Func<CliActionContext, Task> next = middleware != null
+            ? middleware.InvokeAsync
+            : executeActionAsync;
 
-        public ICliActionRuntimeBuilder AddControllers()
-        {
-            return AddControllers(Assembly.GetCallingAssembly());
-        }
-
-        public ICliActionRuntimeBuilder AddController(Type controllerType)
-        {
-            _routesBuilder.AddController(controllerType);
-
-            return this;
-        }
-
-        public ICliActionRuntimeBuilder AddController<TController>()
-        {
-            return AddController(typeof(TController));
-        }
-
-        public ICliActionRuntimeBuilder AddControllers(Assembly assembly)
-        {
-            _routesBuilder.AddControllers(assembly);
-
-            return this;
-        }
-
-        public ICliActionRuntime Build()
-        {
-            var runtime = new CliActionRuntime(_actionExecutor);
-
-            _routesBuilder.BuildRoutes().ForEach(x => _actionRouter.AddRoute(x));
-
-            runtime.Init(CreateMiddlewarePipeline);
-
-            return runtime;
-        }
-
-        private Func<CliActionContext, Task> CreateMiddlewarePipeline(
-            Func<CliActionContext, Task> executeActionAsync)
-        {
-            CliActionMiddlewareBase? lastMiddleware = null;
-
-            foreach (var middlewareRegistration in _middlewareRegistrations.Reverse())
-            {
-                Func<CliActionContext, Task> next = CreateNext(lastMiddleware, executeActionAsync);
-
-                lastMiddleware = middlewareRegistration.CreateMiddleware(next, _serviceProvider);
-            }
-
-            return CreateNext(lastMiddleware, executeActionAsync);
-        }
-
-        private static Func<CliActionContext, Task> CreateNext(CliActionMiddlewareBase? middleware,
-            Func<CliActionContext, Task> executeActionAsync)
-        {
-            Func<CliActionContext, Task> next = middleware != null
-                ? middleware.InvokeAsync
-                : executeActionAsync;
-
-            return next;
-        }
+        return next;
     }
 }

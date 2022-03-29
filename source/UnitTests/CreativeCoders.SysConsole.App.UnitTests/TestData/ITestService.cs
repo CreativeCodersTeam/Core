@@ -1,9 +1,8 @@
-﻿namespace CreativeCoders.SysConsole.App.UnitTests.TestData
-{
-    public interface ITestService
-    {
-        string TextValue { get; }
+﻿namespace CreativeCoders.SysConsole.App.UnitTests.TestData;
 
-        int ReturnCode { get; }
-    }
+public interface ITestService
+{
+    string TextValue { get; }
+
+    int ReturnCode { get; }
 }

@@ -2,23 +2,22 @@
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Core.Comparing
+namespace CreativeCoders.Core.Comparing;
+
+[PublicAPI]
+public class MultiComparer<T> : IComparer<T>
 {
-    [PublicAPI]
-    public class MultiComparer<T> : IComparer<T>
+    private readonly IComparer<T>[] _comparerList;
+
+    public MultiComparer(params IComparer<T>[] comparerList)
     {
-        private readonly IComparer<T>[] _comparerList;
+        _comparerList = comparerList;
+    }
 
-        public MultiComparer(params IComparer<T>[] comparerList)
-        {
-            _comparerList = comparerList;
-        }
-
-        public int Compare(T x, T y)
-        {
-            return _comparerList
-                .Select(comparer => comparer.Compare(x, y))
-                .FirstOrDefault(compareResult => compareResult != 0);
-        }
+    public int Compare(T x, T y)
+    {
+        return _comparerList
+            .Select(comparer => comparer.Compare(x, y))
+            .FirstOrDefault(compareResult => compareResult != 0);
     }
 }

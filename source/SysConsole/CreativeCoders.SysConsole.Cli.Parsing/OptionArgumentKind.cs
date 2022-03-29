@@ -1,9 +1,8 @@
-﻿namespace CreativeCoders.SysConsole.Cli.Parsing
+﻿namespace CreativeCoders.SysConsole.Cli.Parsing;
+
+public enum OptionArgumentKind
 {
-    public enum OptionArgumentKind
-    {
-        Value,
-        ShortName,
-        LongName
-    }
+    Value,
+    ShortName,
+    LongName
 }

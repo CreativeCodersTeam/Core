@@ -1,17 +1,16 @@
-﻿namespace CreativeCoders.Core.Logging
+﻿namespace CreativeCoders.Core.Logging;
+
+public enum LogLevel
 {
-    public enum LogLevel
-    {
-        Trace,
+    Trace,
 
-        Debug,
+    Debug,
 
-        Info,
+    Info,
 
-        Warn,
+    Warn,
 
-        Error,
+    Error,
 
-        Fatal
-    }
+    Fatal
 }

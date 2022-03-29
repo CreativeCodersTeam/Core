@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.AspNetCore.Jwt
+﻿namespace CreativeCoders.AspNetCore.Jwt;
+
+public interface ISymSecurityKeyConfig
 {
-    public interface ISymSecurityKeyConfig
-    {
-        string SecurityKey { get; }
-    }
+    string SecurityKey { get; }
 }

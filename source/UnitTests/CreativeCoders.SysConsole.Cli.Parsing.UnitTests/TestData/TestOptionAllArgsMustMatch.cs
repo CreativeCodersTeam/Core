@@ -1,15 +1,14 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData
-{
-    [PublicAPI]
-    [Options(AllArgsMustMatch = true)]
-    public class TestOptionAllArgsMustMatch
-    {
-        [OptionParameter('f', "first")]
-        public string? FirstValue { get; set; }
+namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData;
 
-        [OptionParameter('s', "second")]
-        public string? SecondValue { get; set; }
-    }
+[PublicAPI]
+[Options(AllArgsMustMatch = true)]
+public class TestOptionAllArgsMustMatch
+{
+    [OptionParameter('f', "first")]
+    public string? FirstValue { get; set; }
+
+    [OptionParameter('s', "second")]
+    public string? SecondValue { get; set; }
 }

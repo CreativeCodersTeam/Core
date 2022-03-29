@@ -1,9 +1,8 @@
-﻿namespace CreativeCoders.Core.Weak
+﻿namespace CreativeCoders.Core.Weak;
+
+public enum KeepOwnerAliveMode
 {
-    public enum KeepOwnerAliveMode
-    {
-        KeepAlive,
-        NotKeepAlive,
-        AutoGuess
-    }
+    KeepAlive,
+    NotKeepAlive,
+    AutoGuess
 }

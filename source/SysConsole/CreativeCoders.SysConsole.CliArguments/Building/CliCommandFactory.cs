@@ -4,50 +4,49 @@ using CreativeCoders.Core.Reflection;
 using CreativeCoders.SysConsole.CliArguments.Commands;
 using CreativeCoders.SysConsole.CliArguments.Exceptions;
 
-namespace CreativeCoders.SysConsole.CliArguments.Building
+namespace CreativeCoders.SysConsole.CliArguments.Building;
+
+public class CliCommandFactory
 {
-    public class CliCommandFactory
+    private readonly IServiceProvider _serviceProvider;
+
+    public CliCommandFactory(IServiceProvider serviceProvider)
     {
-        private readonly IServiceProvider _serviceProvider;
+        _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+    }
 
-        public CliCommandFactory(IServiceProvider serviceProvider)
+    public ICliCommand CreateCommand<TCommand>()
+        where TCommand : class, ICliCommand
+    {
+        try
         {
-            _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+            var command = typeof(TCommand).CreateInstance<ICliCommand>(_serviceProvider);
+
+            return command!;
         }
-
-        public ICliCommand CreateCommand<TCommand>()
-            where TCommand : class, ICliCommand
+        catch (Exception e)
         {
-            try
-            {
-                var command = typeof(TCommand).CreateInstance<ICliCommand>(_serviceProvider);
-
-                return command!;
-            }
-            catch (Exception e)
-            {
-                throw new CliCommandCreationFailedException(typeof(TCommand), e);
-            }
+            throw new CliCommandCreationFailedException(typeof(TCommand), e);
         }
+    }
 
-        public ICliCommand CreateCommand<TCommand, TOptions>(Action<TCommand> configureCommand)
-            where TCommand : class, ICliCommand<TOptions>
-            where TOptions : class, new()
+    public ICliCommand CreateCommand<TCommand, TOptions>(Action<TCommand> configureCommand)
+        where TCommand : class, ICliCommand<TOptions>
+        where TOptions : class, new()
+    {
+        Ensure.NotNull(configureCommand, nameof(configureCommand));
+
+        try
         {
-            Ensure.NotNull(configureCommand, nameof(configureCommand));
+            var command = typeof(TCommand).CreateInstance<TCommand>(_serviceProvider)!;
 
-            try
-            {
-                var command = typeof(TCommand).CreateInstance<TCommand>(_serviceProvider)!;
+            configureCommand(command);
 
-                configureCommand(command);
-
-                return command;
-            }
-            catch (Exception e)
-            {
-                throw new CliCommandCreationFailedException(typeof(TCommand), e);
-            }
+            return command;
+        }
+        catch (Exception e)
+        {
+            throw new CliCommandCreationFailedException(typeof(TCommand), e);
         }
     }
 }
