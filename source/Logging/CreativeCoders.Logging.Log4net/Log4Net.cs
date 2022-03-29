@@ -49,14 +49,17 @@ public static class Log4Net
             return;
         }
 
-        ConfigFileSystemWatcher = FileSys.CreateFileSystemWatcher(FileSys.Path.GetDirectoryName(configFileName));
+        ConfigFileSystemWatcher =
+            FileSys.CreateFileSystemWatcher(FileSys.Path.GetDirectoryName(configFileName));
         ConfigFileSystemWatcher.Filter = FileSys.Path.GetFileName(configFileName);
         ConfigFileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
-        ConfigFileSystemWatcher.Changed += (_, _) => ConfigFileSystemWatcherOnChanged(configFileName, logRepository);
+        ConfigFileSystemWatcher.Changed +=
+            (_, _) => ConfigFileSystemWatcherOnChanged(configFileName, logRepository);
         ConfigFileSystemWatcher.EnableRaisingEvents = true;
     }
 
-    private static void ConfigFileSystemWatcherOnChanged(string configFileName, ILoggerRepository logRepository)
+    private static void ConfigFileSystemWatcherOnChanged(string configFileName,
+        ILoggerRepository logRepository)
     {
         LoadConfig(configFileName, logRepository);
     }
@@ -67,9 +70,10 @@ public static class Log4Net
         {
             return;
         }
+
         using (var configStream = FileSys.File.OpenRead(configFileName))
         {
             XmlConfigurator.Configure(logRepository, configStream);
         }
-    }        
+    }
 }

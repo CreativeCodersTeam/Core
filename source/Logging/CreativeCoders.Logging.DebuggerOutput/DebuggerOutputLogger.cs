@@ -31,6 +31,7 @@ public class DebuggerOutputLogger : ISimpleLoggerImpl
         {
             return;
         }
+
         WriteText(logLevel, text);
     }
 
@@ -40,6 +41,7 @@ public class DebuggerOutputLogger : ISimpleLoggerImpl
         {
             return;
         }
+
         WriteText(logLevel, text);
         Debug.WriteLine(exception);
     }
@@ -50,6 +52,7 @@ public class DebuggerOutputLogger : ISimpleLoggerImpl
         {
             return;
         }
+
         WriteText(logLevel, string.Format(formatText, args));
     }
 
@@ -59,6 +62,7 @@ public class DebuggerOutputLogger : ISimpleLoggerImpl
         {
             return;
         }
+
         WriteText(logLevel, value.ToString());
     }
 
@@ -68,6 +72,7 @@ public class DebuggerOutputLogger : ISimpleLoggerImpl
         {
             return;
         }
+
         WriteText(logLevel, getMessage().ToString());
     }
 

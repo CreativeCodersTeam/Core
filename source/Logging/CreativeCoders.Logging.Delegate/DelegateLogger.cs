@@ -33,6 +33,7 @@ internal class DelegateLogger : ISimpleLoggerImpl
         {
             return;
         }
+
         _logAction(logLevel, _scope, text);
     }
 
@@ -42,9 +43,10 @@ internal class DelegateLogger : ISimpleLoggerImpl
         {
             return;
         }
+
         text = text + Environment.NewLine + exception;
 
-        _logAction(logLevel, _scope, text);            
+        _logAction(logLevel, _scope, text);
     }
 
     public void LogFormat(LogLevel logLevel, string formatText, params object[] args)
@@ -53,6 +55,7 @@ internal class DelegateLogger : ISimpleLoggerImpl
         {
             return;
         }
+
         _logAction(logLevel, _scope, string.Format(formatText, args));
     }
 
@@ -62,6 +65,7 @@ internal class DelegateLogger : ISimpleLoggerImpl
         {
             return;
         }
+
         _logAction(logLevel, _scope, value.ToString());
     }
 
@@ -71,6 +75,7 @@ internal class DelegateLogger : ISimpleLoggerImpl
         {
             return;
         }
+
         _logAction(logLevel, _scope, getMessage().ToString());
     }
 

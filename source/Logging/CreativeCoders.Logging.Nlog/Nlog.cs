@@ -46,7 +46,8 @@ public static class Nlog
             return;
         }
 
-        ConfigFileSystemWatcher = FileSys.CreateFileSystemWatcher(FileSys.Path.GetDirectoryName(configFileName));
+        ConfigFileSystemWatcher =
+            FileSys.CreateFileSystemWatcher(FileSys.Path.GetDirectoryName(configFileName));
         ConfigFileSystemWatcher.Filter = FileSys.Path.GetFileName(configFileName);
         ConfigFileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite;
         ConfigFileSystemWatcher.Changed += (_, _) => ConfigFileSystemWatcherOnChanged(configFileName);
@@ -64,6 +65,7 @@ public static class Nlog
         {
             return null;
         }
+
         var element = XElement.Parse(FileSys.File.ReadAllText(configFileName));
         return new XmlLoggingConfiguration(element.CreateReader(), null);
     }
