@@ -35,8 +35,9 @@ public class XmlRpcMethodExecutor
         {
             throw new MissingMethodException();
         }
-            
-        var parameters = GetParameters(methodRegistration.Method.GetParameters(), methodCall.Parameters.ToArray());
+
+        var parameters = GetParameters(methodRegistration.Method.GetParameters(),
+            methodCall.Parameters.ToArray());
 
         if (!methodRegistration.Method.ReturnType.IsGenericType ||
             methodRegistration.Method.ReturnType.GetGenericTypeDefinition() != typeof(Task<>))
@@ -49,7 +50,8 @@ public class XmlRpcMethodExecutor
         return await task.ToTask<object>();
     }
 
-    private static object[] GetParameters(IReadOnlyList<ParameterInfo> parameterInfos, IReadOnlyCollection<XmlRpcValue> parameters)
+    private static object[] GetParameters(IReadOnlyList<ParameterInfo> parameterInfos,
+        IReadOnlyCollection<XmlRpcValue> parameters)
     {
         if (!parameterInfos.Any())
         {
@@ -61,7 +63,7 @@ public class XmlRpcMethodExecutor
             throw new TargetParameterCountException(
                 $"Xml Rpc method parameter count mismatch. Method parameter count ({parameterInfos.Count}) != calling parameter count ({parameters.Count})");
         }
-            
+
         var converter = new XmlRpcValueToDataConverter();
 
         return parameters

@@ -9,6 +9,5 @@ public class JwtAuthToken
         Token = token;
     }
 
-    [JsonProperty("authToken")]
-    public string Token { get; set; }
+    [JsonProperty("authToken")] public string Token { get; set; }
 }

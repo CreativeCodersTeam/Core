@@ -14,9 +14,7 @@ namespace CreativeCoders.Net.XmlRpc.Reader;
 
 public class ResponseModelReader : ModelReaderBase, IResponseModelReader
 {
-    public ResponseModelReader(IValueReaders readers) : base(readers)
-    {
-    }
+    public ResponseModelReader(IValueReaders readers) : base(readers) { }
 
     public async Task<XmlRpcResponse> ReadAsync(Stream inputStream, bool isMultiCallResponse)
     {
@@ -32,7 +30,7 @@ public class ResponseModelReader : ModelReaderBase, IResponseModelReader
 
         var methodResult = ReadMethodResponse(methodResponseElement);
 
-        return new XmlRpcResponse(new []{methodResult}, false);
+        return new XmlRpcResponse(new[] {methodResult}, false);
     }
 
     private XmlRpcMethodResult ReadMethodResponse(XNode methodResponseNode)
@@ -43,7 +41,8 @@ public class ResponseModelReader : ModelReaderBase, IResponseModelReader
             return faultResult;
         }
 
-        var parameterNodes = methodResponseNode.XPathSelectElements(XmlRpcTags.Params + "/" + XmlRpcTags.Param);
+        var parameterNodes =
+            methodResponseNode.XPathSelectElements(XmlRpcTags.Params + "/" + XmlRpcTags.Param);
 
         var values = parameterNodes
             .Select(ReadXmlRpcValue)

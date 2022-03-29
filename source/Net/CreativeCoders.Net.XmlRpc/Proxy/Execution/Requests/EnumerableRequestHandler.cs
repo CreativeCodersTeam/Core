@@ -11,25 +11,26 @@ namespace CreativeCoders.Net.XmlRpc.Proxy.Execution.Requests;
 
 public class EnumerableRequestHandler : XmlRpcRequestHandlerBase
 {
-    public EnumerableRequestHandler() : base(ApiMethodReturnType.Enumerable)
-    {
-    }
+    public EnumerableRequestHandler() : base(ApiMethodReturnType.Enumerable) { }
 
     public override object HandleRequest(RequestData requestData)
     {
-        return this.ExecuteGenericMethod<object>(nameof(GetEnumerableAsync), new[] { requestData.ValueType }, requestData);
+        return this.ExecuteGenericMethod<object>(nameof(GetEnumerableAsync), new[] {requestData.ValueType},
+            requestData);
     }
 
     // ReSharper disable once MemberCanBeMadeStatic.Local
     private async Task<IEnumerable<T>> GetEnumerableAsync<T>(RequestData requestData)
     {
-        return await GetValueWithExceptionHandlingAsync(() => GetEnumerableInternalAsync<T>(requestData), requestData).ConfigureAwait(false);
+        return await GetValueWithExceptionHandlingAsync(() => GetEnumerableInternalAsync<T>(requestData),
+            requestData).ConfigureAwait(false);
     }
-        
+
     // ReSharper disable once MemberCanBeMadeStatic.Local
     private async Task<IEnumerable<T>> GetEnumerableInternalAsync<T>(RequestData requestData)
     {
-        var xmlRpcResponse = await requestData.Client.InvokeExAsync(requestData.MethodName, requestData.Arguments).ConfigureAwait(false);
+        var xmlRpcResponse = await requestData.Client
+            .InvokeExAsync(requestData.MethodName, requestData.Arguments).ConfigureAwait(false);
 
         if (xmlRpcResponse.Results.First().Values.First() is not ArrayValue xmlRpcValue)
         {

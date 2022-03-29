@@ -21,7 +21,7 @@ public class SoapHttpClient : ISoapHttpClient
         _webRequestFactory = webRequestFactory;
     }
 
-    public TResponse Invoke<TRequest, TResponse>(TRequest actionRequest) where TResponse: class, new()
+    public TResponse Invoke<TRequest, TResponse>(TRequest actionRequest) where TResponse : class, new()
     {
         Ensure.IsNotNull(actionRequest, nameof(actionRequest));
 
@@ -62,7 +62,7 @@ public class SoapHttpClient : ISoapHttpClient
             select new PropertyFieldMapping {FieldName = attribute.Name, Property = property}).ToArray();
 
         responseInfo.PropertyMappings = propertyMappings;
-            
+
         return responseInfo;
     }
 
@@ -88,7 +88,7 @@ public class SoapHttpClient : ISoapHttpClient
         var propertyMappings = (from property in requestType.GetProperties()
             let attribute = property.GetCustomAttribute<SoapRequestFieldAttribute>(false)
             where attribute != null
-            select new PropertyFieldMapping {FieldName = attribute.Name, Property = property}).ToArray();            
+            select new PropertyFieldMapping {FieldName = attribute.Name, Property = property}).ToArray();
 
         requestInfo.PropertyMappings = propertyMappings;
 

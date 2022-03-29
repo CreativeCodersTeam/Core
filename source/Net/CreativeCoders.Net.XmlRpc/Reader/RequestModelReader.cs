@@ -13,9 +13,7 @@ namespace CreativeCoders.Net.XmlRpc.Reader;
 
 public class RequestModelReader : ModelReaderBase
 {
-    public RequestModelReader(IValueReaders valueReaders) : base(valueReaders)
-    {
-    }
+    public RequestModelReader(IValueReaders valueReaders) : base(valueReaders) { }
 
     public async Task<XmlRpcRequest> ReadAsync(Stream inputStream)
     {
@@ -33,7 +31,7 @@ public class RequestModelReader : ModelReaderBase
 
         return method.Name.Equals(XmlRpcConstants.MultiCallMethodName)
             ? UnwrapMultiCall(method)
-            : new XmlRpcRequest(new []{method}, false);
+            : new XmlRpcRequest(new[] {method}, false);
     }
 
     private static XmlRpcRequest UnwrapMultiCall(XmlRpcMethodCall methodCall)
@@ -63,7 +61,7 @@ public class RequestModelReader : ModelReaderBase
     {
         var methodName = ReadNodeValue(methodCallNode, XmlRpcTags.MethodName);
 
-        var parameterNodes = methodCallNode.XPathSelectElements(XmlRpcTags.Params + "/" +XmlRpcTags.Param);
+        var parameterNodes = methodCallNode.XPathSelectElements(XmlRpcTags.Params + "/" + XmlRpcTags.Param);
 
         var values = parameterNodes
             .Select(ReadXmlRpcValue)

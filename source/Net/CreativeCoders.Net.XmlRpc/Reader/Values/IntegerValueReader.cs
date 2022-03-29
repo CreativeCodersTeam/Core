@@ -5,7 +5,5 @@ namespace CreativeCoders.Net.XmlRpc.Reader.Values;
 public class IntegerValueReader : ValueReaderBase
 {
     public IntegerValueReader() : base(new[] {XmlRpcTags.I4, XmlRpcTags.Int},
-        value => new IntegerValue(int.Parse(value)))
-    {
-    }
+        value => new IntegerValue(int.Parse(value))) { }
 }

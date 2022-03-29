@@ -73,7 +73,8 @@ public class DataToXmlRpcValueConverter : IDataToXmlRpcValueConverter
             return null;
         }
 
-        var directMapping = _valueMappings.FirstOrDefault(mapping => mapping.Key.IsAssignableFrom(dataType)).Value;
+        var directMapping = _valueMappings.FirstOrDefault(mapping => mapping.Key.IsAssignableFrom(dataType))
+            .Value;
 
         if (directMapping != null)
         {
@@ -91,7 +92,7 @@ public class DataToXmlRpcValueConverter : IDataToXmlRpcValueConverter
         }
 
         var structValue = new StructValue();
-            
+
         var properties = data.GetType().GetProperties();
 
         var memberProperties = from property in properties
@@ -104,8 +105,9 @@ public class DataToXmlRpcValueConverter : IDataToXmlRpcValueConverter
         return structValue;
     }
 
-        
-    private void SetMemberValue(object obj, PropertyInfo property, XmlRpcStructMemberAttribute memberAttribute,
+
+    private void SetMemberValue(object obj, PropertyInfo property,
+        XmlRpcStructMemberAttribute memberAttribute,
         StructValue xmlRpcStruct)
     {
         var memberName = string.IsNullOrEmpty(memberAttribute.Name)

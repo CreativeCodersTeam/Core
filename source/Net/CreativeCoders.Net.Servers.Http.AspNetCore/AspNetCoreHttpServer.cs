@@ -12,7 +12,7 @@ namespace CreativeCoders.Net.Servers.Http.AspNetCore;
 public class AspNetCoreHttpServer : HttpServerBase<HttpContext>, IWebHostConfig, IDisposable
 {
     private static readonly ILogger Log = LogManager.GetLogger<AspNetCoreHttpServer>();
-        
+
     private readonly AspNetCoreWebHost _aspNetCoreWebHost;
 
     public AspNetCoreHttpServer()
@@ -40,20 +40,20 @@ public class AspNetCoreHttpServer : HttpServerBase<HttpContext>, IWebHostConfig,
     public override Task StartAsync()
     {
         Log.Debug("Starting asp.net core http server");
-        Log.Debug($"Listing urls: {string.Join(";",Urls)}");
-            
+        Log.Debug($"Listing urls: {string.Join(";", Urls)}");
+
         return _aspNetCoreWebHost.StartAsync(this);
     }
 
     public override Task StopAsync()
     {
         Log.Debug("Stopping asp.net core http server");
-            
+
         return _aspNetCoreWebHost.StopAsync();
     }
 
     IReadOnlyCollection<string> IWebHostConfig.Urls => Urls.ToImmutableArray();
-        
+
     public bool DisableLogging { get; set; }
 
     public bool AllowSynchronousIO { get; set; }

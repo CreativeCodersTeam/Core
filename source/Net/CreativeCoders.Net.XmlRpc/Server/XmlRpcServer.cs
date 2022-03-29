@@ -24,7 +24,7 @@ namespace CreativeCoders.Net.XmlRpc.Server;
 public class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler, IDisposable
 {
     private static readonly ILogger Log = LogManager.GetLogger<XmlRpcServer>();
-        
+
     private readonly IHttpServer _httpServer;
 
     private readonly XmlRpcMethodExecutor _executor;
@@ -36,7 +36,7 @@ public class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler, IDisposable
     public XmlRpcServer(IHttpServer httpServer)
     {
         Ensure.IsNotNull(httpServer, nameof(httpServer));
-            
+
         _httpServer = httpServer;
         Encoding = Encoding.UTF8;
 
@@ -74,22 +74,24 @@ public class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler, IDisposable
     public async Task ProcessAsync(IHttpRequest request, IHttpResponse response)
     {
         Log.Debug("Process xml rpc request");
-            
+
         Ensure.IsNotNull(request, nameof(request));
         Ensure.IsNotNull(response, nameof(response));
 
         if (!request.HttpMethod.Equals(HttpMethod.Post.Method, StringComparison.InvariantCultureIgnoreCase))
         {
             Log.Debug($"Http method '{request.HttpMethod}' not supported");
-                
+
             response.StatusCode = (int) HttpStatusCode.MethodNotAllowed;
             return;
         }
 
-        if (!_allowedContentTypes.Any(ct => request.ContentType == null || request.ContentType.StartsWith(ct, StringComparison.InvariantCultureIgnoreCase)))
+        if (!_allowedContentTypes.Any(ct =>
+                request.ContentType == null ||
+                request.ContentType.StartsWith(ct, StringComparison.InvariantCultureIgnoreCase)))
         {
             Log.Debug($"Content type '{request.ContentType}' not allowed");
-                
+
             response.StatusCode = (int) HttpStatusCode.UnsupportedMediaType;
             return;
         }
@@ -155,17 +157,19 @@ public class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler, IDisposable
         foreach (var methodCall in xmlRpcRequest.Methods)
         {
             var callResult = await InvokeMethod(methodCall);
-                
+
             results.Add(callResult);
         }
 
-        return new XmlRpcResponse(results.Select(data => new XmlRpcMethodResult(_dataToXmlRpcValueConverter.Convert(data))), xmlRpcRequest.IsMultiCall);
+        return new XmlRpcResponse(
+            results.Select(data => new XmlRpcMethodResult(_dataToXmlRpcValueConverter.Convert(data))),
+            xmlRpcRequest.IsMultiCall);
     }
 
     private async Task<object> InvokeMethod(XmlRpcMethodCall methodCall)
     {
         Log.Debug($"Invoke method '{methodCall.Name}'");
-            
+
         return await _executor.Invoke(methodCall);
     }
 

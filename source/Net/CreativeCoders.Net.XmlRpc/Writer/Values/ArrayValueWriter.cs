@@ -7,11 +7,11 @@ namespace CreativeCoders.Net.XmlRpc.Writer.Values;
 
 public class ArrayValueWriter : ValueWriterBase<IEnumerable<XmlRpcValue>>
 {
-    public ArrayValueWriter(IValueWriters writers) : base(XmlRpcTags.Array, (value, element) => WriteToElement(value, element, writers))
-    {
-    }
+    public ArrayValueWriter(IValueWriters writers) : base(XmlRpcTags.Array,
+        (value, element) => WriteToElement(value, element, writers)) { }
 
-    private static void WriteToElement(XmlRpcValue<IEnumerable<XmlRpcValue>> value, XContainer element, IValueWriters writers)
+    private static void WriteToElement(XmlRpcValue<IEnumerable<XmlRpcValue>> value, XContainer element,
+        IValueWriters writers)
     {
         var dataElement = new XElement(XmlRpcTags.Data);
 
@@ -20,7 +20,8 @@ public class ArrayValueWriter : ValueWriterBase<IEnumerable<XmlRpcValue>>
         element.Add(dataElement);
     }
 
-    private static void WriteToElements(IEnumerable<XmlRpcValue> array, XElement dataElement, IValueWriters writers)
+    private static void WriteToElements(IEnumerable<XmlRpcValue> array, XElement dataElement,
+        IValueWriters writers)
     {
         array.ForEach(value => WriteElement(value, dataElement, writers));
     }

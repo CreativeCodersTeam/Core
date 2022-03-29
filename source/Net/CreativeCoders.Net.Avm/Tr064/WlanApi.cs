@@ -11,8 +11,9 @@ namespace CreativeCoders.Net.Avm.Tr064;
 [PublicAPI]
 public class WlanApi : Tr064ApiBase
 {
-    public WlanApi(string fritzBoxUrl, string userName, string password) : this(new SoapHttpClient(WebRequestFactory.Default), fritzBoxUrl, userName, password) { }
-        
+    public WlanApi(string fritzBoxUrl, string userName, string password) : this(
+        new SoapHttpClient(WebRequestFactory.Default), fritzBoxUrl, userName, password) { }
+
     public WlanApi(ISoapHttpClient soapHttpClient, string fritzBoxUrl, string userName, string password)
         // ReSharper disable once StringLiteralTypo
         : base(soapHttpClient, fritzBoxUrl, "/upnp/control/wlanconfig1", userName, password) { }
@@ -27,8 +28,8 @@ public class WlanApi : Tr064ApiBase
         }
         catch (WebException e)
         {
-            throw new EntryNotFoundException(macAddress, $"Wlan device info for '{macAddress}' not found.", e);
+            throw new EntryNotFoundException(macAddress, $"Wlan device info for '{macAddress}' not found.",
+                e);
         }
-            
-    } 
+    }
 }

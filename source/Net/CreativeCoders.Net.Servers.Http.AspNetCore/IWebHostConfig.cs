@@ -7,7 +7,7 @@ namespace CreativeCoders.Net.Servers.Http.AspNetCore;
 public interface IWebHostConfig
 {
     IReadOnlyCollection<string> Urls { get; }
-        
+
     bool DisableLogging { get; set; }
 
     bool AllowSynchronousIO { get; set; }

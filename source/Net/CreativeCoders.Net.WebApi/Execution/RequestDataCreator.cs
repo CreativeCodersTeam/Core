@@ -20,7 +20,8 @@ public class RequestDataCreator
 
     private readonly ApiData _apiData;
 
-    public RequestDataCreator(object target, ApiStructure apiStructure, ApiMethodInfo apiMethod, object[] arguments, ApiData apiData)
+    public RequestDataCreator(object target, ApiStructure apiStructure, ApiMethodInfo apiMethod,
+        object[] arguments, ApiData apiData)
     {
         _target = target;
         _apiStructure = apiStructure;

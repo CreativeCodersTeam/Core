@@ -4,9 +4,10 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Net.WebApi.Definition;
 
 [PublicAPI]
-[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = true)]
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Method | AttributeTargets.Property,
+    AllowMultiple = true)]
 public class HeaderAttribute : Attribute
-{        
+{
     public HeaderAttribute(string name)
     {
         Name = name;

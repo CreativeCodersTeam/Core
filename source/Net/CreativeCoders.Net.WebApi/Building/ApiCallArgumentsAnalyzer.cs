@@ -136,7 +136,8 @@ public class ApiCallArgumentsAnalyzer
     }
 
     [SuppressMessage("ReSharper", "ParameterTypeCanBeEnumerable.Local")]
-    private static ParameterHeaderDefinition GetHeaderDefinition(ParameterInfo parameterInfo, Attribute[] attributes)
+    private static ParameterHeaderDefinition GetHeaderDefinition(ParameterInfo parameterInfo,
+        Attribute[] attributes)
     {
         var headerAttribute = GetSingleAttribute<HeaderAttribute>(parameterInfo, attributes, "header",
             typeof(QueryAttribute), typeof(PathAttribute));
@@ -148,7 +149,8 @@ public class ApiCallArgumentsAnalyzer
 
     [SuppressMessage("ReSharper", "ParameterTypeCanBeEnumerable.Local")]
     // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-    private static T GetSingleAttribute<T>(ParameterInfo parameterInfo, Attribute[] attributes, string attributeName,
+    private static T GetSingleAttribute<T>(ParameterInfo parameterInfo, Attribute[] attributes,
+        string attributeName,
         params Type[] notAllowedTypes)
         where T : Attribute
     {

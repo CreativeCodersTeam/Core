@@ -40,7 +40,7 @@ public abstract class ValueWriterBase<T> : ValueWriterBase
 
         if (_getValue != null)
         {
-            valueDataElement.Add(_getValue((XmlRpcValue<T>)xmlRpcValue));
+            valueDataElement.Add(_getValue((XmlRpcValue<T>) xmlRpcValue));
         }
         else
         {

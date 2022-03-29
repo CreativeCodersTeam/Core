@@ -24,7 +24,8 @@ public abstract class ModelWriterBase<T>
 
         var xmlDoc = CreateXml(data, encoding);
 
-        var writer = XmlWriter.Create(outputStream, new XmlWriterSettings { Async = true, Encoding = encoding });
+        var writer =
+            XmlWriter.Create(outputStream, new XmlWriterSettings {Async = true, Encoding = encoding});
 
         xmlDoc.WriteTo(writer);
 

@@ -16,8 +16,8 @@ public class RequestData
     public IXmlRpcClient Client { get; set; }
 
     public MethodInfo InvocationMethod { get; set; }
-        
+
     public IMethodExceptionHandler ExceptionHandler { get; set; }
-        
+
     public object DefaultResult { get; set; }
 }

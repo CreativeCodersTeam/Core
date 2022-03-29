@@ -27,7 +27,7 @@ public static class HttpClientPostWithoutBodyExtensions
     {
         using var request = new HttpRequestMessage(HttpMethod.Post, requestUri)
             {Content = new ByteArrayContent(Array.Empty<byte>())};
-            
+
         return httpClient.SendAsync(request, completionOption, cancellationToken);
     }
 

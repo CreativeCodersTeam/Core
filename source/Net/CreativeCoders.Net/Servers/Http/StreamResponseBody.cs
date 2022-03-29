@@ -17,7 +17,7 @@ public class StreamResponseBody : IHttpResponseBody
     public Task WriteAsync(string content)
     {
         _streamWriter ??= new StreamWriter(_stream);
-            
+
         return _streamWriter.WriteAsync(content);
     }
 
@@ -27,7 +27,7 @@ public class StreamResponseBody : IHttpResponseBody
         {
             await _streamWriter.FlushAsync().ConfigureAwait(false);
         }
-            
+
         await _stream.FlushAsync().ConfigureAwait(false);
     }
 

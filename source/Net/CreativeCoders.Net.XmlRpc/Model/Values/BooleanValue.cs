@@ -2,7 +2,5 @@
 
 public class BooleanValue : XmlRpcValue<bool>
 {
-    public BooleanValue(bool value) : base(value)
-    {
-    }
+    public BooleanValue(bool value) : base(value) { }
 }

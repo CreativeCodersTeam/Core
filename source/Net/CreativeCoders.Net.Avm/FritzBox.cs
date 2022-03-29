@@ -20,6 +20,6 @@ public class FritzBox
     public Hosts Hosts { get; }
 
     public WanPppConnection WanPppConnection { get; }
-        
+
     public Wlan Wlan { get; }
 }

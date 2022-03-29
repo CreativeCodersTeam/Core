@@ -8,7 +8,7 @@ using CreativeCoders.Core.Collections;
 
 namespace CreativeCoders.Net.Soap.Response;
 
-internal class SoapResponder<TResponse> where TResponse: class, new()
+internal class SoapResponder<TResponse> where TResponse : class, new()
 {
     private readonly Stream _responseStream;
 
@@ -35,30 +35,33 @@ internal class SoapResponder<TResponse> where TResponse: class, new()
 
     private void MapXmlResponseToData(XContainer xmlDoc, TResponse responseData)
     {
-        var bodyNode = xmlDoc.Elements(SoapConsts.EnvelopeName).Elements(SoapConsts.BodyName).FirstOrDefault();
+        var bodyNode = xmlDoc.Elements(SoapConsts.EnvelopeName).Elements(SoapConsts.BodyName)
+            .FirstOrDefault();
 
         var contentElement = bodyNode?.Elements(XName.Get(_responseInfo.Name, _responseInfo.NameSpace))
             .FirstOrDefault();
 
         if (contentElement != null)
         {
-            _responseInfo.PropertyMappings.ForEach(mapping => MapProperty(responseData, mapping, contentElement));
+            _responseInfo.PropertyMappings.ForEach(mapping =>
+                MapProperty(responseData, mapping, contentElement));
         }
     }
 
-    private static void MapProperty(TResponse responseData, PropertyFieldMapping mapping, XContainer contentElement)
+    private static void MapProperty(TResponse responseData, PropertyFieldMapping mapping,
+        XContainer contentElement)
     {
         var fieldNode = contentElement.Elements(XName.Get(mapping.FieldName)).FirstOrDefault();
 
         switch (fieldNode)
         {
-            case { FirstNode: null }:
+            case {FirstNode: null}:
             {
                 var propValue = mapping.Property.PropertyType == typeof(string) ? string.Empty : null;
                 mapping.Property.SetValue(responseData, propValue);
                 return;
             }
-            case { FirstNode: { NodeType: XmlNodeType.Text } }:
+            case {FirstNode: {NodeType: XmlNodeType.Text}}:
             {
                 var fieldValue = (fieldNode.FirstNode as XText)?.Value;
                 var propValue = Convert.ChangeType(fieldValue, mapping.Property.PropertyType);

@@ -10,7 +10,7 @@ public interface IXmlRpcProxyBuilder<out T>
     IXmlRpcProxyBuilder<T> ForUrl(string url);
 
     IXmlRpcProxyBuilder<T> UseEncoding(Encoding encoding);
-        
+
     IXmlRpcProxyBuilder<T> UseEncoding(string encodingName);
 
     IXmlRpcProxyBuilder<T> WithContentType(string contentType);

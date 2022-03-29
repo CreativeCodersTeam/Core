@@ -22,7 +22,8 @@ public class XmlRpcServerMethods : IXmlRpcServerMethods
     {
         Ensure.IsNotNull(methodsInterface, nameof(methodsInterface));
 
-        var methods = typeof(T).GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        var methods =
+            typeof(T).GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
         foreach (var methodInfo in methods)
         {
@@ -32,13 +33,14 @@ public class XmlRpcServerMethods : IXmlRpcServerMethods
         }
     }
 
-    private void RegisterMethod<T>(XmlRpcMethodAttribute methodAttribute, MethodInfo methodInfo, string methodSuffix, T methodsInterface)
+    private void RegisterMethod<T>(XmlRpcMethodAttribute methodAttribute, MethodInfo methodInfo,
+        string methodSuffix, T methodsInterface)
     {
         if (methodAttribute == null)
         {
             return;
         }
-            
+
         var methodName = string.IsNullOrEmpty(methodAttribute.MethodName)
             ? methodInfo.Name
             : methodAttribute.MethodName;
@@ -46,6 +48,7 @@ public class XmlRpcServerMethods : IXmlRpcServerMethods
         {
             methodName = methodSuffix + "." + methodName;
         }
+
         var methodRegistration = new MethodRegistration(methodName, methodInfo, methodsInterface);
         _methods.Add(methodRegistration);
     }

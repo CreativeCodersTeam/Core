@@ -22,7 +22,7 @@ public class AspNetCoreWebHost : IDisposable
     public AspNetCoreWebHost(Func<HttpContext, Task> handleRequest)
     {
         Ensure.IsNotNull(handleRequest, nameof(handleRequest));
-            
+
         _handleRequest = handleRequest;
     }
 
@@ -35,7 +35,7 @@ public class AspNetCoreWebHost : IDisposable
         {
             webHostBuilder = webHostBuilder.ConfigureLogging(x => x.ClearProviders());
         }
-            
+
         _webHost = webHostBuilder
             .Build();
 
@@ -57,7 +57,7 @@ public class AspNetCoreWebHost : IDisposable
                 {
                     webBuilder.UseKestrel(options => options.AllowSynchronousIO = true);
                 }
-                    
+
                 webBuilder.Configure(app =>
                     app.Run(async context => await _handleRequest(context).ConfigureAwait(false)));
 
@@ -66,7 +66,7 @@ public class AspNetCoreWebHost : IDisposable
 
         return hostBuilder;
     }
-            
+
     public void Dispose()
     {
         _webHost?.Dispose();

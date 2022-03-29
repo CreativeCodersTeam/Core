@@ -10,9 +10,7 @@ namespace CreativeCoders.Net.XmlRpc.Writer;
 
 public class RequestModelWriter : ModelWriterBase<XmlRpcRequest>
 {
-    public RequestModelWriter(IValueWriters writers) : base(writers)
-    {
-    }
+    public RequestModelWriter(IValueWriters writers) : base(writers) { }
 
     protected override XDocument CreateXml(XmlRpcRequest xmlRpcRequest, Encoding encoding)
     {
@@ -35,7 +33,7 @@ public class RequestModelWriter : ModelWriterBase<XmlRpcRequest>
         {
             return new XElement(XmlRpcTags.MethodCall, new XElement(XmlRpcTags.MethodName, method.Name));
         }
-            
+
         var parameters = CreateParameters(method.Parameters);
         return new XElement(XmlRpcTags.MethodCall,
             new XElement(XmlRpcTags.MethodName, method.Name),
@@ -47,7 +45,7 @@ public class RequestModelWriter : ModelWriterBase<XmlRpcRequest>
         foreach (var methodParameter in methodParameters)
         {
             var writer = Writers.GetWriter(methodParameter.GetType());
-                
+
             var paramNode = new XElement(XmlRpcTags.Param);
             writer?.WriteTo(paramNode, methodParameter);
 

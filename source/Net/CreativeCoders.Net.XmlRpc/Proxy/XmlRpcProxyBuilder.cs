@@ -16,11 +16,11 @@ public class XmlRpcProxyBuilder<T> : IXmlRpcProxyBuilder<T>
     private readonly IProxyBuilder<T> _proxyBuilder;
 
     private readonly IHttpClientFactory _httpClientFactory;
-        
+
     private string _url;
-        
+
     private Encoding _encoding;
-        
+
     private string _contentType;
 
     public XmlRpcProxyBuilder(IProxyBuilder<T> proxyBuilder, IHttpClientFactory httpClientFactory)
@@ -35,7 +35,7 @@ public class XmlRpcProxyBuilder<T> : IXmlRpcProxyBuilder<T>
 
         _proxyBuilder = proxyBuilder;
         _httpClientFactory = httpClientFactory;
-            
+
         SetDefaultSettings();
     }
 

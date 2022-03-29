@@ -8,7 +8,5 @@ public class DateTimeValueReader : ValueReaderBase
 {
     public DateTimeValueReader() : base(new[] {XmlRpcTags.DateTime},
         value => new DateTimeValue(
-            DateTime.ParseExact(value, XmlRpcConstants.DateTimeFormat, DateTimeFormatInfo.InvariantInfo)))
-    {
-    }
+            DateTime.ParseExact(value, XmlRpcConstants.DateTimeFormat, DateTimeFormatInfo.InvariantInfo))) { }
 }

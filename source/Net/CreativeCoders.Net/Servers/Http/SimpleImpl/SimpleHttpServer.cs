@@ -30,7 +30,7 @@ public class SimpleHttpServer : IHttpServer, IDisposable
     {
         _running = true;
         await Task.Run(() => _httpListener.Start()).ConfigureAwait(false);
-            
+
         _listenerThread = new Thread(Listen);
         _listenerThread.Start();
     }

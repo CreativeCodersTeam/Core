@@ -12,7 +12,8 @@ internal class SoapRequester
 
     private readonly Func<SoapRequestInfo, IHttpWebRequest> _createHttpWebRequest;
 
-    public SoapRequester(SoapRequestInfo soapRequestInfo, Func<SoapRequestInfo, IHttpWebRequest> createHttpWebRequest)
+    public SoapRequester(SoapRequestInfo soapRequestInfo,
+        Func<SoapRequestInfo, IHttpWebRequest> createHttpWebRequest)
     {
         Ensure.IsNotNull(soapRequestInfo, nameof(soapRequestInfo));
         Ensure.IsNotNull(createHttpWebRequest, nameof(createHttpWebRequest));

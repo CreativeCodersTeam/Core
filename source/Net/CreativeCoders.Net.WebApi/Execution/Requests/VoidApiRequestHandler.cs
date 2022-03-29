@@ -6,9 +6,7 @@ namespace CreativeCoders.Net.WebApi.Execution.Requests;
 
 public class VoidApiRequestHandler : ApiRequestHandlerBase
 {
-    public VoidApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.Void, httpClient)
-    {
-    }
+    public VoidApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.Void, httpClient) { }
 
     public override object SendRequest(RequestData requestData)
     {

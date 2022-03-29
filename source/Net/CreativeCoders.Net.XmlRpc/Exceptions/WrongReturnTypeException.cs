@@ -8,7 +8,8 @@ namespace CreativeCoders.Net.XmlRpc.Exceptions;
 public class WrongReturnTypeException : Exception
 {
     public WrongReturnTypeException(MethodInfo methodInfo)
-        : base($"XmlRpc method '{methodInfo.Name}' has a wrong return type '{methodInfo.ReturnType.FullName}'. Allowed are Task and Task<>.")
+        : base(
+            $"XmlRpc method '{methodInfo.Name}' has a wrong return type '{methodInfo.ReturnType.FullName}'. Allowed are Task and Task<>.")
     {
         ReturnType = methodInfo.ReturnType;
         Method = methodInfo;
@@ -17,5 +18,4 @@ public class WrongReturnTypeException : Exception
     public MethodInfo Method { get; }
 
     public Type ReturnType { get; }
-
 }

@@ -54,9 +54,11 @@ public static class HttpClientPostTextExtensions
     /// <returns>   The task object representing the asynchronous operation. </returns>
     ///-------------------------------------------------------------------------------------------------
     public static Task<HttpResponseMessage> PostTextAsync(this HttpClient httpClient, Uri requestUri,
-        string content, string mediaType = ContentMediaTypes.Text.Plain, CancellationToken cancellationToken = default)
+        string content, string mediaType = ContentMediaTypes.Text.Plain,
+        CancellationToken cancellationToken = default)
     {
-        return httpClient.PostTextAsync(requestUri, content, mediaType, HttpCompletionOption.ResponseHeadersRead,
+        return httpClient.PostTextAsync(requestUri, content, mediaType,
+            HttpCompletionOption.ResponseHeadersRead,
             cancellationToken);
     }
 }

@@ -15,7 +15,7 @@ public class ApiPropertyAnalyzer
     {
         _propertyInfo = propertyInfo;
     }
-        
+
     public ApiPropertyInfo GetPropertyInfo()
     {
         var headerDefinitions = GetHeaderDefinitions().ToArray();

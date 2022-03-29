@@ -9,10 +9,12 @@ namespace CreativeCoders.Net.Avm.Tr064;
 [PublicAPI]
 public class WanPppConnectionApi : Tr064ApiBase
 {
-    public WanPppConnectionApi(string fritzBoxUrl, string userName, string password) : base(new SoapHttpClient(WebRequestFactory.Default),
+    public WanPppConnectionApi(string fritzBoxUrl, string userName, string password) : base(
+        new SoapHttpClient(WebRequestFactory.Default),
         fritzBoxUrl, "/upnp/control/wanpppconn1", userName, password) { }
 
-    public WanPppConnectionApi(ISoapHttpClient soapHttpClient, string fritzBoxUrl, string userName, string password) :
+    public WanPppConnectionApi(ISoapHttpClient soapHttpClient, string fritzBoxUrl, string userName,
+        string password) :
         base(soapHttpClient, fritzBoxUrl, "/upnp/control/wanpppconn1", userName, password) { }
 
     public GetExternalIpAddressResponse GetExternalIpAddress()

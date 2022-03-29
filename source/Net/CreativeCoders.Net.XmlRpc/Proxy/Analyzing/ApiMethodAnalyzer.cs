@@ -13,7 +13,7 @@ namespace CreativeCoders.Net.XmlRpc.Proxy.Analyzing;
 public class ApiMethodAnalyzer
 {
     private readonly MethodInfo _methodInfo;
-        
+
     private readonly IMethodExceptionHandler _globalExceptionHandler;
 
     private readonly XmlRpcMethodAttribute _methodAttr;
@@ -24,7 +24,7 @@ public class ApiMethodAnalyzer
         _globalExceptionHandler = globalExceptionHandler;
         _methodAttr = _methodInfo.GetCustomAttribute(typeof(XmlRpcMethodAttribute)) as XmlRpcMethodAttribute;
     }
-        
+
     public ApiMethodInfo Analyze()
     {
         var apiMethodInfo = new ApiMethodInfo
@@ -80,14 +80,16 @@ public class ApiMethodAnalyzer
             }
 
             // ReSharper disable once ConvertIfStatementToSwitchStatement
-            if (genericArgument.IsGenericType && genericArgument.GetGenericTypeDefinition() == typeof(IDictionary<,>))
+            if (genericArgument.IsGenericType &&
+                genericArgument.GetGenericTypeDefinition() == typeof(IDictionary<,>))
             {
                 apiMethodInfo.ReturnType = ApiMethodReturnType.Dictionary;
                 apiMethodInfo.ValueType = genericArgument.GetGenericArguments().Last();
                 return;
             }
 
-            if (genericArgument.IsGenericType && genericArgument.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            if (genericArgument.IsGenericType &&
+                genericArgument.GetGenericTypeDefinition() == typeof(IEnumerable<>))
             {
                 apiMethodInfo.ReturnType = ApiMethodReturnType.Enumerable;
                 apiMethodInfo.ValueType = genericArgument.GetGenericArguments().First();
@@ -106,7 +108,7 @@ public class ApiMethodAnalyzer
         {
             throw new WrongReturnTypeException(_methodInfo);
         }
-            
+
         apiMethodInfo.ReturnType = ApiMethodReturnType.Void;
     }
 }

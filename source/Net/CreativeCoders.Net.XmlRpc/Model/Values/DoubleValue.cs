@@ -2,7 +2,5 @@
 
 public class DoubleValue : XmlRpcValue<double>
 {
-    public DoubleValue(double value) : base(value)
-    {
-    }
+    public DoubleValue(double value) : base(value) { }
 }

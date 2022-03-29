@@ -31,7 +31,7 @@ public class ApiAnalyzer<T>
         };
 
         return apiStructure;
-    }        
+    }
 
     private IEnumerable<ApiPropertyInfo> AnalyzeProperties()
     {

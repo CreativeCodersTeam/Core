@@ -7,9 +7,7 @@ namespace CreativeCoders.Net.XmlRpc.Definition;
 [AttributeUsage(AttributeTargets.Property)]
 public class XmlRpcStructMemberAttribute : Attribute
 {
-    public XmlRpcStructMemberAttribute() : this(string.Empty)
-    {
-    }
+    public XmlRpcStructMemberAttribute() : this(string.Empty) { }
 
     public XmlRpcStructMemberAttribute(string name)
     {
@@ -38,6 +36,6 @@ public class XmlRpcStructMemberAttribute : Attribute
     public bool Required { get; set; }
 
     public Type DataType { get; set; }
-        
+
     public static readonly object NoDefaultValue = new();
 }

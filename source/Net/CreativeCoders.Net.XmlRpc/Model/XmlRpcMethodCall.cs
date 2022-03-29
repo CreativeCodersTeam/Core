@@ -12,7 +12,7 @@ public class XmlRpcMethodCall
         Ensure.IsNotNullOrWhitespace(name, nameof(name));
 
         Name = name;
-            
+
         _parameters = new List<XmlRpcValue>(parameters);
     }
 

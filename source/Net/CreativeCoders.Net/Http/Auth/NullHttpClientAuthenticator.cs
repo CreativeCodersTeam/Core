@@ -13,9 +13,7 @@ public class NullHttpClientAuthenticator : IHttpClientAuthenticator
         throw new NotSupportedException();
     }
 
-    public void PrepareHttpRequest(HttpRequestMessage httpRequest)
-    {
-    }
+    public void PrepareHttpRequest(HttpRequestMessage httpRequest) { }
 
     public bool CanAuthenticate(Uri requestUri) => false;
 }

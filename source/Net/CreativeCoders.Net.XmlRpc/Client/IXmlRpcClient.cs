@@ -20,7 +20,8 @@ public interface IXmlRpcClient
 
     Task<T> InvokeExAsync<T>(string methodName, object[] parameters);
 
-    Task<T> InvokeExAsync<T, TInvoke>(string methodName, object[] parameters, IMethodResultConverter resultConverter);
+    Task<T> InvokeExAsync<T, TInvoke>(string methodName, object[] parameters,
+        IMethodResultConverter resultConverter);
 
     string Url { get; set; }
 

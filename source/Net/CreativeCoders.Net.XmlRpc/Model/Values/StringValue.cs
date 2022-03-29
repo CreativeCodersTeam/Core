@@ -2,7 +2,5 @@
 
 public class StringValue : XmlRpcValue<string>
 {
-    public StringValue(string value) : base(value)
-    {
-    }
+    public StringValue(string value) : base(value) { }
 }

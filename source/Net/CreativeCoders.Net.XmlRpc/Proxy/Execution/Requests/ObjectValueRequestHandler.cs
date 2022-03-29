@@ -8,25 +8,26 @@ namespace CreativeCoders.Net.XmlRpc.Proxy.Execution.Requests;
 
 public class ObjectValueRequestHandler : XmlRpcRequestHandlerBase
 {
-    public ObjectValueRequestHandler() : base(ApiMethodReturnType.ObjectValue)
-    {
-    }
+    public ObjectValueRequestHandler() : base(ApiMethodReturnType.ObjectValue) { }
 
     public override object HandleRequest(RequestData requestData)
     {
-        return this.ExecuteGenericMethod<object>(nameof(GetObjectValueAsync), new[] { requestData.ValueType }, requestData);
+        return this.ExecuteGenericMethod<object>(nameof(GetObjectValueAsync), new[] {requestData.ValueType},
+            requestData);
     }
 
     // ReSharper disable once MemberCanBeMadeStatic.Local
     private async Task<T> GetObjectValueAsync<T>(RequestData requestData)
     {
-        return await GetValueWithExceptionHandlingAsync(() => GetObjectValueInternalAsync<T>(requestData), requestData).ConfigureAwait(false);
+        return await GetValueWithExceptionHandlingAsync(() => GetObjectValueInternalAsync<T>(requestData),
+            requestData).ConfigureAwait(false);
     }
-        
+
     // ReSharper disable once MemberCanBeMadeStatic.Local
     private async Task<T> GetObjectValueInternalAsync<T>(RequestData requestData)
     {
-        var xmlRpcResponse = await requestData.Client.InvokeExAsync(requestData.MethodName, requestData.Arguments).ConfigureAwait(false);
+        var xmlRpcResponse = await requestData.Client
+            .InvokeExAsync(requestData.MethodName, requestData.Arguments).ConfigureAwait(false);
 
         var xmlRpcValue = xmlRpcResponse.Results.First().Values.First();
 

@@ -4,9 +4,7 @@ namespace CreativeCoders.Net.XmlRpc.Definition;
 
 public class XmlRpcMethodAttribute : Attribute
 {
-    public XmlRpcMethodAttribute() : this(string.Empty)
-    {
-    }
+    public XmlRpcMethodAttribute() : this(string.Empty) { }
 
     public XmlRpcMethodAttribute(string methodName)
     {

@@ -19,7 +19,7 @@ public class RequestBuilder : IRequestBuilder
     {
         var methodCall = new XmlRpcMethodCall(methodName, CreateXmlRpcValues(parameters).ToArray());
 
-        var xmlRpcRequest = new XmlRpcRequest(new []{methodCall}, false);
+        var xmlRpcRequest = new XmlRpcRequest(new[] {methodCall}, false);
 
         return xmlRpcRequest;
     }

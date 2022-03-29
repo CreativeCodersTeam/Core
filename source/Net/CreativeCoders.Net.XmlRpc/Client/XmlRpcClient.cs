@@ -25,7 +25,7 @@ public class XmlRpcClient : IXmlRpcClient
     public XmlRpcClient(HttpClient httpClient)
     {
         Ensure.IsNotNull(httpClient, nameof(httpClient));
-            
+
         _httpClient = httpClient;
         _requestBuilder = new RequestBuilder(new DataToXmlRpcValueConverter());
     }
@@ -33,7 +33,7 @@ public class XmlRpcClient : IXmlRpcClient
     public async Task<XmlRpcResponse> SendRequestAsync(XmlRpcRequest request)
     {
         Ensure.IsNotNull(request, nameof(request));
-            
+
         var httpRequest = await CreateHttpRequestAsync(request).ConfigureAwait(false);
 
         var httpResponse = await _httpClient
@@ -57,7 +57,8 @@ public class XmlRpcClient : IXmlRpcClient
 
         var responseModelReader = new ResponseModelReader(new ValueReaders(XmlEncoding));
 
-        return await responseModelReader.ReadAsync(new MemoryStream(XmlEncoding.GetBytes(responseContent)), false).ConfigureAwait(false);
+        return await responseModelReader
+            .ReadAsync(new MemoryStream(XmlEncoding.GetBytes(responseContent)), false).ConfigureAwait(false);
     }
 
     private async Task<HttpRequestMessage> CreateHttpRequestAsync(XmlRpcRequest request)
@@ -77,7 +78,7 @@ public class XmlRpcClient : IXmlRpcClient
         var requestModelWriter = new RequestModelWriter(new ValueWriters());
 
         await using var stream = new MemoryStream();
-            
+
         await requestModelWriter.WriteAsync(stream, request, XmlEncoding).ConfigureAwait(false);
 
         stream.Seek(0, SeekOrigin.Begin);
@@ -95,7 +96,7 @@ public class XmlRpcClient : IXmlRpcClient
     public async Task<XmlRpcResponse> InvokeAsync(string methodName, params object[] parameters)
     {
         Ensure.IsNotNullOrWhitespace(methodName, nameof(methodName));
-            
+
         var request = _requestBuilder.Build(methodName, parameters);
 
         return await SendRequestAsync(request).ConfigureAwait(false);
@@ -120,7 +121,8 @@ public class XmlRpcClient : IXmlRpcClient
         return InvokeAsync<T>(methodName, parameters);
     }
 
-    public async Task<T> InvokeExAsync<T, TInvoke>(string methodName, object[] parameters, IMethodResultConverter resultConverter)
+    public async Task<T> InvokeExAsync<T, TInvoke>(string methodName, object[] parameters,
+        IMethodResultConverter resultConverter)
     {
         var result = await InvokeExAsync<TInvoke>(methodName, parameters).ConfigureAwait(false);
 

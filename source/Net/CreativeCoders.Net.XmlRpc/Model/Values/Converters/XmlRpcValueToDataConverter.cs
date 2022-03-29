@@ -63,7 +63,8 @@ public class XmlRpcValueToDataConverter : IXmlRpcValueToDataConverter
     {
         if (xmlRpcValue is not ArrayValue arrayValue)
         {
-            throw new InvalidOperationException($"Xml rpc value must be an array value. Current type '{xmlRpcValue.GetType().Name}'");
+            throw new InvalidOperationException(
+                $"Xml rpc value must be an array value. Current type '{xmlRpcValue.GetType().Name}'");
         }
 
         var elementType =
@@ -97,14 +98,16 @@ public class XmlRpcValueToDataConverter : IXmlRpcValueToDataConverter
     {
         if (xmlRpcValue is not StructValue structValue)
         {
-            throw new InvalidOperationException($"Xml rpc value must be an struct value. Current type '{xmlRpcValue.GetType().Name}'");
+            throw new InvalidOperationException(
+                $"Xml rpc value must be an struct value. Current type '{xmlRpcValue.GetType().Name}'");
         }
 
         var elementType = targetType.GetGenericArguments().Skip(1).First();
 
         var convertValue = GetConvertValueFunction(elementType);
 
-        var dictionary = this.ExecuteGenericMethod<object>(nameof(ToDictionary), new []{elementType}, structValue.Value as IDictionary, convertValue);
+        var dictionary = this.ExecuteGenericMethod<object>(nameof(ToDictionary), new[] {elementType},
+            structValue.Value as IDictionary, convertValue);
 
         return dictionary;
     }
@@ -121,10 +124,11 @@ public class XmlRpcValueToDataConverter : IXmlRpcValueToDataConverter
     }
 
     // ReSharper disable once MemberCanBeMadeStatic.Local
-    private IDictionary<string, TElement> ToDictionary<TElement>(IDictionary sourceDictionary, Func<XmlRpcValue, Type, object> convertValue)
+    private IDictionary<string, TElement> ToDictionary<TElement>(IDictionary sourceDictionary,
+        Func<XmlRpcValue, Type, object> convertValue)
     {
         return sourceDictionary.ToDictionary<string, TElement>(
-            o => (TElement) convertValue((XmlRpcValue)o, typeof(TElement)), true);
+            o => (TElement) convertValue((XmlRpcValue) o, typeof(TElement)), true);
     }
 
     private object ConvertToObject(Type targetType, XmlRpcValue xmlRpcValue)
@@ -133,7 +137,7 @@ public class XmlRpcValueToDataConverter : IXmlRpcValueToDataConverter
         {
             return CreateFromStruct(structValue, targetType);
         }
-            
+
         if (targetType == typeof(object))
         {
             return xmlRpcValue.Data;
@@ -147,7 +151,8 @@ public class XmlRpcValueToDataConverter : IXmlRpcValueToDataConverter
     {
         var instance = Activator.CreateInstance(targetType);
 
-        var properties = instance?.GetType().GetProperties() ?? throw new InvalidOperationException("Object for xml rpc struct cannot be created");
+        var properties = instance?.GetType().GetProperties() ??
+                         throw new InvalidOperationException("Object for xml rpc struct cannot be created");
 
         var memberProperties = (from property in properties
             let memberAttribute = property.GetCustomAttribute<XmlRpcStructMemberAttribute>()
@@ -159,7 +164,8 @@ public class XmlRpcValueToDataConverter : IXmlRpcValueToDataConverter
         return instance;
     }
 
-    private void SetProperty(object obj, PropertyInfo property, XmlRpcStructMemberAttribute memberAttribute, StructValue structValue)
+    private void SetProperty(object obj, PropertyInfo property, XmlRpcStructMemberAttribute memberAttribute,
+        StructValue structValue)
     {
         var memberName = string.IsNullOrEmpty(memberAttribute.Name)
             ? property.Name
@@ -171,7 +177,7 @@ public class XmlRpcValueToDataConverter : IXmlRpcValueToDataConverter
             {
                 throw new RequiredMemberMissingException(property, memberAttribute);
             }
-                
+
             if (memberAttribute.DefaultValue != XmlRpcStructMemberAttribute.NoDefaultValue)
             {
                 property.SetValue(obj, memberAttribute.DefaultValue);

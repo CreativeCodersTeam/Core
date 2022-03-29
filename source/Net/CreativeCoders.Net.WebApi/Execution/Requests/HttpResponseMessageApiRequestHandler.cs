@@ -5,9 +5,8 @@ namespace CreativeCoders.Net.WebApi.Execution.Requests;
 
 public class HttpResponseMessageApiRequestHandler : ApiRequestHandlerBase
 {
-    public HttpResponseMessageApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.HttpResponseMessage, httpClient)
-    {
-    }
+    public HttpResponseMessageApiRequestHandler(HttpClient httpClient) : base(
+        ApiMethodReturnType.HttpResponseMessage, httpClient) { }
 
     public override object SendRequest(RequestData requestData)
     {

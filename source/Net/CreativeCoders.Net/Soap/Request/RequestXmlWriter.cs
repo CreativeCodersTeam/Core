@@ -55,10 +55,11 @@ internal class RequestXmlWriter
     {
         XNamespace ns = _soapRequestInfo.ServiceNameSpace;
 
-        var xmlNode = new XElement(ns + _soapRequestInfo.ActionName, new XAttribute(XNamespace.Xmlns + "u", ns));
+        var xmlNode = new XElement(ns + _soapRequestInfo.ActionName,
+            new XAttribute(XNamespace.Xmlns + "u", ns));
 
         CreateParametersXml().ForEach(xmlNode.Add);
-            
+
         return xmlNode;
     }
 
@@ -66,6 +67,7 @@ internal class RequestXmlWriter
     {
         return from propertyFieldMapping in _soapRequestInfo.PropertyMappings
             let propValue = propertyFieldMapping.Property.GetValue(_soapRequestInfo.Action)
-            select new XElement(propertyFieldMapping.FieldName, new XText(propValue?.ToString() ?? string.Empty));
+            select new XElement(propertyFieldMapping.FieldName,
+                new XText(propValue?.ToString() ?? string.Empty));
     }
 }

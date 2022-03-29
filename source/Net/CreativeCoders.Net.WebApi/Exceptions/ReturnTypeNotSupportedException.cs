@@ -6,7 +6,7 @@ namespace CreativeCoders.Net.WebApi.Exceptions;
 [PublicAPI]
 public class ReturnTypeNotSupportedException : ApiException
 {
-    public ReturnTypeNotSupportedException(MethodInfo method) : 
+    public ReturnTypeNotSupportedException(MethodInfo method) :
         base($"Method '{method.Name}' has not supported return type '{method.ReturnType.Name}'")
     {
         Method = method;

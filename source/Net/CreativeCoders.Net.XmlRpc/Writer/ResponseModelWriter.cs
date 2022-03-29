@@ -9,9 +9,7 @@ namespace CreativeCoders.Net.XmlRpc.Writer;
 
 public class ResponseModelWriter : ModelWriterBase<XmlRpcResponse>
 {
-    public ResponseModelWriter(IValueWriters writers) : base(writers)
-    {
-    }
+    public ResponseModelWriter(IValueWriters writers) : base(writers) { }
 
     protected override XDocument CreateXml(XmlRpcResponse xmlRpcRequest, Encoding encoding)
     {
@@ -36,7 +34,8 @@ public class ResponseModelWriter : ModelWriterBase<XmlRpcResponse>
 
     private XDocument CreateMultiCallResponse(XmlRpcResponse xmlRpcResponse, Encoding encoding)
     {
-        return new(new XDeclaration("1.0", encoding.BodyName.ToUpper(), null), CreateMultiCallResultValues(xmlRpcResponse.Results));
+        return new(new XDeclaration("1.0", encoding.BodyName.ToUpper(), null),
+            CreateMultiCallResultValues(xmlRpcResponse.Results));
     }
 
     private XElement CreateMultiCallResultValues(IEnumerable<XmlRpcMethodResult> results)

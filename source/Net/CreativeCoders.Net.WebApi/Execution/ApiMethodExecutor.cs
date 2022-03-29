@@ -30,7 +30,8 @@ public class ApiMethodExecutor
 
     public object Invoke(object target, ApiMethodInfo apiMethod, object[] arguments, ApiData apiData)
     {
-        var requestData = new RequestDataCreator(target, _apiStructure, apiMethod, arguments, apiData).Create();
+        var requestData =
+            new RequestDataCreator(target, _apiStructure, apiMethod, arguments, apiData).Create();
 
         return ExecuteRequest(requestData);
     }
@@ -42,7 +43,8 @@ public class ApiMethodExecutor
 
         if (requestHandler == null)
         {
-            throw new ArgumentOutOfRangeException(nameof(requestData.RequestReturnType), $"No request handler for {nameof(requestData.RequestReturnType)} found");
+            throw new ArgumentOutOfRangeException(nameof(requestData.RequestReturnType),
+                $"No request handler for {nameof(requestData.RequestReturnType)} found");
         }
 
         return requestHandler.SendRequest(requestData);

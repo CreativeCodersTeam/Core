@@ -6,7 +6,8 @@ namespace CreativeCoders.Net.Soap.Request;
 
 internal static class SoapHttpWebRequestCreator
 {
-    public static IHttpWebRequest Create(SoapRequestInfo soapRequestInfo, IWebRequestFactory webRequestFactory)
+    public static IHttpWebRequest Create(SoapRequestInfo soapRequestInfo,
+        IWebRequestFactory webRequestFactory)
     {
         Ensure.IsNotNull(soapRequestInfo, nameof(soapRequestInfo));
 
@@ -14,7 +15,8 @@ internal static class SoapHttpWebRequestCreator
         httpWebRequest.Credentials = soapRequestInfo.Credentials;
         httpWebRequest.Method = "POST";
         httpWebRequest.ContentType = "text/xml; charset=utf-8";
-        httpWebRequest.Headers.Add("SOAPACTION", $"{soapRequestInfo.ServiceNameSpace}#{soapRequestInfo.ActionName}");
+        httpWebRequest.Headers.Add("SOAPACTION",
+            $"{soapRequestInfo.ServiceNameSpace}#{soapRequestInfo.ActionName}");
         httpWebRequest.ProtocolVersion = HttpVersion.Version11;
 
         return httpWebRequest;

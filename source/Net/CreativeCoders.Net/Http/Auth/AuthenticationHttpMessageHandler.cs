@@ -11,16 +11,16 @@ public class AuthenticationHttpMessageHandler : DelegatingHandler
 {
     private IHttpClientAuthenticationProvider _authenticationProvider;
 
-    public AuthenticationHttpMessageHandler(HttpMessageHandler  httpMessageHandler) : base(httpMessageHandler)
-    {
-    }
+    public AuthenticationHttpMessageHandler(HttpMessageHandler httpMessageHandler) :
+        base(httpMessageHandler) { }
 
     public void SetAuthenticationProvider(IHttpClientAuthenticationProvider authenticationProvider)
     {
         _authenticationProvider = authenticationProvider;
     }
 
-    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+        CancellationToken cancellationToken)
     {
         return await Policy
             .HandleResult<HttpResponseMessage>(x =>

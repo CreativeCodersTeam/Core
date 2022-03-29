@@ -13,7 +13,7 @@ namespace CreativeCoders.Net.WebApi.Building;
 public class ApiMethodAnalyzer
 {
     private readonly MethodInfo _methodInfo;
-        
+
     private readonly ApiMethodBaseAttribute _apiMethodAttribute;
 
     public ApiMethodAnalyzer(MethodInfo methodInfo, ApiMethodBaseAttribute apiMethodAttribute)
@@ -21,12 +21,12 @@ public class ApiMethodAnalyzer
         _methodInfo = methodInfo;
         _apiMethodAttribute = apiMethodAttribute;
     }
-        
+
     public ApiMethodInfo GetMethodInfo()
     {
         var methodReturnType = GetMethodReturnType();
         var headerDefinitions = GetHeaderDefinitions().ToArray();
-            
+
         var apiMethodInfo = new ApiMethodInfo
         {
             Method = _methodInfo,
@@ -34,10 +34,12 @@ public class ApiMethodAnalyzer
             RequestMethod = _apiMethodAttribute.RequestMethod,
             HeaderDefinitions = headerDefinitions,
             MethodUri = _apiMethodAttribute.Uri,
-            DefaultCompletionOption = _apiMethodAttribute.GetCompletionOption(HttpCompletionOption.ResponseContentRead)
+            DefaultCompletionOption =
+                _apiMethodAttribute.GetCompletionOption(HttpCompletionOption.ResponseContentRead)
         };
 
-        apiMethodInfo.ArgumentInfos = new ApiCallArgumentsAnalyzer(apiMethodInfo).Analyze(_methodInfo).ToArray();
+        apiMethodInfo.ArgumentInfos =
+            new ApiCallArgumentsAnalyzer(apiMethodInfo).Analyze(_methodInfo).ToArray();
 
         return apiMethodInfo;
     }
@@ -72,7 +74,8 @@ public class ApiMethodAnalyzer
                 return ApiMethodReturnType.Stream;
             }
 
-            if (genericArgument.IsGenericType && genericArgument.GetGenericTypeDefinition() == typeof(Response<>))
+            if (genericArgument.IsGenericType &&
+                genericArgument.GetGenericTypeDefinition() == typeof(Response<>))
             {
                 return ApiMethodReturnType.Response;
             }

@@ -10,11 +10,12 @@ public class EntryNotFoundException : Exception
     {
         Address = address;
     }
-        
-    public EntryNotFoundException(string address, string message, Exception innerException) : base(message, innerException)
+
+    public EntryNotFoundException(string address, string message, Exception innerException) : base(message,
+        innerException)
     {
         Address = address;
     }
-        
+
     public string Address { get; }
 }

@@ -14,7 +14,7 @@ public class ApiAnalyzer<T>
         var methods = apiType.GetMethods();
 
         var exceptionHandler = GetExceptionHandler();
-            
+
         return new ApiStructure
         {
             MethodInfos = methods.Select(method => new ApiMethodAnalyzer(method, exceptionHandler).Analyze())

@@ -14,7 +14,7 @@ public class Wlan
     public WlanDeviceInfo GetWlanDeviceInfo(string macAddress)
     {
         var response = _wlanApi.GetSpecificAssociatedDeviceInfo(macAddress);
-            
+
         return new WlanDeviceInfo
         {
             MacAddress = macAddress,

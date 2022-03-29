@@ -7,10 +7,7 @@ namespace CreativeCoders.Net.WebApi.Definition;
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
 public class QueryAttribute : Attribute
 {
-    public QueryAttribute()
-    {
-            
-    }
+    public QueryAttribute() { }
 
     public QueryAttribute(string name)
     {

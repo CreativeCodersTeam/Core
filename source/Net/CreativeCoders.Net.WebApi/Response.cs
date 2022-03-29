@@ -30,7 +30,7 @@ public class Response<T> : IDisposable
             {
                 return _data;
             }
-                
+
             _dataIsRead = true;
             _data = _getData();
 

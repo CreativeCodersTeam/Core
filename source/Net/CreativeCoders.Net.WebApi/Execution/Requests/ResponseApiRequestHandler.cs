@@ -9,14 +9,13 @@ namespace CreativeCoders.Net.WebApi.Execution.Requests;
 
 public class ResponseApiRequestHandler : ApiRequestHandlerBase
 {
-    public ResponseApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.Response, httpClient)
-    {
-    }
+    public ResponseApiRequestHandler(HttpClient httpClient) :
+        base(ApiMethodReturnType.Response, httpClient) { }
 
     public override object SendRequest(RequestData requestData)
     {
         return this.ExecuteGenericMethod<object>(nameof(RequestResponseAsync),
-            new[] { requestData.DataObjectType }, requestData);
+            new[] {requestData.DataObjectType}, requestData);
     }
 
     private async Task<Response<T>> RequestResponseAsync<T>(RequestData requestData)

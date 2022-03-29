@@ -9,14 +9,17 @@ namespace CreativeCoders.Net.Avm.Tr064;
 [PublicAPI]
 public class HostsApi : Tr064ApiBase
 {
-    public HostsApi(string fritzBoxUrl, string userName, string password) : this(new SoapHttpClient(WebRequestFactory.Default), fritzBoxUrl, userName, password) { }
+    public HostsApi(string fritzBoxUrl, string userName, string password) : this(
+        new SoapHttpClient(WebRequestFactory.Default), fritzBoxUrl, userName, password) { }
 
-    public HostsApi(ISoapHttpClient soapHttpClient, string fritzBoxUrl, string userName, string password) : base(soapHttpClient, fritzBoxUrl, "/upnp/control/hosts", userName, password) { }
+    public HostsApi(ISoapHttpClient soapHttpClient, string fritzBoxUrl, string userName, string password) :
+        base(soapHttpClient, fritzBoxUrl, "/upnp/control/hosts", userName, password) { }
 
 
     public GetHostNumberOfEntriesResponse GetHostNumberOfEntries()
     {
-        return SoapHttpClient.Invoke<GetHostNumberOfEntriesRequest, GetHostNumberOfEntriesResponse>(new GetHostNumberOfEntriesRequest());
+        return SoapHttpClient.Invoke<GetHostNumberOfEntriesRequest, GetHostNumberOfEntriesResponse>(
+            new GetHostNumberOfEntriesRequest());
     }
 
     public GetSpecificHostEntryResponse GetSpecificHostEntry(string macAddress)

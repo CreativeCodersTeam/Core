@@ -7,14 +7,13 @@ namespace CreativeCoders.Net.WebApi.Execution.Requests;
 
 public class DataObjectApiRequestHandler : ApiRequestHandlerBase
 {
-    public DataObjectApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.DataObject, httpClient)
-    {
-    }
+    public DataObjectApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.DataObject,
+        httpClient) { }
 
     public override object SendRequest(RequestData requestData)
     {
         return this.ExecuteGenericMethod<object>(nameof(RequestAsync),
-            new[] { requestData.DataObjectType }, requestData);
+            new[] {requestData.DataObjectType}, requestData);
     }
 
     private async Task<T> RequestAsync<T>(RequestData requestData)
@@ -24,7 +23,8 @@ public class DataObjectApiRequestHandler : ApiRequestHandlerBase
             response.EnsureSuccessStatusCode();
 
             var deserializer = GetResponseDeserializer(requestData);
-            return deserializer.Deserialize<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+            return deserializer.Deserialize<T>(await response.Content.ReadAsStringAsync()
+                .ConfigureAwait(false));
         }
     }
 }

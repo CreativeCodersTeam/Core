@@ -10,9 +10,7 @@ namespace CreativeCoders.Net.XmlRpc.Reader.Values;
 public class ArrayValueReader : ValueReaderBase
 {
     public ArrayValueReader(IValueReaders readers) :
-        base(new []{XmlRpcTags.Array}, valueElement => CreateValue(valueElement, readers))
-    {
-    }
+        base(new[] {XmlRpcTags.Array}, valueElement => CreateValue(valueElement, readers)) { }
 
     private static XmlRpcValue CreateValue(XNode valueNode, IValueReaders readers)
     {
@@ -23,7 +21,8 @@ public class ArrayValueReader : ValueReaderBase
         return new ArrayValue(values.ToArray());
     }
 
-    private static IEnumerable<XmlRpcValue> GetValues(IEnumerable<XElement> valueElements, IValueReaders readers)
+    private static IEnumerable<XmlRpcValue> GetValues(IEnumerable<XElement> valueElements,
+        IValueReaders readers)
     {
         return valueElements.Select(readers.ReadValue);
     }

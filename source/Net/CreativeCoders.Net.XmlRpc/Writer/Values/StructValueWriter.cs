@@ -6,11 +6,11 @@ namespace CreativeCoders.Net.XmlRpc.Writer.Values;
 
 public class StructValueWriter : ValueWriterBase<IDictionary<string, XmlRpcValue>>
 {
-    public StructValueWriter(IValueWriters writers) : base(XmlRpcTags.Struct, (value, element) => WriteToElement(value, element, writers))
-    {
-    }
+    public StructValueWriter(IValueWriters writers) : base(XmlRpcTags.Struct,
+        (value, element) => WriteToElement(value, element, writers)) { }
 
-    private static void WriteToElement(XmlRpcValue<IDictionary<string, XmlRpcValue>> value, XContainer element, IValueWriters writers)
+    private static void WriteToElement(XmlRpcValue<IDictionary<string, XmlRpcValue>> value,
+        XContainer element, IValueWriters writers)
     {
         foreach (var (key, xmlRpcValue) in value.Value)
         {

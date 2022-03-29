@@ -30,7 +30,7 @@ public class NetworkInfo : INetworkInfo
     public int FindFreePort(int startPort)
     {
         const int maxPort = IPEndPoint.MaxPort;
-            
+
         return FindFreePort(Enumerable.Range(startPort, maxPort - startPort + 1));
     }
 

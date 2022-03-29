@@ -14,7 +14,8 @@ public abstract class XmlRpcRequestHandlerBase : IXmlRpcApiRequestHandler
 
     public abstract object HandleRequest(RequestData requestData);
 
-    protected static async Task<T> GetValueWithExceptionHandlingAsync<T>(Func<Task<T>> execute, RequestData requestData)
+    protected static async Task<T> GetValueWithExceptionHandlingAsync<T>(Func<Task<T>> execute,
+        RequestData requestData)
     {
         try
         {
@@ -28,7 +29,7 @@ public abstract class XmlRpcRequestHandlerBase : IXmlRpcApiRequestHandler
             }
 
             var exceptionArguments = new MethodExceptionHandlerArguments {MethodException = e};
-                
+
             requestData.ExceptionHandler.HandleException(exceptionArguments);
 
             if (exceptionArguments.Handled)
@@ -39,7 +40,7 @@ public abstract class XmlRpcRequestHandlerBase : IXmlRpcApiRequestHandler
             throw exceptionArguments.MethodException ?? e;
         }
     }
-        
+
     protected static async Task ExecuteWithExceptionHandlingAsync(Func<Task> execute, RequestData requestData)
     {
         try
@@ -54,7 +55,7 @@ public abstract class XmlRpcRequestHandlerBase : IXmlRpcApiRequestHandler
             }
 
             var exceptionArguments = new MethodExceptionHandlerArguments {MethodException = e};
-                
+
             requestData.ExceptionHandler.HandleException(exceptionArguments);
 
             if (exceptionArguments.Handled)

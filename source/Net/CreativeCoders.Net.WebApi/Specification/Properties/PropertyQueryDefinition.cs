@@ -6,7 +6,8 @@ namespace CreativeCoders.Net.WebApi.Specification.Properties;
 [PublicAPI]
 public class PropertyQueryDefinition : PropertyDefinitionBase
 {
-    public PropertyQueryDefinition(string name, bool urlEncode, PropertyInfo propertyInfo) : base(propertyInfo)
+    public PropertyQueryDefinition(string name, bool urlEncode, PropertyInfo propertyInfo) : base(
+        propertyInfo)
     {
         Name = name;
         UrlEncode = urlEncode;

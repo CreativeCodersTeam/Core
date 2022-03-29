@@ -10,9 +10,7 @@ namespace CreativeCoders.Net.XmlRpc.Reader.Values;
 public class StructValueReader : ValueReaderBase
 {
     public StructValueReader(IValueReaders readers) :
-        base(new []{XmlRpcTags.Struct}, valueElement => CreateValue(valueElement, readers))
-    {            
-    }
+        base(new[] {XmlRpcTags.Struct}, valueElement => CreateValue(valueElement, readers)) { }
 
     private static XmlRpcValue CreateValue(XNode valueNode, IValueReaders readers)
     {

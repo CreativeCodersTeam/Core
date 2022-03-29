@@ -25,7 +25,8 @@ public class XmlRpcProxyInterceptor<T> : InterceptorWithPropertiesBase<T>
 
     protected override void ExecuteMethod(IInvocation invocation)
     {
-        var apiMethodInfo = _apiStructure.MethodInfos.FirstOrDefault(x => invocation.Method.MatchesMethod(x.Method));
+        var apiMethodInfo =
+            _apiStructure.MethodInfos.FirstOrDefault(x => invocation.Method.MatchesMethod(x.Method));
 
         if (apiMethodInfo == null)
         {

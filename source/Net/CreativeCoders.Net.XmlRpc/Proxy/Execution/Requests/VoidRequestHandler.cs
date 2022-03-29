@@ -5,9 +5,7 @@ namespace CreativeCoders.Net.XmlRpc.Proxy.Execution.Requests;
 
 public class VoidRequestHandler : XmlRpcRequestHandlerBase
 {
-    public VoidRequestHandler() : base(ApiMethodReturnType.Void)
-    {
-    }
+    public VoidRequestHandler() : base(ApiMethodReturnType.Void) { }
 
     public override object HandleRequest(RequestData requestData)
     {
@@ -18,6 +16,8 @@ public class VoidRequestHandler : XmlRpcRequestHandlerBase
     private async Task ExecuteAsync(RequestData requestData)
     {
         await ExecuteWithExceptionHandlingAsync(
-            () => requestData.Client.ExecuteAsync(requestData.MethodName, requestData.Arguments), requestData).ConfigureAwait(false);
+                () => requestData.Client.ExecuteAsync(requestData.MethodName, requestData.Arguments),
+                requestData)
+            .ConfigureAwait(false);
     }
 }

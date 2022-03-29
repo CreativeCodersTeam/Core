@@ -8,9 +8,7 @@ namespace CreativeCoders.Net.WebApi.Execution.Requests;
 
 public class StreamApiRequestHandler : ApiRequestHandlerBase
 {
-    public StreamApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.Stream, httpClient)
-    {
-    }
+    public StreamApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.Stream, httpClient) { }
 
     public override object SendRequest(RequestData requestData)
     {

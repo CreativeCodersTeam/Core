@@ -25,7 +25,8 @@ public class DelegateHttpMessageHandler : HttpMessageHandler
     ///
     /// <param name="sendAsync">    The function for sending asynchronous. </param>
     ///-------------------------------------------------------------------------------------------------
-    public DelegateHttpMessageHandler(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> sendAsync)
+    public DelegateHttpMessageHandler(
+        Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> sendAsync)
     {
         Ensure.IsNotNull(sendAsync, nameof(sendAsync));
 
@@ -47,7 +48,8 @@ public class DelegateHttpMessageHandler : HttpMessageHandler
         _sendAsync = (request, _) => sendAsync(request);
     }
 
-    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+        CancellationToken cancellationToken)
     {
         return _sendAsync(request, cancellationToken);
     }

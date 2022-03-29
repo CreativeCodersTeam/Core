@@ -2,7 +2,5 @@
 
 public class ParserException : XmlRpcException
 {
-    public ParserException(string message) : base(message)
-    {
-    }
+    public ParserException(string message) : base(message) { }
 }

@@ -15,7 +15,7 @@ public class Hosts
     {
         Ensure.IsNotNullOrWhitespace(url, nameof(url));
 
-        _hostsApi = new HostsApi(url, userName, password);            
+        _hostsApi = new HostsApi(url, userName, password);
     }
 
     public HostEntry GetHostEntry(string macAddress)

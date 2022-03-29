@@ -12,8 +12,7 @@ public class AuthenticationHttpClient : HttpClient, IHttpClientAuthenticationPro
         : this(new AuthenticationHttpMessageHandler(httpMessageHandlerFactory.CreateHandler())) { }
 
     internal AuthenticationHttpClient(IHttpMessageHandlerFactory httpMessageHandlerFactory, string name)
-        : this(new AuthenticationHttpMessageHandler(httpMessageHandlerFactory.CreateHandler(name)))
-    { }
+        : this(new AuthenticationHttpMessageHandler(httpMessageHandlerFactory.CreateHandler(name))) { }
 
     private AuthenticationHttpClient(AuthenticationHttpMessageHandler httpMessageHandler) : base(
         httpMessageHandler, false)

@@ -23,7 +23,7 @@ public class ApiBuilder : IApiBuilder
             HttpClient = _httpClient,
             DefaultDataFormatter = defaultDataFormatter
         };
-            
+
         var apiStructure = new ApiAnalyzer<T>().Analyze();
 
         var interceptor = new ApiInvocator<T>(apiData, apiStructure);

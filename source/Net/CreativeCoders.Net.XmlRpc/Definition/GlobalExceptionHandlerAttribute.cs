@@ -11,6 +11,6 @@ public class GlobalExceptionHandlerAttribute : Attribute
     {
         ExceptionHandler = exceptionHandler;
     }
-        
+
     public Type ExceptionHandler { get; }
 }

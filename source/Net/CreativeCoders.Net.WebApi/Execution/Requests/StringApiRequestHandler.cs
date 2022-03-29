@@ -6,9 +6,7 @@ namespace CreativeCoders.Net.WebApi.Execution.Requests;
 
 public class StringApiRequestHandler : ApiRequestHandlerBase
 {
-    public StringApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.String, httpClient)
-    {
-    }
+    public StringApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.String, httpClient) { }
 
     public override object SendRequest(RequestData requestData)
     {
