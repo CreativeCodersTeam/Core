@@ -12,6 +12,6 @@ public class CliActionHelp
     public string HelpText { get; init; } = string.Empty;
 
     public string Syntax { get; init; } = string.Empty;
-        
+
     public OptionsHelp OptionsHelp { get; }
 }

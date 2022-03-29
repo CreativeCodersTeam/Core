@@ -8,7 +8,4 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Exceptions;
 /// <seealso cref="CliActionException"/>
 ///-------------------------------------------------------------------------------------------------
 [PublicAPI]
-public class NoActionException : CliActionException
-{
-        
-}
+public class NoActionException : CliActionException { }

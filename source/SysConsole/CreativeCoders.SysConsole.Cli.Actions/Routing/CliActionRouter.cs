@@ -40,7 +40,8 @@ internal class CliActionRouter : ICliActionRouter
                FindRoute(args, x => x.RouteParts.Take(2).All(string.IsNullOrEmpty), _ => 0);
     }
 
-    private CliActionRoute? FindRoute(IList<string> args, Func<CliActionRoute, bool> routeFilter, Func<CliActionRoute, int> getRouteCount)
+    private CliActionRoute? FindRoute(IList<string> args, Func<CliActionRoute, bool> routeFilter,
+        Func<CliActionRoute, int> getRouteCount)
     {
         var routes = _actionRoutes
             .Where(routeFilter)

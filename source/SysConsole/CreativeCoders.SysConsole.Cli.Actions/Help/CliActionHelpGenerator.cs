@@ -72,12 +72,12 @@ public class CliActionHelpGenerator : ICliActionHelpGenerator
         {
             syntaxParts.Add(action);
         }
-            
+
         if (!string.IsNullOrEmpty(arguments))
         {
             syntaxParts.Add(arguments);
         }
-            
+
         if (optionsHelp.ParameterHelpEntries.Any())
         {
             syntaxParts.Add("[OPTIONS]");

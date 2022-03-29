@@ -23,7 +23,8 @@ public class EnumerableValueConverter : ICliValueConverter
 
         var itemType = typeof(object);
 
-        if (targetType.IsConstructedGenericType && targetType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+        if (targetType.IsConstructedGenericType &&
+            targetType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
         {
             itemType = targetType.GetGenericArguments().First();
         }

@@ -17,9 +17,7 @@ public sealed class CliActionAttribute : Attribute
     ///     route.
     /// </summary>
     ///-------------------------------------------------------------------------------------------------
-    public CliActionAttribute() : this(string.Empty)
-    {
-    }
+    public CliActionAttribute() : this(string.Empty) { }
 
     ///-------------------------------------------------------------------------------------------------
     /// <summary>

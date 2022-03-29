@@ -2,5 +2,5 @@
 
 public static class ConverterAction
 {
-    public static object DoNothing { get; } = new ();
+    public static object DoNothing { get; } = new();
 }

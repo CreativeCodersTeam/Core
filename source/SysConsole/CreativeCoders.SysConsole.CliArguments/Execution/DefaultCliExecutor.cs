@@ -45,7 +45,8 @@ public class DefaultCliExecutor : ICliExecutor
         return defaultCommandResult.ReturnCode;
     }
 
-    private async Task<(bool IsExecuted, CliCommandResult? CommandResult)> TryExecuteCommandAsync(string[] args)
+    private async Task<(bool IsExecuted, CliCommandResult? CommandResult)> TryExecuteCommandAsync(
+        string[] args)
     {
         var command = _context.Commands.FirstOrDefault(x => x.Name == args.FirstOrDefault())
                       ?? _context.Commands.FirstOrDefault(x => x.IsDefault);
@@ -62,7 +63,8 @@ public class DefaultCliExecutor : ICliExecutor
         return (true, commandResult);
     }
 
-    private async Task<(bool IsExecuted, CliCommandResult? CommandResult)> TryExecuteGroupCommandAsync(string[] args)
+    private async Task<(bool IsExecuted, CliCommandResult? CommandResult)> TryExecuteGroupCommandAsync(
+        string[] args)
     {
         var group = _context.CommandGroups.FirstOrDefault(x => x.Name == args.FirstOrDefault());
 

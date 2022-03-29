@@ -45,10 +45,7 @@ public class OptionParser
 
         ReadOptionProperties().ForEach(x =>
         {
-            if (!x.Read(optionArguments, option))
-            {
-                    
-            }
+            if (!x.Read(optionArguments, option)) { }
         });
 
         CheckAllArguments(optionArguments, option);
@@ -73,7 +70,7 @@ public class OptionParser
             throw new NotAllArgumentsMatchException(notMatchedArgs);
         }
     }
-        
+
     private IEnumerable<OptionPropertyBase> ReadOptionProperties()
     {
         foreach (var propertyInfo in _optionType.GetProperties())

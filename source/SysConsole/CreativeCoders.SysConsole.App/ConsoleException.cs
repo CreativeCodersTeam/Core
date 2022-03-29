@@ -19,21 +19,13 @@ public class ConsoleException : Exception
         ReturnCode = returnCode;
     }
 
-    public ConsoleException()
-    {
-    }
+    public ConsoleException() { }
 
-    public ConsoleException(string? message) : base(message)
-    {
-    }
+    public ConsoleException(string? message) : base(message) { }
 
-    public ConsoleException(string? message, Exception? innerException) : base(message, innerException)
-    {
-    }
+    public ConsoleException(string? message, Exception? innerException) : base(message, innerException) { }
 
-    protected ConsoleException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
-    }
+    protected ConsoleException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
     public int ReturnCode { get; }
 }

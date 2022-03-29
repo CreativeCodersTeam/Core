@@ -56,7 +56,7 @@ public class ConsoleAppBuilder
         Action<ConfigurationBuilder> setupConfiguration)
     {
         _setupConfiguration = setupConfiguration;
-            
+
         return this;
     }
 
@@ -115,7 +115,8 @@ public class ConsoleAppBuilder
 
         var commandExecutor = _createExecutor(serviceProvider);
 
-        return new DefaultConsoleApp(commandExecutor, _arguments, serviceProvider.GetRequiredService<ISysConsole>());
+        return new DefaultConsoleApp(commandExecutor, _arguments,
+            serviceProvider.GetRequiredService<ISysConsole>());
     }
 
     private void ConfigureStartup(IServiceCollection services, IConfiguration configuration)

@@ -38,7 +38,6 @@ public class ArgsToOptionArgumentsConverter
                     OptionName = arg.TrimStart('-'),
                     Value = GetParameterValue(index, ref skipNext)
                 };
-
             })
             .Where(x => x != null)
             .ToArray();

@@ -24,7 +24,9 @@ public class OptionsHelpGenerator : IOptionsHelpGenerator
         return valueAttributes.Select(x =>
             new HelpEntry
             {
-                ArgumentName = string.IsNullOrEmpty(x.Option.Name) ? x.OptionProperty.Name : $"<{x.Option.Name.ToUpper()}>",
+                ArgumentName = string.IsNullOrEmpty(x.Option.Name)
+                    ? x.OptionProperty.Name
+                    : $"<{x.Option.Name.ToUpper()}>",
                 HelpText = x.Option.HelpText
             });
     }
@@ -60,7 +62,8 @@ public class OptionsHelpGenerator : IOptionsHelpGenerator
         return argName.Trim();
     }
 
-    private static IEnumerable<(OptionValueAttribute Option, PropertyInfo OptionProperty)> GetOptionValues(Type optionsType)
+    private static IEnumerable<(OptionValueAttribute Option, PropertyInfo OptionProperty)> GetOptionValues(
+        Type optionsType)
     {
         return
             from property in optionsType.GetProperties()

@@ -18,11 +18,13 @@ internal class MiddlewareRegistration
         _args = args;
     }
 
-    public CliActionMiddlewareBase CreateMiddleware(Func<CliActionContext, Task> next, IServiceProvider serviceProvider)
+    public CliActionMiddlewareBase CreateMiddleware(Func<CliActionContext, Task> next,
+        IServiceProvider serviceProvider)
     {
         var args = new List<object>(_args ?? Array.Empty<object>()) {next};
 
-        var middleware = _middlewareType.CreateInstance<CliActionMiddlewareBase>(serviceProvider, args.ToArray());
+        var middleware =
+            _middlewareType.CreateInstance<CliActionMiddlewareBase>(serviceProvider, args.ToArray());
 
         if (middleware == null)
         {

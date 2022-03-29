@@ -14,21 +14,24 @@ public static class SysConsoleExtensions
         return sysConsole.SelectItem(items, x => x?.ToString());
     }
 
-    public static TItem? SelectItem<TItem>(this ISysConsole sysConsole, IEnumerable<TItem> items, Func<TItem, string?> getCaption)
+    public static TItem? SelectItem<TItem>(this ISysConsole sysConsole, IEnumerable<TItem> items,
+        Func<TItem, string?> getCaption)
     {
         return sysConsole.SelectItem(items, getCaption, default);
     }
 
-    public static TItem? SelectItem<TItem>(this ISysConsole sysConsole, IEnumerable<TItem> items, TItem? defaultItem)
+    public static TItem? SelectItem<TItem>(this ISysConsole sysConsole, IEnumerable<TItem> items,
+        TItem? defaultItem)
     {
         return sysConsole.SelectItem(items, x => x?.ToString(), defaultItem);
     }
 
-    public static TItem? SelectItem<TItem>(this ISysConsole sysConsole, IEnumerable<TItem> items, Func<TItem, string?> getCaption, TItem? defaultItem)
+    public static TItem? SelectItem<TItem>(this ISysConsole sysConsole, IEnumerable<TItem> items,
+        Func<TItem, string?> getCaption, TItem? defaultItem)
     {
         var selectionList = items
             .SelectWithIndex()
-            .Select(x => new { Number = x.Index + 1, Text = getCaption(x.Data), Item = x.Data })
+            .Select(x => new {Number = x.Index + 1, Text = getCaption(x.Data), Item = x.Data})
             .ToArray();
 
         selectionList.ForEach(x => sysConsole.WriteLine($"[{x.Number}]: {x.Text}"));

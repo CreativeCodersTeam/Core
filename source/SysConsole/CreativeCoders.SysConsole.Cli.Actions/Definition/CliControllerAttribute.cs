@@ -17,9 +17,7 @@ public sealed class CliControllerAttribute : Attribute
     ///     default route.
     /// </summary>
     ///-------------------------------------------------------------------------------------------------
-    public CliControllerAttribute() : this(string.Empty)
-    {
-    }
+    public CliControllerAttribute() : this(string.Empty) { }
 
     ///-------------------------------------------------------------------------------------------------
     /// <summary>

@@ -8,7 +8,8 @@ public class OptionParameterProperty : OptionPropertyBase
 {
     private readonly OptionParameterAttribute _optionParameterAttribute;
 
-    public OptionParameterProperty(PropertyInfo propertyInfo, OptionParameterAttribute optionParameterAttribute)
+    public OptionParameterProperty(PropertyInfo propertyInfo,
+        OptionParameterAttribute optionParameterAttribute)
         : base(propertyInfo, optionParameterAttribute)
     {
         _optionParameterAttribute = optionParameterAttribute;

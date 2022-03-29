@@ -86,8 +86,8 @@ internal class CliActionExecutor : ICliActionExecutor
         {
             throw new ActionReturnTypeNotSupportedException(resultType);
         }
-                
-        context.ReturnCode = ((CliActionResult)result).ReturnCode;
+
+        context.ReturnCode = ((CliActionResult) result).ReturnCode;
     }
 
     private static object[] CreateActionArguments(CliActionContext context)
@@ -102,9 +102,10 @@ internal class CliActionExecutor : ICliActionExecutor
                 throw new TargetParameterCountException("Action argument count must be 0 or 1");
             default:
             {
-                var option = new OptionParser(parameters.First().ParameterType).Parse(context.Arguments.ToArray());
+                var option =
+                    new OptionParser(parameters.First().ParameterType).Parse(context.Arguments.ToArray());
 
-                return new[] { option };
+                return new[] {option};
             }
         }
     }

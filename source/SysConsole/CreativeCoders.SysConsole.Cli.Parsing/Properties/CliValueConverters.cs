@@ -20,7 +20,7 @@ public class CliValueConverters : ICliValueConverter
         _enumerableConverter = new EnumerableValueConverter();
 
         _converters = new Dictionary<Type, ICliValueConverter>
-            { {typeof(bool), new BooleanValueConverter()} };
+            {{typeof(bool), new BooleanValueConverter()}};
     }
 
     public static ICliValueConverter Default { get; } = new CliValueConverters();

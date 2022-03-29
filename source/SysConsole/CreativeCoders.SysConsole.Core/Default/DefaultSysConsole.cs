@@ -84,14 +84,16 @@ internal class DefaultSysConsole : ISysConsole
 
     public ConsoleColor ErrorBackgroundColor { get; set; } = ConsoleColor.Red;
 
-    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility",
+        Justification = "<Pending>")]
     public string Title
     {
         get => Env.OSVersion.Platform == PlatformID.Win32NT ? Console.Title : string.Empty;
         set => Console.Title = value;
     }
 
-    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility",
+        Justification = "<Pending>")]
     public int BufferHeight
     {
         get => Console.BufferHeight;
@@ -99,7 +101,8 @@ internal class DefaultSysConsole : ISysConsole
     }
 
 
-    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility",
+        Justification = "<Pending>")]
     public int BufferWidth
     {
         get => Console.BufferWidth;
@@ -118,28 +121,32 @@ internal class DefaultSysConsole : ISysConsole
         set => Console.CursorTop = value;
     }
 
-    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility",
+        Justification = "<Pending>")]
     public int WindowHeight
     {
         get => Console.WindowHeight;
         set => ExecOnlyOnWindows(() => Console.WindowHeight = value);
     }
 
-    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility",
+        Justification = "<Pending>")]
     public int WindowWidth
     {
         get => Console.WindowWidth;
         set => ExecOnlyOnWindows(() => Console.WindowWidth = value);
     }
 
-    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility",
+        Justification = "<Pending>")]
     public int WindowLeft
     {
         get => Console.WindowLeft;
         set => ExecOnlyOnWindows(() => Console.WindowLeft = value);
     }
 
-    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility",
+        Justification = "<Pending>")]
     public int WindowTop
     {
         get => Console.WindowTop;
@@ -151,7 +158,8 @@ internal class DefaultSysConsole : ISysConsole
         return WithColors(ErrorForegroundColor, ErrorBackgroundColor, actionWithErrorColors);
     }
 
-    private ISysConsole WithColors(ConsoleColor foregroundColor, ConsoleColor backgroundColor, Action<ISysConsole> actionWithColors)
+    private ISysConsole WithColors(ConsoleColor foregroundColor, ConsoleColor backgroundColor,
+        Action<ISysConsole> actionWithColors)
     {
         ForegroundColor = foregroundColor;
         BackgroundColor = backgroundColor;
