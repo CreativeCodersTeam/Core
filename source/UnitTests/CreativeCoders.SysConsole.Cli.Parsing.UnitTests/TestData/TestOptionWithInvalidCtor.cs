@@ -2,8 +2,5 @@
 
 public class TestOptionWithInvalidCtor
 {
-    private TestOptionWithInvalidCtor()
-    {
-            
-    }
+    private TestOptionWithInvalidCtor() { }
 }

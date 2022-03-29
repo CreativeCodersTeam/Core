@@ -2,13 +2,16 @@
 
 public class TestClassForExecutor
 {
-    public void DoSomething(ITestService testService, IUnknownService unknownService, ITestService<int> testServiceInt)
+    public void DoSomething(ITestService testService, IUnknownService unknownService,
+        ITestService<int> testServiceInt)
     {
         TestService = testService;
         UnknownService = unknownService;
         TestServiceInt = testServiceInt;
     }
-    public string DoSomethingWithResult(ITestService testService, IUnknownService unknownService, ITestService<int> testServiceInt)
+
+    public string DoSomethingWithResult(ITestService testService, IUnknownService unknownService,
+        ITestService<int> testServiceInt)
     {
         TestService = testService;
         UnknownService = unknownService;

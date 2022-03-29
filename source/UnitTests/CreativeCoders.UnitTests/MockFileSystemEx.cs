@@ -7,14 +7,11 @@ namespace CreativeCoders.UnitTests;
 
 public class MockFileSystemEx : MockFileSystem, IFileSystemEx
 {
-    public MockFileSystemEx()
-    {
-    }
+    public MockFileSystemEx() { }
 
-    public MockFileSystemEx(IDictionary<string, MockFileData> files, string currentDirectory) : base(files, currentDirectory)
-    {
-    }
-        
+    public MockFileSystemEx(IDictionary<string, MockFileData> files, string currentDirectory) : base(files,
+        currentDirectory) { }
+
     public void Install()
     {
         FileSys.InstallFileSystemSupport(this);

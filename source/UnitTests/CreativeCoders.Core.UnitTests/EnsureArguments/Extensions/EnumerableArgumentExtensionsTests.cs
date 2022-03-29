@@ -12,7 +12,7 @@ public class EnumerableArgumentExtensionsTests
     [Fact]
     public void NotNullOrEmpty_ArrayContainingItems_ReturnsArgument()
     {
-        var items = new[] { 1, 2, 3 };
+        var items = new[] {1, 2, 3};
 
         // Act
         var argument = Ensure.Argument(items, nameof(items)).NotNullOrEmpty();
@@ -28,7 +28,7 @@ public class EnumerableArgumentExtensionsTests
     [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "<Pending>")]
     public void NotNullOrEmpty_EnumerableContainingItems_ReturnsArgument()
     {
-        var items = new[] { 1, 2, 3 }.Where(_ => true);
+        var items = new[] {1, 2, 3}.Where(_ => true);
 
         // Act
         var argument = Ensure.Argument(items, nameof(items)).NotNullOrEmpty();
@@ -70,7 +70,7 @@ public class EnumerableArgumentExtensionsTests
     [Fact]
     public void NotEmpty_ArrayContainingItems_ReturnsArgument()
     {
-        var items = new[] { 1, 2, 3 };
+        var items = new[] {1, 2, 3};
 
         // Act
         var argument = Ensure.Argument(items, nameof(items)).NotNull().NotEmpty();
@@ -86,7 +86,7 @@ public class EnumerableArgumentExtensionsTests
     [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "<Pending>")]
     public void NotEmpty_EnumerableContainingItems_ReturnsArgument()
     {
-        var items = new[] { 1, 2, 3 }.Where(_ => true);
+        var items = new[] {1, 2, 3}.Where(_ => true);
 
         // Act
         var argument = Ensure.Argument(items, nameof(items)).NotNull().NotEmpty();
@@ -113,9 +113,9 @@ public class EnumerableArgumentExtensionsTests
 
     [Theory]
     [InlineData(new int[0], 0)]
-    [InlineData(new[] { 1, 2, 3 }, 1)]
-    [InlineData(new[] { 1, 2, 3 }, 2)]
-    [InlineData(new[] { 1, 2, 3 }, 3)]
+    [InlineData(new[] {1, 2, 3}, 1)]
+    [InlineData(new[] {1, 2, 3}, 2)]
+    [InlineData(new[] {1, 2, 3}, 3)]
     public void MinCount_ItemsCountMeetsMinCount_ReturnsArgumentNotNullWithItems(int[] items,
         int minCount)
     {
@@ -130,9 +130,9 @@ public class EnumerableArgumentExtensionsTests
 
     [Theory]
     [InlineData(new int[0], 1)]
-    [InlineData(new[] { 1, 2, 3 }, 4)]
-    [InlineData(new[] { 1, 2, 3 }, 5)]
-    [InlineData(new[] { 1, 2, 3 }, 6)]
+    [InlineData(new[] {1, 2, 3}, 4)]
+    [InlineData(new[] {1, 2, 3}, 5)]
+    [InlineData(new[] {1, 2, 3}, 6)]
     public void MinCount_ItemsCountNotMeetsMinCount_ThrowsException(int[] items, int minCount)
     {
         // Act
@@ -146,9 +146,9 @@ public class EnumerableArgumentExtensionsTests
 
     [Theory]
     [InlineData(new int[0], 1)]
-    [InlineData(new[] { 1, 2, 3 }, 4)]
-    [InlineData(new[] { 1, 2, 3 }, 5)]
-    [InlineData(new[] { 1, 2, 3 }, 6)]
+    [InlineData(new[] {1, 2, 3}, 4)]
+    [InlineData(new[] {1, 2, 3}, 5)]
+    [InlineData(new[] {1, 2, 3}, 6)]
     public void MinCount_ItemsCountNotMeetsMinCountWithMessage_ThrowsExceptionWithMessage(
         int[] items, int minCount)
     {
@@ -166,9 +166,9 @@ public class EnumerableArgumentExtensionsTests
 
     [Theory]
     [InlineData(new int[0], 0)]
-    [InlineData(new[] { 1, 2, 3 }, 3)]
-    [InlineData(new[] { 1, 2, 3 }, 4)]
-    [InlineData(new[] { 1, 2, 3 }, 5)]
+    [InlineData(new[] {1, 2, 3}, 3)]
+    [InlineData(new[] {1, 2, 3}, 4)]
+    [InlineData(new[] {1, 2, 3}, 5)]
     public void MaxCount_ItemsCountMeetsMaxCount_ReturnsArgumentNotNullWithItems(int[] items,
         int maxCount)
     {
@@ -183,9 +183,9 @@ public class EnumerableArgumentExtensionsTests
 
     [Theory]
     [InlineData(new int[0], -1)]
-    [InlineData(new[] { 1, 2, 3 }, 0)]
-    [InlineData(new[] { 1, 2, 3 }, 1)]
-    [InlineData(new[] { 1, 2, 3 }, 2)]
+    [InlineData(new[] {1, 2, 3}, 0)]
+    [InlineData(new[] {1, 2, 3}, 1)]
+    [InlineData(new[] {1, 2, 3}, 2)]
     public void MaxCount_ItemsCountNotMeetsMaxCount_ThrowsException(int[] items, int maxCount)
     {
         // Act
@@ -199,9 +199,9 @@ public class EnumerableArgumentExtensionsTests
 
     [Theory]
     [InlineData(new int[0], -1)]
-    [InlineData(new[] { 1, 2, 3 }, 0)]
-    [InlineData(new[] { 1, 2, 3 }, 1)]
-    [InlineData(new[] { 1, 2, 3 }, 2)]
+    [InlineData(new[] {1, 2, 3}, 0)]
+    [InlineData(new[] {1, 2, 3}, 1)]
+    [InlineData(new[] {1, 2, 3}, 2)]
     public void MaxCount_ItemsCountNotMeetsMaxCountWithMessage_ThrowsExceptionWithMessage(
         int[] items, int maxCount)
     {
@@ -218,10 +218,10 @@ public class EnumerableArgumentExtensionsTests
     }
 
     [Theory]
-    [InlineData(new[] { 1, 2, 3 }, 0, 3)]
-    [InlineData(new[] { 1, 2, 3 }, 1, 4)]
-    [InlineData(new[] { 1, 2, 3 }, 2, 5)]
-    [InlineData(new[] { 1, 2, 3 }, 3, 3)]
+    [InlineData(new[] {1, 2, 3}, 0, 3)]
+    [InlineData(new[] {1, 2, 3}, 1, 4)]
+    [InlineData(new[] {1, 2, 3}, 2, 5)]
+    [InlineData(new[] {1, 2, 3}, 3, 3)]
     public void InRange_ItemsCountIsInRange_ReturnsArgumentNotNullWithItems(
         int[] items, int minCount, int maxCount)
     {
@@ -235,11 +235,11 @@ public class EnumerableArgumentExtensionsTests
     }
 
     [Theory]
-    [InlineData(new[] { 1, 2, 3 }, 4, 4)]
-    [InlineData(new[] { 1, 2, 3 }, 4, 5)]
-    [InlineData(new[] { 1, 2, 3 }, 1, 1)]
-    [InlineData(new[] { 1, 2, 3 }, 1, 2)]
-    [InlineData(new[] { 1, 2, 3 }, 0, 2)]
+    [InlineData(new[] {1, 2, 3}, 4, 4)]
+    [InlineData(new[] {1, 2, 3}, 4, 5)]
+    [InlineData(new[] {1, 2, 3}, 1, 1)]
+    [InlineData(new[] {1, 2, 3}, 1, 2)]
+    [InlineData(new[] {1, 2, 3}, 0, 2)]
     public void InRange_ItemsCountIsNotInRange_ThrowsException(int[] items, int minCount, int maxCount)
     {
         // Act
@@ -252,11 +252,11 @@ public class EnumerableArgumentExtensionsTests
     }
 
     [Theory]
-    [InlineData(new[] { 1, 2, 3 }, 4, 4)]
-    [InlineData(new[] { 1, 2, 3 }, 4, 5)]
-    [InlineData(new[] { 1, 2, 3 }, 1, 1)]
-    [InlineData(new[] { 1, 2, 3 }, 1, 2)]
-    [InlineData(new[] { 1, 2, 3 }, 0, 2)]
+    [InlineData(new[] {1, 2, 3}, 4, 4)]
+    [InlineData(new[] {1, 2, 3}, 4, 5)]
+    [InlineData(new[] {1, 2, 3}, 1, 1)]
+    [InlineData(new[] {1, 2, 3}, 1, 2)]
+    [InlineData(new[] {1, 2, 3}, 0, 2)]
     public void InRange_ItemsCountIsNotInRangeWithMessage_ThrowsExceptionWithMessage(
         int[] items, int minCount, int maxCount)
     {

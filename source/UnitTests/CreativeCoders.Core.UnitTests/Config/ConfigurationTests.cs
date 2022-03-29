@@ -39,7 +39,7 @@ public class ConfigurationTests
 
         Assert.Throws<ArgumentNullException>(() => config.AddSources<object>(null));
 
-        config.AddSources(new []{source0, source1});
+        config.AddSources(new[] {source0, source1});
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public class ConfigurationTests
 
         config.AddSource(source);
 
-        Assert.Throws<FileNotFoundException>(() => config.GetItem<object>());            
+        Assert.Throws<FileNotFoundException>(() => config.GetItem<object>());
     }
 
     [Fact]
@@ -111,7 +111,7 @@ public class ConfigurationTests
 
         var item = config.GetItem<object>();
 
-        Assert.Same(settingObject, item);            
+        Assert.Same(settingObject, item);
     }
 
     [Fact]

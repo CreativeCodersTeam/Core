@@ -52,40 +52,40 @@ public class ObjectExtensionsTests
         object obj = 123;
 
         var intValue = obj.As(1);
-            
+
         Assert.IsType<int>(intValue);
         Assert.Equal(123, intValue);
     }
-        
+
     [Fact]
     public void As_Integer_ReturnsInteger()
     {
         object obj = 123;
 
         var intValue = obj.As<int>();
-            
+
         Assert.IsType<int>(intValue);
         Assert.Equal(123, intValue);
     }
-        
+
     [Fact]
     public void As_WithDefaultValueObject_ReturnsDefaultValue()
     {
         var obj = new object();
 
         var intValue = obj.As(1);
-            
+
         Assert.IsType<int>(intValue);
         Assert.Equal(1, intValue);
     }
-        
+
     [Fact]
     public void As_Object_ReturnsDefaultValue()
     {
         var obj = new object();
 
         var intValue = obj.As<int>();
-            
+
         Assert.IsType<int>(intValue);
         Assert.Equal(0, intValue);
     }
@@ -96,32 +96,32 @@ public class ObjectExtensionsTests
         var instance = A.Fake<IAsyncDisposable>();
 
         A.CallTo(() => instance.DisposeAsync()).Returns(new ValueTask());
-            
+
         await instance.TryDisposeAsync();
-            
+
         A.CallTo(() => instance.DisposeAsync()).MustHaveHappenedOnceExactly();
     }
-        
+
     [Fact]
     public async Task TryDisposeAsync_Disposable_DisposeIsCalled()
     {
         var instance = A.Fake<IDisposable>();
-            
+
         await instance.TryDisposeAsync();
-            
+
         A.CallTo(() => instance.Dispose()).MustHaveHappenedOnceExactly();
     }
-        
+
     [Fact]
     public async Task TryDisposeAsync_AsyncDisposableAndDisposable_DisposeAsyncIsCalled()
     {
         var instance = A.Fake<IAsyncDisposable>(x => x.Implements<IDisposable>());
         var disposable = instance as IDisposable;
-            
+
         A.CallTo(() => instance.DisposeAsync()).Returns(new ValueTask());
-            
+
         await instance.TryDisposeAsync();
-            
+
         A.CallTo(() => instance.DisposeAsync()).MustHaveHappenedOnceExactly();
         A.CallTo(() => disposable.Dispose()).MustNotHaveHappened();
     }

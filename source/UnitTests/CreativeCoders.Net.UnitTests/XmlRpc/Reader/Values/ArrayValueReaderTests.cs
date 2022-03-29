@@ -50,7 +50,8 @@ public class ArrayValueReaderTests
 
         var reader = new ArrayValueReader(valueReaders);
 
-        var xmlElement = new XElement("array", new XElement("data", new XElement("value", new XElement("int"))));
+        var xmlElement =
+            new XElement("array", new XElement("data", new XElement("value", new XElement("int"))));
 
         var value = reader.ReadValue(xmlElement);
 

@@ -119,7 +119,7 @@ public class PropertyValidationContextTests
         propertyValidationContext.AddFault(fault1);
         propertyValidationContext.AddFault(fault2);
 
-        Assert.Equal(new[]{fault, fault1, fault2}, propertyValidationContext.Faults);
+        Assert.Equal(new[] {fault, fault1, fault2}, propertyValidationContext.Faults);
     }
 
     [Fact]

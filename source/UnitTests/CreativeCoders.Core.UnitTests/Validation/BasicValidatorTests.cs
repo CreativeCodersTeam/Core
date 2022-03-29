@@ -80,7 +80,8 @@ public class BasicValidatorTests
     }
 
     [Fact]
-    public void ValidateWithBreakRuleFalse_StrValueNotNullIntValueGreater100_StrValueNullIntValue0ReturnsInvalid()
+    public void
+        ValidateWithBreakRuleFalse_StrValueNotNullIntValueGreater100_StrValueNullIntValue0ReturnsInvalid()
     {
         var validator = new TestDataObjectValidator(v =>
         {
@@ -102,7 +103,8 @@ public class BasicValidatorTests
     }
 
     [Fact]
-    public void ValidateWithBreakRuleTrue_StrValueNotNullIntValueGreater100_StrValueNullIntValue0ReturnsInvalid()
+    public void
+        ValidateWithBreakRuleTrue_StrValueNotNullIntValueGreater100_StrValueNullIntValue0ReturnsInvalid()
     {
         var validator = new TestDataObjectValidator(v =>
         {

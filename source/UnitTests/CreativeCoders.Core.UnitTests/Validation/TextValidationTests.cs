@@ -57,7 +57,7 @@ public class TextValidationTests
     [Theory]
     [InlineData("Hell")]
     [InlineData("123456")]
-    [InlineData((string)null)]
+    [InlineData((string) null)]
     public void HasLength_StrValueHasWrongLength_Invalid(string strValue)
     {
         Assert.False(IsValid(v => v.HasLength(5), strValue));
@@ -76,7 +76,7 @@ public class TextValidationTests
     [Theory]
     [InlineData("Hell")]
     [InlineData("123456789")]
-    [InlineData((string)null)]
+    [InlineData((string) null)]
     public void HasLengthBetween_StrValueHasWrongLength_Invalid(string strValue)
     {
         Assert.False(IsValid(v => v.HasLength(5, 8), strValue));
@@ -113,7 +113,7 @@ public class TextValidationTests
     [Theory]
     [InlineData("Hell")]
     [InlineData("123")]
-    [InlineData((string)null)]
+    [InlineData((string) null)]
     public void HasMinimumLength_StrValueNotHasMinLength_Invalid(string strValue)
     {
         Assert.False(IsValid(v => v.HasMinimumLength(5), strValue));
@@ -122,7 +122,7 @@ public class TextValidationTests
     [Theory]
     [InlineData("Hello")]
     [InlineData("1234")]
-    [InlineData((string)null)]
+    [InlineData((string) null)]
     public void HasMaximumLength_StrValueHasMaxLength_Valid(string strValue)
     {
         Assert.True(IsValid(v => v.HasMaximumLength(5), strValue));
@@ -246,7 +246,8 @@ public class TextValidationTests
     [InlineData(null, "Helloo12", StringComparison.CurrentCultureIgnoreCase)]
     [InlineData("Helloo12x", null, StringComparison.CurrentCulture)]
     [InlineData("Helloo12x", null, StringComparison.CurrentCultureIgnoreCase)]
-    public void IsEqual_StrValueWithComparison_Invalid(string strValue, string compareText, StringComparison comparison)
+    public void IsEqual_StrValueWithComparison_Invalid(string strValue, string compareText,
+        StringComparison comparison)
     {
         Assert.False(IsValid(v => v.IsEqual(compareText, comparison), strValue));
     }
@@ -260,7 +261,8 @@ public class TextValidationTests
     [InlineData("3456712XX", "3456712xx", StringComparison.CurrentCultureIgnoreCase)]
     [InlineData("AbCd 12 ", "abcd 12 ", StringComparison.CurrentCultureIgnoreCase)]
     [InlineData(null, null, StringComparison.CurrentCultureIgnoreCase)]
-    public void IsEqual_StrValueWithComparison_Valid(string strValue, string compareText, StringComparison comparison)
+    public void IsEqual_StrValueWithComparison_Valid(string strValue, string compareText,
+        StringComparison comparison)
     {
         Assert.True(IsValid(v => v.IsEqual(compareText, comparison), strValue));
     }
@@ -276,7 +278,8 @@ public class TextValidationTests
     [InlineData(null, "Helloo12", StringComparison.CurrentCultureIgnoreCase)]
     [InlineData("Helloo12x", null, StringComparison.CurrentCulture)]
     [InlineData("Helloo12x", null, StringComparison.CurrentCultureIgnoreCase)]
-    public void IsNotEqual_StrValueComparison_Valid(string strValue, string compareText, StringComparison comparison)
+    public void IsNotEqual_StrValueComparison_Valid(string strValue, string compareText,
+        StringComparison comparison)
     {
         Assert.True(IsValid(v => v.IsNotEqual(compareText, comparison), strValue));
     }
@@ -290,7 +293,8 @@ public class TextValidationTests
     [InlineData("3456712XX", "3456712xx", StringComparison.CurrentCultureIgnoreCase)]
     [InlineData("AbCd 12 ", "abcd 12 ", StringComparison.CurrentCultureIgnoreCase)]
     [InlineData(null, null, StringComparison.CurrentCultureIgnoreCase)]
-    public void IsNotEqual_StrValueComparison_Invalid(string strValue, string compareText, StringComparison comparison)
+    public void IsNotEqual_StrValueComparison_Invalid(string strValue, string compareText,
+        StringComparison comparison)
     {
         Assert.False(IsValid(v => v.IsNotEqual(compareText, comparison), strValue));
     }

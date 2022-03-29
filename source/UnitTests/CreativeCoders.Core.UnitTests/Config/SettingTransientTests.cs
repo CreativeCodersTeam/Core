@@ -14,6 +14,7 @@ public class SettingTransientTests
     [Fact]
     public void ValueTest()
     {
-        new SettingTestHelper().TestSettingValue(factory => new SettingTransient<object>(factory), () => new object());
+        new SettingTestHelper().TestSettingValue(factory => new SettingTransient<object>(factory),
+            () => new object());
     }
 }

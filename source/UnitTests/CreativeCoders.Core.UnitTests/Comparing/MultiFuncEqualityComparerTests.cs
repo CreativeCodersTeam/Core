@@ -32,7 +32,8 @@ public class MultiFuncEqualityComparerTests
     [Fact]
     public void Equals_TwoKeysSameTypeNotEquals_ReturnsFalse()
     {
-        var comparer = new MultiFuncEqualityComparer<ComparerTestObject, int>(x => x.IntValue1, x => x.IntValue2);
+        var comparer =
+            new MultiFuncEqualityComparer<ComparerTestObject, int>(x => x.IntValue1, x => x.IntValue2);
 
         var testObj1 = new ComparerTestObject {IntValue1 = 1, IntValue2 = 1};
         var testObj2 = new ComparerTestObject {IntValue1 = 2, IntValue2 = 1};
@@ -43,7 +44,8 @@ public class MultiFuncEqualityComparerTests
     [Fact]
     public void Equals_TwoKeysSameTypeEquals_ReturnsTrue()
     {
-        var comparer = new MultiFuncEqualityComparer<ComparerTestObject, int>(x => x.IntValue1, x => x.IntValue2);
+        var comparer =
+            new MultiFuncEqualityComparer<ComparerTestObject, int>(x => x.IntValue1, x => x.IntValue2);
 
         var testObj1 = new ComparerTestObject {IntValue1 = 1, IntValue2 = 1};
         var testObj2 = new ComparerTestObject {IntValue1 = 1, IntValue2 = 1};
@@ -79,7 +81,8 @@ public class MultiFuncEqualityComparerTests
     public void Equals_ThreeKeysDifferentTypeNotEquals_ReturnsFalse()
     {
         var comparer =
-            new MultiFuncEqualityComparer<ComparerTestObject, int, string, int>(x => x.IntValue1, x => x.StrValue,
+            new MultiFuncEqualityComparer<ComparerTestObject, int, string, int>(x => x.IntValue1,
+                x => x.StrValue,
                 x => x.IntValue2);
 
         var testObj1 = new ComparerTestObject {IntValue1 = 1, StrValue = "Hello", IntValue2 = 3};
@@ -92,7 +95,8 @@ public class MultiFuncEqualityComparerTests
     public void Equals_ThreeKeysDifferentTypeEquals_ReturnsTrue()
     {
         var comparer =
-            new MultiFuncEqualityComparer<ComparerTestObject, int, string, int>(x => x.IntValue1, x => x.StrValue,
+            new MultiFuncEqualityComparer<ComparerTestObject, int, string, int>(x => x.IntValue1,
+                x => x.StrValue,
                 x => x.IntValue2);
 
         var testObj1 = new ComparerTestObject {IntValue1 = 1, StrValue = "Hello", IntValue2 = 3};
@@ -104,7 +108,8 @@ public class MultiFuncEqualityComparerTests
     [Fact]
     public void Equals_FourKeysDifferentTypeNotEquals_ReturnsFalse()
     {
-        var comparer = new MultiFuncEqualityComparer<ComparerTestObject, int, string, int, string>(x => x.IntValue1,
+        var comparer = new MultiFuncEqualityComparer<ComparerTestObject, int, string, int, string>(
+            x => x.IntValue1,
             x => x.StrValue, x => x.IntValue2, x => x.StrValue1);
 
         var testObj1 = new ComparerTestObject
@@ -118,7 +123,8 @@ public class MultiFuncEqualityComparerTests
     [Fact]
     public void Equals_FourKeysDifferentTypeEquals_ReturnsTrue()
     {
-        var comparer = new MultiFuncEqualityComparer<ComparerTestObject, int, string, int, string>(x => x.IntValue1,
+        var comparer = new MultiFuncEqualityComparer<ComparerTestObject, int, string, int, string>(
+            x => x.IntValue1,
             x => x.StrValue, x => x.IntValue2, x => x.StrValue1);
 
         var testObj1 = new ComparerTestObject
@@ -194,7 +200,8 @@ public class MultiFuncEqualityComparerTests
     public void GetHashCode_ThreeKeysIntValue_ReturnsCorrectHashCode()
     {
         var comparer =
-            new MultiFuncEqualityComparer<ComparerTestObject, int, int, int>(x => x.IntValue1, x => x.IntValue2,
+            new MultiFuncEqualityComparer<ComparerTestObject, int, int, int>(x => x.IntValue1,
+                x => x.IntValue2,
                 x => x.IntValue3);
 
         var testObj = new ComparerTestObject {IntValue1 = 1, IntValue2 = 2, IntValue3 = 3};
@@ -219,7 +226,8 @@ public class MultiFuncEqualityComparerTests
     [Fact]
     public void GetHashCode_FiveKeysIntValue_ReturnsCorrectHashCode()
     {
-        var comparer = new MultiFuncEqualityComparer<ComparerTestObject, int, int, int, int, int>(x => x.IntValue1,
+        var comparer = new MultiFuncEqualityComparer<ComparerTestObject, int, int, int, int, int>(
+            x => x.IntValue1,
             x => x.IntValue2, x => x.IntValue3, x => x.IntValue4, x => x.IntValue5);
 
         var testObj = new ComparerTestObject

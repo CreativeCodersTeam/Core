@@ -54,7 +54,8 @@ public interface IMockHttpResponder
     ///
     /// <returns>   This instance. </returns>
     ///-------------------------------------------------------------------------------------------------
-    IMockHttpResponder Return(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> requestHandler);
+    IMockHttpResponder Return(
+        Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> requestHandler);
 
     ///-------------------------------------------------------------------------------------------------
     /// <summary>   Specifies the response data as JSON. </summary>
@@ -67,7 +68,8 @@ public interface IMockHttpResponder
     ///
     /// <returns>   This instance. </returns>
     ///-------------------------------------------------------------------------------------------------
-    IMockHttpResponder ReturnJson<T>(T data, HttpStatusCode statusCode, JsonSerializerOptions jsonSerializerOptions = null);
+    IMockHttpResponder ReturnJson<T>(T data, HttpStatusCode statusCode,
+        JsonSerializerOptions jsonSerializerOptions = null);
 
     ///-------------------------------------------------------------------------------------------------
     /// <summary>   Specifies the response data as JSON with HTTP status code 200 (OK). </summary>

@@ -8,19 +8,21 @@ namespace CreativeCoders.Scripting.UnitTests.CSharp;
 
 public class TestScriptImplementation : CSharpScriptImplementation
 {
-    public TestScriptImplementation(IEnumerable<ISourcePreprocessor> sourcePreprocessors, ITestApi testApi, bool scriptObjectWithInterface)
+    public TestScriptImplementation(IEnumerable<ISourcePreprocessor> sourcePreprocessors, ITestApi testApi,
+        bool scriptObjectWithInterface)
         : base(CreateScriptClassTemplate(scriptObjectWithInterface, testApi), new RoslynCompiler())
     {
         SourcePreprocessors.AddRange(sourcePreprocessors);
     }
 
-    private static ScriptClassTemplate CreateScriptClassTemplate(bool scriptObjectWithInterface, ITestApi testApi)
+    private static ScriptClassTemplate CreateScriptClassTemplate(bool scriptObjectWithInterface,
+        ITestApi testApi)
     {
         if (scriptObjectWithInterface)
         {
             return new TestScriptClassTemplate(testApi);
         }
-            
+
         return new TestScriptClassWithoutInterfaceTemplate(testApi);
     }
 }

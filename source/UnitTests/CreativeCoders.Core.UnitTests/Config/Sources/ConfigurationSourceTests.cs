@@ -50,7 +50,7 @@ public class ConfigurationSourceTests
     public void GetDefaultSettingObjectTestWithDefaultCtor()
     {
         var obj = new TestSetting {Text = "Test"};
-            
+
         var source = new ConfigurationSource<TestSetting>(() => obj);
 
         var settingObject = source.GetDefaultSettingObject() as TestSetting;

@@ -10,7 +10,7 @@ public class TaskExtensionsTests
     public async Task ToTask()
     {
         const int value = 1234;
-            
+
         var task = (Task) GetIntValue(value);
 
         var result = await task.ToTask<int>();
@@ -22,7 +22,7 @@ public class TaskExtensionsTests
     private static async Task<T> GetIntValue<T>(T value)
     {
         await Task.Delay(500);
-            
+
         return value;
-    } 
+    }
 }

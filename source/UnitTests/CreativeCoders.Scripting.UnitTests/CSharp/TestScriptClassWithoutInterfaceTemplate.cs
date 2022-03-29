@@ -9,7 +9,7 @@ public class TestScriptClassWithoutInterfaceTemplate : ScriptClassTemplate
         Usings.Add("System");
         Usings.Add("System.Linq");
         Usings.Add("System.Threading.Tasks");
-            
+
         Members.AddRawContent("$$code$$");
 
         Injections.AddProperty("Api", () => testApi);

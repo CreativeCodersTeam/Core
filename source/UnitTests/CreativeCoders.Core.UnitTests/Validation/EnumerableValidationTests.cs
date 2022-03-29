@@ -83,7 +83,7 @@ public class EnumerableValidationTests
     [InlineData("Test", "1234", "Test", "Hello")]
     [InlineData("1234", "1234", "Test", "Hello")]
     public void Contains_ItemIsInObjList_Valid(string item, params string[] items)
-    { 
+    {
         object obj = item;
         var objects = new TestEnumerableImpl();
         items.ForEach(x => objects.Items.Add(x));
@@ -181,43 +181,46 @@ public class EnumerableValidationTests
         Assert.False(IsValidList(rb => rb.Single(), items));
         Assert.False(IsValid(rb => rb.Single(), items));
     }
-        
+
     [Fact]
     public void Single_EmptyList_Invalid()
     {
         var items = Array.Empty<string>();
-            
+
         Assert.False(IsValidList(rb => rb.Single(), items));
         Assert.False(IsValid(rb => rb.Single(), items));
     }
 
-    private static bool IsValid(Action<IPropertyRuleBuilder<TestDataObject, IEnumerable<string>>> setupRule, IEnumerable<string> strItems)
+    private static bool IsValid(Action<IPropertyRuleBuilder<TestDataObject, IEnumerable<string>>> setupRule,
+        IEnumerable<string> strItems)
     {
         var validator = new TestDataObjectValidator(v => setupRule(v.RuleFor(x => x.StrItems)));
 
-        var testData = new TestDataObject { StrItems = strItems };
+        var testData = new TestDataObject {StrItems = strItems};
 
         var validationResult = validator.Validate(testData);
 
         return validationResult.IsValid;
     }
 
-    private static bool IsValidObjects(Action<IPropertyRuleBuilder<TestDataObject, IEnumerable>> setupRule, IEnumerable items)
+    private static bool IsValidObjects(Action<IPropertyRuleBuilder<TestDataObject, IEnumerable>> setupRule,
+        IEnumerable items)
     {
         var validator = new TestDataObjectValidator(v => setupRule(v.RuleFor(x => x.ObjItems)));
 
-        var testData = new TestDataObject { ObjItems = items };
+        var testData = new TestDataObject {ObjItems = items};
 
         var validationResult = validator.Validate(testData);
 
         return validationResult.IsValid;
     }
 
-    private static bool IsValidList(Action<IPropertyRuleBuilder<TestDataObject, IList<string>>> setupRule, IEnumerable<string> strItems)
+    private static bool IsValidList(Action<IPropertyRuleBuilder<TestDataObject, IList<string>>> setupRule,
+        IEnumerable<string> strItems)
     {
         var validator = new TestDataObjectValidator(v => setupRule(v.RuleFor(x => x.StrList)));
 
-        var testData = new TestDataObject { StrList = strItems.ToList() };
+        var testData = new TestDataObject {StrList = strItems.ToList()};
 
         var validationResult = validator.Validate(testData);
 

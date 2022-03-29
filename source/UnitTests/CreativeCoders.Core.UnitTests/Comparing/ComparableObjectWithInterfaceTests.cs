@@ -14,8 +14,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData(-10, 3)]
     public void CompareTo_Object0LesserThanObject1_ReturnsLesserThanZero(int value0, int value1)
     {
-        var intObject0 = new ComparableIntInterfaceObject { IntValue = value0 };
-        var intObject1 = new ComparableIntInterfaceObject { IntValue = value1 };
+        var intObject0 = new ComparableIntInterfaceObject {IntValue = value0};
+        var intObject1 = new ComparableIntInterfaceObject {IntValue = value1};
 
         // Act
         var result = intObject0.CompareTo(intObject1);
@@ -33,8 +33,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData(3456, 1234)]
     public void CompareTo_Object0GreaterThanObject1_ReturnsGreaterThanZero(int value0, int value1)
     {
-        var intObject0 = new ComparableIntInterfaceObject { IntValue = value0 };
-        var intObject1 = new ComparableIntInterfaceObject { IntValue = value1 };
+        var intObject0 = new ComparableIntInterfaceObject {IntValue = value0};
+        var intObject1 = new ComparableIntInterfaceObject {IntValue = value1};
 
         // Act
         var result = intObject0.CompareTo(intObject1);
@@ -51,8 +51,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData(-12, -12)]
     public void CompareTo_Object0EqualToObject1_ReturnsGreaterThanZero(int value0, int value1)
     {
-        var intObject0 = new ComparableIntInterfaceObject { IntValue = value0 };
-        var intObject1 = new ComparableIntInterfaceObject { IntValue = value1 };
+        var intObject0 = new ComparableIntInterfaceObject {IntValue = value0};
+        var intObject1 = new ComparableIntInterfaceObject {IntValue = value1};
 
         // Act
         var result = intObject0.CompareTo(intObject1);
@@ -69,7 +69,7 @@ public class ComparableObjectWithInterfaceTests
     [InlineData(1234)]
     public void GetHashCode_ObjectWithIntProperty_ReturnsIntValue(int value0)
     {
-        var intObject0 = new ComparableIntInterfaceObject { IntValue = value0 };
+        var intObject0 = new ComparableIntInterfaceObject {IntValue = value0};
 
         // Act
         var result = intObject0.GetHashCode();
@@ -91,8 +91,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData(3456, 1234)]
     public void Equals_Object0NotEqualObject1_ReturnsFalse(int value0, int value1)
     {
-        var intObject0 = new ComparableIntInterfaceObject { IntValue = value0 };
-        var intObject1 = new ComparableIntInterfaceObject { IntValue = value1 };
+        var intObject0 = new ComparableIntInterfaceObject {IntValue = value0};
+        var intObject1 = new ComparableIntInterfaceObject {IntValue = value1};
 
         // Act
         var result = intObject0.Equals(intObject1);
@@ -114,8 +114,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData(3456, 1234)]
     public void Equals_WithObjectArgObject0NotEqualObject1_ReturnsFalse(int value0, int value1)
     {
-        var intObject0 = new ComparableIntInterfaceObject { IntValue = value0 };
-        object intObject1 = new ComparableIntInterfaceObject { IntValue = value1 };
+        var intObject0 = new ComparableIntInterfaceObject {IntValue = value0};
+        object intObject1 = new ComparableIntInterfaceObject {IntValue = value1};
 
         // Act
         var result = intObject0.Equals(intObject1);
@@ -132,8 +132,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData(-12, -12)]
     public void Equals_Object0EqualObject1_ReturnsTrue(int value0, int value1)
     {
-        var intObject0 = new ComparableIntInterfaceObject { IntValue = value0 };
-        var intObject1 = new ComparableIntInterfaceObject { IntValue = value1 };
+        var intObject0 = new ComparableIntInterfaceObject {IntValue = value0};
+        var intObject1 = new ComparableIntInterfaceObject {IntValue = value1};
 
         // Act
         var result = intObject0.Equals(intObject1);
@@ -150,8 +150,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData(-12, -12)]
     public void Equals_WithObjectArgObject0EqualObject1_ReturnsTrue(int value0, int value1)
     {
-        var intObject0 = new ComparableIntInterfaceObject { IntValue = value0 };
-        object intObject1 = new ComparableIntInterfaceObject { IntValue = value1 };
+        var intObject0 = new ComparableIntInterfaceObject {IntValue = value0};
+        object intObject1 = new ComparableIntInterfaceObject {IntValue = value1};
 
         // Act
         var result = intObject0.Equals(intObject1);
@@ -170,8 +170,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData("A", "Z")]
     public void CompareTo_StringObject0LesserThanObject1_ReturnsLesserThanZero(string value0, string value1)
     {
-        var textObject0 = new ComparableStringInterfaceObject { TextValue = value0 };
-        var textObject1 = new ComparableStringInterfaceObject { TextValue = value1 };
+        var textObject0 = new ComparableStringInterfaceObject {TextValue = value0};
+        var textObject1 = new ComparableStringInterfaceObject {TextValue = value1};
 
         // Act
         var result = textObject0.CompareTo(textObject1);
@@ -189,8 +189,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData("Z", "X")]
     public void CompareTo_StringObject0GreaterThanObject1_ReturnsGreaterThanZero(string value0, string value1)
     {
-        var textObject0 = new ComparableStringInterfaceObject { TextValue = value0 };
-        var textObject1 = new ComparableStringInterfaceObject { TextValue = value1 };
+        var textObject0 = new ComparableStringInterfaceObject {TextValue = value0};
+        var textObject1 = new ComparableStringInterfaceObject {TextValue = value1};
 
         // Act
         var result = textObject0.CompareTo(textObject1);
@@ -207,8 +207,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData("Hello", "Hello")]
     public void CompareTo_StringObject0EqualToObject1_ReturnsGreaterThanZero(string value0, string value1)
     {
-        var textObject0 = new ComparableStringInterfaceObject { TextValue = value0 };
-        var textObject1 = new ComparableStringInterfaceObject { TextValue = value1 };
+        var textObject0 = new ComparableStringInterfaceObject {TextValue = value0};
+        var textObject1 = new ComparableStringInterfaceObject {TextValue = value1};
 
         // Act
         var result = textObject0.CompareTo(textObject1);
@@ -226,7 +226,7 @@ public class ComparableObjectWithInterfaceTests
     [InlineData("Hello")]
     public void GetHashCode_StringObjectWithIntProperty_ReturnsIntValue(string value0)
     {
-        var textObject0 = new ComparableStringInterfaceObject { TextValue = value0 };
+        var textObject0 = new ComparableStringInterfaceObject {TextValue = value0};
 
         // Act
         var result = textObject0.GetHashCode();
@@ -244,8 +244,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData("A", "Z")]
     public void CompareTo_TextObject0LesserThanObject1_ReturnsLesserThanZero(string value0, string value1)
     {
-        var textObject0 = new ComparableTextPropertyInterfaceObject { TextValue = value0 };
-        var textObject1 = new ComparableTextPropertyInterfaceObject { TextValue = value1 };
+        var textObject0 = new ComparableTextPropertyInterfaceObject {TextValue = value0};
+        var textObject1 = new ComparableTextPropertyInterfaceObject {TextValue = value1};
 
         // Act
         var result = textObject0.CompareTo(textObject1);
@@ -263,8 +263,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData("Z", "X")]
     public void CompareTo_TextObject0GreaterThanObject1_ReturnsGreaterThanZero(string value0, string value1)
     {
-        var textObject0 = new ComparableTextPropertyInterfaceObject { TextValue = value0 };
-        var textObject1 = new ComparableTextPropertyInterfaceObject { TextValue = value1 };
+        var textObject0 = new ComparableTextPropertyInterfaceObject {TextValue = value0};
+        var textObject1 = new ComparableTextPropertyInterfaceObject {TextValue = value1};
 
         // Act
         var result = textObject0.CompareTo(textObject1);
@@ -281,8 +281,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData("Hello", "Hello")]
     public void CompareTo_TextObject0EqualToObject1_ReturnsGreaterThanZero(string value0, string value1)
     {
-        var textObject0 = new ComparableTextPropertyInterfaceObject { TextValue = value0 };
-        var textObject1 = new ComparableTextPropertyInterfaceObject { TextValue = value1 };
+        var textObject0 = new ComparableTextPropertyInterfaceObject {TextValue = value0};
+        var textObject1 = new ComparableTextPropertyInterfaceObject {TextValue = value1};
 
         // Act
         var result = textObject0.CompareTo(textObject1);
@@ -300,7 +300,7 @@ public class ComparableObjectWithInterfaceTests
     [InlineData("Hello")]
     public void GetHashCode_TextObjectWithIntProperty_ReturnsIntValue(string value0)
     {
-        var textObject0 = new ComparableTextPropertyInterfaceObject { TextValue = value0 };
+        var textObject0 = new ComparableTextPropertyInterfaceObject {TextValue = value0};
 
         // Act
         var result = textObject0.GetHashCode();
@@ -322,8 +322,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData("ZZ", "ABC")]
     public void Equals_TextObject0NotEqualObject1_ReturnsFalse(string value0, string value1)
     {
-        var textObject0 = new ComparableTextPropertyInterfaceObject { TextValue = value0 };
-        var textObject1 = new ComparableTextPropertyInterfaceObject { TextValue = value1 };
+        var textObject0 = new ComparableTextPropertyInterfaceObject {TextValue = value0};
+        var textObject1 = new ComparableTextPropertyInterfaceObject {TextValue = value1};
 
         // Act
         var result = textObject0.Equals(textObject1);
@@ -345,8 +345,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData("ZZ", "ABC")]
     public void Equals_TextWithObjectArgObject0NotEqualObject1_ReturnsFalse(string value0, string value1)
     {
-        var textObject0 = new ComparableTextPropertyInterfaceObject { TextValue = value0 };
-        object textObject1 = new ComparableTextPropertyInterfaceObject { TextValue = value1 };
+        var textObject0 = new ComparableTextPropertyInterfaceObject {TextValue = value0};
+        object textObject1 = new ComparableTextPropertyInterfaceObject {TextValue = value1};
 
         // Act
         var result = textObject0.Equals(textObject1);
@@ -363,8 +363,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData("Hello", "Hello")]
     public void Equals_TextObject0EqualObject1_ReturnsTrue(string value0, string value1)
     {
-        var textObject0 = new ComparableTextPropertyInterfaceObject { TextValue = value0 };
-        var textObject1 = new ComparableTextPropertyInterfaceObject { TextValue = value1 };
+        var textObject0 = new ComparableTextPropertyInterfaceObject {TextValue = value0};
+        var textObject1 = new ComparableTextPropertyInterfaceObject {TextValue = value1};
 
         // Act
         var result = textObject0.Equals(textObject1);
@@ -381,8 +381,8 @@ public class ComparableObjectWithInterfaceTests
     [InlineData("Hello", "Hello")]
     public void Equals_TextWithObjectArgObject0EqualObject1_ReturnsTrue(string value0, string value1)
     {
-        var intObject0 = new ComparableTextPropertyInterfaceObject { TextValue = value0 };
-        object intObject1 = new ComparableTextPropertyInterfaceObject { TextValue = value1 };
+        var intObject0 = new ComparableTextPropertyInterfaceObject {TextValue = value0};
+        object intObject1 = new ComparableTextPropertyInterfaceObject {TextValue = value1};
 
         // Act
         var result = intObject0.Equals(intObject1);

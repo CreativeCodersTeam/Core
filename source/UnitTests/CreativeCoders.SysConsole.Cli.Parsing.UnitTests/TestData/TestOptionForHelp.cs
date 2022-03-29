@@ -15,8 +15,7 @@ public class TestOptionForHelp
     [OptionParameter(TitleShortName, TitleLongName, Name = TitleName, HelpText = TitleHelpText)]
     public string? Title { get; set; }
 
-    [OptionParameter('v', "verbose")]
-    public bool Verbose { get; set; }
+    [OptionParameter('v', "verbose")] public bool Verbose { get; set; }
 
     [OptionValue(0, HelpText = FirstValueHelpText)]
     public string? FirstValue { get; set; }

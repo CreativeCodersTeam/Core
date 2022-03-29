@@ -23,16 +23,16 @@ public class CSharpScriptIntegrationTests
             "public void Execute() { Api.DoSomething(\"Method executed\"); }";
 
         var testApi = A.Fake<ITestApi>();
-            
+
         var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, false);
-            
+
         var action = script.CreateAction("Execute", null);
 
         action();
-            
+
         A.CallTo(() => testApi.DoSomething("Method executed")).MustHaveHappenedOnceExactly();
     }
-        
+
     [Fact]
     public void CreateAction_TestApiInjectedViaContext_ExecutionSucceeded()
     {
@@ -42,16 +42,16 @@ public class CSharpScriptIntegrationTests
 
         var testApi = A.Fake<ITestApi>();
         var contextTestApi = A.Fake<ITestApi>();
-            
+
         var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, false);
-            
+
         var scriptContext = new ScriptContext();
         scriptContext.AddInjection(new ScriptPropertyInjection<ITestApi>("Api", () => contextTestApi));
-            
+
         var action = script.CreateAction("Execute", scriptContext);
 
         action();
-            
+
         A.CallTo(() => testApi.DoSomething("Method executed")).MustNotHaveHappened();
         A.CallTo(() => contextTestApi.DoSomething("Method executed")).MustHaveHappenedOnceExactly();
     }
@@ -64,16 +64,16 @@ public class CSharpScriptIntegrationTests
             "public void Execute() { Api.DoSomething(\"Method executed\"); }";
 
         var testApi = A.Fake<ITestApi>();
-            
+
         var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, false);
-            
+
         var action = script.CreateAction("CallApi", null);
 
         action();
-            
+
         A.CallTo(() => testApi.DoSomething("Call")).MustHaveHappenedOnceExactly();
     }
-        
+
     [Fact]
     public void CreateObject_ForGeneratedProperty_ApiIsCalled()
     {
@@ -82,20 +82,20 @@ public class CSharpScriptIntegrationTests
             "public void Execute() { Api.DoSomething(\"Method executed\"); }";
 
         var testApi = A.Fake<ITestApi>();
-            
+
         var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, true);
-            
+
         var scriptObject = script.CreateObject<ITextScript>();
 
         var result = scriptObject.TestText;
-            
+
         Assert.Equal("SomeText", result);
 
         scriptObject.TestText = "MoreText";
-            
+
         A.CallTo(() => testApi.DoSomething("MoreText")).MustHaveHappenedOnceExactly();
     }
-        
+
     [Fact]
     public void CreateObject_ForGeneratedProperty_GetReturnsValue()
     {
@@ -104,13 +104,13 @@ public class CSharpScriptIntegrationTests
             "public void Execute() { Api.DoSomething(\"Method executed\"); }";
 
         var testApi = A.Fake<ITestApi>();
-            
+
         var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, true);
-            
+
         var scriptObject = script.CreateObject<ITextScript>();
 
         var result = scriptObject.IntValue;
-            
+
         Assert.Equal(12345, result);
     }
 
@@ -122,7 +122,7 @@ public class CSharpScriptIntegrationTests
             "public void Execute() { Api.DoSomething(\"Method executed\"); }";
 
         var testApi = A.Fake<ITestApi>();
-            
+
         var script = CreateScript(scriptSourceCode, new[] {new UsingsPreprocessor()}, testApi, true);
 
         Assert.Equal(2, script.MethodNames.Count);
@@ -138,25 +138,35 @@ public class CSharpScriptIntegrationTests
             "public void Exe cute() { Api.DoSomething(\"Method executed\"); }";
 
         var testApi = A.Fake<ITestApi>();
-            
-        var scriptPackage = new ScriptPackage("Script0", "TestScript", new StringSourceCode(scriptSourceCode));
-            
-        var runtime = new CSharpScriptRuntime<TestScriptImplementation>(new TestScriptImplementation(Array.Empty<ISourcePreprocessor>(), testApi, false)) as IScriptRuntime;
+
+        var scriptPackage =
+            new ScriptPackage("Script0", "TestScript", new StringSourceCode(scriptSourceCode));
+
+        var runtime =
+            new CSharpScriptRuntime<TestScriptImplementation>(
+                    new TestScriptImplementation(Array.Empty<ISourcePreprocessor>(), testApi, false)) as
+                IScriptRuntime;
 
         var runtimeSpace = runtime.CreateSpace("CreativeCoders.TestScripts");
 
-        var exception = Assert.Throws<ScriptCompilationFailedException>(() => runtimeSpace.Build(scriptPackage));
-            
+        var exception =
+            Assert.Throws<ScriptCompilationFailedException>(() => runtimeSpace.Build(scriptPackage));
+
         Assert.Same(scriptPackage, exception.ScriptPackage);
-        Assert.NotEmpty(exception.CompilationResultMessages.Where(x => x.MessageType == CompilationMessageType.Error));
+        Assert.NotEmpty(
+            exception.CompilationResultMessages.Where(x => x.MessageType == CompilationMessageType.Error));
     }
 
-    private static IScript CreateScript(string sourceCode, IEnumerable<ISourcePreprocessor> sourcePreprocessors,
+    private static IScript CreateScript(string sourceCode,
+        IEnumerable<ISourcePreprocessor> sourcePreprocessors,
         ITestApi testApi, bool scriptObjectWithInterface)
     {
         var scriptPackage = new ScriptPackage("Script0", "TestScript", new StringSourceCode(sourceCode));
-            
-        var runtime = new CSharpScriptRuntime<TestScriptImplementation>(new TestScriptImplementation(sourcePreprocessors, testApi, scriptObjectWithInterface)) as IScriptRuntime;
+
+        var runtime =
+            new CSharpScriptRuntime<TestScriptImplementation>(
+                    new TestScriptImplementation(sourcePreprocessors, testApi, scriptObjectWithInterface)) as
+                IScriptRuntime;
 
         var runtimeSpace = runtime.CreateSpace("CreativeCoders.TestScripts");
 

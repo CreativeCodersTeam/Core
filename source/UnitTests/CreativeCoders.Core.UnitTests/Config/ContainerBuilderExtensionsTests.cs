@@ -50,7 +50,7 @@ public class ContainerBuilderExtensionsTests
         var builder = new SimpleInjectorDiContainerBuilder(new Container());
 
         var config = new Configuration();
-        config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting { Text = "DemoValue" }));
+        config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting {Text = "DemoValue"}));
 
         builder.Configure(config);
 
@@ -71,7 +71,7 @@ public class ContainerBuilderExtensionsTests
         var builder = new SimpleInjectorDiContainerBuilder(new Container());
 
         var config = new Configuration();
-        config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting { Text = "DemoValue" }));
+        config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting {Text = "DemoValue"}));
 
         builder.Configure(config);
 
@@ -92,7 +92,7 @@ public class ContainerBuilderExtensionsTests
         var builder = new SimpleInjectorDiContainerBuilder(new Container());
 
         var config = new Configuration();
-        config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting { Text = "DemoValue" }));
+        config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting {Text = "DemoValue"}));
 
         builder.Configure(config);
 
@@ -128,7 +128,7 @@ public class ContainerBuilderExtensionsTests
         var builder = new SimpleInjectorDiContainerBuilder(new Container());
 
         var config = new Configuration();
-        config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting { Text = "DemoValue" }));
+        config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting {Text = "DemoValue"}));
 
         builder.Configure(config);
 
@@ -157,7 +157,7 @@ public class ContainerBuilderExtensionsTests
         var builder = new SimpleInjectorDiContainerBuilder(new Container());
 
         var config = new Configuration();
-        config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting { Text = "DemoValue" }));
+        config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting {Text = "DemoValue"}));
 
         builder.Configure(config);
 
@@ -186,7 +186,7 @@ public class ContainerBuilderExtensionsTests
         var builder = new SimpleInjectorDiContainerBuilder(new Container());
 
         var config = new Configuration();
-        config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting { Text = "DemoValue" }));
+        config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting {Text = "DemoValue"}));
 
         builder.Configure(config);
 

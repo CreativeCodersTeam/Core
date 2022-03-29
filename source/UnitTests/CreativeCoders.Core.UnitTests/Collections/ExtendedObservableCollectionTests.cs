@@ -49,7 +49,7 @@ public class ExtendedObservableCollectionTests
 
         Assert.Single(collectionChangedEventArgsList);
         Assert.Equal(NotifyCollectionChangedAction.Add, collectionChangedEventArgsList[0].Action);
-            
+
         Assert.NotNull(collectionChangedEventArgsList[0].NewItems);
         Assert.Single(collectionChangedEventArgsList[0].NewItems);
         Assert.Equal(123, collectionChangedEventArgsList[0].NewItems[0]);
@@ -234,7 +234,7 @@ public class ExtendedObservableCollectionTests
 
         Assert.NotNull(collectionChangedEventArgsList[0].NewItems);
         Assert.Single(collectionChangedEventArgsList[0].NewItems);
-            
+
         Assert.Equal(0, collectionChangedEventArgsList[0].NewItems[0]);
     }
 
@@ -289,11 +289,11 @@ public class ExtendedObservableCollectionTests
 
         var collection = new ExtendedObservableCollection<int> {123, 456, 789};
         collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
-            
+
         collection.Move(1, 2);
-            
-        Assert.Equal(new[]{123, 789, 456}, collection);
-            
+
+        Assert.Equal(new[] {123, 789, 456}, collection);
+
         Assert.Single(collectionChangedEventArgsList);
         Assert.Equal(NotifyCollectionChangedAction.Move, collectionChangedEventArgsList[0].Action);
 
@@ -309,7 +309,7 @@ public class ExtendedObservableCollectionTests
         Assert.Equal(1, collectionChangedEventArgsList[0].OldStartingIndex);
         Assert.Equal(2, collectionChangedEventArgsList[0].NewStartingIndex);
     }
-        
+
     [Fact]
     public void Move_TwoItems_ItemsAreMovedToNewIndex()
     {
@@ -317,14 +317,14 @@ public class ExtendedObservableCollectionTests
 
         var collection = new ExtendedObservableCollection<int> {123, 456, 789, 135, 246};
         collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
-            
+
         collection.Move(1, 2);
         collection.Move(4, 0);
-            
-        Assert.Equal(new[]{246, 123, 789, 456, 135}, collection);
-            
+
+        Assert.Equal(new[] {246, 123, 789, 456, 135}, collection);
+
         Assert.Equal(2, collectionChangedEventArgsList.Count);
-            
+
         Assert.Equal(NotifyCollectionChangedAction.Move, collectionChangedEventArgsList[0].Action);
 
         Assert.NotNull(collectionChangedEventArgsList[0].NewItems);
@@ -338,7 +338,7 @@ public class ExtendedObservableCollectionTests
         Assert.Equal(456, collectionChangedEventArgsList[0].OldItems[0]);
         Assert.Equal(1, collectionChangedEventArgsList[0].OldStartingIndex);
         Assert.Equal(2, collectionChangedEventArgsList[0].NewStartingIndex);
-            
+
         Assert.Equal(NotifyCollectionChangedAction.Move, collectionChangedEventArgsList[1].Action);
 
         Assert.NotNull(collectionChangedEventArgsList[1].NewItems);
@@ -414,13 +414,13 @@ public class ExtendedObservableCollectionTests
 
         var collection = new ExtendedObservableCollection<int> {123, 456, 789};
         collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
-            
+
         collection.RemoveAt(1);
-            
+
         Assert.Equal(2, collection.Count);
         Assert.Equal(123, collection[0]);
         Assert.Equal(789, collection[1]);
-            
+
         Assert.Single(collectionChangedEventArgsList);
         Assert.Equal(NotifyCollectionChangedAction.Remove, collectionChangedEventArgsList[0].Action);
 
@@ -429,7 +429,7 @@ public class ExtendedObservableCollectionTests
 
         Assert.Equal(456, collectionChangedEventArgsList[0].OldItems[0]);
     }
-        
+
     [Fact]
     public void RemoveAt_TwoItems_ItemsAreRemovedAndCollectionChangedRaised()
     {
@@ -437,14 +437,14 @@ public class ExtendedObservableCollectionTests
 
         var collection = new ExtendedObservableCollection<int> {135, 123, 456, 789};
         collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
-            
+
         collection.RemoveAt(3);
         collection.RemoveAt(1);
-            
+
         Assert.Equal(2, collection.Count);
         Assert.Equal(135, collection[0]);
         Assert.Equal(456, collection[1]);
-            
+
         Assert.Equal(2, collectionChangedEventArgsList.Count);
 
         Assert.Equal(NotifyCollectionChangedAction.Remove, collectionChangedEventArgsList[0].Action);
@@ -471,9 +471,9 @@ public class ExtendedObservableCollectionTests
         collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
         collection[0] = 987;
-            
-        Assert.Equal(new[]{987, 123, 456, 789}, collection);
-            
+
+        Assert.Equal(new[] {987, 123, 456, 789}, collection);
+
         Assert.Single(collectionChangedEventArgsList);
         Assert.Equal(NotifyCollectionChangedAction.Replace, collectionChangedEventArgsList[0].Action);
 
@@ -495,13 +495,13 @@ public class ExtendedObservableCollectionTests
 
         var collection = new ExtendedObservableCollection<int> {135, 123, 456, 789};
         collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
-            
+
         collection.BeginUpdate();
         collection.Add(42);
-            
+
         Assert.Empty(collectionChangedEventArgsList);
     }
-        
+
     [Fact]
     public void EndUpdate_EndUpdateAfterBeginUpdate_NoCollectionChangedRaised()
     {
@@ -509,14 +509,14 @@ public class ExtendedObservableCollectionTests
 
         var collection = new ExtendedObservableCollection<int> {135, 123, 456, 789};
         collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
-            
+
         collection.BeginUpdate();
         collection.Add(42);
-            
+
         Assert.Empty(collectionChangedEventArgsList);
-            
+
         collection.EndUpdate();
-            
+
         Assert.Single(collectionChangedEventArgsList);
         Assert.Equal(NotifyCollectionChangedAction.Reset, collectionChangedEventArgsList[0].Action);
     }
@@ -528,14 +528,14 @@ public class ExtendedObservableCollectionTests
 
         var collection = new ExtendedObservableCollection<int>();
         collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
-            
+
         collection.BeginUpdate();
         collection.EndUpdate();
-            
+
         Assert.Empty(collection);
         Assert.Empty(collectionChangedEventArgsList);
     }
-        
+
     [Fact]
     public void EndUpdate_OneEndUpdateAfterTwoBeginUpdate_NoCollectionChangedRaised()
     {
@@ -543,16 +543,16 @@ public class ExtendedObservableCollectionTests
 
         var collection = new ExtendedObservableCollection<int>();
         collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
-            
+
         collection.BeginUpdate();
         collection.BeginUpdate();
         collection.Add(1234);
         collection.EndUpdate();
-            
+
         Assert.Single(collection);
         Assert.Empty(collectionChangedEventArgsList);
     }
-        
+
     [Fact]
     public void EndUpdate_NestedUpdates_CollectionChangedRaised()
     {
@@ -560,21 +560,21 @@ public class ExtendedObservableCollectionTests
 
         var collection = new ExtendedObservableCollection<int>();
         collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
-            
+
         collection.BeginUpdate();
-            
+
         collection.Add(1234);
-            
+
         collection.BeginUpdate();
-            
+
         collection.Add(5678);
-            
+
         collection.EndUpdate();
-            
+
         Assert.Empty(collectionChangedEventArgsList);
-            
+
         collection.EndUpdate();
-            
+
         Assert.Equal(2, collection.Count);
         Assert.Single(collectionChangedEventArgsList);
         Assert.Equal(NotifyCollectionChangedAction.Reset, collectionChangedEventArgsList[0].Action);
@@ -588,13 +588,11 @@ public class ExtendedObservableCollectionTests
         var collection = new ExtendedObservableCollection<int>();
         collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
-        using (collection.Update())
-        {
-        }
-            
+        using (collection.Update()) { }
+
         Assert.Empty(collectionChangedEventArgsList);
     }
-        
+
     [Fact]
     public void Update_ItemsAdded_CollectionChangedRaised()
     {
@@ -608,7 +606,7 @@ public class ExtendedObservableCollectionTests
             collection.Add(123);
             collection.Add(456);
         }
-            
+
         Assert.Equal(2, collection.Count);
         Assert.Single(collectionChangedEventArgsList);
         Assert.Equal(NotifyCollectionChangedAction.Reset, collectionChangedEventArgsList[0].Action);
@@ -619,7 +617,7 @@ public class ExtendedObservableCollectionTests
     public void ReadOnly_Get_IsFalse()
     {
         var collection = new ExtendedObservableCollection<int>();
-            
+
         Assert.False(collection.IsReadOnly);
     }
 
@@ -627,24 +625,25 @@ public class ExtendedObservableCollectionTests
     public void Capacity_SetNewCapacity_NewCapacityIsSet()
     {
         var collection = new ExtendedObservableCollection<int> {Capacity = 100};
-            
+
         Assert.Equal(100, collection.Capacity);
 
         collection.Capacity = 200;
-            
+
         Assert.Equal(200, collection.Capacity);
 
         collection.Capacity = 50;
-            
+
         Assert.Equal(50, collection.Capacity);
     }
-        
+
     [Fact]
     public void Synchronization_TwoItemsAddedWithPostSyncMethod_ItemsAreAddedAndCollectionChangedRaised()
     {
         var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
-        var collection = new ExtendedObservableCollection<int>(new TestSynchronizationContext(), SynchronizationMethod.Post, () => new LockSlimLockingMechanism());
+        var collection = new ExtendedObservableCollection<int>(new TestSynchronizationContext(),
+            SynchronizationMethod.Post, () => new LockSlimLockingMechanism());
         collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
         collection.Add(123);
@@ -667,13 +666,14 @@ public class ExtendedObservableCollectionTests
         Assert.Equal(123, collectionChangedEventArgsList[0].NewItems[0]);
         Assert.Equal(456, collectionChangedEventArgsList[1].NewItems[0]);
     }
-        
+
     [Fact]
     public void Synchronization_TwoItemsAddedWithNoneSyncMethod_ItemsAreAddedAndCollectionChangedRaised()
     {
         var collectionChangedEventArgsList = new List<NotifyCollectionChangedEventArgs>();
 
-        var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current, SynchronizationMethod.None, () => new LockSlimLockingMechanism());
+        var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current,
+            SynchronizationMethod.None, () => new LockSlimLockingMechanism());
         collection.CollectionChanged += (_, args) => collectionChangedEventArgsList.Add(args);
 
         collection.Add(123);
@@ -700,7 +700,8 @@ public class ExtendedObservableCollectionTests
     [Fact]
     public void Reentrancy_AddNewItemOnCollectionChanged_ItemIsAdded()
     {
-        var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current, SynchronizationMethod.None, () => new LockSlimLockingMechanism());
+        var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current,
+            SynchronizationMethod.None, () => new LockSlimLockingMechanism());
         collection.CollectionChanged += (_, _) =>
         {
             if (collection.Count == 1)
@@ -708,17 +709,18 @@ public class ExtendedObservableCollectionTests
                 collection.Add(collection.Count + 1);
             }
         };
-            
+
         collection.Add(123);
-            
+
         Assert.Equal(2, collection.Count);
         Assert.Equal(123, collection[0]);
     }
-        
+
     [Fact]
     public void Reentrancy_AddNewItemOnCollectionChangedWithTwoEventHandler_ExceptionIsThrown()
     {
-        var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current, SynchronizationMethod.None, () => new LockSlimLockingMechanism());
+        var collection = new ExtendedObservableCollection<int>(SynchronizationContext.Current,
+            SynchronizationMethod.None, () => new LockSlimLockingMechanism());
         collection.CollectionChanged += (_, _) =>
         {
             if (collection.Count == 1)
@@ -733,10 +735,10 @@ public class ExtendedObservableCollectionTests
                 Assert.Throws<InvalidOperationException>(() => collection.Add(collection.Count + 1));
             }
         };
-            
+
         collection.Add(123);
     }
-        
+
     [Fact]
     public async Task InvokeTestFromOtherThread()
     {
@@ -749,7 +751,7 @@ public class ExtendedObservableCollectionTests
                 collection.Add("test1");
             }
         });
-         
+
         var secondTask = Task.Run(() =>
         {
             for (var i = 0; i <= 99999; i++)

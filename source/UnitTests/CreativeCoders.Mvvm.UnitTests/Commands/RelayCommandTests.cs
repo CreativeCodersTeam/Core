@@ -14,10 +14,10 @@ public class RelayCommandTests
     public void Execute_Wait_ActionIsExecuted()
     {
         SynchronizationContext.SetSynchronizationContext(new TestSynchronizationContext());
-            
+
         var commandExecuted = false;
         var canExecuteChangedRaised = false;
-            
+
         var command = new RelayCommand(_ =>
         {
             Assert.False(commandExecuted);
@@ -30,19 +30,19 @@ public class RelayCommandTests
         };
 
         command.Execute(null);
-            
+
         Assert.True(commandExecuted);
         Assert.True(canExecuteChangedRaised);
     }
-        
+
     [Fact]
     public void CanExecuteChanged_RemoveHandler_HandlerIsNotCalled()
     {
         SynchronizationContext.SetSynchronizationContext(new TestSynchronizationContext());
-            
+
         var commandExecuted = false;
         _canExecuteChangedRaised = false;
-            
+
         var command = new RelayCommand(_ =>
         {
             // ReSharper disable once AccessToModifiedClosure
@@ -52,7 +52,7 @@ public class RelayCommandTests
         command.CanExecuteChanged += CommandOnCanExecuteChanged;
 
         command.Execute(null);
-            
+
         Assert.True(commandExecuted);
         Assert.True(_canExecuteChangedRaised);
 
@@ -60,9 +60,9 @@ public class RelayCommandTests
         commandExecuted = false;
 
         command.CanExecuteChanged -= CommandOnCanExecuteChanged;
-            
+
         command.Execute(null);
-            
+
         Assert.True(commandExecuted);
         Assert.False(_canExecuteChangedRaised);
     }
@@ -72,12 +72,12 @@ public class RelayCommandTests
         Assert.False(_canExecuteChangedRaised);
         _canExecuteChangedRaised = true;
     }
-        
+
     [Fact]
     public void Execute_CanExecuteIsFalse_ActionIsNotExecuted()
     {
         var commandExecuted = false;
-            
+
         var command = new RelayCommand(_ =>
         {
             Assert.False(commandExecuted);
@@ -85,7 +85,7 @@ public class RelayCommandTests
         }, _ => false);
 
         command.Execute(null);
-            
+
         Assert.False(commandExecuted);
     }
 }

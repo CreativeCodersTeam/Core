@@ -14,7 +14,8 @@ public class DependencyResolverTests
     [InlineData(DependencyTestData.VgaDriver,
         DependencyTestData.Cpu, DependencyTestData.Kernel)]
     [InlineData(DependencyTestData.Cpu)]
-    public void Resolve_ForElement_ReturnsDependentElements(string element, params string[] expectedDependencies)
+    public void Resolve_ForElement_ReturnsDependentElements(string element,
+        params string[] expectedDependencies)
     {
         var collection = DependencyTestData.CreateTestData();
 

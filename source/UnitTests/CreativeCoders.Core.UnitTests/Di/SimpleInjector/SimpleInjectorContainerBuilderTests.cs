@@ -120,7 +120,7 @@ public class SimpleInjectorContainerBuilderTests
     public void GetInstance_GetContainerScoped_ReturnsScopedContainer()
     {
         var simpleInjectorContainer = new Container();
-            
+
         new DiContainerBuilderTestHelper().GetInstance_GetDiContainerInScope_GetsScopedContainer(
             () => new SimpleInjectorDiContainerBuilder(simpleInjectorContainer));
     }
@@ -178,34 +178,34 @@ public class SimpleInjectorContainerBuilderTests
                 () =>
                     new SimpleInjectorDiContainerBuilder(CreateContainer(false)));
     }
-        
+
     [Fact]
     public void AddTransientCollectionFor_Type_ReturnsCorrectInstances()
     {
         new DiContainerBuilderTestHelper()
             .AddTransientCollectionFor_Type_ReturnsCorrectInstances(
-                () => 
+                () =>
                     new SimpleInjectorDiContainerBuilder(CreateContainer(false)));
     }
-        
+
     [Fact]
     public void AddScopedCollectionFor_Type_ReturnsCorrectInstances()
     {
         new DiContainerBuilderTestHelper()
             .AddScopedCollectionFor_Type_ReturnsCorrectInstances(
-                () => 
+                () =>
                     new SimpleInjectorDiContainerBuilder(CreateContainer(false)));
     }
-        
+
     [Fact]
     public void AddSingletonCollectionFor_Type_ReturnsCorrectInstances()
     {
         new DiContainerBuilderTestHelper()
             .AddSingletonCollectionFor_Type_ReturnsCorrectInstances(
-                () => 
+                () =>
                     new SimpleInjectorDiContainerBuilder(CreateContainer(false)));
     }
-        
+
     [Fact]
     public void AddTransientCollectionFor_ForNoneInterfaceType_ThrowsException()
     {
@@ -258,7 +258,7 @@ public class SimpleInjectorContainerBuilderTests
         {
             return container;
         }
-            
+
         container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
         return AsyncScopedLifestyle.BeginScope(container).Container;
     }

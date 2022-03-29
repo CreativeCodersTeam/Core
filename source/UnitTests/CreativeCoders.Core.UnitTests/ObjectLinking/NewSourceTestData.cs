@@ -13,7 +13,8 @@ public class NewSourceTestData : SourceTestData
 
     private string _initialText;
 
-    [PropertyLink(typeof(NewTargetTestData), nameof(NewTargetTestData.IsChecked), Direction = LinkDirection.TwoWay,
+    [PropertyLink(typeof(NewTargetTestData), nameof(NewTargetTestData.IsChecked),
+        Direction = LinkDirection.TwoWay,
         Converter = typeof(NullableSourcePropertyConverter<bool>))]
     public bool? IsChecked
     {

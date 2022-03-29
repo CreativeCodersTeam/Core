@@ -20,7 +20,7 @@ public class ItemTypeTemplateSelectorTests
         var selector = new TestMappingTemplateSelector();
 
         var dataTemplate = A.Fake<DataTemplate>();
-            
+
         selector.AddMapping<string>(() => dataTemplate);
     }
 

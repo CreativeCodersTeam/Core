@@ -17,9 +17,9 @@ public class FileSourceCodeTests
         var fileSystem = new MockFileSystemEx();
         fileSystem.AddFile(fileName, new MockFileData(fileContent));
         fileSystem.Install();
-            
+
         var sourceCode = new FileSourceCode(fileName);
-            
+
         Assert.Equal(fileContent, sourceCode.Read());
     }
 }

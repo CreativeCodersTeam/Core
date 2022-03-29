@@ -12,8 +12,5 @@ namespace CreativeCoders.UnitTests.Net.Http;
 ///-------------------------------------------------------------------------------------------------
 public class NoResponderFoundException : Exception
 {
-    internal NoResponderFoundException() : base("No matching responder found")
-    {
-            
-    }
+    internal NoResponderFoundException() : base("No matching responder found") { }
 }

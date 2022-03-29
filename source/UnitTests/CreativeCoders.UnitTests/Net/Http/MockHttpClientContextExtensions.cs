@@ -33,6 +33,7 @@ public static class MockHttpClientContextExtensions
         return new RecordedRequestVerifier(
             httpClientContext.RecordedRequests
                 .Where(x =>
-                    PatternMatcher.MatchesPattern(x.RequestMessage.RequestUri.ToStringSafe(), uriPattern)).ToList());
+                    PatternMatcher.MatchesPattern(x.RequestMessage.RequestUri.ToStringSafe(), uriPattern))
+                .ToList());
     }
 }

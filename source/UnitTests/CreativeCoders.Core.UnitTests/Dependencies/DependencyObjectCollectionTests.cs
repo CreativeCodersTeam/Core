@@ -20,7 +20,8 @@ public class DependencyObjectCollectionTests
 
         for (var i = 0; i < expected.DependencyObjects.Count; i++)
         {
-            Assert.True(AreEqual(expected.DependencyObjects.ToList()[i], collection.DependencyObjects.ToList()[i]));
+            Assert.True(AreEqual(expected.DependencyObjects.ToList()[i],
+                collection.DependencyObjects.ToList()[i]));
         }
     }
 
@@ -44,16 +45,17 @@ public class DependencyObjectCollectionTests
     public void RemoveRedundancies_CollectionHasNoRedundancies_CollectionIsLikeBefore()
     {
         var collection = DependencyTestData.CreateTestData();
-            
+
         collection.RemoveRedundancies();
 
         var expected = DependencyTestData.CreateTestData();
-            
+
         Assert.Equal(expected.DependencyObjects.Count, collection.DependencyObjects.Count);
 
         for (var i = 0; i < expected.DependencyObjects.Count; i++)
         {
-            Assert.True(AreEqual(expected.DependencyObjects.ToList()[i], collection.DependencyObjects.ToList()[i]));
+            Assert.True(AreEqual(expected.DependencyObjects.ToList()[i],
+                collection.DependencyObjects.ToList()[i]));
         }
     }
 
@@ -73,12 +75,14 @@ public class DependencyObjectCollectionTests
 
         for (var i = 0; i < expected.DependencyObjects.Count; i++)
         {
-            Assert.True(AreEqual(expected.DependencyObjects.ToList()[i], collection.DependencyObjects.ToList()[i]));
+            Assert.True(AreEqual(expected.DependencyObjects.ToList()[i],
+                collection.DependencyObjects.ToList()[i]));
         }
     }
 
     [SuppressMessage("ReSharper", "LoopCanBeConvertedToQuery")]
-    private static bool AreEqual(DependencyObject<string> expectedDependencyObject, DependencyObject<string> collectionDependencyObject)
+    private static bool AreEqual(DependencyObject<string> expectedDependencyObject,
+        DependencyObject<string> collectionDependencyObject)
     {
         if (expectedDependencyObject.Element != collectionDependencyObject.Element)
         {

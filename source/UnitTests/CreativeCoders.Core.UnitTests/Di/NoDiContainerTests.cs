@@ -23,7 +23,8 @@ public class NoDiContainerTests
             diContainer.GetInstance<ITestService>("2"));
         Assert.Throws<ServiceLocatorNotInitializedException>(() =>
             diContainer.CreateScope());
-        Assert.Throws<ServiceLocatorNotInitializedException>(() => diContainer.TryGetInstance<ITestService>(out _));
+        Assert.Throws<ServiceLocatorNotInitializedException>(() =>
+            diContainer.TryGetInstance<ITestService>(out _));
         Assert.Throws<ServiceLocatorNotInitializedException>(() =>
             diContainer.TryGetInstance(typeof(ITestService), out _));
         Assert.Throws<ServiceLocatorNotInitializedException>(() =>

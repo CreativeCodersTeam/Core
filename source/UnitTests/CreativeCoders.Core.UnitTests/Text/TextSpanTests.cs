@@ -18,7 +18,7 @@ public class TextSpanTests
     public void IsEmptyTestTrue()
     {
         var textSpan = new TextSpan(10, 0);
-        Assert.True(textSpan.IsEmpty);            
+        Assert.True(textSpan.IsEmpty);
     }
 
     [Fact]

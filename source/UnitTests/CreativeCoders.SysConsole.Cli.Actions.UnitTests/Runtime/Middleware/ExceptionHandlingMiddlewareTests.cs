@@ -22,9 +22,9 @@ public class ExceptionHandlingMiddlewareTests
         var route = new CliActionRoute(
             typeof(DemoCliController),
             typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync))
-            ?? throw new InvalidOperationException(), new[] { "test" });
+            ?? throw new InvalidOperationException(), new[] {"test"});
 
-        var args = new[] { "test" };
+        var args = new[] {"test"};
 
         var router = A.Fake<ICliActionRouter>();
 
@@ -61,13 +61,13 @@ public class ExceptionHandlingMiddlewareTests
         var route = new CliActionRoute(
             typeof(DemoCliController),
             typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync))
-            ?? throw new InvalidOperationException(), new[] { "test" });
+            ?? throw new InvalidOperationException(), new[] {"test"});
 
-        var args = new[] { "test" };
+        var args = new[] {"test"};
 
         Exception? exception = null;
 
-        void ErrorHandler (CliActionContext x)
+        void ErrorHandler(CliActionContext x)
         {
             exception = x.Exception;
         }

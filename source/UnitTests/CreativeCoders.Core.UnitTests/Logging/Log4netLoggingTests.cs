@@ -34,12 +34,13 @@ public class Log4NetLoggingTests : LoggingTestBase
         CallLogger(loggerScope);
 
 
-        logger.Log((LogLevel)(-1), "test");
+        logger.Log((LogLevel) (-1), "test");
     }
 
     private static void SetupLog4Net()
     {
-        var hierarchy = (Hierarchy)log4net.LogManager.GetRepository(Assembly.GetAssembly(typeof(Log4NetLoggingTests)));
+        var hierarchy =
+            (Hierarchy) log4net.LogManager.GetRepository(Assembly.GetAssembly(typeof(Log4NetLoggingTests)));
 
         var patternLayout = new PatternLayout
         {

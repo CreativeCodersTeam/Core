@@ -62,7 +62,8 @@ public class DependencyTreeBuilderTests
         Assert.Empty(kernelNode.SubNodes);
 
 
-        var networkDriverNode = browserNode.SubNodes.Single(x => x.Element == DependencyTestData.NetworkDriver);
+        var networkDriverNode =
+            browserNode.SubNodes.Single(x => x.Element == DependencyTestData.NetworkDriver);
 
         var kernelNode2 = networkDriverNode.SubNodes.Single(x => x.Element == DependencyTestData.Kernel);
 

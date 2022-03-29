@@ -44,11 +44,12 @@ public class ObjectValidationTests
         Assert.False(IsValid(rb => rb.Between(min, max), value));
     }
 
-    private static bool IsValid(Action<IPropertyRuleBuilder<TestDataObject, object>> setupRule, object objValue)
+    private static bool IsValid(Action<IPropertyRuleBuilder<TestDataObject, object>> setupRule,
+        object objValue)
     {
         var validator = new TestDataObjectValidator(v => setupRule(v.RuleFor(x => x.ObjValue)));
 
-        var testData = new TestDataObject { ObjValue = objValue };
+        var testData = new TestDataObject {ObjValue = objValue};
 
         var validationResult = validator.Validate(testData);
 
@@ -59,7 +60,7 @@ public class ObjectValidationTests
     {
         var validator = new TestDataObjectValidator(v => setupRule(v.RuleFor(x => x.IntValue)));
 
-        var testData = new TestDataObject { IntValue = intValue };
+        var testData = new TestDataObject {IntValue = intValue};
 
         var validationResult = validator.Validate(testData);
 

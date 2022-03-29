@@ -56,7 +56,7 @@ public class DiContainerTestHelper
 
         Xunit.Assert.Equal(implementationTypes.Length, serviceObjects.Length);
 
-        CheckServices(serviceObjects, implementationTypes);            
+        CheckServices(serviceObjects, implementationTypes);
     }
 
     public void GetInstances_NoServicesFound_ReturnsEmptyArray<TService>(IDiContainer container)

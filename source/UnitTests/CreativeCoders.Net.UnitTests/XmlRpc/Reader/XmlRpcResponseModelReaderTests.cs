@@ -23,7 +23,8 @@ public class XmlRpcResponseModelReaderTests
 
         var reader = new ResponseModelReader(readers);
 
-        var model = await reader.ReadAsync(new MemoryStream(Encoding.UTF8.GetBytes(XmlRpcResponseData)), false);
+        var model =
+            await reader.ReadAsync(new MemoryStream(Encoding.UTF8.GetBytes(XmlRpcResponseData)), false);
 
         Assert.Single(model.Results);
         var result = model.Results.First();

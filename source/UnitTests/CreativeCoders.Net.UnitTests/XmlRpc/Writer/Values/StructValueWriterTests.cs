@@ -38,7 +38,8 @@ public class StructValueWriterTests
         var integerValue = new IntegerValue(2345);
         var xmlElement = new XElement("param");
 
-        var writerAction = new Action<XElement, XmlRpcValue>((xml, xmlRpcValue) => xml.Add(new XElement("value", xmlRpcValue.Data.ToString())));
+        var writerAction = new Action<XElement, XmlRpcValue>((xml, xmlRpcValue) =>
+            xml.Add(new XElement("value", xmlRpcValue.Data.ToString())));
         var integerWriter = A.Fake<IValueWriter>();
         A.CallTo(() => integerWriter.WriteTo(A<XElement>.Ignored, integerValue)).Invokes(writerAction);
 
@@ -48,7 +49,7 @@ public class StructValueWriterTests
 
         var writer = new StructValueWriter(writers);
 
-        var value = new StructValue(new Dictionary<string, XmlRpcValue>{{"TestProp", integerValue}});
+        var value = new StructValue(new Dictionary<string, XmlRpcValue> {{"TestProp", integerValue}});
 
         writer.WriteTo(xmlElement, value);
 

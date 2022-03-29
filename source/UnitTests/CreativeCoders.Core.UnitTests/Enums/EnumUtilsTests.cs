@@ -16,7 +16,11 @@ public class EnumUtilsTests
 
         Assert.Equal(5, enumValues.Length);
 
-        var expectedValues = new Enum[] {TestEnum.None, TestEnum.FirstEntry, TestEnum.Extra, TestEnum.SomeMore, TestEnum.ElementWithoutAttribute};
+        var expectedValues = new Enum[]
+        {
+            TestEnum.None, TestEnum.FirstEntry, TestEnum.Extra, TestEnum.SomeMore,
+            TestEnum.ElementWithoutAttribute
+        };
         Assert.Equal(expectedValues.AsEnumerable(), enumValues.AsEnumerable());
     }
 
@@ -35,7 +39,8 @@ public class EnumUtilsTests
     {
         var fieldInfos = EnumUtils.GetValuesFieldInfos<TestEnum>();
 
-        var fieldInfos2 = TestEnum.None.GetType().GetFields().Where(field => field.FieldType == typeof(TestEnum));
+        var fieldInfos2 = TestEnum.None.GetType().GetFields()
+            .Where(field => field.FieldType == typeof(TestEnum));
 
         Assert.Equal(fieldInfos2.AsEnumerable(), fieldInfos.AsEnumerable());
     }
@@ -46,10 +51,10 @@ public class EnumUtilsTests
         var enumFieldInfos = EnumUtils.GetEnumFieldInfos<TestEnum>();
         var expectedFieldInfos = new Dictionary<Enum, FieldInfo>
         {
-            {TestEnum.None, typeof(TestEnum).GetField("None") },
-            {TestEnum.FirstEntry, typeof(TestEnum).GetField("FirstEntry") },
-            {TestEnum.Extra, typeof(TestEnum).GetField("Extra") },
-            {TestEnum.SomeMore, typeof(TestEnum).GetField("SomeMore") },
+            {TestEnum.None, typeof(TestEnum).GetField("None")},
+            {TestEnum.FirstEntry, typeof(TestEnum).GetField("FirstEntry")},
+            {TestEnum.Extra, typeof(TestEnum).GetField("Extra")},
+            {TestEnum.SomeMore, typeof(TestEnum).GetField("SomeMore")},
             {TestEnum.ElementWithoutAttribute, typeof(TestEnum).GetField("ElementWithoutAttribute")}
         };
 

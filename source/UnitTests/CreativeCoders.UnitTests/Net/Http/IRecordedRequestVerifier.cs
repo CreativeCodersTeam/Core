@@ -55,7 +55,8 @@ public interface IRecordedRequestVerifier
     ///
     /// <returns>   This instance. </returns>
     ///-------------------------------------------------------------------------------------------------
-    IRecordedRequestVerifier RequestMeets(Func<HttpRequestMessage, CancellationToken, bool> verifyRequestMessage,
+    IRecordedRequestVerifier RequestMeets(
+        Func<HttpRequestMessage, CancellationToken, bool> verifyRequestMessage,
         string verificationInfoText);
 
     ///-------------------------------------------------------------------------------------------------

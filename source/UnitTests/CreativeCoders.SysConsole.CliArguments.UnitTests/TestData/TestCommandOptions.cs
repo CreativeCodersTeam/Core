@@ -5,6 +5,5 @@ namespace CreativeCoders.SysConsole.CliArguments.UnitTests.TestData;
 
 public class TestCommandOptions
 {
-    [OptionParameter('t', "text")]
-    public string? Text { get; [UsedImplicitly] set; }
+    [OptionParameter('t', "text")] public string? Text { get; [UsedImplicitly] set; }
 }

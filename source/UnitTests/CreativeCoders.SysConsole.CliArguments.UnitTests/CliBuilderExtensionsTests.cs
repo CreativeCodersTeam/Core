@@ -15,7 +15,7 @@ public class CliBuilderExtensionsTests
     {
         const int expectedReturnCode = 1234;
 
-        var args = new[] { "command", "param1" };
+        var args = new[] {"command", "param1"};
 
         var builder = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider());
 
@@ -37,7 +37,7 @@ public class CliBuilderExtensionsTests
     [Fact]
     public async Task ExecuteAsync_WithOptions_OptionsArePassedToExecute()
     {
-        var args = new[] { "command", "-t", "param1" };
+        var args = new[] {"command", "-t", "param1"};
 
         TestCommandOptions? options = null;
 
@@ -89,7 +89,7 @@ public class CliBuilderExtensionsTests
     [Fact]
     public async Task ExecuteAsync_CommandAddedViaAssemblyModules_ReturnsResultFromCommand()
     {
-        var args = new[] { "command" };
+        var args = new[] {"command"};
 
         var builder = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider());
 
@@ -111,7 +111,7 @@ public class CliBuilderExtensionsTests
     {
         const int expectedReturnCode = -2468;
 
-        var args = new[] { "command" };
+        var args = new[] {"command"};
 
         var builder = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider());
 

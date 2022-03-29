@@ -89,7 +89,6 @@ public class AcquireUpgradeableReaderLockTests
                     executed = true;
                     var _ = upgradeableLock.UseWriteLock(1);
                 });
-
             }
         });
 

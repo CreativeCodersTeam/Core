@@ -64,10 +64,11 @@ public class CliActionRuntimeBuilderTests
     {
         var route = new CliActionRoute(
             typeof(DemoCliController),
-            typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync)) ?? throw new InvalidOperationException(),
-            new[] { "test" });
+            typeof(DemoCliController).GetMethod(nameof(DemoCliController.DoAsync)) ??
+            throw new InvalidOperationException(),
+            new[] {"test"});
 
-        var args = new[] { "test" };
+        var args = new[] {"test"};
 
         var router = A.Fake<ICliActionRouter>();
 

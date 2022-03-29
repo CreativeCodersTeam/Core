@@ -10,7 +10,5 @@ namespace CreativeCoders.UnitTests.Net.Http;
 public class RecordedRequestVerificationFailedException : Exception
 {
     internal RecordedRequestVerificationFailedException(string failedVerification)
-        : base($"Verification for recorded requests failed. {failedVerification}")
-    {
-    }
+        : base($"Verification for recorded requests failed. {failedVerification}") { }
 }

@@ -42,7 +42,7 @@ public class CliExecutorTests
     [Fact]
     public async Task ExecuteAsync_CommandClass_ReturnsCommandResult()
     {
-        var args = new[] { "command", "param1" };
+        var args = new[] {"command", "param1"};
 
         var builder = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider());
 
@@ -104,7 +104,7 @@ public class CliExecutorTests
     {
         const int expectedReturnCode = 4321;
 
-        var args = new[] { "group", "command", "param1" };
+        var args = new[] {"group", "command", "param1"};
 
         var builder = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider());
 
@@ -224,7 +224,7 @@ public class CliExecutorTests
     [Fact]
     public async Task ExecuteAsync_NoCommandArgGiven_DefaultCommandIsExecuted()
     {
-        var args = new[] { "group" };
+        var args = new[] {"group"};
 
         var executor = new DefaultCliBuilder(new ServiceCollection().BuildServiceProvider())
             .AddCommand<TestDefaultCommand>()

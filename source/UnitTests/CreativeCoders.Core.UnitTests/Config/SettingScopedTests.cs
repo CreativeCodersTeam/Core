@@ -14,6 +14,7 @@ public class SettingScopedTests
     [Fact]
     public void ValueTest()
     {
-        new SettingTestHelper().TestSettingValue(factory => new SettingScoped<object>(factory), () => new object());
+        new SettingTestHelper().TestSettingValue(factory => new SettingScoped<object>(factory),
+            () => new object());
     }
 }

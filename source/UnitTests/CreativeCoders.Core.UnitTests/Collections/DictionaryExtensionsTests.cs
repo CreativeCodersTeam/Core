@@ -74,13 +74,13 @@ public class DictionaryExtensionsTests
         } as IDictionary;
 
         var output = dictionary.ToDictionary<string, string>(true);
-            
+
         Assert.Equal(2, output.Keys.Count);
-            
+
         Assert.Equal("Value1", output["Key0"]);
         Assert.Equal("Value2", output["Key1"]);
     }
-        
+
     [Fact]
     public void ToDictionary_NotMatchingKeyInputDictionary_SkippedNotMatchingKey()
     {
@@ -91,12 +91,12 @@ public class DictionaryExtensionsTests
         } as IDictionary;
 
         var output = dictionary.ToDictionary<string, string>(true);
-            
+
         Assert.Equal(1, output.Keys.Count);
-            
+
         Assert.Equal("Value2", output["Key1"]);
     }
-        
+
     [Fact]
     public void ToDictionary_NotMatchingValueInputDictionary_SkippedNotMatchingValue()
     {
@@ -107,12 +107,12 @@ public class DictionaryExtensionsTests
         } as IDictionary;
 
         var output = dictionary.ToDictionary<string, string>(true);
-            
+
         Assert.Equal(1, output.Keys.Count);
-            
+
         Assert.Equal("Value2", output["Key1"]);
     }
-        
+
     [Fact]
     public void ToDictionary_NotMatchingKeyInputDictionary_ThrowsException()
     {
@@ -124,7 +124,7 @@ public class DictionaryExtensionsTests
 
         Assert.Throws<InvalidCastException>(() => dictionary.ToDictionary<string, string>(false));
     }
-        
+
     [Fact]
     public void ToDictionary_NotMatchingValueInputDictionary_ThrowsException()
     {
@@ -136,7 +136,7 @@ public class DictionaryExtensionsTests
 
         Assert.Throws<InvalidCastException>(() => dictionary.ToDictionary<string, string>(false));
     }
-        
+
     [Fact]
     public void ToDictionary_WithValueSelectorMatchingInputDictionary_ReturnsCorrectDictionary()
     {
@@ -147,13 +147,13 @@ public class DictionaryExtensionsTests
         } as IDictionary;
 
         var output = dictionary.ToDictionary<string, string>(o => o.ToString(), true);
-            
+
         Assert.Equal(2, output.Keys.Count);
-            
+
         Assert.Equal("1234", output["Key0"]);
         Assert.Equal("5678", output["Key1"]);
     }
-        
+
     [Fact]
     public void ToDictionary_WithValueSelectorNotMatchingKeyInputDictionary_SkippedNotMatchingKey()
     {
@@ -164,12 +164,12 @@ public class DictionaryExtensionsTests
         } as IDictionary;
 
         var output = dictionary.ToDictionary<string, string>(o => o.ToString(), true);
-            
+
         Assert.Equal(1, output.Keys.Count);
-            
+
         Assert.Equal("5678", output["Key1"]);
     }
-        
+
     [Fact]
     public void ToDictionary_WithValueSelectorNotMatchingKeyInputDictionary_ThrowsException()
     {
@@ -179,6 +179,7 @@ public class DictionaryExtensionsTests
             {"Key1", 5678}
         } as IDictionary;
 
-        Assert.Throws<InvalidCastException>(() => dictionary.ToDictionary<string, string>(o => o.ToString(), false));
+        Assert.Throws<InvalidCastException>(() =>
+            dictionary.ToDictionary<string, string>(o => o.ToString(), false));
     }
 }

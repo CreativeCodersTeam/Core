@@ -10,7 +10,8 @@ public class InMemoryConfigurationSourceTests
     public void CtorTest()
     {
         Assert.Throws<ArgumentNullException>(() => new InMemoryConfigurationSource<object>(null));
-        Assert.Throws<ArgumentNullException>(() => new InMemoryConfigurationSource<object>(new object(), null));
+        Assert.Throws<ArgumentNullException>(
+            () => new InMemoryConfigurationSource<object>(new object(), null));
 
         var obj = new object();
 
@@ -49,7 +50,7 @@ public class InMemoryConfigurationSourceTests
     [Fact]
     public void GetDefaultSettingObjectTestWithDefaultCtor()
     {
-        var obj = new TestSetting { Text = "Test" };
+        var obj = new TestSetting {Text = "Test"};
 
         var source = new InMemoryConfigurationSource<TestSetting>(obj);
 

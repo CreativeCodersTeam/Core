@@ -50,7 +50,8 @@ public class DataToXmlRpcValueConverterTests
         });
 
         var dataObject =
-            converter.Convert(xmlRpcValue, typeof(StructTestDataWithObjectValue)) as StructTestDataWithObjectValue;
+            converter.Convert(xmlRpcValue, typeof(StructTestDataWithObjectValue)) as
+                StructTestDataWithObjectValue;
 
         Assert.Equal("Test", dataObject?.Value);
     }

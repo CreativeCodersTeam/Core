@@ -34,7 +34,8 @@ public class RecordedRequestVerifier : IRecordedRequestVerifier
 
     public IRecordedRequestVerifier WithContentType(string contentType)
     {
-        return RequestMeets(requestMessage => requestMessage.Content?.Headers.ContentType?.MediaType == contentType,
+        return RequestMeets(
+            requestMessage => requestMessage.Content?.Headers.ContentType?.MediaType == contentType,
             $"Content type '{contentType}' not found");
     }
 
@@ -44,7 +45,8 @@ public class RecordedRequestVerifier : IRecordedRequestVerifier
             $"Content text '{content}' not found.");
     }
 
-    private IRecordedRequestVerifier RequestMeetsCore(Func<RecordedHttpRequest, bool> verifyRequest, string verificationInfoText)
+    private IRecordedRequestVerifier RequestMeetsCore(Func<RecordedHttpRequest, bool> verifyRequest,
+        string verificationInfoText)
     {
         _recordedHttpRequests = _recordedHttpRequests
             .Where(verifyRequest)
@@ -55,15 +57,19 @@ public class RecordedRequestVerifier : IRecordedRequestVerifier
         return this;
     }
 
-    public IRecordedRequestVerifier RequestMeets(Func<HttpRequestMessage, bool> verifyRequestMessage, string verificationInfoText)
+    public IRecordedRequestVerifier RequestMeets(Func<HttpRequestMessage, bool> verifyRequestMessage,
+        string verificationInfoText)
     {
-        return RequestMeetsCore(request => verifyRequestMessage(request.RequestMessage), verificationInfoText);
+        return RequestMeetsCore(request => verifyRequestMessage(request.RequestMessage),
+            verificationInfoText);
     }
 
     public IRecordedRequestVerifier RequestMeets(
         Func<HttpRequestMessage, CancellationToken, bool> verifyRequestMessage, string verificationInfoText)
     {
-        return RequestMeetsCore(request => verifyRequestMessage(request.RequestMessage, request.CancellationToken), verificationInfoText);
+        return RequestMeetsCore(
+            request => verifyRequestMessage(request.RequestMessage, request.CancellationToken),
+            verificationInfoText);
     }
 
     public IRecordedRequestVerifier RequestCount(int count)

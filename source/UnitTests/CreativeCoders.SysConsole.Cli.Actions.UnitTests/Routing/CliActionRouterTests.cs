@@ -11,9 +11,9 @@ namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing;
 public class CliActionRouterTests
 {
     [Theory]
-    [InlineData(new[] {"demo", "command"}, new[] { "demo", "command" }, new string[0])]
-    [InlineData(new[] {"demo", "command", "test1"}, new[] { "demo", "command" }, new[] {"test1"})]
-    [InlineData(new[] {"demo", "command", "test2"}, new[] { "demo" }, new[] {"command", "test2"})]
+    [InlineData(new[] {"demo", "command"}, new[] {"demo", "command"}, new string[0])]
+    [InlineData(new[] {"demo", "command", "test1"}, new[] {"demo", "command"}, new[] {"test1"})]
+    [InlineData(new[] {"demo", "command", "test2"}, new[] {"demo"}, new[] {"command", "test2"})]
     public void FindRoute_RouteIsMatched_ReturnsRoute(string[] arguments, string[] routeParts,
         string[] expectedArgs)
     {
@@ -122,7 +122,7 @@ public class CliActionRouterTests
     [Fact]
     public void FindRoute()
     {
-        var args = new List<string> { "controller", "action" };
+        var args = new List<string> {"controller", "action"};
 
         var route0 = CreateActionRoute<DefaultCliController>(nameof(DefaultCliController.DoDefaultAsync),
             "controller");

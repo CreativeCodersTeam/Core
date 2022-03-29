@@ -37,7 +37,8 @@ public class DependencySorterTests
 
         var exception = Assert.Throws<CircularReferenceException>(() => sorter.Sort());
 
-        Assert.Contains(exception.PossibleCircularReferences, x => (string) x == DependencyTestData.Application);
-        Assert.Contains(exception.PossibleCircularReferences, x => (string)x == DependencyTestData.Shell);
+        Assert.Contains(exception.PossibleCircularReferences,
+            x => (string) x == DependencyTestData.Application);
+        Assert.Contains(exception.PossibleCircularReferences, x => (string) x == DependencyTestData.Shell);
     }
 }

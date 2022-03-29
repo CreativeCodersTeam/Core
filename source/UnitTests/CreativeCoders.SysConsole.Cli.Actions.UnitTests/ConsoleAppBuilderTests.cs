@@ -33,7 +33,7 @@ public class ConsoleAppBuilderTests
     [Fact]
     public async Task RunAsync_ConsoleAppControllerDo_ReturnsCorrectReturnCode()
     {
-        var args = new[] { "test", "do" };
+        var args = new[] {"test", "do"};
 
         var consoleApp = new ConsoleAppBuilder(args)
             .UseActions<Startup>()
@@ -51,7 +51,7 @@ public class ConsoleAppBuilderTests
     [Fact]
     public async Task RunAsync_ConsoleAppControllerAmbiguousAction_ThrowsException()
     {
-        var args = new[] { "test", "do_this" };
+        var args = new[] {"test", "do_this"};
 
         var consoleApp = new ConsoleAppBuilder(args)
             .UseActions<Startup>()
@@ -117,7 +117,8 @@ public class ConsoleAppBuilderTests
     [InlineData("controller", "execute")]
     [InlineData("controller", "execute", "this")]
     [InlineData]
-    public async Task RunSync_AddControllerWithTypeParamDifferentRoutesToDefaultAction_ActionIsExecuted(params string[] args)
+    public async Task RunSync_AddControllerWithTypeParamDifferentRoutesToDefaultAction_ActionIsExecuted(
+        params string[] args)
     {
         var consoleApp = new ConsoleAppBuilder(args)
             .UseActions(x =>
@@ -139,7 +140,8 @@ public class ConsoleAppBuilderTests
     [InlineData("controller", "-t", "HelloWorld")]
     [InlineData("controller", "execute", "--text", "HelloWorld")]
     [InlineData("controller", "execute", "this", "-t", "HelloWorld")]
-    public async Task RunSync_DifferentRoutesToDefaultActionWithOptions_ActionIsExecutedWithOptions(params string[] args)
+    public async Task RunSync_DifferentRoutesToDefaultActionWithOptions_ActionIsExecutedWithOptions(
+        params string[] args)
     {
         var consoleApp = new ConsoleAppBuilder(args)
             .UseActions(x =>

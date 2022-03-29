@@ -68,7 +68,7 @@ public class DelegateLoggingTest : LoggingTestBase
         logger.Log(LogLevel.Debug, "Test");
 
         Assert.Equal(LogLevel.Debug, actualLogLevel);
-    }        
+    }
 
     private readonly IDictionary<LogLevel, string> _logEntries = new Dictionary<LogLevel, string>();
 

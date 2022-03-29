@@ -16,7 +16,7 @@ public class ValidationResultTests
     [Fact]
     public void Ctor_CallWithFaultsParam_FaultsStored()
     {
-        var validationResult = new ValidationResult(new []{new ValidationFault("Test")});
+        var validationResult = new ValidationResult(new[] {new ValidationFault("Test")});
 
         Assert.Single((IEnumerable) validationResult.Faults);
     }
@@ -24,7 +24,7 @@ public class ValidationResultTests
     [Fact]
     public void Ctor_CallWithFaultsParam_IsValidFalse()
     {
-        var validationResult = new ValidationResult(new[] { new ValidationFault("Test") });
+        var validationResult = new ValidationResult(new[] {new ValidationFault("Test")});
 
         Assert.False(validationResult.IsValid);
     }

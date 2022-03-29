@@ -17,7 +17,8 @@ public class AuthenticationHttpClientFactoryTests
 
         var client = clientFactory.CreateClient();
 
-        A.CallTo(() => messageHandlerFactory.CreateHandler(Options.DefaultName)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => messageHandlerFactory.CreateHandler(Options.DefaultName))
+            .MustHaveHappenedOnceExactly();
 
         Assert.IsType<AuthenticationHttpClient>(client);
     }

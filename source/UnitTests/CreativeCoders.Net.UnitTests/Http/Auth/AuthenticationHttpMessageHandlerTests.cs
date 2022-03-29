@@ -25,11 +25,13 @@ public class AuthenticationHttpMessageHandlerTests
             .Then()
             .ReturnText(expectedData, HttpStatusCode.OK);
 
-        var authenticationHttpMessageHandler = new AuthenticationHttpMessageHandler(mockHttpClientContext.CreateMessageHandler());
+        var authenticationHttpMessageHandler =
+            new AuthenticationHttpMessageHandler(mockHttpClientContext.CreateMessageHandler());
 
         var httpClient = new HttpClient(authenticationHttpMessageHandler);
 
-        await Assert.ThrowsAsync<HttpRequestException>(() => httpClient.GetStringAsync(new Uri("http://test.com")));
+        await Assert.ThrowsAsync<HttpRequestException>(() =>
+            httpClient.GetStringAsync(new Uri("http://test.com")));
 
         Assert.Single(mockHttpClientContext.RecordedRequests);
     }
@@ -44,7 +46,8 @@ public class AuthenticationHttpMessageHandlerTests
             .Respond()
             .ReturnText(expectedData, HttpStatusCode.OK);
 
-        var authenticationHttpMessageHandler = new AuthenticationHttpMessageHandler(mockHttpClientContext.CreateMessageHandler());
+        var authenticationHttpMessageHandler =
+            new AuthenticationHttpMessageHandler(mockHttpClientContext.CreateMessageHandler());
 
         var httpClient = new HttpClient(authenticationHttpMessageHandler);
 
@@ -89,7 +92,8 @@ public class AuthenticationHttpMessageHandlerTests
         var authenticationProvider = A.Fake<IHttpClientAuthenticationProvider>();
         A.CallTo(() => authenticationProvider.ClientAuthenticator).Returns(clientAuthenticator);
 
-        var authenticationHttpMessageHandler = new AuthenticationHttpMessageHandler(mockHttpClientContext.CreateMessageHandler());
+        var authenticationHttpMessageHandler =
+            new AuthenticationHttpMessageHandler(mockHttpClientContext.CreateMessageHandler());
         authenticationHttpMessageHandler.SetAuthenticationProvider(authenticationProvider);
 
         var httpClient = new HttpClient(authenticationHttpMessageHandler);
@@ -141,13 +145,16 @@ public class AuthenticationHttpMessageHandlerTests
             });
 
         var authenticationProvider = A.Fake<IHttpClientAuthenticationProvider>();
-        A.CallTo(() => authenticationProvider.ClientAuthenticator).Returns(clientAuthenticator).Once().Then.Returns(null);
+        A.CallTo(() => authenticationProvider.ClientAuthenticator).Returns(clientAuthenticator).Once().Then
+            .Returns(null);
 
-        var authenticationHttpMessageHandler = new AuthenticationHttpMessageHandler(mockHttpClientContext.CreateMessageHandler());
+        var authenticationHttpMessageHandler =
+            new AuthenticationHttpMessageHandler(mockHttpClientContext.CreateMessageHandler());
         authenticationHttpMessageHandler.SetAuthenticationProvider(authenticationProvider);
 
         var httpClient = new HttpClient(authenticationHttpMessageHandler);
 
-        await Assert.ThrowsAsync<ArgumentException>(() => httpClient.GetStringAsync(new Uri("http://test.com")));
+        await Assert.ThrowsAsync<ArgumentException>(() =>
+            httpClient.GetStringAsync(new Uri("http://test.com")));
     }
 }

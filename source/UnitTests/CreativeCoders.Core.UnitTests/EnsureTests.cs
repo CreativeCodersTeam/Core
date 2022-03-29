@@ -74,7 +74,8 @@ public class EnsureTests
     public void IsNotNull_AssertIsNotNullExceptionTest()
     {
         object? obj = null;
-        Assert.Throws<InvalidOperationException>(() => Ensure.IsNotNull(obj, () => new InvalidOperationException("test")));
+        Assert.Throws<InvalidOperationException>(() =>
+            Ensure.IsNotNull(obj, () => new InvalidOperationException("test")));
 
         obj = new object();
         Ensure.IsNotNull(obj, () => new InvalidOperationException("test"));
@@ -104,7 +105,7 @@ public class EnsureTests
         Ensure.ThatRange(true, "paramName");
         Ensure.ThatRange(true, "paramName", "Message");
     }
-        
+
     [Fact]
     public void ThatRange_AssertionFalse_ThrowsException()
     {
@@ -131,7 +132,7 @@ public class EnsureTests
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             Ensure.IndexIsInRange(index, startIndex, endIndex, "paramName"));
     }
-        
+
     [Theory]
     [InlineData(0, 1)]
     [InlineData(1, 2)]
@@ -155,59 +156,60 @@ public class EnsureTests
     public void FileExists_ExistingFile_PassWithoutException()
     {
         const string fileName = @"C:\temp_dir\test.txt";
-            
+
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>
             {
                 {fileName, MockFileData.NullObject}
             },
             @"C:\");
-            
+
         mockFileSystem.Install();
-            
+
         Ensure.FileExists(fileName);
     }
-        
+
     [Fact]
     public void FileExists_NoneExistingFile_ThrowsException()
     {
         const string fileName = @"C:\temp_dir\test.txt";
-            
+
         var mockFileSystem = new MockFileSystemEx();
-            
+
         mockFileSystem.Install();
-            
+
         Assert.Throws<FileNotFoundException>(() => Ensure.FileExists(fileName));
     }
-        
+
     [Fact]
     public void DirectoryExists_ExistingDirectory_PassWithoutException()
     {
         const string dirName = @"C:\temp_dir";
         const string fileName = dirName + @"\test.txt";
-            
+
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>
             {
                 {fileName, MockFileData.NullObject}
             },
             @"C:\");
-            
+
         mockFileSystem.Install();
-            
+
         Ensure.DirectoryExists(dirName);
     }
-        
+
     [Fact]
     public void DirectoryExists_NoneExistingDirectory_ThrowsException()
     {
         const string fileName = @"C:\temp_dir\test.txt";
-            
+
         var mockFileSystem = new MockFileSystemEx();
-            
+
         mockFileSystem.Install();
-            
-        Assert.Throws<DirectoryNotFoundException>(() => Ensure.DirectoryExists(Path.GetDirectoryName(fileName)));
+
+        Assert.Throws<DirectoryNotFoundException>(() =>
+            Ensure.DirectoryExists(Path.GetDirectoryName(fileName)));
     }
 
     [Theory]

@@ -3,7 +3,8 @@
 namespace CreativeCoders.Core.UnitTests.Comparing.TestData;
 
 public class ComparableIntInterfaceObject :
-    ComparableObject<ComparableIntInterfaceObject, IComparableIntInterfaceObject>, IComparableIntInterfaceObject
+    ComparableObject<ComparableIntInterfaceObject, IComparableIntInterfaceObject>,
+    IComparableIntInterfaceObject
 {
     static ComparableIntInterfaceObject()
     {

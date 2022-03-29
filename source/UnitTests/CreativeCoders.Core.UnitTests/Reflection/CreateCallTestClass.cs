@@ -6,7 +6,7 @@ namespace CreativeCoders.Core.UnitTests.Reflection;
 public class CreateCallTestClass
 {
     public string GetData() => Data;
-        
+
     public string GetData1(int data)
     {
         return data.ToString();

@@ -7,10 +7,7 @@ namespace CreativeCoders.SysConsole.App.UnitTests.TestData;
 [PublicAPI]
 public class TestProgramMainWithPrivateCtor : IMain
 {
-    private TestProgramMainWithPrivateCtor()
-    {
-            
-    }
+    private TestProgramMainWithPrivateCtor() { }
 
     public Task<int> ExecuteAsync(string[] args)
     {

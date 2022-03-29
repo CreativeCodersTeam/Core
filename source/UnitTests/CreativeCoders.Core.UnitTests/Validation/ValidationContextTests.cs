@@ -31,14 +31,15 @@ public class ValidationContextTests
         var fault = A.Fake<ValidationFault>();
 
         var context = new ValidationContext<object>(obj, false);
-        context.AddFaults(new[]{fault});
+        context.AddFaults(new[] {fault});
 
         Assert.Single((IEnumerable) context.Faults);
         Assert.Contains(fault, context.Faults);
     }
 
     [Fact]
-    public void Ctor_BreakRuleValidationAfterFirstFailedValidationSetToFalse_BreakRuleValidationAfterFirstFailedValidationIsFalse()
+    public void
+        Ctor_BreakRuleValidationAfterFirstFailedValidationSetToFalse_BreakRuleValidationAfterFirstFailedValidationIsFalse()
     {
         var context = new ValidationContext<object>(new object(), false);
 
@@ -46,7 +47,8 @@ public class ValidationContextTests
     }
 
     [Fact]
-    public void Ctor_BreakRuleValidationAfterFirstFailedValidationSetToTrue_BreakRuleValidationAfterFirstFailedValidationIsTrue()
+    public void
+        Ctor_BreakRuleValidationAfterFirstFailedValidationSetToTrue_BreakRuleValidationAfterFirstFailedValidationIsTrue()
     {
         var context = new ValidationContext<object>(new object(), true);
 

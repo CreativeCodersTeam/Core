@@ -18,7 +18,8 @@ public class ServiceLocatorTests
 #pragma warning restore 618
 
         Assert.Throws<ServiceLocatorNotInitializedException>(ServiceLocator.GetInstance<ITestService>);
-        Assert.Throws<ServiceLocatorNotInitializedException>(() => ServiceLocator.GetInstance(typeof(ITestService)));
+        Assert.Throws<ServiceLocatorNotInitializedException>(() =>
+            ServiceLocator.GetInstance(typeof(ITestService)));
     }
 
     [Fact]
@@ -35,7 +36,8 @@ public class ServiceLocatorTests
         A.CallTo(() => diContainer.GetInstance<ITestService>()).Returns(newInstance);
 
         ServiceLocator.Init(() => diContainer);
-        Assert.Throws<ServiceLocatorAlreadyInitializedException>(() => ServiceLocator.Init(() => diContainer));
+        Assert.Throws<ServiceLocatorAlreadyInitializedException>(() =>
+            ServiceLocator.Init(() => diContainer));
         var instance = ServiceLocator.GetInstance<ITestService>();
 
         Assert.Same(newInstance, instance);
@@ -53,11 +55,14 @@ public class ServiceLocatorTests
 
         var diContainer = A.Fake<IDiContainer>();
 
-        A.CallTo(() => diContainer.GetInstances<ITestService>()).Returns(new ITestService[]{newInstance, newInstance2});
-        A.CallTo(() => diContainer.GetInstances(typeof(ITestService))).Returns(new ITestService[] { newInstance, newInstance2 });
+        A.CallTo(() => diContainer.GetInstances<ITestService>())
+            .Returns(new ITestService[] {newInstance, newInstance2});
+        A.CallTo(() => diContainer.GetInstances(typeof(ITestService)))
+            .Returns(new ITestService[] {newInstance, newInstance2});
 
         ServiceLocator.Init(() => diContainer);
-        Assert.Throws<ServiceLocatorAlreadyInitializedException>(() => ServiceLocator.Init(() => diContainer));
+        Assert.Throws<ServiceLocatorAlreadyInitializedException>(() =>
+            ServiceLocator.Init(() => diContainer));
         var instances = ServiceLocator.GetInstances<ITestService>().ToArray();
 
         Assert.Equal(2, instances.Length);

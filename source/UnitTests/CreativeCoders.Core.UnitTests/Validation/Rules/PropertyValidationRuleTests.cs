@@ -89,7 +89,7 @@ public class PropertyValidationRuleTests
     public void Validate_NoSteps_DoesNothing()
     {
         var validationContext = A.Fake<IValidationContext<TestDataObject>>();
-            
+
         var rule = new PropertyValidationRule<TestDataObject, string>(x => x.StrValue);
 
         rule.Validate(validationContext);
@@ -256,7 +256,8 @@ public class PropertyValidationRuleTests
 
 
         A.CallTo(() =>
-                validationContext.AddFaults(A<IEnumerable<IValidationFault>>.That.IsSameSequenceAs(validationFault)))
+                validationContext.AddFaults(
+                    A<IEnumerable<IValidationFault>>.That.IsSameSequenceAs(validationFault)))
             .MustHaveHappenedOnceExactly();
     }
 }

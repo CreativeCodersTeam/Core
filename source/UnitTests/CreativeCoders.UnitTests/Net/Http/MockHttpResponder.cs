@@ -48,17 +48,19 @@ public class MockHttpResponder : IMockHttpResponder
         return ReturnText(content, HttpStatusCode.OK);
     }
 
-    public IMockHttpResponder Return(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> requestHandler)
+    public IMockHttpResponder Return(
+        Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> requestHandler)
     {
         _requestHandler = requestHandler;
 
         return this;
     }
 
-    public IMockHttpResponder ReturnJson<T>(T data, HttpStatusCode statusCode, JsonSerializerOptions jsonSerializerOptions = null)
+    public IMockHttpResponder ReturnJson<T>(T data, HttpStatusCode statusCode,
+        JsonSerializerOptions jsonSerializerOptions = null)
     {
         return Return((_, _) => Task.FromResult(new HttpResponseMessage(statusCode)
-            { Content = JsonContent.Create(data, null, jsonSerializerOptions) }));
+            {Content = JsonContent.Create(data, null, jsonSerializerOptions)}));
     }
 
     public IMockHttpResponder ReturnJson<T>(T data, JsonSerializerOptions jsonSerializerOptions = null)
@@ -90,7 +92,8 @@ public class MockHttpResponder : IMockHttpResponder
     ///     responder is not responsible for this request.
     /// </returns>
     ///-------------------------------------------------------------------------------------------------
-    public Task<HttpResponseMessage> Execute(HttpRequestMessage requestMessage, CancellationToken cancellationToken)
+    public Task<HttpResponseMessage> Execute(HttpRequestMessage requestMessage,
+        CancellationToken cancellationToken)
     {
         Ensure.IsNotNull(requestMessage, nameof(requestMessage));
 
@@ -99,7 +102,8 @@ public class MockHttpResponder : IMockHttpResponder
             throw new InvalidOperationException("Return() was not configured");
         }
 
-        if (_uriPattern.IsNotNullOrEmpty() && !PatternMatcher.MatchesPattern(requestMessage.RequestUri.ToStringSafe(), _uriPattern))
+        if (_uriPattern.IsNotNullOrEmpty() &&
+            !PatternMatcher.MatchesPattern(requestMessage.RequestUri.ToStringSafe(), _uriPattern))
         {
             return Task.FromResult<HttpResponseMessage>(null);
         }

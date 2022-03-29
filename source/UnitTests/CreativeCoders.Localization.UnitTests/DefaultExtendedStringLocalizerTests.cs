@@ -19,8 +19,8 @@ public class DefaultExtendedStringLocalizerTests
     public void GetStrings_DifferentStrings_ReturnsConcatList()
     {
         var localizer = CreateLocalizer(
-            new[] { LocalizedString1 },
-            new[] { LocalizedString2 },
+            new[] {LocalizedString1},
+            new[] {LocalizedString2},
             LocalizedString1, LocalizedString2);
 
         // Act
@@ -52,8 +52,8 @@ public class DefaultExtendedStringLocalizerTests
     public void GetStrings_DuplicateNames_ReturnsMergedList()
     {
         var localizer = CreateLocalizer(
-            new[] { LocalizedString1, LocalizedString2 },
-            new[] { LocalizedString11 },
+            new[] {LocalizedString1, LocalizedString2},
+            new[] {LocalizedString11},
             LocalizedString1, LocalizedString2);
 
         // Act
@@ -85,8 +85,8 @@ public class DefaultExtendedStringLocalizerTests
     public void GetStrings_DuplicateNamesWithResourceNotFound_ReturnsMergedList()
     {
         var localizer = CreateLocalizer(
-            new[] { new LocalizedString(LocalizedString1.Name, LocalizedString1.Value, true) },
-            new[] { LocalizedString11 },
+            new[] {new LocalizedString(LocalizedString1.Name, LocalizedString1.Value, true)},
+            new[] {LocalizedString11},
             LocalizedString1, LocalizedString2);
 
         // Act
@@ -195,6 +195,7 @@ public class DefaultExtendedStringLocalizerTests
         A.CallTo(() => globalLocalizer[A<string>.Ignored, A<string>.Ignored]).Returns(globalLocalizedString);
         A.CallTo(() => localizer[A<string>.Ignored, A<string>.Ignored]).Returns(localizedString);
 
-        return new DefaultExtendedStringLocalizer<DefaultExtendedStringLocalizerTests>(globalLocalizer, localizer);
+        return new DefaultExtendedStringLocalizer<DefaultExtendedStringLocalizerTests>(globalLocalizer,
+            localizer);
     }
 }

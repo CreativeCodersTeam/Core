@@ -18,7 +18,8 @@ public class MethodExecutorTests
 
         var instance = new TestClassForExecutor();
 
-        MethodExecutor.Execute(container, instance, instance.GetType().GetMethod(nameof(TestClassForExecutor.DoSomething)));
+        MethodExecutor.Execute(container, instance,
+            instance.GetType().GetMethod(nameof(TestClassForExecutor.DoSomething)));
 
         Assert.Same(testService, instance.TestService);
         Assert.Same(unknownService, instance.UnknownService);
@@ -48,7 +49,8 @@ public class MethodExecutorTests
         Assert.Equal(nameof(TestClassForExecutor.DoSomethingWithResult), result);
     }
 
-    private static IDiContainer CreateContainerMock(ITestService testService, IUnknownService unknownService, ITestService<int> testServiceInt)
+    private static IDiContainer CreateContainerMock(ITestService testService, IUnknownService unknownService,
+        ITestService<int> testServiceInt)
     {
         var container = A.Fake<IDiContainer>();
 

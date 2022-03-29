@@ -55,21 +55,23 @@ public class MethodInfoExtensionsTests
     [Fact]
     public void MatchesMethod_ExactSameSignature_ReturnsTrue()
     {
-
-        var methodInfo = typeof(ITestInterfaceWithMethods).GetMethod(nameof(ITestInterfaceWithMethods.TestGeneric1))?
+        var methodInfo = typeof(ITestInterfaceWithMethods)
+            .GetMethod(nameof(ITestInterfaceWithMethods.TestGeneric1))?
             .MakeGenericMethod(typeof(int));
 
-        Assert.True(methodInfo.MatchesMethod(typeof(ITestInterfaceWithMethods).GetMethod(nameof(ITestInterfaceWithMethods.TestGeneric1))));
+        Assert.True(methodInfo.MatchesMethod(
+            typeof(ITestInterfaceWithMethods).GetMethod(nameof(ITestInterfaceWithMethods.TestGeneric1))));
     }
 
     [Fact]
     public void MatchesMethod_SameSignatureButDifferentGenericParameters_ReturnsFalse()
     {
-
-        var methodInfoInt = typeof(ITestInterfaceWithMethods).GetMethod(nameof(ITestInterfaceWithMethods.TestGeneric1))?
+        var methodInfoInt = typeof(ITestInterfaceWithMethods)
+            .GetMethod(nameof(ITestInterfaceWithMethods.TestGeneric1))?
             .MakeGenericMethod(typeof(int));
 
-        var methodInfoDouble = typeof(ITestInterfaceWithMethods).GetMethod(nameof(ITestInterfaceWithMethods.TestGeneric1))?
+        var methodInfoDouble = typeof(ITestInterfaceWithMethods)
+            .GetMethod(nameof(ITestInterfaceWithMethods.TestGeneric1))?
             .MakeGenericMethod(typeof(double));
 
         Assert.False(methodInfoInt.MatchesMethod(methodInfoDouble));

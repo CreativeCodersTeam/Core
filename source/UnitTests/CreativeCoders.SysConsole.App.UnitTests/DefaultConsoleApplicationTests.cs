@@ -40,7 +40,8 @@ public class DefaultConsoleApplicationTests
 
         var executor = A.Fake<IConsoleAppExecutor>();
 
-        A.CallTo(() => executor.ExecuteAsync(A<string[]>.Ignored)).Throws(_ => new ConsoleException(expectedResult));
+        A.CallTo(() => executor.ExecuteAsync(A<string[]>.Ignored))
+            .Throws(_ => new ConsoleException(expectedResult));
 
         var consoleApp = new DefaultConsoleApp(executor, Array.Empty<string>(), sysConsole);
 

@@ -32,7 +32,7 @@ public class ServiceProviderContainerTests
     public void GetInstanceTestThrowsException()
     {
         var serviceCollection = new ServiceCollection();
-            
+
         var container = new ServiceProviderDiContainer(serviceCollection.BuildServiceProvider());
 
         new DiContainerTestHelper().TestGetInstanceThrowsException<ITestService>(container);
@@ -47,7 +47,8 @@ public class ServiceProviderContainerTests
 
         var container = new ServiceProviderDiContainer(serviceCollection.BuildServiceProvider());
 
-        new DiContainerTestHelper().TestGetInstances<ITestService>(container, typeof(TestService), typeof(TestServiceWithNoCtorParam));
+        new DiContainerTestHelper().TestGetInstances<ITestService>(container, typeof(TestService),
+            typeof(TestServiceWithNoCtorParam));
     }
 
     [Fact]
@@ -63,7 +64,8 @@ public class ServiceProviderContainerTests
     {
         var container = new ServiceProviderDiContainer(new ServiceCollection().BuildServiceProvider());
 
-        new DiContainerTestHelper().TryGetInstance_NoServiceFound_ReturnsFalseAndNull<ITestService>(container);
+        new DiContainerTestHelper()
+            .TryGetInstance_NoServiceFound_ReturnsFalseAndNull<ITestService>(container);
     }
 
     [Fact]
@@ -73,7 +75,8 @@ public class ServiceProviderContainerTests
         serviceCollection.AddTransient<ITestService, TestService2>();
         var container = new ServiceProviderDiContainer(serviceCollection.BuildServiceProvider());
 
-        new DiContainerTestHelper().TryGetInstance_ServiceFound_ReturnsTrueAndInstance<ITestService>(container);
+        new DiContainerTestHelper()
+            .TryGetInstance_ServiceFound_ReturnsTrueAndInstance<ITestService>(container);
     }
 
     [Fact]

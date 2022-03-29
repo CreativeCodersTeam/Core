@@ -23,7 +23,7 @@ public class SimpleInjectorContainerTests
         var simpleInjectorContainer = new Container();
         simpleInjectorContainer.Options.ResolveUnregisteredConcreteTypes = true;
         simpleInjectorContainer.Register<ITestService, TestServiceWithNoCtorParam>();
-            
+
         var container = new SimpleInjectorDiContainer(simpleInjectorContainer);
 
         new DiContainerTestHelper().TestGetInstance<ITestService, TestServiceWithNoCtorParam>(container);
@@ -42,14 +42,16 @@ public class SimpleInjectorContainerTests
     [Fact]
     public void GetInstancesTest()
     {
-        var _ = new[] { typeof(TestServiceWithNoCtorParam).Assembly};
+        var _ = new[] {typeof(TestServiceWithNoCtorParam).Assembly};
         var simpleInjectorContainer = new Container();
-        simpleInjectorContainer.Collection.Register<ITestService>(typeof(TestService2), typeof(TestServiceWithNoCtorParam));
-            
+        simpleInjectorContainer.Collection.Register<ITestService>(typeof(TestService2),
+            typeof(TestServiceWithNoCtorParam));
+
         simpleInjectorContainer.Verify();
         var container = new SimpleInjectorDiContainer(simpleInjectorContainer);
 
-        new DiContainerTestHelper().TestGetInstances<ITestService>(container, typeof(TestService2), typeof(TestServiceWithNoCtorParam));
+        new DiContainerTestHelper().TestGetInstances<ITestService>(container, typeof(TestService2),
+            typeof(TestServiceWithNoCtorParam));
     }
 
     [Fact]
@@ -65,7 +67,8 @@ public class SimpleInjectorContainerTests
     {
         var container = new SimpleInjectorDiContainer(new Container());
 
-        new DiContainerTestHelper().TryGetInstance_NoServiceFound_ReturnsFalseAndNull<ITestService>(container);
+        new DiContainerTestHelper()
+            .TryGetInstance_NoServiceFound_ReturnsFalseAndNull<ITestService>(container);
     }
 
     [Fact]
@@ -75,7 +78,8 @@ public class SimpleInjectorContainerTests
         simpleInjectorContainer.Register<ITestService, TestService2>();
         var container = new SimpleInjectorDiContainer(simpleInjectorContainer);
 
-        new DiContainerTestHelper().TryGetInstance_ServiceFound_ReturnsTrueAndInstance<ITestService>(container);
+        new DiContainerTestHelper()
+            .TryGetInstance_ServiceFound_ReturnsTrueAndInstance<ITestService>(container);
     }
 
     [Fact]

@@ -100,8 +100,10 @@ public class JsonConfigurationSourceTests
                 {@"c:\temp\data0.config", @"c:\temp\data1.config"}).ToArray();
 
         Assert.Equal(2, sources.Length);
-        Assert.Contains("DemoDataValue0", sources.Select(source => (source.GetSettingObject() as DemoSetting)?.Text));
-        Assert.Contains("DemoDataValue1", sources.Select(source => (source.GetSettingObject() as DemoSetting)?.Text));
+        Assert.Contains("DemoDataValue0",
+            sources.Select(source => (source.GetSettingObject() as DemoSetting)?.Text));
+        Assert.Contains("DemoDataValue1",
+            sources.Select(source => (source.GetSettingObject() as DemoSetting)?.Text));
     }
 
     [Fact]
@@ -115,7 +117,8 @@ public class JsonConfigurationSourceTests
 
         var sources =
             JsonConfigurationSource<DemoSetting>.FromFiles(new[]
-                    {@"c:\temp\data10.config", @"c:\temp\data21.config"}, () => new DemoSetting {Text = "DemoData"})
+                        {@"c:\temp\data10.config", @"c:\temp\data21.config"},
+                    () => new DemoSetting {Text = "DemoData"})
                 .ToArray();
 
         Assert.Equal(2, sources.Length);

@@ -165,34 +165,34 @@ public class ServiceProviderContainerBuilderTests
                 () =>
                     new ServiceProviderDiContainerBuilder(new ServiceCollection()));
     }
-        
+
     [Fact]
     public void AddTransientCollectionFor_Type_ReturnsCorrectInstances()
     {
         new DiContainerBuilderTestHelper()
             .AddTransientCollectionFor_Type_ReturnsCorrectInstances(
-                () => 
+                () =>
                     new ServiceProviderDiContainerBuilder(new ServiceCollection()));
     }
-        
+
     [Fact]
     public void AddScopedCollectionFor_Type_ReturnsCorrectInstances()
     {
         new DiContainerBuilderTestHelper()
             .AddScopedCollectionFor_Type_ReturnsCorrectInstances(
-                () => 
+                () =>
                     new ServiceProviderDiContainerBuilder(new ServiceCollection()));
     }
-        
+
     [Fact]
     public void AddSingletonCollectionFor_Type_ReturnsCorrectInstances()
     {
         new DiContainerBuilderTestHelper()
             .AddSingletonCollectionFor_Type_ReturnsCorrectInstances(
-                () => 
+                () =>
                     new ServiceProviderDiContainerBuilder(new ServiceCollection()));
     }
-        
+
     [Fact]
     public void AddTransientCollectionFor_ForNoneInterfaceType_ThrowsException()
     {

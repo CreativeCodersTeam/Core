@@ -40,9 +40,7 @@ public class ReflectionTests
         Assert.False(expression.IsPropertyOf());
     }
 
-    [UsedImplicitly]
-    public string Text;
+    [UsedImplicitly] public string Text;
 
-    [UsedImplicitly]
-    public string TestProp { get; set; }
+    [UsedImplicitly] public string TestProp { get; set; }
 }

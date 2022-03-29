@@ -195,25 +195,25 @@ public class AutofacDiContainerBuilderTests
     {
         new DiContainerBuilderTestHelper()
             .AddTransientCollectionFor_Type_ReturnsCorrectInstances(
-                () => 
+                () =>
                     new AutofacDiContainerBuilder(CreateContainer()));
     }
-        
+
     [Fact]
     public void AddScopedCollectionFor_Type_ReturnsCorrectInstances()
     {
         new DiContainerBuilderTestHelper()
             .AddScopedCollectionFor_Type_ReturnsCorrectInstances(
-                () => 
+                () =>
                     new AutofacDiContainerBuilder(CreateContainer()));
     }
-        
+
     [Fact]
     public void AddSingletonCollectionFor_Type_ReturnsCorrectInstances()
     {
         new DiContainerBuilderTestHelper()
             .AddSingletonCollectionFor_Type_ReturnsCorrectInstances(
-                () => 
+                () =>
                     new AutofacDiContainerBuilder(CreateContainer()));
     }
 

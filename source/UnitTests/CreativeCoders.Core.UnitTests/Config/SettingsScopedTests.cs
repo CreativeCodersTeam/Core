@@ -15,6 +15,6 @@ public class SettingsScopedTests
     public void ValuesTest()
     {
         new SettingTestHelper().TestSettingsValues(factory => new SettingsScoped<object>(factory),
-            () => new[] { new object(), new object() });
+            () => new[] {new object(), new object()});
     }
 }

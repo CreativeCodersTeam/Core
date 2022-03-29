@@ -7,6 +7,7 @@ public enum TestEnum
     Ok,
     Failed,
     Custom,
+
     // ReSharper disable once InconsistentNaming
     OK
 }

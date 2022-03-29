@@ -23,7 +23,7 @@ public class ArrayValueTests
     public void Ctor_EmptyCollection_ValueIsEmpty()
     {
         var value = new ArrayValue(Array.Empty<XmlRpcValue>());
-        var xmlRpcValue = (XmlRpcValue)value;
+        var xmlRpcValue = (XmlRpcValue) value;
 
         Assert.Empty(value.Value);
         Assert.Empty(xmlRpcValue.GetValue<IEnumerable<XmlRpcValue>>());
@@ -35,8 +35,8 @@ public class ArrayValueTests
         var stringValue = new StringValue("SomeValue");
         var intValue = new IntegerValue(1234);
 
-        var value = new ArrayValue(new XmlRpcValue[]{stringValue, intValue});
-        var xmlRpcValue = (XmlRpcValue)value;
+        var value = new ArrayValue(new XmlRpcValue[] {stringValue, intValue});
+        var xmlRpcValue = (XmlRpcValue) value;
 
         Assert.Equal(2, value.Value.Count());
         Assert.Equal(2, xmlRpcValue.GetValue<IEnumerable<XmlRpcValue>>().Count());

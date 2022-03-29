@@ -19,7 +19,7 @@ public class NullArgumentExtensionsTests
         argument
             .Should()
             .BeOfType<ArgumentNotNull<string>>();
-            
+
         argument.Value
             .Should()
             .Be(testValue);

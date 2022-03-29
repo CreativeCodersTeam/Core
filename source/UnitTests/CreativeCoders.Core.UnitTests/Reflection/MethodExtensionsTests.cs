@@ -11,107 +11,109 @@ public class MethodExtensionsTests
     public void ExecuteMethod_ExistingMethod_MethodIsCalled()
     {
         var testObject = A.Fake<IReflectionTestObject>();
-            
+
         testObject.ExecuteMethod(nameof(testObject.Execute));
 
         A.CallTo(() => testObject.Execute()).MustHaveHappenedOnceExactly();
     }
-        
+
     [Fact]
     public void ExecuteMethod_NotExistingMethod_ThrowsException()
     {
         var testObject = A.Fake<IReflectionTestObject>();
-            
-        Assert.Throws<MissingMethodException>(() => testObject.ExecuteMethod(nameof(testObject.Execute) + "1234"));
+
+        Assert.Throws<MissingMethodException>(() =>
+            testObject.ExecuteMethod(nameof(testObject.Execute) + "1234"));
     }
-        
+
     [Fact]
     public void ExecuteMethod_OverloadedExistingMethod_MethodIsCalled()
     {
         var testObject = A.Fake<IReflectionTestObject>();
-            
+
         testObject.ExecuteMethod(nameof(testObject.ExecuteEx));
 
         A.CallTo(() => testObject.ExecuteEx()).MustHaveHappenedOnceExactly();
     }
-        
+
     [Fact]
     public void ExecuteMethod_OverloadedExistingMethodWithOneArgument_MethodIsCalled()
     {
         var testObject = A.Fake<IReflectionTestObject>();
-            
+
         testObject.ExecuteMethod(nameof(testObject.ExecuteEx), 1234);
 
         A.CallTo(() => testObject.ExecuteEx(1234)).MustHaveHappenedOnceExactly();
     }
-        
+
     [Fact]
     public void ExecuteMethod_OverloadedExistingMethodWithTwoArgument_MethodIsCalled()
     {
         var testObject = A.Fake<IReflectionTestObject>();
-            
+
         testObject.ExecuteMethod(nameof(testObject.ExecuteEx), 1234, "Test");
 
         A.CallTo(() => testObject.ExecuteEx(1234, "Test")).MustHaveHappenedOnceExactly();
     }
-        
+
     [Fact]
     public void ExecuteMethod_OverloadedExistingMethodWithThreeArgument_MethodIsCalled()
     {
         var testObject = A.Fake<IReflectionTestObject>();
-            
+
         testObject.ExecuteMethod(nameof(testObject.ExecuteEx), 1234, "Test", true);
 
         A.CallTo(() => testObject.ExecuteEx(1234, "Test", true)).MustHaveHappenedOnceExactly();
     }
-        
+
     [Fact]
     public void ExecuteMethod_ExistingMethodWithReturnValue_MethodIsCalled()
     {
         var testObject = A.Fake<IReflectionTestObject>();
 
         A.CallTo(() => testObject.Calculate()).Returns(1234);
-            
+
         var result = testObject.ExecuteMethod<int>(nameof(testObject.Calculate));
 
         A.CallTo(() => testObject.Calculate()).MustHaveHappenedOnceExactly();
         Assert.Equal(1234, result);
     }
-        
+
     [Fact]
     public void ExecuteMethod_NotExistingMethodWithReturnValue_ThrowsException()
     {
         var testObject = A.Fake<IReflectionTestObject>();
-            
-        Assert.Throws<MissingMethodException>(() => testObject.ExecuteMethod<int>(nameof(testObject.Calculate) + "1234"));
+
+        Assert.Throws<MissingMethodException>(() =>
+            testObject.ExecuteMethod<int>(nameof(testObject.Calculate) + "1234"));
     }
-        
+
     [Fact]
     public void ExecuteMethod_OverloadedExistingMethodWithOneArgumentWithReturnValue_MethodIsCalled()
     {
         var testObject = A.Fake<IReflectionTestObject>();
-            
+
         A.CallTo(() => testObject.Calculate(3456)).Returns(1234);
-            
+
         var result = testObject.ExecuteMethod<int>(nameof(testObject.Calculate), 3456);
 
         A.CallTo(() => testObject.Calculate(3456)).MustHaveHappenedOnceExactly();
         Assert.Equal(1234, result);
     }
-        
+
     [Fact]
     public void ExecuteMethod_OverloadedExistingMethodWithTwoArgumentWithReturnValue_MethodIsCalled()
     {
         var testObject = A.Fake<IReflectionTestObject>();
-            
+
         A.CallTo(() => testObject.Calculate(3456, "Test")).Returns(1234);
-            
+
         var result = testObject.ExecuteMethod<int>(nameof(testObject.Calculate), 3456, "Test");
 
         A.CallTo(() => testObject.Calculate(3456, "Test")).MustHaveHappenedOnceExactly();
         Assert.Equal(1234, result);
     }
-        
+
     [Fact]
     public void ExecuteGenericMethod_CallVoidMethod_MethodWasCalled()
     {
@@ -119,7 +121,7 @@ public class MethodExtensionsTests
         var instance = new GenericMethodTestClass();
 
         instance.ExecuteGenericMethod(nameof(GenericMethodTestClass.DoSomething),
-            new [] {new GenericArgument("T", typeof(int))}, value);
+            new[] {new GenericArgument("T", typeof(int))}, value);
 
         Assert.Equal(value.ToString(), instance.Data);
     }
@@ -131,7 +133,7 @@ public class MethodExtensionsTests
         var instance = new GenericMethodTestClass();
 
         instance.ExecuteGenericMethod(nameof(GenericMethodTestClass.DoSomething),
-            new[] { typeof(int) }, value);
+            new[] {typeof(int)}, value);
 
         Assert.Equal(value.ToString(), instance.Data);
     }
@@ -143,7 +145,7 @@ public class MethodExtensionsTests
         var instance = new GenericMethodTestClass();
 
         var result = instance.ExecuteGenericMethod<int>(nameof(GenericMethodTestClass.GetData),
-            new[] { new GenericArgument("T", typeof(int)) }, value);
+            new[] {new GenericArgument("T", typeof(int))}, value);
 
         Assert.Equal(value, result);
     }
@@ -155,7 +157,7 @@ public class MethodExtensionsTests
         var instance = new GenericMethodTestClass();
 
         var result = instance.ExecuteGenericMethod<int>(nameof(GenericMethodTestClass.GetData),
-            new[] { typeof(int) }, value);
+            new[] {typeof(int)}, value);
 
         Assert.Equal(value, result);
     }
@@ -181,7 +183,8 @@ public class MethodExtensionsTests
     }
 
     [Fact]
-    public void ExecuteGenericMethod_CallMethodWithResultAndTwoGenericTypeParametersAndType_MethodReturnsResult()
+    public void
+        ExecuteGenericMethod_CallMethodWithResultAndTwoGenericTypeParametersAndType_MethodReturnsResult()
     {
         const int value = 12345;
         var dateTime = DateTime.Now;
@@ -201,7 +204,8 @@ public class MethodExtensionsTests
     }
 
     [Fact]
-    public void ExecuteGenericMethod_CallMethodWithResultAndTwoGenericTypeParametersAndTypeNotExactlyMatching_MethodReturnsResult()
+    public void
+        ExecuteGenericMethod_CallMethodWithResultAndTwoGenericTypeParametersAndTypeNotExactlyMatching_MethodReturnsResult()
     {
         var value = new TestDataClassSpecial();
         var dateTime = DateTime.Now;
@@ -245,7 +249,7 @@ public class MethodExtensionsTests
         var instance = new GenericMethodTestClass();
 
         Assert.Throws<MissingMethodException>(() => instance.ExecuteGenericMethod("NotExisting",
-            new[] { new GenericArgument("T", typeof(int)) }, 1234));
+            new[] {new GenericArgument("T", typeof(int))}, 1234));
 
         Assert.Throws<MissingMethodException>(() =>
             instance.ExecuteGenericMethod<string>(nameof(GenericMethodTestClass.GetData),
@@ -288,7 +292,7 @@ public class MethodExtensionsTests
         var instance = new GenericMethodTestClass();
 
         var func = instance.CreateGenericMethodFunc<string>(nameof(GenericMethodTestClass.GetData),
-            new [] {typeof(int), typeof(DateTime)}, typeof(int), typeof(DateTime));
+            new[] {typeof(int), typeof(DateTime)}, typeof(int), typeof(DateTime));
 
         var result = func(new object[] {value, dateTimeNow});
 
@@ -299,10 +303,11 @@ public class MethodExtensionsTests
     public void CreateGenericMethodFunc_FuncWithOneGenericParameters_CallSucceeded()
     {
         const int value = 1234;
-            
+
         var instance = new GenericMethodTestClass();
 
-        var func = instance.CreateGenericMethodFunc<int, string>(nameof(GenericMethodTestClass.GetDataText), new []{ typeof(int) }, typeof(int));
+        var func = instance.CreateGenericMethodFunc<int, string>(nameof(GenericMethodTestClass.GetDataText),
+            new[] {typeof(int)}, typeof(int));
 
         var result = func(value);
 
@@ -317,7 +322,8 @@ public class MethodExtensionsTests
 
         var instance = new GenericMethodTestClass();
 
-        var func = instance.CreateGenericMethodFunc<int, DateTime, string>(nameof(GenericMethodTestClass.GetData),
+        var func = instance.CreateGenericMethodFunc<int, DateTime, string>(
+            nameof(GenericMethodTestClass.GetData),
             new[] {typeof(int), typeof(DateTime)}, typeof(int), typeof(DateTime));
 
         var result = func(value, dateTimeNow);
@@ -335,7 +341,7 @@ public class MethodExtensionsTests
         var instance = new GenericMethodTestClass();
 
         var func = instance.CreateGenericMethodFunc<int, DateTime, bool, string>(
-            nameof(GenericMethodTestClass.GetData3), new[] { typeof(int), typeof(DateTime), typeof(bool) },
+            nameof(GenericMethodTestClass.GetData3), new[] {typeof(int), typeof(DateTime), typeof(bool)},
             typeof(int), typeof(DateTime), typeof(bool));
 
         var result = func(value, dateTimeNow, boolValue);
@@ -354,7 +360,8 @@ public class MethodExtensionsTests
         var instance = new GenericMethodTestClass();
 
         var func = instance.CreateGenericMethodFunc<int, DateTime, bool, double, string>(
-            nameof(GenericMethodTestClass.GetData4), new[] { typeof(int), typeof(DateTime), typeof(bool), typeof(double) },
+            nameof(GenericMethodTestClass.GetData4),
+            new[] {typeof(int), typeof(DateTime), typeof(bool), typeof(double)},
             typeof(int), typeof(DateTime), typeof(bool), typeof(double));
 
         var result = func(value, dateTimeNow, boolValue, doubleValue);

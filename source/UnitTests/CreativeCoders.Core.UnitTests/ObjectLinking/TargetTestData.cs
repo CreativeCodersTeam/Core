@@ -8,17 +8,17 @@ namespace CreativeCoders.Core.UnitTests.ObjectLinking;
 public class TargetTestData : ObservableObject
 {
     private string _targetText;
-        
+
     private string _targetName;
-        
+
     private string _fromSourceName;
-        
+
     private string _twoWayProperty;
-        
+
     private string _stringValue;
-        
+
     private double _doubleValue;
-        
+
     private string _secondStringValue;
     private string _fromSourceNameTwoWay;
 
@@ -27,7 +27,7 @@ public class TargetTestData : ObservableObject
         get => _targetText;
         set => Set(ref _targetText, value);
     }
-        
+
     [PropertyLink(typeof(SourceTestData), nameof(SourceTestData.SourceName))]
     public string TargetName
     {
@@ -35,14 +35,16 @@ public class TargetTestData : ObservableObject
         set => Set(ref _targetName, value);
     }
 
-    [PropertyLink(typeof(SourceTestData), nameof(SourceTestData.SourceName), Direction = LinkDirection.OneWayFromTarget)]
+    [PropertyLink(typeof(SourceTestData), nameof(SourceTestData.SourceName),
+        Direction = LinkDirection.OneWayFromTarget)]
     public string FromSourceName
     {
         get => _fromSourceName;
         set => Set(ref _fromSourceName, value);
     }
-        
-    [PropertyLink(typeof(SourceTestData), nameof(SourceTestData.SourceName), Direction = LinkDirection.TwoWay)]
+
+    [PropertyLink(typeof(SourceTestData), nameof(SourceTestData.SourceName),
+        Direction = LinkDirection.TwoWay)]
     public string FromSourceNameTwoWay
     {
         get => _fromSourceNameTwoWay;
@@ -63,14 +65,15 @@ public class TargetTestData : ObservableObject
         set => Set(ref _stringValue, value);
     }
 
-    [PropertyLink(typeof(SourceTestData), nameof(SourceTestData.IntValue), Direction = LinkDirection.OneWayToTarget,
+    [PropertyLink(typeof(SourceTestData), nameof(SourceTestData.IntValue),
+        Direction = LinkDirection.OneWayToTarget,
         Converter = typeof(StringSourcePropertyConverter<int>))]
     public double DoubleValue
     {
         get => _doubleValue;
         set => Set(ref _doubleValue, value);
     }
-        
+
     [PropertyLink(typeof(SourceTestData), nameof(SourceTestData.IntValue), Direction = LinkDirection.TwoWay,
         Converter = typeof(StringSourcePropertyConverter<int>), ConverterParameter = 9876)]
     public string SecondStringValue

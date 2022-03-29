@@ -198,7 +198,7 @@ public class PropertyLinkItemsBuilderTests
         Assert.Equal(targetProperty, item.Info.TargetProperty);
         Assert.Equal(LinkDirection.OneWayToTarget, item.Info.Direction);
     }
-        
+
     [Fact]
     public void Build_TwoDefinitionWithSameDataTargetTwoWayInput_OneInfoOutput()
     {
@@ -242,7 +242,7 @@ public class PropertyLinkItemsBuilderTests
         Assert.Equal(targetProperty, item.Info.TargetProperty);
         Assert.Equal(LinkDirection.TwoWay, item.Info.Direction);
     }
-        
+
     [Fact]
     public void Build_TwoDefinitionWithSameDataSourceTwoWayInput_OneInfoOutput()
     {
@@ -330,7 +330,7 @@ public class PropertyLinkItemsBuilderTests
         Assert.Equal(targetProperty, item.Info.TargetProperty);
         Assert.Equal(LinkDirection.TwoWay, item.Info.Direction);
     }
-        
+
     [Fact]
     public void Build_TwoDefinitionWithOppositeLinkingInput_OneInfoWithOneWayOutput()
     {
@@ -340,7 +340,7 @@ public class PropertyLinkItemsBuilderTests
         const string targetPropertyName = nameof(TargetTestData.TargetName);
         var sourceProperty = sourceTestData.GetType().GetProperty(sourcePropertyName);
         var targetProperty = targetTestData.GetType().GetProperty(targetPropertyName);
-            
+
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
             new()
@@ -362,19 +362,19 @@ public class PropertyLinkItemsBuilderTests
                 LinkDirection = LinkDirection.OneWayToTarget
             }
         };
-            
+
         var items = new PropertyLinkItemsBuilder(linkDefinitions).Build().ToArray();
 
         Assert.Single(items);
         var item = items.First();
-            
+
         Assert.Equal(sourceTestData, item.Info.Source);
         Assert.Equal(targetTestData, item.Info.Target);
         Assert.Equal(sourceProperty, item.Info.SourceProperty);
         Assert.Equal(targetProperty, item.Info.TargetProperty);
         Assert.Equal(LinkDirection.OneWayFromTarget, item.Info.Direction);
     }
-        
+
     [Fact]
     public void Build_TwoDefinitionWithOppositeLinkingInput_OneInfoWithTwoWayOutput()
     {
@@ -384,7 +384,7 @@ public class PropertyLinkItemsBuilderTests
         const string targetPropertyName = nameof(TargetTestData.TargetName);
         var sourceProperty = sourceTestData.GetType().GetProperty(sourcePropertyName);
         var targetProperty = targetTestData.GetType().GetProperty(targetPropertyName);
-            
+
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
             new()
@@ -406,19 +406,19 @@ public class PropertyLinkItemsBuilderTests
                 LinkDirection = LinkDirection.OneWayToTarget
             }
         };
-            
+
         var items = new PropertyLinkItemsBuilder(linkDefinitions).Build().ToArray();
 
         Assert.Single(items);
         var item = items.First();
-            
+
         Assert.Equal(sourceTestData, item.Info.Source);
         Assert.Equal(targetTestData, item.Info.Target);
         Assert.Equal(sourceProperty, item.Info.SourceProperty);
         Assert.Equal(targetProperty, item.Info.TargetProperty);
         Assert.Equal(LinkDirection.TwoWay, item.Info.Direction);
     }
-        
+
     [Fact]
     public void Build_TwoDefinitionWithOppositeLinkingWithOneTwoWayLinkInput_OneInfoWithTwoWayOutput()
     {
@@ -428,7 +428,7 @@ public class PropertyLinkItemsBuilderTests
         const string targetPropertyName = nameof(TargetTestData.TargetName);
         var sourceProperty = sourceTestData.GetType().GetProperty(sourcePropertyName);
         var targetProperty = targetTestData.GetType().GetProperty(targetPropertyName);
-            
+
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
             new()
@@ -450,19 +450,19 @@ public class PropertyLinkItemsBuilderTests
                 LinkDirection = LinkDirection.TwoWay
             }
         };
-            
+
         var items = new PropertyLinkItemsBuilder(linkDefinitions).Build().ToArray();
 
         Assert.Single(items);
         var item = items.First();
-            
+
         Assert.Equal(sourceTestData, item.Info.Source);
         Assert.Equal(targetTestData, item.Info.Target);
         Assert.Equal(sourceProperty, item.Info.SourceProperty);
         Assert.Equal(targetProperty, item.Info.TargetProperty);
         Assert.Equal(LinkDirection.TwoWay, item.Info.Direction);
     }
-        
+
     [Fact]
     public void Build_TwoDefinitionWithSameDataButDifferentConverterInput_TwoInfoOutput()
     {
@@ -507,7 +507,7 @@ public class PropertyLinkItemsBuilderTests
         Assert.Equal(targetProperty, firstItem.Info.TargetProperty);
         Assert.IsType<StringSourcePropertyConverter<int>>(firstItem.Info.Converter);
         Assert.Equal(LinkDirection.OneWayToTarget, firstItem.Info.Direction);
-            
+
         var secondItem = items[1];
 
         Assert.Equal(sourceTestData, secondItem.Info.Source);
@@ -517,7 +517,7 @@ public class PropertyLinkItemsBuilderTests
         Assert.Null(secondItem.Info.Converter);
         Assert.Equal(LinkDirection.OneWayToTarget, secondItem.Info.Direction);
     }
-        
+
     [Fact]
     public void Build_TwoDefinitionWithSameDataButDifferentConverterParametersInput_TwoInfoOutput()
     {
@@ -566,7 +566,7 @@ public class PropertyLinkItemsBuilderTests
         Assert.IsType<StringSourcePropertyConverter<int>>(firstItem.Info.Converter);
         Assert.Equal(1, firstItem.Info.ConverterParameter);
         Assert.Equal(LinkDirection.OneWayToTarget, firstItem.Info.Direction);
-            
+
         var secondItem = items[1];
 
         Assert.Equal(sourceTestData, secondItem.Info.Source);

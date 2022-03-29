@@ -45,6 +45,7 @@ public class DateTimeValueReaderTests
         var value = reader.ReadValue(xmlElement);
 
         Assert.IsType<DateTimeValue>(value);
-        Assert.Equal(new DateTime(2019, 6, 25, 11, 22, 33), value.GetValue<DateTime>(), TimeSpan.FromMilliseconds(1));
+        Assert.Equal(new DateTime(2019, 6, 25, 11, 22, 33), value.GetValue<DateTime>(),
+            TimeSpan.FromMilliseconds(1));
     }
 }

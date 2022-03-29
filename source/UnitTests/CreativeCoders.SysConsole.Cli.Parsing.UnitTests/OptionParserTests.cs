@@ -12,7 +12,7 @@ public class OptionParserTests
     [Fact]
     public void Parse_ValueAndParameterWithLongName_PropertiesAreSetCorrect()
     {
-        var args = new[] { "hello", "--text", "TestText" };
+        var args = new[] {"hello", "--text", "TestText"};
 
         var parser = new OptionParser(typeof(TestOptionForParser));
 
@@ -36,7 +36,7 @@ public class OptionParserTests
     [Fact]
     public void Parse_ValueAndParameterWithShortName_PropertiesAreSetCorrect()
     {
-        var args = new[] { "hello", "-t", "TestText" };
+        var args = new[] {"hello", "-t", "TestText"};
 
         var parser = new OptionParser(typeof(TestOptionForParser));
 
@@ -91,7 +91,7 @@ public class OptionParserTests
         const int expectedValue0 = 1234;
         const int expectedValue1 = 4321;
 
-        var args = new[] { "hello", "-j", expectedValue1.ToString(), "-i", expectedValue0.ToString() };
+        var args = new[] {"hello", "-j", expectedValue1.ToString(), "-i", expectedValue0.ToString()};
 
         var parser = new OptionParser(typeof(TestOptionWithInt));
 
@@ -121,7 +121,7 @@ public class OptionParserTests
     {
         const int expectedValue1 = 4321;
 
-        var args = new[] { "hello", "-j", expectedValue1.ToString() };
+        var args = new[] {"hello", "-j", expectedValue1.ToString()};
 
         var parser = new OptionParser(typeof(TestOptionWithInt));
 
@@ -140,13 +140,13 @@ public class OptionParserTests
 
         exception.ParameterAttribute
             .Should()
-            .BeEquivalentTo(new OptionParameterAttribute('i', "integer"){IsRequired = true});
+            .BeEquivalentTo(new OptionParameterAttribute('i', "integer") {IsRequired = true});
     }
 
     [Fact]
     public void Parse_BoolValues_PropertiesAreSetCorrect()
     {
-        var args = new[] { "-v", "--bold", "true" };
+        var args = new[] {"-v", "--bold", "true"};
 
         var parser = new OptionParser(typeof(TestOptionWithBool));
 
@@ -170,7 +170,7 @@ public class OptionParserTests
     [Fact]
     public void Parse_BoolValuesInvalidFormat_PropertyIsSetFalse()
     {
-        var args = new[] { "-v", "--bold", "1234" };
+        var args = new[] {"-v", "--bold", "1234"};
 
         var parser = new OptionParser(typeof(TestOptionWithBool));
 
@@ -209,11 +209,12 @@ public class OptionParserTests
 
         exception.MissingProperty
             .Should()
-            .BeSameAs(typeof(TestOptionWithValueOption).GetProperty(nameof(TestOptionWithValueOption.TestValue)));
+            .BeSameAs(typeof(TestOptionWithValueOption).GetProperty(
+                nameof(TestOptionWithValueOption.TestValue)));
 
         exception.ValueAttribute
             .Should()
-            .BeEquivalentTo(new OptionValueAttribute(0) { IsRequired = true });
+            .BeEquivalentTo(new OptionValueAttribute(0) {IsRequired = true});
     }
 
     [Fact]
@@ -294,7 +295,7 @@ public class OptionParserTests
     [InlineData("nONe", TestEnum.None)]
     public void Parse_EnumValue_PropertyIsSetCorrect(string argValue, TestEnum enumValue)
     {
-        var args = new[] { "-e", argValue };
+        var args = new[] {"-e", argValue};
 
         var parser = new OptionParser(typeof(TestOptionWithEnum));
 
@@ -318,7 +319,7 @@ public class OptionParserTests
     [InlineData("qwertz", "QWERTZ")]
     public void Parse_PropertyWithConverter_PropertyIsSetCorrect(string argValue, string propertyValue)
     {
-        var args = new[] { "-t", argValue };
+        var args = new[] {"-t", argValue};
 
         var parser = new OptionParser(typeof(TestOptionWithConverter));
 
@@ -336,12 +337,12 @@ public class OptionParserTests
     }
 
     [Theory]
-    [InlineData("1,2,3,4,5", new []{1,2,3,4,5})]
-    [InlineData("1", new[] { 1 })]
+    [InlineData("1,2,3,4,5", new[] {1, 2, 3, 4, 5})]
+    [InlineData("1", new[] {1})]
     public void Parse_PropertyIsIEnumerableOfInt_PropertyIsSetCorrect(string argValue,
         IEnumerable<int> intValues)
     {
-        var args = new[] { "-i", argValue };
+        var args = new[] {"-i", argValue};
 
         var parser = new OptionParser(typeof(TestOptionWithIntEnumerable));
 
@@ -405,7 +406,7 @@ public class OptionParserTests
             .Should()
             .HaveCount(1)
             .And
-            .BeEquivalentTo(new []{new OptionArgument(){Kind = OptionArgumentKind.Value, Value = "test"}});
+            .BeEquivalentTo(new[] {new OptionArgument() {Kind = OptionArgumentKind.Value, Value = "test"}});
     }
 
     [Theory]

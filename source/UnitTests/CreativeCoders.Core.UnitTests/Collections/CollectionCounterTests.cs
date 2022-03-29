@@ -12,7 +12,7 @@ public class CollectionCounterTests
     [Fact]
     public void Count_FilledArray_ReturnsArrayLength()
     {
-        var items = new[] { 1, 2, 3 };
+        var items = new[] {1, 2, 3};
 
         // Act
         var count = Count(items);
@@ -26,7 +26,7 @@ public class CollectionCounterTests
     [Fact]
     public void Count_FilledList_ReturnsListCount()
     {
-        var items = new List<int> { 1, 2, 3 };
+        var items = new List<int> {1, 2, 3};
 
         // Act
         var count = Count(items);
@@ -40,10 +40,10 @@ public class CollectionCounterTests
     [Fact]
     public void Count_FilledEnumerable_ReturnsEnumerableCount()
     {
-        var items = new List<int> { 1, 2, 3 };
+        var items = new List<int> {1, 2, 3};
 
         // Act
-        var count = Count((IEnumerable)items);
+        var count = Count((IEnumerable) items);
 
         // Assert
         count
@@ -52,10 +52,10 @@ public class CollectionCounterTests
     }
 
     [Theory]
-    [InlineData(new[] { 1, 2, 3 }, 2, 3)]
-    [InlineData(new[] { 1, 2, 3, 4 }, 0, 4)]
-    [InlineData(new[] { 1, 2, 3, 4, 5 }, 5, 5)]
-    [InlineData(new[] { 1, 2, 3, 4, 5 }, 6, 5)]
+    [InlineData(new[] {1, 2, 3}, 2, 3)]
+    [InlineData(new[] {1, 2, 3, 4}, 0, 4)]
+    [InlineData(new[] {1, 2, 3, 4, 5}, 5, 5)]
+    [InlineData(new[] {1, 2, 3, 4, 5}, 6, 5)]
     public void CountMax_FilledArray_ReturnsArrayLength(int[] items, int maxCount, int expectedCount)
     {
         // Act
@@ -68,11 +68,11 @@ public class CollectionCounterTests
     }
 
     [Theory]
-    [InlineData(new[] { 1, 2, 3 }, 2, 3)]
-    [InlineData(new[] { 1, 2, 3, 4 }, 0, 4)]
-    [InlineData(new[] { 1, 2, 3, 4, 5 }, 5, 5)]
-    [InlineData(new[] { 1, 2, 3, 4, 5 }, 6, 5)]
-    public void CountMax_FilledList_ReturnsListCount(int [] itemsArray, int maxCount, int expectedCount)
+    [InlineData(new[] {1, 2, 3}, 2, 3)]
+    [InlineData(new[] {1, 2, 3, 4}, 0, 4)]
+    [InlineData(new[] {1, 2, 3, 4, 5}, 5, 5)]
+    [InlineData(new[] {1, 2, 3, 4, 5}, 6, 5)]
+    public void CountMax_FilledList_ReturnsListCount(int[] itemsArray, int maxCount, int expectedCount)
     {
         var items = itemsArray.ToList();
 
@@ -86,13 +86,14 @@ public class CollectionCounterTests
     }
 
     [Theory]
-    [InlineData(new[] { 1, 2, 3 }, 2, 2)]
-    [InlineData(new[] { 1, 2, 3, 4 }, 0, 4)]
-    [InlineData(new[] { 1, 2, 3, 4, 5 }, 5, 5)]
-    [InlineData(new[] { 1, 2, 3, 4, 5 }, 6, 5)]
-    public void CountMax_FilledEnumerable_ReturnsEnumerableCount(int[] itemsArray, int maxCount, int expectedCount)
+    [InlineData(new[] {1, 2, 3}, 2, 2)]
+    [InlineData(new[] {1, 2, 3, 4}, 0, 4)]
+    [InlineData(new[] {1, 2, 3, 4, 5}, 5, 5)]
+    [InlineData(new[] {1, 2, 3, 4, 5}, 6, 5)]
+    public void CountMax_FilledEnumerable_ReturnsEnumerableCount(int[] itemsArray, int maxCount,
+        int expectedCount)
     {
-        var items = (IEnumerable)itemsArray.Where(_ => true);
+        var items = (IEnumerable) itemsArray.Where(_ => true);
 
         // Act
         var count = CountMax(items, maxCount);

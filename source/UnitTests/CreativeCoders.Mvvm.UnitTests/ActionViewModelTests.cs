@@ -38,7 +38,8 @@ public class ActionViewModelTests
     [Fact]
     public void ShortCutTest()
     {
-        TestProperty(action => action.ShortCut, (action, value) => action.ShortCut = value, new KeyGesture(new Key()));
+        TestProperty(action => action.ShortCut, (action, value) => action.ShortCut = value,
+            new KeyGesture(new Key()));
     }
 
     [Fact]
@@ -50,13 +51,15 @@ public class ActionViewModelTests
     [Fact]
     public void SmallIconTest()
     {
-        TestProperty(action => action.SmallIcon, (action, value) => action.SmallIcon = value, "TestSmallIcon");
+        TestProperty(action => action.SmallIcon, (action, value) => action.SmallIcon = value,
+            "TestSmallIcon");
     }
 
     [Fact]
     public void LargeIconTest()
     {
-        TestProperty(action => action.LargeIcon, (action, value) => action.LargeIcon = value, "TestLargeIcon");
+        TestProperty(action => action.LargeIcon, (action, value) => action.LargeIcon = value,
+            "TestLargeIcon");
     }
 
     [Fact]
@@ -65,7 +68,8 @@ public class ActionViewModelTests
         TestProperty(action => action.IsChecked, (action, value) => action.IsChecked = value, true);
     }
 
-    private static void TestProperty<TProp>(Func<ActionViewModel, TProp> getProperty, Action<ActionViewModel, TProp> setProperty, TProp testValue)
+    private static void TestProperty<TProp>(Func<ActionViewModel, TProp> getProperty,
+        Action<ActionViewModel, TProp> setProperty, TProp testValue)
     {
         var action = new ActionViewModel();
         setProperty(action, testValue);

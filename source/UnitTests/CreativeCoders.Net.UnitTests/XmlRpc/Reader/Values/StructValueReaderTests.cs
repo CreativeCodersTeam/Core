@@ -48,12 +48,14 @@ public class StructValueReaderTests
 
         var reader = new StructValueReader(valueReaders);
 
-        var xmlElement = new XElement("struct", new XElement("member", new XElement("name", "TextProp"), new XElement("value", new XElement("string", "Value1234"))));
+        var xmlElement = new XElement("struct",
+            new XElement("member", new XElement("name", "TextProp"),
+                new XElement("value", new XElement("string", "Value1234"))));
 
         var value = reader.ReadValue(xmlElement);
 
         Assert.IsType<StructValue>(value);
-        var arrayValue = (StructValue)value;
+        var arrayValue = (StructValue) value;
         Assert.Single(arrayValue.Value);
         var (key, xmlRpcValue) = arrayValue.Value.First();
         Assert.Equal("TextProp", key);

@@ -10,7 +10,7 @@ public class SourceTestData : ObservableObject
 
     private string _twoWayProperty;
     private int _intValue;
-        
+
     private int _secondIntValue;
 
     [PropertyLink(typeof(TargetTestData), nameof(TargetTestData.TargetText))]
@@ -26,14 +26,15 @@ public class SourceTestData : ObservableObject
         set => Set(ref _sourceName, value);
     }
 
-    [PropertyLink(typeof(TargetTestData), nameof(TargetTestData.TwoWayProperty), Direction = LinkDirection.TwoWay)]
+    [PropertyLink(typeof(TargetTestData), nameof(TargetTestData.TwoWayProperty),
+        Direction = LinkDirection.TwoWay)]
     public string TwoWayProperty
     {
         get => _twoWayProperty;
         set => Set(ref _twoWayProperty, value);
     }
 
-        
+
     public int IntValue
     {
         get => _intValue;

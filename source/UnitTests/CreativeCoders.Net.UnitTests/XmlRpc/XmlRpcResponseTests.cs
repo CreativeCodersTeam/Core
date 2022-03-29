@@ -19,7 +19,7 @@ public class XmlRpcResponseTests
     {
         var methodResult = new XmlRpcMethodResult();
 
-        var request = new XmlRpcResponse(new[] { methodResult }, false);
+        var request = new XmlRpcResponse(new[] {methodResult}, false);
 
         Assert.Single(request.Results);
         Assert.Same(methodResult, request.Results.First());
@@ -31,10 +31,10 @@ public class XmlRpcResponseTests
         var methodResult = new XmlRpcMethodResult();
         var methodResult1 = new XmlRpcMethodResult();
 
-        var request = new XmlRpcResponse(new[] { methodResult, methodResult1 }, false);
+        var request = new XmlRpcResponse(new[] {methodResult, methodResult1}, false);
 
         Assert.Equal(2, request.Results.Count());
-        Assert.Equal(request.Results, new[] { methodResult, methodResult1 });
+        Assert.Equal(request.Results, new[] {methodResult, methodResult1});
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class XmlRpcResponseTests
     {
         var methodResult = new XmlRpcMethodResult();
 
-        var request = new XmlRpcResponse(new[] { methodResult }, false);
+        var request = new XmlRpcResponse(new[] {methodResult}, false);
 
         Assert.False(request.IsMultiCall);
     }
@@ -52,7 +52,7 @@ public class XmlRpcResponseTests
     {
         var methodResult = new XmlRpcMethodResult();
 
-        var request = new XmlRpcResponse(new[] { methodResult }, true);
+        var request = new XmlRpcResponse(new[] {methodResult}, true);
 
         Assert.True(request.IsMultiCall);
     }

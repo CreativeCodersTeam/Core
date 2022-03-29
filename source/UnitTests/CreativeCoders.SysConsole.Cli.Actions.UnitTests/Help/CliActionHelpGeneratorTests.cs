@@ -38,7 +38,7 @@ public class CliActionHelpGeneratorTests
         var helpGenerator = new CliActionHelpGenerator(optionsHelpGenerator, actionRouter);
 
         // Act
-        var help = helpGenerator.CreateHelp(new []{"test"});
+        var help = helpGenerator.CreateHelp(new[] {"test"});
 
         // Assert
         help.HelpText
@@ -54,8 +54,5 @@ public class CliActionHelpGeneratorTests
     }
 
     [Fact]
-    public void Test()
-    {
-
-    }
+    public void Test() { }
 }

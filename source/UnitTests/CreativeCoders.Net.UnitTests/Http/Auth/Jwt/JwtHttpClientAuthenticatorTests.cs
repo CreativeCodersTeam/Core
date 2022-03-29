@@ -82,7 +82,9 @@ public class JwtHttpClientAuthenticatorTests
 
         var jwtClientMock = A.Fake<IJwtClient>();
 
-        A.CallTo(() => jwtClientMock.RequestTokenInfoAsync(new Uri("http://authtest.com/auth"), A<JwtTokenRequest>.Ignored))
+        A.CallTo(() =>
+                jwtClientMock.RequestTokenInfoAsync(new Uri("http://authtest.com/auth"),
+                    A<JwtTokenRequest>.Ignored))
             .Returns(Task.FromResult(new JwtTokenInfo(expectedToken)));
 
         var jwtHttpClientAuthenticator = new JwtHttpClientAuthenticator(jwtClientMock)

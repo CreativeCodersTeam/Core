@@ -65,7 +65,7 @@ public class DataToXmlRpcValueConverterIntegrationTests
 
         Assert.IsType<StructValue>(convertedValue);
 
-        var xmlStructValue = (StructValue)convertedValue;
+        var xmlStructValue = (StructValue) convertedValue;
 
         Assert.Equal(3, xmlStructValue.Value.Count);
 
@@ -120,13 +120,14 @@ public class DataToXmlRpcValueConverterIntegrationTests
 
         Assert.IsType<StructValue>(convertedValue);
 
-        var xmlStructValue = (StructValue)convertedValue;
+        var xmlStructValue = (StructValue) convertedValue;
 
         CheckTestData(xmlStructValue, intData, stringData, 2345, "Item1", 3456, "Item2");
     }
 
     [SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
-    private static void CheckTestData(StructValue xmlStructValue, int intData, string stringData, int firstId, string firstName, int secondId, string secondName)
+    private static void CheckTestData(StructValue xmlStructValue, int intData, string stringData, int firstId,
+        string firstName, int secondId, string secondName)
     {
         Assert.Equal(3, xmlStructValue.Value.Count);
 
@@ -223,9 +224,9 @@ public class DataToXmlRpcValueConverterIntegrationTests
         Assert.IsType<StructValue>(firstValue);
         Assert.IsType<StructValue>(lastValue);
 
-        CheckTestData((StructValue)firstValue, intData, stringData, 2345, "Item1", 3456, "Item2");
+        CheckTestData((StructValue) firstValue, intData, stringData, 2345, "Item1", 3456, "Item2");
 
-        CheckTestData((StructValue)lastValue, intData2, stringData2, 45, "Item21", 78, "Item22");
+        CheckTestData((StructValue) lastValue, intData2, stringData2, 45, "Item21", 78, "Item22");
     }
 
     [Fact]
@@ -270,7 +271,6 @@ public class DataToXmlRpcValueConverterIntegrationTests
             Assert.Equal(testData.SubItems[i].Id, convertedTestData.SubItems[i].Id);
             Assert.Equal(testData.SubItems[i].Name, convertedTestData.SubItems[i].Name);
         }
-            
     }
 
     [Fact]
@@ -282,9 +282,9 @@ public class DataToXmlRpcValueConverterIntegrationTests
         xmlRpcValue.Value["StringTest"] = new StringValue("1234Test");
         xmlRpcValue.Value["SubData"] = new StructValue(new Dictionary<string, XmlRpcValue>
         {
-            {"Id", new IntegerValue(4567) }
+            {"Id", new IntegerValue(4567)}
         });
-        xmlRpcValue.Value["SubItems"] = new ArrayValue(new []
+        xmlRpcValue.Value["SubItems"] = new ArrayValue(new[]
         {
             new StructValue(new Dictionary<string, XmlRpcValue>
             {
@@ -379,7 +379,7 @@ public class DataToXmlRpcValueConverterIntegrationTests
 
         Assert.IsType<StructValue>(convertedObject);
 
-        var structValue = (StructValue)convertedObject;
+        var structValue = (StructValue) convertedObject;
 
         Assert.Single(structValue.Value);
 
@@ -388,7 +388,7 @@ public class DataToXmlRpcValueConverterIntegrationTests
         Assert.Equal(nameof(StructTestDataWithBoolInt.TestBoolValue), key);
         Assert.IsType<IntegerValue>(xmlRpcValue);
 
-        var integerValue = (IntegerValue)xmlRpcValue;
+        var integerValue = (IntegerValue) xmlRpcValue;
         Assert.Equal(intValue, integerValue.Value);
     }
 }

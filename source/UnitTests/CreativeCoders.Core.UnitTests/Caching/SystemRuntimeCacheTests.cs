@@ -18,7 +18,7 @@ public class SystemRuntimeCacheTests
     {
         TestCaching.TryGet_KeyNotExistsWithRegion_ReturnFalse(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public async Task TryGetAsync_KeyNotExists_ReturnFalse()
     {
@@ -42,7 +42,7 @@ public class SystemRuntimeCacheTests
     {
         TestCaching.TryGet_KeyExistsWithRegion_ReturnsTrueAndValue(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public async Task TryGetAsync_KeyExists_ReturnsTrueAndValue()
     {
@@ -66,7 +66,7 @@ public class SystemRuntimeCacheTests
     {
         TestCaching.TryGet_AddOrUpdateTwoValueWithRegions_ReturnsLastValue(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public async Task TryGetAsync_AddOrUpdateTwoValue_ReturnsLastValue()
     {
@@ -76,7 +76,8 @@ public class SystemRuntimeCacheTests
     [Fact]
     public async Task TryGetAsync_AddOrUpdateTwoValueWithRegions_ReturnsLastValue()
     {
-        await TestCaching.TryGetAsync_AddOrUpdateTwoValueWithRegions_ReturnsLastValue(CreateCache<int, string>());
+        await TestCaching.TryGetAsync_AddOrUpdateTwoValueWithRegions_ReturnsLastValue(
+            CreateCache<int, string>());
     }
 
     [Fact]
@@ -90,7 +91,7 @@ public class SystemRuntimeCacheTests
     {
         TestCaching.Clear_TryGetValueWithRegions_ReturnFalse(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public async Task ClearAsync_TryGetValue_ReturnFalse()
     {
@@ -102,7 +103,7 @@ public class SystemRuntimeCacheTests
     {
         await TestCaching.ClearAsync_TryGetValueWithRegions_ReturnFalse(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public void Remove_TryGetValue_ReturnFalse()
     {
@@ -120,7 +121,7 @@ public class SystemRuntimeCacheTests
     {
         TestCaching.Remove_WithRegionsTryGetValue_ReturnFalse(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public async Task RemoveAsync_TryGetValue_ReturnFalse()
     {
@@ -150,7 +151,7 @@ public class SystemRuntimeCacheTests
     {
         TestCaching.GetValue_GetExistingWithRegion_ReturnsValue(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public async Task GetValueAsync_GetExisting_ReturnsValue()
     {
@@ -174,7 +175,7 @@ public class SystemRuntimeCacheTests
     {
         TestCaching.GetValue_KeyNotExistsWithRegions_ThrowsException(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public async Task GetValueAsync_KeyNotExists_ThrowsException()
     {
@@ -198,7 +199,7 @@ public class SystemRuntimeCacheTests
     {
         TestCaching.GetValue_KeyNotExistsWithRegions_ReturnNull(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public async Task GetValueAsync_KeyNotExists_ReturnNull()
     {
@@ -216,7 +217,7 @@ public class SystemRuntimeCacheTests
     {
         TestCaching.GetValue_KeyNotExists_ReturnDefaultValue(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public async Task GetValueAsync_KeyNotExists_ReturnDefaultValue()
     {
@@ -228,11 +229,12 @@ public class SystemRuntimeCacheTests
     {
         TestCaching.GetValue_KeyNotExists_ReturnNewValueAndStoreToCache(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public async Task GetValueAsync_KeyNotExists_ReturnNewValueAndStoreToCache()
     {
-        await TestCaching.GetValueAsync_KeyNotExists_ReturnNewValueAndStoreToCache(CreateCache<int, string>());
+        await TestCaching
+            .GetValueAsync_KeyNotExists_ReturnNewValueAndStoreToCache(CreateCache<int, string>());
     }
 
     [Fact]
@@ -240,7 +242,7 @@ public class SystemRuntimeCacheTests
     {
         TestCaching.GetValue_KeyExists_ReturnOldValue(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public async Task GetValueAsync_KeyExists_ReturnOldValue()
     {
@@ -252,19 +254,19 @@ public class SystemRuntimeCacheTests
     {
         await TestCaching.TryGet_AfterExpiration_ReturnsFalse(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public async Task TryGetAsync_AfterExpiration_ReturnsFalse()
     {
         await TestCaching.TryGetAsync_AfterExpiration_ReturnsFalse(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public async Task TryGet_AfterExpirationTimeSpan_ReturnsFalse()
     {
         await TestCaching.TryGet_AfterExpirationTimeSpan_ReturnsFalse(CreateCache<int, string>());
     }
-        
+
     [Fact]
     public async Task TryGetAsync_AfterExpirationTimeSpan_ReturnsFalse()
     {
@@ -274,7 +276,8 @@ public class SystemRuntimeCacheTests
     [Fact]
     public void GetOrAdd_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
     {
-        TestCaching.GetOrAdd_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(CreateCache<int, string>());
+        TestCaching.GetOrAdd_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+            CreateCache<int, string>());
     }
 
     [Fact]
@@ -292,10 +295,12 @@ public class SystemRuntimeCacheTests
     }
 
     [Fact]
-    public async Task GetOrAddAsync_TwoTimesCalledWithRegions_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
+    public async Task
+        GetOrAddAsync_TwoTimesCalledWithRegions_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
     {
-        await TestCaching.GetOrAddAsync_TwoTimesCalledWithRegions_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
-            CreateCache<int, string>());
+        await TestCaching
+            .GetOrAddAsync_TwoTimesCalledWithRegions_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
+                CreateCache<int, string>());
     }
 
     [Fact]
@@ -306,35 +311,44 @@ public class SystemRuntimeCacheTests
     }
 
     [Fact]
-    public async Task GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
+    public async Task
+        GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
     {
-        await TestCaching.GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
-            CreateCache<int, string>());
+        await TestCaching
+            .GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
+                CreateCache<int, string>());
     }
 
     [Fact]
-    public async Task GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+    public async Task
+        GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
     {
-        await TestCaching.GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
-            CreateCache<int, string>());
+        await TestCaching
+            .GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+                CreateCache<int, string>());
     }
 
     [Fact]
-    public async Task GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes()
+    public async Task
+        GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes()
     {
-        await TestCaching.GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes(
-            CreateCache<int, string>());
+        await TestCaching
+            .GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes(
+                CreateCache<int, string>());
     }
 
     [Fact]
-    public async Task GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+    public async Task
+        GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
     {
-        await TestCaching.GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
-            CreateCache<int, string>());
+        await TestCaching
+            .GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
+                CreateCache<int, string>());
     }
 
     [Fact]
-    public async Task GetOrAddAsync_TwoTimesCalledWithNeverExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
+    public async Task
+        GetOrAddAsync_TwoTimesCalledWithNeverExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
     {
         await TestCaching
             .GetOrAddAsync_TwoTimesCalledWithNeverExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
@@ -358,7 +372,7 @@ public class SystemRuntimeCacheTests
             .GetOrAddAsync_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
                 CreateCache<int, string>());
     }
-        
+
     private static ICache<TKey, TValue> CreateCache<TKey, TValue>()
     {
         var cache = new SystemRuntimeCache<TKey, TValue>();

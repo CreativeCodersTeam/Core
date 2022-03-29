@@ -49,11 +49,12 @@ public class LoggingTestBase
 
         logger.WarnFormat("{0}:{1}", "test2", 1290);
 
-        CallLogForLevels(logger, LogLevel.Fatal, LogLevel.Debug, LogLevel.Error, LogLevel.Info, LogLevel.Trace, LogLevel.Warn);
+        CallLogForLevels(logger, LogLevel.Fatal, LogLevel.Debug, LogLevel.Error, LogLevel.Info,
+            LogLevel.Trace, LogLevel.Warn);
 
         logger.LogFormat(LogLevel.Info, "{0}:{1}", "test2", 1290);
 
-        logger.Log((LogLevel)(-1), "test");
+        logger.Log((LogLevel) (-1), "test");
     }
 
     private static void CallLogForLevels(ILogger logger, params LogLevel[] logLevels)

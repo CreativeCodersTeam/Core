@@ -12,6 +12,7 @@ public enum TestEnumWithFlags
     Ok,
     Failed,
     Custom,
+
     // ReSharper disable once InconsistentNaming
     OK
 }

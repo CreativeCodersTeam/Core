@@ -14,10 +14,10 @@ public class SimpleRelayCommandTests
     public void Execute_Wait_ActionIsExecuted()
     {
         SynchronizationContext.SetSynchronizationContext(new TestSynchronizationContext());
-            
+
         var commandExecuted = false;
         var canExecuteChangedRaised = false;
-            
+
         var command = new SimpleRelayCommand(() =>
         {
             Assert.False(commandExecuted);
@@ -30,19 +30,19 @@ public class SimpleRelayCommandTests
         };
 
         command.Execute(null);
-            
+
         Assert.True(commandExecuted);
         Assert.True(canExecuteChangedRaised);
     }
-        
+
     [Fact]
     public void CanExecuteChanged_RemoveHandler_HandlerIsNotCalled()
     {
         SynchronizationContext.SetSynchronizationContext(new TestSynchronizationContext());
-            
+
         var commandExecuted = false;
         _canExecuteChangedRaised = false;
-            
+
         var command = new SimpleRelayCommand(() =>
         {
             // ReSharper disable once AccessToModifiedClosure
@@ -52,7 +52,7 @@ public class SimpleRelayCommandTests
         command.CanExecuteChanged += CommandOnCanExecuteChanged;
 
         command.Execute(null);
-            
+
         Assert.True(commandExecuted);
         Assert.True(_canExecuteChangedRaised);
 
@@ -60,9 +60,9 @@ public class SimpleRelayCommandTests
         commandExecuted = false;
 
         command.CanExecuteChanged -= CommandOnCanExecuteChanged;
-            
+
         command.Execute(null);
-            
+
         Assert.True(commandExecuted);
         Assert.False(_canExecuteChangedRaised);
     }
@@ -72,12 +72,12 @@ public class SimpleRelayCommandTests
         Assert.False(_canExecuteChangedRaised);
         _canExecuteChangedRaised = true;
     }
-        
+
     [Fact]
     public void Execute_CanExecuteIsFalse_ActionIsNotExecuted()
     {
         var commandExecuted = false;
-            
+
         var command = new SimpleRelayCommand(() =>
         {
             Assert.False(commandExecuted);
@@ -85,7 +85,7 @@ public class SimpleRelayCommandTests
         }, () => false);
 
         command.Execute(null);
-            
+
         Assert.False(commandExecuted);
     }
 }

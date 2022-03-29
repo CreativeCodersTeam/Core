@@ -19,7 +19,7 @@ public class HttpClientJwtExtensionsTests
 
         mockHttpClientContext
             .Respond()
-            .ReturnJson(new {authToken2 = expectedToken, authToken1 = expectedToken + "2" });
+            .ReturnJson(new {authToken2 = expectedToken, authToken1 = expectedToken + "2"});
 
         var client = mockHttpClientContext.CreateClient();
 
@@ -50,7 +50,7 @@ public class HttpClientJwtExtensionsTests
 
         mockHttpClientContext
             .Respond()
-            .ReturnJson(new { specificAuthToken = expectedToken });
+            .ReturnJson(new {specificAuthToken = expectedToken});
 
         var client = mockHttpClientContext.CreateClient();
 

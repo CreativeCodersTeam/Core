@@ -9,9 +9,9 @@ public class TestScriptClassTemplate : ScriptClassTemplate
         Usings.Add("System");
         Usings.Add("System.Linq");
         Usings.Add("System.Threading.Tasks");
-            
+
         ImplementsInterfaces.Add(nameof(ITextScript));
-            
+
         Members.AddRawContent("$$code$$");
 
         Injections.AddProperty("Api", () => testApi);

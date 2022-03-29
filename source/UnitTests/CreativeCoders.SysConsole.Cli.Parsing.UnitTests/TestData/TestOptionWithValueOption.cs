@@ -2,6 +2,5 @@
 
 public class TestOptionWithValueOption
 {
-    [OptionValue(0, IsRequired = true)]
-    public string? TestValue { get; set; }
+    [OptionValue(0, IsRequired = true)] public string? TestValue { get; set; }
 }

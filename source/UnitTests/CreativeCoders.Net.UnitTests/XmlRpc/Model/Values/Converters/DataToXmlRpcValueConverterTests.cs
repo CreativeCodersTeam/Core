@@ -28,7 +28,7 @@ public class DataToXmlRpcValueConverterTests
 
         Assert.IsType<StructValue>(convertedValue);
 
-        var xmlStructValue = (StructValue)convertedValue;
+        var xmlStructValue = (StructValue) convertedValue;
 
         Assert.Equal(2, xmlStructValue.Value.Count);
 
@@ -58,11 +58,11 @@ public class DataToXmlRpcValueConverterTests
         var xmlRpcValue = converter.Convert(data) as ArrayValue;
 
         Assert.NotNull(xmlRpcValue);
-            
+
         Assert.Equal(data.Count, xmlRpcValue.Value.Count());
-            
+
         var convertedEnumerable = converter.Convert(xmlRpcValue.Value);
-            
+
         Assert.NotNull(convertedEnumerable);
     }
 
@@ -83,9 +83,9 @@ public class DataToXmlRpcValueConverterTests
         var xmlRpcValue = converter.Convert(data) as StructValue;
 
         Assert.NotNull(xmlRpcValue);
-            
+
         var convertedEnumerable = converter.Convert(xmlRpcValue.Value);
-            
+
         Assert.NotNull(convertedEnumerable);
     }
 
@@ -104,11 +104,11 @@ public class DataToXmlRpcValueConverterTests
         };
 
         var xmlRpcValue = converter.Convert(data) as StructValue;
-            
+
         Assert.NotNull(xmlRpcValue);
 
         var convertedEnumerable = converter.Convert(xmlRpcValue.Value);
-            
+
         Assert.NotNull(convertedEnumerable);
     }
 }

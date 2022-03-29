@@ -57,7 +57,7 @@ public class MessengerTests
         _testCallbackCalledSendString = false;
 
         var messenger = Messenger.CreateInstance();
-            
+
         messenger.Register<string>(this, _ => _testCallbackCalledSendString = true);
         messenger.Send(new string("Hallo".ToCharArray()));
 
@@ -70,7 +70,7 @@ public class MessengerTests
         _testCallbackCalledUnReg = false;
 
         var messenger = Messenger.CreateInstance();
-            
+
         messenger.Register<string>(this, _ => _testCallbackCalledUnReg = true);
         messenger.Send(new string("Hallo".ToCharArray()));
 
@@ -90,7 +90,7 @@ public class MessengerTests
         _testCallbackCalledUnRegString = false;
 
         var messenger = Messenger.CreateInstance();
-            
+
         messenger.Register<string>(this, _ => _testCallbackCalledUnRegString = true);
         messenger.Send(new string("Hallo".ToCharArray()));
 
@@ -109,7 +109,7 @@ public class MessengerTests
     {
         _testCallbackCalledSendMultiple = false;
         _testCallbackCalledSendMultiple2 = false;
-            
+
         var messenger = Messenger.CreateInstance();
 
         messenger.Register<string>(this, _ => _testCallbackCalledSendMultiple = true);
@@ -127,7 +127,7 @@ public class MessengerTests
         _testCallbackCalledUnRegMultiple2 = false;
 
         var messenger = Messenger.CreateInstance();
-            
+
         messenger.Register<string>(this, _ => _testCallbackCalledUnRegMultiple = true);
         messenger.Register<string>(this, _ => _testCallbackCalledUnRegMultiple2 = true);
         messenger.Send(new string("Hallo".ToCharArray()));
@@ -153,7 +153,7 @@ public class MessengerTests
         _testCallbackCalledUnRegMultipleEx2 = false;
 
         var messenger = Messenger.CreateInstance();
-            
+
         messenger.Register<int>(this, _ => _testCallbackCalledUnRegMultipleEx = true);
         messenger.Register<string>(this, _ => _testCallbackCalledUnRegMultipleEx2 = true);
         messenger.Send(new string("Hallo".ToCharArray()));
@@ -197,7 +197,7 @@ public class MessengerTests
     public void MessageBaseTest()
     {
         var messenger = Messenger.CreateInstance();
-            
+
         var msgBase = new MessageBase();
         messenger.Register<MessageBase>(null, msg => msg.IsHandled = true);
         messenger.Send(msgBase);
@@ -210,7 +210,7 @@ public class MessengerTests
     public void DialogMessageTest()
     {
         var messenger = Messenger.CreateInstance();
-            
+
         var dialogMessage = new DialogMessage("Test1234");
         messenger.Register<DialogMessage>(null, msg => _dialogMessageText = msg.MessageText);
         messenger.Send(dialogMessage);
@@ -223,7 +223,7 @@ public class MessengerTests
         _testCallbackCalledSend = false;
 
         var messenger = Messenger.CreateInstance();
-            
+
         var callbackMessage = new CallbackMessage(OnCallbackMessage);
         messenger.Register<CallbackMessage>(null, msg => msg.Execute());
         messenger.Send(callbackMessage);
@@ -236,7 +236,7 @@ public class MessengerTests
         _testCallbackCalledSend = false;
 
         var messenger = Messenger.CreateInstance();
-            
+
         messenger.Register<TestMessage>(this, TestCallback);
         messenger.Send(new TestMessage());
 
@@ -249,7 +249,7 @@ public class MessengerTests
         _testCallbackCalledUnRegMultipleEx = false;
 
         var messenger = Messenger.CreateInstance();
-            
+
         messenger.Register<TestMessage>(this, _ => _testCallbackCalledUnRegMultipleEx = true);
         messenger.Send(new TestMessage());
 
@@ -260,7 +260,7 @@ public class MessengerTests
     public void SendTestWithExceptionInAction()
     {
         var messenger = Messenger.CreateInstance();
-            
+
         messenger.Register<TestMessage>(this, _ => throw new InvalidOperationException());
         messenger.Send(new TestMessage());
     }
@@ -269,7 +269,7 @@ public class MessengerTests
     public void SendAfterGarbageCollectTest()
     {
         var messenger = Messenger.CreateInstance();
-            
+
         var obj = new TestReceiver();
 
         messenger.Register<TestMessage>(obj, obj.HandleMessage);
@@ -312,7 +312,7 @@ public class MessengerTests
     public void DisposeRegistrationTest()
     {
         var messenger = Messenger.CreateInstance();
-            
+
         _testCallbackCalledSend = false;
         var obj0 = new object();
 
@@ -334,7 +334,7 @@ public class MessengerTests
     public void DoubleDisposeRegistrationTest()
     {
         var messenger = Messenger.CreateInstance();
-            
+
         _testCallbackCalledSend = false;
         var obj0 = new object();
 
@@ -366,6 +366,6 @@ public class MessengerTests
 
     private void TestCallback(TestMessage testMessage)
     {
-        _testCallbackCalledSend = true;            
+        _testCallbackCalledSend = true;
     }
 }

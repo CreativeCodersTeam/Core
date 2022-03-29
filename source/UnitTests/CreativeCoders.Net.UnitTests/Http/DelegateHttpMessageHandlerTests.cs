@@ -49,7 +49,7 @@ public class DelegateHttpMessageHandlerTests
         var expectedCancellationToken = new CancellationToken();
 
         HttpRequestMessage actualRequestMessage = null;
-            
+
         var httpMessageHandler = new DelegateHttpMessageHandler(request =>
         {
             actualRequestMessage = request;

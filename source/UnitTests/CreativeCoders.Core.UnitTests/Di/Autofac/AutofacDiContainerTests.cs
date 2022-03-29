@@ -33,7 +33,7 @@ public class AutofacDiContainerTests
     public void GetInstanceTestThrowsException()
     {
         var autofacContainerBuilder = new ContainerBuilder();
-            
+
         var container = new AutofacDiContainer(autofacContainerBuilder.Build());
 
         new DiContainerTestHelper().TestGetInstanceThrowsException<ITestService>(container);
@@ -42,7 +42,7 @@ public class AutofacDiContainerTests
     [Fact]
     public void GetInstancesTest()
     {
-        var _ = new[] { typeof(TestServiceWithNoCtorParam).Assembly };
+        var _ = new[] {typeof(TestServiceWithNoCtorParam).Assembly};
 
         var autofacContainerBuilder = new ContainerBuilder();
         autofacContainerBuilder.RegisterType<TestService2>().As<ITestService>();
@@ -50,14 +50,15 @@ public class AutofacDiContainerTests
 
         var container = new AutofacDiContainer(autofacContainerBuilder.Build());
 
-        new DiContainerTestHelper().TestGetInstances<ITestService>(container, typeof(TestService2), typeof(TestServiceWithNoCtorParam));
+        new DiContainerTestHelper().TestGetInstances<ITestService>(container, typeof(TestService2),
+            typeof(TestServiceWithNoCtorParam));
     }
 
     [Fact]
     public void GetInstances_NoServicesFound_ReturnsEmptyArray()
     {
         var autofacContainerBuilder = new ContainerBuilder();
-            
+
         var container = new AutofacDiContainer(autofacContainerBuilder.Build());
 
         new DiContainerTestHelper().GetInstances_NoServicesFound_ReturnsEmptyArray<ITestService>(container);
@@ -70,7 +71,8 @@ public class AutofacDiContainerTests
 
         var container = new AutofacDiContainer(autofacContainerBuilder.Build());
 
-        new DiContainerTestHelper().TryGetInstance_NoServiceFound_ReturnsFalseAndNull<ITestService>(container);
+        new DiContainerTestHelper()
+            .TryGetInstance_NoServiceFound_ReturnsFalseAndNull<ITestService>(container);
     }
 
     [Fact]
@@ -80,14 +82,16 @@ public class AutofacDiContainerTests
         autofacContainerBuilder.RegisterType<TestService2>().As<ITestService>();
         var container = new AutofacDiContainer(autofacContainerBuilder.Build());
 
-        new DiContainerTestHelper().TryGetInstance_ServiceFound_ReturnsTrueAndInstance<ITestService>(container);
+        new DiContainerTestHelper()
+            .TryGetInstance_ServiceFound_ReturnsTrueAndInstance<ITestService>(container);
     }
 
     [Fact]
     public void CreateScopeTest()
     {
         var autofacContainerBuilder = new ContainerBuilder();
-        autofacContainerBuilder.RegisterType<TestServiceWithNoCtorParam>().As<ITestService>().InstancePerLifetimeScope();
+        autofacContainerBuilder.RegisterType<TestServiceWithNoCtorParam>().As<ITestService>()
+            .InstancePerLifetimeScope();
         var container = new AutofacDiContainer(autofacContainerBuilder.Build());
 
         new DiContainerTestHelper().TestCreateScope<ITestService, TestServiceWithNoCtorParam>(container);

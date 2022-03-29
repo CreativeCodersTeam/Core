@@ -8,9 +8,9 @@ public class NewTargetTestData : TargetTestData
     private bool _isChecked;
 
     private bool _isVisible;
-        
+
     private bool _boolWithDefault;
-        
+
     private string _initialText;
 
     public bool IsChecked
@@ -19,7 +19,8 @@ public class NewTargetTestData : TargetTestData
         set => Set(ref _isChecked, value);
     }
 
-    [PropertyLink(typeof(NewSourceTestData), nameof(NewSourceTestData.IsVisible), Direction = LinkDirection.TwoWay,
+    [PropertyLink(typeof(NewSourceTestData), nameof(NewSourceTestData.IsVisible),
+        Direction = LinkDirection.TwoWay,
         Converter = typeof(NullableTargetPropertyConverter<bool>))]
     public bool IsVisible
     {
@@ -27,14 +28,15 @@ public class NewTargetTestData : TargetTestData
         set => Set(ref _isVisible, value);
     }
 
-    [PropertyLink(typeof(NewSourceTestData), nameof(NewSourceTestData.BoolWithDefault), Direction = LinkDirection.TwoWay,
+    [PropertyLink(typeof(NewSourceTestData), nameof(NewSourceTestData.BoolWithDefault),
+        Direction = LinkDirection.TwoWay,
         Converter = typeof(NullableTargetPropertyConverter<bool>), ConverterParameter = true)]
     public bool BoolWithDefault
     {
         get => _boolWithDefault;
         set => Set(ref _boolWithDefault, value);
     }
-        
+
     public string InitialText
     {
         get => _initialText;

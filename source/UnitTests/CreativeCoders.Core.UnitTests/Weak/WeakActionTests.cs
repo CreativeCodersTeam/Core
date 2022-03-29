@@ -40,7 +40,7 @@ public class WeakActionTests
     [Fact]
     public void WeakActionExecuteTestWithoutTarget()
     {
-        StaticActionExecuted  = false;
+        StaticActionExecuted = false;
         var weakAction = new WeakAction(null, StaticActionExecute);
 
         weakAction.Execute();
@@ -147,6 +147,6 @@ public class WeakActionTests
 
         weakAction.Dispose();
 
-        Assert.False(weakAction.IsAlive());            
+        Assert.False(weakAction.IsAlive());
     }
 }

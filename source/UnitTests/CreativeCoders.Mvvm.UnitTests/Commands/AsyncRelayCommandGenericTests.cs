@@ -11,13 +11,13 @@ namespace CreativeCoders.Mvvm.UnitTests.Commands;
 public class AsyncRelayCommandGenericTests
 {
     private bool _canExecuteChangedRaised;
-        
+
     [Fact]
     public async Task Execute_Wait_ActionIsExecuted()
     {
         var commandExecuted = false;
         var canExecuteChangedRaised = false;
-            
+
         var command = new AsyncRelayCommand<string>(_ =>
         {
             Assert.False(commandExecuted);
@@ -31,19 +31,19 @@ public class AsyncRelayCommandGenericTests
         };
 
         command.Execute(null);
-            
+
         await Task.Delay(100);
-            
+
         Assert.True(commandExecuted);
         Assert.True(canExecuteChangedRaised);
     }
-        
+
     [Fact]
     public async Task CanExecuteChanged_RemoveHandler_HandlerIsNotCalled()
     {
         var commandExecuted = false;
         _canExecuteChangedRaised = false;
-            
+
         var command = new AsyncRelayCommand<string>(_ =>
         {
             // ReSharper disable once AccessToModifiedClosure
@@ -54,9 +54,9 @@ public class AsyncRelayCommandGenericTests
         command.CanExecuteChanged += CommandOnCanExecuteChanged;
 
         command.Execute(null);
-            
+
         await Task.Delay(100);
-            
+
         Assert.True(commandExecuted);
         Assert.True(_canExecuteChangedRaised);
 
@@ -64,11 +64,11 @@ public class AsyncRelayCommandGenericTests
         commandExecuted = false;
 
         command.CanExecuteChanged -= CommandOnCanExecuteChanged;
-            
+
         command.Execute(null);
-            
+
         await Task.Delay(100);
-            
+
         Assert.False(_canExecuteChangedRaised);
     }
 
@@ -77,12 +77,12 @@ public class AsyncRelayCommandGenericTests
         Assert.False(_canExecuteChangedRaised);
         _canExecuteChangedRaised = true;
     }
-        
+
     [Fact]
     public async Task ExecuteAsync_Await_ActionIsExecuted()
     {
         var commandExecuted = false;
-            
+
         var command = new AsyncRelayCommand<string>(_ =>
         {
             Assert.False(commandExecuted);
@@ -91,15 +91,15 @@ public class AsyncRelayCommandGenericTests
         });
 
         await command.ExecuteAsync(null);
-            
+
         Assert.True(commandExecuted);
     }
-        
+
     [Fact]
     public async Task ExecuteAsync_CanExecuteIsFalse_ActionIsNotExecuted()
     {
         var commandExecuted = false;
-            
+
         var command = new AsyncRelayCommand<string>(_ =>
         {
             Assert.False(commandExecuted);
@@ -108,10 +108,10 @@ public class AsyncRelayCommandGenericTests
         }, _ => false);
 
         await command.ExecuteAsync(null);
-            
+
         Assert.False(commandExecuted);
     }
-        
+
     [Fact]
     [SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
     public async Task ExecuteAsync_ExceptionInExecute_ErrorHandlerIsCalled()
@@ -122,20 +122,21 @@ public class AsyncRelayCommandGenericTests
         A
             .CallTo(() => errorHandler.HandleException(A<Exception>.Ignored))
             .Invokes(call => handledException = call.Arguments.Get<Exception>(0));
-            
+
         var command = new AsyncRelayCommand<string>(parameter =>
         {
             if (parameter == null)
             {
                 throw new ArgumentNullException(nameof(parameter));
             }
+
             return Task.CompletedTask;
         }, errorHandler);
 
         command.Execute(null);
 
         await Task.Delay(100);
-            
+
         Assert.IsType<ArgumentNullException>(handledException);
     }
 }

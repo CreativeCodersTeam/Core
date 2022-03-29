@@ -15,6 +15,6 @@ public class SettingsTransientTests
     public void ValuesTest()
     {
         new SettingTestHelper().TestSettingsValues(factory => new SettingsTransient<object>(factory),
-            () => new[] { new object(), new object() });
+            () => new[] {new object(), new object()});
     }
 }

@@ -61,7 +61,7 @@ public class ConcurrentListTests
     [Fact]
     public void ClearTest()
     {
-        var list = new ConcurrentList<int>(new[] { 1, 2, 3, 4 });
+        var list = new ConcurrentList<int>(new[] {1, 2, 3, 4});
         list.Clear();
 
         Assert.Empty(list);
@@ -70,7 +70,7 @@ public class ConcurrentListTests
     [Fact]
     public void ContainsTest()
     {
-        var list = new ConcurrentList<int>(new[] { 1, 2, 3, 4 });
+        var list = new ConcurrentList<int>(new[] {1, 2, 3, 4});
 
         for (var i = 1; i < 5; i++)
         {
@@ -86,7 +86,7 @@ public class ConcurrentListTests
     [Fact]
     public void CopyToTest()
     {
-        var list = new ConcurrentList<int>(new[] { 1, 2, 3, 4 });
+        var list = new ConcurrentList<int>(new[] {1, 2, 3, 4});
 
         var intArray = new int[4];
 
@@ -101,7 +101,7 @@ public class ConcurrentListTests
     [Fact]
     public void RemoveTest()
     {
-        var list = new ConcurrentList<int>(new[] { 1, 2, 3, 4 });
+        var list = new ConcurrentList<int>(new[] {1, 2, 3, 4});
 
         list.Remove(4);
 
@@ -116,19 +116,20 @@ public class ConcurrentListTests
     [Fact]
     public void IndexOfTest()
     {
-        var list = new ConcurrentList<int>(new[] { 1, 2, 3, 4 });
+        var list = new ConcurrentList<int>(new[] {1, 2, 3, 4});
 
         for (var i = 0; i < list.Count; i++)
         {
             Assert.Equal(i, list.IndexOf(i + 1));
         }
+
         Assert.Equal(-1, list.IndexOf(101));
     }
 
     [Fact]
     public void InsertTest()
     {
-        var list = new ConcurrentList<int>(new[] { 1, 2, 3, 4 });
+        var list = new ConcurrentList<int>(new[] {1, 2, 3, 4});
 
         list.Insert(4, 5);
 
@@ -145,7 +146,7 @@ public class ConcurrentListTests
     [Fact]
     public void RemoveAtTest()
     {
-        var list = new ConcurrentList<int>(new[] { 1, 2, 3, 4 });
+        var list = new ConcurrentList<int>(new[] {1, 2, 3, 4});
 
         list.RemoveAt(3);
         list.RemoveAt(1);
@@ -158,7 +159,7 @@ public class ConcurrentListTests
     [Fact]
     public void EnumeratorTest()
     {
-        var list = new ConcurrentList<int>(new[] { 1, 2, 3, 4 }) as IEnumerable;
+        var list = new ConcurrentList<int>(new[] {1, 2, 3, 4}) as IEnumerable;
         var secondList = list.Cast<int>().ToList();
 
         Assert.Equal(4, secondList.Count);
@@ -172,7 +173,7 @@ public class ConcurrentListTests
     [Fact]
     public void EnumeratorGenericTest()
     {
-        var list = new ConcurrentList<int>(new[] { 1, 2, 3, 4 }) as IEnumerable<int>;
+        var list = new ConcurrentList<int>(new[] {1, 2, 3, 4}) as IEnumerable<int>;
         var secondList = list.ToList();
 
         Assert.Equal(4, secondList.Count);
@@ -187,13 +188,13 @@ public class ConcurrentListTests
     public void ThisItemTest()
     {
         var list = new ConcurrentList<int>(new[] {1, 2, 3, 4}) {[0] = 1234};
-            
+
         Assert.Equal(1234, list[0]);
     }
 
     [Fact]
     public void IsReadOnlyTest()
     {
-        Assert.False(new ConcurrentList<int>(new[] { 1, 2, 3, 4 }).IsReadOnly);
+        Assert.False(new ConcurrentList<int>(new[] {1, 2, 3, 4}).IsReadOnly);
     }
 }

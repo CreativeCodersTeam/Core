@@ -18,7 +18,7 @@ public class TypeExtensionsTests
 
         Assert.NotNull(instance);
         Assert.IsType<GenericClass<int>>(instance);
-        Assert.Equal(0, ((GenericClass<int>)instance!).Data);
+        Assert.Equal(0, ((GenericClass<int>) instance!).Data);
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class TypeExtensionsTests
 
         Assert.NotNull(instance);
         Assert.IsType<GenericClass<int>>(instance);
-        Assert.Equal(1234, ((GenericClass<int>)instance!).Data);
+        Assert.Equal(1234, ((GenericClass<int>) instance!).Data);
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class TypeExtensionsTests
             .And
             .Be(0);
     }
-        
+
     [Fact]
     public void GetDefault_ForBool_ReturnsFalse()
     {
@@ -54,7 +54,7 @@ public class TypeExtensionsTests
             .And
             .Be(false);
     }
-        
+
     [Fact]
     public void GetDefault_ForString_ReturnsNull()
     {
@@ -109,14 +109,15 @@ public class TypeExtensionsTests
 
         var services = new ServiceCollection();
 
-        var options = new TestSimpleClassOptions() { Value = expectedText };
+        var options = new TestSimpleClassOptions() {Value = expectedText};
 
         services.AddTransient<ITestSimpleClassOptions>(_ => options);
 
         var sp = services.BuildServiceProvider();
 
         // Act
-        var instance = typeof(TestSimpleClassWithOptionsArg).CreateInstance<TestSimpleClassWithOptionsArg>(sp);
+        var instance =
+            typeof(TestSimpleClassWithOptionsArg).CreateInstance<TestSimpleClassWithOptionsArg>(sp);
 
         // Assert
         instance
@@ -135,12 +136,13 @@ public class TypeExtensionsTests
 
         var services = new ServiceCollection();
 
-        var options = new TestSimpleClassOptions() { Value = expectedText };
+        var options = new TestSimpleClassOptions() {Value = expectedText};
 
         var sp = services.BuildServiceProvider();
 
         // Act
-        var instance = typeof(TestSimpleClassWithOptionsArg).CreateInstance<TestSimpleClassWithOptionsArg>(sp, options);
+        var instance =
+            typeof(TestSimpleClassWithOptionsArg).CreateInstance<TestSimpleClassWithOptionsArg>(sp, options);
 
         // Assert
         instance
@@ -159,13 +161,14 @@ public class TypeExtensionsTests
 
         var services = new ServiceCollection();
 
-        var options = new TestSimpleClassOptions { Value = expectedText };
+        var options = new TestSimpleClassOptions {Value = expectedText};
 
         var sp = services.BuildServiceProvider();
 
         // Act
         var instance =
-            typeof(TestSimpleClassWithOptionsArgAsClass).CreateInstance<TestSimpleClassWithOptionsArgAsClass>(sp,
+            typeof(TestSimpleClassWithOptionsArgAsClass).CreateInstance<TestSimpleClassWithOptionsArgAsClass>(
+                sp,
                 options);
 
         // Assert
@@ -185,13 +188,14 @@ public class TypeExtensionsTests
 
         var services = new ServiceCollection();
 
-        var options = new TestSimpleClassOptions { Value = expectedText };
+        var options = new TestSimpleClassOptions {Value = expectedText};
 
         var sp = services.BuildServiceProvider();
 
         // Act
         var instance =
-            typeof(TestSimpleClassWithOptionsArgAsClass).CreateInstance<TestSimpleClassWithOptionsArgAsClass>(sp,
+            typeof(TestSimpleClassWithOptionsArgAsClass).CreateInstance<TestSimpleClassWithOptionsArgAsClass>(
+                sp,
                 options, "Test");
 
         // Assert
@@ -207,7 +211,7 @@ public class TypeExtensionsTests
 
         var services = new ServiceCollection();
 
-        var options = new TestSimpleClassOptions { Value = expectedText };
+        var options = new TestSimpleClassOptions {Value = expectedText};
 
         var service = new TestService();
 
@@ -217,8 +221,9 @@ public class TypeExtensionsTests
 
         // Act
         var instance =
-            typeof(TestSimpleClassWithOptionsArgAndService).CreateInstance<TestSimpleClassWithOptionsArgAndService>(sp,
-                options);
+            typeof(TestSimpleClassWithOptionsArgAndService)
+                .CreateInstance<TestSimpleClassWithOptionsArgAndService>(sp,
+                    options);
 
         // Assert
         instance

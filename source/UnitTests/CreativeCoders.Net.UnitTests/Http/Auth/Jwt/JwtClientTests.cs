@@ -25,7 +25,7 @@ public class JwtClientTests
 
         mockHttpClientContext
             .Respond()
-            .ReturnJson(new { specificAuthToken = expectedToken });
+            .ReturnJson(new {specificAuthToken = expectedToken});
 
         var jwtClient = new JwtClient(mockHttpClientContext.CreateClient());
 
@@ -39,7 +39,7 @@ public class JwtClientTests
             .WithVerb(HttpMethod.Post)
             .WithContentType(ContentMediaTypes.Application.Json)
             .WithContentText(JsonSerializer.Serialize(expectedTokenRequest,
-                new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
+                new JsonSerializerOptions() {PropertyNamingPolicy = JsonNamingPolicy.CamelCase}));
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public class JwtClientTests
 
         mockHttpClientContext
             .Respond()
-            .ReturnJson(new { specificAuthToken = expectedToken });
+            .ReturnJson(new {specificAuthToken = expectedToken});
 
         var jwtClient = new JwtClient(mockHttpClientContext.CreateClient());
 
@@ -71,6 +71,6 @@ public class JwtClientTests
             .WithVerb(HttpMethod.Post)
             .WithContentType(ContentMediaTypes.Application.Json)
             .WithContentText(JsonSerializer.Serialize(expectedTokenRequest,
-                new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
+                new JsonSerializerOptions() {PropertyNamingPolicy = JsonNamingPolicy.CamelCase}));
     }
 }

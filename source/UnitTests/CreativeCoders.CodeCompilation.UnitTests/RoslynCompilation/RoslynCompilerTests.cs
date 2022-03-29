@@ -20,14 +20,14 @@ public class RoslynCompilerTests
 
         compilationPackage.AddReferenceAssembly(typeof(ISimpleScript).Assembly);
         compilationPackage.SourceCodes.Add(new SourceCodeUnit(TestScripts.SimpleScript, "Test.cs"));
-            
+
         var compilationOutput = new CompilationOutput(CompilationOutputKind.DynamicallyLinkedLibrary,
             new StreamCompilationOutputData(outputStream));
 
         var compilerResult = compiler.Compile(compilationPackage, compilationOutput);
 
         Assert.Empty(compilerResult.Messages.Where(x => x.MessageType == CompilationMessageType.Error));
-            
+
         var assembly = Assembly.Load(outputStream.ToArray());
 
         var simpleScript = assembly.CreateInstance(

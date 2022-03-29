@@ -4,8 +4,7 @@ namespace CreativeCoders.Core.UnitTests.Comparing.TestData;
 
 public interface IComparableStringInterfaceObject
 {
-    [UsedImplicitly]
-    string TextValue { get; set; }
+    [UsedImplicitly] string TextValue { get; set; }
 
     string ToString();
 }

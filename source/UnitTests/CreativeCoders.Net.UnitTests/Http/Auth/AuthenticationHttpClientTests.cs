@@ -23,7 +23,7 @@ public class AuthenticationHttpClientTests
             .ReturnText("Failed", HttpStatusCode.Unauthorized)
             .Then()
             .ReturnText(expectedData, HttpStatusCode.OK);
-            
+
         var httpMessageHandler = mockHttpClientContext.CreateMessageHandler();
 
         var httpMessageHandlerFactory = A.Fake<IHttpMessageHandlerFactory>();
@@ -48,7 +48,8 @@ public class AuthenticationHttpClientTests
         Assert.Equal(expectedData, response);
 
         A.CallTo(() => clientAuthenticator.PrepareHttpRequest(request)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => clientAuthenticator.CanAuthenticate(new Uri("http://test.com"))).MustHaveHappenedOnceExactly();
+        A.CallTo(() => clientAuthenticator.CanAuthenticate(new Uri("http://test.com")))
+            .MustHaveHappenedOnceExactly();
         A.CallTo(() => clientAuthenticator.AuthenticateAsync(new Uri("http://test.com")))
             .MustHaveHappenedOnceExactly();
     }

@@ -42,6 +42,5 @@ public class AcquireReaderLockTests
 
         await Task.Run(() =>
             Assert.Throws<AcquireLockFailedException>(() => new AcquireReaderLock(slimLock, 1)));
-
     }
 }

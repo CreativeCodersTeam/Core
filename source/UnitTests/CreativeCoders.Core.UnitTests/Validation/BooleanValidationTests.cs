@@ -81,7 +81,7 @@ public class BooleanValidationTests
     {
         var validator = new TestDataObjectValidator(v => setupRule(v.RuleFor(x => x.IntValue)));
 
-        var testData = new TestDataObject { IntValue = intValue };
+        var testData = new TestDataObject {IntValue = intValue};
 
         var validationResult = validator.Validate(testData);
 

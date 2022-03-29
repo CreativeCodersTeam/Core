@@ -36,7 +36,7 @@ public class GenericMethodTestClass
         return data1.ToString() + data2 + data3 + data4;
     }
 
-    public void SetDataWithParam<T>(params string [] lines)
+    public void SetDataWithParam<T>(params string[] lines)
     {
         Data = typeof(T).Name + string.Join(string.Empty, lines);
     }

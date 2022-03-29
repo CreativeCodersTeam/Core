@@ -5,6 +5,5 @@ namespace CreativeCoders.Core.UnitTests.Reflection.TestData;
 
 public interface ITestSimpleClassOptions
 {
-    [UsedImplicitly]
-    string? Value { get; }
+    [UsedImplicitly] string? Value { get; }
 }

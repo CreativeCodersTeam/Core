@@ -24,7 +24,8 @@ public class OptionsHelpGeneratorTests
 
         firstHelpParameter.ArgumentName
             .Should()
-            .Be($"-{TestOptionForHelp.TitleShortName} --{TestOptionForHelp.TitleLongName} <{TestOptionForHelp.TitleName.ToUpper()}>");
+            .Be(
+                $"-{TestOptionForHelp.TitleShortName} --{TestOptionForHelp.TitleLongName} <{TestOptionForHelp.TitleName.ToUpper()}>");
 
         firstHelpParameter.HelpText
             .Should()

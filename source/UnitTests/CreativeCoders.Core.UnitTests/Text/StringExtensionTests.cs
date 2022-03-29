@@ -30,7 +30,7 @@ public class StringExtensionTests
     [InlineData("")]
     public void IsNullOrEmptyTestTrue(string value)
     {
-        Assert.True(value.IsNullOrEmpty());            
+        Assert.True(value.IsNullOrEmpty());
     }
 
     [Theory]
@@ -121,7 +121,7 @@ public class StringExtensionTests
         sb.AppendLine("1234");
         sb.AppendLine("Test", false);
 
-        Assert.Equal("1234"+ Env.NewLine + "Test" + Env.NewLine, sb.ToString());
+        Assert.Equal("1234" + Env.NewLine + "Test" + Env.NewLine, sb.ToString());
     }
 
     [Fact]
@@ -136,8 +136,8 @@ public class StringExtensionTests
     }
 
     [Theory]
-    [InlineData("Hello World", new[]{'o', 'W'}, "Hell rld")]
-    [InlineData(@"some\:_file?*.txt", new[] { '\\', ':', '?', '*' }, "some_file.txt")]
+    [InlineData("Hello World", new[] {'o', 'W'}, "Hell rld")]
+    [InlineData(@"some\:_file?*.txt", new[] {'\\', ':', '?', '*'}, "some_file.txt")]
     public void Filter_(string input, char[] filteredChars, string expected)
     {
         var filteredText = input.Filter(filteredChars);
@@ -151,7 +151,7 @@ public class StringExtensionTests
         const string expectedText = "TestText";
 
         var secureString = expectedText.ToSecureString();
-            
+
         Assert.Equal(expectedText, secureString.ToNormalString());
     }
 

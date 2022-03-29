@@ -44,7 +44,8 @@ public class HttpClientPostTextExtensionsTests
 
         var client = mockHttpClientContext.CreateClient();
 
-        var _ = await client.PostTextAsync(new Uri("http://test.com"), expectedData, ContentMediaTypes.Text.Xml);
+        var _ = await client.PostTextAsync(new Uri("http://test.com"), expectedData,
+            ContentMediaTypes.Text.Xml);
 
         Assert.Single(mockHttpClientContext.RecordedRequests);
 

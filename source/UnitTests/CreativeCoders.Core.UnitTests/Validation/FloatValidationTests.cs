@@ -43,7 +43,8 @@ public class FloatValidationTests
     [InlineData(12, 12, 0.1)]
     [InlineData(12, 11.9, 0.1)]
     [InlineData(12, 11.9999999, 0.000001)]
-    public void IsEqual_EqualValuesWithTolerance_Valid(double floatValue, double compareValue, double tolerance)
+    public void IsEqual_EqualValuesWithTolerance_Valid(double floatValue, double compareValue,
+        double tolerance)
     {
         Assert.True(IsValid(rb => rb.IsEqual(compareValue, tolerance), floatValue));
     }
@@ -51,7 +52,8 @@ public class FloatValidationTests
     [Theory]
     [InlineData(12, 12.1, 0.01)]
     [InlineData(12.1, 11.9999999999, 0.01)]
-    public void IsEqual_NotEqualValuesWithTolerance_Invalid(double floatValue, double compareValue, double tolerance)
+    public void IsEqual_NotEqualValuesWithTolerance_Invalid(double floatValue, double compareValue,
+        double tolerance)
     {
         Assert.False(IsValid(rb => rb.IsEqual(compareValue, tolerance), floatValue));
     }
@@ -59,7 +61,8 @@ public class FloatValidationTests
     [Theory]
     [InlineData(12, 12, 0.1)]
     [InlineData(12, 11.99, 0.1)]
-    public void IsNotEqual_EqualValuesWithTolerance_Invalid(double floatValue, double compareValue, double tolerance)
+    public void IsNotEqual_EqualValuesWithTolerance_Invalid(double floatValue, double compareValue,
+        double tolerance)
     {
         Assert.False(IsValid(rb => rb.IsNotEqual(compareValue, tolerance), floatValue));
     }
@@ -67,16 +70,18 @@ public class FloatValidationTests
     [Theory]
     [InlineData(12, 12.1, 0.01)]
     [InlineData(12.1, 11.9999999999, 0.00001)]
-    public void IsNotEqual_NotEqualValuesWithTolerance_Valid(double floatValue, double compareValue, double tolerance)
+    public void IsNotEqual_NotEqualValuesWithTolerance_Valid(double floatValue, double compareValue,
+        double tolerance)
     {
         Assert.True(IsValid(rb => rb.IsNotEqual(compareValue, tolerance), floatValue));
     }
 
-    private static bool IsValid(Action<IPropertyRuleBuilder<TestDataObject, double>> setupRule, double floatValue)
+    private static bool IsValid(Action<IPropertyRuleBuilder<TestDataObject, double>> setupRule,
+        double floatValue)
     {
         var validator = new TestDataObjectValidator(v => setupRule(v.RuleFor(x => x.FloatValue)));
 
-        var testData = new TestDataObject { FloatValue = floatValue };
+        var testData = new TestDataObject {FloatValue = floatValue};
 
         var validationResult = validator.Validate(testData);
 
@@ -119,7 +124,7 @@ public class FloatValidationTests
     {
         var validator = new TestDataObjectValidator(v => setupRule(v.RuleFor(x => x.IntValue)));
 
-        var testData = new TestDataObject { IntValue = intValue };
+        var testData = new TestDataObject {IntValue = intValue};
 
         var validationResult = validator.Validate(testData);
 
@@ -162,7 +167,7 @@ public class FloatValidationTests
     {
         var validator = new TestDataObjectValidator(v => setupRule(v.RuleFor(x => x.LongValue)));
 
-        var testData = new TestDataObject { LongValue = longValue };
+        var testData = new TestDataObject {LongValue = longValue};
 
         var validationResult = validator.Validate(testData);
 
@@ -201,11 +206,12 @@ public class FloatValidationTests
         Assert.True(IsValid(rb => rb.IsNotEqual(compareValue), decimalValue));
     }
 
-    private static bool IsValid(Action<IPropertyRuleBuilder<TestDataObject, decimal>> setupRule, decimal decimalValue)
+    private static bool IsValid(Action<IPropertyRuleBuilder<TestDataObject, decimal>> setupRule,
+        decimal decimalValue)
     {
         var validator = new TestDataObjectValidator(v => setupRule(v.RuleFor(x => x.DecimalValue)));
 
-        var testData = new TestDataObject { DecimalValue = decimalValue };
+        var testData = new TestDataObject {DecimalValue = decimalValue};
 
         var validationResult = validator.Validate(testData);
 
@@ -245,11 +251,12 @@ public class FloatValidationTests
         Assert.True(IsValid(rb => rb.IsNotEqual(compareValue), strValue));
     }
 
-    private static bool IsValid(Action<IPropertyRuleBuilder<TestDataObject, string>> setupRule, string strValue)
+    private static bool IsValid(Action<IPropertyRuleBuilder<TestDataObject, string>> setupRule,
+        string strValue)
     {
         var validator = new TestDataObjectValidator(v => setupRule(v.RuleFor(x => x.StrValue)));
 
-        var testData = new TestDataObject { StrValue = strValue };
+        var testData = new TestDataObject {StrValue = strValue};
 
         var validationResult = validator.Validate(testData);
 
@@ -262,11 +269,12 @@ public class FloatValidationTests
         Assert.False(IsValid(rb => rb.IsEqual(0.1), new object()));
     }
 
-    private static bool IsValid(Action<IPropertyRuleBuilder<TestDataObject, object>> setupRule, object objValue)
+    private static bool IsValid(Action<IPropertyRuleBuilder<TestDataObject, object>> setupRule,
+        object objValue)
     {
         var validator = new TestDataObjectValidator(v => setupRule(v.RuleFor(x => x.ObjValue)));
 
-        var testData = new TestDataObject { ObjValue = objValue };
+        var testData = new TestDataObject {ObjValue = objValue};
 
         var validationResult = validator.Validate(testData);
 

@@ -16,13 +16,13 @@ public class DelegateErrorHandlerTests
     public void HandleException_()
     {
         Exception exception = null;
-            
+
         var errorHandler = new DelegateErrorHandler(e => exception = e);
-            
+
         var newException = new ApplicationException("Test Exception");
-            
+
         errorHandler.HandleException(newException);
-            
+
         Assert.Same(newException, exception);
     }
 }

@@ -6,10 +6,7 @@ namespace CreativeCoders.Core.UnitTests.Reflection;
 [DummyTest(Value = 12345)]
 public class GenericClass<T>
 {
-    public GenericClass() : this(default)
-    {
-            
-    }
+    public GenericClass() : this(default) { }
 
     // ReSharper disable once MemberCanBePrivate.Global
     public GenericClass(T data)

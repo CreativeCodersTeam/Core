@@ -17,6 +17,7 @@ public class PropertyRuleBuilderTests
 
         builder.AddValidationStep(propValidationStep);
 
-        A.CallTo(() => propValidationRule.AddValidationStep(propValidationStep)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => propValidationRule.AddValidationStep(propValidationStep))
+            .MustHaveHappenedOnceExactly();
     }
 }
