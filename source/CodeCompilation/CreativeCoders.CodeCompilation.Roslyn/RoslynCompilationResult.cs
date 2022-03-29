@@ -22,7 +22,7 @@ internal class RoslynCompilationResult : ICompilationResult
         _compilation = compilation;
         _outputData = outputData;
         _messages = new List<CompilationMessage>();
-            
+
         EmitCompilation();
     }
 
@@ -38,7 +38,7 @@ internal class RoslynCompilationResult : ICompilationResult
     {
         var messageType = RoslynConvert.ConvertMessageType(diagnostic.Severity);
         var textSpan = RoslynConvert.ConvertTextSpan(diagnostic.Location.SourceSpan);
-            
+
         var message = new CompilationMessage(messageType, textSpan, diagnostic.GetMessage());
 
         _messages.Add(message);

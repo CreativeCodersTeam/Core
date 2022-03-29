@@ -11,7 +11,7 @@ public class CompilationMessage
     {
         Ensure.IsNotNull(messageType, nameof(messageType));
         Ensure.IsNotNull(sourceSpan, nameof(sourceSpan));
-            
+
         MessageType = messageType;
         SourceSpan = sourceSpan;
         Message = message;

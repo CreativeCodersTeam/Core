@@ -7,8 +7,8 @@ public class CompilationOutput
         OutputKind = outputKind;
         OutputData = outputData;
     }
-        
+
     public CompilationOutputKind OutputKind { get; }
-        
+
     public ICompilationOutputData OutputData { get; }
 }

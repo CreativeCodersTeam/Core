@@ -11,6 +11,6 @@ public class CompileFailedException : Exception
     {
         CompilerMessages = compilerMessages;
     }
-        
+
     public IEnumerable<CompilationMessage> CompilerMessages { get; }
 }

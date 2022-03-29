@@ -13,7 +13,8 @@ namespace CreativeCoders.CodeCompilation.Roslyn;
 
 public class RoslynCompiler : ICompiler
 {
-    public ICompilationResult Compile(CompilationPackage compilationPackage, CompilationOutput compilationOutput)
+    public ICompilationResult Compile(CompilationPackage compilationPackage,
+        CompilationOutput compilationOutput)
     {
         Ensure.IsNotNull(compilationOutput, nameof(compilationOutput));
 
@@ -25,7 +26,8 @@ public class RoslynCompiler : ICompiler
                     syntaxTree.GetCompilationUnitRoot().Usings.Select(usingDirective => usingDirective)),
                 compilationPackage);
 
-        var compilation = CreateCompilation(syntaxTrees, assemblyFiles, compilationPackage, compilationOutput);
+        var compilation =
+            CreateCompilation(syntaxTrees, assemblyFiles, compilationPackage, compilationOutput);
 
         return new RoslynCompilationResult(compilation, compilationOutput.OutputData);
     }
@@ -39,7 +41,8 @@ public class RoslynCompiler : ICompiler
         if (compilationPackage.AddAllLoadedAssemblyReferences)
         {
             var loadedAssemblies = ReflectionUtils.GetAllAssemblies();
-            usings.ForEach(usingDirective => GetAssemblyForUsing(usingDirective, loadedAssemblies, assemblies));
+            usings.ForEach(
+                usingDirective => GetAssemblyForUsing(usingDirective, loadedAssemblies, assemblies));
         }
 
         if (compilationPackage.AddNetStandardReferences)
@@ -53,28 +56,32 @@ public class RoslynCompiler : ICompiler
     private static IEnumerable<string> GetNetStandardAssemblies()
     {
         var netStdAssembly = Assembly.Load(new AssemblyName("netstandard"));
-            
+
         var referencedAssemblyNames = netStdAssembly.GetReferencedAssemblies();
-            
+
         var assemblyLocations = referencedAssemblyNames.Select(Assembly.Load)
             .Select(assembly => assembly.Location).ToList();
         assemblyLocations.Add(netStdAssembly.Location);
         return assemblyLocations;
     }
 
-    private static void GetAssemblyForUsing(UsingDirectiveSyntax usingDirectiveSyntax, IEnumerable<Assembly> loadedAssemblies, ICollection<string> assemblies)
+    private static void GetAssemblyForUsing(UsingDirectiveSyntax usingDirectiveSyntax,
+        IEnumerable<Assembly> loadedAssemblies, ICollection<string> assemblies)
     {
         var nameSpace = usingDirectiveSyntax.Name.GetText().ToString();
 
         var foundAssemblies = loadedAssemblies.Where(assembly => !assembly.IsDynamic &&
-                                                                 assembly.GetExportedTypes().Any(type => type.Namespace?.Equals(nameSpace) == true));
-            
+                                                                 assembly.GetExportedTypes().Any(type =>
+                                                                     type.Namespace?.Equals(nameSpace) ==
+                                                                     true));
+
         foundAssemblies.ForEach(assembly => assemblies.Add(assembly.Location));
     }
 
     private static IEnumerable<MetadataReference> GetReferences(IEnumerable<string> assemblyFiles)
     {
-        return assemblyFiles.Distinct().Select(assemblyFile => MetadataReference.CreateFromFile(assemblyFile));
+        return assemblyFiles.Distinct()
+            .Select(assemblyFile => MetadataReference.CreateFromFile(assemblyFile));
     }
 
     private static CSharpCompilation CreateCompilation(IEnumerable<SyntaxTree> syntaxTrees,
@@ -95,14 +102,17 @@ public class RoslynCompiler : ICompiler
         return compilation;
     }
 
-    private static IEnumerable<CSharpSyntaxTree> CreateSyntaxTrees(IEnumerable<SourceCodeUnit> sourceCodeUnits)
+    private static IEnumerable<CSharpSyntaxTree> CreateSyntaxTrees(
+        IEnumerable<SourceCodeUnit> sourceCodeUnits)
     {
         return sourceCodeUnits.Select(CreateSyntaxTree);
     }
 
     private static CSharpSyntaxTree CreateSyntaxTree(SourceCodeUnit sourceCodeUnit)
     {
-        var syntaxTree = CSharpSyntaxTree.ParseText(sourceCodeUnit.SourceCode, null, sourceCodeUnit.FileName) as CSharpSyntaxTree;
+        var syntaxTree =
+            CSharpSyntaxTree.ParseText(sourceCodeUnit.SourceCode, null, sourceCodeUnit.FileName) as
+                CSharpSyntaxTree;
         return syntaxTree;
     }
 }

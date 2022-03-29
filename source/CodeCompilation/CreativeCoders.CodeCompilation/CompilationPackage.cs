@@ -26,6 +26,6 @@ public class CompilationPackage
     public IList<string> ReferencedAssemblyFiles { get; }
 
     public bool AddNetStandardReferences { get; set; }
-        
+
     public bool AddAllLoadedAssemblyReferences { get; set; }
 }
