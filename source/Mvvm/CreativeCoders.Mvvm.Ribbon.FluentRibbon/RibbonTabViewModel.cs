@@ -12,7 +12,7 @@ public class RibbonTabViewModel : ObjectLinkViewModelBase
     private string _text;
 
     private bool _isVisible;
-        
+
     private bool _isSelected;
 
     public RibbonTabViewModel()
@@ -20,14 +20,16 @@ public class RibbonTabViewModel : ObjectLinkViewModelBase
         IsVisible = true;
     }
 
-    [PropertyLink(typeof(RibbonTabItem), nameof(RibbonTabItem.IsSelected), Direction = LinkDirection.OneWayToTarget)]
+    [PropertyLink(typeof(RibbonTabItem), nameof(RibbonTabItem.IsSelected),
+        Direction = LinkDirection.OneWayToTarget)]
     public bool IsSelected
     {
         get => _isSelected;
         set => Set(ref _isSelected, value);
     }
-        
-    [PropertyLink(typeof(RibbonTabItem), nameof(RibbonTabItem.Header), Direction = LinkDirection.OneWayToTarget)]
+
+    [PropertyLink(typeof(RibbonTabItem), nameof(RibbonTabItem.Header),
+        Direction = LinkDirection.OneWayToTarget)]
     public string Text
     {
         get => _text;
