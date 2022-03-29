@@ -1,17 +1,17 @@
 ﻿@typeparam T
 @inherits DropDownBase<T>
 
-    <div class="btn-group">
-        @if (ButtonTemplate == null)
-        {
-            <Button class="@Classes.ToString()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@ChildContent</Button>
-        }
-        else
-        {
-            @ButtonTemplate
-        }
+<div class="btn-group">
+    @if (ButtonTemplate == null)
+    {
+        <Button class="@Classes.ToString()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@ChildContent</Button>
+    }
+    else
+    {
+        @ButtonTemplate
+    }
 
-        <div class="dropdown-menu">
-            <ItemsControl T="T" Items="@DropDownItems" ItemTemplate="@DropDownItemTemplate" />
-        </div>
+    <div class="dropdown-menu">
+        <ItemsControl T="T" Items="@DropDownItems" ItemTemplate="@DropDownItemTemplate"/>
     </div>
+</div>

@@ -8,8 +8,6 @@ namespace CreativeCoders.AspNetCore.Blazor.Components.Buttons;
 public enum ButtonElementType
 {
     Button,
-    [EnumStringValue("a")]
-    Link,
-    [EnumStringValue("div")]
-    Div
+    [EnumStringValue("a")] Link,
+    [EnumStringValue("div")] Div
 }

@@ -43,11 +43,11 @@ public class ViewModelArea<TViewModel> : ContainerControlBase, IDisposable
         base.OnParametersSet();
 
         _observeProperties = new List<string>(
-            ObserveProperties?.Split(new[] { ' ', ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
+            ObserveProperties?.Split(new[] {' ', ',', ';'}, StringSplitOptions.RemoveEmptyEntries)
                 .WhereNotNull() ?? Array.Empty<string>());
 
         _excludeProperties = new List<string>(
-            ExcludeProperties?.Split(new[] { ' ', ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
+            ExcludeProperties?.Split(new[] {' ', ',', ';'}, StringSplitOptions.RemoveEmptyEntries)
                 .WhereNotNull() ?? Array.Empty<string>());
     }
 
@@ -76,12 +76,9 @@ public class ViewModelArea<TViewModel> : ContainerControlBase, IDisposable
         ViewModel.PropertyChanged -= ViewModelOnPropertyChanged;
     }
 
-    [Parameter]
-    public TViewModel ViewModel { get; set; }
+    [Parameter] public TViewModel ViewModel { get; set; }
 
-    [Parameter]
-    public string ObserveProperties { get; set; }
+    [Parameter] public string ObserveProperties { get; set; }
 
-    [Parameter]
-    public string ExcludeProperties { get; set; }
+    [Parameter] public string ExcludeProperties { get; set; }
 }

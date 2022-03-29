@@ -20,7 +20,7 @@ public class RawRequestBodyFormatter : InputFormatter
     public override bool CanRead(InputFormatterContext context)
     {
         Ensure.IsNotNull(context, nameof(context));
-            
+
         var contentType = context.HttpContext.Request.ContentType;
         return string.IsNullOrEmpty(contentType) ||
                ContentMediaTypes.IsContentType(contentType, ContentMediaTypes.Text.Plain) ||

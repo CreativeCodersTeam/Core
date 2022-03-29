@@ -15,7 +15,7 @@ public class Iconify : ControlBase
         base.BuildRenderTree(builder);
 
         var sequence = 0;
-            
+
         builder.OpenElement(sequence++, "div");
         builder.AddAttribute(sequence++, "id", Id);
 
@@ -67,11 +67,11 @@ public class Iconify : ControlBase
     [Parameter] public string Width { get; set; }
 
     [Parameter] public string Height { get; set; }
-        
+
     [Parameter] public string Color { get; set; }
-        
+
     [Parameter] public int Rotation { get; set; }
-        
+
     [Parameter] public IconFlipMode FlipMode { get; set; }
 
     [Parameter] public bool IsInline { get; set; }

@@ -35,14 +35,11 @@ public class ItemsControlBase<TItem> : ControlBase, IDisposable
         Items = new List<TItem>((IEnumerable<TItem>) ItemsSource ?? Array.Empty<TItem>());
     }
 
-    [Parameter]
-    public IReadOnlyCollection<TItem> Items { get; set; }
+    [Parameter] public IReadOnlyCollection<TItem> Items { get; set; }
 
-    [Parameter]
-    public RenderFragment<TItem> ItemTemplate { get; set; }
+    [Parameter] public RenderFragment<TItem> ItemTemplate { get; set; }
 
-    [Parameter]
-    public ExtendedObservableCollection<TItem> ItemsSource { get; set; }
+    [Parameter] public ExtendedObservableCollection<TItem> ItemsSource { get; set; }
 
     public void Dispose()
     {

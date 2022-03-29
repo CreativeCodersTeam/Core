@@ -35,14 +35,16 @@ public class ButtonBase : ContainerControlBase
     ///
     /// <value> The callback for the click event. </value>
     ///-------------------------------------------------------------------------------------------------
-    [Parameter] public EventCallback<MouseEventArgs> Clicked { get; set; }
+    [Parameter]
+    public EventCallback<MouseEventArgs> Clicked { get; set; }
 
     ///-------------------------------------------------------------------------------------------------
     /// <summary>   Gets or sets the kind of the button. </summary>
     ///
     /// <value> The kind of the button. </value>
     ///-------------------------------------------------------------------------------------------------
-    [Parameter] public ButtonKind Kind { get; set; }
+    [Parameter]
+    public ButtonKind Kind { get; set; }
 
     ///-------------------------------------------------------------------------------------------------
     /// <summary>   Gets or sets the size. </summary>
@@ -57,12 +59,14 @@ public class ButtonBase : ContainerControlBase
     ///
     /// <value> True if this button is outlined, false if not. </value>
     ///-------------------------------------------------------------------------------------------------
-    [Parameter] public bool IsOutlined { get; set; }
+    [Parameter]
+    public bool IsOutlined { get; set; }
 
     ///-------------------------------------------------------------------------------------------------
     /// <summary>   Gets or sets a value indicating whether this button is block level. </summary>
     ///
     /// <value> True if this button is block level, false if not. </value>
     ///-------------------------------------------------------------------------------------------------
-    [Parameter] public bool IsBlockLevel { get; set; }
+    [Parameter]
+    public bool IsBlockLevel { get; set; }
 }

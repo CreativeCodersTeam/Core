@@ -8,8 +8,6 @@ namespace CreativeCoders.AspNetCore.Blazor.Components.Buttons;
 public enum ButtonType
 {
     Button,
-    [EnumStringValue("submit")]
-    Submit,
-    [EnumStringValue("reset")]
-    Reset
+    [EnumStringValue("submit")] Submit,
+    [EnumStringValue("reset")] Reset
 }

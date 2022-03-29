@@ -8,8 +8,6 @@ namespace CreativeCoders.AspNetCore.Blazor.Components.Buttons;
 public enum ButtonSize
 {
     Normal,
-    [EnumStringValue("btn-sm")]
-    Small,
-    [EnumStringValue("btn-lg")]
-    Large
+    [EnumStringValue("btn-sm")] Small,
+    [EnumStringValue("btn-lg")] Large
 }

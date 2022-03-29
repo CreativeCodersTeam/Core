@@ -6,8 +6,6 @@ namespace CreativeCoders.AspNetCore.Blazor;
 
 public class BlazorObservableCollection<T> : ExtendedObservableCollection<T>
 {
-    public BlazorObservableCollection() : base(new SynchronizationContext(), SynchronizationMethod.Post, () => new NoLockingMechanism())
-    {
-            
-    }
+    public BlazorObservableCollection() : base(new SynchronizationContext(), SynchronizationMethod.Post,
+        () => new NoLockingMechanism()) { }
 }

@@ -10,7 +10,8 @@ namespace CreativeCoders.AspNetCore.Jwt;
 [PublicAPI]
 public static class JwtServicesRegistrationExtensions
 {
-    public static IServiceCollection AddJwtSupport<TUserAuthProvider>(this IServiceCollection serviceCollection, string symSecurityKey)
+    public static IServiceCollection AddJwtSupport<TUserAuthProvider>(
+        this IServiceCollection serviceCollection, string symSecurityKey)
         where TUserAuthProvider : class, IUserAuthProvider
     {
         serviceCollection
@@ -40,7 +41,8 @@ public static class JwtServicesRegistrationExtensions
         return serviceCollection;
     }
 
-    public static IMvcBuilder AddJwtSupport<TUserAuthProvider>(this IMvcBuilder builder, string symSecurityKey)
+    public static IMvcBuilder AddJwtSupport<TUserAuthProvider>(this IMvcBuilder builder,
+        string symSecurityKey)
         where TUserAuthProvider : class, IUserAuthProvider
     {
         builder.Services

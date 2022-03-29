@@ -12,8 +12,5 @@ public class ClassesAttributeBuilder : AttributeBuilder
     ///     Initializes a new instance of the <see cref="ClassesAttributeBuilder"/> class.
     /// </summary>
     ///-------------------------------------------------------------------------------------------------
-    public ClassesAttributeBuilder() : base(" ", " ")
-    {
-            
-    }
+    public ClassesAttributeBuilder() : base(" ", " ") { }
 }

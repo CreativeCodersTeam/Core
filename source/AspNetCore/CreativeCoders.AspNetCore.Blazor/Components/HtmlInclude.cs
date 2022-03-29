@@ -11,11 +11,10 @@ namespace CreativeCoders.AspNetCore.Blazor.Components;
 [PublicAPI]
 public class HtmlInclude : ControlBase
 {
-    [Inject]
-    private HttpClient HttpClient { get; set; }
+    [Inject] private HttpClient HttpClient { get; set; }
 
     private MarkupString Content { get; set; }
-        
+
     private bool ContentLoadFailed { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -25,7 +24,7 @@ public class HtmlInclude : ControlBase
         try
         {
             var html = ContentLoader != null ? await ContentLoader() : await HttpClient.GetStringAsync(Url);
-        
+
             Content = new MarkupString(html);
 
             ContentLoadFailed = false;
@@ -33,7 +32,7 @@ public class HtmlInclude : ControlBase
         catch (Exception e)
         {
             Console.WriteLine($"HtmlInclude load data failed. {e}");
-                
+
             ContentLoadFailed = true;
         }
     }
@@ -48,7 +47,7 @@ public class HtmlInclude : ControlBase
         {
             builder.OpenElement(sequence++, "div");
         }
-            
+
         if (ContentLoadFailed)
         {
             builder.AddContent(sequence, FailedContent);
@@ -64,15 +63,11 @@ public class HtmlInclude : ControlBase
         }
     }
 
-    [Parameter]
-    public string Url { get; set; }
-    
-    [Parameter]
-    public RenderFragment FailedContent { get; set; }
-    
-    [Parameter]
-    public bool UseEnclosingDiv { get; set; }
-        
-    [Parameter]
-    public Func<Task<string>> ContentLoader { get; set; }
+    [Parameter] public string Url { get; set; }
+
+    [Parameter] public RenderFragment FailedContent { get; set; }
+
+    [Parameter] public bool UseEnclosingDiv { get; set; }
+
+    [Parameter] public Func<Task<string>> ContentLoader { get; set; }
 }
