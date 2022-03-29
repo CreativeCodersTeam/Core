@@ -1,7 +1,9 @@
-﻿using Nuke.Common.Tools.DotNet;
+﻿using JetBrains.Annotations;
+using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.BuildActions;
 
+[PublicAPI]
 public class DotNetPublishBuildAction : BuildActionBase<DotNetPublishBuildAction>
 {
     private string _projectFile;
