@@ -12,11 +12,12 @@ public class RibbonMenuItemViewModel : RibbonCommandControlViewModel
 
     private bool? _isChecked;
 
-    public RibbonMenuItemViewModel() {}
+    public RibbonMenuItemViewModel() { }
 
-    public RibbonMenuItemViewModel(ActionViewModel action) : base(action) {}
+    public RibbonMenuItemViewModel(ActionViewModel action) : base(action) { }
 
-    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.SmallIcon), Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
+    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.SmallIcon),
+        Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
     public string Icon
     {
         get => _icon;
@@ -29,7 +30,8 @@ public class RibbonMenuItemViewModel : RibbonCommandControlViewModel
         set => Set(ref _isCheckable, value);
     }
 
-    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.IsChecked), Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
+    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.IsChecked),
+        Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
     public bool? IsChecked
     {
         get => _isChecked;

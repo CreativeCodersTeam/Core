@@ -12,9 +12,9 @@ public abstract class RibbonBaseButtonViewModel : RibbonCommandControlViewModel
 
     private string _smallIcon;
 
-    protected RibbonBaseButtonViewModel() {}
+    protected RibbonBaseButtonViewModel() { }
 
-    protected RibbonBaseButtonViewModel(ActionViewModel action) : base(action) {}
+    protected RibbonBaseButtonViewModel(ActionViewModel action) : base(action) { }
 
     public RibbonButtonSize Size
     {
@@ -22,17 +22,19 @@ public abstract class RibbonBaseButtonViewModel : RibbonCommandControlViewModel
         set => Set(ref _size, value);
     }
 
-    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.LargeIcon), Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
+    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.LargeIcon),
+        Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
     public string LargeIcon
     {
         get => _largeIcon;
         set => Set(ref _largeIcon, value);
     }
 
-    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.SmallIcon), Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
+    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.SmallIcon),
+        Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
     public string SmallIcon
     {
         get => _smallIcon;
         set => Set(ref _smallIcon, value);
-    }        
+    }
 }

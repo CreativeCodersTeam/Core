@@ -10,18 +10,20 @@ public class RibbonCheckBoxViewModel : RibbonCommandControlViewModel
 
     private string _smallIcon;
 
-    public RibbonCheckBoxViewModel() {}
+    public RibbonCheckBoxViewModel() { }
 
-    public RibbonCheckBoxViewModel(ActionViewModel action) : base(action) {}
+    public RibbonCheckBoxViewModel(ActionViewModel action) : base(action) { }
 
-    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.IsChecked), Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
+    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.IsChecked),
+        Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
     public bool? IsChecked
     {
         get => _isChecked;
         set => Set(ref _isChecked, value);
     }
 
-    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.SmallIcon), Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
+    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.SmallIcon),
+        Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
     public string SmallIcon
     {
         get => _smallIcon;

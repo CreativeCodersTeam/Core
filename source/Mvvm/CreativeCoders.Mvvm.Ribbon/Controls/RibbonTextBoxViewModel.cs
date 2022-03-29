@@ -3,6 +3,4 @@
 namespace CreativeCoders.Mvvm.Ribbon.Controls;
 
 [PublicAPI]
-public class RibbonTextBoxViewModel : RibbonControlViewModel
-{
-}
+public class RibbonTextBoxViewModel : RibbonControlViewModel { }

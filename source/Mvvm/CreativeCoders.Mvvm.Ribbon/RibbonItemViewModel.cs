@@ -23,14 +23,16 @@ public abstract class RibbonItemViewModel : ViewModelBase
         set => Set(ref _name, value);
     }
 
-    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.Caption), Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
+    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.Caption), Direction = LinkDirection.TwoWay,
+        InitWithTargetValue = true)]
     public string Text
     {
         get => _text;
         set => Set(ref _text, value);
     }
 
-    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.IsVisible), Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
+    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.IsVisible),
+        Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
     public bool IsVisible
     {
         get => _isVisible;

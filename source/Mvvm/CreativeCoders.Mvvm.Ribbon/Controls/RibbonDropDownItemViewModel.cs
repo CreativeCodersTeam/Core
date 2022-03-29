@@ -8,11 +8,12 @@ public class RibbonDropDownItemViewModel : RibbonCommandControlViewModel
 {
     private string _icon;
 
-    public RibbonDropDownItemViewModel() {}
+    public RibbonDropDownItemViewModel() { }
 
-    public RibbonDropDownItemViewModel(ActionViewModel action) : base(action) {}
+    public RibbonDropDownItemViewModel(ActionViewModel action) : base(action) { }
 
-    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.SmallIcon), Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
+    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.SmallIcon),
+        Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
     public string Icon
     {
         get => _icon;

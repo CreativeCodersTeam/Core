@@ -7,9 +7,9 @@ public class RibbonButtonViewModel : RibbonBaseButtonViewModel
 {
     private bool _isToggle;
 
-    public RibbonButtonViewModel() {}
+    public RibbonButtonViewModel() { }
 
-    public RibbonButtonViewModel(ActionViewModel action) : base(action) {}
+    public RibbonButtonViewModel(ActionViewModel action) : base(action) { }
 
     public bool IsToggle
     {

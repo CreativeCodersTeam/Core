@@ -9,7 +9,7 @@ public abstract class RibbonCommandControlViewModel : RibbonControlViewModel
 {
     private ICommand _command;
 
-    protected RibbonCommandControlViewModel() {}
+    protected RibbonCommandControlViewModel() { }
 
     protected RibbonCommandControlViewModel(ActionViewModel action)
     {
@@ -17,7 +17,8 @@ public abstract class RibbonCommandControlViewModel : RibbonControlViewModel
         ActionLink = new ObjectLinkBuilder(action, this).Build();
     }
 
-    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.Command), Direction = LinkDirection.TwoWay, InitWithTargetValue = true)]
+    [PropertyLink(typeof(ActionViewModel), nameof(ActionViewModel.Command), Direction = LinkDirection.TwoWay,
+        InitWithTargetValue = true)]
     public ICommand Command
     {
         get => _command;
