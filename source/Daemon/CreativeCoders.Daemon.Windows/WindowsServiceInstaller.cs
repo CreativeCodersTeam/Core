@@ -51,7 +51,8 @@ public class WindowsServiceInstaller
             .AppendIf(!string.IsNullOrWhiteSpace(startMode), $" start= {startMode}")
             .AppendIf(!string.IsNullOrEmpty(user), $" obj= {user}")
             .AppendIf(!string.IsNullOrEmpty(_daemonInfo.Password), $" password= \"{_daemonInfo.Password}\"")
-            .AppendIf(_daemonInfo.DaemonsDependedOn.Length > 0, $" depend= {string.Join("/", _daemonInfo.DaemonsDependedOn)}");
+            .AppendIf(_daemonInfo.DaemonsDependedOn.Length > 0,
+                $" depend= {string.Join("/", _daemonInfo.DaemonsDependedOn)}");
 
         var startInfo = new ProcessStartInfo("sc.exe", args.ToString()) {UseShellExecute = false};
 
@@ -59,7 +60,7 @@ public class WindowsServiceInstaller
 
         process?.WaitForExit();
 
-        if (process is not { ExitCode: 0 })
+        if (process is not {ExitCode: 0})
         {
             Console.WriteLine("Service creation failed!");
         }
@@ -74,7 +75,8 @@ public class WindowsServiceInstaller
             DaemonStartMode.Automatic => _daemonInfo.DelayedAutoStart ? "delayed-auto" : "auto",
             DaemonStartMode.Manual => "demand",
             DaemonStartMode.Disabled => "disabled",
-            _ => throw new ArgumentOutOfRangeException(nameof(DaemonInfo.StartMode), "Daemon start mode is unknown")
+            _ => throw new ArgumentOutOfRangeException(nameof(DaemonInfo.StartMode),
+                "Daemon start mode is unknown")
         };
     }
 
@@ -86,7 +88,8 @@ public class WindowsServiceInstaller
             DaemonAccount.LocalSystem => string.Empty,
             DaemonAccount.NetworkService => "NT AUTHORITY\\NetworkService",
             DaemonAccount.User => _daemonInfo.User,
-            _ => throw new ArgumentOutOfRangeException(nameof(DaemonInfo.Account), "Daemon account is unknown")
+            _ => throw new ArgumentOutOfRangeException(nameof(DaemonInfo.Account),
+                "Daemon account is unknown")
         };
     }
 

@@ -79,15 +79,19 @@ public class SystemdDaemonInstaller
 
         if (string.IsNullOrWhiteSpace(_daemonInfo.WorkingDirectory))
         {
-            _daemonInfo.WorkingDirectory = FileSys.Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+            _daemonInfo.WorkingDirectory =
+                FileSys.Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
         }
 
         serviceConfig
             .AppendLine("[Unit]")
             .AppendLine($"Description={_daemonInfo.Description}")
-            .AppendLine($"Requires={string.Join(" ", _daemonInfo.DaemonsDependedOn)}", !(_daemonInfo.DaemonsDependedOn?.Length > 1))
-            .AppendLine($"After={string.Join(" ", _daemonInfo.StartAfterDaemons)}", !(_daemonInfo.StartAfterDaemons?.Length > 1))
-            .AppendLine($"Before={string.Join(" ", _daemonInfo.StartBeforeDaemons)}", !(_daemonInfo.StartBeforeDaemons?.Length > 1))
+            .AppendLine($"Requires={string.Join(" ", _daemonInfo.DaemonsDependedOn)}",
+                !(_daemonInfo.DaemonsDependedOn?.Length > 1))
+            .AppendLine($"After={string.Join(" ", _daemonInfo.StartAfterDaemons)}",
+                !(_daemonInfo.StartAfterDaemons?.Length > 1))
+            .AppendLine($"Before={string.Join(" ", _daemonInfo.StartBeforeDaemons)}",
+                !(_daemonInfo.StartBeforeDaemons?.Length > 1))
             .AppendLine("")
             .AppendLine("[Service]")
             .AppendLine($"WorkingDirectory={_daemonInfo.WorkingDirectory}")
@@ -96,7 +100,8 @@ public class SystemdDaemonInstaller
             .AppendLine("RestartSec=10")
             .AppendLine($"SyslogIdentifier={_daemonInfo.SyslogIdentifier}")
             .AppendLine($"User={_daemonInfo.User}", string.IsNullOrWhiteSpace(_daemonInfo.User))
-            .AppendLine($"Environment={_daemonInfo.Environment}", string.IsNullOrWhiteSpace(_daemonInfo.Environment))
+            .AppendLine($"Environment={_daemonInfo.Environment}",
+                string.IsNullOrWhiteSpace(_daemonInfo.Environment))
             .AppendLine()
             .AppendLine("[Install]")
             .AppendLine("WantedBy=multi-user.target");

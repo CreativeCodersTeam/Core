@@ -39,9 +39,7 @@ public abstract class DaemonBase
     /// <param name="hostBuilder">  The host builder. </param>
     ///-------------------------------------------------------------------------------------------------
     protected DaemonBase(IWorkerHostBuilder hostBuilder)
-        : this(hostBuilder, "--install", "--uninstall")
-    {
-    }
+        : this(hostBuilder, "--install", "--uninstall") { }
 
     ///-------------------------------------------------------------------------------------------------
     /// <summary>   Runs the daemon asynchronous. </summary>

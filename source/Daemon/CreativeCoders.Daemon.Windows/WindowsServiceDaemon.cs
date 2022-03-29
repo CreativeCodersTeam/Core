@@ -117,7 +117,8 @@ public class WindowsServiceDaemon<TDaemonService, TConfig> : WindowsServiceDaemo
     /// <param name="uninstallArg"> The uninstall argument. </param>
     ///-------------------------------------------------------------------------------------------------
     public WindowsServiceDaemon(TConfig workerConfig, string installArg, string uninstallArg)
-        : base(new WindowsDaemonHostBuilder<TDaemonService, TConfig>(workerConfig), installArg, uninstallArg) { }
+        : base(new WindowsDaemonHostBuilder<TDaemonService, TConfig>(workerConfig), installArg,
+            uninstallArg) { }
 
     ///-------------------------------------------------------------------------------------------------
     /// <summary>
