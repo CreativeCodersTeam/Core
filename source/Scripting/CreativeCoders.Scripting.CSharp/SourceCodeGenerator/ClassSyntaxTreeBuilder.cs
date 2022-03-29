@@ -19,7 +19,8 @@ public class ClassSyntaxTreeBuilder
 
     private readonly IEnumerable<string> _scriptUsings;
 
-    public ClassSyntaxTreeBuilder(ScriptClassTemplate template, string nameSpace, string className, IEnumerable<string> scriptUsings)
+    public ClassSyntaxTreeBuilder(ScriptClassTemplate template, string nameSpace, string className,
+        IEnumerable<string> scriptUsings)
     {
         Ensure.IsNotNull(template, nameof(template));
         Ensure.IsNotNullOrWhitespace(nameSpace, nameof(nameSpace));
@@ -61,7 +62,8 @@ public class ClassSyntaxTreeBuilder
 
     private void AddRawContents(ClassSyntaxNode classNode)
     {
-        _template.Members.OfType<ScriptClassRawContent>().ForEach(rawContent => AddRawContent(classNode, rawContent));
+        _template.Members.OfType<ScriptClassRawContent>()
+            .ForEach(rawContent => AddRawContent(classNode, rawContent));
     }
 
     private static void AddRawContent(ClassSyntaxNode classNode, ScriptClassRawContent rawContent)
@@ -77,7 +79,8 @@ public class ClassSyntaxTreeBuilder
 
     private static void AddProperty(ClassSyntaxNode classNode, ScriptClassProperty property)
     {
-        var propertyNode = new PropertySyntaxNode(property.Name, property.ValueType, property.GetterSourceCode, property.SetterSourceCode);
+        var propertyNode = new PropertySyntaxNode(property.Name, property.ValueType,
+            property.GetterSourceCode, property.SetterSourceCode);
         classNode.AddSubNode(propertyNode);
         classNode.AddSubNode(new EmptyLineSyntaxNode());
     }

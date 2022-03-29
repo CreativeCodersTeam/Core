@@ -12,7 +12,7 @@ public class CSharpScriptClassBuilder
     {
         _sourcePreprocessors = sourcePreprocessors;
     }
-        
+
     public CSharpScriptClassDefinition Build(ScriptPackage scriptPackage,
         string nameSpace)
     {
@@ -24,11 +24,12 @@ public class CSharpScriptClassBuilder
         };
 
         PreprocessSourceCode(scriptPackage, definition);
-            
+
         return definition;
     }
 
-    private void PreprocessSourceCode(ScriptPackage scriptPackage, CSharpScriptClassDefinition classDefinition)
+    private void PreprocessSourceCode(ScriptPackage scriptPackage,
+        CSharpScriptClassDefinition classDefinition)
     {
         _sourcePreprocessors.ForEach(x => x.Preprocess(scriptPackage, classDefinition));
     }

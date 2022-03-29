@@ -6,7 +6,5 @@ namespace CreativeCoders.Scripting.Base.SourceCode;
 [PublicAPI]
 public class FileSourceCode : DelegateSourceCode
 {
-    public FileSourceCode(string fileName) : base(() => FileSys.File.ReadAllText(fileName))
-    {
-    }
+    public FileSourceCode(string fileName) : base(() => FileSys.File.ReadAllText(fileName)) { }
 }

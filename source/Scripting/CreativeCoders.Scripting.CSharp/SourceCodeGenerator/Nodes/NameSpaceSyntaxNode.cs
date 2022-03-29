@@ -2,7 +2,8 @@
 
 namespace CreativeCoders.Scripting.CSharp.SourceCodeGenerator.Nodes;
 
-public class NameSpaceSyntaxNode : ClassSyntaxTreeNode, IVisitable<SyntaxSourceCodeEmitVisitor, NameSpaceSyntaxNode>
+public class NameSpaceSyntaxNode : ClassSyntaxTreeNode,
+    IVisitable<SyntaxSourceCodeEmitVisitor, NameSpaceSyntaxNode>
 {
     public NameSpaceSyntaxNode(string nameSpace)
     {

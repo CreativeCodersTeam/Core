@@ -13,14 +13,14 @@ public class ScriptContext : IScriptContext
     {
         _injections = new List<IInjection>();
     }
-        
+
     public static IScriptContext Empty { get; } = new ScriptContext();
 
     public void AddInjection(IInjection injection)
     {
         _injections.Add(injection);
     }
-        
+
     public void SetupScriptObject(object scriptObject)
     {
         _injections.ForEach(x => x.Inject(scriptObject));

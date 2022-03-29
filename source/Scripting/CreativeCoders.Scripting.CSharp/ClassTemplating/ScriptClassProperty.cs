@@ -4,7 +4,8 @@ namespace CreativeCoders.Scripting.CSharp.ClassTemplating;
 
 public class ScriptClassProperty : ScriptClassMember
 {
-    internal ScriptClassProperty(string name, string valueType, string getterSourceCode, string setterSourceCode) : base(
+    internal ScriptClassProperty(string name, string valueType, string getterSourceCode,
+        string setterSourceCode) : base(
         ScriptClassMemberType.Property, name)
     {
         Ensure.IsNotNullOrWhitespace(valueType, nameof(valueType));

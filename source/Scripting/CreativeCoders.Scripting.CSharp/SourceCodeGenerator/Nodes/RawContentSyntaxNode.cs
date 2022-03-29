@@ -2,11 +2,12 @@
 
 namespace CreativeCoders.Scripting.CSharp.SourceCodeGenerator.Nodes;
 
-public class RawContentSyntaxNode : ClassSyntaxTreeNode, IVisitable<SyntaxSourceCodeEmitVisitor, RawContentSyntaxNode>
+public class RawContentSyntaxNode : ClassSyntaxTreeNode,
+    IVisitable<SyntaxSourceCodeEmitVisitor, RawContentSyntaxNode>
 {
     public RawContentSyntaxNode(string rawContent)
     {
-        RawContent = rawContent;            
+        RawContent = rawContent;
     }
 
     protected override IVisitable GetAsVisitable()

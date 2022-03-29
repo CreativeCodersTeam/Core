@@ -11,7 +11,7 @@ public class CSharpScriptRuntime<TRuntimeImplementation> : IScriptRuntime
     {
         _runtimeImplementation = runtimeImplementation;
     }
-        
+
     public IScriptRuntimeSpace CreateSpace(string nameSpace)
     {
         return new CSharpScriptRuntimeSpace<TRuntimeImplementation>(nameSpace, _runtimeImplementation);

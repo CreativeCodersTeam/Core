@@ -7,5 +7,5 @@ public class ScriptClassMethod : ScriptClassMember
         SourceCode = sourceCode;
     }
 
-    public string SourceCode { get; }            
+    public string SourceCode { get; }
 }

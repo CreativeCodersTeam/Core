@@ -2,7 +2,8 @@
 
 namespace CreativeCoders.Scripting.CSharp.SourceCodeGenerator.Nodes;
 
-public class EmptyLineSyntaxNode : ClassSyntaxTreeNode, IVisitable<SyntaxSourceCodeEmitVisitor, EmptyLineSyntaxNode>
+public class EmptyLineSyntaxNode : ClassSyntaxTreeNode,
+    IVisitable<SyntaxSourceCodeEmitVisitor, EmptyLineSyntaxNode>
 {
     public void Accept(SyntaxSourceCodeEmitVisitor visitor)
     {

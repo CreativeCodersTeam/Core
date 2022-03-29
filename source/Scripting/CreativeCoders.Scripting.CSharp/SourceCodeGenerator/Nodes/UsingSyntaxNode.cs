@@ -6,7 +6,7 @@ public class UsingSyntaxNode : ClassSyntaxTreeNode, IVisitable<SyntaxSourceCodeE
 {
     public UsingSyntaxNode(string usingNameSpace)
     {
-        UsingNameSpace = usingNameSpace;            
+        UsingNameSpace = usingNameSpace;
     }
 
     public void Accept(SyntaxSourceCodeEmitVisitor visitor)

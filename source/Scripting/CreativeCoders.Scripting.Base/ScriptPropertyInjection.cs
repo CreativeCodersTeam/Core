@@ -8,12 +8,13 @@ namespace CreativeCoders.Scripting.Base;
 public class ScriptPropertyInjection<T> : IInjection
 {
     private readonly string _propertyName;
-        
+
     private readonly Func<T> _getPropertyValue;
-        
+
     private readonly bool _throwExceptionIfPropertyNotExists;
 
-    public ScriptPropertyInjection(string propertyName, Func<T> getPropertyValue, bool throwExceptionIfPropertyNotExists)
+    public ScriptPropertyInjection(string propertyName, Func<T> getPropertyValue,
+        bool throwExceptionIfPropertyNotExists)
     {
         _propertyName = propertyName;
         _getPropertyValue = getPropertyValue;
@@ -21,10 +22,8 @@ public class ScriptPropertyInjection<T> : IInjection
     }
 
     public ScriptPropertyInjection(string propertyName, Func<T> getPropertyValue)
-        : this(propertyName, getPropertyValue, false)
-    {
-    }
-        
+        : this(propertyName, getPropertyValue, false) { }
+
     public void Inject(object scriptObject)
     {
         var propertyInfo = scriptObject.GetType().GetProperty(_propertyName);
@@ -35,10 +34,10 @@ public class ScriptPropertyInjection<T> : IInjection
             {
                 throw new InjectionFailedException($"Property '{_propertyName}' not found");
             }
-                
+
             return;
         }
-            
+
         propertyInfo.SetValue(scriptObject, _getPropertyValue());
     }
 }

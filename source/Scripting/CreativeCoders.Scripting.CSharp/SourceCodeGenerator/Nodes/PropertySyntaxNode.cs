@@ -2,9 +2,11 @@
 
 namespace CreativeCoders.Scripting.CSharp.SourceCodeGenerator.Nodes;
 
-public class PropertySyntaxNode : ClassSyntaxTreeNode, IVisitable<SyntaxSourceCodeEmitVisitor, PropertySyntaxNode>
+public class PropertySyntaxNode : ClassSyntaxTreeNode,
+    IVisitable<SyntaxSourceCodeEmitVisitor, PropertySyntaxNode>
 {
-    public PropertySyntaxNode(string propertyName, string valueType, string propertyGetterSourceCode, string propertySetterSourceCode)
+    public PropertySyntaxNode(string propertyName, string valueType, string propertyGetterSourceCode,
+        string propertySetterSourceCode)
     {
         PropertyName = propertyName;
         ValueType = valueType;

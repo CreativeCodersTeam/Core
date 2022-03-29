@@ -12,10 +12,10 @@ public class DelegateSourceCode : ISourceCode
     public DelegateSourceCode(Func<string> getSourceCode)
     {
         Ensure.IsNotNull(getSourceCode, nameof(getSourceCode));
-            
+
         _getSourceCode = getSourceCode;
     }
-        
+
     public string Read()
     {
         return _getSourceCode();

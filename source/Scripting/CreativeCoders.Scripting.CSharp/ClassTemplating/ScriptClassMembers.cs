@@ -35,7 +35,8 @@ public class ScriptClassMembers : IEnumerable<ScriptClassMember>
         return AddProperty(propertyName, valueType, getterSourceCode, string.Empty);
     }
 
-    public ScriptClassProperty AddProperty(string propertyName, string valueType, string getterSourceCode, string setterSourceCode)
+    public ScriptClassProperty AddProperty(string propertyName, string valueType, string getterSourceCode,
+        string setterSourceCode)
     {
         Ensure.IsNotNullOrWhitespace(propertyName, nameof(propertyName));
         Ensure.IsNotNullOrWhitespace(valueType, nameof(valueType));

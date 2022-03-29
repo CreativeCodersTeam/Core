@@ -11,7 +11,7 @@ public class ScriptPackage
         Name = name;
         SourceCode = sourceCode;
     }
-        
+
     public string Id { get; }
 
     public string Name { get; }

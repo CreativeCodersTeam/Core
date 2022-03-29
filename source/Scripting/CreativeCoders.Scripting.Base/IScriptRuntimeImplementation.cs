@@ -1,6 +1,3 @@
 ﻿namespace CreativeCoders.Scripting.Base;
 
-public interface IScriptRuntimeImplementation
-{
-        
-}
+public interface IScriptRuntimeImplementation { }

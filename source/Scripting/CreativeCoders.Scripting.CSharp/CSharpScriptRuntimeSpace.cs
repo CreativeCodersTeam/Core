@@ -6,7 +6,7 @@ public class CSharpScriptRuntimeSpace<TRuntimeImplementation> : IScriptRuntimeSp
     where TRuntimeImplementation : CSharpScriptImplementation
 {
     private readonly string _nameSpace;
-        
+
     private readonly TRuntimeImplementation _runtimeImplementation;
 
     public CSharpScriptRuntimeSpace(string nameSpace, TRuntimeImplementation runtimeImplementation)
@@ -14,7 +14,7 @@ public class CSharpScriptRuntimeSpace<TRuntimeImplementation> : IScriptRuntimeSp
         _nameSpace = nameSpace;
         _runtimeImplementation = runtimeImplementation;
     }
-        
+
     public IScript Build(ScriptPackage scriptPackage)
     {
         return _runtimeImplementation.Build(scriptPackage, _nameSpace);

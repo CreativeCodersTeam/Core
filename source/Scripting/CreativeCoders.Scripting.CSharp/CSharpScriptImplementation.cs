@@ -13,14 +13,14 @@ namespace CreativeCoders.Scripting.CSharp;
 public class CSharpScriptImplementation : IScriptRuntimeImplementation
 {
     private readonly ICompiler _compiler;
-        
+
     private readonly ScriptClassTemplate _classTemplate;
 
     public CSharpScriptImplementation(ScriptClassTemplate classTemplate, ICompiler compiler)
     {
         _classTemplate = classTemplate;
         _compiler = compiler;
-            
+
         SourcePreprocessors = new List<ISourcePreprocessor>();
     }
 
@@ -35,7 +35,8 @@ public class CSharpScriptImplementation : IScriptRuntimeImplementation
     private static CompilationPackage BuildCompilationPackage(ScriptClassSourceCode classSourceCode)
     {
         var package = new CompilationPackage();
-        package.SourceCodes.Add(new SourceCodeUnit(classSourceCode.SourceCode, classSourceCode.ClassName + ".cs"));
+        package.SourceCodes.Add(new SourceCodeUnit(classSourceCode.SourceCode,
+            classSourceCode.ClassName + ".cs"));
         return package;
     }
 
@@ -46,23 +47,25 @@ public class CSharpScriptImplementation : IScriptRuntimeImplementation
         try
         {
             var assembly = CompileToAssembly(classSourceCode);
-            
-            return new CSharpScript(assembly, classSourceCode.NameSpace, classSourceCode.ClassName, _classTemplate.Injections);
+
+            return new CSharpScript(assembly, classSourceCode.NameSpace, classSourceCode.ClassName,
+                _classTemplate.Injections);
         }
         catch (CompileFailedException e)
         {
             throw new ScriptCompilationFailedException(scriptPackage, e.CompilerMessages);
         }
     }
-        
+
     private ScriptClassSourceCode CreateClassSourceCode(ScriptPackage scriptPackage, string nameSpace)
     {
-        var classDefinition = new CSharpScriptClassBuilder(SourcePreprocessors).Build(scriptPackage, nameSpace);
-        
+        var classDefinition =
+            new CSharpScriptClassBuilder(SourcePreprocessors).Build(scriptPackage, nameSpace);
+
         var classSourceCode = new ScriptClassSourceGenerator(_classTemplate, classDefinition).Generate();
 
         return classSourceCode;
     }
-        
+
     public IList<ISourcePreprocessor> SourcePreprocessors { get; }
 }

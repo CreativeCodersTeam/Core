@@ -55,7 +55,8 @@ public class SyntaxSourceCodeEmitVisitor : VisitorBase<SyntaxSourceCodeEmitVisit
 
     public void Visit(ClassSyntaxNode classSyntax)
     {
-        AppendLine($"public class {classSyntax.ClassName}{GetImplementingInterfaces(classSyntax.InheritsFrom)}");
+        AppendLine(
+            $"public class {classSyntax.ClassName}{GetImplementingInterfaces(classSyntax.InheritsFrom)}");
         AppendLine("{");
         _indentLevel++;
         VisitSubItems(classSyntax);
@@ -70,7 +71,7 @@ public class SyntaxSourceCodeEmitVisitor : VisitorBase<SyntaxSourceCodeEmitVisit
         {
             return string.Empty;
         }
-            
+
         var interfacesText = string.Join(", ", interfaces);
         return $" : {interfacesText}";
     }
@@ -100,6 +101,7 @@ public class SyntaxSourceCodeEmitVisitor : VisitorBase<SyntaxSourceCodeEmitVisit
             AppendLine($"public {propertySyntax.ValueType} {propertySyntax.PropertyName} {{ get; set; }}");
             return;
         }
+
         AppendLine($"public {propertySyntax.ValueType} {propertySyntax.PropertyName}");
         AppendLine("{");
         _indentLevel++;
@@ -124,7 +126,7 @@ public class SyntaxSourceCodeEmitVisitor : VisitorBase<SyntaxSourceCodeEmitVisit
         AppendLine("{");
         _indentLevel++;
 
-        var lines = sourceCode.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+        var lines = sourceCode.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
         lines.ForEach(AppendLine);
 
         _indentLevel--;
@@ -133,7 +135,7 @@ public class SyntaxSourceCodeEmitVisitor : VisitorBase<SyntaxSourceCodeEmitVisit
 
     public void Visit(RawContentSyntaxNode rawContentSyntax)
     {
-        AppendCodeLines(rawContentSyntax.RawContent);            
+        AppendCodeLines(rawContentSyntax.RawContent);
     }
 
     public void Visit(EmptyLineSyntaxNode visitableObject)

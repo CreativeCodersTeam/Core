@@ -2,7 +2,8 @@
 
 namespace CreativeCoders.Scripting.CSharp.ClassTemplating;
 
-internal class PropertyInjection<T> : IScriptClassInjection {
+internal class PropertyInjection<T> : IScriptClassInjection
+{
     private readonly string _propertyName;
 
     private readonly Func<T> _getInjectionData;

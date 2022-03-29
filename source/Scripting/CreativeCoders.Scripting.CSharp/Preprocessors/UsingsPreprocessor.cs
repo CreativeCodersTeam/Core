@@ -14,7 +14,7 @@ public class UsingsPreprocessor : ISourcePreprocessor
         var usings = new List<string>();
         var sourceCode = new StringBuilder();
 
-        foreach (var line in classDefinition.SourceCode.Split(new[]{Env.NewLine}, StringSplitOptions.None))
+        foreach (var line in classDefinition.SourceCode.Split(new[] {Env.NewLine}, StringSplitOptions.None))
         {
             if (line.Trim().StartsWith("using ", StringComparison.InvariantCulture))
             {

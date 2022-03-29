@@ -17,10 +17,11 @@ public class ClassSyntaxTree
         Ensure.IsNotNull(sourceCode, nameof(sourceCode));
 
         var sb = new StringBuilder();
-            
+
         var visitor = new SyntaxSourceCodeEmitVisitor(sb, sourceCode);
-        new ListVisitor<SyntaxSourceCodeEmitVisitor>(visitor).Visit(RootNode.SubNodes.Select(subNode => subNode.AsVisitable));
-            
+        new ListVisitor<SyntaxSourceCodeEmitVisitor>(visitor).Visit(
+            RootNode.SubNodes.Select(subNode => subNode.AsVisitable));
+
         return sb.ToString();
     }
 

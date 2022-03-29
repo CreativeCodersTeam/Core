@@ -8,10 +8,10 @@ public class ScriptClassSourceCode
         ClassName = className;
         SourceCode = sourceCode;
     }
-        
+
     public string NameSpace { get; }
-        
+
     public string ClassName { get; }
-        
+
     public string SourceCode { get; }
 }

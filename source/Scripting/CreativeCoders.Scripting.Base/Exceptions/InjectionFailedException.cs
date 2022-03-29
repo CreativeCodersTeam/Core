@@ -3,8 +3,5 @@
 public class InjectionFailedException : ScriptingException
 {
     public InjectionFailedException(string message)
-        : base(message)
-    {
-            
-    }
+        : base(message) { }
 }
