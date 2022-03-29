@@ -11,10 +11,10 @@ public class DelegateErrorHandler : IErrorHandler
     public DelegateErrorHandler(Action<Exception> handleException)
     {
         Ensure.IsNotNull(handleException, nameof(handleException));
-            
+
         _handleException = handleException;
     }
-        
+
     public void HandleException(Exception exception)
     {
         _handleException(exception);

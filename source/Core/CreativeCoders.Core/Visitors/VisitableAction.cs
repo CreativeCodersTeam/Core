@@ -2,13 +2,13 @@
 
 namespace CreativeCoders.Core.Visitors;
 
-public class VisitableAction<TVisitor> : IVisitable where TVisitor : class 
+public class VisitableAction<TVisitor> : IVisitable where TVisitor : class
 {
     private readonly Action<TVisitor> _acceptAction;
 
     public VisitableAction(Action<TVisitor> acceptAction)
     {
-        _acceptAction = acceptAction;            
+        _acceptAction = acceptAction;
     }
 
     public void Accept(object visitor)
@@ -17,6 +17,7 @@ public class VisitableAction<TVisitor> : IVisitable where TVisitor : class
         {
             return;
         }
+
         _acceptAction?.Invoke(theVisitor);
     }
 }

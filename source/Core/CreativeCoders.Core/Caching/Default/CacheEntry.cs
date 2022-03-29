@@ -7,7 +7,7 @@ namespace CreativeCoders.Core.Caching.Default;
 internal class CacheEntry<TKey, TValue> : ICacheEntry<TKey, TValue>
 {
     private DateTime _lastEntryCheck;
-        
+
     public CacheEntry(TKey key, ICacheExpirationPolicy expirationPolicy)
     {
         Key = key;
@@ -29,12 +29,13 @@ internal class CacheEntry<TKey, TValue> : ICacheEntry<TKey, TValue>
                 {
                     _lastEntryCheck = DateTime.Now;
                 }
+
                 return isExpired;
             default:
                 throw new ArgumentOutOfRangeException();
         }
     }
-        
+
     public TKey Key { get; }
 
     public TValue Value { get; set; }

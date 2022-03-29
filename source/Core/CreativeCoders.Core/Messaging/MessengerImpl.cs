@@ -22,7 +22,8 @@ internal class MessengerImpl : IMessenger
         return Register(receiver, action, KeepOwnerAliveMode.NotKeepAlive);
     }
 
-    public IDisposable Register<TMessage>(object receiver, Action<TMessage> action, KeepOwnerAliveMode keepOwnerAliveMode)
+    public IDisposable Register<TMessage>(object receiver, Action<TMessage> action,
+        KeepOwnerAliveMode keepOwnerAliveMode)
     {
         var actions = GetRegistrationsForMessageType<TMessage>();
         var registration = new MessengerRegistration<TMessage>(this, receiver, action, keepOwnerAliveMode);
@@ -56,18 +57,19 @@ internal class MessengerImpl : IMessenger
         Ensure.IsNotNull(message, nameof(message));
 
         var actions = GetRegistrationsForMessageType<TMessage>();
-            
+
         actions.ForEach(action => action.Execute(message));
     }
 
     private IList<IMessengerRegistration> GetRegistrationsForMessageType<TMessage>()
     {
         CleanupDeadActions();
-        var messageType = typeof (TMessage);
+        var messageType = typeof(TMessage);
         if (!_registrationsForMessages.ContainsKey(messageType))
         {
             _registrationsForMessages[messageType] = new ConcurrentList<IMessengerRegistration>();
         }
+
         return _registrationsForMessages[messageType];
     }
 

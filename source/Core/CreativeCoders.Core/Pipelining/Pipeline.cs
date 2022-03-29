@@ -23,13 +23,15 @@ public class Pipeline<TInput, TOutput> : IPipeline<TInput, TOutput>
 
     public bool RunStageParallel { get; set; }
 
-    public IStage<TStageInput, TStageOutput> AddStage<TStageInput, TStageOutput>(Func<TStageInput, TStageOutput> stageWorker)
+    public IStage<TStageInput, TStageOutput> AddStage<TStageInput, TStageOutput>(
+        Func<TStageInput, TStageOutput> stageWorker)
     {
         Ensure.IsNotNull(stageWorker, nameof(stageWorker));
         Ensure.That(!(_stages.Count == 0 && typeof(TStageInput) != typeof(TInput)), nameof(TStageInput));
-        Ensure.That(_stages.LastOrDefault()?.OutputIsOfType(typeof(TStageInput)) != false, nameof(TStageInput));
+        Ensure.That(_stages.LastOrDefault()?.OutputIsOfType(typeof(TStageInput)) != false,
+            nameof(TStageInput));
 
-        var stage = new Stage<TStageInput, TStageOutput> { StageWorker = stageWorker };
+        var stage = new Stage<TStageInput, TStageOutput> {StageWorker = stageWorker};
         _stages.Add(stage);
         return stage;
     }
@@ -55,12 +57,13 @@ public class Pipeline<TInput, TOutput> : IPipeline<TInput, TOutput>
     private IEnumerable<StageRunner> ConnectStageRunners(IEnumerable<StageRunner> runners)
     {
         var stageRunners = runners as StageRunner[] ?? runners.ToArray();
-            
+
         var firstRunner = stageRunners.FirstOrDefault();
         if (firstRunner == null)
         {
             return stageRunners;
         }
+
         firstRunner.Input = () => Input().Cast<object>();
 
         foreach (var runner in stageRunners.Skip(1))
@@ -76,7 +79,7 @@ public class Pipeline<TInput, TOutput> : IPipeline<TInput, TOutput>
         }
 
         return stageRunners;
-    }        
+    }
 
     private static void ConnectStageRunners(StageRunner firstRunner, StageRunner secondRunner)
     {

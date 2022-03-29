@@ -53,13 +53,13 @@ public class DependencyResolver<T>
         {
             yield return dependencyObject.Element;
         }
-            
+
         foreach (var dependency in dependencyObject.DependsOn)
         {
             yield return dependency.Element;
-                
+
             var dependencies = GetDependencies(dependency, true);
-                
+
             foreach (var subDependency in dependencies)
             {
                 yield return subDependency;

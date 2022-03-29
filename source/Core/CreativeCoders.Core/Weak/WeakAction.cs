@@ -7,13 +7,13 @@ namespace CreativeCoders.Core.Weak;
 [PublicAPI]
 public class WeakAction : WeakBase<Action>, IExecutable
 {
-    public WeakAction(Action action) : this(action?.Target, action) {}
+    public WeakAction(Action action) : this(action?.Target, action) { }
 
     public WeakAction(Action action, KeepOwnerAliveMode keepOwnerAliveMode)
         : this(action?.Target, action, keepOwnerAliveMode) { }
 
     public WeakAction(object target, Action action)
-        : base(target ?? action?.Target, action, GetAliveMode(action)) {}
+        : base(target ?? action?.Target, action, GetAliveMode(action)) { }
 
     public WeakAction(object target, Action action, KeepOwnerAliveMode keepOwnerAliveMode)
         : base(target ?? action?.Target, action, keepOwnerAliveMode) { }

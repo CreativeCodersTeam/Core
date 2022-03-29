@@ -8,9 +8,9 @@ namespace CreativeCoders.Core.ObjectLinking;
 public class ObjectLink : IDisposable
 {
     private readonly object _instance0;
-        
+
     private readonly object _instance1;
-        
+
     private readonly IEnumerable<PropertyLinkItem> _linkItems;
 
     public ObjectLink(object instance0, object instance1, IEnumerable<PropertyLinkItem> linkItems)
@@ -18,9 +18,9 @@ public class ObjectLink : IDisposable
         _instance0 = instance0;
         _instance1 = instance1;
         _linkItems = linkItems;
-            
+
         ConnectChangedEvents();
-            
+
         InitLinks();
     }
 
@@ -35,6 +35,7 @@ public class ObjectLink : IDisposable
         {
             notifyPropertyChanged0.PropertyChanged += NotifyPropertyChangedOnPropertyChanged;
         }
+
         if (_instance1 is INotifyPropertyChanged notifyPropertyChanged1)
         {
             notifyPropertyChanged1.PropertyChanged += NotifyPropertyChangedOnPropertyChanged;
@@ -47,6 +48,7 @@ public class ObjectLink : IDisposable
         {
             notifyPropertyChanged0.PropertyChanged -= NotifyPropertyChangedOnPropertyChanged;
         }
+
         if (_instance1 is INotifyPropertyChanged notifyPropertyChanged1)
         {
             notifyPropertyChanged1.PropertyChanged -= NotifyPropertyChangedOnPropertyChanged;

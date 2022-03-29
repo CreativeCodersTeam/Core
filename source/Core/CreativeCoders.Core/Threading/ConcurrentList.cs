@@ -12,7 +12,7 @@ public class ConcurrentList<T> : IList<T>, IReadOnlyCollection<T>
 
     private readonly List<T> _items;
 
-    public ConcurrentList() : this(DefaultLockingMechanism()) {}
+    public ConcurrentList() : this(DefaultLockingMechanism()) { }
 
     public ConcurrentList(ILockingMechanism lockingMechanism)
     {
@@ -22,7 +22,7 @@ public class ConcurrentList<T> : IList<T>, IReadOnlyCollection<T>
         _items = new List<T>();
     }
 
-    public ConcurrentList(IEnumerable<T> collection) : this(collection, DefaultLockingMechanism()) {}
+    public ConcurrentList(IEnumerable<T> collection) : this(collection, DefaultLockingMechanism()) { }
 
     public ConcurrentList(IEnumerable<T> collection, ILockingMechanism lockingMechanism)
     {

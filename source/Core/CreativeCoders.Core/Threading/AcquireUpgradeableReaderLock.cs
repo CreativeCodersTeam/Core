@@ -9,7 +9,7 @@ namespace CreativeCoders.Core.Threading;
 public class AcquireUpgradeableReaderLock : IDisposable
 {
     private readonly ReaderWriterLockSlim _lockSlim;
-        
+
     private bool _disposed;
 
     [ExcludeFromCodeCoverage]
@@ -32,14 +32,14 @@ public class AcquireUpgradeableReaderLock : IDisposable
     {
         return UseWriteLock(Timeout.Infinite);
     }
-        
+
     public IDisposable UseWriteLock(int timeout)
     {
         if (!_lockSlim.TryEnterWriteLock(timeout))
         {
             throw new AcquireLockFailedException("Acquire upgraded writer lock failed", timeout);
         }
-            
+
         return new DelegateDisposable(() => _lockSlim.ExitWriteLock(), true);
     }
 
@@ -55,6 +55,7 @@ public class AcquireUpgradeableReaderLock : IDisposable
         {
             _lockSlim.ExitUpgradeableReadLock();
         }
+
         _disposed = true;
     }
 }

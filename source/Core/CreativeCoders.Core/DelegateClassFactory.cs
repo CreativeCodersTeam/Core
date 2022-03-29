@@ -27,7 +27,7 @@ public class DelegateClassFactory : IClassFactory
     public DelegateClassFactory(Func<Type, object> createInstance)
     {
         Ensure.IsNotNull(createInstance, nameof(createInstance));
-            
+
         _createInstance = createInstance;
     }
 
@@ -87,7 +87,8 @@ public class DelegateClassFactory<T> : DelegateClassFactory, IClassFactory<T>
     /// <param name="createInstance">   The <see cref="Func{TResult}"/> for creating new
     ///                                 instances. </param>
     ///-------------------------------------------------------------------------------------------------
-    public DelegateClassFactory(Func<T> createInstance) : base(type => CreateClassObject(type, createInstance))
+    public DelegateClassFactory(Func<T> createInstance) : base(
+        type => CreateClassObject(type, createInstance))
     {
         _createInstance = createInstance;
     }

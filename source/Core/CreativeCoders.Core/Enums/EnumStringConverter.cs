@@ -56,7 +56,7 @@ public class EnumStringConverter : IEnumToStringConverter
         return attr != null ? attr.Text : fieldInfo.Name;
     }
 
-        
+
     private static IEnumStringAttribute GetEnumStringAttribute(ICustomAttributeProvider attributeProvider)
     {
         var attrs = attributeProvider?.GetCustomAttributes(true);

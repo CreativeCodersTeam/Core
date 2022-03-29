@@ -11,14 +11,12 @@ public class DelegateEqualityComparer<T> : IEqualityComparer<T>
 
     private readonly Func<T, int> _getHashCode;
 
-    public DelegateEqualityComparer(Func<T, T, bool> compare) : this(compare, null)
-    {
-    }
+    public DelegateEqualityComparer(Func<T, T, bool> compare) : this(compare, null) { }
 
     public DelegateEqualityComparer(Func<T, T, bool> compare, Func<T, int> getHashCode)
     {
         Ensure.IsNotNull(compare, nameof(compare));
-            
+
         _compare = compare;
         _getHashCode = getHashCode;
     }

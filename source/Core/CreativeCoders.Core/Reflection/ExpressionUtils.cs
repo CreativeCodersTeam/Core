@@ -38,7 +38,8 @@ public static class ExpressionUtils
             parameterExpression1, parameterExpression2, parameterExpression3);
     }
 
-    public static Action<T1, T2, T3, T4> CreateCallAction<T1, T2, T3, T4>(object instance, MethodInfo methodInfo)
+    public static Action<T1, T2, T3, T4> CreateCallAction<T1, T2, T3, T4>(object instance,
+        MethodInfo methodInfo)
     {
         var parameterExpression1 = Expression.Parameter(typeof(T1));
         var parameterExpression2 = Expression.Parameter(typeof(T2));
@@ -61,16 +62,18 @@ public static class ExpressionUtils
         return CreateCallExpression<Func<T, TResult>>(instance, methodInfo, parameterExpression);
     }
 
-    public static Func<T1, T2, TResult> CreateCallFunc<T1, T2, TResult>(object instance, MethodInfo methodInfo)
+    public static Func<T1, T2, TResult> CreateCallFunc<T1, T2, TResult>(object instance,
+        MethodInfo methodInfo)
     {
         var parameterExpression1 = Expression.Parameter(typeof(T1));
         var parameterExpression2 = Expression.Parameter(typeof(T2));
 
-        return CreateCallExpression<Func<T1, T2, TResult>>(instance, methodInfo, 
+        return CreateCallExpression<Func<T1, T2, TResult>>(instance, methodInfo,
             parameterExpression1, parameterExpression2);
     }
 
-    public static Func<T1, T2, T3, TResult> CreateCallFunc<T1, T2, T3, TResult>(object instance, MethodInfo methodInfo)
+    public static Func<T1, T2, T3, TResult> CreateCallFunc<T1, T2, T3, TResult>(object instance,
+        MethodInfo methodInfo)
     {
         var parameterExpression1 = Expression.Parameter(typeof(T1));
         var parameterExpression2 = Expression.Parameter(typeof(T2));
@@ -80,7 +83,8 @@ public static class ExpressionUtils
             parameterExpression1, parameterExpression2, parameterExpression3);
     }
 
-    public static Func<T1, T2, T3, T4, TResult> CreateCallFunc<T1, T2, T3, T4, TResult>(object instance, MethodInfo methodInfo)
+    public static Func<T1, T2, T3, T4, TResult> CreateCallFunc<T1, T2, T3, T4, TResult>(object instance,
+        MethodInfo methodInfo)
     {
         var parameterExpression1 = Expression.Parameter(typeof(T1));
         var parameterExpression2 = Expression.Parameter(typeof(T2));
@@ -91,11 +95,13 @@ public static class ExpressionUtils
             parameterExpression1, parameterExpression2, parameterExpression3, parameterExpression4);
     }
 
-    private static T CreateCallExpression<T>(object instance, MethodInfo methodInfo, params ParameterExpression[] arguments)
+    private static T CreateCallExpression<T>(object instance, MethodInfo methodInfo,
+        params ParameterExpression[] arguments)
     {
         var instanceParameter = Expression.Constant(instance);
 
-        var callExpression = Expression.Call(instanceParameter, methodInfo, arguments.OfType<Expression>().ToArray());
+        var callExpression =
+            Expression.Call(instanceParameter, methodInfo, arguments.OfType<Expression>().ToArray());
 
         var lambdaExpression = Expression.Lambda<T>(callExpression, arguments);
 

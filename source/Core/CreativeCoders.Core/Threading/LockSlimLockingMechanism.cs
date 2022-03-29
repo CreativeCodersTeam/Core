@@ -97,7 +97,7 @@ public class LockSlimLockingMechanism : IUpgradeableLockingMechanism
                 () =>
                 {
                     _lock.EnterWriteLock();
-                        
+
                     return new DelegateDisposable(() => _lock.ExitWriteLock(), true);
                 }
             );

@@ -10,7 +10,7 @@ public class CacheExpirationPolicy : ICacheExpirationPolicy
     {
         ExpirationMode = expirationMode;
     }
-        
+
     public static readonly CacheExpirationPolicy NeverExpire = new(CacheExpirationMode.NeverExpire);
 
     public static CacheExpirationPolicy AfterAbsoluteDateTime(DateTime absoluteDateTime)
@@ -28,7 +28,7 @@ public class CacheExpirationPolicy : ICacheExpirationPolicy
             SlidingTimeSpan = slidingTimeSpan
         };
     }
-        
+
     public CacheExpirationMode ExpirationMode { get; }
 
     public DateTime AbsoluteDateTime { get; private set; }

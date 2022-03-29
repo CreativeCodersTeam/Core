@@ -11,7 +11,7 @@ public class SimpleMonitor : IDisposable
     {
         Interlocked.Increment(ref _counter);
     }
-        
+
     public void Dispose()
     {
         Interlocked.Decrement(ref _counter);

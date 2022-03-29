@@ -37,14 +37,14 @@ public class DependencyTreeBuilder<T>
     ///-------------------------------------------------------------------------------------------------
     public DependencyTreeNode<T> Build(T element)
     {
-        return new(element, GetSubNodes(_dependencyObjectCollection.GetDependencyObject(element))); 
+        return new(element, GetSubNodes(_dependencyObjectCollection.GetDependencyObject(element)));
     }
 
     private static IEnumerable<DependencyTreeNode<T>> GetSubNodes(DependencyObject<T> dependencyObject)
     {
         return dependencyObject
             .DependsOn
-            .Select(dependency => 
+            .Select(dependency =>
                 new DependencyTreeNode<T>(dependency.Element, GetSubNodes(dependency)));
     }
 }

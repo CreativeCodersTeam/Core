@@ -38,12 +38,14 @@ public static class CacheExtensions
         return default;
     }
 
-    public static TValue GetValue<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, string regionName = null)
+    public static TValue GetValue<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key,
+        string regionName = null)
     {
         return cache.GetValue(key, true, regionName);
     }
-        
-    public static Task<TValue> GetValueAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key, string regionName = null)
+
+    public static Task<TValue> GetValueAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key,
+        string regionName = null)
     {
         return cache.GetValueAsync(key, true, regionName);
     }
@@ -54,7 +56,8 @@ public static class CacheExtensions
         return cache.TryGet(key, out var value, regionName) ? value : defaultValue;
     }
 
-    public static async Task<TValue> GetValueOrDefaultAsync<TKey, TValue>(this ICache<TKey, TValue> cache, TKey key,
+    public static async Task<TValue> GetValueOrDefaultAsync<TKey, TValue>(this ICache<TKey, TValue> cache,
+        TKey key,
         TValue defaultValue, string regionName = null)
     {
         var cacheRequestResult = await cache.TryGetAsync(key, regionName).ConfigureAwait(false);

@@ -8,7 +8,7 @@ public class StringSourcePropertyConverter<T> : IPropertyValueConverter
     {
         _stringTargetPropertyConverter = new StringTargetPropertyConverter<T>();
     }
-        
+
     public object Convert(object value, object parameter)
     {
         return _stringTargetPropertyConverter.ConvertBack(value, parameter);

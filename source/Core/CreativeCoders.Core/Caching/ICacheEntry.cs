@@ -6,8 +6,8 @@ namespace CreativeCoders.Core.Caching;
 public interface ICacheEntry<out TKey, TValue>
 {
     TKey Key { get; }
-        
+
     TValue Value { get; set; }
-        
+
     ICacheExpirationPolicy ExpirationPolicy { get; }
 }

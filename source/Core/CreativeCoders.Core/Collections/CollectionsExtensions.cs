@@ -51,7 +51,7 @@ public static class CollectionsExtensions
     private static bool EnumerableCountInRange(this IEnumerable items, int minCount, int maxCount)
     {
         var count = 0;
-            
+
         foreach (var _ in items)
         {
             count++;
@@ -68,7 +68,7 @@ public static class CollectionsExtensions
     private static int EnumerableCount(this IEnumerable items, int maxCount)
     {
         var count = 0;
-            
+
         foreach (var _ in items)
         {
             count++;

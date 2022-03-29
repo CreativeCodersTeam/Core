@@ -52,7 +52,8 @@ public static class MethodInfoExtensions
             if (methodInfo.ReturnType.IsGenericType || methodInfoForCompare.ReturnType.IsGenericType)
             {
                 var genericReturnTypeArguments = methodInfo.ReturnType.GenericTypeArguments;
-                var genericReturnTypeArgumentsForCompare = methodInfoForCompare.ReturnType.GenericTypeArguments;
+                var genericReturnTypeArgumentsForCompare =
+                    methodInfoForCompare.ReturnType.GenericTypeArguments;
 
                 returnTypeEqual = genericReturnTypeArguments.SequenceEqual(
                     genericReturnTypeArgumentsForCompare,
@@ -88,6 +89,7 @@ public static class MethodInfoExtensions
         }
 
         return genericArguments.SequenceEqual(genericArgumentsForCompare,
-            new DelegateEqualityComparer<Type>((x, y) => x == y || x.IsGenericParameter || y.IsGenericParameter));
+            new DelegateEqualityComparer<Type>((x, y) =>
+                x == y || x.IsGenericParameter || y.IsGenericParameter));
     }
 }

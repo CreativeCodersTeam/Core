@@ -5,7 +5,8 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Core.Visitors;
 
 [PublicAPI]
-public abstract class Visitable<TVisitor, TVisitableObject> : IVisitable, IVisitable<TVisitor, TVisitableObject>
+public abstract class Visitable<TVisitor, TVisitableObject> : IVisitable,
+    IVisitable<TVisitor, TVisitableObject>
     where TVisitor : class, IVisitor<TVisitor, TVisitableObject>
     where TVisitableObject : Visitable<TVisitor, TVisitableObject>
 {
@@ -22,6 +23,7 @@ public abstract class Visitable<TVisitor, TVisitableObject> : IVisitable, IVisit
         {
             return;
         }
+
         visitor.Visit(self);
     }
 
@@ -31,9 +33,9 @@ public abstract class Visitable<TVisitor, TVisitableObject> : IVisitable, IVisit
         {
             return;
         }
-            
+
         var theVisitor = visitor as TVisitor;
-            
+
         switch (theVisitor)
         {
             case null when _visitors.TryGetValue(visitor.GetType(), out var acceptAction):

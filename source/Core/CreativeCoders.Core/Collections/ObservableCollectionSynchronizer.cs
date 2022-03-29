@@ -11,11 +11,11 @@ namespace CreativeCoders.Core.Collections;
 public class ObservableCollectionSynchronizer<TMasterElement, TSlaveElement> : IDisposable
 {
     private readonly ObservableCollection<TMasterElement> _masterCollection;
-        
+
     private readonly ObservableCollection<TSlaveElement> _slaveCollection;
-        
+
     private readonly Func<TMasterElement, TSlaveElement> _createSlave;
-        
+
     private readonly Func<TMasterElement, TSlaveElement> _getSlaveForMaster;
 
     public ObservableCollectionSynchronizer(ObservableCollection<TMasterElement> masterCollection,
@@ -28,7 +28,7 @@ public class ObservableCollectionSynchronizer<TMasterElement, TSlaveElement> : I
         _getSlaveForMaster = getSlaveForMaster;
 
         _masterCollection.CollectionChanged += MasterCollectionOnCollectionChanged;
-            
+
         _slaveCollection.AddRange(_masterCollection.Select(_createSlave));
     }
 
@@ -46,7 +46,8 @@ public class ObservableCollectionSynchronizer<TMasterElement, TSlaveElement> : I
                 _slaveCollection.Move(e.OldStartingIndex, e.NewStartingIndex);
                 break;
             case NotifyCollectionChangedAction.Remove:
-                RemoveElements(e.OldStartingIndex, e.OldItems?.Cast<TMasterElement>() ?? Array.Empty<TMasterElement>());
+                RemoveElements(e.OldStartingIndex,
+                    e.OldItems?.Cast<TMasterElement>() ?? Array.Empty<TMasterElement>());
                 break;
             case NotifyCollectionChangedAction.Replace:
                 ReplaceElement(e);
@@ -56,7 +57,8 @@ public class ObservableCollectionSynchronizer<TMasterElement, TSlaveElement> : I
                 _slaveCollection.AddRange(_masterCollection.Select(_createSlave));
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(e) + "." + nameof(e.Action), $"Unknown action '{e.Action}'");
+                throw new ArgumentOutOfRangeException(nameof(e) + "." + nameof(e.Action),
+                    $"Unknown action '{e.Action}'");
         }
     }
 

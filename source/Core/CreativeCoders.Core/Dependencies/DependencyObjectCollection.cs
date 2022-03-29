@@ -51,9 +51,9 @@ public class DependencyObjectCollection<T>
         {
             return existingDependencyObject;
         }
-            
+
         var newDependencyObject = new DependencyObject<T>(element);
-            
+
         _dependencyObjects.Add(newDependencyObject);
 
         return newDependencyObject;
@@ -155,7 +155,8 @@ public class DependencyObjectCollection<T>
         }
     }
 
-    private bool ObjectIsSubObject(IReadOnlyCollection<DependencyObject<T>> dependencyObjects, DependencyObject<T> dependencyObject)
+    private bool ObjectIsSubObject(IReadOnlyCollection<DependencyObject<T>> dependencyObjects,
+        DependencyObject<T> dependencyObject)
     {
         if (dependencyObjects.Contains(dependencyObject))
         {

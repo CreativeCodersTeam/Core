@@ -38,7 +38,7 @@ public class DependencySorter<T>
     public IEnumerable<T> Sort()
     {
         var sortedList = new List<T>();
-            
+
         var sortObjects = _dependencyObjectCollection
             .DependencyObjects
             .Select(x => new SortObject<T>(x)).ToList();
@@ -54,11 +54,11 @@ public class DependencySorter<T>
             }
 
             var elements = objectsWithoutDependencies.Select(x => x.Element).ToArray();
-                
+
             sortedList.AddRange(elements);
-                
+
             sortObjects.Remove(objectsWithoutDependencies);
-                
+
             sortObjects.ForEach(x => x.DependsOn.Remove(elements));
         }
 

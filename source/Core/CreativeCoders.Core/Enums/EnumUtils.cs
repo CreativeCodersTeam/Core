@@ -44,7 +44,7 @@ public static class EnumUtils
     public static FieldInfo GetFieldInfoForEnum(Enum enumValue)
     {
         Ensure.IsNotNull(enumValue, nameof(enumValue));
-            
+
         var enumType = enumValue.GetType();
         return enumType.GetField(enumValue.ToString());
     }

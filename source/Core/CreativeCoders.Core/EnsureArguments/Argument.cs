@@ -38,7 +38,7 @@ public readonly struct Argument<T>
     public TValue? Cast<TValue>()
     {
         object? objectValue = Value;
-            
+
         return (TValue?) objectValue;
     }
 

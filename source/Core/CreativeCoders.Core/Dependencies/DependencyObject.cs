@@ -18,7 +18,7 @@ public class DependencyObject<T>
     public DependencyObject(T element)
     {
         Element = element;
-            
+
         DependsOn = new List<DependencyObject<T>>();
     }
 

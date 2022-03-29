@@ -56,7 +56,7 @@ public static class Ensure
     ///                                 gets thrown, if <paramref name="value"/>  is null. </param>
     ///-------------------------------------------------------------------------------------------------
     [ContractAnnotation("halt <= value: null")]
-    public static void IsNotNull<T>(object value, Func<T> createException) where T: Exception
+    public static void IsNotNull<T>(object value, Func<T> createException) where T : Exception
     {
         if (value == null)
         {
@@ -204,7 +204,7 @@ public static class Ensure
     {
         if (!condition)
         {
-            throw new ArgumentException(message, paramName);                
+            throw new ArgumentException(message, paramName);
         }
     }
 
@@ -241,7 +241,7 @@ public static class Ensure
     {
         if (!condition)
         {
-            throw new ArgumentOutOfRangeException(paramName, message);                
+            throw new ArgumentOutOfRangeException(paramName, message);
         }
     }
 
@@ -262,7 +262,8 @@ public static class Ensure
     {
         if (index < startIndex || index > endIndex)
         {
-            throw new ArgumentOutOfRangeException(paramName, index, $"Index '{index}' is out of range '{startIndex}-{endIndex}'");
+            throw new ArgumentOutOfRangeException(paramName, index,
+                $"Index '{index}' is out of range '{startIndex}-{endIndex}'");
         }
     }
 
@@ -282,7 +283,8 @@ public static class Ensure
     {
         if (index < 0 || index >= collectionLength)
         {
-            throw new ArgumentOutOfRangeException(paramName, index, $"Index '{index}' is out of range '{0}-{collectionLength - 1}'");
+            throw new ArgumentOutOfRangeException(paramName, index,
+                $"Index '{index}' is out of range '{0}-{collectionLength - 1}'");
         }
     }
 

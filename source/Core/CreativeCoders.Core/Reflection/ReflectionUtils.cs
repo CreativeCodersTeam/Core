@@ -35,7 +35,7 @@ public static class ReflectionUtils
 
     public static IEnumerable<Type> GetAllTypes()
     {
-        return 
+        return
             GetAllAssemblies()
                 .SelectMany(assembly => assembly.GetTypesSafe());
     }
@@ -55,7 +55,8 @@ public static class ReflectionUtils
                 .SelectMany(assembly => assembly.GetTypesSafe());
     }
 
-    public static IEnumerable<Type> GetAllTypes(Func<Assembly, bool> checkAssembly, bool withReflectionOnlyAssemblies)
+    public static IEnumerable<Type> GetAllTypes(Func<Assembly, bool> checkAssembly,
+        bool withReflectionOnlyAssemblies)
     {
         return
             GetAllAssemblies(withReflectionOnlyAssemblies)

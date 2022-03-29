@@ -20,22 +20,25 @@ public class StreamWrapper : Stream
     public StreamWrapper(Stream dataStream)
     {
         Ensure.IsNotNull(dataStream, nameof(dataStream));
-            
+
         _dataStream = dataStream;
     }
 
-    public StreamWrapper(Stream dataStream, Action<bool> disposeBeforeStreamAction, Action<bool> disposeAfterStreamAction) : this(dataStream)
+    public StreamWrapper(Stream dataStream, Action<bool> disposeBeforeStreamAction,
+        Action<bool> disposeAfterStreamAction) : this(dataStream)
     {
         _disposeBeforeStreamAction = disposeBeforeStreamAction;
         _disposeAfterStreamAction = disposeAfterStreamAction;
     }
 
-    public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
+    public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback,
+        object state)
     {
         return _dataStream.BeginRead(buffer, offset, count, callback, state);
     }
 
-    public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
+    public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback,
+        object state)
     {
         return _dataStream.BeginWrite(buffer, offset, count, callback, state);
     }
@@ -74,7 +77,8 @@ public class StreamWrapper : Stream
         return _dataStream.FlushAsync(cancellationToken);
     }
 
-    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+    public override Task<int> ReadAsync(byte[] buffer, int offset, int count,
+        CancellationToken cancellationToken)
     {
         return _dataStream.ReadAsync(buffer, offset, count, cancellationToken);
     }
@@ -93,7 +97,7 @@ public class StreamWrapper : Stream
     {
         _dataStream.WriteByte(value);
     }
-        
+
     public override bool Equals(object obj)
     {
         return _dataStream.Equals(obj);

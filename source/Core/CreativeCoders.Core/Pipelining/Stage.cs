@@ -12,6 +12,7 @@ public class Stage<TInput, TOutput> : IStage<TInput, TOutput>
         {
             throw new InvalidOperationException();
         }
+
         return StageWorker(data);
     }
 

@@ -13,52 +13,55 @@ public static class FluentInterfaceExtensions
         fluentAction();
         return fluentInterface;
     }
-        
+
     public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Action<TFluent> fluentAction)
     {
         fluentAction(fluentInterface);
         return fluentInterface;
     }
-        
+
     // ReSharper disable once UnusedParameter.Global
     public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Func<TFluent> fluentFunction)
     {
         return fluentFunction();
     }
-        
+
     public static TFluent Fluent<TFluent>(this TFluent fluentInterface, Func<TFluent, TFluent> fluentFunction)
     {
         return fluentFunction(fluentInterface);
     }
-        
+
     public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Action fluentAction)
     {
         if (condition)
         {
-            fluentAction();    
+            fluentAction();
         }
-            
+
         return fluentInterface;
     }
-        
-    public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Action<TFluent> fluentAction)
+
+    public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition,
+        Action<TFluent> fluentAction)
     {
         if (condition)
         {
-            fluentAction(fluentInterface);    
+            fluentAction(fluentInterface);
         }
-            
+
         return fluentInterface;
     }
-        
-    public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Func<TFluent> fluentFunction)
+
+    public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition,
+        Func<TFluent> fluentFunction)
     {
         return condition
             ? fluentFunction()
             : fluentInterface;
     }
-        
-    public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition, Func<TFluent, TFluent> fluentFunction)
+
+    public static TFluent FluentIf<TFluent>(this TFluent fluentInterface, bool condition,
+        Func<TFluent, TFluent> fluentFunction)
     {
         return condition
             ? fluentFunction(fluentInterface)

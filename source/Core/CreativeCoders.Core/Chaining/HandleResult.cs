@@ -10,7 +10,7 @@ public class HandleResult<T>
         IsHandled = isHandled;
         Result = result;
     }
-        
+
     public bool IsHandled { get; }
 
     public T Result { get; }

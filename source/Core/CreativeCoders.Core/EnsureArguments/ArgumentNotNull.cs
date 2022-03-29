@@ -22,7 +22,7 @@ public readonly struct ArgumentNotNull<T>
         {
             throw new ArgumentNullException(nameof(value));
         }
-            
+
         Value = value;
         Name = name ?? throw new ArgumentNullException(nameof(name));
     }
@@ -45,7 +45,7 @@ public readonly struct ArgumentNotNull<T>
     public TValue Cast<TValue>()
     {
         object objectValue = Value;
-            
+
         return (TValue) objectValue;
     }
 

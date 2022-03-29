@@ -6,13 +6,14 @@ namespace CreativeCoders.Core.Caching.Default;
 public class DictionaryCache<TKey, TValue> : CacheBase<TKey, TValue>
 {
     private readonly CacheRegions<TKey, TValue> _regions;
-        
+
     public DictionaryCache()
     {
         _regions = new CacheRegions<TKey, TValue>();
     }
 
-    public override TValue GetOrAdd(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy, string regionName = null)
+    public override TValue GetOrAdd(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy,
+        string regionName = null)
     {
         if (TryGet(key, out var value, regionName))
         {
@@ -25,7 +26,8 @@ public class DictionaryCache<TKey, TValue> : CacheBase<TKey, TValue>
         return newValue;
     }
 
-    public override Task<TValue> GetOrAddAsync(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy, string regionName = null)
+    public override Task<TValue> GetOrAddAsync(TKey key, Func<TValue> getValue,
+        ICacheExpirationPolicy expirationPolicy, string regionName = null)
     {
         return Task.FromResult(GetOrAdd(key, getValue, expirationPolicy, regionName));
     }
@@ -44,7 +46,7 @@ public class DictionaryCache<TKey, TValue> : CacheBase<TKey, TValue>
             value = default;
             return false;
         }
-            
+
         value = cacheEntry.Value;
         return true;
     }
@@ -60,10 +62,12 @@ public class DictionaryCache<TKey, TValue> : CacheBase<TKey, TValue>
 
     public override void AddOrUpdate(TKey key, TValue value, string regionName = null)
     {
-        _regions.Set(key, new CacheEntry<TKey, TValue>(key, CacheExpirationPolicy.NeverExpire) {Value = value}, regionName);
+        _regions.Set(key,
+            new CacheEntry<TKey, TValue>(key, CacheExpirationPolicy.NeverExpire) {Value = value}, regionName);
     }
 
-    public override void AddOrUpdate(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy, string regionName = null)
+    public override void AddOrUpdate(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy,
+        string regionName = null)
     {
         _regions.Set(key, new CacheEntry<TKey, TValue>(key, expirationPolicy) {Value = value}, regionName);
     }
@@ -71,14 +75,15 @@ public class DictionaryCache<TKey, TValue> : CacheBase<TKey, TValue>
     public override Task AddOrUpdateAsync(TKey key, TValue value, string regionName = null)
     {
         AddOrUpdate(key, value, regionName);
-            
+
         return Task.CompletedTask;
     }
 
-    public override Task AddOrUpdateAsync(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy, string regionName = null)
+    public override Task AddOrUpdateAsync(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy,
+        string regionName = null)
     {
         AddOrUpdate(key, value, expirationPolicy, regionName);
-            
+
         return Task.CompletedTask;
     }
 

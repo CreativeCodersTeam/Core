@@ -9,9 +9,9 @@ public class WeakBase<T> : IDisposable
     where T : class
 {
     private WeakReference _ownerReference;
-        
+
     private WeakReference<T> _dataReference;
-        
+
     private object _owner;
 
     private T _data;
@@ -21,7 +21,7 @@ public class WeakBase<T> : IDisposable
         Ensure.IsNotNull(data, nameof(data));
 
         KeepOwnerAlive = GetKeepAlive(keepOwnerAliveMode, owner);
-            
+
         if (owner != null)
         {
             _ownerReference = new WeakReference(owner);
@@ -38,7 +38,7 @@ public class WeakBase<T> : IDisposable
         {
             _data = data;
         }
-            
+
         _dataReference = new WeakReference<T>(data);
     }
 
@@ -58,14 +58,14 @@ public class WeakBase<T> : IDisposable
         {
             return _dataReference?.GetTarget();
         }
-            
+
         var target = _ownerReference.Target;
 
-        return target == null 
+        return target == null
             ? default
             : _dataReference?.GetTarget();
     }
-        
+
     public bool KeepOwnerAlive { get; }
 
     public bool IsAlive()

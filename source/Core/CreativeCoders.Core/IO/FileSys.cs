@@ -9,7 +9,7 @@ namespace CreativeCoders.Core.IO;
 public static class FileSys
 {
     private static IFileSystemEx Instance { get; set; } = new FileSystemEx();
-        
+
     public static void InstallFileSystemSupport(IFileSystemEx fileSystem)
     {
         Ensure.IsNotNull(fileSystem, nameof(fileSystem));
@@ -31,7 +31,9 @@ public static class FileSys
 
     public static FileSystemWatcherBase CreateFileSystemWatcher() => Instance.CreateFileSystemWatcher();
 
-    public static FileSystemWatcherBase CreateFileSystemWatcher(string path) => Instance.CreateFileSystemWatcher(path);
+    public static FileSystemWatcherBase CreateFileSystemWatcher(string path) =>
+        Instance.CreateFileSystemWatcher(path);
 
-    public static FileSystemWatcherBase CreateFileSystemWatcher(string path, string filter) => Instance.CreateFileSystemWatcher(path, filter);
+    public static FileSystemWatcherBase CreateFileSystemWatcher(string path, string filter) =>
+        Instance.CreateFileSystemWatcher(path, filter);
 }

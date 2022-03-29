@@ -55,13 +55,15 @@ public class PropertyLinkItem
 
     private void CopyToTarget()
     {
-        _propertyValueCopier.CopyPropertyValue(Info.Source, Info.SourceProperty, Info.Target, Info.TargetProperty,
+        _propertyValueCopier.CopyPropertyValue(Info.Source, Info.SourceProperty, Info.Target,
+            Info.TargetProperty,
             false, Info);
     }
 
     private void CopyToSource()
     {
-        _propertyValueCopier.CopyPropertyValue(Info.Target, Info.TargetProperty, Info.Source, Info.SourceProperty,
+        _propertyValueCopier.CopyPropertyValue(Info.Target, Info.TargetProperty, Info.Source,
+            Info.SourceProperty,
             true, Info);
     }
 

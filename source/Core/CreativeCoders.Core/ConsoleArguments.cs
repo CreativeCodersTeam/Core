@@ -31,12 +31,14 @@ public class ConsoleArguments
             {
                 valueName = "/" + valueName;
             }
+
             var result = string.Empty;
             var (_, value) = _values.FirstOrDefault(x => ValueNameEquals(valueName, x.Key));
             if (!string.IsNullOrWhiteSpace(value))
             {
                 result = value;
             }
+
             return result;
         }
     }
@@ -72,6 +74,7 @@ public class ConsoleArguments
         {
             index = arg.IndexOf(":", StringComparison.Ordinal);
         }
+
         if (index == -1)
         {
             _values[arg] = string.Empty;

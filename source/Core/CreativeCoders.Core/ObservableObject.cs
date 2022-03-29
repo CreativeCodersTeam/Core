@@ -30,6 +30,7 @@ public class ObservableObject : INotifyPropertyChanged, INotifyPropertyChanging
         {
             return;
         }
+
         OnPropertyChanging(propertyName);
         value = newValue;
         OnPropertyChanged(propertyName);

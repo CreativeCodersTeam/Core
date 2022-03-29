@@ -7,7 +7,7 @@ namespace CreativeCoders.Core.Messaging;
 internal class MessengerRegistration<TMessage> : IMessengerRegistration
 {
     private static readonly ILogger Log = LogManager.GetLogger<MessengerRegistration<TMessage>>();
-        
+
     private MessengerImpl _messenger;
 
     private bool _disposed;
@@ -52,7 +52,7 @@ internal class MessengerRegistration<TMessage> : IMessengerRegistration
 
     public void Dispose()
     {
-        Dispose(true);            
+        Dispose(true);
     }
 
     public void RemovedFromMessenger()

@@ -26,12 +26,12 @@ public class ComparableObject<T> : IEquatable<T>, IComparable<T>
 
     public bool Equals(T? other)
     {
-        return EqualityComparer.Equals((T)this, other);
+        return EqualityComparer.Equals((T) this, other);
     }
 
     public int CompareTo(T? other)
     {
-        return Comparer.Compare((T)this, other);
+        return Comparer.Compare((T) this, other);
     }
 
     public override bool Equals(object? obj) => Equals(obj as T);
@@ -39,7 +39,7 @@ public class ComparableObject<T> : IEquatable<T>, IComparable<T>
     public override int GetHashCode()
     {
         // ReSharper disable once NonReadonlyMemberInGetHashCode
-        return GetHashCodeFunc((T)this);
+        return GetHashCodeFunc((T) this);
     }
 }
 
@@ -65,12 +65,12 @@ public class ComparableObject<TObject, TInterface> : IEquatable<TInterface>, ICo
 
     public bool Equals(TInterface? other)
     {
-        return EqualityComparer.Equals((TInterface)(object)this, other);
+        return EqualityComparer.Equals((TInterface) (object) this, other);
     }
 
     public int CompareTo(TInterface? other)
     {
-        return Comparer.Compare((TInterface)(object)this, other);
+        return Comparer.Compare((TInterface) (object) this, other);
     }
 
     public override bool Equals(object? obj) => Equals(obj as TInterface);
@@ -78,6 +78,6 @@ public class ComparableObject<TObject, TInterface> : IEquatable<TInterface>, ICo
     public override int GetHashCode()
     {
         // ReSharper disable once NonReadonlyMemberInGetHashCode
-        return GetHashCodeFunc((TInterface)(object)this);
+        return GetHashCodeFunc((TInterface) (object) this);
     }
 }

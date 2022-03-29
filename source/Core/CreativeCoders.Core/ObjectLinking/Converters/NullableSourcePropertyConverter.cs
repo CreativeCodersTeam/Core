@@ -9,7 +9,7 @@ public class NullableSourcePropertyConverter<T> : IPropertyValueConverter
     {
         _nullableTargetPropertyConverter = new NullableTargetPropertyConverter<T>();
     }
-        
+
     public object Convert(object value, object parameter)
     {
         return _nullableTargetPropertyConverter.ConvertBack(value, parameter);

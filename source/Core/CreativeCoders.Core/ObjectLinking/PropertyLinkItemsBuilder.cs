@@ -8,7 +8,7 @@ namespace CreativeCoders.Core.ObjectLinking;
 public class PropertyLinkItemsBuilder
 {
     private readonly IEnumerable<PropertyLinkDefinition> _propertyLinkDefinitions;
-        
+
     private readonly HandlerChain<(PropertyLinkInfo, PropertyLinkInfo), bool> _handlerChain;
 
     public PropertyLinkItemsBuilder(IEnumerable<PropertyLinkDefinition> propertyLinkDefinitions)
@@ -45,7 +45,8 @@ public class PropertyLinkItemsBuilder
                     ConverterParameter = linkDefinition.ConverterParameter,
                     InitWithTargetValue = linkDefinition.InitWithTargetValue
                 })
-            .Where(propertyLinkInfo => !linkItems.Any(linkItem => MergeLinkInfos(linkItem.Info, propertyLinkInfo)));
+            .Where(propertyLinkInfo =>
+                !linkItems.Any(linkItem => MergeLinkInfos(linkItem.Info, propertyLinkInfo)));
     }
 
     private bool MergeLinkInfos(PropertyLinkInfo existingLinkInfo, PropertyLinkInfo newLinkInfo)
@@ -57,7 +58,7 @@ public class PropertyLinkItemsBuilder
 
     private static HandlerChain<(PropertyLinkInfo, PropertyLinkInfo), bool> CreateHandlerChain()
     {
-        var handlerChain = new HandlerChain<(PropertyLinkInfo, PropertyLinkInfo), bool>(new []
+        var handlerChain = new HandlerChain<(PropertyLinkInfo, PropertyLinkInfo), bool>(new[]
         {
             new ChainDataHandler<(PropertyLinkInfo, PropertyLinkInfo), bool>(CheckDifferentConverters),
             new ChainDataHandler<(PropertyLinkInfo, PropertyLinkInfo), bool>(CheckOppositeLink),
@@ -68,10 +69,11 @@ public class PropertyLinkItemsBuilder
         return handlerChain;
     }
 
-    private static HandleResult<bool> CheckExistingDirection((PropertyLinkInfo existingLinkInfo, PropertyLinkInfo newLinkInfo) data)
+    private static HandleResult<bool> CheckExistingDirection(
+        (PropertyLinkInfo existingLinkInfo, PropertyLinkInfo newLinkInfo) data)
     {
         var (existingLinkInfo, newLinkInfo) = data;
-            
+
         if (existingLinkInfo.Direction == LinkDirection.TwoWay)
         {
             return new HandleResult<bool>(true, true);
@@ -81,14 +83,15 @@ public class PropertyLinkItemsBuilder
         {
             existingLinkInfo.Direction = LinkDirection.TwoWay;
         }
-            
+
         return new HandleResult<bool>(true, true);
     }
 
-    private static HandleResult<bool> CheckDifferentLink((PropertyLinkInfo existingLinkInfo, PropertyLinkInfo newLinkInfo) data)
+    private static HandleResult<bool> CheckDifferentLink(
+        (PropertyLinkInfo existingLinkInfo, PropertyLinkInfo newLinkInfo) data)
     {
         var (existingLinkInfo, newLinkInfo) = data;
-            
+
         if (existingLinkInfo.Source != newLinkInfo.Source ||
             existingLinkInfo.Target != newLinkInfo.Target ||
             existingLinkInfo.SourceProperty != newLinkInfo.SourceProperty ||
@@ -96,11 +99,12 @@ public class PropertyLinkItemsBuilder
         {
             return new HandleResult<bool>(true, false);
         }
-            
+
         return new HandleResult<bool>(false, false);
     }
 
-    private static HandleResult<bool> CheckOppositeLink((PropertyLinkInfo existingLinkInfo, PropertyLinkInfo newLinkInfo) data)
+    private static HandleResult<bool> CheckOppositeLink(
+        (PropertyLinkInfo existingLinkInfo, PropertyLinkInfo newLinkInfo) data)
     {
         var (existingLinkInfo, newLinkInfo) = data;
 
@@ -111,7 +115,7 @@ public class PropertyLinkItemsBuilder
         {
             return new HandleResult<bool>(false, false);
         }
-                
+
         if (existingLinkInfo.Direction == LinkDirection.TwoWay ||
             newLinkInfo.Direction == LinkDirection.TwoWay)
         {
@@ -127,7 +131,6 @@ public class PropertyLinkItemsBuilder
         existingLinkInfo.Direction = LinkDirection.TwoWay;
 
         return new HandleResult<bool>(true, true);
-
     }
 
     private static HandleResult<bool> CheckDifferentConverters(

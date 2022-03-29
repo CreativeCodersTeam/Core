@@ -26,6 +26,7 @@ public class MutexLock : IDisposable
                 _mutex = Mutex.OpenExisting(mutexName);
             }
         }
+
         _hasMutexLock = _mutex.WaitOne();
     }
 
@@ -35,13 +36,14 @@ public class MutexLock : IDisposable
         {
             return;
         }
-            
+
         if (disposing && _mutex != null)
         {
             if (_hasMutexLock)
             {
                 _mutex.ReleaseMutex();
             }
+
             _mutex.Dispose();
             _mutex = null;
         }

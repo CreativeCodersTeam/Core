@@ -27,8 +27,9 @@ public static class MustArgumentExtensions
 
         return ref argument;
     }
-        
-    public static ref readonly ArgumentNotNull<T> Must<T>(in this ArgumentNotNull<T> argument, Func<T, bool> predicate,
+
+    public static ref readonly ArgumentNotNull<T> Must<T>(in this ArgumentNotNull<T> argument,
+        Func<T, bool> predicate,
         string? message = null)
     {
         if (!predicate(argument.Value))
@@ -39,7 +40,8 @@ public static class MustArgumentExtensions
         return ref argument;
     }
 
-    public static ref readonly ArgumentNotNull<T> MustNot<T>(in this ArgumentNotNull<T> argument, Func<T, bool> predicate,
+    public static ref readonly ArgumentNotNull<T> MustNot<T>(in this ArgumentNotNull<T> argument,
+        Func<T, bool> predicate,
         string? message = null)
     {
         if (predicate(argument.Value))

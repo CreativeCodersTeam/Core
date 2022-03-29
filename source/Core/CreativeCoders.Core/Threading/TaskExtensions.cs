@@ -9,10 +9,10 @@ namespace CreativeCoders.Core.Threading;
 public static class TaskExtensions
 {
     public static void FireAndForgetAsync(this Task task, IErrorHandler errorHandler)
-    { 
+    {
         task.FireAndForgetAsync(e => errorHandler?.HandleException(e));
     }
-        
+
     public static async void FireAndForgetAsync(this Task task, Action<Exception> errorHandler)
     {
         try
@@ -30,7 +30,8 @@ public static class TaskExtensions
         await task;
 
         var resultProperty = task.GetType().GetProperty("Result")
-                             ?? throw new InvalidCastException($"{task.GetType().FullName} has no Result property");
+                             ?? throw new InvalidCastException(
+                                 $"{task.GetType().FullName} has no Result property");
 
         return (T) resultProperty.GetValue(task);
     }

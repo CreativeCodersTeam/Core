@@ -13,7 +13,7 @@ public class PropertyLinkAttribute : Attribute
     }
 
     public Type TargetType { get; }
-        
+
     public string TargetPropertyName { get; }
 
     public LinkDirection Direction { get; set; }

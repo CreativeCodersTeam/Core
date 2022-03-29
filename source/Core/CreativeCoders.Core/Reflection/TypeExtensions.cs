@@ -10,7 +10,8 @@ namespace CreativeCoders.Core.Reflection;
 [PublicAPI]
 public static class TypeExtensions
 {
-    public static object? CreateGenericInstance(this Type type, Type typeArgument, params object[] constructorParameters)
+    public static object? CreateGenericInstance(this Type type, Type typeArgument,
+        params object[] constructorParameters)
     {
         Ensure.That(type.IsGenericType, nameof(type));
         Ensure.IsNotNull(typeArgument, nameof(typeArgument));

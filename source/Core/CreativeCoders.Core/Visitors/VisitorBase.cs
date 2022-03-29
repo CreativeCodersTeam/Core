@@ -4,7 +4,8 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Core.Visitors;
 
 [PublicAPI]
-public abstract class VisitorBase<TVisitor, TVisitableObject> : IVisitorInfo, IVisitor<TVisitor, TVisitableObject>
+public abstract class VisitorBase<TVisitor, TVisitableObject> : IVisitorInfo,
+    IVisitor<TVisitor, TVisitableObject>
     where TVisitor : IVisitor<TVisitor, TVisitableObject>
     where TVisitableObject : IVisitable<TVisitor, TVisitableObject>
 {
@@ -12,7 +13,7 @@ public abstract class VisitorBase<TVisitor, TVisitableObject> : IVisitorInfo, IV
     {
         ThrowIfNoAcceptMethod = throwIfNoAcceptMethod;
     }
-        
+
     public abstract void Visit(TVisitableObject visitableObject);
 
     protected virtual void VisitSubItems(object visitableObject)

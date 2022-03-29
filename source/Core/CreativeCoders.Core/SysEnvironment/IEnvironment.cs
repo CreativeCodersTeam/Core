@@ -75,5 +75,5 @@ public interface IEnvironment
 
     Version Version { get; }
 
-    long WorkingSet { get; }        
+    long WorkingSet { get; }
 }

@@ -31,7 +31,8 @@ public static class DictionaryExtensions
         return false;
     }
 
-    public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IDictionary dictionary, bool skipNotMatchingEntries)
+    public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IDictionary dictionary,
+        bool skipNotMatchingEntries)
     {
         var convertedDictionary = new Dictionary<TKey, TValue>();
 
@@ -63,7 +64,8 @@ public static class DictionaryExtensions
         return convertedDictionary;
     }
 
-    public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IDictionary dictionary, Func<object, TValue> valueSelector, bool skipNotMatchingEntries)
+    public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IDictionary dictionary,
+        Func<object, TValue> valueSelector, bool skipNotMatchingEntries)
     {
         var convertedDictionary = new Dictionary<TKey, TValue>();
 

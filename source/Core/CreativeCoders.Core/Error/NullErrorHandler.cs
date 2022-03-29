@@ -21,7 +21,5 @@ public class NullErrorHandler : IErrorHandler
     public static IErrorHandler Instance { get; } = new NullErrorHandler();
 
     /// <inheritdoc />
-    public void HandleException(Exception exception)
-    {
-    }
+    public void HandleException(Exception exception) { }
 }

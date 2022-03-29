@@ -9,9 +9,9 @@ public class NullableTargetPropertyConverter<T> : IPropertyValueConverter
         {
             return null;
         }
-            
+
         T? nullableValue = structValue;
-            
+
         return nullableValue;
     }
 
@@ -21,12 +21,12 @@ public class NullableTargetPropertyConverter<T> : IPropertyValueConverter
         {
             return nullableValue;
         }
-            
+
         if (parameter is T defaultValue)
         {
             return defaultValue;
         }
-            
+
         return default(T);
     }
 }

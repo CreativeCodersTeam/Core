@@ -17,7 +17,7 @@ public class HandlerChain<TData, TResult>
     {
         return Handle(data, default);
     }
-        
+
     public TResult Handle(TData data, TResult defaultResult)
     {
         // ReSharper disable once LoopCanBePartlyConvertedToQuery

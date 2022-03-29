@@ -19,14 +19,14 @@ public static class EnumerableExtension
         {
             return default;
         }
-                
+
         var firstElement = enumerator.Current;
 
-        return enumerator.MoveNext() 
-            ? default 
+        return enumerator.MoveNext()
+            ? default
             : firstElement;
     }
-        
+
     public static void ForEach<T>(this IEnumerable<T> self, Action<T> action)
     {
         Ensure.IsNotNull(action, nameof(action));
@@ -36,7 +36,7 @@ public static class EnumerableExtension
             action(item);
         }
     }
-        
+
     public static async Task ForEachAsync<T>(this IEnumerable<T> self, Func<T, Task> actionAsync)
     {
         Ensure.IsNotNull(actionAsync, nameof(actionAsync));
@@ -70,7 +70,7 @@ public static class EnumerableExtension
             action(element, index++);
         }
     }
-        
+
     public static async Task ForEachAsync<T>(this IEnumerable<T> source, Func<T, int, Task> actionAsync)
     {
         Ensure.IsNotNull(actionAsync, nameof(actionAsync));
@@ -326,7 +326,8 @@ public static class EnumerableExtension
         return items.Select((x, index) => new ItemWithIndex<T>(index, x));
     }
 
-    public static IOrderedEnumerable<T> OrderBy<T, TKey1, TKey2>(this IEnumerable<T> items, Func<T, TKey1> keySelector1,
+    public static IOrderedEnumerable<T> OrderBy<T, TKey1, TKey2>(this IEnumerable<T> items,
+        Func<T, TKey1> keySelector1,
         Func<T, TKey2> keySelector2)
     {
         return items.Sort(new SortFieldInfo<T, TKey1>(keySelector1, SortOrder.Ascending),
@@ -359,7 +360,8 @@ public static class EnumerableExtension
         SortFieldInfo<T, TKey3> sortFieldInfo3, SortFieldInfo<T, TKey4> sortFieldInfo4)
     {
         return items.OrderBy(x => x,
-            new MultiFuncComparer<T, TKey1, TKey2, TKey3, TKey4>(sortFieldInfo1, sortFieldInfo2, sortFieldInfo3,
+            new MultiFuncComparer<T, TKey1, TKey2, TKey3, TKey4>(sortFieldInfo1, sortFieldInfo2,
+                sortFieldInfo3,
                 sortFieldInfo4));
     }
 
@@ -387,10 +389,11 @@ public static class EnumerableExtension
 #nullable enable
     public static object OfType(this IEnumerable source, Type itemType)
     {
-        var ofTypeMethod = typeof(Enumerable).GetMethod(nameof(Enumerable.OfType))?.MakeGenericMethod(itemType);
+        var ofTypeMethod = typeof(Enumerable).GetMethod(nameof(Enumerable.OfType))
+            ?.MakeGenericMethod(itemType);
 
         return ofTypeMethod != null
-            ? ofTypeMethod.Invoke(null, new object?[] { source })!
+            ? ofTypeMethod.Invoke(null, new object?[] {source})!
             : throw new MissingMethodException(nameof(Enumerable), nameof(Enumerable.OfType));
     }
 #nullable restore

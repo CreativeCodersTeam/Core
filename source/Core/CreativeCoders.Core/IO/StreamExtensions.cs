@@ -18,7 +18,8 @@ public static class StreamExtensions
         return streamReader.ReadToEnd();
     }
 
-    public static string ReadAsString(this Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks)
+    public static string ReadAsString(this Stream stream, Encoding encoding,
+        bool detectEncodingFromByteOrderMarks)
     {
         using var streamReader = new StreamReader(stream, encoding, detectEncodingFromByteOrderMarks);
         return streamReader.ReadToEnd();
@@ -36,7 +37,8 @@ public static class StreamExtensions
         return streamReader.ReadToEndAsync();
     }
 
-    public static Task<string> ReadAsStringAsync(this Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks)
+    public static Task<string> ReadAsStringAsync(this Stream stream, Encoding encoding,
+        bool detectEncodingFromByteOrderMarks)
     {
         using var streamReader = new StreamReader(stream, encoding, detectEncodingFromByteOrderMarks);
         return streamReader.ReadToEndAsync();

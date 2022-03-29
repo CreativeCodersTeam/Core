@@ -68,7 +68,8 @@ public static class Env
         return EnvironmentInstance.GetFolderPath(folder);
     }
 
-    public static string GetFolderPath(Environment.SpecialFolder folder, Environment.SpecialFolderOption option)
+    public static string GetFolderPath(Environment.SpecialFolder folder,
+        Environment.SpecialFolderOption option)
     {
         return EnvironmentInstance.GetFolderPath(folder, option);
     }

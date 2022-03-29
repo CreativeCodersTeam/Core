@@ -17,11 +17,9 @@ public static class RandomString
     ///-------------------------------------------------------------------------------------------------
     public static string Create(int bufferSize)
     {
-        using var rng = new RNGCryptoServiceProvider();
-            
         var buffer = new byte[bufferSize];
 
-        rng.GetNonZeroBytes(buffer);
+        RandomNumberGenerator.Create().GetNonZeroBytes(buffer);
 
         return Convert.ToBase64String(buffer);
     }

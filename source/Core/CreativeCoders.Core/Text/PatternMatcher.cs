@@ -9,7 +9,8 @@ public static class PatternMatcher
         Ensure.IsNotNullOrEmpty(name, "name");
         Ensure.IsNotNullOrEmpty(mask, "mask");
         var pattern = '^' +
-                      Regex.Escape(mask.Replace(".", "__DOT__").Replace("*", "__STAR__").Replace("?", "__QM__"))
+                      Regex.Escape(mask.Replace(".", "__DOT__").Replace("*", "__STAR__")
+                              .Replace("?", "__QM__"))
                           .Replace("__DOT__", "[.]")
                           .Replace("__STAR__", ".*")
                           .Replace("__QM__", ".") + '$';

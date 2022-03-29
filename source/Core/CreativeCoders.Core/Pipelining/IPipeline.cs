@@ -11,7 +11,8 @@ public interface IPipeline<TInput, TOutput>
 
     Action<TOutput> Output { get; set; }
 
-    IStage<TStageInput, TStageOutput> AddStage<TStageInput, TStageOutput>(Func<TStageInput, TStageOutput> stageWorker);
+    IStage<TStageInput, TStageOutput> AddStage<TStageInput, TStageOutput>(
+        Func<TStageInput, TStageOutput> stageWorker);
 
     IEnumerable<IStage> Stages { get; }
 

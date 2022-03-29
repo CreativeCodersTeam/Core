@@ -7,9 +7,9 @@ public class PropertyValueCopier
 {
     private readonly SynchronizedValue<bool> _isInCopyProperty = new();
 
-    public void CopyPropertyValue(object source, PropertyInfo sourceProperty, object target, PropertyInfo targetProperty, bool backDirection, PropertyLinkInfo info)
+    public void CopyPropertyValue(object source, PropertyInfo sourceProperty, object target,
+        PropertyInfo targetProperty, bool backDirection, PropertyLinkInfo info)
     {
-            
         if (_isInCopyProperty.Value)
         {
             return;
@@ -31,13 +31,13 @@ public class PropertyValueCopier
                 {
                     return;
                 }
-                    
+
                 if (propertyValue == PropertyLink.Error)
                 {
                     return;
                 }
             }
-            
+
             targetProperty.SetValue(target, propertyValue);
         }
         finally

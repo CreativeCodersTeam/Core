@@ -7,6 +7,6 @@ namespace CreativeCoders.Core.Caching;
 public interface ICachedValue<TValue>
 {
     Task<TValue> GetValueAsync();
-        
+
     TValue Value { get; }
 }

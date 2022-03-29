@@ -12,40 +12,40 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Core.Collections;
 
 [PublicAPI]
-public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INotifyPropertyChanged, INotifyCollectionChanged
+public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INotifyPropertyChanged,
+    INotifyCollectionChanged
 {
     private const string IndexerName = "Item[]";
-        
+
     private readonly SynchronizationContext _synchronizationContext;
-        
+
     private readonly SynchronizationMethod _synchronizationMethod;
 
     private readonly ILockingMechanism _lockingMechanism;
 
     private readonly List<T> _items;
-        
+
     private readonly SynchronizedValue<int> _updateCounter;
-    
+
     private readonly SynchronizedValue<bool> _collectionHasChanged;
 
     private readonly SimpleMonitor _reentrancyMonitor;
 
     public ExtendedObservableCollection()
-        : this(SynchronizationContext.Current, SynchronizationMethod.Send, () => new LockSlimLockingMechanism(), Array.Empty<T>())
-    {
-    }
+        : this(SynchronizationContext.Current, SynchronizationMethod.Send,
+            () => new LockSlimLockingMechanism(), Array.Empty<T>()) { }
 
     public ExtendedObservableCollection(IEnumerable<T> items)
-        : this(SynchronizationContext.Current, SynchronizationMethod.Send, () => new LockSlimLockingMechanism(), items)
-    {
-    }
+        : this(SynchronizationContext.Current, SynchronizationMethod.Send,
+            () => new LockSlimLockingMechanism(), items) { }
 
     public ExtendedObservableCollection(SynchronizationContext synchronizationContext,
         SynchronizationMethod synchronizationMethod, Func<ILockingMechanism> lockingMechanism)
         : this(synchronizationContext, synchronizationMethod, lockingMechanism, Array.Empty<T>()) { }
 
     public ExtendedObservableCollection(SynchronizationContext synchronizationContext,
-        SynchronizationMethod synchronizationMethod, Func<ILockingMechanism> lockingMechanism, IEnumerable<T> items)
+        SynchronizationMethod synchronizationMethod, Func<ILockingMechanism> lockingMechanism,
+        IEnumerable<T> items)
     {
         Ensure.IsNotNull(synchronizationMethod, nameof(synchronizationMethod));
         Ensure.IsNotNull(lockingMechanism, nameof(lockingMechanism));
@@ -71,12 +71,12 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         var index = _lockingMechanism.Write(() =>
         {
             CheckReentrancy();
-                
+
             _items.Add(item);
-                
+
             return _items.Count - 1;
         });
-            
+
         NotifyItemAdded(item, index);
     }
 
@@ -85,10 +85,10 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         _lockingMechanism.Write(() =>
         {
             CheckReentrancy();
-                
+
             _items.AddRange(items);
         });
-            
+
         NotifyItemsReset();
     }
 
@@ -100,9 +100,9 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
             {
                 return false;
             }
-                
+
             CheckReentrancy();
-                
+
             _items.Clear();
 
             return true;
@@ -126,12 +126,12 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         var isRemoved = _lockingMechanism.Write(() =>
         {
             CheckReentrancy();
-                
+
             var removed = _items.Remove(item);
 
             return removed;
         });
-            
+
         if (isRemoved)
         {
             NotifyItemRemoved(item);
@@ -154,7 +154,7 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
 
             _items.Insert(index, item);
         });
-            
+
         NotifyItemAdded(item, index);
     }
 
@@ -163,16 +163,16 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         var removedItem = _lockingMechanism.Write(() =>
         {
             Ensure.IndexIsInRange(index, _items.Count, nameof(index));
-                
+
             CheckReentrancy();
 
             var item = _items[index];
-                
+
             _items.RemoveAt(index);
 
             return item;
         });
-            
+
         NotifyItemRemoved(removedItem, index);
     }
 
@@ -182,7 +182,7 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         {
             Ensure.IndexIsInRange(oldIndex, _items.Count, nameof(oldIndex));
             Ensure.IndexIsInRange(newIndex, _items.Count, nameof(newIndex));
-                
+
             CheckReentrancy();
 
             var item = _items[oldIndex];
@@ -191,7 +191,7 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
 
             return item;
         });
-            
+
         NotifyItemMoved(movedItem, oldIndex, newIndex);
     }
 
@@ -201,7 +201,8 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         {
             OnPropertyChanged(IndexerName);
             OnCollectionChanged(
-                new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, item, newIndex, oldIndex));
+                new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, item, newIndex,
+                    oldIndex));
         });
     }
 
@@ -219,16 +220,16 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
             var oldValue = _lockingMechanism.Write(() =>
             {
                 Ensure.IndexIsInRange(index, _items.Count, nameof(index));
-                    
+
                 CheckReentrancy();
-                    
+
                 var oldItem = _items[index];
-                    
+
                 _items[index] = value;
 
                 return oldItem;
             });
-                
+
             NotifyItemReplaced(oldValue, value, index);
         }
     }
@@ -236,7 +237,7 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
     public IDisposable Update()
     {
         BeginUpdate();
-            
+
         return new DelegateDisposable(EndUpdate, true);
     }
 
@@ -245,7 +246,7 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
     public void EndUpdate()
     {
         var notify = false;
-            
+
         _updateCounter.SetValue(updateCounter =>
         {
             updateCounter--;
@@ -254,7 +255,7 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
             {
                 return updateCounter;
             }
-            
+
             _collectionHasChanged.Value = false;
             notify = true;
 
@@ -266,7 +267,7 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
             NotifyItemsReset();
         }
     }
-        
+
     private void InvokeSynchronizationContext(Action execute)
     {
         using (BlockReentrancy())
@@ -294,10 +295,11 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
 
         return _reentrancyMonitor;
     }
-        
+
     private void CheckReentrancy()
     {
-        if (_reentrancyMonitor.Busy && CollectionChanged != null && CollectionChanged.GetInvocationList().Length > 1)
+        if (_reentrancyMonitor.Busy && CollectionChanged != null &&
+            CollectionChanged.GetInvocationList().Length > 1)
         {
             throw new InvalidOperationException("ExtendedObservableCollection reentrancy not allowed");
         }
@@ -309,39 +311,43 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         {
             OnPropertyChanged(nameof(Count));
             OnPropertyChanged(IndexerName);
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
+            OnCollectionChanged(
+                new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
         });
     }
-        
+
     private void NotifyItemRemoved(T item)
     {
         InvokeSynchronizationContext(() =>
         {
             OnPropertyChanged(nameof(Count));
             OnPropertyChanged(IndexerName);
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item));
+            OnCollectionChanged(
+                new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item));
         });
     }
-        
+
     private void NotifyItemRemoved(T item, int index)
     {
         InvokeSynchronizationContext(() =>
         {
             OnPropertyChanged(nameof(Count));
             OnPropertyChanged(IndexerName);
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item, index));
+            OnCollectionChanged(
+                new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item, index));
         });
     }
-        
+
     private void NotifyItemReplaced(T oldItem, T newItem, int index)
     {
         InvokeSynchronizationContext(() =>
         {
             OnPropertyChanged(IndexerName);
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, newItem, oldItem, index));
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace,
+                newItem, oldItem, index));
         });
     }
-        
+
     private void NotifyItemsReset()
     {
         InvokeSynchronizationContext(() =>
@@ -351,7 +357,7 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         });
     }
-        
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     [NotifyPropertyChangedInvocator]
@@ -369,7 +375,7 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
             _collectionHasChanged.Value = true;
             return;
         }
-            
+
         CollectionChanged?.Invoke(this, e);
     }
 }
