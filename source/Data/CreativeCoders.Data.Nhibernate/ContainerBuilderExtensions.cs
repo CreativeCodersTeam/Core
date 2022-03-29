@@ -10,7 +10,8 @@ namespace CreativeCoders.Data.Nhibernate;
 [PublicAPI]
 public static class ContainerBuilderExtensions
 {
-    public static IDiContainerBuilder AddNhibernateSupport(this IDiContainerBuilder builder, Action<Configuration> setupNhibernateConfiguration)
+    public static IDiContainerBuilder AddNhibernateSupport(this IDiContainerBuilder builder,
+        Action<Configuration> setupNhibernateConfiguration)
     {
         var configuration = new Configuration();
         configuration.DataBaseIntegration(dbi =>
@@ -20,7 +21,7 @@ public static class ContainerBuilderExtensions
             dbi.Driver<Sql2008ClientDriver>();
         });
         setupNhibernateConfiguration(configuration);
-            
+
         builder.AddScoped(_ => configuration.BuildSessionFactory());
 
         return builder;

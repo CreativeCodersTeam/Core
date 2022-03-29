@@ -70,9 +70,7 @@ public class EfCoreRepository<TEntity> : IRepository<TEntity>
 public class EfCoreRepository<TKey, TEntity> : EfCoreRepository<TEntity>, IRepository<TKey, TEntity>
     where TEntity : class, IEntityKey<TKey>
 {
-    public EfCoreRepository(DbContext dbContext) : base(dbContext)
-    {
-    }
+    public EfCoreRepository(DbContext dbContext) : base(dbContext) { }
 
     public TEntity Get(TKey id)
     {

@@ -10,10 +10,12 @@ namespace CreativeCoders.Data;
 public interface IIncludableDataQueryable<TEntity> : IQueryable<TEntity>
     where TEntity : class
 {
-    IIncludableDataQueryable<TEntity, TProperty> Include<TProperty>(Expression<Func<TEntity, TProperty>> includeProperty)
+    IIncludableDataQueryable<TEntity, TProperty> Include<TProperty>(
+        Expression<Func<TEntity, TProperty>> includeProperty)
         where TProperty : class;
 
-    IIncludableDataQueryable<TEntity, IEnumerable<TProperty>, TProperty> IncludeCollection<TProperty>(Expression<Func<TEntity, IEnumerable<TProperty>>> includeProperty)
+    IIncludableDataQueryable<TEntity, IEnumerable<TProperty>, TProperty> IncludeCollection<TProperty>(
+        Expression<Func<TEntity, IEnumerable<TProperty>>> includeProperty)
         where TProperty : class;
 }
 
@@ -22,10 +24,12 @@ public interface IIncludableDataQueryable<TEntity, TProperty> : IIncludableDataQ
     where TEntity : class
     where TProperty : class
 {
-    IIncludableDataQueryable<TEntity, TSubProperty> ThenInclude<TSubProperty>(Expression<Func<TProperty, TSubProperty>> includeSubProperty)
+    IIncludableDataQueryable<TEntity, TSubProperty> ThenInclude<TSubProperty>(
+        Expression<Func<TProperty, TSubProperty>> includeSubProperty)
         where TSubProperty : class;
 
-    IIncludableDataQueryable<TEntity, IEnumerable<TSubProperty>, TSubProperty> ThenIncludeCollection<TSubProperty>(
+    IIncludableDataQueryable<TEntity, IEnumerable<TSubProperty>, TSubProperty> ThenIncludeCollection<
+        TSubProperty>(
         Expression<Func<TProperty, IEnumerable<TSubProperty>>> includeSubPropertyCollection)
         where TSubProperty : class;
 }
@@ -36,10 +40,12 @@ public interface IIncludableDataQueryable<TEntity, TCollection, TProperty> : IIn
     where TEntity : class
     where TCollection : IEnumerable<TProperty>
 {
-    IIncludableDataQueryable<TEntity, TSubProperty> ThenInclude<TSubProperty>(Expression<Func<TProperty, TSubProperty>> includeSubProperty)
+    IIncludableDataQueryable<TEntity, TSubProperty> ThenInclude<TSubProperty>(
+        Expression<Func<TProperty, TSubProperty>> includeSubProperty)
         where TSubProperty : class;
 
-    IIncludableDataQueryable<TEntity, IEnumerable<TSubProperty>, TSubProperty> ThenIncludeCollection<TSubProperty>(
+    IIncludableDataQueryable<TEntity, IEnumerable<TSubProperty>, TSubProperty> ThenIncludeCollection<
+        TSubProperty>(
         Expression<Func<TProperty, IEnumerable<TSubProperty>>> includeSubPropertyCollection)
         where TSubProperty : class;
 }

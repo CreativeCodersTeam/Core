@@ -26,8 +26,6 @@ public class EfCoreDbContext : DbContext
         }
     }
 
-    protected virtual void OnEntityModelBuilderSourceSetup(IEfCoreEntityModelBuilderSource entityModelBuilderSource)
-    {
-
-    }
+    protected virtual void OnEntityModelBuilderSourceSetup(
+        IEfCoreEntityModelBuilderSource entityModelBuilderSource) { }
 }

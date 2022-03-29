@@ -29,7 +29,8 @@ public class EfCoreEntityModelBuilderSource : IEfCoreEntityModelBuilderSource
 
     public IEfCoreEntityModelBuilderSource Add(Type entityModelBuilderType)
     {
-        return !entityModelBuilderType.IsAbstract && entityModelBuilderType.GetInterfaces().Contains(typeof(IEfCoreEntityModelBuilder))
+        return !entityModelBuilderType.IsAbstract && entityModelBuilderType.GetInterfaces()
+            .Contains(typeof(IEfCoreEntityModelBuilder))
             ? Add(CreateEntityModelBuilder(entityModelBuilderType))
             : this;
     }

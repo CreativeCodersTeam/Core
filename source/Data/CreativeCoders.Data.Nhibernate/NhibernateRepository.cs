@@ -7,7 +7,8 @@ using NHibernate;
 
 namespace CreativeCoders.Data.Nhibernate;
 
-public class NhibernateRepository<TKey, TEntity> : IRepository<TKey, TEntity> where TEntity : class, IEntityKey<TKey>
+public class NhibernateRepository<TKey, TEntity> : IRepository<TKey, TEntity>
+    where TEntity : class, IEntityKey<TKey>
 {
     private readonly ISession _session;
 

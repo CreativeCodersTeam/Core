@@ -6,7 +6,7 @@ public class SqlServerConnectionStringSetting : ISetting<SqlServerConnectionStri
 {
     public SqlServerConnectionStringSetting(string connectionString)
     {
-        Value = new SqlServerConnectionString{ConnectionString = connectionString};
+        Value = new SqlServerConnectionString {ConnectionString = connectionString};
     }
 
     public SqlServerConnectionString Value { get; }

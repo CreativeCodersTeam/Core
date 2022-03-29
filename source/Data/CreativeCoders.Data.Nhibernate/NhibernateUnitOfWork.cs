@@ -32,12 +32,12 @@ public class NhibernateUnitOfWork : UnitOfWorkBase
         {
             return;
         }
-            
+
         if (_session.IsOpen)
         {
             _session.Close();
         }
-            
+
         GC.SuppressFinalize(this);
     }
 
@@ -47,6 +47,7 @@ public class NhibernateUnitOfWork : UnitOfWorkBase
         {
             throw new InvalidOperationException("Transaction is not active.");
         }
+
         _transaction.Commit();
     }
 
