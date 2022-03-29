@@ -1,6 +1,7 @@
 ﻿namespace CreativeCoders.Validation.ValidationSteps.TextValidations;
 
-public class HasLengthBetweenPropertyValidationStep<T, TProperty> : SimplePropertyValidationStepBase<T, TProperty>
+public class
+    HasLengthBetweenPropertyValidationStep<T, TProperty> : SimplePropertyValidationStepBase<T, TProperty>
     where T : class
 {
     private readonly int _minLength;

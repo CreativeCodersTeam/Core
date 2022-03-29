@@ -16,10 +16,12 @@ public abstract class PropertyValidationStepBase<T, TProperty> : IPropertyValida
         {
             return true;
         }
-            
-        propertyValidationContext.AddFault(new ValidationFault(propertyValidationContext.PropertyName, _faultMessage));
+
+        propertyValidationContext.AddFault(new ValidationFault(propertyValidationContext.PropertyName,
+            _faultMessage));
         return false;
     }
 
-    protected abstract bool IsValid(TProperty propertyValue, IPropertyValidationContext<T, TProperty> propertyValidationContext);
+    protected abstract bool IsValid(TProperty propertyValue,
+        IPropertyValidationContext<T, TProperty> propertyValidationContext);
 }

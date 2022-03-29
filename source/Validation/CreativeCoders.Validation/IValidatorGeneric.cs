@@ -15,6 +15,7 @@ public interface IValidator<T>
     ValidationResult Validate<TProperty>(T instanceForValidation,
         Expression<Func<T, TProperty>> propertyExpression);
 
-    ValidationResult Validate<TProperty>(T instanceForValidation, Expression<Func<T, TProperty>> propertyExpression,
+    ValidationResult Validate<TProperty>(T instanceForValidation,
+        Expression<Func<T, TProperty>> propertyExpression,
         bool breakRuleValidationAfterFirstFailedValidation);
 }

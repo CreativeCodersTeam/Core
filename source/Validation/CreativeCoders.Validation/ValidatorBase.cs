@@ -24,19 +24,22 @@ public abstract class ValidatorBase<T> : IValidator<T>, IValidator
         return Validate(instanceForValidation, true);
     }
 
-    public ValidationResult Validate(T instanceForValidation, bool breakRuleValidationAfterFirstFailedValidation)
+    public ValidationResult Validate(T instanceForValidation,
+        bool breakRuleValidationAfterFirstFailedValidation)
     {
         Ensure.IsNotNull(instanceForValidation, nameof(instanceForValidation));
 
         return ValidateRules(instanceForValidation, _rules, breakRuleValidationAfterFirstFailedValidation);
     }
 
-    public ValidationResult Validate<TProperty>(T instanceForValidation, Expression<Func<T, TProperty>> propertyExpression)
+    public ValidationResult Validate<TProperty>(T instanceForValidation,
+        Expression<Func<T, TProperty>> propertyExpression)
     {
         return Validate(instanceForValidation, propertyExpression, true);
     }
 
-    public ValidationResult Validate<TProperty>(T instanceForValidation, Expression<Func<T, TProperty>> propertyExpression,
+    public ValidationResult Validate<TProperty>(T instanceForValidation,
+        Expression<Func<T, TProperty>> propertyExpression,
         bool breakRuleValidationAfterFirstFailedValidation)
     {
         Ensure.IsNotNull(instanceForValidation, nameof(instanceForValidation));
@@ -46,10 +49,10 @@ public abstract class ValidatorBase<T> : IValidator<T>, IValidator
 
         return ValidateRules(instanceForValidation, _rules.Where(rule => rule.Affects(propertyExpression)),
             breakRuleValidationAfterFirstFailedValidation);
-
     }
 
-    public IStartPropertyRuleBuilder<T, TProperty> RuleFor<TProperty>(Expression<Func<T, TProperty>> propertyExpression)
+    public IStartPropertyRuleBuilder<T, TProperty> RuleFor<TProperty>(
+        Expression<Func<T, TProperty>> propertyExpression)
     {
         Ensure.IsNotNull(propertyExpression, nameof(propertyExpression));
         Ensure.That(propertyExpression.IsPropertyOf(), nameof(propertyExpression),
@@ -68,7 +71,8 @@ public abstract class ValidatorBase<T> : IValidator<T>, IValidator
         return Validate(instanceForValidation, true);
     }
 
-    public ValidationResult Validate(object instanceForValidation, bool breakRuleValidationAfterFirstFailedValidation)
+    public ValidationResult Validate(object instanceForValidation,
+        bool breakRuleValidationAfterFirstFailedValidation)
     {
         Ensure.IsNotNull(instanceForValidation, nameof(instanceForValidation));
         Ensure.That(CanValidate(instanceForValidation), nameof(instanceForValidation),
@@ -91,13 +95,15 @@ public abstract class ValidatorBase<T> : IValidator<T>, IValidator
         Ensure.IsNotNullOrWhitespace(propertyName, nameof(propertyName));
 
         return ValidateRules((T) instanceForValidation, _rules.Where(rule => rule.Affects(propertyName)),
-            breakRuleValidationAfterFirstFailedValidation);            
+            breakRuleValidationAfterFirstFailedValidation);
     }
 
-    private static ValidationResult ValidateRules(T instanceForValidation, IEnumerable<IValidationRule<T>> rules,
+    private static ValidationResult ValidateRules(T instanceForValidation,
+        IEnumerable<IValidationRule<T>> rules,
         bool breakRuleValidationAfterFirstFailedValidation)
     {
-        var validationContext = new ValidationContext<T>(instanceForValidation, breakRuleValidationAfterFirstFailedValidation);
+        var validationContext =
+            new ValidationContext<T>(instanceForValidation, breakRuleValidationAfterFirstFailedValidation);
 
         foreach (var validationRule in rules)
         {

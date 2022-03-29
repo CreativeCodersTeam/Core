@@ -34,7 +34,8 @@ public class PropertyValidationRule<T, TProperty> : IValidationRule<T>, IPropert
             return;
         }
 
-        var propertyValidationContext = new PropertyValidationContext<T, TProperty>(_propertyExpression, validationContext);
+        var propertyValidationContext =
+            new PropertyValidationContext<T, TProperty>(_propertyExpression, validationContext);
 
         // ReSharper disable once LoopCanBePartlyConvertedToQuery
         foreach (var propertyValidationStep in _validationSteps)

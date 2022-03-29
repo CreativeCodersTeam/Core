@@ -54,7 +54,8 @@ public static class PropertyRuleBuilderExtensions
         this IPropertyRuleBuilder<T, TProperty> ruleBuilder, double compareValue, double comparisonTolerance)
         where T : class
     {
-        var validationStep = new FloatEqualPropertyValidationStep<T, TProperty>(compareValue, comparisonTolerance, true);
+        var validationStep =
+            new FloatEqualPropertyValidationStep<T, TProperty>(compareValue, comparisonTolerance, true);
         ruleBuilder.AddValidationStep(validationStep);
 
         return ruleBuilder;
@@ -74,14 +75,16 @@ public static class PropertyRuleBuilderExtensions
         this IPropertyRuleBuilder<T, TProperty> ruleBuilder, double compareValue, double comparisonTolerance)
         where T : class
     {
-        var validationStep = new FloatEqualPropertyValidationStep<T, TProperty>(compareValue, comparisonTolerance, false);
+        var validationStep =
+            new FloatEqualPropertyValidationStep<T, TProperty>(compareValue, comparisonTolerance, false);
         ruleBuilder.AddValidationStep(validationStep);
 
         return ruleBuilder;
     }
 
     public static IPropertyRuleBuilder<T, string> IsEqual<T>(
-        this IPropertyRuleBuilder<T, string> ruleBuilder, string compareValue, StringComparison stringComparison)
+        this IPropertyRuleBuilder<T, string> ruleBuilder, string compareValue,
+        StringComparison stringComparison)
         where T : class
     {
         return ruleBuilder.Must((_, property) =>
@@ -90,7 +93,8 @@ public static class PropertyRuleBuilderExtensions
     }
 
     public static IPropertyRuleBuilder<T, string> IsNotEqual<T>(
-        this IPropertyRuleBuilder<T, string> ruleBuilder, string compareValue, StringComparison stringComparison)
+        this IPropertyRuleBuilder<T, string> ruleBuilder, string compareValue,
+        StringComparison stringComparison)
         where T : class
     {
         return ruleBuilder.Must((_, property) =>

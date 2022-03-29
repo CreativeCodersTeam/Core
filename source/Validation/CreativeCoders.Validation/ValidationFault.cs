@@ -2,9 +2,7 @@
 
 public class ValidationFault : IValidationFault
 {
-    public ValidationFault(string message) : this(string.Empty, message)
-    {
-    }
+    public ValidationFault(string message) : this(string.Empty, message) { }
 
     public ValidationFault(string propertyName, string message)
     {

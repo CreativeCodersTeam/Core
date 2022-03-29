@@ -7,12 +7,14 @@ public class CheckLengthPropertyValidationStep<T, TProperty> : PropertyValidatio
 {
     private readonly Func<T, TProperty, int> _checkLength;
 
-    public CheckLengthPropertyValidationStep(Func<T, TProperty, int> checkLength) : base("Property length check failed")
+    public CheckLengthPropertyValidationStep(Func<T, TProperty, int> checkLength) : base(
+        "Property length check failed")
     {
         _checkLength = checkLength;
     }
 
-    protected override bool IsValid(TProperty propertyValue, IPropertyValidationContext<T, TProperty> propertyValidationContext)
+    protected override bool IsValid(TProperty propertyValue,
+        IPropertyValidationContext<T, TProperty> propertyValidationContext)
     {
         var propertyTextLength = propertyValue?.ToString()?.Length;
 
@@ -21,6 +23,7 @@ public class CheckLengthPropertyValidationStep<T, TProperty> : PropertyValidatio
             return false;
         }
 
-        return propertyTextLength == _checkLength(propertyValidationContext.InstanceForValidation, propertyValue);
+        return propertyTextLength ==
+               _checkLength(propertyValidationContext.InstanceForValidation, propertyValue);
     }
 }

@@ -6,7 +6,8 @@ using CreativeCoders.Core.Reflection;
 
 namespace CreativeCoders.Validation;
 
-public class PropertyValidationContext<T, TProperty> : IPropertyValidationContext<T, TProperty> where T : class
+public class PropertyValidationContext<T, TProperty> : IPropertyValidationContext<T, TProperty>
+    where T : class
 {
     private readonly Expression<Func<T, TProperty>> _propertyExpression;
 
@@ -18,7 +19,8 @@ public class PropertyValidationContext<T, TProperty> : IPropertyValidationContex
 
     private readonly Lazy<string> _propertyName;
 
-    public PropertyValidationContext(Expression<Func<T, TProperty>> propertyExpression, IValidationContext<T> validationContext)
+    public PropertyValidationContext(Expression<Func<T, TProperty>> propertyExpression,
+        IValidationContext<T> validationContext)
     {
         Ensure.IsNotNull(propertyExpression, nameof(propertyExpression));
         Ensure.That(propertyExpression.IsPropertyOf(), nameof(propertyExpression),

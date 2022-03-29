@@ -22,5 +22,5 @@ public class EqualPropertyValidationStep<T, TProperty> : SimplePropertyValidatio
         return _mustBeEqual
             ? Comparer<TProperty>.Default.Compare(propertyValue, _compareValue) == 0
             : Comparer<TProperty>.Default.Compare(propertyValue, _compareValue) != 0;
-    }        
+    }
 }

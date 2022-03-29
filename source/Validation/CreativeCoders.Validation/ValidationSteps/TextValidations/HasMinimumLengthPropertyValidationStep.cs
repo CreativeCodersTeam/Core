@@ -1,11 +1,13 @@
 ﻿namespace CreativeCoders.Validation.ValidationSteps.TextValidations;
 
-public class HasMinimumLengthPropertyValidationStep<T, TProperty> : SimplePropertyValidationStepBase<T, TProperty>
+public class
+    HasMinimumLengthPropertyValidationStep<T, TProperty> : SimplePropertyValidationStepBase<T, TProperty>
     where T : class
 {
     private readonly int _length;
 
-    public HasMinimumLengthPropertyValidationStep(int length) : base($"Property must have at least the length {length}")
+    public HasMinimumLengthPropertyValidationStep(int length) : base(
+        $"Property must have at least the length {length}")
     {
         _length = length;
     }

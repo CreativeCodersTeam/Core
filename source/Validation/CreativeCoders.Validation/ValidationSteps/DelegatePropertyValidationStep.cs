@@ -9,11 +9,10 @@ public class DelegatePropertyValidationStep<T, TProperty> : SimplePropertyValida
 {
     private readonly Func<TProperty, bool> _validate;
 
-    public DelegatePropertyValidationStep(Func<TProperty, bool> validate) : this(validate, string.Empty)
-    {
-    }
+    public DelegatePropertyValidationStep(Func<TProperty, bool> validate) : this(validate, string.Empty) { }
 
-    public DelegatePropertyValidationStep(Func<TProperty, bool> validate, string faultMessage) : base(faultMessage)
+    public DelegatePropertyValidationStep(Func<TProperty, bool> validate, string faultMessage) : base(
+        faultMessage)
     {
         _validate = validate;
     }

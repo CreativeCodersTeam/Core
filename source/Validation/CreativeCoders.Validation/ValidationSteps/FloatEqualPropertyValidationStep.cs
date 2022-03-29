@@ -11,7 +11,8 @@ public class FloatEqualPropertyValidationStep<T, TProperty> : SimplePropertyVali
 
     private readonly bool _mustBeEqual;
 
-    public FloatEqualPropertyValidationStep(double compareValue, double comparisonTolerance, bool mustBeEqual) : base("")
+    public FloatEqualPropertyValidationStep(double compareValue, double comparisonTolerance, bool mustBeEqual)
+        : base("")
     {
         _compareValue = compareValue;
         _comparisonTolerance = comparisonTolerance;
@@ -51,7 +52,7 @@ public class FloatEqualPropertyValidationStep<T, TProperty> : SimplePropertyVali
     {
         try
         {
-            value = (TValue)Convert.ChangeType(propertyValue, typeof(TValue));
+            value = (TValue) Convert.ChangeType(propertyValue, typeof(TValue));
             return true;
         }
         catch (FormatException)
