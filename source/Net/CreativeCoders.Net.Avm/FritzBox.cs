@@ -1,4 +1,5 @@
-﻿using CreativeCoders.Core;
+﻿using System.Net.Http;
+using CreativeCoders.Core;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Net.Avm;
@@ -6,15 +7,15 @@ namespace CreativeCoders.Net.Avm;
 [PublicAPI]
 public class FritzBox
 {
-    public FritzBox(string url) : this(url, string.Empty, string.Empty) { }
+    public FritzBox(IHttpClientFactory httpClientFactory, string url) : this(httpClientFactory, url, string.Empty, string.Empty) { }
 
-    public FritzBox(string url, string userName, string password)
+    public FritzBox(IHttpClientFactory httpClientFactory, string url, string userName, string password)
     {
         Ensure.IsNotNullOrWhitespace(url, nameof(url));
 
-        Hosts = new Hosts(url, userName, password);
-        WanPppConnection = new WanPppConnection(url, userName, password);
-        Wlan = new Wlan(url, userName, password);
+        Hosts = new Hosts(httpClientFactory, url, userName, password);
+        WanPppConnection = new WanPppConnection(httpClientFactory, url, userName, password);
+        Wlan = new Wlan(httpClientFactory, url, userName, password);
     }
 
     public Hosts Hosts { get; }

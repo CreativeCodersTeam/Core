@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using CreativeCoders.Core;
 using CreativeCoders.Net.Avm.Tr064;
 using JetBrains.Annotations;
@@ -11,18 +13,18 @@ public class Hosts
 {
     private readonly HostsApi _hostsApi;
 
-    public Hosts(string url, string userName, string password)
+    public Hosts(IHttpClientFactory httpClientFactory, string url, string userName, string password)
     {
         Ensure.IsNotNullOrWhitespace(url, nameof(url));
 
-        _hostsApi = new HostsApi(url, userName, password);
+        _hostsApi = new HostsApi(httpClientFactory, url, userName, password);
     }
 
-    public HostEntry GetHostEntry(string macAddress)
+    public async Task<HostEntry> GetHostEntryAsync(string macAddress)
     {
         Ensure.IsNotNullOrWhitespace(macAddress, nameof(macAddress));
 
-        var response = _hostsApi.GetSpecificHostEntry(macAddress);
+        var response = await _hostsApi.GetSpecificHostEntryAsync(macAddress).ConfigureAwait(false);
 
         var entry = new HostEntry
         {
@@ -38,15 +40,15 @@ public class Hosts
         return entry;
     }
 
-    public int GetHostCount()
+    public async Task<int> GetHostCountAsync()
     {
-        var response = _hostsApi.GetHostNumberOfEntries();
+        var response = await _hostsApi.GetHostNumberOfEntriesAsync().ConfigureAwait(false);
         return response?.HostNumberOfEntries ?? 0;
     }
 
-    public HostEntry GetHostEntry(int index)
+    public async Task<HostEntry> GetHostEntryAsync(int index)
     {
-        var response = _hostsApi.GetGenericHostEntry(index);
+        var response = await _hostsApi.GetGenericHostEntryAsync(index).ConfigureAwait(false);
 
         var entry = new HostEntry
         {
@@ -62,23 +64,41 @@ public class Hosts
         return entry;
     }
 
-    public IEnumerable<HostEntry> GetAllHostEntries()
+    public async Task<IEnumerable<HostEntry>> GetAllHostEntriesAsync()
     {
-        return InternalGetAllHostEntries().ToArray();
+        return (await InternalGetAllHostEntriesAsync().ConfigureAwait(false))
+            .ToArray();
     }
 
-    public IEnumerable<HostEntry> GetAllHostEntries(bool hostIsActive)
+    public async Task<IEnumerable<HostEntry>> GetAllHostEntriesAsync(bool hostIsActive)
     {
-        return InternalGetAllHostEntries().Where(host => host.IsActive == hostIsActive).ToArray();
+        return (await InternalGetAllHostEntriesAsync().ConfigureAwait(false))
+            .Where(host => host.IsActive == hostIsActive)
+            .ToArray();
     }
 
-    private IEnumerable<HostEntry> InternalGetAllHostEntries()
+    private async Task<IEnumerable<HostEntry>> InternalGetAllHostEntriesAsync()
     {
-        var hostCount = GetHostCount();
+        var hostCount = await GetHostCountAsync();
+
+        var hosts = new List<HostEntry>();
 
         for (var i = 0; i < hostCount; i++)
         {
-            yield return GetHostEntry(i);
+            hosts.Add(await GetHostEntryAsync(i));
+            //yield return await GetHostEntryAsync(i);
         }
+
+        return hosts;
     }
+
+    //private async Task<IEnumerable<HostEntry>> InternalGetAllHostEntriesAsync()
+    //{
+    //    var hostCount = GetHostCount();
+
+    //    for (var i = 0; i < hostCount; i++)
+    //    {
+    //        yield return GetHostEntry(i);
+    //    }
+    //}
 }

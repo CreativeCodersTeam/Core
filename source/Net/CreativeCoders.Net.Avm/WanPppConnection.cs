@@ -1,4 +1,6 @@
 ﻿using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using CreativeCoders.Net.Avm.Tr064;
 using JetBrains.Annotations;
 
@@ -9,20 +11,24 @@ public class WanPppConnection
 {
     private readonly WanPppConnectionApi _wanPppApi;
 
-    public WanPppConnection(string url, string userName, string password)
+    public WanPppConnection(IHttpClientFactory httpClientFactory, string url, string userName, string password)
     {
-        _wanPppApi = new WanPppConnectionApi(url, userName, password);
+        _wanPppApi = new WanPppConnectionApi(httpClientFactory, url, userName, password);
     }
 
-    public string GetExternalIpAddress()
+    public async Task<string> GetExternalIpAddressAsync()
     {
-        var response = _wanPppApi.GetExternalIpAddress();
+        var response = await _wanPppApi.GetExternalIpAddressAsync()
+            .ConfigureAwait(false);
+
         return response?.IpAddress ?? string.Empty;
     }
 
-    public IPAddress GetExternalIpAddressEx()
+    public async Task<IPAddress> GetExternalIpAddressExAsync()
     {
-        var ipAddress = GetExternalIpAddress();
+        var ipAddress = await GetExternalIpAddressAsync()
+            .ConfigureAwait(false);
+
         return IPAddress.TryParse(ipAddress, out var ip) ? ip : IPAddress.None;
     }
 }

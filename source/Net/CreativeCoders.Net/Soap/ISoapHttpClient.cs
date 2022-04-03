@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Net.Soap;
@@ -12,5 +13,6 @@ public interface ISoapHttpClient
 
     bool AllowUntrustedCertificates { get; set; }
 
-    TResponse Invoke<TRequest, TResponse>(TRequest actionRequest) where TResponse : class, new();
+    Task<TResponse> InvokeAsync<TRequest, TResponse>(TRequest actionRequest)
+        where TResponse : class, new();
 }

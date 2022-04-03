@@ -1,43 +1,86 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
 using CreativeCoders.Core;
 using CreativeCoders.Net.Soap.Exceptions;
 using CreativeCoders.Net.Soap.Request;
 using CreativeCoders.Net.Soap.Response;
-using CreativeCoders.Net.WebRequests;
 
 namespace CreativeCoders.Net.Soap;
 
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
 public class SoapHttpClient : ISoapHttpClient
 {
-    private readonly IWebRequestFactory _webRequestFactory;
+    private readonly IHttpClientFactory _httpClientFactory;
 
-    public SoapHttpClient(IWebRequestFactory webRequestFactory)
+    public SoapHttpClient(IHttpClientFactory httpClientFactory)
     {
-        Ensure.IsNotNull(webRequestFactory, nameof(webRequestFactory));
-
-        _webRequestFactory = webRequestFactory;
+        _httpClientFactory = Ensure.NotNull(httpClientFactory, nameof(httpClientFactory));
     }
 
-    public TResponse Invoke<TRequest, TResponse>(TRequest actionRequest) where TResponse : class, new()
+    public async Task<TResponse> InvokeAsync<TRequest, TResponse>(TRequest actionRequest)
+        where TResponse : class, new()
     {
         Ensure.IsNotNull(actionRequest, nameof(actionRequest));
 
         var soapRequestInfo = CreateRequestInfo(actionRequest);
 
-        var soapActionRequester = new SoapRequester(soapRequestInfo, CreateHttpWebRequest);
+        using var httpClient = _httpClientFactory.CreateClient("FritzBox");
 
-        using (var httpResponse = soapActionRequester.GetResponse())
-        {
-            using (var responseStream = httpResponse.GetResponseStream())
-            {
-                var responseInfo = CreateResponseInfo<TResponse>();
-                var responseData = new SoapResponder<TResponse>(responseStream, responseInfo).Eval();
-                return responseData;
-            }
-        }
+        var response = await httpClient.SendAsync(CreateRequestMessage(soapRequestInfo));
+
+        //var content = await response.Content.ReadAsStringAsync();
+
+        await using var responseStream = await response.Content.ReadAsStreamAsync();
+
+        var responseInfo = CreateResponseInfo<TResponse>();
+        var responseData = new SoapResponder<TResponse>(responseStream, responseInfo).Eval();
+
+        return responseData;
+
+        //var soapActionRequester = new SoapRequester(soapRequestInfo, CreateHttpWebRequest);
+
+        //using (var httpResponse = soapActionRequester.GetResponse())
+        //{
+        //    using (var responseStream = httpResponse.GetResponseStream())
+        //    {
+        //        var responseInfo = CreateResponseInfo<TResponse>();
+        //        var responseData = new SoapResponder<TResponse>(responseStream, responseInfo).Eval();
+        //        return responseData;
+        //    }
+        //}
+    }
+
+    private HttpRequestMessage CreateRequestMessage(SoapRequestInfo soapRequestInfo)
+    {
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, soapRequestInfo.Url);
+
+        requestMessage.Headers.Add("ContentType", "text/xml; charset=utf-8");
+
+        requestMessage.Headers.Add("SOAPACTION",
+            $"{soapRequestInfo.ServiceNameSpace}#{soapRequestInfo.ActionName}");
+
+        var stream = new MemoryStream();
+        var writer = new StreamWriter(stream);
+
+        //var sb = new StringBuilder();
+
+        //var textWriter = new StringWriter(sb);
+
+        new RequestXmlWriter(writer, soapRequestInfo).Write();
+
+        stream.Seek(0, SeekOrigin.Begin);
+
+        var content = Encoding.UTF8.GetString(stream.ToArray());
+
+        requestMessage.Content = new StringContent(content, Encoding.UTF8, "text/xml");
+
+        return requestMessage;
     }
 
     private static SoapResponseInfo CreateResponseInfo<TResponse>()
@@ -95,20 +138,20 @@ public class SoapHttpClient : ISoapHttpClient
         return requestInfo;
     }
 
-    private IHttpWebRequest CreateHttpWebRequest(SoapRequestInfo soapRequestInfo)
-    {
-        var httpWebRequest = SoapHttpWebRequestCreator.Create(soapRequestInfo, _webRequestFactory);
-        OnConfigureHttpWebRequest(httpWebRequest);
-        return httpWebRequest;
-    }
+    //private IHttpWebRequest CreateHttpWebRequest(SoapRequestInfo soapRequestInfo)
+    //{
+    //    var httpWebRequest = SoapHttpWebRequestCreator.Create(soapRequestInfo, _webRequestFactory);
+    //    OnConfigureHttpWebRequest(httpWebRequest);
+    //    return httpWebRequest;
+    //}
 
-    protected virtual void OnConfigureHttpWebRequest(IHttpWebRequest httpWebRequest)
-    {
-        if (AllowUntrustedCertificates)
-        {
-            httpWebRequest.ServerCertificateValidationCallback = (_, _, _, _) => true;
-        }
-    }
+    //protected virtual void OnConfigureHttpWebRequest(IHttpWebRequest httpWebRequest)
+    //{
+    //    if (AllowUntrustedCertificates)
+    //    {
+    //        httpWebRequest.ServerCertificateValidationCallback = (_, _, _, _) => true;
+    //    }
+    //}
 
     public ICredentials Credentials { get; set; }
 
