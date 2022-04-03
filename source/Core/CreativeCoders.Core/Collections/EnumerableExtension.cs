@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Comparing;
@@ -104,10 +105,15 @@ public static class EnumerableExtension
     {
         Ensure.IsNotNull(pipeAction, nameof(pipeAction));
 
-        foreach (var item in items)
+        return PipeCore();
+
+        IEnumerable<T> PipeCore()
         {
-            pipeAction(item);
-            yield return item;
+            foreach (var item in items)
+            {
+                pipeAction(item);
+                yield return item;
+            }
         }
     }
 
@@ -115,13 +121,18 @@ public static class EnumerableExtension
     {
         Ensure.IsNotNull(predicate, nameof(predicate));
 
-        foreach (var item in items)
-        {
-            yield return item;
+        return TakeUntilCore();
 
-            if (predicate(item))
+        IEnumerable<T> TakeUntilCore()
+        {
+            foreach (var item in items)
             {
-                yield break;
+                yield return item;
+
+                if (predicate(item))
+                {
+                    yield break;
+                }
             }
         }
     }
@@ -130,21 +141,26 @@ public static class EnumerableExtension
     {
         Ensure.IsNotNull(predicate, nameof(predicate));
 
-        var checkUntil = true;
+        return SkipUntilCore();
 
-        foreach (var item in items)
+        IEnumerable<T> SkipUntilCore()
         {
-            if (checkUntil)
+            var checkUntil = true;
+
+            foreach (var item in items)
             {
-                if (predicate(item))
+                if (checkUntil)
                 {
-                    checkUntil = false;
+                    if (predicate(item))
+                    {
+                        checkUntil = false;
+                    }
+
+                    continue;
                 }
 
-                continue;
+                yield return item;
             }
-
-            yield return item;
         }
     }
 
@@ -295,27 +311,36 @@ public static class EnumerableExtension
         return items.NotDistinct(new MultiFuncEqualityComparer<T, TKey>(keySelectors));
     }
 
+    [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
     public static IEnumerable<T> NotDistinct<T>(this IEnumerable<T> items, IEqualityComparer<T> comparer)
     {
-        var bufferedItems = items.SelectWithIndex().ToArray();
-        var foundDuplicates = new List<int>();
+        Ensure.NotNull(items, nameof(items));
+        Ensure.NotNull(comparer, nameof(comparer));
 
-        // ReSharper disable once LoopCanBePartlyConvertedToQuery
-        foreach (var item in bufferedItems)
+        return NotDistinctCore();
+
+        IEnumerable<T> NotDistinctCore()
         {
-            var duplicates = bufferedItems
-                .Where(x =>
-                    !foundDuplicates.Contains(x.Index) && comparer.Equals(item.Data, x.Data))
-                .ToArray();
+            var bufferedItems = items.SelectWithIndex().ToArray();
+            var foundDuplicates = new List<int>();
 
-            // ReSharper disable once InvertIf
-            if (duplicates.Length > 1)
+            // ReSharper disable once LoopCanBePartlyConvertedToQuery
+            foreach (var item in bufferedItems)
             {
-                foundDuplicates.AddRange(duplicates.Select(x => x.Index));
+                var duplicates = bufferedItems
+                    .Where(x =>
+                        !foundDuplicates.Contains(x.Index) && comparer.Equals(item.Data, x.Data))
+                    .ToArray();
 
-                foreach (var duplicate in duplicates)
+                // ReSharper disable once InvertIf
+                if (duplicates.Length > 1)
                 {
-                    yield return duplicate.Data;
+                    foundDuplicates.AddRange(duplicates.Select(x => x.Index));
+
+                    foreach (var duplicate in duplicates)
+                    {
+                        yield return duplicate.Data;
+                    }
                 }
             }
         }
