@@ -1,11 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 using CreativeCoders.Core;
 using CreativeCoders.Net.Soap.Exceptions;
 using CreativeCoders.Net.Soap.Request;
@@ -16,11 +16,13 @@ namespace CreativeCoders.Net.Soap;
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
 public class SoapHttpClient : ISoapHttpClient
 {
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly HttpClient _httpClient;
 
-    public SoapHttpClient(IHttpClientFactory httpClientFactory)
+    private bool _disposed;
+
+    public SoapHttpClient(HttpClient httpClient)
     {
-        _httpClientFactory = Ensure.NotNull(httpClientFactory, nameof(httpClientFactory));
+        _httpClient = Ensure.NotNull(httpClient, nameof(httpClient));
     }
 
     public async Task<TResponse> InvokeAsync<TRequest, TResponse>(TRequest actionRequest)
@@ -30,11 +32,7 @@ public class SoapHttpClient : ISoapHttpClient
 
         var soapRequestInfo = CreateRequestInfo(actionRequest);
 
-        using var httpClient = _httpClientFactory.CreateClient("FritzBox");
-
-        var response = await httpClient.SendAsync(CreateRequestMessage(soapRequestInfo));
-
-        //var content = await response.Content.ReadAsStringAsync();
+        var response = await _httpClient.SendAsync(CreateRequestMessage(soapRequestInfo));
 
         await using var responseStream = await response.Content.ReadAsStreamAsync();
 
@@ -42,21 +40,9 @@ public class SoapHttpClient : ISoapHttpClient
         var responseData = new SoapResponder<TResponse>(responseStream, responseInfo).Eval();
 
         return responseData;
-
-        //var soapActionRequester = new SoapRequester(soapRequestInfo, CreateHttpWebRequest);
-
-        //using (var httpResponse = soapActionRequester.GetResponse())
-        //{
-        //    using (var responseStream = httpResponse.GetResponseStream())
-        //    {
-        //        var responseInfo = CreateResponseInfo<TResponse>();
-        //        var responseData = new SoapResponder<TResponse>(responseStream, responseInfo).Eval();
-        //        return responseData;
-        //    }
-        //}
     }
 
-    private HttpRequestMessage CreateRequestMessage(SoapRequestInfo soapRequestInfo)
+    private static HttpRequestMessage CreateRequestMessage(SoapRequestInfo soapRequestInfo)
     {
         var requestMessage = new HttpRequestMessage(HttpMethod.Post, soapRequestInfo.Url);
 
@@ -65,12 +51,8 @@ public class SoapHttpClient : ISoapHttpClient
         requestMessage.Headers.Add("SOAPACTION",
             $"{soapRequestInfo.ServiceNameSpace}#{soapRequestInfo.ActionName}");
 
-        var stream = new MemoryStream();
-        var writer = new StreamWriter(stream);
-
-        //var sb = new StringBuilder();
-
-        //var textWriter = new StringWriter(sb);
+        using var stream = new MemoryStream();
+        using var writer = new StreamWriter(stream);
 
         new RequestXmlWriter(writer, soapRequestInfo).Write();
 
@@ -122,7 +104,7 @@ public class SoapHttpClient : ISoapHttpClient
         var requestInfo = new SoapRequestInfo
         {
             Url = Url,
-            Credentials = Credentials,
+            //Credentials = Credentials,
             Action = actionRequest,
             ActionName = soapRequestAttribute.Name,
             ServiceNameSpace = soapRequestAttribute.NameSpace
@@ -138,24 +120,26 @@ public class SoapHttpClient : ISoapHttpClient
         return requestInfo;
     }
 
-    //private IHttpWebRequest CreateHttpWebRequest(SoapRequestInfo soapRequestInfo)
-    //{
-    //    var httpWebRequest = SoapHttpWebRequestCreator.Create(soapRequestInfo, _webRequestFactory);
-    //    OnConfigureHttpWebRequest(httpWebRequest);
-    //    return httpWebRequest;
-    //}
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
-    //protected virtual void OnConfigureHttpWebRequest(IHttpWebRequest httpWebRequest)
-    //{
-    //    if (AllowUntrustedCertificates)
-    //    {
-    //        httpWebRequest.ServerCertificateValidationCallback = (_, _, _, _) => true;
-    //    }
-    //}
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposing || _disposed)
+        {
+            return;
+        }
 
-    public ICredentials Credentials { get; set; }
+        _disposed = true;
+        _httpClient.Dispose();
+    }
+
+    //public ICredentials Credentials { get; set; }
 
     public string Url { get; set; }
 
-    public bool AllowUntrustedCertificates { get; set; }
+    //public bool AllowUntrustedCertificates { get; set; }
 }

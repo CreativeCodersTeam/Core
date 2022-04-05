@@ -13,11 +13,11 @@ public class Hosts
 {
     private readonly HostsApi _hostsApi;
 
-    public Hosts(IHttpClientFactory httpClientFactory, string url, string userName, string password)
+    public Hosts(HttpClient httpClient, string url)
     {
         Ensure.IsNotNullOrWhitespace(url, nameof(url));
 
-        _hostsApi = new HostsApi(httpClientFactory, url, userName, password);
+        _hostsApi = new HostsApi(httpClient, url);
     }
 
     public async Task<HostEntry> GetHostEntryAsync(string macAddress)

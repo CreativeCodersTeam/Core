@@ -10,12 +10,11 @@ namespace CreativeCoders.Net.Avm.Tr064;
 [PublicAPI]
 public class HostsApi : Tr064ApiBase
 {
-    public HostsApi(IHttpClientFactory httpClientFactory, string fritzBoxUrl, string userName,
-        string password) : this(
-        new SoapHttpClient(httpClientFactory), fritzBoxUrl, userName, password) { }
+    public HostsApi(HttpClient httpClient, string fritzBoxUrl) : this(
+        new SoapHttpClient(httpClient), fritzBoxUrl) { }
 
-    public HostsApi(ISoapHttpClient soapHttpClient, string fritzBoxUrl, string userName, string password) :
-        base(soapHttpClient, fritzBoxUrl, "/upnp/control/hosts", userName, password) { }
+    public HostsApi(ISoapHttpClient soapHttpClient, string fritzBoxUrl) :
+        base(soapHttpClient, fritzBoxUrl, "/upnp/control/hosts") { }
 
 
     public async Task<GetHostNumberOfEntriesResponse> GetHostNumberOfEntriesAsync()

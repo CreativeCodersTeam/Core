@@ -61,7 +61,7 @@ internal class SoapResponder<TResponse> where TResponse : class, new()
                 mapping.Property.SetValue(responseData, propValue);
                 return;
             }
-            case {FirstNode: {NodeType: XmlNodeType.Text}}:
+            case {FirstNode.NodeType: XmlNodeType.Text}:
             {
                 var fieldValue = (fieldNode.FirstNode as XText)?.Value;
                 var propValue = Convert.ChangeType(fieldValue, mapping.Property.PropertyType);

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Net.Avm;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Http;
 
 namespace NetSampleApp;
 
@@ -19,24 +20,23 @@ public static class AvmTest
 
         var services = new ServiceCollection();
 
-        services
-            .AddHttpClient("FritzBox")
-            .ConfigurePrimaryHttpMessageHandler(() =>
-            {
-                var handler = new HttpClientHandler();
+        services.AddFritzBox("https://fritz.box", user, password);
 
-                handler.Credentials = new NetworkCredential(user, password);
-
-                handler.ServerCertificateCustomValidationCallback =
-                    (message, certificate2, arg3, arg4) => true;
-
-                return handler;
-            }
-            );
+        //services.AddFritzBox(x =>
+        //{
+        //    x.Url = new Uri("https://fritz.box");
+        //    x.UserName = user;
+        //    x.Password = password;
+        //    x.AllowUntrustedCertificates = true;
+        //});
 
         var sp = services.BuildServiceProvider();
-            
-        var fritzBox = new FritzBox(sp.GetRequiredService<IHttpClientFactory>(), "https://fritz.box", user, password);
+
+        //var handler = sp.GetRequiredService<IHttpMessageHandlerFactory>().CreateHandler();
+
+        var fritzBox = sp.GetRequiredService<IFritzBox>();
+
+        var fritzBox2 = sp.GetRequiredService<IFritzBox>();
 
         var hostEntries = await fritzBox
             .Hosts

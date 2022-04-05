@@ -11,9 +11,9 @@ public class WanPppConnection
 {
     private readonly WanPppConnectionApi _wanPppApi;
 
-    public WanPppConnection(IHttpClientFactory httpClientFactory, string url, string userName, string password)
+    public WanPppConnection(HttpClient httpClient, string url)
     {
-        _wanPppApi = new WanPppConnectionApi(httpClientFactory, url, userName, password);
+        _wanPppApi = new WanPppConnectionApi(httpClient, url);
     }
 
     public async Task<string> GetExternalIpAddressAsync()
