@@ -4,7 +4,7 @@ namespace CreativeCoders.Net.Soap;
 
 public class PropertyFieldMapping
 {
-    public string FieldName { get; set; }
+    public string FieldName { get; init; }
 
-    public PropertyInfo Property { get; set; }
+    public PropertyInfo Property { get; init; }
 }

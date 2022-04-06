@@ -9,9 +9,9 @@ public class SoapResponseInfo
         PropertyMappings = Array.Empty<PropertyFieldMapping>();
     }
 
-    public string Name { get; set; }
+    public string Name { get; init; }
 
-    public string NameSpace { get; set; }
+    public string NameSpace { get; init; }
 
     public PropertyFieldMapping[] PropertyMappings { get; set; }
 }

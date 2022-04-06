@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Net.Avm;
+using CreativeCoders.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
 
@@ -20,23 +21,28 @@ public static class AvmTest
 
         var services = new ServiceCollection();
 
-        services.AddFritzBox("https://fritz.box", user, password);
-
-        //services.AddFritzBox(x =>
-        //{
-        //    x.Url = new Uri("https://fritz.box");
-        //    x.UserName = user;
-        //    x.Password = password;
-        //    x.AllowUntrustedCertificates = true;
-        //});
+        services.AddFritzBox();
 
         var sp = services.BuildServiceProvider();
 
-        //var handler = sp.GetRequiredService<IHttpMessageHandlerFactory>().CreateHandler();
+        var fritzBoxConnections = sp.GetRequiredService<IFritzBoxConnections>();
 
-        var fritzBox = sp.GetRequiredService<IFritzBox>();
+        fritzBoxConnections.Add("FritzBox2",
+            new FritzBoxConnection
+            {
+                Url = new Uri("https://fritz.box"),
+                UserName = user,
+                Password = password,
+                AllowUntrustedCertificates = true
+            });
 
-        var fritzBox2 = sp.GetRequiredService<IFritzBox>();
+        var fritzBoxFactory = sp.GetRequiredService<IFritzBoxFactory>();
+
+        var fritzBox = fritzBoxFactory.Create("FritzBox2");
+
+        //var fritzBox = sp.GetRequiredService<IFritzBox>();
+
+        //var fritzBox2 = sp.GetRequiredService<IFritzBox>();
 
         var hostEntries = await fritzBox
             .Hosts

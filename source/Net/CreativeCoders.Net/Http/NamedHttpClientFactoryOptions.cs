@@ -1,15 +1,16 @@
-﻿using Microsoft.Extensions.Http;
+﻿using CreativeCoders.Core;
+using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Options;
 
 namespace CreativeCoders.Net.Http;
 
 public class NamedHttpClientFactoryOptions : IConfigureNamedOptions<HttpClientFactoryOptions>
 {
-    private readonly INamedHttpClientFactoryOptionsStore _optionsStore;
+    private readonly IHttpClientSettings _optionsStore;
 
-    public NamedHttpClientFactoryOptions(INamedHttpClientFactoryOptionsStore optionsStore)
+    public NamedHttpClientFactoryOptions(IHttpClientSettings optionsStore)
     {
-        _optionsStore = optionsStore;
+        _optionsStore = Ensure.NotNull(optionsStore, nameof(optionsStore));
     }
 
     public void Configure(HttpClientFactoryOptions options) { }

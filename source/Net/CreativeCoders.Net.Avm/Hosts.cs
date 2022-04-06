@@ -13,11 +13,9 @@ public class Hosts
 {
     private readonly HostsApi _hostsApi;
 
-    public Hosts(HttpClient httpClient, string url)
+    public Hosts(HttpClient httpClient)
     {
-        Ensure.IsNotNullOrWhitespace(url, nameof(url));
-
-        _hostsApi = new HostsApi(httpClient, url);
+        _hostsApi = new HostsApi(httpClient);
     }
 
     public async Task<HostEntry> GetHostEntryAsync(string macAddress)

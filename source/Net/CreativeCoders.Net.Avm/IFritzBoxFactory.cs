@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Net.Http;
+using CreativeCoders.Core;
 
 namespace CreativeCoders.Net.Avm;
 
@@ -11,16 +10,16 @@ public interface IFritzBoxFactory
 
 public class FritzBoxFactory : IFritzBoxFactory
 {
-    private readonly IFritzBoxConnections _fritzBoxConnections;
+    private readonly IHttpClientFactory _httpClientFactory;
 
-    public FritzBoxFactory(IFritzBoxConnections fritzBoxConnections)
+    public FritzBoxFactory(IHttpClientFactory httpClientFactory)
     {
-        _fritzBoxConnections = fritzBoxConnections;
+        _httpClientFactory = Ensure.NotNull(httpClientFactory, nameof(httpClientFactory));
     }
 
     public IFritzBox Create(string name)
     {
-        throw new NotImplementedException();
+        return new FritzBox(_httpClientFactory.CreateClient(name));
     }
 }
 
@@ -32,14 +31,3 @@ public interface IFritzBox
 
     public Wlan Wlan { get; }
 }
-
-//public interface IFritzBoxHosts
-//{
-//    Task<HostEntry> GetHostEntryAsync(string macAddress);
-
-//    Task<int> GetHostCountAsync();
-
-//    Task<HostEntry> GetHostEntryAsync(int index);
-
-//    Task<IEnumerable<HostEntry>> GetAllHostEntriesAsync();
-//}

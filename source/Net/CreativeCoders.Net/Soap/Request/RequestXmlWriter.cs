@@ -27,10 +27,6 @@ internal class RequestXmlWriter
         var xmlDoc = CreateXmlDoc();
 
         xmlDoc.Save(_streamWriter);
-
-        //var writer = new StringWriter();
-        //xmlDoc.Save(writer);
-        //var text = writer.ToString();
     }
 
     private XDocument CreateXmlDoc()

@@ -12,19 +12,19 @@ namespace CreativeCoders.Net.Avm.Tr064;
 [PublicAPI]
 public class WlanApi : Tr064ApiBase
 {
-    public WlanApi(HttpClient httpClient, string fritzBoxUrl) : this(
-        new SoapHttpClient(httpClient), fritzBoxUrl) { }
+    public WlanApi(HttpClient httpClient) : this(
+        new SoapHttpClient(httpClient)) { }
 
-    public WlanApi(ISoapHttpClient soapHttpClient, string fritzBoxUrl)
+    public WlanApi(ISoapHttpClient soapHttpClient)
         // ReSharper disable once StringLiteralTypo
-        : base(soapHttpClient, fritzBoxUrl, "/upnp/control/wlanconfig1") { }
+        : base(soapHttpClient, "/upnp/control/wlanconfig1") { }
 
     public async Task<GetSpecificAssociatedDeviceInfoResponse> GetSpecificAssociatedDeviceInfoAsync(string macAddress)
     {
         try
         {
             return await SoapHttpClient
-                .InvokeAsync<GetSpecificAssociatedDeviceInfoRequest, GetSpecificAssociatedDeviceInfoResponse>(
+                .InvokeAsync<GetSpecificAssociatedDeviceInfoRequest, GetSpecificAssociatedDeviceInfoResponse>(Url,
                     new GetSpecificAssociatedDeviceInfoRequest {MacAddress = macAddress})
                 .ConfigureAwait(false);
         }

@@ -6,14 +6,14 @@ using System.Net.Http;
 using CreativeCoders.Core;
 using CreativeCoders.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Options;
 
 namespace CreativeCoders.Net.Avm;
 
 public static class FritzBoxServiceCollectionExtensions
 {
-    public static void AddFritzBox(this IServiceCollection services, Action<FritzBoxOptions> configureOptions)
+    public static void AddFritzBox(this IServiceCollection services,
+        Action<FritzBoxConnection> configureOptions)
     {
         Ensure.NotNull(services, nameof(services));
         Ensure.NotNull(configureOptions, nameof(configureOptions));
@@ -24,96 +24,53 @@ public static class FritzBoxServiceCollectionExtensions
             .AddHttpClient<FritzBox>()
             .ConfigureHttpClient((sp, x) =>
             {
-                var options = sp.GetRequiredService<IOptions<FritzBoxOptions>>().Value;
+                var options = sp.GetRequiredService<IOptions<FritzBoxConnection>>().Value;
 
-                //x.BaseAddress = options.Url;
+                x.BaseAddress = options.Url;
             })
             .ConfigurePrimaryHttpMessageHandler(sp =>
+            {
+                var options = sp.GetRequiredService<IOptions<FritzBoxConnection>>().Value;
+
+                var handler = new HttpClientHandler();
+
+                if (!string.IsNullOrEmpty(options.UserName) || !string.IsNullOrEmpty(options.Password))
                 {
-                    var options = sp.GetRequiredService<IOptions<FritzBoxOptions>>().Value;
-
-                    var handler = new HttpClientHandler();
-
                     handler.Credentials = new NetworkCredential(options.UserName, options.Password);
-
-                    if (options.AllowUntrustedCertificates)
-                    {
-                        handler.ServerCertificateCustomValidationCallback =
-                            (message, certificate2, arg3, arg4) => true;
-                    }
-                    
-                    return handler;
                 }
-            );
+
+                if (options.AllowUntrustedCertificates)
+                {
+                    handler.ServerCertificateCustomValidationCallback =
+                        (_, _, _, _) => true;
+                }
+
+                return handler;
+            });
 
         services.AddTransient<IFritzBox>(sp =>
         {
-            var options = sp.GetRequiredService<IOptions<FritzBoxOptions>>().Value;
-
-            var fritzBox = new FritzBox(sp.GetRequiredService<IHttpClientFactory>().CreateClient("FritzBox"), options.Url.ToString());
+            var fritzBox = new FritzBox(sp.GetRequiredService<IHttpClientFactory>().CreateClient("FritzBox"));
 
             return fritzBox;
         });
     }
 
-    public static void AddFritzBox(this IServiceCollection services, string url, string userName, string password)
+    public static void AddFritzBox(this IServiceCollection services)
     {
         Ensure.NotNull(services, nameof(services));
 
         services.AddNamedHttpClientOptions();
 
+        services.AddSingleton<IFritzBoxConnections, FritzBoxConnections>();
 
-        //services.AddSingleton<IFritzBoxConnections, FritzBoxConnections>();
-
-        //services.AddHttpClient<FritzBox>();
-
-        //services
-        //    .AddHttpClient<FritzBox>()
-        //    .ConfigureHttpClient((sp, x) =>
-        //    {
-        //        var options = sp.GetRequiredService<IOptions<FritzBoxOptions>>().Value;
-
-        //        //x.BaseAddress = options.Url;
-        //    })
-        //    .ConfigurePrimaryHttpMessageHandler(sp =>
-        //        {
-        //            var options = sp.GetRequiredService<IOptions<FritzBoxOptions>>().Value;
-
-        //            var handler = new HttpClientHandler();
-
-        //            handler.Credentials = new NetworkCredential(options.UserName, options.Password);
-
-        //            if (options.AllowUntrustedCertificates)
-        //            {
-        //                handler.ServerCertificateCustomValidationCallback =
-        //                    (message, certificate2, arg3, arg4) => true;
-        //            }
-
-        //            return handler;
-        //        }
-        //    );
-
-
+        services.AddTransient<IFritzBoxFactory, FritzBoxFactory>();
 
         services.AddTransient<IFritzBox>(sp =>
         {
-            var store = sp.GetRequiredService<INamedHttpClientFactoryOptionsStore>();
-
-            store.Add("FritzBox", x =>
-            {
-                x.HttpMessageHandlerBuilderActions.Add(builder => builder.PrimaryHandler = new HttpClientHandler()
-                {
-                    Credentials = new NetworkCredential(userName, password),
-                    ServerCertificateCustomValidationCallback =
-                        (message, certificate2, arg3, arg4) => true
-                });
-            });
-
             var client = sp.GetRequiredService<IHttpClientFactory>().CreateClient("FritzBox");
 
-            //var options = sp.GetRequiredService<IOptions<FritzBoxOptions>>().Value;
-
-            var fritzBox = new FritzBox(client, url);
+            var fritzBox = new FritzBox(client);
 
             return fritzBox;
         });
@@ -122,32 +79,56 @@ public static class FritzBoxServiceCollectionExtensions
 
 public interface IFritzBoxConnections
 {
-    void Add(string name, FritzBoxOptions options);
+    void Add(string name, FritzBoxConnection options);
 
-    FritzBoxOptions Get(string name);
+    FritzBoxConnection Get(string name);
 }
 
 public class FritzBoxConnections : IFritzBoxConnections
 {
-    private readonly IDictionary<string, FritzBoxOptions> _optionList;
+    private readonly IHttpClientSettings _httpClientSettings;
 
-    public FritzBoxConnections()
+    private readonly IDictionary<string, FritzBoxConnection> _optionList;
+
+    public FritzBoxConnections(IHttpClientSettings httpClientSettings)
     {
-        _optionList = new ConcurrentDictionary<string, FritzBoxOptions>();
+        _httpClientSettings = httpClientSettings;
+        _optionList = new ConcurrentDictionary<string, FritzBoxConnection>();
     }
 
-    public void Add(string name, FritzBoxOptions options)
+    public void Add(string name, FritzBoxConnection options)
     {
         _optionList[name] = options;
+
+        _httpClientSettings
+            .Add(name)
+            .ConfigureClient(x => x.BaseAddress = options.Url)
+            .ConfigureClientHandler(() =>
+            {
+                var handler = new HttpClientHandler();
+
+                if (!string.IsNullOrEmpty(options.UserName) || !string.IsNullOrEmpty(options.Password))
+                {
+                    handler.Credentials = new NetworkCredential(options.UserName, options.Password);
+                }
+
+                if (options.AllowUntrustedCertificates)
+                {
+                    handler.ServerCertificateCustomValidationCallback =
+                        (_, _, _, _) => true;
+                }
+
+                return handler;
+            });
     }
 
-    public FritzBoxOptions Get(string name)
+    public FritzBoxConnection Get(string name)
     {
         return _optionList[name];
     }
 }
 
-public class FritzBoxOptions
+public class FritzBoxConnection
 {
     public Uri Url { get; set; }
 

@@ -8,9 +8,9 @@ public class Wlan
 {
     private readonly WlanApi _wlanApi;
 
-    public Wlan(HttpClient httpClient, string url)
+    public Wlan(HttpClient httpClient)
     {
-        _wlanApi = new WlanApi(httpClient, url);
+        _wlanApi = new WlanApi(httpClient);
     }
 
     public async Task<WlanDeviceInfo> GetWlanDeviceInfo(string macAddress)

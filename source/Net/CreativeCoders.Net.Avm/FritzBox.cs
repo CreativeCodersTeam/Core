@@ -7,13 +7,11 @@ namespace CreativeCoders.Net.Avm;
 [PublicAPI]
 public class FritzBox : IFritzBox
 {
-    public FritzBox(HttpClient httpClient, string url)
+    public FritzBox(HttpClient httpClient)
     {
-        Ensure.IsNotNullOrWhitespace(url, nameof(url));
-
-        Hosts = new Hosts(httpClient, url);
-        WanPppConnection = new WanPppConnection(httpClient, url);
-        Wlan = new Wlan(httpClient, url);
+        Hosts = new Hosts(httpClient);
+        WanPppConnection = new WanPppConnection(httpClient);
+        Wlan = new Wlan(httpClient);
     }
 
     public Hosts Hosts { get; }

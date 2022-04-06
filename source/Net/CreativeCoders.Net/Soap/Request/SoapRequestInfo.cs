@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 
 namespace CreativeCoders.Net.Soap.Request;
 
@@ -10,15 +9,13 @@ internal class SoapRequestInfo
         PropertyMappings = Array.Empty<PropertyFieldMapping>();
     }
 
-    public string Url { get; set; }
+    public Uri Url { get; init; }
 
-    public ICredentials Credentials { get; set; }
+    public string ActionName { get; init; }
 
-    public string ActionName { get; set; }
+    public object Action { get; init; }
 
-    public object Action { get; set; }
-
-    public string ServiceNameSpace { get; set; }
+    public string ServiceNameSpace { get; init; }
 
     public PropertyFieldMapping[] PropertyMappings { get; set; }
 }

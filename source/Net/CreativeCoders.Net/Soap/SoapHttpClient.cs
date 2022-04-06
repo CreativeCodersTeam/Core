@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
@@ -10,12 +9,15 @@ using CreativeCoders.Core;
 using CreativeCoders.Net.Soap.Exceptions;
 using CreativeCoders.Net.Soap.Request;
 using CreativeCoders.Net.Soap.Response;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Net.Soap;
 
-// ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
+[PublicAPI]
 public class SoapHttpClient : ISoapHttpClient
 {
+    private const string SoapActionHeader = "SOAPACTION";
+
     private readonly HttpClient _httpClient;
 
     private bool _disposed;
@@ -25,12 +27,12 @@ public class SoapHttpClient : ISoapHttpClient
         _httpClient = Ensure.NotNull(httpClient, nameof(httpClient));
     }
 
-    public async Task<TResponse> InvokeAsync<TRequest, TResponse>(TRequest actionRequest)
+    public async Task<TResponse> InvokeAsync<TRequest, TResponse>(Uri uri, TRequest actionRequest)
         where TResponse : class, new()
     {
         Ensure.IsNotNull(actionRequest, nameof(actionRequest));
 
-        var soapRequestInfo = CreateRequestInfo(actionRequest);
+        var soapRequestInfo = CreateRequestInfo(actionRequest, uri);
 
         var response = await _httpClient.SendAsync(CreateRequestMessage(soapRequestInfo));
 
@@ -48,7 +50,7 @@ public class SoapHttpClient : ISoapHttpClient
 
         requestMessage.Headers.Add("ContentType", "text/xml; charset=utf-8");
 
-        requestMessage.Headers.Add("SOAPACTION",
+        requestMessage.Headers.Add(SoapActionHeader,
             $"{soapRequestInfo.ServiceNameSpace}#{soapRequestInfo.ActionName}");
 
         using var stream = new MemoryStream();
@@ -91,7 +93,7 @@ public class SoapHttpClient : ISoapHttpClient
         return responseInfo;
     }
 
-    private SoapRequestInfo CreateRequestInfo<TRequest>(TRequest actionRequest)
+    private static SoapRequestInfo CreateRequestInfo<TRequest>(TRequest actionRequest, Uri uri)
     {
         var requestType = typeof(TRequest);
 
@@ -103,8 +105,7 @@ public class SoapHttpClient : ISoapHttpClient
 
         var requestInfo = new SoapRequestInfo
         {
-            Url = Url,
-            //Credentials = Credentials,
+            Url = uri,
             Action = actionRequest,
             ActionName = soapRequestAttribute.Name,
             ServiceNameSpace = soapRequestAttribute.NameSpace
@@ -136,10 +137,4 @@ public class SoapHttpClient : ISoapHttpClient
         _disposed = true;
         _httpClient.Dispose();
     }
-
-    //public ICredentials Credentials { get; set; }
-
-    public string Url { get; set; }
-
-    //public bool AllowUntrustedCertificates { get; set; }
 }
