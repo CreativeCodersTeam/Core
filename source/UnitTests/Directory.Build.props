@@ -1,5 +1,6 @@
 <Project>
 	<PropertyGroup>
 		<IsPackable>false</IsPackable>
+		<NoWarn>$(NoWarn);IDE0079</NoWarn>
 	</PropertyGroup>
 </Project>
