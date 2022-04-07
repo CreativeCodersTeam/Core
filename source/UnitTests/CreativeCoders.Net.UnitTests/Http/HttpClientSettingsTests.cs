@@ -20,15 +20,15 @@ public class HttpClientSettingsTests
 
         var httpClientSettings = new HttpClientSettings();
 
-        Action<HttpClientFactoryOptions> configureAction = x => configuredOptions = x;
+        void ConfigureAction(HttpClientFactoryOptions x) => configuredOptions = x;
 
         // Act
-        httpClientSettings.Add("Test", configureAction);
+        httpClientSettings.Add("Test", ConfigureAction);
 
         // Assert
         var options = new HttpClientFactoryOptions();
 
-        httpClientSettings.Get("Test")(options);
+        httpClientSettings.Get("Test")?.Invoke(options);
 
         configuredOptions
             .Should()
@@ -48,7 +48,7 @@ public class HttpClientSettingsTests
         // Assert
         var options = new HttpClientFactoryOptions();
 
-        httpClientSettings.Get("Test")(options);
+        httpClientSettings.Get("Test")?.Invoke(options);
 
         options.HttpClientActions
             .Should()
@@ -76,7 +76,7 @@ public class HttpClientSettingsTests
         // Assert
         var options = new HttpClientFactoryOptions();
 
-        httpClientSettings.Get("Test")(options);
+        httpClientSettings.Get("Test")?.Invoke(options);
 
         options.HttpMessageHandlerBuilderActions
             .Should()

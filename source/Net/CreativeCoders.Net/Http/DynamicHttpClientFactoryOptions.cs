@@ -5,11 +5,11 @@ using Microsoft.Extensions.Options;
 
 namespace CreativeCoders.Net.Http;
 
-public class NamedHttpClientFactoryOptions : IConfigureNamedOptions<HttpClientFactoryOptions>
+public class DynamicHttpClientFactoryOptions : IConfigureNamedOptions<HttpClientFactoryOptions>
 {
     private readonly IHttpClientSettings _optionsStore;
 
-    public NamedHttpClientFactoryOptions(IHttpClientSettings optionsStore)
+    public DynamicHttpClientFactoryOptions(IHttpClientSettings optionsStore)
     {
         _optionsStore = Ensure.NotNull(optionsStore, nameof(optionsStore));
     }

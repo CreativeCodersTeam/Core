@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CreativeCoders.Net.Http;
 
-public static class NamedHttpClientFactoryOptionsServiceCollectionExtensions
+public static class DynamicHttpClientFactoryOptionsServiceCollectionExtensions
 {
     public static void AddDynamicHttpClient(this IServiceCollection services)
     {
@@ -13,6 +13,6 @@ public static class NamedHttpClientFactoryOptionsServiceCollectionExtensions
 
         services.AddSingleton<IHttpClientSettings, HttpClientSettings>();
 
-        services.ConfigureOptions<NamedHttpClientFactoryOptions>();
+        services.ConfigureOptions<DynamicHttpClientFactoryOptions>();
     }
 }

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Net.Avm;
-using CreativeCoders.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Http;
 
 namespace NetSampleApp;
 
@@ -39,10 +35,6 @@ public static class AvmTest
         var fritzBoxFactory = sp.GetRequiredService<IFritzBoxFactory>();
 
         var fritzBox = fritzBoxFactory.Create("FritzBox2");
-
-        //var fritzBox = sp.GetRequiredService<IFritzBox>();
-
-        //var fritzBox2 = sp.GetRequiredService<IFritzBox>();
 
         var hostEntries = await fritzBox
             .Hosts

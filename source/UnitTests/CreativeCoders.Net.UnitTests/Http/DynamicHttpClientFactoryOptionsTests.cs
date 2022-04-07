@@ -7,7 +7,7 @@ using Xunit;
 
 namespace CreativeCoders.Net.UnitTests.Http;
 
-public class NamedHttpClientFactoryOptionsTests
+public class DynamicHttpClientFactoryOptionsTests
 {
     [Fact]
     public void Configure_GetOptionsForExistingName_OptionsAreConfigured()
@@ -16,7 +16,7 @@ public class NamedHttpClientFactoryOptionsTests
 
         var httpClientSettings = A.Fake<IHttpClientSettings>();
 
-        var namedOptions = new NamedHttpClientFactoryOptions(httpClientSettings);
+        var namedOptions = new DynamicHttpClientFactoryOptions(httpClientSettings);
 
         var options = new HttpClientFactoryOptions();
 

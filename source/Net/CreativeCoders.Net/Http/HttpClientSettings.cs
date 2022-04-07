@@ -6,6 +6,7 @@ using Microsoft.Extensions.Http;
 
 namespace CreativeCoders.Net.Http;
 
+#nullable enable
 public class HttpClientSettings : IHttpClientSettings
 {
     private readonly IDictionary<string, Action<HttpClientFactoryOptions>> _options;
@@ -34,10 +35,12 @@ public class HttpClientSettings : IHttpClientSettings
         return clientSetup;
     }
 
-    public Action<HttpClientFactoryOptions> Get(string name)
+    public Action<HttpClientFactoryOptions>? Get(string name)
     {
         Ensure.NotNull(name, nameof(name));
 
-        return _options[name];
+        return _options.TryGetValue(name, out var value)
+            ? value
+            : null;
     }
 }

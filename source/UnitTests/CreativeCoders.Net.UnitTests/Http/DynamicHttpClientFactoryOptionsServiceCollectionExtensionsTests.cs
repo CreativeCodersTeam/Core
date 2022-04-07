@@ -7,7 +7,7 @@ using Xunit;
 
 namespace CreativeCoders.Net.UnitTests.Http;
 
-public class NamedHttpClientFactoryOptionsServiceCollectionExtensionsTests
+public class DynamicHttpClientFactoryOptionsServiceCollectionExtensionsTests
 {
     [Fact]
     public void AddDynamicHttpClient_AddHttpClientSettings_HttpClientHasConfiguredBaseAddress()
