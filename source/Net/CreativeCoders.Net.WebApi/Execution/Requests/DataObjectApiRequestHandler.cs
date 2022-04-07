@@ -3,29 +3,28 @@ using System.Threading.Tasks;
 using CreativeCoders.Core.Reflection;
 using CreativeCoders.Net.WebApi.Specification;
 
-namespace CreativeCoders.Net.WebApi.Execution.Requests
+namespace CreativeCoders.Net.WebApi.Execution.Requests;
+
+public class DataObjectApiRequestHandler : ApiRequestHandlerBase
 {
-    public class DataObjectApiRequestHandler : ApiRequestHandlerBase
+    public DataObjectApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.DataObject,
+        httpClient) { }
+
+    public override object SendRequest(RequestData requestData)
     {
-        public DataObjectApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.DataObject, httpClient)
-        {
-        }
+        return this.ExecuteGenericMethod<object>(nameof(RequestAsync),
+            new[] {requestData.DataObjectType}, requestData);
+    }
 
-        public override object SendRequest(RequestData requestData)
+    private async Task<T> RequestAsync<T>(RequestData requestData)
+    {
+        using (var response = await RequestResponseMessageAsync(requestData).ConfigureAwait(false))
         {
-            return this.ExecuteGenericMethod<object>(nameof(RequestAsync),
-                new[] { requestData.DataObjectType }, requestData);
-        }
+            response.EnsureSuccessStatusCode();
 
-        private async Task<T> RequestAsync<T>(RequestData requestData)
-        {
-            using (var response = await RequestResponseMessageAsync(requestData).ConfigureAwait(false))
-            {
-                response.EnsureSuccessStatusCode();
-
-                var deserializer = GetResponseDeserializer(requestData);
-                return deserializer.Deserialize<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
-            }
+            var deserializer = GetResponseDeserializer(requestData);
+            return deserializer.Deserialize<T>(await response.Content.ReadAsStringAsync()
+                .ConfigureAwait(false));
         }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace CreativeCoders.Di
+namespace CreativeCoders.Di;
+
+public interface IDiContainerScope : IDisposable
 {
-    public interface IDiContainerScope : IDisposable
-    {
-        IDiContainer Container { get; }
-    }
+    IDiContainer Container { get; }
 }

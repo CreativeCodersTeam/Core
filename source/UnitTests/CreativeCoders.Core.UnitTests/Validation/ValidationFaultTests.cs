@@ -1,26 +1,25 @@
 ﻿using CreativeCoders.Validation;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.Validation
+namespace CreativeCoders.Core.UnitTests.Validation;
+
+public class ValidationFaultTests
 {
-    public class ValidationFaultTests
+    [Fact]
+    public void Ctor_WithMessage_MessagePropIsSetCorrect()
     {
-        [Fact]
-        public void Ctor_WithMessage_MessagePropIsSetCorrect()
-        {
-            var fault = new ValidationFault("Test");
+        var fault = new ValidationFault("Test");
 
-            Assert.Equal("Test", fault.Message);
-            Assert.Equal(string.Empty, fault.PropertyName);
-        }
+        Assert.Equal("Test", fault.Message);
+        Assert.Equal(string.Empty, fault.PropertyName);
+    }
 
-        [Fact]
-        public void Ctor_WithMessageAndPropertyName_MessageAndPropertyNamePropIsSetCorrect()
-        {
-            var fault = new ValidationFault("TestProp", "Test");
+    [Fact]
+    public void Ctor_WithMessageAndPropertyName_MessageAndPropertyNamePropIsSetCorrect()
+    {
+        var fault = new ValidationFault("TestProp", "Test");
 
-            Assert.Equal("Test", fault.Message);
-            Assert.Equal("TestProp", fault.PropertyName);
-        }
+        Assert.Equal("Test", fault.Message);
+        Assert.Equal("TestProp", fault.PropertyName);
     }
 }

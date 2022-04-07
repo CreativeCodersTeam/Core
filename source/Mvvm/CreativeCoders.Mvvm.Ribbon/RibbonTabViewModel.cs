@@ -1,15 +1,14 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Ribbon
-{
-    [PublicAPI]
-    public class RibbonTabViewModel : RibbonItemViewModel
-    {
-        public RibbonTabViewModel()
-        {
-            Bars = new RibbonItemCollection<RibbonBarViewModel>();
-        }
+namespace CreativeCoders.Mvvm.Ribbon;
 
-        public RibbonItemCollection<RibbonBarViewModel> Bars { get; }
+[PublicAPI]
+public class RibbonTabViewModel : RibbonItemViewModel
+{
+    public RibbonTabViewModel()
+    {
+        Bars = new RibbonItemCollection<RibbonBarViewModel>();
     }
+
+    public RibbonItemCollection<RibbonBarViewModel> Bars { get; }
 }

@@ -2,383 +2,384 @@
 using CreativeCoders.Validation;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.Validation
+namespace CreativeCoders.Core.UnitTests.Validation;
+
+public class BasicValidatorTests
 {
-    public class BasicValidatorTests
+    [Fact]
+    public void Validate_StrValueNotNull_StrValueNullReturnsInvalid()
     {
-        [Fact]
-        public void Validate_StrValueNotNull_StrValueNullReturnsInvalid()
+        var validator = new TestDataObjectValidator(v => v.RuleFor(x => x.StrValue).IsNotNull());
+
+        var testData = new TestDataObject();
+
+        var validationResult = validator.Validate(testData);
+
+        Assert.False(validationResult.IsValid);
+        Assert.Single(validationResult.Faults);
+        Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
+    }
+
+    [Fact]
+    public void Validate_StrValueNotNull_StrValueNotNullReturnsValid()
+    {
+        var validator = new TestDataObjectValidator(v => v.RuleFor(x => x.StrValue).IsNotNull());
+
+        var testData = new TestDataObject {StrValue = "Test"};
+
+        var validationResult = validator.Validate(testData);
+
+        Assert.True(validationResult.IsValid);
+        Assert.Empty(validationResult.Faults);
+    }
+
+    [Fact]
+    public void ValidateNoneGeneric_StrValueNotNull_StrValueNullReturnsInvalid()
+    {
+        var validator = new TestDataObjectValidator(v => v.RuleFor(x => x.StrValue).IsNotNull());
+
+        var testData = new TestDataObject() as object;
+
+        var validationResult = validator.Validate(testData);
+
+        Assert.False(validationResult.IsValid);
+        Assert.Single(validationResult.Faults);
+        Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
+    }
+
+    [Fact]
+    public void ValidateNoneGeneric_StrValueNotNull_StrValueNotNullReturnsValid()
+    {
+        var validator = new TestDataObjectValidator(v => v.RuleFor(x => x.StrValue).IsNotNull());
+
+        var testData = new TestDataObject {StrValue = "Test"} as object;
+
+        var validationResult = validator.Validate(testData);
+
+        Assert.True(validationResult.IsValid);
+        Assert.Empty(validationResult.Faults);
+    }
+
+    [Fact]
+    public void Validate_StrValueNotNullIntValueGreater100_StrValueNullIntValue0ReturnsInvalid()
+    {
+        var validator = new TestDataObjectValidator(v =>
         {
-            var validator = new TestDataObjectValidator(v => v.RuleFor(x => x.StrValue).IsNotNull());
+            v.RuleFor(x => x.StrValue).IsNotNull();
+            v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
+        });
 
-            var testData = new TestDataObject();
+        var testData = new TestDataObject();
 
-            var validationResult = validator.Validate(testData);
+        var validationResult = validator.Validate(testData);
 
-            Assert.False(validationResult.IsValid);
-            Assert.Single(validationResult.Faults);
-            Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
-        }
+        Assert.False(validationResult.IsValid);
+        Assert.Equal(2, validationResult.Faults.Count());
+        Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
+        Assert.Equal("IntValue", validationResult.Faults.Last().PropertyName);
+    }
 
-        [Fact]
-        public void Validate_StrValueNotNull_StrValueNotNullReturnsValid()
+    [Fact]
+    public void
+        ValidateWithBreakRuleFalse_StrValueNotNullIntValueGreater100_StrValueNullIntValue0ReturnsInvalid()
+    {
+        var validator = new TestDataObjectValidator(v =>
         {
-            var validator = new TestDataObjectValidator(v => v.RuleFor(x => x.StrValue).IsNotNull());
+            v.RuleFor(x => x.StrValue).IsNotNull().HasMinimumLength(10);
+            v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
+        });
 
-            var testData = new TestDataObject {StrValue = "Test"};
-
-            var validationResult = validator.Validate(testData);
-
-            Assert.True(validationResult.IsValid);
-            Assert.Empty(validationResult.Faults);
-        }
-
-        [Fact]
-        public void ValidateNoneGeneric_StrValueNotNull_StrValueNullReturnsInvalid()
+        var testData = new TestDataObject
         {
-            var validator = new TestDataObjectValidator(v => v.RuleFor(x => x.StrValue).IsNotNull());
+            IntValue = 101
+        };
 
-            var testData = new TestDataObject() as object;
+        var validationResult = validator.Validate(testData, false);
 
-            var validationResult = validator.Validate(testData);
+        Assert.False(validationResult.IsValid);
+        Assert.Equal(2, validationResult.Faults.Count());
+        Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
+        Assert.Equal("StrValue", validationResult.Faults.Last().PropertyName);
+    }
 
-            Assert.False(validationResult.IsValid);
-            Assert.Single(validationResult.Faults);
-            Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
-        }
-
-        [Fact]
-        public void ValidateNoneGeneric_StrValueNotNull_StrValueNotNullReturnsValid()
+    [Fact]
+    public void
+        ValidateWithBreakRuleTrue_StrValueNotNullIntValueGreater100_StrValueNullIntValue0ReturnsInvalid()
+    {
+        var validator = new TestDataObjectValidator(v =>
         {
-            var validator = new TestDataObjectValidator(v => v.RuleFor(x => x.StrValue).IsNotNull());
+            v.RuleFor(x => x.StrValue).IsNotNull().HasMinimumLength(10);
+            v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
+        });
 
-            var testData = new TestDataObject {StrValue = "Test"} as object;
-
-            var validationResult = validator.Validate(testData);
-
-            Assert.True(validationResult.IsValid);
-            Assert.Empty(validationResult.Faults);
-        }
-
-        [Fact]
-        public void Validate_StrValueNotNullIntValueGreater100_StrValueNullIntValue0ReturnsInvalid()
+        var testData = new TestDataObject
         {
-            var validator = new TestDataObjectValidator(v =>
-            {
-                v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
-            });
+            IntValue = 101
+        };
 
-            var testData = new TestDataObject();
+        var validationResult = validator.Validate(testData, true);
 
-            var validationResult = validator.Validate(testData);
+        Assert.False(validationResult.IsValid);
+        Assert.Single(validationResult.Faults);
+        Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
+    }
 
-            Assert.False(validationResult.IsValid);
-            Assert.Equal(2, validationResult.Faults.Count());
-            Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
-            Assert.Equal("IntValue", validationResult.Faults.Last().PropertyName);
-        }
-
-        [Fact]
-        public void ValidateWithBreakRuleFalse_StrValueNotNullIntValueGreater100_StrValueNullIntValue0ReturnsInvalid()
+    [Fact]
+    public void ValidateStrValueExpr_StrValueNotNullIntValueGreater100_StrValueNullIntValue0ReturnsInvalid()
+    {
+        var validator = new TestDataObjectValidator(v =>
         {
-            var validator = new TestDataObjectValidator(v =>
-            {
-                v.RuleFor(x => x.StrValue).IsNotNull().HasMinimumLength(10);
-                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
-            });
+            v.RuleFor(x => x.StrValue).IsNotNull();
+            v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
+        });
 
-            var testData = new TestDataObject
-            {
-                IntValue = 101
-            };
+        var testData = new TestDataObject();
 
-            var validationResult = validator.Validate(testData, false);
+        var validationResult = validator.Validate(testData, x => x.StrValue);
 
-            Assert.False(validationResult.IsValid);
-            Assert.Equal(2, validationResult.Faults.Count());
-            Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
-            Assert.Equal("StrValue", validationResult.Faults.Last().PropertyName);
-        }
+        Assert.False(validationResult.IsValid);
+        Assert.Single(validationResult.Faults);
+        Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
+    }
 
-        [Fact]
-        public void ValidateWithBreakRuleTrue_StrValueNotNullIntValueGreater100_StrValueNullIntValue0ReturnsInvalid()
+    [Fact]
+    public void ValidateStrValueExpr_StrValueNotNullIntValueGreater100_StrValueNotNullIntValue0ReturnsValid()
+    {
+        var validator = new TestDataObjectValidator(v =>
         {
-            var validator = new TestDataObjectValidator(v =>
-            {
-                v.RuleFor(x => x.StrValue).IsNotNull().HasMinimumLength(10);
-                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
-            });
+            v.RuleFor(x => x.StrValue).IsNotNull();
+            v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
+        });
 
-            var testData = new TestDataObject
-            {
-                IntValue = 101
-            };
-
-            var validationResult = validator.Validate(testData, true);
-
-            Assert.False(validationResult.IsValid);
-            Assert.Single(validationResult.Faults);
-            Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
-        }
-
-        [Fact]
-        public void ValidateStrValueExpr_StrValueNotNullIntValueGreater100_StrValueNullIntValue0ReturnsInvalid()
+        var testData = new TestDataObject
         {
-            var validator = new TestDataObjectValidator(v =>
-            {
-                v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
-            });
+            StrValue = "Test"
+        };
 
-            var testData = new TestDataObject();
+        var validationResult = validator.Validate(testData, x => x.StrValue);
 
-            var validationResult = validator.Validate(testData, x => x.StrValue);
+        Assert.True(validationResult.IsValid);
+        Assert.Empty(validationResult.Faults);
+    }
 
-            Assert.False(validationResult.IsValid);
-            Assert.Single(validationResult.Faults);
-            Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
-        }
-
-        [Fact]
-        public void ValidateStrValueExpr_StrValueNotNullIntValueGreater100_StrValueNotNullIntValue0ReturnsValid()
+    [Fact]
+    public void ValidateStrValue_StrValueNotNullIntValueGreater100_StrValueNullIntValue0ReturnsInvalid()
+    {
+        var validator = new TestDataObjectValidator(v =>
         {
-            var validator = new TestDataObjectValidator(v =>
-            {
-                v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
-            });
+            v.RuleFor(x => x.StrValue).IsNotNull();
+            v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
+        });
 
-            var testData = new TestDataObject
-            {
-                StrValue = "Test"
-            };
+        var testData = new TestDataObject();
 
-            var validationResult = validator.Validate(testData, x => x.StrValue);
+        var validationResult = validator.Validate(testData, "StrValue");
 
-            Assert.True(validationResult.IsValid);
-            Assert.Empty(validationResult.Faults);
-        }
+        Assert.False(validationResult.IsValid);
+        Assert.Single(validationResult.Faults);
+        Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
+    }
 
-        [Fact]
-        public void ValidateStrValue_StrValueNotNullIntValueGreater100_StrValueNullIntValue0ReturnsInvalid()
+    [Fact]
+    public void ValidateStrValue_StrValueNotNullIntValueGreater100_StrValueNotNullIntValue0ReturnsValid()
+    {
+        var validator = new TestDataObjectValidator(v =>
         {
-            var validator = new TestDataObjectValidator(v =>
-            {
-                v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
-            });
+            v.RuleFor(x => x.StrValue).IsNotNull();
+            v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
+        });
 
-            var testData = new TestDataObject();
-
-            var validationResult = validator.Validate(testData, "StrValue");
-
-            Assert.False(validationResult.IsValid);
-            Assert.Single(validationResult.Faults);
-            Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
-        }
-
-        [Fact]
-        public void ValidateStrValue_StrValueNotNullIntValueGreater100_StrValueNotNullIntValue0ReturnsValid()
+        var testData = new TestDataObject
         {
-            var validator = new TestDataObjectValidator(v =>
-            {
-                v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
-            });
+            StrValue = "Test"
+        };
 
-            var testData = new TestDataObject
-            {
-                StrValue = "Test"
-            };
+        var validationResult = validator.Validate(testData, "StrValue");
 
-            var validationResult = validator.Validate(testData, "StrValue");
+        Assert.True(validationResult.IsValid);
+        Assert.Empty(validationResult.Faults);
+    }
 
-            Assert.True(validationResult.IsValid);
-            Assert.Empty(validationResult.Faults);
-        }
-
-        [Fact]
-        public void Validate_StrValueNotNullIntValueGreater100_StrValueNullReturnsInvalid()
+    [Fact]
+    public void Validate_StrValueNotNullIntValueGreater100_StrValueNullReturnsInvalid()
+    {
+        var validator = new TestDataObjectValidator(v =>
         {
-            var validator = new TestDataObjectValidator(v =>
-            {
-                v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
-            });
+            v.RuleFor(x => x.StrValue).IsNotNull();
+            v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
+        });
 
-            var testData = new TestDataObject {IntValue = 101};
+        var testData = new TestDataObject {IntValue = 101};
 
-            var validationResult = validator.Validate(testData);
+        var validationResult = validator.Validate(testData);
 
-            Assert.False(validationResult.IsValid);
-            Assert.Single(validationResult.Faults);
-            Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
-        }
+        Assert.False(validationResult.IsValid);
+        Assert.Single(validationResult.Faults);
+        Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
+    }
 
-        [Fact]
-        public void Validate_StrValueNotNullIntValueGreater100_StrValueNotNullIntValue0ReturnsInvalid()
+    [Fact]
+    public void Validate_StrValueNotNullIntValueGreater100_StrValueNotNullIntValue0ReturnsInvalid()
+    {
+        var validator = new TestDataObjectValidator(v =>
         {
-            var validator = new TestDataObjectValidator(v =>
-            {
-                v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
-            });
+            v.RuleFor(x => x.StrValue).IsNotNull();
+            v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
+        });
 
-            var testData = new TestDataObject {StrValue = "Test"};
+        var testData = new TestDataObject {StrValue = "Test"};
 
-            var validationResult = validator.Validate(testData);
+        var validationResult = validator.Validate(testData);
 
-            Assert.False(validationResult.IsValid);
-            Assert.Single(validationResult.Faults);
-            Assert.Equal("IntValue", validationResult.Faults.First().PropertyName);
-        }
+        Assert.False(validationResult.IsValid);
+        Assert.Single(validationResult.Faults);
+        Assert.Equal("IntValue", validationResult.Faults.First().PropertyName);
+    }
 
-        [Fact]
-        public void Validate_StrValueNotNullIntValueGreater100_StrValueNotNullIntValue101ReturnsValid()
+    [Fact]
+    public void Validate_StrValueNotNullIntValueGreater100_StrValueNotNullIntValue101ReturnsValid()
+    {
+        var validator = new TestDataObjectValidator(v =>
         {
-            var validator = new TestDataObjectValidator(v =>
-            {
-                v.RuleFor(x => x.StrValue).IsNotNull();
-                v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
-            });
+            v.RuleFor(x => x.StrValue).IsNotNull();
+            v.RuleFor(x => x.IntValue).Must((_, i) => i > 100);
+        });
 
-            var testData = new TestDataObject
-            {
-                StrValue = "Test",
-                IntValue = 101
-            };
-
-            var validationResult = validator.Validate(testData);
-
-            Assert.True(validationResult.IsValid);
-            Assert.Empty(validationResult.Faults);
-        }
-
-        [Fact]
-        public void Validate_StrValueNotNullIfThenFalse_StrValueNullReturnsInvalid()
+        var testData = new TestDataObject
         {
-            var validator = new TestDataObjectValidator(v =>
+            StrValue = "Test",
+            IntValue = 101
+        };
+
+        var validationResult = validator.Validate(testData);
+
+        Assert.True(validationResult.IsValid);
+        Assert.Empty(validationResult.Faults);
+    }
+
+    [Fact]
+    public void Validate_StrValueNotNullIfThenFalse_StrValueNullReturnsInvalid()
+    {
+        var validator = new TestDataObjectValidator(v =>
+            v
+                .RuleFor(x => x.StrValue)
+                .IfThen(_ => false)
+                .IsNotNull());
+
+        var testData = new TestDataObject();
+
+        var validationResult = validator.Validate(testData);
+
+        Assert.True(validationResult.IsValid);
+        Assert.Empty(validationResult.Faults);
+    }
+
+    [Fact]
+    public void Validate_StrValueNotNullIfThenTrue_StrValueNullReturnsInvalid()
+    {
+        var validator = new TestDataObjectValidator(v =>
+            v
+                .RuleFor(x => x.StrValue)
+                .IfThen(_ => true)
+                .IsNotNull());
+
+        var testData = new TestDataObject();
+
+        var validationResult = validator.Validate(testData);
+
+        Assert.False(validationResult.IsValid);
+        Assert.Single(validationResult.Faults);
+        Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
+    }
+
+    [Fact]
+    public void Validate_StrValueNotNullIfThenTrue_StrValueNotNullReturnsValid()
+    {
+        var validator = new TestDataObjectValidator(v =>
+            v
+                .RuleFor(x => x.StrValue)
+                .IfThen(_ => true)
+                .IsNotNull());
+
+        var testData = new TestDataObject {StrValue = "Test"};
+
+        var validationResult = validator.Validate(testData);
+
+        Assert.True(validationResult.IsValid);
+        Assert.Empty(validationResult.Faults);
+    }
+
+    [Fact]
+    public void Validate_StrValueNotNullIfNotThenTrue_StrValueNullReturnsInvalid()
+    {
+        var validator =
+            new TestDataObjectValidator(v =>
                 v
                     .RuleFor(x => x.StrValue)
-                    .IfThen(_ => false)
+                    .IfNotThen(_ => true)
                     .IsNotNull());
 
-            var testData = new TestDataObject();
+        var testData = new TestDataObject();
 
-            var validationResult = validator.Validate(testData);
+        var validationResult = validator.Validate(testData);
 
-            Assert.True(validationResult.IsValid);
-            Assert.Empty(validationResult.Faults);
-        }
+        Assert.True(validationResult.IsValid);
+        Assert.Empty(validationResult.Faults);
+    }
 
-        [Fact]
-        public void Validate_StrValueNotNullIfThenTrue_StrValueNullReturnsInvalid()
-        {
-            var validator = new TestDataObjectValidator(v =>
+    [Fact]
+    public void Validate_StrValueNotNullIfNotThenFalse_StrValueNullReturnsInvalid()
+    {
+        var validator =
+            new TestDataObjectValidator(v =>
                 v
                     .RuleFor(x => x.StrValue)
-                    .IfThen(_ => true)
+                    .IfNotThen(_ => false)
                     .IsNotNull());
 
-            var testData = new TestDataObject();
+        var testData = new TestDataObject();
 
-            var validationResult = validator.Validate(testData);
+        var validationResult = validator.Validate(testData);
 
-            Assert.False(validationResult.IsValid);
-            Assert.Single(validationResult.Faults);
-            Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
-        }
+        Assert.False(validationResult.IsValid);
+        Assert.Single(validationResult.Faults);
+        Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
+    }
 
-        [Fact]
-        public void Validate_StrValueNotNullIfThenTrue_StrValueNotNullReturnsValid()
-        {
-            var validator = new TestDataObjectValidator(v =>
+    [Fact]
+    public void Validate_StrValueNotNullIfNotThenFalse_StrValueNotNullReturnsValid()
+    {
+        var validator =
+            new TestDataObjectValidator(v =>
                 v
                     .RuleFor(x => x.StrValue)
-                    .IfThen(_ => true)
+                    .IfNotThen(_ => false)
                     .IsNotNull());
 
-            var testData = new TestDataObject {StrValue = "Test"};
+        var testData = new TestDataObject {StrValue = "Test"};
 
-            var validationResult = validator.Validate(testData);
+        var validationResult = validator.Validate(testData);
 
-            Assert.True(validationResult.IsValid);
-            Assert.Empty(validationResult.Faults);
-        }
+        Assert.True(validationResult.IsValid);
+        Assert.Empty(validationResult.Faults);
+    }
 
-        [Fact]
-        public void Validate_StrValueNotNullIfNotThenTrue_StrValueNullReturnsInvalid()
-        {
-            var validator =
-                new TestDataObjectValidator(v =>
-                    v
-                        .RuleFor(x => x.StrValue)
-                        .IfNotThen(_ => true)
-                        .IsNotNull());
+    [Fact]
+    public void Validate_StrValueNotNullWithMessage_StrValueNullReturnsInvalid()
+    {
+        var validator = new TestDataObjectValidator(v =>
+            v
+                .RuleFor(x => x.StrValue)
+                .IsNotNull()
+                .WithMessage("Fault Test Message"));
 
-            var testData = new TestDataObject();
+        var testData = new TestDataObject();
 
-            var validationResult = validator.Validate(testData);
+        var validationResult = validator.Validate(testData);
 
-            Assert.True(validationResult.IsValid);
-            Assert.Empty(validationResult.Faults);
-        }
-
-        [Fact]
-        public void Validate_StrValueNotNullIfNotThenFalse_StrValueNullReturnsInvalid()
-        {
-            var validator =
-                new TestDataObjectValidator(v =>
-                    v
-                        .RuleFor(x => x.StrValue)
-                        .IfNotThen(_ => false)
-                        .IsNotNull());
-
-            var testData = new TestDataObject();
-
-            var validationResult = validator.Validate(testData);
-
-            Assert.False(validationResult.IsValid);
-            Assert.Single(validationResult.Faults);
-            Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
-        }
-
-        [Fact]
-        public void Validate_StrValueNotNullIfNotThenFalse_StrValueNotNullReturnsValid()
-        {
-            var validator =
-                new TestDataObjectValidator(v =>
-                    v
-                        .RuleFor(x => x.StrValue)
-                        .IfNotThen(_ => false)
-                        .IsNotNull());
-
-            var testData = new TestDataObject {StrValue = "Test"};
-
-            var validationResult = validator.Validate(testData);
-
-            Assert.True(validationResult.IsValid);
-            Assert.Empty(validationResult.Faults);
-        }
-
-        [Fact]
-        public void Validate_StrValueNotNullWithMessage_StrValueNullReturnsInvalid()
-        {
-            var validator = new TestDataObjectValidator(v =>
-                v
-                    .RuleFor(x => x.StrValue)
-                    .IsNotNull()
-                    .WithMessage("Fault Test Message"));
-
-            var testData = new TestDataObject();
-
-            var validationResult = validator.Validate(testData);
-
-            Assert.False(validationResult.IsValid);
-            Assert.Single(validationResult.Faults);
-            Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
-            Assert.Equal("Fault Test Message", validationResult.Faults.First().Message);
-        }
+        Assert.False(validationResult.IsValid);
+        Assert.Single(validationResult.Faults);
+        Assert.Equal("StrValue", validationResult.Faults.First().PropertyName);
+        Assert.Equal("Fault Test Message", validationResult.Faults.First().Message);
     }
 }

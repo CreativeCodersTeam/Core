@@ -7,87 +7,86 @@ using CreativeCoders.Net.XmlRpc.Client;
 using CreativeCoders.Net.XmlRpc.Proxy.Analyzing;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.XmlRpc.Proxy
+namespace CreativeCoders.Net.XmlRpc.Proxy;
+
+[PublicAPI]
+public class XmlRpcProxyBuilder<T> : IXmlRpcProxyBuilder<T>
+    where T : class
 {
-    [PublicAPI]
-    public class XmlRpcProxyBuilder<T> : IXmlRpcProxyBuilder<T>
-        where T : class
+    private readonly IProxyBuilder<T> _proxyBuilder;
+
+    private readonly IHttpClientFactory _httpClientFactory;
+
+    private string _url;
+
+    private Encoding _encoding;
+
+    private string _contentType;
+
+    public XmlRpcProxyBuilder(IProxyBuilder<T> proxyBuilder, IHttpClientFactory httpClientFactory)
     {
-        private readonly IProxyBuilder<T> _proxyBuilder;
+        Ensure.IsNotNull(proxyBuilder, nameof(proxyBuilder));
+        Ensure.IsNotNull(httpClientFactory, nameof(httpClientFactory));
 
-        private readonly IHttpClientFactory _httpClientFactory;
-        
-        private string _url;
-        
-        private Encoding _encoding;
-        
-        private string _contentType;
-
-        public XmlRpcProxyBuilder(IProxyBuilder<T> proxyBuilder, IHttpClientFactory httpClientFactory)
+        if (!typeof(T).IsInterface)
         {
-            Ensure.IsNotNull(proxyBuilder, nameof(proxyBuilder));
-            Ensure.IsNotNull(httpClientFactory, nameof(httpClientFactory));
+            throw new ArgumentException($"Generic type '{typeof(T).Name}' must be an interface");
+        }
 
-            if (!typeof(T).IsInterface)
-            {
-                throw new ArgumentException($"Generic type '{typeof(T).Name}' must be an interface");
-            }
+        _proxyBuilder = proxyBuilder;
+        _httpClientFactory = httpClientFactory;
 
-            _proxyBuilder = proxyBuilder;
-            _httpClientFactory = httpClientFactory;
-            
+        SetDefaultSettings();
+    }
+
+    private void SetDefaultSettings()
+    {
+        _url = null;
+        _encoding = Encoding.UTF8;
+        _contentType = ContentMediaTypes.Text.Xml;
+    }
+
+    public IXmlRpcProxyBuilder<T> ForUrl(string url)
+    {
+        _url = url;
+        return this;
+    }
+
+    public IXmlRpcProxyBuilder<T> UseEncoding(Encoding encoding)
+    {
+        _encoding = encoding;
+        return this;
+    }
+
+    public IXmlRpcProxyBuilder<T> UseEncoding(string encodingName)
+    {
+        return UseEncoding(Encoding.GetEncoding(encodingName));
+    }
+
+    public IXmlRpcProxyBuilder<T> WithContentType(string contentType)
+    {
+        _contentType = contentType;
+        return this;
+    }
+
+    public T Build()
+    {
+        try
+        {
+            return _proxyBuilder.Build(
+                new XmlRpcProxyInterceptor<T>(
+                    new XmlRpcClient(_httpClientFactory.CreateClient())
+                    {
+                        Url = _url,
+                        XmlEncoding = _encoding,
+                        HttpContentType = _contentType
+                    },
+                    new ApiAnalyzer<T>().Analyze())
+            );
+        }
+        finally
+        {
             SetDefaultSettings();
-        }
-
-        private void SetDefaultSettings()
-        {
-            _url = null;
-            _encoding = Encoding.UTF8;
-            _contentType = ContentMediaTypes.Text.Xml;
-        }
-
-        public IXmlRpcProxyBuilder<T> ForUrl(string url)
-        {
-            _url = url;
-            return this;
-        }
-
-        public IXmlRpcProxyBuilder<T> UseEncoding(Encoding encoding)
-        {
-            _encoding = encoding;
-            return this;
-        }
-
-        public IXmlRpcProxyBuilder<T> UseEncoding(string encodingName)
-        {
-            return UseEncoding(Encoding.GetEncoding(encodingName));
-        }
-
-        public IXmlRpcProxyBuilder<T> WithContentType(string contentType)
-        {
-            _contentType = contentType;
-            return this;
-        }
-
-        public T Build()
-        {
-            try
-            {
-                return _proxyBuilder.Build(
-                    new XmlRpcProxyInterceptor<T>(
-                        new XmlRpcClient(_httpClientFactory.CreateClient())
-                        {
-                            Url = _url,
-                            XmlEncoding = _encoding,
-                            HttpContentType = _contentType
-                        },
-                        new ApiAnalyzer<T>().Analyze())
-                );
-            }
-            finally
-            {
-                SetDefaultSettings();
-            }
         }
     }
 }

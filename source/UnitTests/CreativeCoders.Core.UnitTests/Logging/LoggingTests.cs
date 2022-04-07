@@ -1,27 +1,26 @@
 ﻿using CreativeCoders.Core.Logging;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.Logging
+namespace CreativeCoders.Core.UnitTests.Logging;
+
+[Collection("Logging")]
+public class LoggingTests : LoggingTestBase
 {
-    [Collection("Logging")]
-    public class LoggingTests : LoggingTestBase
+    [Fact]
+    public void LogManagerTest()
     {
-        [Fact]
-        public void LogManagerTest()
-        {
-            LogManager.SetLoggerFactory(null);
+        LogManager.SetLoggerFactory(null);
 
-            var loggerForScope = LogManager.GetLogger("TestScope");
-            var loggerForType = LogManager.GetLogger(typeof(LoggingTests));
+        var loggerForScope = LogManager.GetLogger("TestScope");
+        var loggerForType = LogManager.GetLogger(typeof(LoggingTests));
 
-            Assert.NotNull(loggerForScope);
-            Assert.NotNull(loggerForType);
+        Assert.NotNull(loggerForScope);
+        Assert.NotNull(loggerForType);
 
-            Assert.True(loggerForScope.GetType().Name == "NullLogger");
+        Assert.True(loggerForScope.GetType().Name == "NullLogger");
 
-            CallLogger(loggerForType);
+        CallLogger(loggerForType);
 
-            CallLogger(loggerForScope);
-        }
+        CallLogger(loggerForScope);
     }
 }

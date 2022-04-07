@@ -2,23 +2,22 @@
 using CreativeCoders.Config.Base;
 using CreativeCoders.Core;
 
-namespace CreativeCoders.Config
+namespace CreativeCoders.Config;
+
+public class SettingsFactory<T> : ISettingsFactory<T>
+    where T : class
 {
-    public class SettingsFactory<T> : ISettingsFactory<T>
-        where T : class
+    private readonly IConfiguration _configuration;
+
+    public SettingsFactory(IConfiguration configuration)
     {
-        private readonly IConfiguration _configuration;
+        Ensure.IsNotNull(configuration, nameof(configuration));
 
-        public SettingsFactory(IConfiguration configuration)
-        {
-            Ensure.IsNotNull(configuration, nameof(configuration));
+        _configuration = configuration;
+    }
 
-            _configuration = configuration;
-        }
-
-        public IEnumerable<T> Create()
-        {
-            return _configuration.GetItems<T>();
-        }
+    public IEnumerable<T> Create()
+    {
+        return _configuration.GetItems<T>();
     }
 }

@@ -3,9 +3,9 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     mc:Ignorable="d">
-    
+
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    
+
     <!-- <fluentRibbon:RibbonItemTemplateSelector x:Key="ItemTemplateSelector"> -->
     <!--     <fluentRibbon:RibbonItemTemplateSelector.ButtonTemplate> -->
     <!--         <DataTemplate DataType="controls:RibbonButtonViewModel"> -->
@@ -31,5 +31,5 @@
     <!--     <Setter Property="ItemsSource" Value="{Binding Items}" /> -->
     <!--     <Setter Property="ItemTemplateSelector" Value="{StaticResource ItemTemplateSelector}" /> -->
     <!-- </Style> -->
-    
+
 </ResourceDictionary>

@@ -1,13 +1,12 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Core.Caching
+namespace CreativeCoders.Core.Caching;
+
+[PublicAPI]
+public interface ICachedValue<TValue>
 {
-    [PublicAPI]
-    public interface ICachedValue<TValue>
-    {
-        Task<TValue> GetValueAsync();
-        
-        TValue Value { get; }
-    }
+    Task<TValue> GetValueAsync();
+
+    TValue Value { get; }
 }

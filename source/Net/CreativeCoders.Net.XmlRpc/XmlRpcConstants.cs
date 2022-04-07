@@ -1,18 +1,17 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.XmlRpc
+namespace CreativeCoders.Net.XmlRpc;
+
+[PublicAPI]
+public static class XmlRpcConstants
 {
-    [PublicAPI]
-    public static class XmlRpcConstants
-    {
-        public const string DateTimeFormat = "yyyyMMddTHH:mm:ss";
+    public const string DateTimeFormat = "yyyyMMddTHH:mm:ss";
 
-        public const string MultiCallMethodName = "system.multicall";
+    public const string MultiCallMethodName = "system.multicall";
 
-        public const string ListMethodsMethodName = "system.listmethods";
+    public const string ListMethodsMethodName = "system.listmethods";
 
-        public const string FaultCode = "faultCode";
+    public const string FaultCode = "faultCode";
 
-        public const string FaultString = "faultString";
-    }
+    public const string FaultString = "faultString";
 }

@@ -4,55 +4,55 @@ using System.Linq;
 using System.Windows;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Wpf
+namespace CreativeCoders.Mvvm.Wpf;
+
+[PublicAPI]
+[ExcludeFromCodeCoverage]
+public class WindowHelper : IWindowHelper
 {
-    [PublicAPI]
-    [ExcludeFromCodeCoverage]
-    public class WindowHelper : IWindowHelper
+    public Window GetActiveWindow()
     {
-        public Window GetActiveWindow()
+        return Application.Current.Windows.Cast<Window>().SingleOrDefault(x => x.IsActive);
+    }
+
+    public Window FindOwnerWindow(object viewModel)
+    {
+        var owner = Application.Current.Windows.Cast<Window>()
+            .SingleOrDefault(x => x.DataContext == viewModel);
+
+        if (owner == null)
         {
-            return Application.Current.Windows.Cast<Window>().SingleOrDefault(x => x.IsActive);
+            foreach (var window in from Window window in Application.Current.Windows
+                     from frameworkElement in FindAllChildren<FrameworkElement>(window)
+                     where frameworkElement.DataContext == viewModel
+                     select window)
+            {
+                return window;
+            }
+        }
+        else
+        {
+            return owner;
         }
 
-        public Window FindOwnerWindow(object viewModel)
-        {
-            var owner = Application.Current.Windows.Cast<Window>().SingleOrDefault(x => x.DataContext == viewModel);
+        return GetActiveWindow();
+    }
 
-            if (owner == null)
+    public IEnumerable<T> FindAllChildren<T>(DependencyObject container)
+    {
+        foreach (var child in LogicalTreeHelper.GetChildren(container))
+        {
+            if (child is T children)
             {
-                foreach (var window in from Window window in Application.Current.Windows
-                    from frameworkElement in FindAllChildren<FrameworkElement>(window)
-                    where frameworkElement.DataContext == viewModel
-                    select window)
-                {
-                    return window;
-                }
-            }
-            else
-            {
-                return owner;
+                yield return children;
             }
 
-            return GetActiveWindow();
-        }
-
-        public IEnumerable<T> FindAllChildren<T>(DependencyObject container)
-        {
-            foreach (var child in LogicalTreeHelper.GetChildren(container))
+            // ReSharper disable once InvertIf
+            if (child is DependencyObject dependencyObject)
             {
-                if (child is T children)
+                foreach (var subChild in FindAllChildren<T>(dependencyObject))
                 {
-                    yield return children;
-                }
-
-                // ReSharper disable once InvertIf
-                if (child is DependencyObject dependencyObject)
-                {
-                    foreach (var subChild in FindAllChildren<T>(dependencyObject))
-                    {
-                        yield return subChild;
-                    }
+                    yield return subChild;
                 }
             }
         }

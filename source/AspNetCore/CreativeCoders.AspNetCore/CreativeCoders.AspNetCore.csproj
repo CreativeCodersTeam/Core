@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<Description>General purpose classes and types for ASP.NET Core</Description>
 		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>

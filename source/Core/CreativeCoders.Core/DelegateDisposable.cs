@@ -1,33 +1,32 @@
 ﻿using System;
 
-namespace CreativeCoders.Core
+namespace CreativeCoders.Core;
+
+public class DelegateDisposable : IDisposable
 {
-    public class DelegateDisposable : IDisposable
+    private readonly Action _dispose;
+
+    private readonly bool _onlyDisposeOnce;
+
+    private bool _isDisposed;
+
+    public DelegateDisposable(Action dispose, bool onlyDisposeOnce)
     {
-        private readonly Action _dispose;
-        
-        private readonly bool _onlyDisposeOnce;
+        Ensure.IsNotNull(dispose, nameof(dispose));
 
-        private bool _isDisposed;
+        _dispose = dispose;
+        _onlyDisposeOnce = onlyDisposeOnce;
+    }
 
-        public DelegateDisposable(Action dispose, bool onlyDisposeOnce)
+    public void Dispose()
+    {
+        if (_onlyDisposeOnce && _isDisposed)
         {
-            Ensure.IsNotNull(dispose, nameof(dispose));
-            
-            _dispose = dispose;
-            _onlyDisposeOnce = onlyDisposeOnce;
+            return;
         }
-        
-        public void Dispose()
-        {
-            if (_onlyDisposeOnce && _isDisposed)
-            {
-                return;
-            }
 
-            _isDisposed = true;
+        _isDisposed = true;
 
-            _dispose();
-        }
+        _dispose();
     }
 }

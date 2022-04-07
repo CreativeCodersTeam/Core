@@ -1,13 +1,12 @@
 ﻿using Nuke.Common.Tools.DotNet;
 
-namespace CreativeCoders.NukeBuild.BuildActions
+namespace CreativeCoders.NukeBuild.BuildActions;
+
+public class RestoreBuildAction : BuildActionBase<RestoreBuildAction>
 {
-    public class RestoreBuildAction : BuildActionBase<RestoreBuildAction>
+    protected override void OnExecute()
     {
-        protected override void OnExecute()
-        {
-            DotNetTasks.DotNetRestore(s => s
-                .SetProjectFile(BuildInfo.Solution));
-        }
+        DotNetTasks.DotNetRestore(s => s
+            .SetProjectFile(BuildInfo.Solution));
     }
 }

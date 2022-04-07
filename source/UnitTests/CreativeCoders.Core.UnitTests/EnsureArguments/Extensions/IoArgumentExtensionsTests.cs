@@ -8,239 +8,238 @@ using FluentAssertions;
 using Xunit;
 
 #nullable enable
-namespace CreativeCoders.Core.UnitTests.EnsureArguments.Extensions
+namespace CreativeCoders.Core.UnitTests.EnsureArguments.Extensions;
+
+[Collection("FileSys")]
+public class IoArgumentExtensionsTests
 {
-    [Collection("FileSys")]
-    public class IoArgumentExtensionsTests
+    [Fact]
+    public void FileExists_ExistingFileName_ReturnsArgument()
     {
-        [Fact]
-        public void FileExists_ExistingFileName_ReturnsArgument()
-        {
-            const string fileName = @"C:\temp_dir\test.txt";
+        const string fileName = @"C:\temp_dir\test.txt";
 
-            var mockFileSystem = new MockFileSystemEx(
-                new Dictionary<string, MockFileData>
-                {
-                    {fileName, MockFileData.NullObject}
-                },
-                @"C:\");
+        var mockFileSystem = new MockFileSystemEx(
+            new Dictionary<string, MockFileData>
+            {
+                {fileName, MockFileData.NullObject}
+            },
+            @"C:\");
 
-            mockFileSystem.Install();
+        mockFileSystem.Install();
 
-            // Act
-            var argument = Ensure.Argument(fileName, nameof(fileName)).FileExists();
+        // Act
+        var argument = Ensure.Argument(fileName, nameof(fileName)).FileExists();
 
-            // Assert
-            argument
-                .Should()
-                .BeOfType<ArgumentNotNull<string>>();
+        // Assert
+        argument
+            .Should()
+            .BeOfType<ArgumentNotNull<string>>();
 
-            argument.Value
-                .Should()
-                .Be(fileName);
-        }
+        argument.Value
+            .Should()
+            .Be(fileName);
+    }
 
-        [Fact]
-        public void FileExists_NotExistingFileName_ThrowsException()
-        {
-            const string fileName = @"C:\temp_dir\test.txt";
+    [Fact]
+    public void FileExists_NotExistingFileName_ThrowsException()
+    {
+        const string fileName = @"C:\temp_dir\test.txt";
 
-            var mockFileSystem = new MockFileSystemEx(
-                new Dictionary<string, MockFileData>(),
-                @"C:\");
+        var mockFileSystem = new MockFileSystemEx(
+            new Dictionary<string, MockFileData>(),
+            @"C:\");
 
-            mockFileSystem.Install();
+        mockFileSystem.Install();
 
-            // Act
-            Action act = () => Ensure.Argument(fileName, nameof(fileName)).FileExists();
+        // Act
+        Action act = () => Ensure.Argument(fileName, nameof(fileName)).FileExists();
 
-            // Assert
-            act
-                .Should()
-                .Throw<FileNotFoundException>();
-        }
+        // Assert
+        act
+            .Should()
+            .Throw<FileNotFoundException>();
+    }
 
-        [Fact]
-        public void FileExists_ArgNotNullExistingFileName_ReturnsArgument()
-        {
-            const string fileName = @"C:\temp_dir\test.txt";
+    [Fact]
+    public void FileExists_ArgNotNullExistingFileName_ReturnsArgument()
+    {
+        const string fileName = @"C:\temp_dir\test.txt";
 
-            var mockFileSystem = new MockFileSystemEx(
-                new Dictionary<string, MockFileData>
-                {
-                    {fileName, MockFileData.NullObject}
-                },
-                @"C:\");
+        var mockFileSystem = new MockFileSystemEx(
+            new Dictionary<string, MockFileData>
+            {
+                {fileName, MockFileData.NullObject}
+            },
+            @"C:\");
 
-            mockFileSystem.Install();
+        mockFileSystem.Install();
 
-            // Act
-            var argument = Ensure.Argument(fileName, nameof(fileName)).NotNull().FileExists();
+        // Act
+        var argument = Ensure.Argument(fileName, nameof(fileName)).NotNull().FileExists();
 
-            // Assert
-            argument
-                .Should()
-                .BeOfType<ArgumentNotNull<string>>();
+        // Assert
+        argument
+            .Should()
+            .BeOfType<ArgumentNotNull<string>>();
 
-            argument.Value
-                .Should()
-                .Be(fileName);
-        }
+        argument.Value
+            .Should()
+            .Be(fileName);
+    }
 
-        [Fact]
-        public void FileExists_ArgNotNullNotExistingFileName_ThrowsException()
-        {
-            const string fileName = @"C:\temp_dir\test.txt";
+    [Fact]
+    public void FileExists_ArgNotNullNotExistingFileName_ThrowsException()
+    {
+        const string fileName = @"C:\temp_dir\test.txt";
 
-            var mockFileSystem = new MockFileSystemEx(
-                new Dictionary<string, MockFileData>(),
-                @"C:\");
+        var mockFileSystem = new MockFileSystemEx(
+            new Dictionary<string, MockFileData>(),
+            @"C:\");
 
-            mockFileSystem.Install();
+        mockFileSystem.Install();
 
-            // Act
-            Action act = () => Ensure.Argument(fileName, nameof(fileName)).NotNull().FileExists();
+        // Act
+        Action act = () => Ensure.Argument(fileName, nameof(fileName)).NotNull().FileExists();
 
-            // Assert
-            act
-                .Should()
-                .Throw<FileNotFoundException>();
-        }
+        // Assert
+        act
+            .Should()
+            .Throw<FileNotFoundException>();
+    }
 
-        [Fact]
-        public void FileExists_NullFileName_ThrowsException()
-        {
-            const string? fileName = null;
+    [Fact]
+    public void FileExists_NullFileName_ThrowsException()
+    {
+        const string? fileName = null;
 
-            var mockFileSystem = new MockFileSystemEx(
-                new Dictionary<string, MockFileData>(),
-                @"C:\");
+        var mockFileSystem = new MockFileSystemEx(
+            new Dictionary<string, MockFileData>(),
+            @"C:\");
 
-            mockFileSystem.Install();
+        mockFileSystem.Install();
 
-            // Act
-            Action act = () => Ensure.Argument(fileName, nameof(fileName)).FileExists();
+        // Act
+        Action act = () => Ensure.Argument(fileName, nameof(fileName)).FileExists();
 
-            // Assert
-            act
-                .Should()
-                .Throw<ArgumentNullException>();
-        }
+        // Assert
+        act
+            .Should()
+            .Throw<ArgumentNullException>();
+    }
 
-        [Fact]
-        public void DirectoryExists_ExistingDirectoryName_ReturnsArgument()
-        {
-            const string fileName = @"C:\temp_dir\test.txt";
-            var directoryName = FileSys.Path.GetDirectoryName(fileName);
+    [Fact]
+    public void DirectoryExists_ExistingDirectoryName_ReturnsArgument()
+    {
+        const string fileName = @"C:\temp_dir\test.txt";
+        var directoryName = FileSys.Path.GetDirectoryName(fileName);
 
-            var mockFileSystem = new MockFileSystemEx(
-                new Dictionary<string, MockFileData>
-                {
-                    {fileName, MockFileData.NullObject}
-                },
-                @"C:\");
+        var mockFileSystem = new MockFileSystemEx(
+            new Dictionary<string, MockFileData>
+            {
+                {fileName, MockFileData.NullObject}
+            },
+            @"C:\");
 
-            mockFileSystem.Install();
+        mockFileSystem.Install();
 
-            // Act
-            var argument = Ensure.Argument(directoryName, nameof(directoryName)).DirectoryExists();
+        // Act
+        var argument = Ensure.Argument(directoryName, nameof(directoryName)).DirectoryExists();
 
-            // Assert
-            argument
-                .Should()
-                .BeOfType<ArgumentNotNull<string>>();
+        // Assert
+        argument
+            .Should()
+            .BeOfType<ArgumentNotNull<string>>();
 
-            argument.Value
-                .Should()
-                .Be(directoryName);
-        }
+        argument.Value
+            .Should()
+            .Be(directoryName);
+    }
 
-        [Fact]
-        public void DirectoryExists_NotExistingDirectoryName_ThrowsException()
-        {
-            const string directoryName = @"C:\Temp12";
+    [Fact]
+    public void DirectoryExists_NotExistingDirectoryName_ThrowsException()
+    {
+        const string directoryName = @"C:\Temp12";
 
-            var mockFileSystem = new MockFileSystemEx(
-                new Dictionary<string, MockFileData>(),
-                @"C:\");
+        var mockFileSystem = new MockFileSystemEx(
+            new Dictionary<string, MockFileData>(),
+            @"C:\");
 
-            mockFileSystem.Install();
+        mockFileSystem.Install();
 
-            // Act
-            Action act = () => Ensure.Argument(directoryName, nameof(directoryName)).DirectoryExists();
+        // Act
+        Action act = () => Ensure.Argument(directoryName, nameof(directoryName)).DirectoryExists();
 
-            // Assert
-            act
-                .Should()
-                .Throw<DirectoryNotFoundException>();
-        }
+        // Assert
+        act
+            .Should()
+            .Throw<DirectoryNotFoundException>();
+    }
 
-        [Fact]
-        public void DirectoryExists_ArgNotNullExistingDirectoryName_ReturnsArgument()
-        {
-            const string fileName = @"C:\temp_dir\test.txt";
-            var directoryName = FileSys.Path.GetDirectoryName(fileName);
+    [Fact]
+    public void DirectoryExists_ArgNotNullExistingDirectoryName_ReturnsArgument()
+    {
+        const string fileName = @"C:\temp_dir\test.txt";
+        var directoryName = FileSys.Path.GetDirectoryName(fileName);
 
-            var mockFileSystem = new MockFileSystemEx(
-                new Dictionary<string, MockFileData>
-                {
-                    {fileName, MockFileData.NullObject}
-                },
-                @"C:\");
+        var mockFileSystem = new MockFileSystemEx(
+            new Dictionary<string, MockFileData>
+            {
+                {fileName, MockFileData.NullObject}
+            },
+            @"C:\");
 
-            mockFileSystem.Install();
+        mockFileSystem.Install();
 
-            // Act
-            var argument = Ensure.Argument(directoryName, nameof(directoryName)).NotNull().DirectoryExists();
+        // Act
+        var argument = Ensure.Argument(directoryName, nameof(directoryName)).NotNull().DirectoryExists();
 
-            // Assert
-            argument
-                .Should()
-                .BeOfType<ArgumentNotNull<string>>();
+        // Assert
+        argument
+            .Should()
+            .BeOfType<ArgumentNotNull<string>>();
 
-            argument.Value
-                .Should()
-                .Be(directoryName);
-        }
+        argument.Value
+            .Should()
+            .Be(directoryName);
+    }
 
-        [Fact]
-        public void DirectoryExists_ArgNotNullNotExistingDirectoryName_ThrowsException()
-        {
-            const string directoryName = @"C:\Temp12";
+    [Fact]
+    public void DirectoryExists_ArgNotNullNotExistingDirectoryName_ThrowsException()
+    {
+        const string directoryName = @"C:\Temp12";
 
-            var mockFileSystem = new MockFileSystemEx(
-                new Dictionary<string, MockFileData>(),
-                @"C:\");
+        var mockFileSystem = new MockFileSystemEx(
+            new Dictionary<string, MockFileData>(),
+            @"C:\");
 
-            mockFileSystem.Install();
+        mockFileSystem.Install();
 
-            // Act
-            Action act = () => Ensure.Argument(directoryName, nameof(directoryName)).NotNull().DirectoryExists();
+        // Act
+        Action act = () => Ensure.Argument(directoryName, nameof(directoryName)).NotNull().DirectoryExists();
 
-            // Assert
-            act
-                .Should()
-                .Throw<DirectoryNotFoundException>();
-        }
+        // Assert
+        act
+            .Should()
+            .Throw<DirectoryNotFoundException>();
+    }
 
-        [Fact]
-        public void DirectoryExists_NullDirectoryName_ThrowsException()
-        {
-            const string? directoryName = null;
+    [Fact]
+    public void DirectoryExists_NullDirectoryName_ThrowsException()
+    {
+        const string? directoryName = null;
 
-            var mockFileSystem = new MockFileSystemEx(
-                new Dictionary<string, MockFileData>(),
-                @"C:\");
+        var mockFileSystem = new MockFileSystemEx(
+            new Dictionary<string, MockFileData>(),
+            @"C:\");
 
-            mockFileSystem.Install();
+        mockFileSystem.Install();
 
-            // Act
-            Action act = () => Ensure.Argument(directoryName, nameof(directoryName)).DirectoryExists();
+        // Act
+        Action act = () => Ensure.Argument(directoryName, nameof(directoryName)).DirectoryExists();
 
-            // Assert
-            act
-                .Should()
-                .Throw<ArgumentNullException>();
-        }
+        // Assert
+        act
+            .Should()
+            .Throw<ArgumentNullException>();
     }
 }

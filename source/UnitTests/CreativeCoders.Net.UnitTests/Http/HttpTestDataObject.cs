@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Net.UnitTests.Http
+﻿namespace CreativeCoders.Net.UnitTests.Http;
+
+public class HttpTestDataObject
 {
-    public class HttpTestDataObject
-    {
-        public string TestProperty { get; set; }
-    }
+    public string TestProperty { get; init; }
 }

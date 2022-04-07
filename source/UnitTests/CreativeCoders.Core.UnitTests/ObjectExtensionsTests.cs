@@ -4,164 +4,163 @@ using CreativeCoders.UnitTests;
 using FakeItEasy;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests
+namespace CreativeCoders.Core.UnitTests;
+
+public class ObjectExtensionsTests
 {
-    public class ObjectExtensionsTests
+    [Fact]
+    public void ToStringSafe_InstanceIsNull_ReturnsEmptyString()
     {
-        [Fact]
-        public void ToStringSafe_InstanceIsNull_ReturnsEmptyString()
-        {
-            var result = ((object) null).ToStringSafe();
+        var result = ((object) null).ToStringSafe();
 
-            Assert.Equal(string.Empty, result);
-        }
+        Assert.Equal(string.Empty, result);
+    }
 
-        [Fact]
-        public void ToStringSafe_InstanceIsNullAndDefaultIsGiven_ReturnsDefaultValue()
-        {
-            const string text = "This is a test";
+    [Fact]
+    public void ToStringSafe_InstanceIsNullAndDefaultIsGiven_ReturnsDefaultValue()
+    {
+        const string text = "This is a test";
 
-            var result = ((object) null).ToStringSafe(text);
+        var result = ((object) null).ToStringSafe(text);
 
-            Assert.Equal(text, result);
-        }
+        Assert.Equal(text, result);
+    }
 
-        [Fact]
-        public void ToStringSafe_InstanceIsInteger_ReturnsIntegerValueAsString()
-        {
-            const int value = 1234;
+    [Fact]
+    public void ToStringSafe_InstanceIsInteger_ReturnsIntegerValueAsString()
+    {
+        const int value = 1234;
 
-            var result = value.ToStringSafe();
+        var result = value.ToStringSafe();
 
-            Assert.Equal("1234", result);
-        }
+        Assert.Equal("1234", result);
+    }
 
-        [Fact]
-        public void ToStringSafe_InstanceIsIntegerDefaultIsGiven_ReturnsIntegerValueAsString()
-        {
-            const int value = 1234;
+    [Fact]
+    public void ToStringSafe_InstanceIsIntegerDefaultIsGiven_ReturnsIntegerValueAsString()
+    {
+        const int value = 1234;
 
-            var result = value.ToStringSafe("Test");
+        var result = value.ToStringSafe("Test");
 
-            Assert.Equal("1234", result);
-        }
+        Assert.Equal("1234", result);
+    }
 
-        [Fact]
-        public void As_WithDefaultValueInteger_ReturnsInteger()
-        {
-            object obj = 123;
+    [Fact]
+    public void As_WithDefaultValueInteger_ReturnsInteger()
+    {
+        object obj = 123;
 
-            var intValue = obj.As(1);
-            
-            Assert.IsType<int>(intValue);
-            Assert.Equal(123, intValue);
-        }
-        
-        [Fact]
-        public void As_Integer_ReturnsInteger()
-        {
-            object obj = 123;
+        var intValue = obj.As(1);
 
-            var intValue = obj.As<int>();
-            
-            Assert.IsType<int>(intValue);
-            Assert.Equal(123, intValue);
-        }
-        
-        [Fact]
-        public void As_WithDefaultValueObject_ReturnsDefaultValue()
-        {
-            var obj = new object();
+        Assert.IsType<int>(intValue);
+        Assert.Equal(123, intValue);
+    }
 
-            var intValue = obj.As(1);
-            
-            Assert.IsType<int>(intValue);
-            Assert.Equal(1, intValue);
-        }
-        
-        [Fact]
-        public void As_Object_ReturnsDefaultValue()
-        {
-            var obj = new object();
+    [Fact]
+    public void As_Integer_ReturnsInteger()
+    {
+        object obj = 123;
 
-            var intValue = obj.As<int>();
-            
-            Assert.IsType<int>(intValue);
-            Assert.Equal(0, intValue);
-        }
+        var intValue = obj.As<int>();
 
-        [Fact]
-        public async Task TryDisposeAsync_AsyncDisposable_DisposeAsyncIsCalled()
-        {
-            var instance = A.Fake<IAsyncDisposable>();
+        Assert.IsType<int>(intValue);
+        Assert.Equal(123, intValue);
+    }
 
-            A.CallTo(() => instance.DisposeAsync()).Returns(new ValueTask());
-            
-            await instance.TryDisposeAsync();
-            
-            A.CallTo(() => instance.DisposeAsync()).MustHaveHappenedOnceExactly();
-        }
-        
-        [Fact]
-        public async Task TryDisposeAsync_Disposable_DisposeIsCalled()
-        {
-            var instance = A.Fake<IDisposable>();
-            
-            await instance.TryDisposeAsync();
-            
-            A.CallTo(() => instance.Dispose()).MustHaveHappenedOnceExactly();
-        }
-        
-        [Fact]
-        public async Task TryDisposeAsync_AsyncDisposableAndDisposable_DisposeAsyncIsCalled()
-        {
-            var instance = A.Fake<IAsyncDisposable>(x => x.Implements<IDisposable>());
-            var disposable = instance as IDisposable;
-            
-            A.CallTo(() => instance.DisposeAsync()).Returns(new ValueTask());
-            
-            await instance.TryDisposeAsync();
-            
-            A.CallTo(() => instance.DisposeAsync()).MustHaveHappenedOnceExactly();
-            A.CallTo(() => disposable.Dispose()).MustNotHaveHappened();
-        }
+    [Fact]
+    public void As_WithDefaultValueObject_ReturnsDefaultValue()
+    {
+        var obj = new object();
 
-        [Fact]
-        public void GetPropertyValue_ReadFromExistingProperty_ReturnsPropertyValue()
-        {
-            const string expectedData = "TestText";
+        var intValue = obj.As(1);
 
-            var instance = new UnitTestDemoObject {Text = expectedData};
+        Assert.IsType<int>(intValue);
+        Assert.Equal(1, intValue);
+    }
 
-            Assert.Equal(expectedData, instance.GetPropertyValue<string>(nameof(instance.Text)));
-        }
+    [Fact]
+    public void As_Object_ReturnsDefaultValue()
+    {
+        var obj = new object();
 
-        [Fact]
-        public void GetPropertyValue_ReadFromNotExistingProperty_ThrowsMissingMemberException()
-        {
-            var instance = new object();
+        var intValue = obj.As<int>();
 
-            Assert.Throws<MissingMemberException>(() => instance.GetPropertyValue<string>("Text"));
-        }
+        Assert.IsType<int>(intValue);
+        Assert.Equal(0, intValue);
+    }
 
-        [Fact]
-        public void SetPropertyValue_WriteToExistingProperty_PropertyValueIsSet()
-        {
-            const string expectedData = "TestText";
+    [Fact]
+    public async Task TryDisposeAsync_AsyncDisposable_DisposeAsyncIsCalled()
+    {
+        var instance = A.Fake<IAsyncDisposable>();
 
-            var instance = new UnitTestDemoObject();
+        A.CallTo(() => instance.DisposeAsync()).Returns(new ValueTask());
 
-            instance.SetPropertyValue(nameof(instance.Text), expectedData);
+        await instance.TryDisposeAsync();
 
-            Assert.Equal(expectedData, instance.Text);
-        }
+        A.CallTo(() => instance.DisposeAsync()).MustHaveHappenedOnceExactly();
+    }
 
-        [Fact]
-        public void SetPropertyValue_WriteToNotExistingProperty_ThrowsMissingMemberException()
-        {
-            var instance = new object();
+    [Fact]
+    public async Task TryDisposeAsync_Disposable_DisposeIsCalled()
+    {
+        var instance = A.Fake<IDisposable>();
 
-            Assert.Throws<MissingMemberException>(() => instance.SetPropertyValue("Text", string.Empty));
-        }
+        await instance.TryDisposeAsync();
+
+        A.CallTo(() => instance.Dispose()).MustHaveHappenedOnceExactly();
+    }
+
+    [Fact]
+    public async Task TryDisposeAsync_AsyncDisposableAndDisposable_DisposeAsyncIsCalled()
+    {
+        var instance = A.Fake<IAsyncDisposable>(x => x.Implements<IDisposable>());
+        var disposable = instance as IDisposable;
+
+        A.CallTo(() => instance.DisposeAsync()).Returns(new ValueTask());
+
+        await instance.TryDisposeAsync();
+
+        A.CallTo(() => instance.DisposeAsync()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => disposable.Dispose()).MustNotHaveHappened();
+    }
+
+    [Fact]
+    public void GetPropertyValue_ReadFromExistingProperty_ReturnsPropertyValue()
+    {
+        const string expectedData = "TestText";
+
+        var instance = new UnitTestDemoObject {Text = expectedData};
+
+        Assert.Equal(expectedData, instance.GetPropertyValue<string>(nameof(instance.Text)));
+    }
+
+    [Fact]
+    public void GetPropertyValue_ReadFromNotExistingProperty_ThrowsMissingMemberException()
+    {
+        var instance = new object();
+
+        Assert.Throws<MissingMemberException>(() => instance.GetPropertyValue<string>("Text"));
+    }
+
+    [Fact]
+    public void SetPropertyValue_WriteToExistingProperty_PropertyValueIsSet()
+    {
+        const string expectedData = "TestText";
+
+        var instance = new UnitTestDemoObject();
+
+        instance.SetPropertyValue(nameof(instance.Text), expectedData);
+
+        Assert.Equal(expectedData, instance.Text);
+    }
+
+    [Fact]
+    public void SetPropertyValue_WriteToNotExistingProperty_ThrowsMissingMemberException()
+    {
+        var instance = new object();
+
+        Assert.Throws<MissingMemberException>(() => instance.SetPropertyValue("Text", string.Empty));
     }
 }

@@ -3,100 +3,99 @@ using FluentAssertions;
 using Xunit;
 
 #nullable enable
-namespace CreativeCoders.Core.UnitTests.EnsureArguments.Extensions
+namespace CreativeCoders.Core.UnitTests.EnsureArguments.Extensions;
+
+public class NullArgumentExtensionsTests
 {
-    public class NullArgumentExtensionsTests
+    [Fact]
+    public void NotNull_ValueNotNull_ReturnsArgumentNotNull()
     {
-        [Fact]
-        public void NotNull_ValueNotNull_ReturnsArgumentNotNull()
-        {
-            const string testValue = "Test";
+        const string testValue = "Test";
 
-            // Act
-            var argument = Ensure.Argument(testValue, nameof(testValue)).NotNull();
+        // Act
+        var argument = Ensure.Argument(testValue, nameof(testValue)).NotNull();
 
-            // Assert
-            argument
-                .Should()
-                .BeOfType<ArgumentNotNull<string>>();
-            
-            argument.Value
-                .Should()
-                .Be(testValue);
-        }
+        // Assert
+        argument
+            .Should()
+            .BeOfType<ArgumentNotNull<string>>();
 
-        [Fact]
-        public void NotNull_ValueIsNull_ThrowsException()
-        {
-            string? testValue = null;
+        argument.Value
+            .Should()
+            .Be(testValue);
+    }
 
-            // Act
-            Action act = () => Ensure.Argument(testValue, nameof(testValue)).NotNull();
+    [Fact]
+    public void NotNull_ValueIsNull_ThrowsException()
+    {
+        string? testValue = null;
 
-            // Assert
-            act
-                .Should()
-                .Throw<ArgumentNullException>();
-        }
+        // Act
+        Action act = () => Ensure.Argument(testValue, nameof(testValue)).NotNull();
 
-        [Fact]
-        public void NotNull_WithMessageValueIsNull_ThrowsException()
-        {
-            const string message = "TestMessage";
-            string? testValue = null;
+        // Assert
+        act
+            .Should()
+            .Throw<ArgumentNullException>();
+    }
 
-            // Act
-            Action act = () => Ensure.Argument(testValue, nameof(testValue)).NotNull(message);
+    [Fact]
+    public void NotNull_WithMessageValueIsNull_ThrowsException()
+    {
+        const string message = "TestMessage";
+        string? testValue = null;
 
-            // Assert
-            act
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithMessage(ExceptionHelper.GetMessage(message, nameof(testValue)));
-        }
+        // Act
+        Action act = () => Ensure.Argument(testValue, nameof(testValue)).NotNull(message);
 
-        [Fact]
-        public void Null_ValueNull_ReturnsNull()
-        {
-            const string? testValue = null;
+        // Assert
+        act
+            .Should()
+            .Throw<ArgumentNullException>()
+            .WithMessage(ExceptionHelper.GetMessage(message, nameof(testValue)));
+    }
 
-            // Act
-            var value = Ensure.Argument(testValue, nameof(testValue)).Null();
+    [Fact]
+    public void Null_ValueNull_ReturnsNull()
+    {
+        const string? testValue = null;
 
-            // Assert
-            value
-                .Should()
-                .BeNull();
-        }
+        // Act
+        var value = Ensure.Argument(testValue, nameof(testValue)).Null();
 
-        [Fact]
-        public void Null_ValueIsNotNull_ThrowsException()
-        {
-            const string testValue = "TestText";
+        // Assert
+        value
+            .Should()
+            .BeNull();
+    }
 
-            // Act
-            Action act = () => Ensure.Argument(testValue, nameof(testValue)).Null();
+    [Fact]
+    public void Null_ValueIsNotNull_ThrowsException()
+    {
+        const string testValue = "TestText";
 
-            // Assert
-            act
-                .Should()
-                .Throw<ArgumentException>();
-        }
+        // Act
+        Action act = () => Ensure.Argument(testValue, nameof(testValue)).Null();
 
-        [Fact]
-        public void Null_WithMessageValueIsNotNull_ThrowsException()
-        {
-            const string message = "TestMessage";
-            const string testValue = "TestText";
+        // Assert
+        act
+            .Should()
+            .Throw<ArgumentException>();
+    }
 
-            // Act
-            Action act = () => Ensure.Argument(testValue, nameof(testValue)).Null(message);
+    [Fact]
+    public void Null_WithMessageValueIsNotNull_ThrowsException()
+    {
+        const string message = "TestMessage";
+        const string testValue = "TestText";
 
-            // Assert
-            act
-                .Should()
-                .Throw<ArgumentException>()
-                .WithMessage(ExceptionHelper.GetMessage(message, nameof(testValue)));
-        }
+        // Act
+        Action act = () => Ensure.Argument(testValue, nameof(testValue)).Null(message);
+
+        // Assert
+        act
+            .Should()
+            .Throw<ArgumentException>()
+            .WithMessage(ExceptionHelper.GetMessage(message, nameof(testValue)));
     }
 }

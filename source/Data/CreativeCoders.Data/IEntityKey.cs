@@ -1,7 +1,9 @@
-﻿namespace CreativeCoders.Data
+﻿using JetBrains.Annotations;
+
+namespace CreativeCoders.Data;
+
+[PublicAPI]
+public interface IEntityKey<out TKey>
 {
-    public interface IEntityKey<out TKey>
-    {
-        TKey Id { get; }
-    }
+    TKey Id { get; }
 }

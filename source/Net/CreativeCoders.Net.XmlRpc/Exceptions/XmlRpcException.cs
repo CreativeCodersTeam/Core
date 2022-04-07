@@ -1,11 +1,8 @@
 ﻿using System;
 
-namespace CreativeCoders.Net.XmlRpc.Exceptions
+namespace CreativeCoders.Net.XmlRpc.Exceptions;
+
+public abstract class XmlRpcException : Exception
 {
-    public abstract class XmlRpcException : Exception
-    {
-        protected XmlRpcException(string message) : base(message)
-        {
-        }
-    }
+    protected XmlRpcException(string message) : base(message) { }
 }

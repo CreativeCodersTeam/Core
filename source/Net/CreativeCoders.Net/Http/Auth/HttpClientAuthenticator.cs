@@ -2,14 +2,13 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace CreativeCoders.Net.Http.Auth
+namespace CreativeCoders.Net.Http.Auth;
+
+public interface IHttpClientAuthenticator
 {
-    public interface IHttpClientAuthenticator
-    {
-        Task AuthenticateAsync(Uri requestUri);
+    Task AuthenticateAsync(Uri requestUri);
 
-        void PrepareHttpRequest(HttpRequestMessage httpRequest);
+    void PrepareHttpRequest(HttpRequestMessage httpRequest);
 
-        bool CanAuthenticate(Uri requestUri);
-    }
+    bool CanAuthenticate(Uri requestUri);
 }

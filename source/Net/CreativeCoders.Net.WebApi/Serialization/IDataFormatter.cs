@@ -1,13 +1,12 @@
-﻿namespace CreativeCoders.Net.WebApi.Serialization
+﻿namespace CreativeCoders.Net.WebApi.Serialization;
+
+public interface IDataFormatter
 {
-    public interface IDataFormatter
-    {
-        IDataDeserializer GetDeserializer();
+    IDataDeserializer GetDeserializer();
 
-        IDataSerializer GetSerializer();
+    IDataSerializer GetSerializer();
 
-        string ContentMediaType { get; }
+    string ContentMediaType { get; }
 
-        string Name { get; }
-    }
+    string Name { get; }
 }

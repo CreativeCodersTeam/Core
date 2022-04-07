@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Config.Base
+﻿namespace CreativeCoders.Config.Base;
+
+public interface IConfigurationInitializer
 {
-    public interface IConfigurationInitializer
-    {
-        void Configure(IConfiguration configuration);
-    }
+    void Configure(IConfiguration configuration);
 }

@@ -3,38 +3,37 @@ using System.Linq;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Visitors;
 
-namespace CreativeCoders.Scripting.CSharp.SourceCodeGenerator
+namespace CreativeCoders.Scripting.CSharp.SourceCodeGenerator;
+
+public class ClassSyntaxTreeNode : IVisitableSubItems
 {
-    public class ClassSyntaxTreeNode : IVisitableSubItems
+    private readonly IList<ClassSyntaxTreeNode> _subNodes;
+
+    private IVisitable _asVisitable;
+
+    public ClassSyntaxTreeNode()
     {
-        private readonly IList<ClassSyntaxTreeNode> _subNodes;
+        _subNodes = new List<ClassSyntaxTreeNode>();
+    }
 
-        private IVisitable _asVisitable;
+    public void AddSubNode(ClassSyntaxTreeNode subNode)
+    {
+        Ensure.IsNotNull(subNode, nameof(subNode));
 
-        public ClassSyntaxTreeNode()
-        {
-            _subNodes = new List<ClassSyntaxTreeNode>();
-        }
+        _subNodes.Add(subNode);
+    }
 
-        public void AddSubNode(ClassSyntaxTreeNode subNode)
-        {
-            Ensure.IsNotNull(subNode, nameof(subNode));
+    protected virtual IVisitable GetAsVisitable()
+    {
+        return new VisitableAction<SyntaxSourceCodeEmitVisitor>(null);
+    }
 
-            _subNodes.Add(subNode);
-        }
+    public IVisitable AsVisitable => _asVisitable ??= GetAsVisitable();
 
-        protected virtual IVisitable GetAsVisitable()
-        {
-            return new VisitableAction<SyntaxSourceCodeEmitVisitor>(null);
-        }
+    public IEnumerable<ClassSyntaxTreeNode> SubNodes => _subNodes;
 
-        public IVisitable AsVisitable => _asVisitable ??= GetAsVisitable();
-
-        public IEnumerable<ClassSyntaxTreeNode> SubNodes => _subNodes;
-
-        public IEnumerable<IVisitable> GetVisitableSubItems()
-        {
-            return _subNodes.Select(subNode => subNode.AsVisitable);
-        }
+    public IEnumerable<IVisitable> GetVisitableSubItems()
+    {
+        return _subNodes.Select(subNode => subNode.AsVisitable);
     }
 }

@@ -1,14 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>WinExe</OutputType>
-        <TargetFramework>net5.0-windows</TargetFramework>
-        <UseWPF>true</UseWPF>
-        <IsPackable>false</IsPackable>
-    </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\Mvvm\CreativeCoders.Mvvm.Ribbon.FluentRibbon\CreativeCoders.Mvvm.Ribbon.FluentRibbon.csproj" />
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference
+			Include="..\..\Mvvm\CreativeCoders.Mvvm.Ribbon.FluentRibbon\CreativeCoders.Mvvm.Ribbon.FluentRibbon.csproj" />
+	</ItemGroup>
 
 </Project>

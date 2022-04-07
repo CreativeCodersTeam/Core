@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Reflection;
 
-namespace CreativeCoders.Core.Reflection
+namespace CreativeCoders.Core.Reflection;
+
+public static class ParameterInfoExtensions
 {
-    public static class ParameterInfoExtensions
+    public static bool IsParams(this ParameterInfo parameterInfo)
     {
-        public static bool IsParams(this ParameterInfo parameterInfo)
-        {
-            return parameterInfo.IsDefined(typeof(ParamArrayAttribute), false);
-        }
+        return parameterInfo.IsDefined(typeof(ParamArrayAttribute), false);
     }
 }

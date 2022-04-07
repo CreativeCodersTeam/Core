@@ -1,10 +1,9 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Messaging.Core
+namespace CreativeCoders.Messaging.Core;
+
+[PublicAPI]
+public interface IMessageQueueFactory
 {
-    [PublicAPI]
-    public interface IMessageQueueFactory
-    {
-        IMessageQueue<T> Create<T>(int maxQueueLength);
-    }
+    IMessageQueue<T> Create<T>(int maxQueueLength);
 }

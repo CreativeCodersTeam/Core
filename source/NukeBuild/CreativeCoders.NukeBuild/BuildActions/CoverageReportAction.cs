@@ -1,48 +1,49 @@
 ﻿using CreativeCoders.Core.SysEnvironment;
+using JetBrains.Annotations;
 using Nuke.Common.Tools.ReportGenerator;
 
-namespace CreativeCoders.NukeBuild.BuildActions
+namespace CreativeCoders.NukeBuild.BuildActions;
+
+[PublicAPI]
+public class CoverageReportAction : BuildActionBase<CoverageReportAction>
 {
-    public class CoverageReportAction : BuildActionBase<CoverageReportAction>
+    private string _framework;
+
+    private string[] _reports;
+
+    private string _targetDirectory;
+
+    public CoverageReportAction()
     {
-        private string _framework;
+        _framework = $"net{Env.Version.Major}.0";
+    }
 
-        private string[] _reports;
+    protected override void OnExecute()
+    {
+        ReportGeneratorTasks.ReportGenerator(x => x
+            .SetFramework(_framework)
+            .SetReports(_reports)
+            .SetTargetDirectory(_targetDirectory));
+    }
 
-        private string _targetDirectory;
+    public CoverageReportAction SetFramework(string framework)
+    {
+        _framework = framework;
 
-        public CoverageReportAction()
-        {
-            _framework = $"net{Env.Version.Major}.0";
-        }
+        return this;
+    }
 
-        protected override void OnExecute()
-        {
-            ReportGeneratorTasks.ReportGenerator(x => x
-                .SetFramework(_framework)
-                .SetReports(_reports)
-                .SetTargetDirectory(_targetDirectory));
-        }
+    public CoverageReportAction SetReports(params string[] reports)
+    {
+        _reports = reports;
 
-        public CoverageReportAction SetFramework(string framework)
-        {
-            _framework = framework;
+        return this;
+    }
 
-            return this;
-        }
+    public CoverageReportAction SetTargetDirectory(string targetDirectory)
+    {
+        _targetDirectory = targetDirectory;
 
-        public CoverageReportAction SetReports(params string[] reports)
-        {
-            _reports = reports;
-
-            return this;
-        }
-
-        public CoverageReportAction SetTargetDirectory(string targetDirectory)
-        {
-            _targetDirectory = targetDirectory;
-
-            return this;
-        }
+        return this;
     }
 }

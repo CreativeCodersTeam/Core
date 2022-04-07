@@ -6,80 +6,79 @@ using System.Threading.Tasks;
 using CreativeCoders.Core.Collections;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.Servers.Http.SimpleImpl
+namespace CreativeCoders.Net.Servers.Http.SimpleImpl;
+
+[PublicAPI]
+public class SimpleHttpServer : IHttpServer, IDisposable
 {
-    [PublicAPI]
-    public class SimpleHttpServer : IHttpServer, IDisposable
+    private readonly HttpListener _httpListener;
+
+    private IHttpRequestHandler _requestHandler;
+
+    private Thread _listenerThread;
+
+    private volatile bool _running;
+
+    public SimpleHttpServer()
     {
-        private readonly HttpListener _httpListener;
+        _httpListener = new HttpListener();
 
-        private IHttpRequestHandler _requestHandler;
+        Urls = new List<string>();
+    }
 
-        private Thread _listenerThread;
+    public async Task StartAsync()
+    {
+        _running = true;
+        await Task.Run(() => _httpListener.Start()).ConfigureAwait(false);
 
-        private volatile bool _running;
+        _listenerThread = new Thread(Listen);
+        _listenerThread.Start();
+    }
 
-        public SimpleHttpServer()
+    private void Listen()
+    {
+        Urls.ForEach(url => _httpListener.Prefixes.Add(url));
+
+        while (_running)
         {
-            _httpListener = new HttpListener();
+            var context = _httpListener.GetContext();
 
-            Urls = new List<string>();
+            Task.Run(() => StartWorker(context));
         }
+    }
 
-        public async Task StartAsync()
+    private async void StartWorker(HttpListenerContext context)
+    {
+        var request = new HttpListenerRequestWrapper(context.Request);
+        var response = new HttpListenerResponseWrapper(context.Response);
+
+        await _requestHandler.ProcessAsync(request, response).ConfigureAwait(false);
+
+        await response.Body.FlushAsync().ConfigureAwait(false);
+
+        await context.Response.OutputStream.FlushAsync().ConfigureAwait(false);
+        context.Response.OutputStream.Close();
+    }
+
+    public async Task StopAsync()
+    {
+        _running = false;
+        await Task.Run(() =>
         {
-            _running = true;
-            await Task.Run(() => _httpListener.Start()).ConfigureAwait(false);
-            
-            _listenerThread = new Thread(Listen);
-            _listenerThread.Start();
-        }
+            _httpListener.Close();
+            _httpListener.Abort();
+        });
+    }
 
-        private void Listen()
-        {
-            Urls.ForEach(url => _httpListener.Prefixes.Add(url));
+    public void RegisterRequestHandler(IHttpRequestHandler requestHandler)
+    {
+        _requestHandler = requestHandler;
+    }
 
-            while (_running)
-            {
-                var context = _httpListener.GetContext();
+    public IList<string> Urls { get; }
 
-                Task.Run(() => StartWorker(context));
-            }
-        }
-
-        private async void StartWorker(HttpListenerContext context)
-        {
-            var request = new HttpListenerRequestWrapper(context.Request);
-            var response = new HttpListenerResponseWrapper(context.Response);
-
-            await _requestHandler.ProcessAsync(request, response).ConfigureAwait(false);
-
-            await response.Body.FlushAsync().ConfigureAwait(false);
-
-            await context.Response.OutputStream.FlushAsync().ConfigureAwait(false);
-            context.Response.OutputStream.Close();
-        }
-
-        public async Task StopAsync()
-        {
-            _running = false;
-            await Task.Run(() =>
-            {
-                _httpListener.Close();
-                _httpListener.Abort();
-            });
-        }
-
-        public void RegisterRequestHandler(IHttpRequestHandler requestHandler)
-        {
-            _requestHandler = requestHandler;
-        }
-
-        public IList<string> Urls { get; }
-
-        public void Dispose()
-        {
-            (_httpListener as IDisposable)?.Dispose();
-        }
+    public void Dispose()
+    {
+        (_httpListener as IDisposable)?.Dispose();
     }
 }

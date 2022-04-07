@@ -1,10 +1,9 @@
-﻿namespace CreativeCoders.Net.WebApi.Definition
+﻿namespace CreativeCoders.Net.WebApi.Definition;
+
+public enum HttpRequestMethod
 {
-    public enum HttpRequestMethod
-    {
-        Get,
-        Post,
-        Put,
-        Delete
-    }
+    Get,
+    Post,
+    Put,
+    Delete
 }

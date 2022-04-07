@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Scripting.Base
+﻿namespace CreativeCoders.Scripting.Base;
+
+public interface IInjection
 {
-    public interface IInjection
-    {
-        void Inject(object scriptObject);
-    }
+    void Inject(object scriptObject);
 }

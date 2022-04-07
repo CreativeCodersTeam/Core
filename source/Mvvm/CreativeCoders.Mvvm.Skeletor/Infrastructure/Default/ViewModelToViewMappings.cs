@@ -6,75 +6,76 @@ using CreativeCoders.Core.Logging;
 using CreativeCoders.Core.Threading;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Skeletor.Infrastructure.Default
+namespace CreativeCoders.Mvvm.Skeletor.Infrastructure.Default;
+
+[PublicAPI]
+public class ViewModelToViewMappings : IViewModelToViewMappings
 {
-    [PublicAPI]
-    public class ViewModelToViewMappings : IViewModelToViewMappings
+    private static ILogger Log { get; } = LogManager.GetLogger<ViewModelToViewMappings>();
+
+    private readonly IList<ViewModelToViewMapping> _mappings;
+
+    public ViewModelToViewMappings()
     {
-        private static ILogger Log { get; } = LogManager.GetLogger<ViewModelToViewMappings>();
+        _mappings = new ConcurrentList<ViewModelToViewMapping>();
+    }
 
-        private readonly IList<ViewModelToViewMapping> _mappings;
+    public void AddMapping<TViewModel, TView>()
+        where TView : DependencyObject
+    {
+        AddMapping(typeof(TViewModel), typeof(TView));
+    }
 
-        public ViewModelToViewMappings()
+    public void AddMapping<TViewModel, TView>(string name)
+        where TView : DependencyObject
+    {
+        var existingMapping = FindMapping(typeof(TViewModel), name);
+        if (existingMapping != null)
         {
-            _mappings = new ConcurrentList<ViewModelToViewMapping>();
+            Log.Warn("Existing view registration gets replaced");
+            _mappings.Remove(existingMapping);
         }
 
-        public void AddMapping<TViewModel, TView>()
-            where TView : DependencyObject
+        var mapping = new ViewModelToViewMapping(typeof(TViewModel), typeof(TView), name);
+        _mappings.Add(mapping);
+    }
+
+    public void AddMapping(Type viewModelType, Type viewType)
+    {
+        var existingMapping = FindMapping(viewModelType);
+        if (existingMapping != null)
         {
-            AddMapping(typeof(TViewModel), typeof(TView));
+            Log.Warn("Existing view registration gets replaced");
+            _mappings.Remove(existingMapping);
         }
 
-        public void AddMapping<TViewModel, TView>(string name)
-            where TView : DependencyObject
-        {
-            var existingMapping = FindMapping(typeof(TViewModel), name);
-            if (existingMapping != null)
-            {
-                Log.Warn("Existing view registration gets replaced");
-                _mappings.Remove(existingMapping);
-            }
-            var mapping = new ViewModelToViewMapping(typeof(TViewModel), typeof(TView), name);
-            _mappings.Add(mapping);
-        }
+        var mapping = new ViewModelToViewMapping(viewModelType, viewType, null);
+        _mappings.Add(mapping);
+    }
 
-        public void AddMapping(Type viewModelType, Type viewType)
-        {
-            var existingMapping = FindMapping(viewModelType);
-            if (existingMapping != null)
-            {
-                Log.Warn("Existing view registration gets replaced");
-                _mappings.Remove(existingMapping);
-            }
-            var mapping = new ViewModelToViewMapping(viewModelType, viewType, null);
-            _mappings.Add(mapping);
-        }
+    public Type FindViewType(Type viewModelType)
+    {
+        var mapping = FindMapping(viewModelType);
+        return mapping?.ViewType;
+    }
 
-        public Type FindViewType(Type viewModelType)
-        {
-            var mapping = FindMapping(viewModelType);
-            return mapping?.ViewType;
-        }
+    public Type FindViewType(Type viewModelType, string name)
+    {
+        var mapping = FindMapping(viewModelType, name);
+        return mapping?.ViewType;
+    }
 
-        public Type FindViewType(Type viewModelType, string name)
-        {
-            var mapping = FindMapping(viewModelType, name);
-            return mapping?.ViewType;
-        }
+    private ViewModelToViewMapping FindMapping(Type viewModelType)
+    {
+        var mapping =
+            _mappings.FirstOrDefault(m => m.ViewModelType == viewModelType && string.IsNullOrEmpty(m.Name));
+        return mapping;
+    }
 
-        private ViewModelToViewMapping FindMapping(Type viewModelType)
-        {
-            var mapping =
-                _mappings.FirstOrDefault(m => m.ViewModelType == viewModelType && string.IsNullOrEmpty(m.Name));
-            return mapping;
-        }
-
-        private ViewModelToViewMapping FindMapping(Type viewModelType, string name)
-        {
-            var mapping =
-                _mappings.FirstOrDefault(m => m.ViewModelType == viewModelType && m.Name == name);
-            return mapping;
-        }
+    private ViewModelToViewMapping FindMapping(Type viewModelType, string name)
+    {
+        var mapping =
+            _mappings.FirstOrDefault(m => m.ViewModelType == viewModelType && m.Name == name);
+        return mapping;
     }
 }

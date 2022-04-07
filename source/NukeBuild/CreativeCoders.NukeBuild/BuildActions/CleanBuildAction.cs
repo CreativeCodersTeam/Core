@@ -2,35 +2,34 @@
 using Nuke.Common.IO;
 using Nuke.Common.Utilities.Collections;
 
-namespace CreativeCoders.NukeBuild.BuildActions
+namespace CreativeCoders.NukeBuild.BuildActions;
+
+public class CleanBuildAction : BuildActionBase<CleanBuildAction>
 {
-    public class CleanBuildAction : BuildActionBase<CleanBuildAction>
+    private readonly IList<AbsolutePath> _cleanDirectories;
+
+    public CleanBuildAction()
     {
-        private readonly IList<AbsolutePath> _cleanDirectories;
+        _cleanDirectories = new List<AbsolutePath>();
+    }
 
-        public CleanBuildAction()
-        {
-            _cleanDirectories = new List<AbsolutePath>();
-        }
+    protected override void OnExecute()
+    {
+        BuildInfo.SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(SafeDeleteDirectory);
 
-        protected override void OnExecute()
-        {
-            BuildInfo.SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(SafeDeleteDirectory);
+        _cleanDirectories.ForEach(SafeDeleteDirectory);
+    }
 
-            _cleanDirectories.ForEach(SafeDeleteDirectory);
-        }
+    private static void SafeDeleteDirectory(AbsolutePath directory)
+    {
+        FileSystemTasks.EnsureCleanDirectory(directory);
+        FileSystemTasks.DeleteDirectory(directory);
+    }
 
-        private static void SafeDeleteDirectory(AbsolutePath directory)
-        {
-            FileSystemTasks.EnsureCleanDirectory(directory);
-            FileSystemTasks.DeleteDirectory(directory);
-        }
+    public CleanBuildAction AddDirectoryForClean(AbsolutePath directory)
+    {
+        _cleanDirectories.Add(directory);
 
-        public CleanBuildAction AddDirectoryForClean(AbsolutePath directory)
-        {
-            _cleanDirectories.Add(directory);
-
-            return this;
-        }
+        return this;
     }
 }

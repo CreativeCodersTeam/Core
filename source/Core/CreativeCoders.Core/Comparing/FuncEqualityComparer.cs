@@ -1,40 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CreativeCoders.Core.Comparing
+namespace CreativeCoders.Core.Comparing;
+
+public class FuncEqualityComparer<T, TKey> : IEqualityComparer<T>
 {
-    public class FuncEqualityComparer<T, TKey> : IEqualityComparer<T>
+    private readonly Func<T, TKey> _keySelector;
+
+    public FuncEqualityComparer(Func<T, TKey> keySelector)
     {
-        private readonly Func<T, TKey> _keySelector;
+        Ensure.IsNotNull(keySelector, nameof(keySelector));
 
-        public FuncEqualityComparer(Func<T, TKey> keySelector)
+        _keySelector = keySelector;
+    }
+
+    public bool Equals(T x, T y)
+    {
+        if (ReferenceEquals(x, y))
         {
-            Ensure.IsNotNull(keySelector, nameof(keySelector));
-
-            _keySelector = keySelector;
+            return true;
         }
 
-        public bool Equals(T x, T y)
+        if (x is null || y is null)
         {
-            if (ReferenceEquals(x, y))
-            {
-                return true;
-            }
-
-            if (x is null || y is null)
-            {
-                return false;
-            }
-
-            var xValue = _keySelector(x);
-            var yValue = _keySelector(y);
-
-            return EqualityComparer<TKey>.Default.Equals(xValue, yValue);
+            return false;
         }
 
-        public int GetHashCode(T obj)
-        {
-            return _keySelector(obj)?.GetHashCode() ?? 0;
-        }
+        var xValue = _keySelector(x);
+        var yValue = _keySelector(y);
+
+        return EqualityComparer<TKey>.Default.Equals(xValue, yValue);
+    }
+
+    public int GetHashCode(T obj)
+    {
+        return _keySelector(obj)?.GetHashCode() ?? 0;
     }
 }

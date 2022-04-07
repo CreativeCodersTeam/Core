@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Core.UnitTests.Di.Helper
+﻿namespace CreativeCoders.Core.UnitTests.Di.Helper;
+
+public interface ITestService
 {
-    public interface ITestService
-    {
-        string Text { get; set; }
-    }
+    string Text { get; set; }
 }

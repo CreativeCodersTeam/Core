@@ -2,24 +2,23 @@
 using CreativeCoders.Daemon.Base;
 using Microsoft.Extensions.Logging;
 
-namespace WindowsServiceDaemonSampleApp
+namespace WindowsServiceDaemonSampleApp;
+
+public class SampleDaemonService : IDaemonService
 {
-    public class SampleDaemonService : IDaemonService
+    // ReSharper disable once SuggestBaseTypeForParameter
+    public SampleDaemonService(ILogger<SampleDaemonService> logger, SampleWorkerConfig workerConfig)
     {
-        // ReSharper disable once SuggestBaseTypeForParameter
-        public SampleDaemonService(ILogger<SampleDaemonService> logger, SampleWorkerConfig workerConfig)
-        {
-            logger.LogInformation($"SampleDaemonService created. TestData = {workerConfig.TestData}");
-        }
+        logger.LogInformation($"SampleDaemonService created. TestData = {workerConfig.TestData}");
+    }
 
-        public Task StartAsync()
-        {
-            return Task.CompletedTask;
-        }
+    public Task StartAsync()
+    {
+        return Task.CompletedTask;
+    }
 
-        public Task StopAsync()
-        {
-            return Task.CompletedTask;
-        }
+    public Task StopAsync()
+    {
+        return Task.CompletedTask;
     }
 }

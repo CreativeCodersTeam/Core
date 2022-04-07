@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.AspNetCore.TokenAuth
+﻿namespace CreativeCoders.AspNetCore.TokenAuth;
+
+public interface ITokenHandler
 {
-    public interface ITokenHandler
-    {
-        string CreateToken(TokenRequest request);
-    }
+    string CreateToken(TokenRequest request);
 }

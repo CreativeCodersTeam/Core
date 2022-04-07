@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace CreativeCoders.Core.Threading
+namespace CreativeCoders.Core.Threading;
+
+public interface ILockingMechanism
 {
-    public interface ILockingMechanism
-    {
-        void Read(Action action);
+    void Read(Action action);
 
-        T Read<T>(Func<T> function);
+    T Read<T>(Func<T> function);
 
-        void Write(Action action);
+    void Write(Action action);
 
-        T Write<T>(Func<T> function);
-    }
+    T Write<T>(Func<T> function);
 }

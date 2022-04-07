@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.SysConsole.CliArguments.Building
+﻿namespace CreativeCoders.SysConsole.CliArguments.Building;
+
+public interface ICliModule
 {
-    public interface ICliModule
-    {
-        void Configure(ICliBuilder cliBuilder);
-    }
+    void Configure(ICliBuilder cliBuilder);
 }

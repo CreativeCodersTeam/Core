@@ -1,9 +1,8 @@
-﻿namespace CreativeCoders.Core.Threading
+﻿namespace CreativeCoders.Core.Threading;
+
+public enum SynchronizationMethod
 {
-    public enum SynchronizationMethod
-    {
-        None,
-        Send,
-        Post
-    }
+    None,
+    Send,
+    Post
 }

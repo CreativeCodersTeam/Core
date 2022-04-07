@@ -7,63 +7,63 @@ using CreativeCoders.Di;
 using CreativeCoders.Core.Reflection;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Data.EfCore.Modeling
+namespace CreativeCoders.Data.EfCore.Modeling;
+
+[PublicAPI]
+public class EfCoreEntityModelBuilderSource : IEfCoreEntityModelBuilderSource
 {
-    [PublicAPI]
-    public class EfCoreEntityModelBuilderSource : IEfCoreEntityModelBuilderSource
+    private readonly IDiContainer _diContainer;
+
+    private readonly IList<IEfCoreEntityModelBuilder> _builders;
+
+    public EfCoreEntityModelBuilderSource(IDiContainer diContainer)
     {
-        private readonly IDiContainer _diContainer;
+        _diContainer = diContainer;
+        _builders = new List<IEfCoreEntityModelBuilder>();
+    }
 
-        private readonly IList<IEfCoreEntityModelBuilder> _builders;
+    public IEnumerable<IEfCoreEntityModelBuilder> GetEntityModelBuilders()
+    {
+        return _builders;
+    }
 
-        public EfCoreEntityModelBuilderSource(IDiContainer diContainer)
+    public IEfCoreEntityModelBuilderSource Add(Type entityModelBuilderType)
+    {
+        return !entityModelBuilderType.IsAbstract && entityModelBuilderType.GetInterfaces()
+            .Contains(typeof(IEfCoreEntityModelBuilder))
+            ? Add(CreateEntityModelBuilder(entityModelBuilderType))
+            : this;
+    }
+
+    private IEfCoreEntityModelBuilder CreateEntityModelBuilder(Type entityModelBuilderType)
+    {
+        var entityModelBuilder = _diContainer?.GetInstance(entityModelBuilderType)
+                                 ?? Activator.CreateInstance(entityModelBuilderType);
+
+        return (IEfCoreEntityModelBuilder) entityModelBuilder;
+    }
+
+    public IEfCoreEntityModelBuilderSource Add(Assembly assembly)
+    {
+        assembly.GetTypesSafe().ForEach(type => Add(type));
+
+        return this;
+    }
+
+    public IEfCoreEntityModelBuilderSource Add(IEfCoreEntityModelBuilder entityModelBuilder)
+    {
+        if (!_builders.Contains(entityModelBuilder))
         {
-            _diContainer = diContainer;
-            _builders = new List<IEfCoreEntityModelBuilder>();
+            _builders.Add(entityModelBuilder);
         }
 
-        public IEnumerable<IEfCoreEntityModelBuilder> GetEntityModelBuilders()
-        {
-            return _builders;
-        }
+        return this;
+    }
 
-        public IEfCoreEntityModelBuilderSource Add(Type entityModelBuilderType)
-        {
-            return !entityModelBuilderType.IsAbstract && entityModelBuilderType.GetInterfaces().Contains(typeof(IEfCoreEntityModelBuilder))
-                ? Add(CreateEntityModelBuilder(entityModelBuilderType))
-                : this;
-        }
-
-        private IEfCoreEntityModelBuilder CreateEntityModelBuilder(Type entityModelBuilderType)
-        {
-            var entityModelBuilder = _diContainer?.GetInstance(entityModelBuilderType)
-                                     ?? Activator.CreateInstance(entityModelBuilderType);
-
-            return (IEfCoreEntityModelBuilder) entityModelBuilder;
-        }
-
-        public IEfCoreEntityModelBuilderSource Add(Assembly assembly)
-        {
-            assembly.GetTypesSafe().ForEach(type => Add(type));
-
-            return this;
-        }
-
-        public IEfCoreEntityModelBuilderSource Add(IEfCoreEntityModelBuilder entityModelBuilder)
-        {
-            if (!_builders.Contains(entityModelBuilder))
-            {
-                _builders.Add(entityModelBuilder);
-            }
-
-            return this;
-        }
-
-        public void AddFromAllAssemblies()
-        {
-            ReflectionUtils
-                .GetAllAssemblies()
-                .ForEach(assembly => Add(assembly));
-        }
+    public void AddFromAllAssemblies()
+    {
+        ReflectionUtils
+            .GetAllAssemblies()
+            .ForEach(assembly => Add(assembly));
     }
 }

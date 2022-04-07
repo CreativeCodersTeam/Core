@@ -1,23 +1,22 @@
 ﻿using System.Reflection;
 
-namespace CreativeCoders.Core.ObjectLinking
+namespace CreativeCoders.Core.ObjectLinking;
+
+public class PropertyLinkInfo
 {
-    public class PropertyLinkInfo
-    {
-        public object Source { get; set; }
+    public object Source { get; init; }
 
-        public object Target { get; set; }
+    public object Target { get; init; }
 
-        public PropertyInfo SourceProperty { get; set; }
+    public PropertyInfo SourceProperty { get; init; }
 
-        public PropertyInfo TargetProperty { get; set; }
+    public PropertyInfo TargetProperty { get; init; }
 
-        public LinkDirection Direction { get; set; }
+    public LinkDirection Direction { get; set; }
 
-        public IPropertyValueConverter Converter { get; set; }
+    public IPropertyValueConverter Converter { get; init; }
 
-        public object ConverterParameter { get; set; }
+    public object ConverterParameter { get; init; }
 
-        public bool InitWithTargetValue { get; set; }
-    }
+    public bool InitWithTargetValue { get; init; }
 }

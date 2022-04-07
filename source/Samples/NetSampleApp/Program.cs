@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace NetSampleApp
+namespace NetSampleApp;
+
+public static class Program
 {
-    public static class Program
+    public static async Task Main()
     {
-        public static async Task Main()
-        {
-            await new HttpClientAuthTest().Run();
+        //await new HttpClientAuthTest().Run();
             
-            await new HttpClientTest().Run();
+        //await new HttpClientTest().Run();
             
-            AvmTest.Run();
+        await AvmTest.Run();
             
-            Console.WriteLine("Hello World!");
-            Console.ReadKey();
-        }
+        Console.WriteLine("Hello World!");
+        Console.ReadKey();
     }
 }

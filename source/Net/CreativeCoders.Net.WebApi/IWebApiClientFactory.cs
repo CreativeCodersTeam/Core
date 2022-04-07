@@ -1,11 +1,10 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.WebApi
+namespace CreativeCoders.Net.WebApi;
+
+[PublicAPI]
+public interface IWebApiClientFactory
 {
-    [PublicAPI]
-    public interface IWebApiClientFactory
-    {
-        IWebApiClientBuilder<T> CreateBuilder<T>()
-            where T : class;
-    }
+    IWebApiClientBuilder<T> CreateBuilder<T>()
+        where T : class;
 }

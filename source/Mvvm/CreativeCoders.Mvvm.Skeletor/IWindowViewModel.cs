@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel;
 
-namespace CreativeCoders.Mvvm.Skeletor
+namespace CreativeCoders.Mvvm.Skeletor;
+
+public interface IWindowViewModel
 {
-    public interface IWindowViewModel
-    {
-        void Loaded();
+    void Loaded();
 
-        void Closing(CancelEventArgs cancelEventArgs);
+    void Closing(CancelEventArgs cancelEventArgs);
 
-        void Closed();
-    }
+    void Closed();
 }

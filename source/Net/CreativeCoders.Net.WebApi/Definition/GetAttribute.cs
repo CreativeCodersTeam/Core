@@ -1,12 +1,9 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.WebApi.Definition
+namespace CreativeCoders.Net.WebApi.Definition;
+
+[PublicAPI]
+public class GetAttribute : ApiMethodBaseAttribute
 {
-    [PublicAPI]
-    public class GetAttribute : ApiMethodBaseAttribute
-    {
-        public GetAttribute(string uri) : base(HttpRequestMethod.Get, uri)
-        {
-        }
-    }
+    public GetAttribute(string uri) : base(HttpRequestMethod.Get, uri) { }
 }

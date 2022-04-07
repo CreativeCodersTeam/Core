@@ -1,13 +1,12 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.CodeCompilation.Roslyn
+namespace CreativeCoders.CodeCompilation.Roslyn;
+
+[PublicAPI]
+public class RoslynCompilerFactory : ICompilerFactory
 {
-    [PublicAPI]
-    public class RoslynCompilerFactory : ICompilerFactory
+    public ICompiler CreateCompiler()
     {
-        public ICompiler CreateCompiler()
-        {
-            return new RoslynCompiler();
-        }
+        return new RoslynCompiler();
     }
 }

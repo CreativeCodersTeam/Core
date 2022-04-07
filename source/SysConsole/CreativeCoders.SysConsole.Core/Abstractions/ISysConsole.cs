@@ -1,55 +1,54 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.Core.Abstractions
+namespace CreativeCoders.SysConsole.Core.Abstractions;
+
+[PublicAPI]
+public interface ISysConsole
 {
-    [PublicAPI]
-    public interface ISysConsole
-    {
-        ISysConsole WriteLine();
+    ISysConsole WriteLine();
 
-        ISysConsole WriteLine<T>(T? data);
+    ISysConsole WriteLine<T>(T? data);
 
-        ISysConsole Write<T>(T? data);
+    ISysConsole Write<T>(T? data);
 
-        ISysConsole WriteError<T>(T? data);
+    ISysConsole WriteError<T>(T? data);
 
-        ISysConsole WriteLineError<T>(T? data);
+    ISysConsole WriteLineError<T>(T? data);
 
-        ConsoleKeyInfo ReadKey();
+    ConsoleKeyInfo ReadKey();
 
-        ConsoleKeyInfo ReadKey(bool intercept);
+    ConsoleKeyInfo ReadKey(bool intercept);
 
-        string? ReadLine();
+    string? ReadLine();
 
-        ISysConsole Clear();
+    ISysConsole Clear();
 
-        ISysConsole ResetColor();
+    ISysConsole ResetColor();
 
-        ConsoleColor ForegroundColor { get; set; }
+    ConsoleColor ForegroundColor { get; set; }
 
-        ConsoleColor BackgroundColor { get; set; }
+    ConsoleColor BackgroundColor { get; set; }
 
-        ConsoleColor ErrorForegroundColor { get; set; }
+    ConsoleColor ErrorForegroundColor { get; set; }
 
-        ConsoleColor ErrorBackgroundColor { get; set; }
+    ConsoleColor ErrorBackgroundColor { get; set; }
 
-        string Title { get; set; }
+    string Title { get; set; }
 
-        int BufferHeight { get; set; }
+    int BufferHeight { get; set; }
 
-        int BufferWidth { get; set; }
+    int BufferWidth { get; set; }
 
-        int CursorLeft { get; set; }
+    int CursorLeft { get; set; }
 
-        int CursorTop { get; set; }
+    int CursorTop { get; set; }
 
-        int WindowHeight { get; set; }
+    int WindowHeight { get; set; }
 
-        int WindowWidth { get; set; }
+    int WindowWidth { get; set; }
 
-        int WindowLeft { get; set; }
+    int WindowLeft { get; set; }
 
-        int WindowTop { get; set; }
-    }
+    int WindowTop { get; set; }
 }

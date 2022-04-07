@@ -1,10 +1,9 @@
-﻿namespace CreativeCoders.CodeCompilation
+﻿namespace CreativeCoders.CodeCompilation;
+
+public enum CompilationMessageType
 {
-    public enum CompilationMessageType
-    {
-        Suggestion,
-        Info,
-        Warning,
-        Error
-    }
+    Suggestion,
+    Info,
+    Warning,
+    Error
 }

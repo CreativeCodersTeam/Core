@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace CreativeCoders.Net.WebApi.Specification
+namespace CreativeCoders.Net.WebApi.Specification;
+
+public class ApiStructure
 {
-    public class ApiStructure
-    {
-        public IEnumerable<ApiMethodInfo> MethodInfos { get; set; }
+    public IEnumerable<ApiMethodInfo> MethodInfos { get; set; }
 
-        public IEnumerable<RequestHeader> HeaderDefinitions { get; set; }
+    public IEnumerable<RequestHeader> HeaderDefinitions { get; set; }
 
-        public IEnumerable<ApiPropertyInfo> PropertyInfos { get; set; }
-    }
+    public IEnumerable<ApiPropertyInfo> PropertyInfos { get; set; }
 }

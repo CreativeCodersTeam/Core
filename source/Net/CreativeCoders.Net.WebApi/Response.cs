@@ -2,48 +2,47 @@
 using System.Net.Http;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.WebApi
+namespace CreativeCoders.Net.WebApi;
+
+[PublicAPI]
+public class Response<T> : IDisposable
+    where T : class
 {
-    [PublicAPI]
-    public class Response<T> : IDisposable
-        where T : class
+    private readonly Func<T> _getData;
+
+    private T _data;
+
+    private bool _dataIsRead;
+
+    public Response(HttpResponseMessage responseMessage, Func<T> getData)
     {
-        private readonly Func<T> _getData;
+        _getData = getData;
+        ResponseMessage = responseMessage;
+    }
 
-        private T _data;
+    public HttpResponseMessage ResponseMessage { get; }
 
-        private bool _dataIsRead;
-
-        public Response(HttpResponseMessage responseMessage, Func<T> getData)
+    public T Data
+    {
+        get
         {
-            _getData = getData;
-            ResponseMessage = responseMessage;
-        }
-
-        public HttpResponseMessage ResponseMessage { get; }
-
-        public T Data
-        {
-            get
+            if (_dataIsRead)
             {
-                if (_dataIsRead)
-                {
-                    return _data;
-                }
-                
-                _dataIsRead = true;
-                _data = _getData();
-
                 return _data;
             }
-        }
 
-        public void Dispose()
-        {
-            ResponseMessage?.Dispose();
+            _dataIsRead = true;
+            _data = _getData();
 
-            var dataDisposable = Data as IDisposable;
-            dataDisposable?.Dispose();
+            return _data;
         }
+    }
+
+    public void Dispose()
+    {
+        ResponseMessage?.Dispose();
+
+        var dataDisposable = Data as IDisposable;
+        dataDisposable?.Dispose();
     }
 }

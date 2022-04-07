@@ -3,55 +3,54 @@ using System.Collections.Generic;
 using CreativeCoders.Core;
 using CreativeCoders.Di.Exceptions;
 
-namespace CreativeCoders.Di
+namespace CreativeCoders.Di;
+
+public static class ServiceLocator
 {
-    public static class ServiceLocator
+    private static bool IsInitialized;
+
+    private static IDiContainer DiContainer = new NoDiContainer();
+
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [Obsolete("Just for unit testing")]
+    public static void XRemoveDiContainerForUnitTests()
     {
-        private static bool IsInitialized;
+        DiContainer = new NoDiContainer();
+        IsInitialized = false;
+    }
 
-        private static IDiContainer DiContainer = new NoDiContainer();
+    public static void Init(Func<IDiContainer> getDiContainer)
+    {
+        Ensure.IsNotNull(getDiContainer, nameof(getDiContainer));
 
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        [Obsolete("Just for unit testing")]
-        public static void XRemoveDiContainerForUnitTests()
+        if (IsInitialized)
         {
-            DiContainer = new NoDiContainer();
-            IsInitialized = false;
+            throw new ServiceLocatorAlreadyInitializedException();
         }
 
-        public static void Init(Func<IDiContainer> getDiContainer)
-        {
-            Ensure.IsNotNull(getDiContainer, nameof(getDiContainer));
+        DiContainer = getDiContainer();
+        IsInitialized = true;
+    }
 
-            if (IsInitialized)
-            {
-                throw new ServiceLocatorAlreadyInitializedException();
-            }
+    public static T GetInstance<T>()
+        where T : class
+    {
+        return DiContainer.GetInstance<T>();
+    }
 
-            DiContainer = getDiContainer();
-            IsInitialized = true;
-        }
+    public static object GetInstance(Type serviceType)
+    {
+        return DiContainer.GetInstance(serviceType);
+    }
 
-        public static T GetInstance<T>()
-            where T : class
-        {
-            return DiContainer.GetInstance<T>();
-        }
+    public static IEnumerable<T> GetInstances<T>()
+        where T : class
+    {
+        return DiContainer.GetInstances<T>();
+    }
 
-        public static object GetInstance(Type serviceType)
-        {
-            return DiContainer.GetInstance(serviceType);
-        }
-
-        public static IEnumerable<T> GetInstances<T>()
-            where T : class
-        {
-            return DiContainer.GetInstances<T>();
-        }
-
-        public static IEnumerable<object> GetInstances(Type serviceType)
-        {
-            return DiContainer.GetInstances(serviceType);
-        }
+    public static IEnumerable<object> GetInstances(Type serviceType)
+    {
+        return DiContainer.GetInstances(serviceType);
     }
 }

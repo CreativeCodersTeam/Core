@@ -1,9 +1,8 @@
-﻿namespace CreativeCoders.Core.ObjectLinking
+﻿namespace CreativeCoders.Core.ObjectLinking;
+
+public enum LinkDirection
 {
-    public enum LinkDirection
-    {
-        OneWayToTarget,
-        OneWayFromTarget,
-        TwoWay
-    }
+    OneWayToTarget,
+    OneWayFromTarget,
+    TwoWay
 }

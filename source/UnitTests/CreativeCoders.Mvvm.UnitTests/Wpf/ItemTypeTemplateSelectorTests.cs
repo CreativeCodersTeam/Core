@@ -4,38 +4,37 @@ using CreativeCoders.Mvvm.Wpf;
 using FakeItEasy;
 using Xunit;
 
-namespace CreativeCoders.Mvvm.UnitTests.Wpf
+namespace CreativeCoders.Mvvm.UnitTests.Wpf;
+
+public class ItemTypeTemplateSelectorTests
 {
-    public class ItemTypeTemplateSelectorTests
+    [Fact]
+    public void CtorTest()
     {
-        [Fact]
-        public void CtorTest()
-        {
-            var _ = new ItemTypeTemplateSelector();
-        }
+        var _ = new ItemTypeTemplateSelector();
+    }
 
-        [Fact]
-        public void AddTypeTemplateMappingTest()
-        {
-            var selector = new TestMappingTemplateSelector();
+    [Fact]
+    public void AddTypeTemplateMappingTest()
+    {
+        var selector = new TestMappingTemplateSelector();
 
-            var dataTemplate = A.Fake<DataTemplate>();
-            
-            selector.AddMapping<string>(() => dataTemplate);
-        }
+        var dataTemplate = A.Fake<DataTemplate>();
 
-        [Fact]
-        public void SelectTemplateTest()
-        {
-            var selector = new TestMappingTemplateSelector();
+        selector.AddMapping<string>(() => dataTemplate);
+    }
 
-            var dataTemplate = A.Fake<DataTemplate>();
+    [Fact]
+    public void SelectTemplateTest()
+    {
+        var selector = new TestMappingTemplateSelector();
 
-            selector.AddMapping<string>(() => dataTemplate);
+        var dataTemplate = A.Fake<DataTemplate>();
 
-            var template = selector.SelectTemplate(string.Empty, null);
+        selector.AddMapping<string>(() => dataTemplate);
 
-            Assert.Equal(dataTemplate, template);
-        }
+        var template = selector.SelectTemplate(string.Empty, null);
+
+        Assert.Equal(dataTemplate, template);
     }
 }

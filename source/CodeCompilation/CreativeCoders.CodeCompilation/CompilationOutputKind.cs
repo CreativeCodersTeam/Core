@@ -1,9 +1,8 @@
-﻿namespace CreativeCoders.CodeCompilation
+﻿namespace CreativeCoders.CodeCompilation;
+
+public enum CompilationOutputKind
 {
-    public enum CompilationOutputKind
-    {
-        DynamicallyLinkedLibrary,
-        ConsoleApplication,
-        WindowsApplication
-    }
+    DynamicallyLinkedLibrary,
+    ConsoleApplication,
+    WindowsApplication
 }

@@ -1,11 +1,10 @@
 ﻿using CreativeCoders.Net.XmlRpc.Model;
 
-namespace CreativeCoders.Net.XmlRpc.Definition
-{
-    public interface IXmlRpcMemberValueConverter
-    {
-        object ConvertFromValue(XmlRpcValue xmlRpcValue);
+namespace CreativeCoders.Net.XmlRpc.Definition;
 
-        XmlRpcValue ConvertFromObject(object value);
-    }
+public interface IXmlRpcMemberValueConverter
+{
+    object ConvertFromValue(XmlRpcValue xmlRpcValue);
+
+    XmlRpcValue ConvertFromObject(object value);
 }

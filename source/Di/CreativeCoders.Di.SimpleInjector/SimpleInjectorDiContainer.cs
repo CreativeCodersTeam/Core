@@ -6,110 +6,113 @@ using JetBrains.Annotations;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
 
-namespace CreativeCoders.Di.SimpleInjector
+namespace CreativeCoders.Di.SimpleInjector;
+
+[PublicAPI]
+public class SimpleInjectorDiContainer : DiContainerBase, IDiContainer
 {
-    [PublicAPI]
-    public class SimpleInjectorDiContainer : DiContainerBase, IDiContainer
+    private readonly Container _container;
+
+    private readonly Func<Container, Scope> _beginScope;
+
+    public SimpleInjectorDiContainer(Container container) :
+        this(container, AsyncScopedLifestyle.BeginScope) { }
+
+    public SimpleInjectorDiContainer(Container container, Func<Container, Scope> beginScope)
     {
-        private readonly Container _container;
+        Ensure.IsNotNull(container, nameof(container));
+        Ensure.IsNotNull(beginScope, nameof(beginScope));
 
-        private readonly Func<Container, Scope> _beginScope;
+        _container = container;
+        _beginScope = beginScope;
+    }
 
-        public SimpleInjectorDiContainer(Container container) : this(container, AsyncScopedLifestyle.BeginScope) { }
+    public object GetService(Type serviceType)
+    {
+        return GetInstance(serviceType);
+    }
 
-        public SimpleInjectorDiContainer(Container container, Func<Container, Scope> beginScope)
+    public T GetInstance<T>()
+        where T : class
+    {
+        return Resolve<T, ActivationException>(() => _container.GetInstance<T>());
+    }
+
+    public object GetInstance(Type serviceType)
+    {
+        return Resolve<ActivationException>(serviceType, () => _container.GetInstance(serviceType));
+    }
+
+    public T GetInstance<T>(string name)
+        where T : class
+    {
+        var factory = GetInstance<IServiceByNameFactory<T>>();
+        var service = Resolve<T, KeyNotFoundException>(() => factory.GetInstance(this, name));
+
+        return service;
+    }
+
+    public object GetInstance(Type serviceType, string name)
+    {
+        if (TryGetServiceByNameFactory(serviceType, out var serviceByNameFactory))
         {
-            Ensure.IsNotNull(container, nameof(container));
-            Ensure.IsNotNull(beginScope, nameof(beginScope));
-
-            _container = container;
-            _beginScope = beginScope;
+            return Resolve<KeyNotFoundException>(serviceType,
+                () => serviceByNameFactory.GetServiceInstance(this, name));
         }
 
-        public object GetService(Type serviceType)
+        throw new ResolveFailedException(serviceType, null);
+    }
+
+    public IEnumerable<T> GetInstances<T>()
+        where T : class
+    {
+        return TryGetInstance<IEnumerable<T>>(out var instances)
+            ? instances
+            : Array.Empty<T>();
+    }
+
+    private bool TryGetServiceByNameFactory(Type serviceType, out IServiceByNameFactory serviceByNameFactory)
+    {
+        var factoryType = typeof(IServiceByNameFactory<>).MakeGenericType(serviceType);
+        if (TryGetInstance(factoryType, out var factory))
         {
-            return GetInstance(serviceType);
+            serviceByNameFactory = factory as IServiceByNameFactory;
+            return serviceByNameFactory != null;
         }
 
-        public T GetInstance<T>()
-            where T : class
+        serviceByNameFactory = null;
+        return false;
+    }
+
+    public IEnumerable<object> GetInstances(Type serviceType)
+    {
+        try
         {
-            return Resolve<T, ActivationException>(() => _container.GetInstance<T>());
+            return _container.GetAllInstances(serviceType);
         }
-
-        public object GetInstance(Type serviceType)
+        catch (ActivationException)
         {
-            return Resolve<ActivationException>(serviceType, () => _container.GetInstance(serviceType));
+            return Array.Empty<object>();
         }
+    }
 
-        public T GetInstance<T>(string name)
-            where T : class
-        {
-            var factory = GetInstance<IServiceByNameFactory<T>>();
-            var service = Resolve<T, KeyNotFoundException>(() => factory.GetInstance(this, name));
-            
-            return service;
-        }
+    public bool TryGetInstance<T>(out T instance) where T : class
+    {
+        instance = (_container as IServiceProvider).GetService(typeof(T)) as T;
+        return instance != null;
+    }
 
-        public object GetInstance(Type serviceType, string name)
-        {
-            if (TryGetServiceByNameFactory(serviceType, out var serviceByNameFactory))
-            {
-                return Resolve<KeyNotFoundException>(serviceType, () => serviceByNameFactory.GetServiceInstance(this, name));
-            }
-            throw new ResolveFailedException(serviceType, null);
-        }
+    public bool TryGetInstance(Type serviceType, out object instance)
+    {
+        instance = (_container as IServiceProvider).GetService(serviceType);
+        return instance != null;
+    }
 
-        public IEnumerable<T> GetInstances<T>()
-            where T : class
-        {
-            return TryGetInstance<IEnumerable<T>>(out var instances)
-                ? instances
-                : Array.Empty<T>();
-        }
-
-        private bool TryGetServiceByNameFactory(Type serviceType, out IServiceByNameFactory serviceByNameFactory)
-        {
-            var factoryType = typeof(IServiceByNameFactory<>).MakeGenericType(serviceType);
-            if (TryGetInstance(factoryType, out var factory))
-            {
-                serviceByNameFactory = factory as IServiceByNameFactory;
-                return serviceByNameFactory != null;
-            }
-
-            serviceByNameFactory = null;
-            return false;
-        }
-
-        public IEnumerable<object> GetInstances(Type serviceType)
-        {            
-            try
-            {
-                return _container.GetAllInstances(serviceType);
-            }
-            catch (ActivationException)
-            {
-                return Array.Empty<object>();
-            }
-        }
-
-        public bool TryGetInstance<T>(out T instance) where T : class
-        {
-            instance = (_container as IServiceProvider).GetService(typeof(T)) as T;
-            return instance != null;
-        }
-
-        public bool TryGetInstance(Type serviceType, out object instance)
-        {
-            instance = (_container as IServiceProvider).GetService(serviceType);
-            return instance != null;
-        }
-
-        public IDiContainerScope CreateScope()
-        {
-            var scope = _beginScope(_container);
-            var containerScope = new DiContainerScope(new SimpleInjectorDiContainer(scope.Container, _beginScope), () => scope.Dispose());
-            return containerScope;
-        }
+    public IDiContainerScope CreateScope()
+    {
+        var scope = _beginScope(_container);
+        var containerScope = new DiContainerScope(new SimpleInjectorDiContainer(scope.Container, _beginScope),
+            () => scope.Dispose());
+        return containerScope;
     }
 }

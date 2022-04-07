@@ -2,28 +2,27 @@
 using CreativeCoders.Net.XmlRpc.Model;
 using CreativeCoders.Net.XmlRpc.Model.Values;
 
-namespace CreativeCoders.Net.XmlRpc.Definition.MemberConverters
+namespace CreativeCoders.Net.XmlRpc.Definition.MemberConverters;
+
+public class BoolToIntegerValueMemberValueConverter : IXmlRpcMemberValueConverter
 {
-    public class BoolToIntegerValueMemberValueConverter : IXmlRpcMemberValueConverter
+    public object ConvertFromValue(XmlRpcValue xmlRpcValue)
     {
-        public object ConvertFromValue(XmlRpcValue xmlRpcValue)
+        if (xmlRpcValue is IntegerValue integerValue)
         {
-            if (xmlRpcValue is IntegerValue integerValue)
-            {
-                return integerValue.Value != 0;
-            }
-
-            throw new InvalidOperationException($"'{xmlRpcValue}' is no xml rpc integer value");
+            return integerValue.Value != 0;
         }
 
-        public XmlRpcValue ConvertFromObject(object value)
-        {
-            if (value is bool boolValue)
-            {
-                return new IntegerValue(boolValue ? 1 : 0);
-            }
+        throw new InvalidOperationException($"'{xmlRpcValue}' is no xml rpc integer value");
+    }
 
-            throw new InvalidOperationException($"'{value}' is no bool value");
+    public XmlRpcValue ConvertFromObject(object value)
+    {
+        if (value is bool boolValue)
+        {
+            return new IntegerValue(boolValue ? 1 : 0);
         }
+
+        throw new InvalidOperationException($"'{value}' is no bool value");
     }
 }

@@ -5,68 +5,65 @@ using System.Xml.Linq;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 
-namespace CreativeCoders.Net.Soap.Request
+namespace CreativeCoders.Net.Soap.Request;
+
+internal class RequestXmlWriter
 {
-    internal class RequestXmlWriter
+    private readonly StreamWriter _streamWriter;
+
+    private readonly SoapRequestInfo _soapRequestInfo;
+
+    public RequestXmlWriter(StreamWriter streamWriter, SoapRequestInfo soapRequestInfo)
     {
-        private readonly StreamWriter _streamWriter;
+        Ensure.IsNotNull(streamWriter, nameof(streamWriter));
+        Ensure.IsNotNull(soapRequestInfo, nameof(soapRequestInfo));
 
-        private readonly SoapRequestInfo _soapRequestInfo;
+        _streamWriter = streamWriter;
+        _soapRequestInfo = soapRequestInfo;
+    }
 
-        public RequestXmlWriter(StreamWriter streamWriter, SoapRequestInfo soapRequestInfo)
-        {
-            Ensure.IsNotNull(streamWriter, nameof(streamWriter));
-            Ensure.IsNotNull(soapRequestInfo, nameof(soapRequestInfo));
+    public void Write()
+    {
+        var xmlDoc = CreateXmlDoc();
 
-            _streamWriter = streamWriter;
-            _soapRequestInfo = soapRequestInfo;
-        }
+        xmlDoc.Save(_streamWriter);
+    }
 
-        public void Write()
-        {
-            var xmlDoc = CreateXmlDoc();
+    private XDocument CreateXmlDoc()
+    {
+        XNamespace xsi = "http://www.w3.org/2001/XMLSchema-instance";
+        XNamespace xsd = "http://www.w3.org/2001/XMLSchema";
 
-            xmlDoc.Save(_streamWriter);
+        var xmlDoc = new XDocument(
+            new XDeclaration("1.0", "utf-8", "no"),
+            new XElement(SoapConsts.EnvelopeName,
+                new XAttribute(XNamespace.Xmlns + "xsi", xsi),
+                new XAttribute(XNamespace.Xmlns + "xsd", xsd),
+                new XAttribute(XNamespace.Xmlns + "soap", SoapConsts.SoapNameSpace),
+                new XAttribute(SoapConsts.EncodingStyleName, "http://schemas.xmlsoap.org/soap/encoding/"),
+                new XElement(SoapConsts.BodyName, CreateBodyContentXml())
+            ));
 
-            //var writer = new StringWriter();
-            //xmlDoc.Save(writer);
-            //var text = writer.ToString();
-        }
+        return xmlDoc;
+    }
 
-        private XDocument CreateXmlDoc()
-        {
-            XNamespace xsi = "http://www.w3.org/2001/XMLSchema-instance";
-            XNamespace xsd = "http://www.w3.org/2001/XMLSchema";
+    private XElement CreateBodyContentXml()
+    {
+        XNamespace ns = _soapRequestInfo.ServiceNameSpace;
 
-            var xmlDoc = new XDocument(
-                new XDeclaration("1.0", "utf-8", "no"),
-                new XElement(SoapConsts.EnvelopeName,
-                    new XAttribute(XNamespace.Xmlns + "xsi", xsi),
-                    new XAttribute(XNamespace.Xmlns + "xsd", xsd),
-                    new XAttribute(XNamespace.Xmlns + "soap", SoapConsts.SoapNameSpace),
-                    new XAttribute(SoapConsts.EncodingStyleName, "http://schemas.xmlsoap.org/soap/encoding/"),
-                    new XElement(SoapConsts.BodyName, CreateBodyContentXml())
-                ));
+        var xmlNode = new XElement(ns + _soapRequestInfo.ActionName,
+            new XAttribute(XNamespace.Xmlns + "u", ns));
 
-            return xmlDoc;
-        }
+        CreateParametersXml().ForEach(xmlNode.Add);
 
-        private XElement CreateBodyContentXml()
-        {
-            XNamespace ns = _soapRequestInfo.ServiceNameSpace;
+        return xmlNode;
+    }
 
-            var xmlNode = new XElement(ns + _soapRequestInfo.ActionName, new XAttribute(XNamespace.Xmlns + "u", ns));
-
-            CreateParametersXml().ForEach(xmlNode.Add);
-            
-            return xmlNode;
-        }
-
-        private IEnumerable<XElement> CreateParametersXml()
-        {
-            return from propertyFieldMapping in _soapRequestInfo.PropertyMappings
-                let propValue = propertyFieldMapping.Property.GetValue(_soapRequestInfo.Action)
-                select new XElement(propertyFieldMapping.FieldName, new XText(propValue?.ToString() ?? string.Empty));
-        }
+    private IEnumerable<XElement> CreateParametersXml()
+    {
+        return from propertyFieldMapping in _soapRequestInfo.PropertyMappings
+            let propValue = propertyFieldMapping.Property.GetValue(_soapRequestInfo.Action)
+            select new XElement(propertyFieldMapping.FieldName,
+                new XText(propValue?.ToString() ?? string.Empty));
     }
 }

@@ -3,48 +3,47 @@ using System.Threading;
 using System.Windows.Input;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Commands
+namespace CreativeCoders.Mvvm.Commands;
+
+[PublicAPI]
+public abstract class CommandBase : ICommandEx
 {
-    [PublicAPI]
-    public abstract class CommandBase : ICommandEx
+    private EventHandler _canExecuteChanged;
+
+    private readonly SynchronizationContext _synchronizationContext;
+
+    public abstract bool CanExecute(object parameter);
+
+    protected CommandBase()
     {
-        private EventHandler _canExecuteChanged;
+        _synchronizationContext = SynchronizationContext.Current;
+    }
 
-        private readonly SynchronizationContext _synchronizationContext;
+    public abstract void Execute(object parameter);
 
-        public abstract bool CanExecute(object parameter);
-
-        protected CommandBase()
+    public event EventHandler CanExecuteChanged
+    {
+        add
         {
-            _synchronizationContext = SynchronizationContext.Current;
+            _canExecuteChanged += value;
+            CommandManager.RequerySuggested += value;
+        }
+        remove
+        {
+            // ReSharper disable once DelegateSubtraction
+            _canExecuteChanged -= value;
+            CommandManager.RequerySuggested -= value;
+        }
+    }
+
+    public virtual void RaiseCanExecuteChanged()
+    {
+        var handler = _canExecuteChanged;
+        if (handler == null)
+        {
+            return;
         }
 
-        public abstract void Execute(object parameter);
-
-        public event EventHandler CanExecuteChanged
-        {
-            add
-            {
-                _canExecuteChanged += value;
-                CommandManager.RequerySuggested += value;
-            }
-            remove
-            {
-                // ReSharper disable once DelegateSubtraction
-                _canExecuteChanged -= value;
-                CommandManager.RequerySuggested -= value;
-            }
-        }
-
-        public virtual void RaiseCanExecuteChanged()
-        {
-            var handler = _canExecuteChanged;
-            if (handler == null)
-            {
-                return;
-            }
-            
-            _synchronizationContext.Post(_ => handler.Invoke(this, EventArgs.Empty), null);
-        }
+        _synchronizationContext.Post(_ => handler.Invoke(this, EventArgs.Empty), null);
     }
 }

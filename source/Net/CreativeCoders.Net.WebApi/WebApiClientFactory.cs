@@ -3,26 +3,25 @@ using CreativeCoders.Core;
 using CreativeCoders.Net.WebApi.Building;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.WebApi
+namespace CreativeCoders.Net.WebApi;
+
+[PublicAPI]
+public class WebApiClientFactory : IWebApiClientFactory
 {
-    [PublicAPI]
-    public class WebApiClientFactory : IWebApiClientFactory
+    private readonly IHttpClientFactory _httpClientFactory;
+
+    public WebApiClientFactory(IHttpClientFactory httpClientFactory)
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        Ensure.IsNotNull(httpClientFactory, nameof(httpClientFactory));
 
-        public WebApiClientFactory(IHttpClientFactory httpClientFactory)
-        {
-            Ensure.IsNotNull(httpClientFactory, nameof(httpClientFactory));
+        _httpClientFactory = httpClientFactory;
+    }
 
-            _httpClientFactory = httpClientFactory;
-        }
+    public IWebApiClientBuilder<T> CreateBuilder<T>()
+        where T : class
+    {
+        var apiBuilder = new ApiBuilder(_httpClientFactory.CreateClient());
 
-        public IWebApiClientBuilder<T> CreateBuilder<T>()
-            where T : class
-        {
-            var apiBuilder = new ApiBuilder(_httpClientFactory.CreateClient());
-
-            return new WebApiClientBuilder<T>(apiBuilder);
-        }
+        return new WebApiClientBuilder<T>(apiBuilder);
     }
 }

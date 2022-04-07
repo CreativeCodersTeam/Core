@@ -3,35 +3,34 @@ using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.DynamicCode.Proxying
+namespace CreativeCoders.DynamicCode.Proxying;
+
+[PublicAPI]
+public class InterceptorWithPropertiesBase<T> : InterceptorBase<T>
+    where T : class
 {
-    [PublicAPI]
-    public class InterceptorWithPropertiesBase<T> : InterceptorBase<T>
-        where T : class
+    private readonly IDictionary<PropertyInfo, object> _propertyValues;
+
+    public InterceptorWithPropertiesBase()
     {
-        private readonly IDictionary<PropertyInfo, object> _propertyValues;
+        _propertyValues = new ConcurrentDictionary<PropertyInfo, object>();
+    }
 
-        public InterceptorWithPropertiesBase()
+    protected override void SetProperty(PropertyInfo propertyInfo, object value)
+    {
+        _propertyValues[propertyInfo] = value;
+    }
+
+    protected override object GetProperty(PropertyInfo propertyInfo)
+    {
+        if (_propertyValues.TryGetValue(propertyInfo, out var propertyValue))
         {
-            _propertyValues = new ConcurrentDictionary<PropertyInfo, object>();
+            return propertyValue;
         }
 
-        protected override void SetProperty(PropertyInfo propertyInfo, object value)
-        {
-            _propertyValues[propertyInfo] = value;
-        }
+        propertyValue = base.GetProperty(propertyInfo);
+        _propertyValues[propertyInfo] = propertyValue;
 
-        protected override object GetProperty(PropertyInfo propertyInfo)
-        {
-            if (_propertyValues.TryGetValue(propertyInfo, out var propertyValue))
-            {
-                return propertyValue;
-            }
-
-            propertyValue = base.GetProperty(propertyInfo);
-            _propertyValues[propertyInfo] = propertyValue;
-
-            return propertyValue;            
-        }
+        return propertyValue;
     }
 }

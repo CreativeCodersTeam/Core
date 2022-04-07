@@ -1,14 +1,13 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.AspNetCore.Blazor.Components.Icons
+namespace CreativeCoders.AspNetCore.Blazor.Components.Icons;
+
+[PublicAPI]
+[Flags]
+public enum IconFlipMode
 {
-    [PublicAPI]
-    [Flags]
-    public enum IconFlipMode
-    {
-        None,
-        Vertical,
-        Horizontal
-    }
+    None,
+    Vertical,
+    Horizontal
 }

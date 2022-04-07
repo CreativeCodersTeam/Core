@@ -1,7 +1,9 @@
-﻿namespace CreativeCoders.AspNetCore.TokenAuth
+﻿using JetBrains.Annotations;
+
+namespace CreativeCoders.AspNetCore.TokenAuth;
+
+[PublicAPI]
+public interface IUserAuthProvider
 {
-    public interface IUserAuthProvider
-    {
-        bool CheckUser(string userName, string password, string domain);
-    }
+    bool CheckUser(string userName, string password, string domain);
 }

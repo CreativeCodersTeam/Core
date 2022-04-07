@@ -1,11 +1,9 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData
+namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData;
+
+[PublicAPI]
+public class TestOptionWithEnum
 {
-    [PublicAPI]
-    public class TestOptionWithEnum
-    {
-        [OptionParameter('e', "enum")]
-        public TestEnum EnumValue { get; set; }
-    }
+    [OptionParameter('e', "enum")] public TestEnum EnumValue { get; set; }
 }

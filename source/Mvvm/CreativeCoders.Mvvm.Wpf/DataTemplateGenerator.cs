@@ -3,31 +3,32 @@ using System.Windows;
 using System.Windows.Markup;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Wpf
+namespace CreativeCoders.Mvvm.Wpf;
+
+[PublicAPI]
+public class DataTemplateGenerator : IDataTemplateGenerator
 {
-    [PublicAPI]
-    public class DataTemplateGenerator : IDataTemplateGenerator
+    public DataTemplate CreateDataTemplate(Type viewModelType, Type viewType)
     {
-        public DataTemplate CreateDataTemplate(Type viewModelType, Type viewType)
-        {
-            var xaml =
-                $"<DataTemplate DataType=\"{{x:Type vm:{viewModelType.Name}}}\"><v:{viewType.Name} /></DataTemplate>";
+        var xaml =
+            $"<DataTemplate DataType=\"{{x:Type vm:{viewModelType.Name}}}\"><v:{viewType.Name} /></DataTemplate>";
 
-            var context = new ParserContext {XamlTypeMapper = new XamlTypeMapper(Array.Empty<string>())};
+        var context = new ParserContext {XamlTypeMapper = new XamlTypeMapper(Array.Empty<string>())};
 
-            context.XamlTypeMapper.AddMappingProcessingInstruction("vm",
-                viewModelType.Namespace ?? throw new InvalidOperationException(), viewModelType.Assembly.FullName ?? throw new InvalidOperationException());
+        context.XamlTypeMapper.AddMappingProcessingInstruction("vm",
+            viewModelType.Namespace ?? throw new InvalidOperationException(),
+            viewModelType.Assembly.FullName ?? throw new InvalidOperationException());
 
-            context.XamlTypeMapper.AddMappingProcessingInstruction("v",
-                viewType.Namespace ?? throw new InvalidOperationException(), viewType.Assembly.FullName ?? throw new InvalidOperationException());
+        context.XamlTypeMapper.AddMappingProcessingInstruction("v",
+            viewType.Namespace ?? throw new InvalidOperationException(),
+            viewType.Assembly.FullName ?? throw new InvalidOperationException());
 
-            context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
-            context.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
-            context.XmlnsDictionary.Add("vm", "vm");
-            context.XmlnsDictionary.Add("v", "v");
+        context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+        context.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
+        context.XmlnsDictionary.Add("vm", "vm");
+        context.XmlnsDictionary.Add("v", "v");
 
-            var template = (DataTemplate) XamlReader.Parse(xaml, context);
-            return template;
-        }
+        var template = (DataTemplate) XamlReader.Parse(xaml, context);
+        return template;
     }
 }

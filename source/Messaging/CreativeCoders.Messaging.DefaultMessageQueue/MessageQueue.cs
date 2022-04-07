@@ -4,123 +4,122 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using CreativeCoders.Messaging.Core;
 
-namespace CreativeCoders.Messaging.DefaultMessageQueue
+namespace CreativeCoders.Messaging.DefaultMessageQueue;
+
+public class MessageQueue<T> : IMessageQueue<T>
 {
-    public class MessageQueue<T> : IMessageQueue<T>
+    private readonly BufferBlock<T> _bufferBlock;
+
+    private readonly CancellationTokenSource _cancellationTokenSource;
+
+    public MessageQueue()
     {
-        private readonly BufferBlock<T> _bufferBlock;
-        
-        private readonly CancellationTokenSource _cancellationTokenSource;
+        _cancellationTokenSource = new CancellationTokenSource();
 
-        public MessageQueue()
-        {
-            _cancellationTokenSource = new CancellationTokenSource();
-
-            _bufferBlock = new BufferBlock<T>(
-                new DataflowBlockOptions
-                {
-                    CancellationToken = _cancellationTokenSource.Token
-                });
-        }
-
-        private MessageQueue(int maxQueueLength)
-        {
-            _cancellationTokenSource = new CancellationTokenSource();
-            
-            _bufferBlock = new BufferBlock<T>(
-                new DataflowBlockOptions
-                {
-                    BoundedCapacity = maxQueueLength, 
-                    CancellationToken = _cancellationTokenSource.Token
-                });
-        }
-
-        public static MessageQueue<T> Create(int maxQueueLength)
-        {
-            return new(maxQueueLength);
-        }
-        
-        public async Task EnqueueAsync(T message)
-        {
-            var messageEnqueued = await _bufferBlock.SendAsync(message);
-
-            if (!messageEnqueued)
+        _bufferBlock = new BufferBlock<T>(
+            new DataflowBlockOptions
             {
-                throw new MessageEnqueueFailedException();
-            }
-        }
+                CancellationToken = _cancellationTokenSource.Token
+            });
+    }
 
-        public Task<bool> TryEnqueueAsync(T message)
-        {
-            return _bufferBlock.SendAsync(message);
-        }
+    private MessageQueue(int maxQueueLength)
+    {
+        _cancellationTokenSource = new CancellationTokenSource();
 
-        public void Enqueue(T message)
-        {
-            var messageEnqueued = _bufferBlock.Post(message);
-            
-            if (!messageEnqueued)
+        _bufferBlock = new BufferBlock<T>(
+            new DataflowBlockOptions
             {
-                throw new MessageEnqueueFailedException();
-            }
-        }
+                BoundedCapacity = maxQueueLength,
+                CancellationToken = _cancellationTokenSource.Token
+            });
+    }
 
-        public bool TryEnqueue(T message)
+    public static MessageQueue<T> Create(int maxQueueLength)
+    {
+        return new(maxQueueLength);
+    }
+
+    public async Task EnqueueAsync(T message)
+    {
+        var messageEnqueued = await _bufferBlock.SendAsync(message);
+
+        if (!messageEnqueued)
         {
-            return _bufferBlock.Post(message);
+            throw new MessageEnqueueFailedException();
         }
+    }
 
-        public Task<T> DequeueAsync()
+    public Task<bool> TryEnqueueAsync(T message)
+    {
+        return _bufferBlock.SendAsync(message);
+    }
+
+    public void Enqueue(T message)
+    {
+        var messageEnqueued = _bufferBlock.Post(message);
+
+        if (!messageEnqueued)
         {
-            return _bufferBlock.ReceiveAsync();
+            throw new MessageEnqueueFailedException();
         }
+    }
 
-        public T Dequeue()
+    public bool TryEnqueue(T message)
+    {
+        return _bufferBlock.Post(message);
+    }
+
+    public Task<T> DequeueAsync()
+    {
+        return _bufferBlock.ReceiveAsync();
+    }
+
+    public T Dequeue()
+    {
+        return _bufferBlock.Receive();
+    }
+
+    public bool TryDequeue(out T message)
+    {
+        return _bufferBlock.TryReceive(out message);
+    }
+
+    public IObservable<T> AsObservable()
+    {
+        return _bufferBlock.AsObservable();
+    }
+
+    public IObserver<T> AsObserver()
+    {
+        return _bufferBlock.AsObserver();
+    }
+
+    public bool CompleteOnDispose { get; set; }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (CompleteOnDispose)
         {
-            return _bufferBlock.Receive();
+            _bufferBlock.Complete();
+            await _bufferBlock.Completion.ConfigureAwait(false);
         }
-
-        public bool TryDequeue(out T message)
+        else
         {
-            return _bufferBlock.TryReceive(out message);
+            _cancellationTokenSource.Cancel();
         }
+    }
 
-        public IObservable<T> AsObservable()
+    public void Dispose()
+    {
+        if (CompleteOnDispose)
         {
-            return _bufferBlock.AsObservable();
+            _bufferBlock.Complete();
+            _bufferBlock.Completion.GetAwaiter().GetResult();
         }
-
-        public IObserver<T> AsObserver()
+        else
         {
-            return _bufferBlock.AsObserver();
-        }
-
-        public bool CompleteOnDispose { get; set; }
-
-        public async ValueTask DisposeAsync()
-        {
-            if (CompleteOnDispose)
-            {
-                _bufferBlock.Complete();
-                await _bufferBlock.Completion.ConfigureAwait(false);
-            }
-            else
-            {
-                _cancellationTokenSource.Cancel();
-            }
-        }
-
-        public void Dispose()
-        {
-            if (CompleteOnDispose)
-            {
-                _bufferBlock.Complete();
-                _bufferBlock.Completion.GetAwaiter().GetResult();
-            }
-            else
-            {
-                _cancellationTokenSource.Cancel();
-            }
+            _cancellationTokenSource.Cancel();
         }
     }
 }

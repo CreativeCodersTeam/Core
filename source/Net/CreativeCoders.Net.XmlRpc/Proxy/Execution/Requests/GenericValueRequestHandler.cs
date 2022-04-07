@@ -2,37 +2,36 @@
 using CreativeCoders.Net.XmlRpc.Model;
 using CreativeCoders.Net.XmlRpc.Proxy.Specification;
 
-namespace CreativeCoders.Net.XmlRpc.Proxy.Execution.Requests
+namespace CreativeCoders.Net.XmlRpc.Proxy.Execution.Requests;
+
+public class GenericValueRequestHandler : XmlRpcRequestHandlerBase
 {
-    public class GenericValueRequestHandler : XmlRpcRequestHandlerBase
+    private readonly ValueRequestHandler _valueRequestHandler;
+
+    private readonly XmlRpcValueRequestHandler _xmlRpcValueRequestHandler;
+
+    private readonly ObjectValueRequestHandler _objectValueRequestHandler;
+
+    public GenericValueRequestHandler() : base(ApiMethodReturnType.GenericValue)
     {
-        private readonly ValueRequestHandler _valueRequestHandler;
+        _valueRequestHandler = new ValueRequestHandler();
+        _xmlRpcValueRequestHandler = new XmlRpcValueRequestHandler();
+        _objectValueRequestHandler = new ObjectValueRequestHandler();
+    }
 
-        private readonly XmlRpcValueRequestHandler _xmlRpcValueRequestHandler;
+    public override object HandleRequest(RequestData requestData)
+    {
+        var dataType = requestData.InvocationMethod.ReturnType.GetGenericArguments().First();
 
-        private readonly ObjectValueRequestHandler _objectValueRequestHandler;
+        requestData.ValueType = dataType;
 
-        public GenericValueRequestHandler() : base(ApiMethodReturnType.GenericValue)
+        if (typeof(XmlRpcValue).IsAssignableFrom(dataType))
         {
-            _valueRequestHandler = new ValueRequestHandler();
-            _xmlRpcValueRequestHandler = new XmlRpcValueRequestHandler();
-            _objectValueRequestHandler = new ObjectValueRequestHandler();
+            return _xmlRpcValueRequestHandler.HandleRequest(requestData);
         }
 
-        public override object HandleRequest(RequestData requestData)
-        {
-            var dataType = requestData.InvocationMethod.ReturnType.GetGenericArguments().First();
-
-            requestData.ValueType = dataType;
-
-            if (typeof(XmlRpcValue).IsAssignableFrom(dataType))
-            {
-                return _xmlRpcValueRequestHandler.HandleRequest(requestData);
-            }
-
-            return dataType.IsValueType
-                ? _valueRequestHandler.HandleRequest(requestData)
-                : _objectValueRequestHandler.HandleRequest(requestData);
-        }
+        return dataType.IsValueType
+            ? _valueRequestHandler.HandleRequest(requestData)
+            : _objectValueRequestHandler.HandleRequest(requestData);
     }
 }

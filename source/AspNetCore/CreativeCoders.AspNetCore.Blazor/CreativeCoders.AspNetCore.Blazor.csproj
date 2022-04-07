@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<Authors>CreativeCoders</Authors>
 		<Description>Components and classes for Blazor</Description>
 		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
@@ -10,9 +10,9 @@
 
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.10" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" />
-		<PackageReference Include="Microsoft.JSInterop" Version="5.0.10" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.3" />
+		<PackageReference Include="Microsoft.JSInterop" Version="6.0.3" />
 	</ItemGroup>
 
 

@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData
+namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData;
+
+[PublicAPI]
+public class TestOptionWithIntEnumerable
 {
-    [PublicAPI]
-    public class TestOptionWithIntEnumerable
-    {
-        [OptionParameter('i', "integers")]
-        public IEnumerable<int>? IntValues { get; set; }
-    }
+    [OptionParameter('i', "integers")] public IEnumerable<int>? IntValues { get; set; }
 }

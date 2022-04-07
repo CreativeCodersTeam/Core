@@ -2,214 +2,213 @@
 using CreativeCoders.Messaging.DefaultMediator;
 using Xunit;
 
-namespace CreativeCoders.Messaging.UnitTests
+namespace CreativeCoders.Messaging.UnitTests;
+
+public class MediatorTests
 {
-    public class MediatorTests
+    [Fact]
+    public void RegisterHandler_NoSend_HandlerNotCalled()
     {
-        [Fact]
-        public void RegisterHandler_NoSend_HandlerNotCalled()
-        {
-            var handlerCalled = false;
-            
-            var mediator = new Mediator();
+        var handlerCalled = false;
 
-            mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
-            
-            Assert.False(handlerCalled);
-        }
-        
-        [Fact]
-        public void RegisterAsyncHandler_NoSend_HandlerNotCalled()
-        {
-            var handlerCalled = false;
-            
-            var mediator = new Mediator();
+        var mediator = new Mediator();
 
-            mediator.RegisterAsyncHandler<string>(this,
-                _ =>
-                {
-                    handlerCalled = true;
-                    return Task.CompletedTask;
-                });
-            
-            Assert.False(handlerCalled);
-        }
-        
-        [Fact]
-        public async Task SendAsync_Text_HandlerCalled()
-        {
-            var handlerCalled = false;
-            
-            var mediator = new Mediator();
+        mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
 
-            mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
+        Assert.False(handlerCalled);
+    }
 
-            await mediator.SendAsync("test");
-            
-            Assert.True(handlerCalled);
-        }
-        
-        [Fact]
-        public async Task SendAsync_Text_AsyncHandlerCalled()
-        {
-            var handlerCalled = false;
-            
-            var mediator = new Mediator();
+    [Fact]
+    public void RegisterAsyncHandler_NoSend_HandlerNotCalled()
+    {
+        var handlerCalled = false;
 
-            mediator.RegisterAsyncHandler<string>(this,
-                _ =>
-                {
-                    handlerCalled = true;
-                    return Task.CompletedTask;
-                });
+        var mediator = new Mediator();
 
-            await mediator.SendAsync("test");
-            
-            Assert.True(handlerCalled);
-        }
-        
-        [Fact]
-        public async Task SendAsync_Text_HandlerCalledWithText()
-        {
-            var messageValue = string.Empty;
-            
-            var mediator = new Mediator();
+        mediator.RegisterAsyncHandler<string>(this,
+            _ =>
+            {
+                handlerCalled = true;
+                return Task.CompletedTask;
+            });
 
-            mediator.RegisterHandler<string>(this, msg => messageValue = msg);
+        Assert.False(handlerCalled);
+    }
 
-            await mediator.SendAsync("test");
-            
-            Assert.Equal("test", messageValue);
-        }
-        
-        [Fact]
-        public async Task SendAsync_Text_AsyncHandlerCalledWithText()
-        {
-            var messageValue = string.Empty;
-            
-            var mediator = new Mediator();
+    [Fact]
+    public async Task SendAsync_Text_HandlerCalled()
+    {
+        var handlerCalled = false;
 
-            mediator.RegisterAsyncHandler<string>(this,
-                msg =>
-                {
-                    messageValue = msg;
-                    return Task.CompletedTask;
-                });
+        var mediator = new Mediator();
 
-            await mediator.SendAsync("test");
-            
-            Assert.Equal("test", messageValue);
-        }
-        
-        [Fact]
-        public async Task UnregisterHandler_AfterUnregisterHandlerForTarget_HandlerNotCalled()
-        {
-            var handlerCalled = false;
-            
-            var mediator = new Mediator();
+        mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
 
-            mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
-            
-            mediator.UnregisterHandler(this);
+        await mediator.SendAsync("test");
 
-            await mediator.SendAsync("test");
-            
-            Assert.False(handlerCalled);
-        }
-        
-        [Fact]
-        public async Task UnregisterHandler_AfterUnregisterHandlerForTarget_AsyncHandlerNotCalled()
-        {
-            var handlerCalled = false;
-            
-            var mediator = new Mediator();
+        Assert.True(handlerCalled);
+    }
 
-            mediator.RegisterAsyncHandler<string>(this,
-                _ =>
-                {
-                    handlerCalled = true;
-                    return Task.CompletedTask;
-                });
-            
-            mediator.UnregisterHandler(this);
+    [Fact]
+    public async Task SendAsync_Text_AsyncHandlerCalled()
+    {
+        var handlerCalled = false;
 
-            await mediator.SendAsync("test");
-            
-            Assert.False(handlerCalled);
-        }
-        
-        [Fact]
-        public async Task UnregisterHandler_AfterUnregisterHandlerForMessage_HandlerNotCalled()
-        {
-            var handlerCalled = false;
-            
-            var mediator = new Mediator();
+        var mediator = new Mediator();
 
-            mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
-            
-            mediator.UnregisterHandler<string>(this);
+        mediator.RegisterAsyncHandler<string>(this,
+            _ =>
+            {
+                handlerCalled = true;
+                return Task.CompletedTask;
+            });
 
-            await mediator.SendAsync("test");
-            
-            Assert.False(handlerCalled);
-        }
-        
-        [Fact]
-        public async Task UnregisterHandler_AfterUnregisterHandlerForMessage_AsyncHandlerNotCalled()
-        {
-            var handlerCalled = false;
-            
-            var mediator = new Mediator();
+        await mediator.SendAsync("test");
 
-            mediator.RegisterAsyncHandler<string>(this,
-                _ =>
-                {
-                    handlerCalled = true;
-                    return Task.CompletedTask;
-                });
-            
-            mediator.UnregisterHandler<string>(this);
+        Assert.True(handlerCalled);
+    }
 
-            await mediator.SendAsync("test");
-            
-            Assert.False(handlerCalled);
-        }
-        
-        [Fact]
-        public async Task DisposeRegistration_SendAsync_HandlerNotCalled()
-        {
-            var handlerCalled = false;
-            
-            var mediator = new Mediator();
+    [Fact]
+    public async Task SendAsync_Text_HandlerCalledWithText()
+    {
+        var messageValue = string.Empty;
 
-            var registration = mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
-            
-            registration.Dispose();
+        var mediator = new Mediator();
 
-            await mediator.SendAsync("test");
-            
-            Assert.False(handlerCalled);
-        }
-        
-        [Fact]
-        public async Task DisposeRegistration_SendAsync_AsyncHandlerNotCalled()
-        {
-            var handlerCalled = false;
-            
-            var mediator = new Mediator();
+        mediator.RegisterHandler<string>(this, msg => messageValue = msg);
 
-            var registration = mediator.RegisterAsyncHandler<string>(this,
-                _ =>
-                {
-                    handlerCalled = true;
-                    return Task.CompletedTask;
-                });
-            
-            registration.Dispose();
+        await mediator.SendAsync("test");
 
-            await mediator.SendAsync("test");
-            
-            Assert.False(handlerCalled);
-        }
+        Assert.Equal("test", messageValue);
+    }
+
+    [Fact]
+    public async Task SendAsync_Text_AsyncHandlerCalledWithText()
+    {
+        var messageValue = string.Empty;
+
+        var mediator = new Mediator();
+
+        mediator.RegisterAsyncHandler<string>(this,
+            msg =>
+            {
+                messageValue = msg;
+                return Task.CompletedTask;
+            });
+
+        await mediator.SendAsync("test");
+
+        Assert.Equal("test", messageValue);
+    }
+
+    [Fact]
+    public async Task UnregisterHandler_AfterUnregisterHandlerForTarget_HandlerNotCalled()
+    {
+        var handlerCalled = false;
+
+        var mediator = new Mediator();
+
+        mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
+
+        mediator.UnregisterHandler(this);
+
+        await mediator.SendAsync("test");
+
+        Assert.False(handlerCalled);
+    }
+
+    [Fact]
+    public async Task UnregisterHandler_AfterUnregisterHandlerForTarget_AsyncHandlerNotCalled()
+    {
+        var handlerCalled = false;
+
+        var mediator = new Mediator();
+
+        mediator.RegisterAsyncHandler<string>(this,
+            _ =>
+            {
+                handlerCalled = true;
+                return Task.CompletedTask;
+            });
+
+        mediator.UnregisterHandler(this);
+
+        await mediator.SendAsync("test");
+
+        Assert.False(handlerCalled);
+    }
+
+    [Fact]
+    public async Task UnregisterHandler_AfterUnregisterHandlerForMessage_HandlerNotCalled()
+    {
+        var handlerCalled = false;
+
+        var mediator = new Mediator();
+
+        mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
+
+        mediator.UnregisterHandler<string>(this);
+
+        await mediator.SendAsync("test");
+
+        Assert.False(handlerCalled);
+    }
+
+    [Fact]
+    public async Task UnregisterHandler_AfterUnregisterHandlerForMessage_AsyncHandlerNotCalled()
+    {
+        var handlerCalled = false;
+
+        var mediator = new Mediator();
+
+        mediator.RegisterAsyncHandler<string>(this,
+            _ =>
+            {
+                handlerCalled = true;
+                return Task.CompletedTask;
+            });
+
+        mediator.UnregisterHandler<string>(this);
+
+        await mediator.SendAsync("test");
+
+        Assert.False(handlerCalled);
+    }
+
+    [Fact]
+    public async Task DisposeRegistration_SendAsync_HandlerNotCalled()
+    {
+        var handlerCalled = false;
+
+        var mediator = new Mediator();
+
+        var registration = mediator.RegisterHandler<string>(this, _ => handlerCalled = true);
+
+        registration.Dispose();
+
+        await mediator.SendAsync("test");
+
+        Assert.False(handlerCalled);
+    }
+
+    [Fact]
+    public async Task DisposeRegistration_SendAsync_AsyncHandlerNotCalled()
+    {
+        var handlerCalled = false;
+
+        var mediator = new Mediator();
+
+        var registration = mediator.RegisterAsyncHandler<string>(this,
+            _ =>
+            {
+                handlerCalled = true;
+                return Task.CompletedTask;
+            });
+
+        registration.Dispose();
+
+        await mediator.SendAsync("test");
+
+        Assert.False(handlerCalled);
     }
 }

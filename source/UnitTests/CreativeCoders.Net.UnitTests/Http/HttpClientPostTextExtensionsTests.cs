@@ -4,54 +4,54 @@ using CreativeCoders.Net.Http;
 using CreativeCoders.UnitTests.Net.Http;
 using Xunit;
 
-namespace CreativeCoders.Net.UnitTests.Http
+namespace CreativeCoders.Net.UnitTests.Http;
+
+public class HttpClientPostTextExtensionsTests
 {
-    public class HttpClientPostTextExtensionsTests
+    [Fact]
+    public async Task PostTextAsync_WithDefaultMediaType_RequestWithSpecifiedTextIsMade()
     {
-        [Fact]
-        public async Task PostTextAsync_WithDefaultMediaType_RequestWithSpecifiedTextIsMade()
-        {
-            const string expectedData = "TestData";
+        const string expectedData = "TestData";
 
-            var mockHttpClientContext = new MockHttpClientContext();
+        var mockHttpClientContext = new MockHttpClientContext();
 
-            mockHttpClientContext
-                .Respond()
-                .ReturnText("Test");
+        mockHttpClientContext
+            .Respond()
+            .ReturnText("Test");
 
-            var client = mockHttpClientContext.CreateClient();
+        var client = mockHttpClientContext.CreateClient();
 
-            var _ = await client.PostTextAsync(new Uri("http://test.com"), expectedData);
+        var _ = await client.PostTextAsync(new Uri("http://test.com"), expectedData);
 
-            Assert.Single(mockHttpClientContext.RecordedRequests);
+        Assert.Single(mockHttpClientContext.RecordedRequests);
 
-            mockHttpClientContext
-                .CallShouldBeMade("http://test.com/")
-                .WithContentType(ContentMediaTypes.Text.Plain)
-                .WithContentText(expectedData);
-        }
+        mockHttpClientContext
+            .CallShouldBeMade("http://test.com/")
+            .WithContentType(ContentMediaTypes.Text.Plain)
+            .WithContentText(expectedData);
+    }
 
-        [Fact]
-        public async Task PostTextAsync_WithXmlMediaType_RequestWithSpecifiedTextIsMade()
-        {
-            const string expectedData = "TestData";
+    [Fact]
+    public async Task PostTextAsync_WithXmlMediaType_RequestWithSpecifiedTextIsMade()
+    {
+        const string expectedData = "TestData";
 
-            var mockHttpClientContext = new MockHttpClientContext();
+        var mockHttpClientContext = new MockHttpClientContext();
 
-            mockHttpClientContext
-                .Respond()
-                .ReturnText("Test");
+        mockHttpClientContext
+            .Respond()
+            .ReturnText("Test");
 
-            var client = mockHttpClientContext.CreateClient();
+        var client = mockHttpClientContext.CreateClient();
 
-            var _ = await client.PostTextAsync(new Uri("http://test.com"), expectedData, ContentMediaTypes.Text.Xml);
+        var _ = await client.PostTextAsync(new Uri("http://test.com"), expectedData,
+            ContentMediaTypes.Text.Xml);
 
-            Assert.Single(mockHttpClientContext.RecordedRequests);
+        Assert.Single(mockHttpClientContext.RecordedRequests);
 
-            mockHttpClientContext
-                .CallShouldBeMade("http://test.com/")
-                .WithContentType(ContentMediaTypes.Text.Xml)
-                .WithContentText(expectedData);
-        }
+        mockHttpClientContext
+            .CallShouldBeMade("http://test.com/")
+            .WithContentType(ContentMediaTypes.Text.Xml)
+            .WithContentText(expectedData);
     }
 }

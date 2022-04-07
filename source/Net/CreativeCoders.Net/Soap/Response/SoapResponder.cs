@@ -6,65 +6,67 @@ using System.Xml.Linq;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 
-namespace CreativeCoders.Net.Soap.Response
+namespace CreativeCoders.Net.Soap.Response;
+
+internal class SoapResponder<TResponse> where TResponse : class, new()
 {
-    internal class SoapResponder<TResponse> where TResponse: class, new()
+    private readonly Stream _responseStream;
+
+    private readonly SoapResponseInfo _responseInfo;
+
+    public SoapResponder(Stream responseStream, SoapResponseInfo responseInfo)
     {
-        private readonly Stream _responseStream;
+        Ensure.IsNotNull(responseStream, nameof(responseStream));
+        Ensure.IsNotNull(responseInfo, nameof(responseInfo));
 
-        private readonly SoapResponseInfo _responseInfo;
+        _responseStream = responseStream;
+        _responseInfo = responseInfo;
+    }
 
-        public SoapResponder(Stream responseStream, SoapResponseInfo responseInfo)
+    public TResponse Eval()
+    {
+        var responseData = new TResponse();
+
+        var xmlDoc = XDocument.Load(_responseStream);
+        MapXmlResponseToData(xmlDoc, responseData);
+
+        return responseData;
+    }
+
+    private void MapXmlResponseToData(XContainer xmlDoc, TResponse responseData)
+    {
+        var bodyNode = xmlDoc.Elements(SoapConsts.EnvelopeName).Elements(SoapConsts.BodyName)
+            .FirstOrDefault();
+
+        var contentElement = bodyNode?.Elements(XName.Get(_responseInfo.Name, _responseInfo.NameSpace))
+            .FirstOrDefault();
+
+        if (contentElement != null)
         {
-            Ensure.IsNotNull(responseStream, nameof(responseStream));
-            Ensure.IsNotNull(responseInfo, nameof(responseInfo));
-
-            _responseStream = responseStream;
-            _responseInfo = responseInfo;
+            _responseInfo.PropertyMappings.ForEach(mapping =>
+                MapProperty(responseData, mapping, contentElement));
         }
+    }
 
-        public TResponse Eval()
+    private static void MapProperty(TResponse responseData, PropertyFieldMapping mapping,
+        XContainer contentElement)
+    {
+        var fieldNode = contentElement.Elements(XName.Get(mapping.FieldName)).FirstOrDefault();
+
+        switch (fieldNode)
         {
-            var responseData = new TResponse();
-
-            var xmlDoc = XDocument.Load(_responseStream);
-            MapXmlResponseToData(xmlDoc, responseData);
-
-            return responseData;
-        }
-
-        private void MapXmlResponseToData(XContainer xmlDoc, TResponse responseData)
-        {
-            var bodyNode = xmlDoc.Elements(SoapConsts.EnvelopeName).Elements(SoapConsts.BodyName).FirstOrDefault();
-
-            var contentElement = bodyNode?.Elements(XName.Get(_responseInfo.Name, _responseInfo.NameSpace))
-                .FirstOrDefault();
-
-            if (contentElement != null)
+            case {FirstNode: null}:
             {
-                _responseInfo.PropertyMappings.ForEach(mapping => MapProperty(responseData, mapping, contentElement));
+                var propValue = mapping.Property.PropertyType == typeof(string) ? string.Empty : null;
+                mapping.Property.SetValue(responseData, propValue);
+                return;
             }
-        }
-
-        private static void MapProperty(TResponse responseData, PropertyFieldMapping mapping, XContainer contentElement)
-        {
-            var fieldNode = contentElement.Elements(XName.Get(mapping.FieldName)).FirstOrDefault();
-
-            switch (fieldNode)
+            case {FirstNode.NodeType: XmlNodeType.Text}:
             {
-                case { FirstNode: null }:
-                {
-                    var propValue = mapping.Property.PropertyType == typeof(string) ? string.Empty : null;
-                    mapping.Property.SetValue(responseData, propValue);
-                    return;
-                }
-                case { FirstNode: { NodeType: XmlNodeType.Text } }:
-                {
-                    var fieldValue = (fieldNode.FirstNode as XText)?.Value;
-                    var propValue = Convert.ChangeType(fieldValue, mapping.Property.PropertyType);
-                    mapping.Property.SetValue(responseData, propValue);
-                    return;
-                }
+                var fieldValue = (fieldNode.FirstNode as XText)?.Value;
+                var propValue = Convert.ChangeType(fieldValue, mapping.Property.PropertyType);
+                mapping.Property.SetValue(responseData, propValue);
+                return;
             }
         }
     }

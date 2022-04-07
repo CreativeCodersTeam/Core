@@ -1,9 +1,8 @@
-﻿namespace CreativeCoders.Scripting.UnitTests.CSharp
+﻿namespace CreativeCoders.Scripting.UnitTests.CSharp;
+
+public interface ITextScript
 {
-    public interface ITextScript
-    {
-        string TestText { get; set; }
-        
-        int IntValue { get; }
-    }
+    string TestText { get; set; }
+
+    int IntValue { get; }
 }

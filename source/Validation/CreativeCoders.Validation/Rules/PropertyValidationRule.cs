@@ -6,86 +6,86 @@ using CreativeCoders.Core;
 using CreativeCoders.Core.Reflection;
 using CreativeCoders.Validation.ValidationSteps;
 
-namespace CreativeCoders.Validation.Rules
+namespace CreativeCoders.Validation.Rules;
+
+public class PropertyValidationRule<T, TProperty> : IValidationRule<T>, IPropertyValidationRule<T, TProperty>
+    where T : class
 {
-    public class PropertyValidationRule<T, TProperty> : IValidationRule<T>, IPropertyValidationRule<T, TProperty>
-        where T : class
+    private readonly IList<IPropertyValidationStep<T, TProperty>> _validationSteps;
+
+    private readonly Expression<Func<T, TProperty>> _propertyExpression;
+
+    private Func<T, bool> _checkCondition;
+
+    public PropertyValidationRule(Expression<Func<T, TProperty>> propertyExpression)
     {
-        private readonly IList<IPropertyValidationStep<T, TProperty>> _validationSteps;
+        Ensure.IsNotNull(propertyExpression, nameof(propertyExpression));
+        Ensure.That(propertyExpression.IsPropertyOf(), nameof(propertyExpression),
+            $"{nameof(propertyExpression)} must be a property in class {typeof(T).Name}");
 
-        private readonly Expression<Func<T, TProperty>> _propertyExpression;
+        _propertyExpression = propertyExpression;
+        _validationSteps = new List<IPropertyValidationStep<T, TProperty>>();
+    }
 
-        private Func<T, bool> _checkCondition;
-
-        public PropertyValidationRule(Expression<Func<T, TProperty>> propertyExpression)
+    public void Validate(IValidationContext<T> validationContext)
+    {
+        if (_checkCondition?.Invoke(validationContext.InstanceForValidation) == false)
         {
-            Ensure.IsNotNull(propertyExpression, nameof(propertyExpression));
-            Ensure.That(propertyExpression.IsPropertyOf(), nameof(propertyExpression),
-                $"{nameof(propertyExpression)} must be a property in class {typeof(T).Name}");
-
-            _propertyExpression = propertyExpression;
-            _validationSteps = new List<IPropertyValidationStep<T, TProperty>>();
+            return;
         }
 
-        public void Validate(IValidationContext<T> validationContext)
+        var propertyValidationContext =
+            new PropertyValidationContext<T, TProperty>(_propertyExpression, validationContext);
+
+        // ReSharper disable once LoopCanBePartlyConvertedToQuery
+        foreach (var propertyValidationStep in _validationSteps)
         {
-            if (_checkCondition?.Invoke(validationContext.InstanceForValidation) == false)
+            if (!propertyValidationStep.Validate(propertyValidationContext) &&
+                validationContext.BreakRuleValidationAfterFirstFailedValidation)
             {
-                return;
+                break;
             }
-
-            var propertyValidationContext = new PropertyValidationContext<T, TProperty>(_propertyExpression, validationContext);
-
-            // ReSharper disable once LoopCanBePartlyConvertedToQuery
-            foreach (var propertyValidationStep in _validationSteps)
-            {
-                if (!propertyValidationStep.Validate(propertyValidationContext) &&
-                    validationContext.BreakRuleValidationAfterFirstFailedValidation)
-                {
-                    break;
-                }
-            }
-
-            if (!propertyValidationContext.Faults.Any()) return;
-
-            validationContext.AddFaults(HasFaultMessage
-                ? new[] {new ValidationFault(propertyValidationContext.PropertyName, FaultMessage)}
-                : propertyValidationContext.Faults);
         }
 
-        public bool Affects<TProp>(Expression<Func<T, TProp>> propertyExpression)
+        if (!propertyValidationContext.Faults.Any()) return;
+
+        validationContext.AddFaults(HasFaultMessage
+            ? new[] {new ValidationFault(propertyValidationContext.PropertyName, FaultMessage)}
+            : propertyValidationContext.Faults);
+    }
+
+    public bool Affects<TProp>(Expression<Func<T, TProp>> propertyExpression)
+    {
+        if (!propertyExpression.IsPropertyOf())
         {
-            if (!propertyExpression.IsPropertyOf())
-            {
-                return false;
-            }
-
-            return propertyExpression.GetMemberName() == _propertyExpression.GetMemberName();
+            return false;
         }
 
-        public bool Affects(string propertyName)
-        {
-            return _propertyExpression.GetMemberName() == propertyName;
-        }
+        return propertyExpression.GetMemberName() == _propertyExpression.GetMemberName();
+    }
 
-        public void AddValidationStep(IPropertyValidationStep<T, TProperty> validationStep)
-        {
-            _validationSteps.Add(validationStep);
-        }
+    public bool Affects(string propertyName)
+    {
+        return _propertyExpression.GetMemberName() == propertyName;
+    }
 
-        public void SetFaultMessage(string message)
-        {
-            HasFaultMessage = true;
-            FaultMessage = message;
-        }
+    public void AddValidationStep(IPropertyValidationStep<T, TProperty> validationStep)
+    {
+        _validationSteps.Add(validationStep);
+    }
 
-        public string FaultMessage { get; private set; }
+    public void SetFaultMessage(string message)
+    {
+        HasFaultMessage = true;
+        FaultMessage = message;
+    }
 
-        public bool HasFaultMessage { get; private set; }
+    public string FaultMessage { get; private set; }
 
-        public void SetCondition(Func<T, bool> checkCondition)
-        {
-            _checkCondition = checkCondition;
-        }
+    public bool HasFaultMessage { get; private set; }
+
+    public void SetCondition(Func<T, bool> checkCondition)
+    {
+        _checkCondition = checkCondition;
     }
 }

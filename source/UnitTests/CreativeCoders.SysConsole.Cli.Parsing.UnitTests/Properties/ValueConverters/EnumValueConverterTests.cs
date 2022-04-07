@@ -3,23 +3,22 @@ using CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters;
 using FluentAssertions;
 using Xunit;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.Properties.ValueConverters
+namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.Properties.ValueConverters;
+
+public class EnumValueConverterTests
 {
-    public class EnumValueConverterTests
+    [Fact]
+    public void Convert_TargetIsNotEnum_ReturnsDoNothing()
     {
-        [Fact]
-        public void Convert_TargetIsNotEnum_ReturnsDoNothing()
-        {
-            var converter = new EnumValueConverter();
+        var converter = new EnumValueConverter();
 
-            // Act
-            var result = converter.Convert("Test", typeof(int),
-                new OptionParameterAttribute('t', "test"));
+        // Act
+        var result = converter.Convert("Test", typeof(int),
+            new OptionParameterAttribute('t', "test"));
 
-            // Assert
-            result
-                .Should()
-                .Be(ConverterAction.DoNothing);
-        }
+        // Assert
+        result
+            .Should()
+            .Be(ConverterAction.DoNothing);
     }
 }

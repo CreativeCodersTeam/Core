@@ -1,7 +1,6 @@
-﻿namespace WindowsServiceDaemonSampleApp
+﻿namespace WindowsServiceDaemonSampleApp;
+
+public class SampleWorkerConfig
 {
-    public class SampleWorkerConfig
-    {
-        public string TestData { get; set; }
-    }
+    public string TestData { get; set; }
 }

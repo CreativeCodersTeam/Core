@@ -1,9 +1,8 @@
-﻿namespace CreativeCoders.Core.UnitTests.Enums
+﻿namespace CreativeCoders.Core.UnitTests.Enums;
+
+public enum TestEnumWithInt
 {
-    public enum TestEnumWithInt
-    {
-        None = 0,
-        Ok = 1,
-        Test = 2
-    }
+    None = 0,
+    Ok = 1,
+    Test = 2
 }

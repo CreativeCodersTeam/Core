@@ -1,9 +1,8 @@
-﻿namespace CreativeCoders.Config.Base
-{
-    public interface IConfigurationSource
-    {
-        object GetSettingObject();
+﻿namespace CreativeCoders.Config.Base;
 
-        object GetDefaultSettingObject();
-    }
+public interface IConfigurationSource
+{
+    object GetSettingObject();
+
+    object GetDefaultSettingObject();
 }

@@ -1,14 +1,13 @@
 ﻿using CreativeCoders.Config.Base;
 
-namespace CreativeCoders.Data.EfCore.SqlServer
-{
-    public class SqlServerConnectionStringSetting : ISetting<SqlServerConnectionString>
-    {
-        public SqlServerConnectionStringSetting(string connectionString)
-        {
-            Value = new SqlServerConnectionString{ConnectionString = connectionString};
-        }
+namespace CreativeCoders.Data.EfCore.SqlServer;
 
-        public SqlServerConnectionString Value { get; }
+public class SqlServerConnectionStringSetting : ISetting<SqlServerConnectionString>
+{
+    public SqlServerConnectionStringSetting(string connectionString)
+    {
+        Value = new SqlServerConnectionString {ConnectionString = connectionString};
     }
+
+    public SqlServerConnectionString Value { get; }
 }

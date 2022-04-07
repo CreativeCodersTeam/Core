@@ -2,15 +2,14 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.Servers.Http
+namespace CreativeCoders.Net.Servers.Http;
+
+[PublicAPI]
+public interface IHttpResponseBody
 {
-    [PublicAPI]
-    public interface IHttpResponseBody
-    {
-        Task WriteAsync(string content);
+    Task WriteAsync(string content);
 
-        Task FlushAsync();
+    Task FlushAsync();
 
-        Stream GetStream();
-    }
+    Stream GetStream();
 }

@@ -1,26 +1,24 @@
-﻿using CreativeCoders.Core;
+﻿using System.Net.Http;
+using CreativeCoders.Net.Avm.Hosts;
+using CreativeCoders.Net.Avm.Wan;
+using CreativeCoders.Net.Avm.Wlan;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.Avm
+namespace CreativeCoders.Net.Avm;
+
+[PublicAPI]
+public class FritzBox : IFritzBox
 {
-    [PublicAPI]
-    public class FritzBox
+    public FritzBox(HttpClient httpClient)
     {
-        public FritzBox(string url) : this(url, string.Empty, string.Empty) { }
-
-        public FritzBox(string url, string userName, string password)
-        {
-            Ensure.IsNotNullOrWhitespace(url, nameof(url));
-
-            Hosts = new Hosts(url, userName, password);
-            WanPppConnection = new WanPppConnection(url, userName, password);
-            Wlan = new Wlan(url, userName, password);
-        }
-
-        public Hosts Hosts { get; }
-
-        public WanPppConnection WanPppConnection { get; }
-        
-        public Wlan Wlan { get; }
+        Hosts = new HostsImpl(httpClient);
+        WanPppConnection = new WanPppConnectionImpl(httpClient);
+        Wlan = new WlanImpl(httpClient);
     }
+
+    public IHosts Hosts { get; }
+
+    public IWanPppConnection WanPppConnection { get; }
+
+    public IWlan Wlan { get; }
 }

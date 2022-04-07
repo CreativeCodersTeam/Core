@@ -1,13 +1,12 @@
-﻿namespace CreativeCoders.NukeBuild
+﻿namespace CreativeCoders.NukeBuild;
+
+public interface IVersionInfo
 {
-    public interface IVersionInfo
-    {
-        string GetAssemblySemVer();
-        
-        string GetAssemblySemFileVer();
-        
-        string InformationalVersion { get; }
-        
-        string NuGetVersionV2 { get; }
-    }
+    string GetAssemblySemVer();
+
+    string GetAssemblySemFileVer();
+
+    string InformationalVersion { get; }
+
+    string NuGetVersionV2 { get; }
 }

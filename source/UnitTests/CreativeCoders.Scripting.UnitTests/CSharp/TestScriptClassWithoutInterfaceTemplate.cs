@@ -1,22 +1,21 @@
 ﻿using CreativeCoders.Scripting.CSharp.ClassTemplating;
 
-namespace CreativeCoders.Scripting.UnitTests.CSharp
+namespace CreativeCoders.Scripting.UnitTests.CSharp;
+
+public class TestScriptClassWithoutInterfaceTemplate : ScriptClassTemplate
 {
-    public class TestScriptClassWithoutInterfaceTemplate : ScriptClassTemplate
+    public TestScriptClassWithoutInterfaceTemplate(ITestApi testApi)
     {
-        public TestScriptClassWithoutInterfaceTemplate(ITestApi testApi)
-        {
-            Usings.Add("System");
-            Usings.Add("System.Linq");
-            Usings.Add("System.Threading.Tasks");
-            
-            Members.AddRawContent("$$code$$");
+        Usings.Add("System");
+        Usings.Add("System.Linq");
+        Usings.Add("System.Threading.Tasks");
 
-            Injections.AddProperty("Api", () => testApi);
+        Members.AddRawContent("$$code$$");
 
-            Members.AddMethod("CallApi", "Api.DoSomething(\"Call\");");
+        Injections.AddProperty("Api", () => testApi);
 
-            Members.AddProperty("TestText", "string", "return \"SomeText\";", "Api.DoSomething(value);");
-        }
+        Members.AddMethod("CallApi", "Api.DoSomething(\"Call\");");
+
+        Members.AddProperty("TestText", "string", "return \"SomeText\";", "Api.DoSomething(value);");
     }
 }

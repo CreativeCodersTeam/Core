@@ -6,125 +6,124 @@ using JetBrains.Annotations;
 using Nuke.Common.IO;
 using Nuke.Common.Tools.DotNet;
 
-namespace CreativeCoders.NukeBuild.BuildActions
+namespace CreativeCoders.NukeBuild.BuildActions;
+
+[PublicAPI]
+public class DotNetTestAction : BuildActionBase<DotNetTestAction>
 {
-    [PublicAPI]
-    public class DotNetTestAction : BuildActionBase<DotNetTestAction>
+    private string _projectsPattern;
+
+    private string _resultsDirectory;
+
+    private AbsolutePath _testProjectsBaseDirectory;
+
+    private AbsolutePath _coverageDirectory;
+
+    private bool _enableCodeCoverage;
+
+    private string _logger = "xunit";
+
+    private string _resultFileExt = "xml";
+
+    protected override void OnExecute()
     {
-        private string _projectsPattern;
-        
-        private string _resultsDirectory;
-
-        private AbsolutePath _testProjectsBaseDirectory;
-
-        private AbsolutePath _coverageDirectory;
-
-        private bool _enableCodeCoverage;
-
-        private string _logger = "xunit";
-
-        private string _resultFileExt = "xml";
-
-        protected override void OnExecute()
+        if (!Directory.Exists(_testProjectsBaseDirectory))
         {
-            if (!Directory.Exists(_testProjectsBaseDirectory))
+            return;
+        }
+
+        var unitTestProjects = _testProjectsBaseDirectory.GlobFiles(_projectsPattern);
+
+        var failedTests = new List<(string UnitTestProject, Exception Exception)>();
+
+        foreach (var unitTestProject in unitTestProjects)
+        {
+            var projectName = Path.GetFileNameWithoutExtension(unitTestProject);
+
+            var testResultFile = Path.Combine(_resultsDirectory, $"{projectName}.{_resultFileExt}");
+
+            try
             {
-                return;
+                var testSettings =
+                    CreateTestSettings(unitTestProject, testResultFile);
+
+                DotNetTasks.DotNetTest(testSettings);
             }
-            
-            var unitTestProjects = _testProjectsBaseDirectory.GlobFiles(_projectsPattern);
-
-            var failedTests = new List<(string UnitTestProject, Exception Exception)>();
-
-            foreach (var unitTestProject in unitTestProjects)
+            catch (Exception e)
             {
-                var projectName = Path.GetFileNameWithoutExtension(unitTestProject);
-
-                var testResultFile = Path.Combine(_resultsDirectory, $"{projectName}.{_resultFileExt}");
-
-                try
-                {
-                    var testSettings =
-                        CreateTestSettings(unitTestProject, testResultFile);
-
-                    DotNetTasks.DotNetTest(testSettings);
-                }
-                catch (Exception e)
-                {
-                    failedTests.Add((UnitTestProject: unitTestProject, Exception: e));
-                }
-            }
-
-            if (failedTests.Any())
-            {
-                throw failedTests.First().Exception;
+                failedTests.Add((UnitTestProject: unitTestProject, Exception: e));
             }
         }
 
-        private DotNetTestSettings CreateTestSettings(string unitTestProject, string testResultFile)
+        if (failedTests.Any())
         {
-            var settings = new DotNetTestSettings()
-                .SetProjectFile(unitTestProject)
-                .SetConfiguration(BuildInfo.Configuration)
-                .SetLoggers($"{_logger};LogFileName={testResultFile}");
+            throw failedTests.First().Exception;
+        }
+    }
 
-            if (_enableCodeCoverage)
-            {
-                return settings
-                    .SetDataCollector("XPlat Code Coverage")
-                    .SetResultsDirectory(_coverageDirectory);
-            }
+    private DotNetTestSettings CreateTestSettings(string unitTestProject, string testResultFile)
+    {
+        var settings = new DotNetTestSettings()
+            .SetProjectFile(unitTestProject)
+            .SetConfiguration(BuildInfo.Configuration)
+            .SetLoggers($"{_logger};LogFileName={testResultFile}");
 
-            return settings;
+        if (_enableCodeCoverage)
+        {
+            return settings
+                .SetDataCollector("XPlat Code Coverage")
+                .SetResultsDirectory(_coverageDirectory);
         }
 
-        public DotNetTestAction SetTestProjectsBaseDirectory(AbsolutePath testProjectsBaseDirectory)
-        {
-            _testProjectsBaseDirectory = testProjectsBaseDirectory;
+        return settings;
+    }
 
-            return this;
-        }
-        
-        public DotNetTestAction SetProjectsPattern(string projectsPattern)
-        {
-            _projectsPattern = projectsPattern;
+    public DotNetTestAction SetTestProjectsBaseDirectory(AbsolutePath testProjectsBaseDirectory)
+    {
+        _testProjectsBaseDirectory = testProjectsBaseDirectory;
 
-            return this;
-        }
+        return this;
+    }
 
-        public DotNetTestAction SetResultsDirectory(string resultsDirectory)
-        {
-            _resultsDirectory = resultsDirectory;
+    public DotNetTestAction SetProjectsPattern(string projectsPattern)
+    {
+        _projectsPattern = projectsPattern;
 
-            return this;
-        }
+        return this;
+    }
 
-        public DotNetTestAction SetCoverageDirectory(AbsolutePath coverageDirectory)
-        {
-            _coverageDirectory = coverageDirectory;
+    public DotNetTestAction SetResultsDirectory(string resultsDirectory)
+    {
+        _resultsDirectory = resultsDirectory;
 
-            return this;
-        }
+        return this;
+    }
 
-        public DotNetTestAction EnableCoverage()
-        {
-            _enableCodeCoverage = true;
+    public DotNetTestAction SetCoverageDirectory(AbsolutePath coverageDirectory)
+    {
+        _coverageDirectory = coverageDirectory;
 
-            return this;
-        }
+        return this;
+    }
 
-        public DotNetTestAction UseLogger(string logger)
-        {
-            _logger = logger;
+    public DotNetTestAction EnableCoverage()
+    {
+        _enableCodeCoverage = true;
 
-            return this;
-        }
+        return this;
+    }
 
-        public DotNetTestAction SetResultFileExt(string resultFileExt)
-        {
-            _resultFileExt = resultFileExt;
+    public DotNetTestAction UseLogger(string logger)
+    {
+        _logger = logger;
 
-            return this;
-        }
+        return this;
+    }
+
+    public DotNetTestAction SetResultFileExt(string resultFileExt)
+    {
+        _resultFileExt = resultFileExt;
+
+        return this;
     }
 }

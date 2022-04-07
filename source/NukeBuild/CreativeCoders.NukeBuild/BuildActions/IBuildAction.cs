@@ -1,15 +1,14 @@
 ﻿using System;
 using Nuke.Common;
 
-namespace CreativeCoders.NukeBuild.BuildActions
+namespace CreativeCoders.NukeBuild.BuildActions;
+
+public interface IBuildAction<out TBuildAction>
+    where TBuildAction : IBuildAction<TBuildAction>
 {
-    public interface IBuildAction<out TBuildAction>
-        where TBuildAction : IBuildAction<TBuildAction>
-    {
-        ITargetDefinition Setup(ITargetDefinition targetDefinition);
+    ITargetDefinition Setup(ITargetDefinition targetDefinition);
 
-        ITargetDefinition Setup(ITargetDefinition targetDefinition, Action<TBuildAction> configureAction);
+    ITargetDefinition Setup(ITargetDefinition targetDefinition, Action<TBuildAction> configureAction);
 
-        void SetBuildInfo(IBuildInfo buildInfo);
-    }
+    void SetBuildInfo(IBuildInfo buildInfo);
 }

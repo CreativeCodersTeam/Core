@@ -8,55 +8,51 @@ using FakeItEasy;
 using FluentAssertions;
 using Xunit;
 
-namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Help
+namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Help;
+
+public class CliActionHelpGeneratorTests
 {
-    public class CliActionHelpGeneratorTests
+    [Fact]
+    public void CreateHelp_GivenActionViaRouter_HelpTextAndOptionsHelpCorrect()
     {
-        [Fact]
-        public void CreateHelp_GivenActionViaRouter_HelpTextAndOptionsHelpCorrect()
-        {
-            var expectedOptionsHelp = new OptionsHelp(
-                Array.Empty<HelpEntry>(),
-                Array.Empty<HelpEntry>());
+        var expectedOptionsHelp = new OptionsHelp(
+            Array.Empty<HelpEntry>(),
+            Array.Empty<HelpEntry>());
 
-            var optionsHelpGenerator = A.Fake<IOptionsHelpGenerator>();
+        var optionsHelpGenerator = A.Fake<IOptionsHelpGenerator>();
 
-            A.CallTo(() => optionsHelpGenerator.CreateHelp(typeof(OptionsForHelp)))
-                .Returns(expectedOptionsHelp);
+        A.CallTo(() => optionsHelpGenerator.CreateHelp(typeof(OptionsForHelp)))
+            .Returns(expectedOptionsHelp);
 
-            var actionRouter = A.Fake<ICliActionRouter>();
+        var actionRouter = A.Fake<ICliActionRouter>();
 
-            A
-                .CallTo(() => actionRouter.FindRoute(A<IList<string>>.Ignored))
-                .Returns(
-                    new CliActionRoute(
-                        typeof(TestControllerWithDefault),
-                        typeof(TestControllerWithDefault).GetMethod(nameof(TestControllerWithDefault.Setup))
-                        ?? throw new InvalidOperationException(),
-                        Array.Empty<string>()));
+        A
+            .CallTo(() => actionRouter.FindRoute(A<IList<string>>.Ignored))
+            .Returns(
+                new CliActionRoute(
+                    typeof(TestControllerWithDefault),
+                    typeof(TestControllerWithDefault).GetMethod(nameof(TestControllerWithDefault.Setup))
+                    ?? throw new InvalidOperationException(),
+                    Array.Empty<string>()));
 
-            var helpGenerator = new CliActionHelpGenerator(optionsHelpGenerator, actionRouter);
+        var helpGenerator = new CliActionHelpGenerator(optionsHelpGenerator, actionRouter);
 
-            // Act
-            var help = helpGenerator.CreateHelp(new []{"test"});
+        // Act
+        var help = helpGenerator.CreateHelp(new[] {"test"});
 
-            // Assert
-            help.HelpText
-                .Should()
-                .Be("Setups the config");
+        // Assert
+        help.HelpText
+            .Should()
+            .Be("Setups the config");
 
-            help.OptionsHelp
-                .Should()
-                .Be(expectedOptionsHelp);
+        help.OptionsHelp
+            .Should()
+            .Be(expectedOptionsHelp);
 
-            A.CallTo(() => optionsHelpGenerator.CreateHelp(typeof(OptionsForHelp)))
-                .MustHaveHappenedOnceExactly();
-        }
-
-        [Fact]
-        public void Test()
-        {
-
-        }
+        A.CallTo(() => optionsHelpGenerator.CreateHelp(typeof(OptionsForHelp)))
+            .MustHaveHappenedOnceExactly();
     }
+
+    [Fact]
+    public void Test() { }
 }

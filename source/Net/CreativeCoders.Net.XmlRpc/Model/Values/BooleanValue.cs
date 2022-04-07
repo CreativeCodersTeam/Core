@@ -1,9 +1,6 @@
-﻿namespace CreativeCoders.Net.XmlRpc.Model.Values
+﻿namespace CreativeCoders.Net.XmlRpc.Model.Values;
+
+public class BooleanValue : XmlRpcValue<bool>
 {
-    public class BooleanValue : XmlRpcValue<bool>
-    {
-        public BooleanValue(bool value) : base(value)
-        {
-        }
-    }
+    public BooleanValue(bool value) : base(value) { }
 }

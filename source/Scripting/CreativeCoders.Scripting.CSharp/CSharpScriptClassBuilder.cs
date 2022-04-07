@@ -2,35 +2,35 @@
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Scripting.Base;
 
-namespace CreativeCoders.Scripting.CSharp
+namespace CreativeCoders.Scripting.CSharp;
+
+public class CSharpScriptClassBuilder
 {
-    public class CSharpScriptClassBuilder
+    private readonly IEnumerable<ISourcePreprocessor> _sourcePreprocessors;
+
+    public CSharpScriptClassBuilder(IEnumerable<ISourcePreprocessor> sourcePreprocessors)
     {
-        private readonly IEnumerable<ISourcePreprocessor> _sourcePreprocessors;
+        _sourcePreprocessors = sourcePreprocessors;
+    }
 
-        public CSharpScriptClassBuilder(IEnumerable<ISourcePreprocessor> sourcePreprocessors)
+    public CSharpScriptClassDefinition Build(ScriptPackage scriptPackage,
+        string nameSpace)
+    {
+        var definition = new CSharpScriptClassDefinition
         {
-            _sourcePreprocessors = sourcePreprocessors;
-        }
-        
-        public CSharpScriptClassDefinition Build(ScriptPackage scriptPackage,
-            string nameSpace)
-        {
-            var definition = new CSharpScriptClassDefinition
-            {
-                SourceCode = scriptPackage.SourceCode.Read(),
-                ClassName = scriptPackage.Name,
-                NameSpace = nameSpace
-            };
+            SourceCode = scriptPackage.SourceCode.Read(),
+            ClassName = scriptPackage.Name,
+            NameSpace = nameSpace
+        };
 
-            PreprocessSourceCode(scriptPackage, definition);
-            
-            return definition;
-        }
+        PreprocessSourceCode(scriptPackage, definition);
 
-        private void PreprocessSourceCode(ScriptPackage scriptPackage, CSharpScriptClassDefinition classDefinition)
-        {
-            _sourcePreprocessors.ForEach(x => x.Preprocess(scriptPackage, classDefinition));
-        }
+        return definition;
+    }
+
+    private void PreprocessSourceCode(ScriptPackage scriptPackage,
+        CSharpScriptClassDefinition classDefinition)
+    {
+        _sourcePreprocessors.ForEach(x => x.Preprocess(scriptPackage, classDefinition));
     }
 }

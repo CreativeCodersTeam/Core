@@ -1,18 +1,17 @@
 ﻿using System;
 
-namespace CreativeCoders.Net.Soap.Response
+namespace CreativeCoders.Net.Soap.Response;
+
+[AttributeUsage(AttributeTargets.Class)]
+public class SoapResponseAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class SoapResponseAttribute : Attribute
+    public SoapResponseAttribute(string name, string nameSpace)
     {
-        public SoapResponseAttribute(string name, string nameSpace)
-        {
-            Name = name;
-            NameSpace = nameSpace;
-        }
-
-        public string Name { get; }
-
-        public string NameSpace { get; }
+        Name = name;
+        NameSpace = nameSpace;
     }
+
+    public string Name { get; }
+
+    public string NameSpace { get; }
 }

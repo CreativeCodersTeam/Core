@@ -2,21 +2,15 @@
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<Authors>CreativeCoders</Authors>
 		<Description>Basic core classes and types</Description>
 		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Async\**" />
-	  <EmbeddedResource Remove="Async\**" />
-	  <None Remove="Async\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-		<PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
+		<PackageReference Include="System.IO.Abstractions" Version="16.1.25" />
 	</ItemGroup>
 
 </Project>

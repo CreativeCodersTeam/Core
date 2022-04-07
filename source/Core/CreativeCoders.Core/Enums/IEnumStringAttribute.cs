@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Core.Enums
+﻿namespace CreativeCoders.Core.Enums;
+
+public interface IEnumStringAttribute
 {
-    public interface IEnumStringAttribute
-    {
-        string Text { get; }
-    }
+    string Text { get; }
 }

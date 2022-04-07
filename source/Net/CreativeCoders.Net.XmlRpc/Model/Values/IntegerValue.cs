@@ -1,9 +1,6 @@
-﻿namespace CreativeCoders.Net.XmlRpc.Model.Values
+﻿namespace CreativeCoders.Net.XmlRpc.Model.Values;
+
+public class IntegerValue : XmlRpcValue<int>
 {
-    public class IntegerValue : XmlRpcValue<int>
-    {
-        public IntegerValue(int value) : base(value)
-        {
-        }
-    }
+    public IntegerValue(int value) : base(value) { }
 }

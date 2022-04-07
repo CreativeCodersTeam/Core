@@ -1,9 +1,6 @@
-﻿namespace CreativeCoders.Net.XmlRpc.Model.Values
+﻿namespace CreativeCoders.Net.XmlRpc.Model.Values;
+
+public class StringValue : XmlRpcValue<string>
 {
-    public class StringValue : XmlRpcValue<string>
-    {
-        public StringValue(string value) : base(value)
-        {
-        }
-    }
+    public StringValue(string value) : base(value) { }
 }

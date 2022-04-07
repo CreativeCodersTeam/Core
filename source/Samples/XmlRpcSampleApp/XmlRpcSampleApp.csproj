@@ -1,14 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
-        <IsPackable>false</IsPackable>
-    </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\Net\CreativeCoders.Net.Servers.Http.AspNetCore\CreativeCoders.Net.Servers.Http.AspNetCore.csproj" />
-      <ProjectReference Include="..\..\Net\CreativeCoders.Net.XmlRpc\CreativeCoders.Net.XmlRpc.csproj" />
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference
+			Include="..\..\Net\CreativeCoders.Net.Servers.Http.AspNetCore\CreativeCoders.Net.Servers.Http.AspNetCore.csproj" />
+		<ProjectReference Include="..\..\Net\CreativeCoders.Net.XmlRpc\CreativeCoders.Net.XmlRpc.csproj" />
+	</ItemGroup>
 
 </Project>

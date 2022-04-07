@@ -1,17 +1,16 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Skeletor.Infrastructure
-{
-    [PublicAPI]
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ViewAttribute : Attribute
-    {
-        public ViewAttribute(Type viewModelType)
-        {
-            ViewModelType = viewModelType;
-        }
+namespace CreativeCoders.Mvvm.Skeletor.Infrastructure;
 
-        public Type ViewModelType { get; }
+[PublicAPI]
+[AttributeUsage(AttributeTargets.Class)]
+public class ViewAttribute : Attribute
+{
+    public ViewAttribute(Type viewModelType)
+    {
+        ViewModelType = viewModelType;
     }
+
+    public Type ViewModelType { get; }
 }

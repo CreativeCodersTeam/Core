@@ -2,21 +2,20 @@
 using CreativeCoders.Core;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.WebApi.Specification.Properties
+namespace CreativeCoders.Net.WebApi.Specification.Properties;
+
+[PublicAPI]
+public abstract class PropertyDefinitionBase
 {
-    [PublicAPI]
-    public abstract class PropertyDefinitionBase
+    protected PropertyDefinitionBase(PropertyInfo propertyInfo)
     {
-        protected PropertyDefinitionBase(PropertyInfo propertyInfo)
-        {
-            PropertyInfo = propertyInfo;
-        }
+        PropertyInfo = propertyInfo;
+    }
 
-        public PropertyInfo PropertyInfo { get; }
+    public PropertyInfo PropertyInfo { get; }
 
-        public string GetValue(object target)
-        {
-            return PropertyInfo.GetValue(target).ToStringSafe();
-        }
+    public string GetValue(object target)
+    {
+        return PropertyInfo.GetValue(target).ToStringSafe();
     }
 }

@@ -2,16 +2,16 @@
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<Authors>CreativeCoders</Authors>
 		<Description>Network relatived classes and types. HttpClient extensions. Basic Soap support. Base classes and types for Http server abstraction.</Description>
 		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Polly" Version="7.2.2" />
+		<PackageReference Include="Polly" Version="7.2.3" />
 	</ItemGroup>
 
 	<ItemGroup>

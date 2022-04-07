@@ -1,49 +1,48 @@
 ﻿using System.Reflection;
 using CreativeCoders.Core.Threading;
 
-namespace CreativeCoders.Core.ObjectLinking
+namespace CreativeCoders.Core.ObjectLinking;
+
+public class PropertyValueCopier
 {
-    public class PropertyValueCopier
+    private readonly SynchronizedValue<bool> _isInCopyProperty = new();
+
+    public void CopyPropertyValue(object source, PropertyInfo sourceProperty, object target,
+        PropertyInfo targetProperty, bool backDirection, PropertyLinkInfo info)
     {
-        private readonly SynchronizedValue<bool> _isInCopyProperty = new();
-
-        public void CopyPropertyValue(object source, PropertyInfo sourceProperty, object target, PropertyInfo targetProperty, bool backDirection, PropertyLinkInfo info)
+        if (_isInCopyProperty.Value)
         {
-            
-            if (_isInCopyProperty.Value)
+            return;
+        }
+
+        _isInCopyProperty.Value = true;
+
+        try
+        {
+            var propertyValue = sourceProperty.GetValue(source);
+
+            if (info.Converter != null)
             {
-                return;
-            }
+                propertyValue = backDirection
+                    ? info.Converter.ConvertBack(propertyValue, info.ConverterParameter)
+                    : info.Converter.Convert(propertyValue, info.ConverterParameter);
 
-            _isInCopyProperty.Value = true;
-
-            try
-            {
-                var propertyValue = sourceProperty.GetValue(source);
-
-                if (info.Converter != null)
+                if (propertyValue == PropertyLink.DoNothing)
                 {
-                    propertyValue = backDirection
-                        ? info.Converter.ConvertBack(propertyValue, info.ConverterParameter)
-                        : info.Converter.Convert(propertyValue, info.ConverterParameter);
-
-                    if (propertyValue == PropertyLink.DoNothing)
-                    {
-                        return;
-                    }
-                    
-                    if (propertyValue == PropertyLink.Error)
-                    {
-                        return;
-                    }
+                    return;
                 }
-            
-                targetProperty.SetValue(target, propertyValue);
+
+                if (propertyValue == PropertyLink.Error)
+                {
+                    return;
+                }
             }
-            finally
-            {
-                _isInCopyProperty.Value = false;
-            }
+
+            targetProperty.SetValue(target, propertyValue);
+        }
+        finally
+        {
+            _isInCopyProperty.Value = false;
         }
     }
 }

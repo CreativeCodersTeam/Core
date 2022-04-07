@@ -1,8 +1,7 @@
 ﻿#nullable enable
-namespace CreativeCoders.Core.UnitTests.Reflection.TestData
+namespace CreativeCoders.Core.UnitTests.Reflection.TestData;
+
+public class TestSimpleClassOptions : ITestSimpleClassOptions
 {
-    public class TestSimpleClassOptions : ITestSimpleClassOptions
-    {
-        public string? Value { get; set; }
-    }
+    public string? Value { get; set; }
 }

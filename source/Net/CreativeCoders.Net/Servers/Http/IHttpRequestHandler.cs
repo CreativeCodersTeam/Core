@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace CreativeCoders.Net.Servers.Http
+namespace CreativeCoders.Net.Servers.Http;
+
+public interface IHttpRequestHandler
 {
-    public interface IHttpRequestHandler
-    {
-        Task ProcessAsync(IHttpRequest request, IHttpResponse response);
-    }
+    Task ProcessAsync(IHttpRequest request, IHttpResponse response);
 }

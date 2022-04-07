@@ -1,19 +1,18 @@
 ﻿using System;
 
-namespace CreativeCoders.Core.Chaining
+namespace CreativeCoders.Core.Chaining;
+
+public class ChainDataHandler<TData, TResult> : IChainDataHandler<TData, TResult>
 {
-    public class ChainDataHandler<TData, TResult> : IChainDataHandler<TData, TResult>
+    private readonly Func<TData, HandleResult<TResult>> _handle;
+
+    public ChainDataHandler(Func<TData, HandleResult<TResult>> handle)
     {
-        private readonly Func<TData, HandleResult<TResult>> _handle;
+        _handle = handle;
+    }
 
-        public ChainDataHandler(Func<TData, HandleResult<TResult>> handle)
-        {
-            _handle = handle;
-        }
-
-        public HandleResult<TResult> Handle(TData data)
-        {
-            return _handle(data);
-        }
+    public HandleResult<TResult> Handle(TData data)
+    {
+        return _handle(data);
     }
 }

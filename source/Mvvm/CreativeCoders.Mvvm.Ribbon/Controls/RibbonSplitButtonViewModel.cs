@@ -1,20 +1,19 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Ribbon.Controls
+namespace CreativeCoders.Mvvm.Ribbon.Controls;
+
+[PublicAPI]
+public class RibbonSplitButtonViewModel : RibbonBaseButtonViewModel
 {
-    [PublicAPI]
-    public class RibbonSplitButtonViewModel : RibbonBaseButtonViewModel
+    public RibbonSplitButtonViewModel()
     {
-        public RibbonSplitButtonViewModel()
-        {
-            Items = new RibbonItemCollection<RibbonControlViewModel>();
-        }
-
-        public RibbonSplitButtonViewModel(ActionViewModel action) : base(action)
-        {
-            Items = new RibbonItemCollection<RibbonControlViewModel>();
-        }
-
-        public RibbonItemCollection<RibbonControlViewModel> Items { get; }
+        Items = new RibbonItemCollection<RibbonControlViewModel>();
     }
+
+    public RibbonSplitButtonViewModel(ActionViewModel action) : base(action)
+    {
+        Items = new RibbonItemCollection<RibbonControlViewModel>();
+    }
+
+    public RibbonItemCollection<RibbonControlViewModel> Items { get; }
 }

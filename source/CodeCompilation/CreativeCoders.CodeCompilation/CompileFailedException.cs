@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.CodeCompilation
+namespace CreativeCoders.CodeCompilation;
+
+[PublicAPI]
+public class CompileFailedException : Exception
 {
-    [PublicAPI]
-    public class CompileFailedException : Exception
+    public CompileFailedException(IEnumerable<CompilationMessage> compilerMessages)
     {
-        public CompileFailedException(IEnumerable<CompilationMessage> compilerMessages)
-        {
-            CompilerMessages = compilerMessages;
-        }
-        
-        public IEnumerable<CompilationMessage> CompilerMessages { get; }
+        CompilerMessages = compilerMessages;
     }
+
+    public IEnumerable<CompilationMessage> CompilerMessages { get; }
 }

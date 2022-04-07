@@ -1,13 +1,12 @@
 ﻿using JetBrains.Annotations;
 
-namespace SkeletorSampleApp.Views
+namespace SkeletorSampleApp.Views;
+
+[UsedImplicitly]
+public partial class FirstDetailsView
 {
-    [UsedImplicitly]
-    public partial class FirstDetailsView
+    public FirstDetailsView()
     {
-        public FirstDetailsView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

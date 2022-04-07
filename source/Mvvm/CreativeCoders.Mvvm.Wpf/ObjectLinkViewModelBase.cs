@@ -2,34 +2,34 @@
 using CreativeCoders.Core.ObjectLinking;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Wpf
+namespace CreativeCoders.Mvvm.Wpf;
+
+[PublicAPI]
+public class ObjectLinkViewModelBase : ViewModelBase
 {
-    [PublicAPI]
-    public class ObjectLinkViewModelBase : ViewModelBase
+    private string _name;
+
+    private ObjectLink _elementLink;
+
+    public void ConnectTo(DependencyObject element)
     {
-        private string _name;
-        
-        private ObjectLink _elementLink;
-        
-        public void ConnectTo(DependencyObject element)
+        if (element is FrameworkElement frameworkElement)
         {
-            if (element is FrameworkElement frameworkElement)
-            {
-                frameworkElement.Name = Name;
-            }
-            _elementLink = new ObjectLinkBuilder(this, element).Build();
+            frameworkElement.Name = Name;
         }
 
-        public void Disconnect()
-        {
-            _elementLink?.Dispose();
-            _elementLink = null;
-        }
-        
-        public string Name
-        {
-            get => _name;
-            set => Set(ref _name, value);
-        }
+        _elementLink = new ObjectLinkBuilder(this, element).Build();
+    }
+
+    public void Disconnect()
+    {
+        _elementLink?.Dispose();
+        _elementLink = null;
+    }
+
+    public string Name
+    {
+        get => _name;
+        set => Set(ref _name, value);
     }
 }

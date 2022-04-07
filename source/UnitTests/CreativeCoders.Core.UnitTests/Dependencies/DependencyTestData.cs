@@ -1,75 +1,74 @@
 ﻿using CreativeCoders.Core.Dependencies;
 
-namespace CreativeCoders.Core.UnitTests.Dependencies
+namespace CreativeCoders.Core.UnitTests.Dependencies;
+
+public static class DependencyTestData
 {
-    public static class DependencyTestData
+    public const string Cpu = nameof(Cpu);
+
+    public const string Kernel = nameof(Kernel);
+
+    public const string VgaDriver = nameof(VgaDriver);
+
+    public const string NetworkDriver = nameof(NetworkDriver);
+
+    public const string Shell = nameof(Shell);
+
+    public const string Application = nameof(Application);
+
+    public const string WebServer = nameof(WebServer);
+
+    public const string Browser = nameof(Browser);
+
+
+    public static DependencyObjectCollection<string> CreateTestData()
     {
-        public const string Cpu = nameof(Cpu);
+        var collection = new DependencyObjectCollection<string>();
 
-        public const string Kernel = nameof(Kernel);
+        collection.AddDependency(Application, Shell);
 
-        public const string VgaDriver = nameof(VgaDriver);
+        collection.AddDependency(Shell, VgaDriver);
 
-        public const string NetworkDriver = nameof(NetworkDriver);
+        collection.AddDependency(VgaDriver, Kernel);
 
-        public const string Shell = nameof(Shell);
+        collection.AddDependency(Kernel, Cpu);
 
-        public const string Application = nameof(Application);
+        return collection;
+    }
 
-        public const string WebServer = nameof(WebServer);
+    public static DependencyObjectCollection<string> CreateTestDataForTree()
+    {
+        var collection = new DependencyObjectCollection<string>();
 
-        public const string Browser = nameof(Browser);
+        collection.AddDependency(Application, Shell);
 
+        collection.AddDependency(Shell, VgaDriver);
 
-        public static DependencyObjectCollection<string> CreateTestData()
-        {
-            var collection = new DependencyObjectCollection<string>();
+        collection.AddDependency(VgaDriver, Kernel);
 
-            collection.AddDependency(Application, Shell);
+        collection.AddDependency(NetworkDriver, Kernel);
 
-            collection.AddDependency(Shell, VgaDriver);
+        collection.AddDependency(WebServer, NetworkDriver);
 
-            collection.AddDependency(VgaDriver, Kernel);
+        collection.AddDependency(Browser, Application, NetworkDriver);
 
-            collection.AddDependency(Kernel, Cpu);
+        return collection;
+    }
 
-            return collection;
-        }
+    public static DependencyObjectCollection<string> CreateTestDataWithCircularReference()
+    {
+        var collection = new DependencyObjectCollection<string>();
 
-        public static DependencyObjectCollection<string> CreateTestDataForTree()
-        {
-            var collection = new DependencyObjectCollection<string>();
+        collection.AddDependency(Application, Shell);
 
-            collection.AddDependency(Application, Shell);
+        collection.AddDependency(Shell, VgaDriver);
 
-            collection.AddDependency(Shell, VgaDriver);
+        collection.AddDependency(VgaDriver, Kernel);
 
-            collection.AddDependency(VgaDriver, Kernel);
+        collection.AddDependency(Kernel, Cpu);
 
-            collection.AddDependency(NetworkDriver, Kernel);
+        collection.AddDependency(Shell, Application);
 
-            collection.AddDependency(WebServer, NetworkDriver);
-
-            collection.AddDependency(Browser, Application, NetworkDriver);
-
-            return collection;
-        }
-
-        public static DependencyObjectCollection<string> CreateTestDataWithCircularReference()
-        {
-            var collection = new DependencyObjectCollection<string>();
-
-            collection.AddDependency(Application, Shell);
-
-            collection.AddDependency(Shell, VgaDriver);
-
-            collection.AddDependency(VgaDriver, Kernel);
-
-            collection.AddDependency(Kernel, Cpu);
-
-            collection.AddDependency(Shell, Application);
-
-            return collection;
-        }
+        return collection;
     }
 }

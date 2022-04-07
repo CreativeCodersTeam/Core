@@ -7,25 +7,24 @@ using CreativeCoders.Mvvm.Skeletor.Infrastructure.Default;
 using SimpleInjector;
 using SkeletorSampleApp.ViewModels;
 
-namespace SkeletorSampleApp
-{
-    public class BootStrapper : BootStrapperBase<MainViewModel>
-    {
-        protected override IDiContainerBuilder CreateDiContainerBuilder()
-        {
-            return new SimpleInjectorDiContainerBuilder(new Container());
-        }
+namespace SkeletorSampleApp;
 
-        protected void Configure(IViewAttributeInitializer viewAttributeInitializer)
-        {
-            viewAttributeInitializer.InitFromAllAssemblies();
-            ConfigureShell(x => x.Title ="Sample demo app for Skeletor Framework");
-        }
+public class BootStrapper : BootStrapperBase<MainViewModel>
+{
+    protected override IDiContainerBuilder CreateDiContainerBuilder()
+    {
+        return new SimpleInjectorDiContainerBuilder(new Container());
+    }
+
+    protected void Configure(IViewAttributeInitializer viewAttributeInitializer)
+    {
+        viewAttributeInitializer.InitFromAllAssemblies();
+        ConfigureShell(x => x.Title ="Sample demo app for Skeletor Framework");
+    }
         
-        protected override void ConfigureDiContainer(IDiContainerBuilder containerBuilder)
-        {
-            containerBuilder.SetupDefaultInfrastructure();
-            containerBuilder.AddTransient<IFileDialogService, Win32FileDialogService>();
-        }
+    protected override void ConfigureDiContainer(IDiContainerBuilder containerBuilder)
+    {
+        containerBuilder.SetupDefaultInfrastructure();
+        containerBuilder.AddTransient<IFileDialogService, Win32FileDialogService>();
     }
 }

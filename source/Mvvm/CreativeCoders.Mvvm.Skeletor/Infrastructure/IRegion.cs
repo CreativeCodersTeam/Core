@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Skeletor.Infrastructure
+namespace CreativeCoders.Mvvm.Skeletor.Infrastructure;
+
+[PublicAPI]
+public interface IRegion
 {
-    [PublicAPI]
-    public interface IRegion
-    {
-        void AddView(object view);
+    void AddView(object view);
 
-        void RemoveView(object view);
+    void RemoveView(object view);
 
-        IEnumerable<object> Views { get; }
-    }
+    IEnumerable<object> Views { get; }
 }

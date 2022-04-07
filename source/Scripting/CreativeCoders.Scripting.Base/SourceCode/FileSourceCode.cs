@@ -1,13 +1,10 @@
 ﻿using CreativeCoders.Core.IO;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Scripting.Base.SourceCode
+namespace CreativeCoders.Scripting.Base.SourceCode;
+
+[PublicAPI]
+public class FileSourceCode : DelegateSourceCode
 {
-    [PublicAPI]
-    public class FileSourceCode : DelegateSourceCode
-    {
-        public FileSourceCode(string fileName) : base(() => FileSys.File.ReadAllText(fileName))
-        {
-        }
-    }
+    public FileSourceCode(string fileName) : base(() => FileSys.File.ReadAllText(fileName)) { }
 }

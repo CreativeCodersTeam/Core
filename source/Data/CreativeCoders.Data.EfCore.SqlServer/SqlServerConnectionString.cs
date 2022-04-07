@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Data.EfCore.SqlServer
+﻿namespace CreativeCoders.Data.EfCore.SqlServer;
+
+public class SqlServerConnectionString
 {
-    public class SqlServerConnectionString
-    {
-        public string ConnectionString { get; set; }
-    }
+    public string ConnectionString { get; init; }
 }

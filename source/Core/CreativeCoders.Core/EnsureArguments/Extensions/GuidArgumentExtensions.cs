@@ -2,57 +2,56 @@
 
 #nullable enable
 // ReSharper disable once CheckNamespace
-namespace CreativeCoders.Core
+namespace CreativeCoders.Core;
+
+public static class GuidArgumentExtensions
 {
-    public static class GuidArgumentExtensions
+    public static ref readonly Argument<Guid> NotEmpty(in this Argument<Guid> argument,
+        string? message = null)
     {
-        public static ref readonly Argument<Guid> NotEmpty(in this Argument<Guid> argument,
-            string? message = null)
+        if (argument.Value == Guid.Empty)
         {
-            if (argument.Value == Guid.Empty)
-            {
-                throw new ArgumentException(message ?? "GUID is empty", argument.Name);
-            }
-
-            return ref argument;
+            throw new ArgumentException(message ?? "GUID is empty", argument.Name);
         }
 
-        public static ref readonly Argument<Guid?> NotEmpty(in this Argument<Guid?> argument,
-            string? message = null)
+        return ref argument;
+    }
+
+    public static ref readonly Argument<Guid?> NotEmpty(in this Argument<Guid?> argument,
+        string? message = null)
+    {
+        if (!argument.Value.HasValue)
         {
-            if (!argument.Value.HasValue)
-            {
-                ExceptionThrower.ThrowArgumentNullException(argument.Name, message);
-            }
-
-            if (argument.Value.Value == Guid.Empty)
-            {
-                throw new ArgumentException(message ?? "GUID is empty", argument.Name);
-            }
-
-            return ref argument;
+            ExceptionThrower.ThrowArgumentNullException(argument.Name, message);
         }
 
-        public static ref readonly ArgumentNotNull<Guid> NotEmpty(in this ArgumentNotNull<Guid> argument,
-            string? message = null)
+        if (argument.Value.Value == Guid.Empty)
         {
-            if (argument.Value == Guid.Empty)
-            {
-                throw new ArgumentException(message ?? "GUID is empty", argument.Name);
-            }
-
-            return ref argument;
+            throw new ArgumentException(message ?? "GUID is empty", argument.Name);
         }
 
-        public static ref readonly ArgumentNotNull<Guid?> NotEmpty(in this ArgumentNotNull<Guid?> argument,
-            string? message = null)
-        {
-            if (argument.Value == Guid.Empty)
-            {
-                throw new ArgumentException(message ?? "GUID is empty", argument.Name);
-            }
+        return ref argument;
+    }
 
-            return ref argument;
+    public static ref readonly ArgumentNotNull<Guid> NotEmpty(in this ArgumentNotNull<Guid> argument,
+        string? message = null)
+    {
+        if (argument.Value == Guid.Empty)
+        {
+            throw new ArgumentException(message ?? "GUID is empty", argument.Name);
         }
+
+        return ref argument;
+    }
+
+    public static ref readonly ArgumentNotNull<Guid?> NotEmpty(in this ArgumentNotNull<Guid?> argument,
+        string? message = null)
+    {
+        if (argument.Value == Guid.Empty)
+        {
+            throw new ArgumentException(message ?? "GUID is empty", argument.Name);
+        }
+
+        return ref argument;
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Net;
 
-namespace CreativeCoders.Net.Http.Auth.Jwt
-{
-    public interface IJwtHttpClientAuthenticator : IHttpClientAuthenticator
-    {
-        Uri TokenRequestUri { get; set; }
+namespace CreativeCoders.Net.Http.Auth.Jwt;
 
-        ICredentials Credentials { get; set; }
-    }
+public interface IJwtHttpClientAuthenticator : IHttpClientAuthenticator
+{
+    Uri TokenRequestUri { get; set; }
+
+    ICredentials Credentials { get; set; }
 }

@@ -2,57 +2,56 @@
 using System.Xml.Linq;
 using CreativeCoders.Net.XmlRpc.Model;
 
-namespace CreativeCoders.Net.XmlRpc.Writer.Values
-{
-    public abstract class ValueWriterBase : IValueWriter
-    {
-        public abstract void WriteTo(XElement paramNode, XmlRpcValue xmlRpcValue);
+namespace CreativeCoders.Net.XmlRpc.Writer.Values;
 
-        public abstract bool HandlesType(Type valueType);
+public abstract class ValueWriterBase : IValueWriter
+{
+    public abstract void WriteTo(XElement paramNode, XmlRpcValue xmlRpcValue);
+
+    public abstract bool HandlesType(Type valueType);
+}
+
+public abstract class ValueWriterBase<T> : ValueWriterBase
+{
+    private readonly string _valueElementName;
+
+    private readonly Func<XmlRpcValue<T>, string> _getValue;
+
+    private readonly Action<XmlRpcValue<T>, XElement> _writeToValueElement;
+
+    protected ValueWriterBase(string valueElementName, Func<XmlRpcValue<T>, string> getValue)
+    {
+        _valueElementName = valueElementName;
+        _getValue = getValue;
     }
 
-    public abstract class ValueWriterBase<T> : ValueWriterBase
+    protected ValueWriterBase(string valueElementName, Action<XmlRpcValue<T>, XElement> writeToValueElement)
     {
-        private readonly string _valueElementName;
+        _valueElementName = valueElementName;
+        _writeToValueElement = writeToValueElement;
+    }
 
-        private readonly Func<XmlRpcValue<T>, string> _getValue;
+    public override void WriteTo(XElement paramNode, XmlRpcValue xmlRpcValue)
+    {
+        var valueElement = new XElement(XmlRpcTags.Value);
+        paramNode.Add(valueElement);
 
-        private readonly Action<XmlRpcValue<T>, XElement> _writeToValueElement;
+        var valueDataElement = new XElement(_valueElementName);
 
-        protected ValueWriterBase(string valueElementName, Func<XmlRpcValue<T>, string> getValue)
+        if (_getValue != null)
         {
-            _valueElementName = valueElementName;
-            _getValue = getValue;
+            valueDataElement.Add(_getValue((XmlRpcValue<T>) xmlRpcValue));
+        }
+        else
+        {
+            _writeToValueElement?.Invoke((XmlRpcValue<T>) xmlRpcValue, valueDataElement);
         }
 
-        protected ValueWriterBase(string valueElementName, Action<XmlRpcValue<T>, XElement> writeToValueElement)
-        {
-            _valueElementName = valueElementName;
-            _writeToValueElement = writeToValueElement;
-        }
+        valueElement.Add(valueDataElement);
+    }
 
-        public override void WriteTo(XElement paramNode, XmlRpcValue xmlRpcValue)
-        {
-            var valueElement = new XElement(XmlRpcTags.Value);
-            paramNode.Add(valueElement);
-
-            var valueDataElement = new XElement(_valueElementName);
-
-            if (_getValue != null)
-            {
-                valueDataElement.Add(_getValue((XmlRpcValue<T>)xmlRpcValue));
-            }
-            else
-            {
-                _writeToValueElement?.Invoke((XmlRpcValue<T>) xmlRpcValue, valueDataElement);
-            }
-
-            valueElement.Add(valueDataElement);
-        }
-
-        public override bool HandlesType(Type valueType)
-        {
-            return typeof(XmlRpcValue<T>).IsAssignableFrom(valueType);
-        }
+    public override bool HandlesType(Type valueType)
+    {
+        return typeof(XmlRpcValue<T>).IsAssignableFrom(valueType);
     }
 }

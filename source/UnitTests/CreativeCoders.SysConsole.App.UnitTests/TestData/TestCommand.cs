@@ -2,22 +2,21 @@
 using CreativeCoders.SysConsole.CliArguments.Commands;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.App.UnitTests.TestData
+namespace CreativeCoders.SysConsole.App.UnitTests.TestData;
+
+[UsedImplicitly]
+public class TestCommand : CliCommandBase<TestCommandOptions>
 {
-    [UsedImplicitly]
-    public class TestCommand : CliCommandBase<TestCommandOptions>
+    public const int ReturnCode = 123;
+
+    public override Task<CliCommandResult> ExecuteAsync(TestCommandOptions options)
     {
-        public const int ReturnCode = 123;
+        OptionsFirstArg = options.FirstArg;
 
-        public override Task<CliCommandResult> ExecuteAsync(TestCommandOptions options)
-        {
-            OptionsFirstArg = options.FirstArg;
-
-            return Task.FromResult(new CliCommandResult(ReturnCode));
-        }
-
-        public override string Name { get; set; } = "test";
-
-        public static string? OptionsFirstArg { get; private set; }
+        return Task.FromResult(new CliCommandResult(ReturnCode));
     }
+
+    public override string Name { get; set; } = "test";
+
+    public static string? OptionsFirstArg { get; private set; }
 }

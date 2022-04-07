@@ -7,38 +7,37 @@ using System.Xml.XPath;
 using CreativeCoders.Core;
 using CreativeCoders.Net.XmlRpc.Model;
 
-namespace CreativeCoders.Net.XmlRpc.Reader
+namespace CreativeCoders.Net.XmlRpc.Reader;
+
+public abstract class ModelReaderBase
 {
-    public abstract class ModelReaderBase
+    private readonly IValueReaders _readers;
+
+    protected ModelReaderBase(IValueReaders readers)
     {
-        private readonly IValueReaders _readers;
+        Ensure.IsNotNull(readers, nameof(readers));
 
-        protected ModelReaderBase(IValueReaders readers)
+        _readers = readers;
+    }
+
+    protected static async Task<XDocument> ReadXmlDocAsync(Stream inputStream)
+    {
+        var xmlReader = XmlReader.Create(inputStream, new XmlReaderSettings
         {
-            Ensure.IsNotNull(readers, nameof(readers));
+            Async = true,
+            IgnoreComments = true
+        });
 
-            _readers = readers;
-        }
+        var xmlDoc = await XDocument.LoadAsync(xmlReader, LoadOptions.None, CancellationToken.None);
 
-        protected static async Task<XDocument> ReadXmlDocAsync(Stream inputStream)
-        {
-            var xmlReader = XmlReader.Create(inputStream, new XmlReaderSettings
-            {
-                Async = true,
-                IgnoreComments = true
-            });
+        return xmlDoc;
+    }
 
-            var xmlDoc = await XDocument.LoadAsync(xmlReader, LoadOptions.None, CancellationToken.None);
+    protected XmlRpcValue ReadXmlRpcValue(XElement parameterNode)
+    {
+        var valueNode = parameterNode.XPathSelectElement(XmlRpcTags.Value);
+        var isValueParameter = valueNode != null;
 
-            return xmlDoc;
-        }
-
-        protected XmlRpcValue ReadXmlRpcValue(XElement parameterNode)
-        {
-            var valueNode = parameterNode.XPathSelectElement(XmlRpcTags.Value);
-            var isValueParameter = valueNode != null;
-
-            return isValueParameter ? _readers.ReadValue(valueNode) : null;
-        }
+        return isValueParameter ? _readers.ReadValue(valueNode) : null;
     }
 }

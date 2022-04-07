@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Validation
+namespace CreativeCoders.Validation;
+
+[PublicAPI]
+public interface IPropertyValidationContext<out T, out TProperty>
+    where T : class
 {
-    [PublicAPI]
-    public interface IPropertyValidationContext<out T, out TProperty>
-        where T : class
-    {
-        void AddFault(IValidationFault fault);
+    void AddFault(IValidationFault fault);
 
-        IEnumerable<IValidationFault> Faults { get; }
+    IEnumerable<IValidationFault> Faults { get; }
 
-        T InstanceForValidation { get; }
+    T InstanceForValidation { get; }
 
-        TProperty PropertyValue { get; }
+    TProperty PropertyValue { get; }
 
-        string PropertyName { get; }
-    }
+    string PropertyName { get; }
 }

@@ -1,7 +1,6 @@
-namespace CreativeCoders.Mvvm.Commands
+namespace CreativeCoders.Mvvm.Commands;
+
+public interface IEventArgsConverter
 {
-    public interface IEventArgsConverter
-    {
-        object Convert(object value, object parameter);
-    }
+    object Convert(object value, object parameter);
 }

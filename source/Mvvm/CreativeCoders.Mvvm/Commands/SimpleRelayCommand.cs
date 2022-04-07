@@ -1,40 +1,39 @@
 ﻿using System;
 using CreativeCoders.Core;
 
-namespace CreativeCoders.Mvvm.Commands
+namespace CreativeCoders.Mvvm.Commands;
+
+public class SimpleRelayCommand : CommandBase
 {
-    public class SimpleRelayCommand : CommandBase
+    private readonly Action _execute;
+
+    private readonly Func<bool> _canExecute;
+
+    public SimpleRelayCommand(Action execute) : this(execute, () => true) { }
+
+    public SimpleRelayCommand(Action execute, Func<bool> canExecute)
     {
-        private readonly Action _execute;
+        Ensure.IsNotNull(execute, nameof(execute));
+        Ensure.IsNotNull(canExecute, nameof(canExecute));
 
-        private readonly Func<bool> _canExecute;
+        _execute = execute;
+        _canExecute = canExecute;
+    }
 
-        public SimpleRelayCommand(Action execute) : this(execute, () => true) { }
+    public override bool CanExecute(object parameter)
+    {
+        return _canExecute();
+    }
 
-        public SimpleRelayCommand(Action execute, Func<bool> canExecute)
+    public override void Execute(object parameter)
+    {
+        if (!CanExecute(parameter))
         {
-            Ensure.IsNotNull(execute, nameof(execute));
-            Ensure.IsNotNull(canExecute, nameof(canExecute));
-
-            _execute = execute;
-            _canExecute = canExecute;
+            return;
         }
 
-        public override bool CanExecute(object parameter)
-        {
-            return _canExecute();
-        }
+        _execute();
 
-        public override void Execute(object parameter)
-        {
-            if (!CanExecute(parameter))
-            {
-                return;
-            }
-            
-            _execute();
-            
-            RaiseCanExecuteChanged();
-        }        
+        RaiseCanExecuteChanged();
     }
 }

@@ -2,27 +2,24 @@
 using System.Threading.Tasks;
 using CreativeCoders.Net.WebApi.Specification;
 
-namespace CreativeCoders.Net.WebApi.Execution.Requests
+namespace CreativeCoders.Net.WebApi.Execution.Requests;
+
+public class StringApiRequestHandler : ApiRequestHandlerBase
 {
-    public class StringApiRequestHandler : ApiRequestHandlerBase
+    public StringApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.String, httpClient) { }
+
+    public override object SendRequest(RequestData requestData)
     {
-        public StringApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.String, httpClient)
-        {
-        }
+        return RequestStringAsync(requestData);
+    }
 
-        public override object SendRequest(RequestData requestData)
+    private async Task<string> RequestStringAsync(RequestData requestData)
+    {
+        using (var response = await RequestResponseMessageAsync(requestData).ConfigureAwait(false))
         {
-            return RequestStringAsync(requestData);
-        }
+            response.EnsureSuccessStatusCode();
 
-        private async Task<string> RequestStringAsync(RequestData requestData)
-        {
-            using (var response = await RequestResponseMessageAsync(requestData).ConfigureAwait(false))
-            {
-                response.EnsureSuccessStatusCode();
-
-                return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            }
+            return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         }
     }
 }

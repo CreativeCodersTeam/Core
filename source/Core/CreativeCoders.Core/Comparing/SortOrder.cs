@@ -1,8 +1,7 @@
-﻿namespace CreativeCoders.Core.Comparing
+﻿namespace CreativeCoders.Core.Comparing;
+
+public enum SortOrder
 {
-    public enum SortOrder
-    {
-        Ascending,
-        Descending
-    }
+    Ascending,
+    Descending
 }

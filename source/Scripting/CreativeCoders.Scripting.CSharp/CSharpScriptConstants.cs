@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Scripting.CSharp
+﻿namespace CreativeCoders.Scripting.CSharp;
+
+public static class CSharpScriptConstants
 {
-    public static class CSharpScriptConstants
-    {
-        public const string CodePlaceHolder = "$$code$$";
-    }
+    public const string CodePlaceHolder = "$$code$$";
 }

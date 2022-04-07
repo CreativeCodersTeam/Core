@@ -1,12 +1,11 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.FileDialogService
-{
-    [PublicAPI]
-    public interface IFileDialogService
-    {
-        bool ShowOpenFileDialog(OpenFileDialogOptions openDialogOptions);
+namespace CreativeCoders.Mvvm.FileDialogService;
 
-        bool ShowSaveFileDialog(SaveFileDialogOptions saveDialogOptions);
-    }
+[PublicAPI]
+public interface IFileDialogService
+{
+    bool ShowOpenFileDialog(OpenFileDialogOptions openDialogOptions);
+
+    bool ShowSaveFileDialog(SaveFileDialogOptions saveDialogOptions);
 }

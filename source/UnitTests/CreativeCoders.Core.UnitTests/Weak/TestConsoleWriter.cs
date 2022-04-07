@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace CreativeCoders.Core.UnitTests.Weak {
-    public class TestConsoleWriter
+namespace CreativeCoders.Core.UnitTests.Weak;
+
+public class TestConsoleWriter
+{
+    [SuppressMessage("ReSharper", "MemberCanBeMadeStatic.Global")]
+    public void Write(string text)
     {
-        [SuppressMessage("ReSharper", "MemberCanBeMadeStatic.Global")]
-        public void Write(string text)
-        {
-            Console.WriteLine(text);
-        }
+        Console.WriteLine(text);
     }
 }

@@ -7,37 +7,37 @@ using CreativeCoders.Net.XmlRpc.Client;
 using CreativeCoders.Net.XmlRpc.Proxy.Execution;
 using CreativeCoders.Net.XmlRpc.Proxy.Specification;
 
-namespace CreativeCoders.Net.XmlRpc.Proxy
+namespace CreativeCoders.Net.XmlRpc.Proxy;
+
+public class XmlRpcProxyInterceptor<T> : InterceptorWithPropertiesBase<T>
+    where T : class
 {
-    public class XmlRpcProxyInterceptor<T> : InterceptorWithPropertiesBase<T>
-        where T : class
+    private readonly ApiStructure _apiStructure;
+
+    private readonly IApiMethodExecutor _apiMethodExecutor;
+
+    public XmlRpcProxyInterceptor(IXmlRpcClient xmlRpcClient, ApiStructure apiStructure)
     {
-        private readonly ApiStructure _apiStructure;
+        _apiStructure = apiStructure;
 
-        private readonly IApiMethodExecutor _apiMethodExecutor;
+        _apiMethodExecutor = new ApiMethodExecutor(xmlRpcClient);
+    }
 
-        public XmlRpcProxyInterceptor(IXmlRpcClient xmlRpcClient, ApiStructure apiStructure)
+    protected override void ExecuteMethod(IInvocation invocation)
+    {
+        var apiMethodInfo =
+            _apiStructure.MethodInfos.FirstOrDefault(x => invocation.Method.MatchesMethod(x.Method));
+
+        if (apiMethodInfo == null)
         {
-            _apiStructure = apiStructure;
-
-            _apiMethodExecutor = new ApiMethodExecutor(xmlRpcClient);
+            throw new InvalidOperationException();
         }
 
-        protected override void ExecuteMethod(IInvocation invocation)
+        var result = _apiMethodExecutor.Execute(apiMethodInfo, invocation);
+
+        if (invocation.Method.ReturnType != typeof(void))
         {
-            var apiMethodInfo = _apiStructure.MethodInfos.FirstOrDefault(x => invocation.Method.MatchesMethod(x.Method));
-
-            if (apiMethodInfo == null)
-            {
-                throw new InvalidOperationException();
-            }
-
-            var result = _apiMethodExecutor.Execute(apiMethodInfo, invocation);
-
-            if (invocation.Method.ReturnType != typeof(void))
-            {
-                invocation.ReturnValue = result;
-            }
+            invocation.ReturnValue = result;
         }
     }
 }

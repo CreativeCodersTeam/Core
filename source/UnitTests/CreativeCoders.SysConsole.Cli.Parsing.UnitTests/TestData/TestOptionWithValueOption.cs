@@ -1,8 +1,6 @@
-﻿namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData
+﻿namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData;
+
+public class TestOptionWithValueOption
 {
-    public class TestOptionWithValueOption
-    {
-        [OptionValue(0, IsRequired = true)]
-        public string? TestValue { get; set; }
-    }
+    [OptionValue(0, IsRequired = true)] public string? TestValue { get; set; }
 }

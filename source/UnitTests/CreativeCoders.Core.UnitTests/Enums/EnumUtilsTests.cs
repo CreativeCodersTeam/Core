@@ -5,73 +5,77 @@ using System.Reflection;
 using CreativeCoders.Core.Enums;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.Enums
+namespace CreativeCoders.Core.UnitTests.Enums;
+
+public class EnumUtilsTests
 {
-    public class EnumUtilsTests
+    [Fact]
+    public void GetEnumValues_ForTestEnum_ReturnArrayWithAllValuesFromTestEnum()
     {
-        [Fact]
-        public void GetEnumValues_ForTestEnum_ReturnArrayWithAllValuesFromTestEnum()
+        var enumValues = EnumUtils.GetEnumValues<TestEnum>();
+
+        Assert.Equal(5, enumValues.Length);
+
+        var expectedValues = new Enum[]
         {
-            var enumValues = EnumUtils.GetEnumValues<TestEnum>();
+            TestEnum.None, TestEnum.FirstEntry, TestEnum.Extra, TestEnum.SomeMore,
+            TestEnum.ElementWithoutAttribute
+        };
+        Assert.Equal(expectedValues.AsEnumerable(), enumValues.AsEnumerable());
+    }
 
-            Assert.Equal(5, enumValues.Length);
+    [Fact]
+    public void GetFieldInfoForEnum_ForTestEnumNone_ReturnsCorrectFieldInfo()
+    {
+        var fieldInfo = EnumUtils.GetFieldInfoForEnum(TestEnum.None);
 
-            var expectedValues = new Enum[] {TestEnum.None, TestEnum.FirstEntry, TestEnum.Extra, TestEnum.SomeMore, TestEnum.ElementWithoutAttribute};
-            Assert.Equal(expectedValues.AsEnumerable(), enumValues.AsEnumerable());
-        }
+        var fieldInfo2 = typeof(TestEnum).GetField("None");
 
-        [Fact]
-        public void GetFieldInfoForEnum_ForTestEnumNone_ReturnsCorrectFieldInfo()
+        Assert.Equal(fieldInfo2, fieldInfo);
+    }
+
+    [Fact]
+    public void GetValuesFieldInfos_ForTestEnumValues_ReturnsCorrectFieldInfos()
+    {
+        var fieldInfos = EnumUtils.GetValuesFieldInfos<TestEnum>();
+
+        var fieldInfos2 = TestEnum.None.GetType().GetFields()
+            .Where(field => field.FieldType == typeof(TestEnum));
+
+        Assert.Equal(fieldInfos2.AsEnumerable(), fieldInfos.AsEnumerable());
+    }
+
+    [Fact]
+    public void GetEnumFieldInfos_ForTestEnum_ReturnsCorrectFieldInfos()
+    {
+        var enumFieldInfos = EnumUtils.GetEnumFieldInfos<TestEnum>();
+        var expectedFieldInfos = new Dictionary<Enum, FieldInfo>
         {
-            var fieldInfo = EnumUtils.GetFieldInfoForEnum(TestEnum.None);
+            {TestEnum.None, typeof(TestEnum).GetField("None")},
+            {TestEnum.FirstEntry, typeof(TestEnum).GetField("FirstEntry")},
+            {TestEnum.Extra, typeof(TestEnum).GetField("Extra")},
+            {TestEnum.SomeMore, typeof(TestEnum).GetField("SomeMore")},
+            {TestEnum.ElementWithoutAttribute, typeof(TestEnum).GetField("ElementWithoutAttribute")}
+        };
 
-            var fieldInfo2 = typeof(TestEnum).GetField("None");
+        Assert.Equal(expectedFieldInfos.Count, enumFieldInfos.Count);
 
-            Assert.Equal(fieldInfo2, fieldInfo);
-        }
-
-        [Fact]
-        public void GetValuesFieldInfos_ForTestEnumValues_ReturnsCorrectFieldInfos()
+        foreach (var (key, fieldInfo) in expectedFieldInfos)
         {
-            var fieldInfos = EnumUtils.GetValuesFieldInfos<TestEnum>();
-
-            var fieldInfos2 = TestEnum.None.GetType().GetFields().Where(field => field.FieldType == typeof(TestEnum));
-
-            Assert.Equal(fieldInfos2.AsEnumerable(), fieldInfos.AsEnumerable());
+            var value = enumFieldInfos[key];
+            Assert.Equal(fieldInfo, value);
         }
+    }
 
-        [Fact]
-        public void GetEnumFieldInfos_ForTestEnum_ReturnsCorrectFieldInfos()
-        {
-            var enumFieldInfos = EnumUtils.GetEnumFieldInfos<TestEnum>();
-            var expectedFieldInfos = new Dictionary<Enum, FieldInfo>
-            {
-                {TestEnum.None, typeof(TestEnum).GetField("None") },
-                {TestEnum.FirstEntry, typeof(TestEnum).GetField("FirstEntry") },
-                {TestEnum.Extra, typeof(TestEnum).GetField("Extra") },
-                {TestEnum.SomeMore, typeof(TestEnum).GetField("SomeMore") },
-                {TestEnum.ElementWithoutAttribute, typeof(TestEnum).GetField("ElementWithoutAttribute")}
-            };
+    [Theory]
+    [InlineData(0, TestEnumWithInt.None)]
+    [InlineData(1, TestEnumWithInt.Ok)]
+    [InlineData(2, TestEnumWithInt.Test)]
+    [InlineData(3, TestEnumWithInt.None)]
+    public void GetEnum_ForTestEnumWithInt_EnumIsCorrect(int intValue, TestEnumWithInt enumValue)
+    {
+        var convertedValue = EnumUtils.GetEnum<TestEnumWithInt>(intValue);
 
-            Assert.Equal(expectedFieldInfos.Count, enumFieldInfos.Count);
-
-            foreach (var (key, fieldInfo) in expectedFieldInfos)
-            {
-                var value = enumFieldInfos[key];
-                Assert.Equal(fieldInfo, value);
-            }
-        }
-
-        [Theory]
-        [InlineData(0, TestEnumWithInt.None)]
-        [InlineData(1, TestEnumWithInt.Ok)]
-        [InlineData(2, TestEnumWithInt.Test)]
-        [InlineData(3, TestEnumWithInt.None)]
-        public void GetEnum_ForTestEnumWithInt_EnumIsCorrect(int intValue, TestEnumWithInt enumValue)
-        {
-            var convertedValue = EnumUtils.GetEnum<TestEnumWithInt>(intValue);
-
-            Assert.Equal(enumValue, convertedValue);
-        }
+        Assert.Equal(enumValue, convertedValue);
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Scripting.Base
+﻿namespace CreativeCoders.Scripting.Base;
+
+public interface IScriptRuntime
 {
-    public interface IScriptRuntime
-    {
-        IScriptRuntimeSpace CreateSpace(string nameSpace);
-    }
+    IScriptRuntimeSpace CreateSpace(string nameSpace);
 }

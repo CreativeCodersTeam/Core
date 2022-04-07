@@ -2,14 +2,14 @@
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<Authors>CreativeCoders</Authors>
 		<Description>Autofac implementation of dependency injection for CreativeCoders.Di</Description>
 		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="6.2.0" />
+		<PackageReference Include="Autofac" Version="6.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>

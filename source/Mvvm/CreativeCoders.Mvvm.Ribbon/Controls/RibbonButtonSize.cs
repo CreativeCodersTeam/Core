@@ -1,12 +1,11 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Ribbon.Controls
+namespace CreativeCoders.Mvvm.Ribbon.Controls;
+
+[PublicAPI]
+public enum RibbonButtonSize
 {
-    [PublicAPI]
-    public enum RibbonButtonSize
-    {
-        Large,
-        Small,
-        ExtraSmall
-    }
+    Large,
+    Small,
+    ExtraSmall
 }

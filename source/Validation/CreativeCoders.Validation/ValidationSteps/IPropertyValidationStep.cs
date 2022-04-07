@@ -1,8 +1,7 @@
-﻿namespace CreativeCoders.Validation.ValidationSteps
+﻿namespace CreativeCoders.Validation.ValidationSteps;
+
+public interface IPropertyValidationStep<in T, in TProperty>
+    where T : class
 {
-    public interface IPropertyValidationStep<in T, in TProperty>
-        where T : class
-    {
-        bool Validate(IPropertyValidationContext<T, TProperty> propertyValidationContext);
-    }
+    bool Validate(IPropertyValidationContext<T, TProperty> propertyValidationContext);
 }

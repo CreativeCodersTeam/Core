@@ -3,64 +3,64 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace CreativeCoders.Core.Reflection
+namespace CreativeCoders.Core.Reflection;
+
+public static class ReflectionUtils
 {
-    public static class ReflectionUtils
+    public static IEnumerable<Assembly> GetAllAssemblies()
     {
-        public static IEnumerable<Assembly> GetAllAssemblies()
-        {
-            var assemblies = AppDomain
-                .CurrentDomain
-                .GetAssemblies();
+        var assemblies = AppDomain
+            .CurrentDomain
+            .GetAssemblies();
 
-            return assemblies;
+        return assemblies;
+    }
+
+    public static IEnumerable<Assembly> GetAllAssemblies(bool withReflectionOnlyAssemblies)
+    {
+        var assemblies = AppDomain
+            .CurrentDomain
+            .GetAssemblies();
+
+        if (withReflectionOnlyAssemblies)
+        {
+            assemblies = assemblies
+                .Concat(AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies())
+                .Distinct()
+                .ToArray();
         }
 
-        public static IEnumerable<Assembly> GetAllAssemblies(bool withReflectionOnlyAssemblies)
-        {
-            var assemblies = AppDomain
-                .CurrentDomain
-                .GetAssemblies();
+        return assemblies;
+    }
 
-            if (withReflectionOnlyAssemblies)
-            {
-                assemblies = assemblies
-                    .Concat(AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies())
-                    .Distinct()
-                    .ToArray();
-            }
+    public static IEnumerable<Type> GetAllTypes()
+    {
+        return
+            GetAllAssemblies()
+                .SelectMany(assembly => assembly.GetTypesSafe());
+    }
 
-            return assemblies;
-        }
+    public static IEnumerable<Type> GetAllTypes(bool withReflectionOnlyAssemblies)
+    {
+        return
+            GetAllAssemblies(withReflectionOnlyAssemblies)
+                .SelectMany(assembly => assembly.GetTypesSafe());
+    }
 
-        public static IEnumerable<Type> GetAllTypes()
-        {
-            return 
-                GetAllAssemblies()
-                    .SelectMany(assembly => assembly.GetTypesSafe());
-        }
+    public static IEnumerable<Type> GetAllTypes(Func<Assembly, bool> checkAssembly)
+    {
+        return
+            GetAllAssemblies()
+                .Where(checkAssembly)
+                .SelectMany(assembly => assembly.GetTypesSafe());
+    }
 
-        public static IEnumerable<Type> GetAllTypes(bool withReflectionOnlyAssemblies)
-        {
-            return
-                GetAllAssemblies(withReflectionOnlyAssemblies)
-                    .SelectMany(assembly => assembly.GetTypesSafe());
-        }
-
-        public static IEnumerable<Type> GetAllTypes(Func<Assembly, bool> checkAssembly)
-        {
-            return
-                GetAllAssemblies()
-                    .Where(checkAssembly)
-                    .SelectMany(assembly => assembly.GetTypesSafe());
-        }
-
-        public static IEnumerable<Type> GetAllTypes(Func<Assembly, bool> checkAssembly, bool withReflectionOnlyAssemblies)
-        {
-            return
-                GetAllAssemblies(withReflectionOnlyAssemblies)
-                    .Where(checkAssembly)
-                    .SelectMany(assembly => assembly.GetTypesSafe());
-        }
+    public static IEnumerable<Type> GetAllTypes(Func<Assembly, bool> checkAssembly,
+        bool withReflectionOnlyAssemblies)
+    {
+        return
+            GetAllAssemblies(withReflectionOnlyAssemblies)
+                .Where(checkAssembly)
+                .SelectMany(assembly => assembly.GetTypesSafe());
     }
 }

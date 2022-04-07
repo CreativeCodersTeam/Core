@@ -1,11 +1,10 @@
-﻿namespace CreativeCoders.Net.Servers.Http
+﻿namespace CreativeCoders.Net.Servers.Http;
+
+public interface IHttpRequest
 {
-    public interface IHttpRequest
-    {
-        IHttpRequestBody Body { get; }
+    IHttpRequestBody Body { get; }
 
-        string ContentType { get; }
+    string ContentType { get; }
 
-        string HttpMethod { get; }
-    }
+    string HttpMethod { get; }
 }

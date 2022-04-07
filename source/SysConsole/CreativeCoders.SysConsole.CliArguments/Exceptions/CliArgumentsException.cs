@@ -3,26 +3,19 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.SysConsole.CliArguments.Exceptions
+namespace CreativeCoders.SysConsole.CliArguments.Exceptions;
+
+public abstract class CliArgumentsException : Exception
 {
-    public abstract class CliArgumentsException : Exception
-    {
-        protected CliArgumentsException()
-        {
-        }
+    protected CliArgumentsException() { }
 
-        protected CliArgumentsException(string? message) : base(message)
-        {
-        }
+    protected CliArgumentsException(string? message) : base(message) { }
 
-        protected CliArgumentsException(string? message, Exception? innerException) : base(message, innerException)
-        {
-        }
+    protected CliArgumentsException(string? message, Exception? innerException) : base(message,
+        innerException) { }
 
-        [UsedImplicitly]
-        [ExcludeFromCodeCoverage]
-        protected CliArgumentsException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-    }
+    [UsedImplicitly]
+    [ExcludeFromCodeCoverage]
+    protected CliArgumentsException(SerializationInfo info, StreamingContext context) :
+        base(info, context) { }
 }

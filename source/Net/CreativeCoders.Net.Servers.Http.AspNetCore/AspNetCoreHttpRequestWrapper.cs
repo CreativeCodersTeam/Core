@@ -1,21 +1,20 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace CreativeCoders.Net.Servers.Http.AspNetCore
+namespace CreativeCoders.Net.Servers.Http.AspNetCore;
+
+public class AspNetCoreHttpRequestWrapper : IHttpRequest
 {
-    public class AspNetCoreHttpRequestWrapper : IHttpRequest
+    private readonly HttpRequest _httpRequest;
+
+    public AspNetCoreHttpRequestWrapper(HttpRequest httpRequest)
     {
-        private readonly HttpRequest _httpRequest;
-
-        public AspNetCoreHttpRequestWrapper(HttpRequest httpRequest)
-        {
-            _httpRequest = httpRequest;
-            Body = new StreamRequestBody(httpRequest.Body);
-        }
-
-        public IHttpRequestBody Body { get; }
-
-        public string ContentType => _httpRequest.ContentType;
-
-        public string HttpMethod => _httpRequest.Method;
+        _httpRequest = httpRequest;
+        Body = new StreamRequestBody(httpRequest.Body);
     }
+
+    public IHttpRequestBody Body { get; }
+
+    public string ContentType => _httpRequest.ContentType;
+
+    public string HttpMethod => _httpRequest.Method;
 }

@@ -1,12 +1,11 @@
-﻿namespace CreativeCoders.SysConsole.CliArguments.Commands
-{
-    public class CliCommandResult
-    {
-        public CliCommandResult(int returnCode)
-        {
-            ReturnCode = returnCode;
-        }
+﻿namespace CreativeCoders.SysConsole.CliArguments.Commands;
 
-        public int ReturnCode { get; }
+public class CliCommandResult
+{
+    public CliCommandResult(int returnCode)
+    {
+        ReturnCode = returnCode;
     }
+
+    public int ReturnCode { get; }
 }

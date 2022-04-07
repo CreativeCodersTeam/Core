@@ -1,9 +1,6 @@
-﻿namespace CreativeCoders.Net.XmlRpc.Model.Values
+﻿namespace CreativeCoders.Net.XmlRpc.Model.Values;
+
+public class DoubleValue : XmlRpcValue<double>
 {
-    public class DoubleValue : XmlRpcValue<double>
-    {
-        public DoubleValue(double value) : base(value)
-        {
-        }
-    }
+    public DoubleValue(double value) : base(value) { }
 }

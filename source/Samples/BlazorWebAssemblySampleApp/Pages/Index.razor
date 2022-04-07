@@ -10,7 +10,7 @@
 
 <div>
     <div class="btn-group">
-        <input type="text" />
+        <input type="text"/>
         <div class="dropdown-menu"></div>
     </div>
 
@@ -35,7 +35,7 @@
 
 Welcome to your new app.
 
-<div style="content: url('https://api.iconify.design/ic:baseline-add-circle.svg?width=64px&height=64px');vertical-align: -0.125em;"></div>
+<div style="content: url('https://api.iconify.design/ic:baseline-add-circle.svg?width=64px&height=64px'); vertical-align: -0.125em;"></div>
 
 <ItemsControl TItem="TestViewModel" ItemsSource="@ListItems">
     <ItemTemplate Context="item">
@@ -50,9 +50,9 @@ Welcome to your new app.
     public BlazorObservableCollection<TestViewModel> ListItems { get; set; }
         = new BlazorObservableCollection<TestViewModel>
         {
-            new TestViewModel{IntValue = 1, Text = "Hello"},
-            new TestViewModel { IntValue = 2, Text = "World"},
-            new TestViewModel{IntValue = 3, Text = "12345"}
+            new TestViewModel {IntValue = 1, Text = "Hello"},
+            new TestViewModel {IntValue = 2, Text = "World"},
+            new TestViewModel {IntValue = 3, Text = "12345"}
         };
 
     public bool IsOutlined;

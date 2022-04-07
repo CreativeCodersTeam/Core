@@ -1,8 +1,7 @@
-﻿namespace CreativeCoders.DynamicCode.Proxying
+﻿namespace CreativeCoders.DynamicCode.Proxying;
+
+public interface IProxyBuilder<T>
+    where T : class
 {
-    public interface IProxyBuilder<T>
-        where T : class
-    {
-        T Build(InterceptorBase<T> interceptor);
-    }
+    T Build(InterceptorBase<T> interceptor);
 }

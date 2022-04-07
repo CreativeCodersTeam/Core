@@ -2,41 +2,40 @@
 using CreativeCoders.Core;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Mvvm.Commands
+namespace CreativeCoders.Mvvm.Commands;
+
+[PublicAPI]
+public class RelayCommand : CommandBase
 {
-    [PublicAPI]
-    public class RelayCommand : CommandBase
+    private readonly Action<object> _execute;
+
+    private readonly Predicate<object> _canExecute;
+
+    public RelayCommand(Action<object> execute) : this(execute, _ => true) { }
+
+    public RelayCommand(Action<object> execute, Predicate<object> canExecute)
     {
-        private readonly Action<object> _execute;
+        Ensure.IsNotNull(execute, nameof(execute));
+        Ensure.IsNotNull(canExecute, nameof(canExecute));
 
-        private readonly Predicate<object> _canExecute;
+        _execute = execute;
+        _canExecute = canExecute;
+    }
 
-        public RelayCommand(Action<object> execute) : this(execute, _ => true) {}
+    public override bool CanExecute(object parameter)
+    {
+        return _canExecute(parameter);
+    }
 
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+    public override void Execute(object parameter)
+    {
+        if (!CanExecute(parameter))
         {
-            Ensure.IsNotNull(execute, nameof(execute));
-            Ensure.IsNotNull(canExecute, nameof(canExecute));
-
-            _execute = execute;
-            _canExecute = canExecute;
+            return;
         }
 
-        public override bool CanExecute(object parameter)
-        {
-            return _canExecute(parameter);
-        }
+        _execute(parameter);
 
-        public override void Execute(object parameter)
-        {
-            if (!CanExecute(parameter))
-            {
-                return;
-            }
-            
-            _execute(parameter);
-            
-            RaiseCanExecuteChanged();
-        }        
+        RaiseCanExecuteChanged();
     }
 }

@@ -2,29 +2,28 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace CreativeCoders.Net.Http.Auth.Jwt
+namespace CreativeCoders.Net.Http.Auth.Jwt;
+
+public class JwtClient : IJwtClient
 {
-    public class JwtClient : IJwtClient
+    private readonly HttpClient _httpClient;
+
+    public JwtClient(HttpClient httpClient)
     {
-        private readonly HttpClient _httpClient;
+        _httpClient = httpClient;
+    }
 
-        public JwtClient(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-        }
+    public async Task<string> RequestTokenAsync(Uri requestUri, JwtTokenRequest tokenRequest)
+    {
+        var tokenInfo = await RequestTokenInfoAsync(requestUri, tokenRequest);
 
-        public async Task<string> RequestTokenAsync(Uri requestUri, JwtTokenRequest tokenRequest)
-        {
-            var tokenInfo = await RequestTokenInfoAsync(requestUri, tokenRequest);
+        return tokenInfo.Token;
+    }
 
-            return tokenInfo.Token;
-        }
+    public async Task<JwtTokenInfo> RequestTokenInfoAsync(Uri requestUri, JwtTokenRequest tokenRequest)
+    {
+        var authToken = await _httpClient.RequestJwtTokenAsync(requestUri, tokenRequest);
 
-        public async Task<JwtTokenInfo> RequestTokenInfoAsync(Uri requestUri, JwtTokenRequest tokenRequest)
-        {
-            var authToken = await _httpClient.RequestJwtTokenAsync(requestUri, tokenRequest);
-
-            return new JwtTokenInfo(authToken.Token);
-        }
+        return new JwtTokenInfo(authToken.Token);
     }
 }

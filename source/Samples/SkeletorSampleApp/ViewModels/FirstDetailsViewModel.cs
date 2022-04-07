@@ -3,25 +3,24 @@ using CreativeCoders.Mvvm.Commands;
 using CreativeCoders.Mvvm.FileDialogService;
 using JetBrains.Annotations;
 
-namespace SkeletorSampleApp.ViewModels
+namespace SkeletorSampleApp.ViewModels;
+
+[PublicAPI]
+public class FirstDetailsViewModel : ViewModelBase
 {
-    [PublicAPI]
-    public class FirstDetailsViewModel : ViewModelBase
+    internal FirstDetailsViewModel()
     {
-        internal FirstDetailsViewModel()
-        {
-        }
-        
-        public FirstDetailsViewModel(IFileDialogService fileDialogService)
-        {
-            OpenFileDialogCommand = new SimpleRelayCommand(() => ExecuteOpenFileDialog(fileDialogService));
-        }
-
-        private static void ExecuteOpenFileDialog(IFileDialogService fileDialogService)
-        {
-            fileDialogService.ShowOpenFileDialog(new OpenFileDialogOptions());
-        }
-
-        public ICommandEx OpenFileDialogCommand { get; }
     }
+        
+    public FirstDetailsViewModel(IFileDialogService fileDialogService)
+    {
+        OpenFileDialogCommand = new SimpleRelayCommand(() => ExecuteOpenFileDialog(fileDialogService));
+    }
+
+    private static void ExecuteOpenFileDialog(IFileDialogService fileDialogService)
+    {
+        fileDialogService.ShowOpenFileDialog(new OpenFileDialogOptions());
+    }
+
+    public ICommandEx OpenFileDialogCommand { get; }
 }

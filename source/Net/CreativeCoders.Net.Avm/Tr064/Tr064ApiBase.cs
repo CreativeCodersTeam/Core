@@ -1,22 +1,17 @@
-﻿using System.Net;
+﻿using System;
 using CreativeCoders.Net.Soap;
 
-namespace CreativeCoders.Net.Avm.Tr064
+namespace CreativeCoders.Net.Avm.Tr064;
+
+public abstract class Tr064ApiBase
 {
-    public abstract class Tr064ApiBase
+    protected Tr064ApiBase(ISoapHttpClient soapHttpClient, string controlUrl)
     {
-        protected Tr064ApiBase(ISoapHttpClient soapHttpClient, string fritzBoxUrl, string controlUrl, string userName, string password)
-        {
-            SoapHttpClient = soapHttpClient;
-            SoapHttpClient.Url = fritzBoxUrl + "/tr064" + controlUrl;
-            if (!string.IsNullOrWhiteSpace(userName))
-            {
-                SoapHttpClient.Credentials = new NetworkCredential(userName, password);
-            }
-
-            SoapHttpClient.AllowUntrustedCertificates = true;
-        }
-
-        protected ISoapHttpClient SoapHttpClient { get; }
+        SoapHttpClient = soapHttpClient;
+        Url = new Uri("/tr064" + controlUrl, UriKind.Relative);
     }
+
+    protected ISoapHttpClient SoapHttpClient { get; }
+
+    protected Uri Url { get; }
 }

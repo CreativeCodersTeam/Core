@@ -2,36 +2,35 @@
 using System.Threading.Tasks;
 using CreativeCoders.Core;
 
-namespace CreativeCoders.SysConsole.Cli.Actions.Runtime
+namespace CreativeCoders.SysConsole.Cli.Actions.Runtime;
+
+internal class CliActionRuntime : ICliActionRuntime
 {
-    internal class CliActionRuntime : ICliActionRuntime
+    private readonly ICliActionExecutor _actionExecutor;
+
+    private Func<CliActionContext, Task>? _middlewarePipeline;
+
+    public CliActionRuntime(ICliActionExecutor actionExecutor)
     {
-        private readonly ICliActionExecutor _actionExecutor;
+        _actionExecutor = Ensure.NotNull(actionExecutor, nameof(actionExecutor));
+    }
 
-        private Func<CliActionContext, Task>? _middlewarePipeline;
+    public void Init(Func<Func<CliActionContext, Task>, Func<CliActionContext, Task>> createPipeline)
+    {
+        _middlewarePipeline = createPipeline(_actionExecutor.ExecuteAsync);
+    }
 
-        public CliActionRuntime(ICliActionExecutor actionExecutor)
+    public async Task<int> ExecuteAsync(string[] args)
+    {
+        if (_middlewarePipeline == null)
         {
-            _actionExecutor = Ensure.NotNull(actionExecutor, nameof(actionExecutor));
+            throw new InvalidOperationException("CLI action runtime not initialized");
         }
 
-        public void Init(Func<Func<CliActionContext, Task>, Func<CliActionContext, Task>> createPipeline)
-        {
-            _middlewarePipeline = createPipeline(_actionExecutor.ExecuteAsync);
-        }
+        var context = new CliActionContext(new CliActionRequest(args));
 
-        public async Task<int> ExecuteAsync(string[] args)
-        {
-            if (_middlewarePipeline == null)
-            {
-                throw new InvalidOperationException("CLI action runtime not initialized");
-            }
+        await _middlewarePipeline(context);
 
-            var context = new CliActionContext(new CliActionRequest(args));
-
-            await _middlewarePipeline(context);
-
-            return context.ReturnCode;
-        }
+        return context.ReturnCode;
     }
 }

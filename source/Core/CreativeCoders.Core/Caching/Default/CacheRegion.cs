@@ -1,34 +1,33 @@
 ﻿using System.Collections.Generic;
 
-namespace CreativeCoders.Core.Caching.Default
+namespace CreativeCoders.Core.Caching.Default;
+
+internal class CacheRegion<TKey, TValue>
 {
-    internal class CacheRegion<TKey, TValue>
+    private readonly IDictionary<TKey, CacheEntry<TKey, TValue>> _data;
+
+    public CacheRegion()
     {
-        private readonly IDictionary<TKey, CacheEntry<TKey, TValue>> _data;
+        _data = new Dictionary<TKey, CacheEntry<TKey, TValue>>();
+    }
 
-        public CacheRegion()
-        {
-            _data = new Dictionary<TKey, CacheEntry<TKey, TValue>>();
-        }
+    public bool TryGetValue(TKey key, out CacheEntry<TKey, TValue> value)
+    {
+        return _data.TryGetValue(key, out value);
+    }
 
-        public bool TryGetValue(TKey key, out CacheEntry<TKey, TValue> value)
-        {
-            return _data.TryGetValue(key, out value);
-        }
+    public void TryRemove(TKey key)
+    {
+        _data.Remove(key);
+    }
 
-        public void TryRemove(TKey key)
-        {
-            _data.Remove(key);
-        }
+    public void Set(TKey key, CacheEntry<TKey, TValue> cacheEntry)
+    {
+        _data[key] = cacheEntry;
+    }
 
-        public void Set(TKey key, CacheEntry<TKey, TValue> cacheEntry)
-        {
-            _data[key] = cacheEntry;
-        }
-
-        public void Clear()
-        {
-            _data.Clear();
-        }
+    public void Clear()
+    {
+        _data.Clear();
     }
 }

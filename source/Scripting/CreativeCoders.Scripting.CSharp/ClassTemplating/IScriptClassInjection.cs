@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Scripting.CSharp.ClassTemplating
+﻿namespace CreativeCoders.Scripting.CSharp.ClassTemplating;
+
+public interface IScriptClassInjection
 {
-    public interface IScriptClassInjection
-    {
-        void Inject(object scriptObject);
-    }
+    void Inject(object scriptObject);
 }

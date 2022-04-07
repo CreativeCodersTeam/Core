@@ -2,21 +2,18 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace CreativeCoders.Net.Http.Auth
+namespace CreativeCoders.Net.Http.Auth;
+
+public class NullHttpClientAuthenticator : IHttpClientAuthenticator
 {
-    public class NullHttpClientAuthenticator : IHttpClientAuthenticator
+    public static readonly IHttpClientAuthenticator Default = new NullHttpClientAuthenticator();
+
+    public Task AuthenticateAsync(Uri requestUri)
     {
-        public static IHttpClientAuthenticator Default = new NullHttpClientAuthenticator();
-
-        public Task AuthenticateAsync(Uri requestUri)
-        {
-            throw new NotSupportedException();
-        }
-
-        public void PrepareHttpRequest(HttpRequestMessage httpRequest)
-        {
-        }
-
-        public bool CanAuthenticate(Uri requestUri) => false;
+        throw new NotSupportedException();
     }
+
+    public void PrepareHttpRequest(HttpRequestMessage httpRequest) { }
+
+    public bool CanAuthenticate(Uri requestUri) => false;
 }

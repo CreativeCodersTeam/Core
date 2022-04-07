@@ -1,7 +1,6 @@
-﻿namespace CreativeCoders.Core.Chaining
+﻿namespace CreativeCoders.Core.Chaining;
+
+public interface IChainDataHandler<in TData, TResult>
 {
-    public interface IChainDataHandler<in TData, TResult>
-    {
-        HandleResult<TResult> Handle(TData data);
-    }
+    HandleResult<TResult> Handle(TData data);
 }

@@ -2,14 +2,14 @@
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<Authors>CreativeCoders</Authors>
 		<Description>Nlog logger implementation for CreativeCoders.Core.Logging</Description>
 		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="NLog" Version="4.7.11" />
+		<PackageReference Include="NLog" Version="4.7.15" />
 	</ItemGroup>
 
 	<ItemGroup>

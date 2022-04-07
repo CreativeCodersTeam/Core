@@ -1,18 +1,17 @@
 ﻿using System;
 
-namespace CreativeCoders.Net.Soap.Response
+namespace CreativeCoders.Net.Soap.Response;
+
+public class SoapResponseInfo
 {
-    public class SoapResponseInfo
+    public SoapResponseInfo()
     {
-        public SoapResponseInfo()
-        {
-            PropertyMappings = Array.Empty<PropertyFieldMapping>();
-        }
-
-        public string Name { get; set; }
-
-        public string NameSpace { get; set; }
-
-        public PropertyFieldMapping[] PropertyMappings { get; set; }
+        PropertyMappings = Array.Empty<PropertyFieldMapping>();
     }
+
+    public string Name { get; init; }
+
+    public string NameSpace { get; init; }
+
+    public PropertyFieldMapping[] PropertyMappings { get; set; }
 }
