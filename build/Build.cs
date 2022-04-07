@@ -10,7 +10,7 @@ using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.GitVersion;
 
 [PublicAPI]
-[CheckBuildProjectConfigurations]
+[CheckBuildProjectConfigurations(TimeoutInMilliseconds = 10000)]
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild, IBuildInfo
 {
