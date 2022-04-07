@@ -1,5 +1,7 @@
 ﻿using System.Net.Http;
-using CreativeCoders.Core;
+using CreativeCoders.Net.Avm.Hosts;
+using CreativeCoders.Net.Avm.Wan;
+using CreativeCoders.Net.Avm.Wlan;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Net.Avm;
@@ -9,14 +11,14 @@ public class FritzBox : IFritzBox
 {
     public FritzBox(HttpClient httpClient)
     {
-        Hosts = new Hosts(httpClient);
-        WanPppConnection = new WanPppConnection(httpClient);
-        Wlan = new Wlan(httpClient);
+        Hosts = new HostsImpl(httpClient);
+        WanPppConnection = new WanPppConnectionImpl(httpClient);
+        Wlan = new WlanImpl(httpClient);
     }
 
-    public Hosts Hosts { get; }
+    public IHosts Hosts { get; }
 
-    public WanPppConnection WanPppConnection { get; }
+    public IWanPppConnection WanPppConnection { get; }
 
-    public Wlan Wlan { get; }
+    public IWlan Wlan { get; }
 }

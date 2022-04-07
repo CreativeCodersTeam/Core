@@ -2,16 +2,14 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using CreativeCoders.Net.Avm.Tr064;
-using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.Avm;
+namespace CreativeCoders.Net.Avm.Wan;
 
-[PublicAPI]
-public class WanPppConnection
+internal class WanPppConnectionImpl : IWanPppConnection
 {
     private readonly WanPppConnectionApi _wanPppApi;
 
-    public WanPppConnection(HttpClient httpClient)
+    public WanPppConnectionImpl(HttpClient httpClient)
     {
         _wanPppApi = new WanPppConnectionApi(httpClient);
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using CreativeCoders.Net.Http;
+﻿using CreativeCoders.Net.Http;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Http;

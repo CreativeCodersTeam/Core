@@ -2,18 +2,18 @@
 using System.Threading.Tasks;
 using CreativeCoders.Net.Avm.Tr064;
 
-namespace CreativeCoders.Net.Avm;
+namespace CreativeCoders.Net.Avm.Wlan;
 
-public class Wlan
+internal class WlanImpl : IWlan
 {
     private readonly WlanApi _wlanApi;
 
-    public Wlan(HttpClient httpClient)
+    public WlanImpl(HttpClient httpClient)
     {
         _wlanApi = new WlanApi(httpClient);
     }
 
-    public async Task<WlanDeviceInfo> GetWlanDeviceInfo(string macAddress)
+    public async Task<WlanDeviceInfo> GetWlanDeviceInfoAsync(string macAddress)
     {
         var response = await _wlanApi.GetSpecificAssociatedDeviceInfoAsync(macAddress)
             .ConfigureAwait(false);

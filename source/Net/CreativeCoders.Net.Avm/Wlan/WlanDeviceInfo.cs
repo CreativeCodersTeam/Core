@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.Avm;
+namespace CreativeCoders.Net.Avm.Wlan;
 
 [PublicAPI]
 public class WlanDeviceInfo

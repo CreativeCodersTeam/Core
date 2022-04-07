@@ -2,5 +2,5 @@
 
 public class HttpTestDataObject
 {
-    public string TestProperty { get; set; }
+    public string TestProperty { get; init; }
 }

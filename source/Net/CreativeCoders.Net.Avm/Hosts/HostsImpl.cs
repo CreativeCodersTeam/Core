@@ -6,14 +6,14 @@ using CreativeCoders.Core;
 using CreativeCoders.Net.Avm.Tr064;
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Net.Avm;
+namespace CreativeCoders.Net.Avm.Hosts;
 
 [PublicAPI]
-public class Hosts
+internal class HostsImpl : IHosts
 {
     private readonly HostsApi _hostsApi;
 
-    public Hosts(HttpClient httpClient)
+    public HostsImpl(HttpClient httpClient)
     {
         _hostsApi = new HostsApi(httpClient);
     }
@@ -22,7 +22,8 @@ public class Hosts
     {
         Ensure.IsNotNullOrWhitespace(macAddress, nameof(macAddress));
 
-        var response = await _hostsApi.GetSpecificHostEntryAsync(macAddress).ConfigureAwait(false);
+        var response = await _hostsApi.GetSpecificHostEntryAsync(macAddress)
+            .ConfigureAwait(false);
 
         var entry = new HostEntry
         {
@@ -40,13 +41,16 @@ public class Hosts
 
     public async Task<int> GetHostCountAsync()
     {
-        var response = await _hostsApi.GetHostNumberOfEntriesAsync().ConfigureAwait(false);
+        var response = await _hostsApi.GetHostNumberOfEntriesAsync()
+            .ConfigureAwait(false);
+
         return response?.HostNumberOfEntries ?? 0;
     }
 
     public async Task<HostEntry> GetHostEntryAsync(int index)
     {
-        var response = await _hostsApi.GetGenericHostEntryAsync(index).ConfigureAwait(false);
+        var response = await _hostsApi.GetGenericHostEntryAsync(index)
+            .ConfigureAwait(false);
 
         var entry = new HostEntry
         {
@@ -64,13 +68,15 @@ public class Hosts
 
     public async Task<IEnumerable<HostEntry>> GetAllHostEntriesAsync()
     {
-        return (await InternalGetAllHostEntriesAsync().ConfigureAwait(false))
+        return (await InternalGetAllHostEntriesAsync()
+                .ConfigureAwait(false))
             .ToArray();
     }
 
     public async Task<IEnumerable<HostEntry>> GetAllHostEntriesAsync(bool hostIsActive)
     {
-        return (await InternalGetAllHostEntriesAsync().ConfigureAwait(false))
+        return (await InternalGetAllHostEntriesAsync()
+                .ConfigureAwait(false))
             .Where(host => host.IsActive == hostIsActive)
             .ToArray();
     }
@@ -84,19 +90,8 @@ public class Hosts
         for (var i = 0; i < hostCount; i++)
         {
             hosts.Add(await GetHostEntryAsync(i));
-            //yield return await GetHostEntryAsync(i);
         }
 
         return hosts;
     }
-
-    //private async Task<IEnumerable<HostEntry>> InternalGetAllHostEntriesAsync()
-    //{
-    //    var hostCount = GetHostCount();
-
-    //    for (var i = 0; i < hostCount; i++)
-    //    {
-    //        yield return GetHostEntry(i);
-    //    }
-    //}
 }

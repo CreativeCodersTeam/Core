@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using CreativeCoders.Net.Soap;
 
 namespace CreativeCoders.Net.Avm.Tr064;

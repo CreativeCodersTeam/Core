@@ -1,8 +1,10 @@
-﻿using CreativeCoders.Net.Soap.Response;
+﻿using System.Diagnostics.CodeAnalysis;
+using CreativeCoders.Net.Soap.Response;
 
 namespace CreativeCoders.Net.Avm.Tr064.Hosts.Responses;
 
 [SoapResponse("GetSpecificHostEntryResponse", "urn:dslforum-org:service:Hosts:1")]
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
 public class GetSpecificHostEntryResponse
 {
     [SoapResponseField("NewIPAddress")] public string IpAddress { get; set; }

@@ -18,7 +18,7 @@ public class HttpClientSettingsTests
     {
         HttpClientFactoryOptions configuredOptions = null;
 
-        var httpClientSettings = new HttpClientSettings();
+        var httpClientSettings = new HttpClientSettings() as IHttpClientSettings;
 
         void ConfigureAction(HttpClientFactoryOptions x) => configuredOptions = x;
 
@@ -38,7 +38,7 @@ public class HttpClientSettingsTests
     [Fact]
     public void Add_ConfigureClientUseConfigureAction_ActionIsAddedToHttpClientActions()
     {
-        var httpClientSettings = new HttpClientSettings();
+        var httpClientSettings = new HttpClientSettings() as IHttpClientSettings;
 
         Action<HttpClient> configureAction = _ => { };
 
@@ -62,7 +62,7 @@ public class HttpClientSettingsTests
     [Fact]
     public void Add_ConfigureClientHandlerUseConfigureAction_ActionIsAddedToHttpClientActions()
     {
-        var httpClientSettings = new HttpClientSettings();
+        var httpClientSettings = new HttpClientSettings() as IHttpClientSettings;
 
         var httpClientHandler = A.Fake<HttpClientHandler>();
 
