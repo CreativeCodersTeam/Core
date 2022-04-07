@@ -5,7 +5,7 @@ namespace CreativeCoders.Net.Http;
 
 public static class NamedHttpClientFactoryOptionsServiceCollectionExtensions
 {
-    public static void AddNamedHttpClientOptions(this IServiceCollection services)
+    public static void AddDynamicHttpClient(this IServiceCollection services)
     {
         Ensure.NotNull(services, nameof(services));
 

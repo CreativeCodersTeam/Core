@@ -60,7 +60,7 @@ public static class FritzBoxServiceCollectionExtensions
     {
         Ensure.NotNull(services, nameof(services));
 
-        services.AddNamedHttpClientOptions();
+        services.AddDynamicHttpClient();
 
         services.AddSingleton<IFritzBoxConnections, FritzBoxConnections>();
 

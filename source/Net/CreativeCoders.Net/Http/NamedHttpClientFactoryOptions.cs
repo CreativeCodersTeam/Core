@@ -1,4 +1,5 @@
-﻿using CreativeCoders.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+using CreativeCoders.Core;
 using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Options;
 
@@ -13,6 +14,7 @@ public class NamedHttpClientFactoryOptions : IConfigureNamedOptions<HttpClientFa
         _optionsStore = Ensure.NotNull(optionsStore, nameof(optionsStore));
     }
 
+    [ExcludeFromCodeCoverage]
     public void Configure(HttpClientFactoryOptions options) { }
 
     public void Configure(string name, HttpClientFactoryOptions options)
