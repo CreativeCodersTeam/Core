@@ -3,5 +3,6 @@
 		<Authors>CreativeCoders</Authors>
 		<IsPackable>true</IsPackable>
 		<NoWarn>$(NoWarn);IDE0079</NoWarn>
+		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
 	</PropertyGroup>
 </Project>
