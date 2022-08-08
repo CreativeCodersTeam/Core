@@ -426,4 +426,22 @@ public class OptionParserTests
             .Should()
             .Equal(args);
     }
+
+    [Theory]
+    [InlineData(true, "-c")]
+    [InlineData(true, "-c", "true")]
+    [InlineData(false, "-c", "false")]
+    [InlineData(false)]
+    public void Test(bool expectedValue, params string[] args)
+    {
+        var parser = new OptionParser(typeof(TestOptionWithSingleBool));
+
+        // Act
+        var option = (TestOptionWithSingleBool) parser.Parse(args);
+
+        // Assert
+        option.CreateData
+            .Should()
+            .Be(expectedValue);
+    }
 }

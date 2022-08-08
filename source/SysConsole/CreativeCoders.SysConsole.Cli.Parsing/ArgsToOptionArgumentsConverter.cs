@@ -47,7 +47,7 @@ public class ArgsToOptionArgumentsConverter
 
     private string? GetParameterValue(int index, ref bool skipNext)
     {
-        if (index >= _args.Length || _args[index + 1].StartsWith("-", StringComparison.InvariantCulture))
+        if (index + 1 >= _args.Length || _args[index + 1].StartsWith("-", StringComparison.InvariantCulture))
         {
             return null;
         }

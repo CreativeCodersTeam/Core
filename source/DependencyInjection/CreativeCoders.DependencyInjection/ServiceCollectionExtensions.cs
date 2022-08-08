@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
     public static void ConfigureServicesFromAssembly(this IServiceCollection services, Assembly assembly)
     {
         var registrations = typeof(IServiceRegistration)
-            .GetImplementations(new[] {assembly})
+            .GetImplementations(assembly)
             .Select(x =>
             {
                 if (Activator.CreateInstance(x) is not IServiceRegistration serviceRegistration)
