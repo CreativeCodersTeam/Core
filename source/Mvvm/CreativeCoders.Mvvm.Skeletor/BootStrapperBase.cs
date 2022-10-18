@@ -63,7 +63,8 @@ public abstract class BootStrapperBase
         ConfigureDiContainer(containerBuilder);
 
         DiContainer = containerBuilder.Build();
-        ServiceLocator.Init(() => DiContainer);
+
+        SkeletorServiceLocator.Init(() => DiContainer);
     }
 
     protected abstract IDiContainerBuilder CreateDiContainerBuilder();

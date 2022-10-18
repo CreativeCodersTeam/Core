@@ -18,8 +18,8 @@ public class ViewModelTemplateSelector : DataTemplateSelector
             return;
         }
 
-        _viewLocator = ServiceLocator.GetInstance<IViewLocator>();
-        _dataTemplateGenerator = ServiceLocator.GetInstance<IDataTemplateGenerator>();
+        _viewLocator = SkeletorServiceLocator.GetRequiredService<IViewLocator>();
+        _dataTemplateGenerator = SkeletorServiceLocator.GetRequiredService<IDataTemplateGenerator>();
     }
 
     public override DataTemplate SelectTemplate(object item, DependencyObject container)
