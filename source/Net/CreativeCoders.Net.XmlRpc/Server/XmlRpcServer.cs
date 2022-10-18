@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
-using CreativeCoders.Core.Logging;
 using CreativeCoders.Net.Servers.Http;
 using CreativeCoders.Net.XmlRpc.Model;
 using CreativeCoders.Net.XmlRpc.Model.Values.Converters;
@@ -23,8 +22,6 @@ namespace CreativeCoders.Net.XmlRpc.Server;
 [PublicAPI]
 public class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler, IDisposable
 {
-    private static readonly ILogger Log = LogManager.GetLogger<XmlRpcServer>();
-
     private readonly IHttpServer _httpServer;
 
     private readonly XmlRpcMethodExecutor _executor;
@@ -73,15 +70,11 @@ public class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler, IDisposable
 
     public async Task ProcessAsync(IHttpRequest request, IHttpResponse response)
     {
-        Log.Debug("Process xml rpc request");
-
         Ensure.IsNotNull(request, nameof(request));
         Ensure.IsNotNull(response, nameof(response));
 
         if (!request.HttpMethod.Equals(HttpMethod.Post.Method, StringComparison.InvariantCultureIgnoreCase))
         {
-            Log.Debug($"Http method '{request.HttpMethod}' not supported");
-
             response.StatusCode = (int) HttpStatusCode.MethodNotAllowed;
             return;
         }
@@ -90,8 +83,6 @@ public class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler, IDisposable
                 request.ContentType == null ||
                 request.ContentType.StartsWith(ct, StringComparison.InvariantCultureIgnoreCase)))
         {
-            Log.Debug($"Content type '{request.ContentType}' not allowed");
-
             response.StatusCode = (int) HttpStatusCode.UnsupportedMediaType;
             return;
         }
@@ -103,11 +94,9 @@ public class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler, IDisposable
 
             xmlRpcResponse = await ExecuteMethods(xmlRpcRequest);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             response.StatusCode = (int) HttpStatusCode.InternalServerError;
-
-            Log.Error($"Xml rpc method execution failed. Exception: {e}");
 
             return;
         }
@@ -168,8 +157,6 @@ public class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler, IDisposable
 
     private async Task<object> InvokeMethod(XmlRpcMethodCall methodCall)
     {
-        Log.Debug($"Invoke method '{methodCall.Name}'");
-
         return await _executor.Invoke(methodCall);
     }
 

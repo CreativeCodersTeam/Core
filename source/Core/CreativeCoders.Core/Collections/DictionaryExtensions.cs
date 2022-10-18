@@ -21,7 +21,7 @@ public static class DictionaryExtensions
         out TKey key)
     {
         foreach (var dictEntry in dictionary.Where(dictEntry =>
-                     dictEntry.Value is null && value is null || dictEntry.Value?.Equals(value) == true))
+                     (dictEntry.Value is null && value is null) || dictEntry.Value?.Equals(value) == true))
         {
             key = dictEntry.Key;
             return true;

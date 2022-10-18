@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData;
+﻿using JetBrains.Annotations;
 
+namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData;
+
+[PublicAPI]
 public class TestOptionForHelp
 {
     public const char TitleShortName = 't';

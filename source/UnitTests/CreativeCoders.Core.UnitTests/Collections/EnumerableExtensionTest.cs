@@ -6,7 +6,6 @@ using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Comparing;
 using FluentAssertions;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace CreativeCoders.Core.UnitTests.Collections;
 
@@ -846,7 +845,7 @@ public class EnumerableExtensionTest
             .Should()
             .BeAssignableTo(targetType);
 
-        result.FastCount()
+        result!.FastCount()
             .Should()
             .Be(expectedCount);
     }

@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.Net.Http.Auth.Jwt;
+﻿using JetBrains.Annotations;
 
+namespace CreativeCoders.Net.Http.Auth.Jwt;
+
+[PublicAPI]
 public class JwtTokenRequest
 {
     public string UserName { get; set; }

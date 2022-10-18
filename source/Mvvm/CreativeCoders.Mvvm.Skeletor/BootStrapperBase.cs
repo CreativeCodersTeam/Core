@@ -2,8 +2,6 @@
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
-using CreativeCoders.Di;
-using CreativeCoders.Di.Building;
 using CreativeCoders.Mvvm.Skeletor.Infrastructure;
 using CreativeCoders.Mvvm.Wpf;
 using JetBrains.Annotations;

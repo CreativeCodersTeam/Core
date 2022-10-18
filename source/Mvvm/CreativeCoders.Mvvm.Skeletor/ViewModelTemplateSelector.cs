@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using CreativeCoders.Di;
 using CreativeCoders.Mvvm.Skeletor.Infrastructure;
 using CreativeCoders.Mvvm.Wpf;
 

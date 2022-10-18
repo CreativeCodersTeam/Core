@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using CreativeCoders.Di;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Mvvm.Skeletor.Infrastructure.Default;
@@ -10,12 +9,12 @@ public class ViewLocator : IViewLocator
 {
     private readonly IViewModelToViewMappings _viewModelToViewMappings;
 
-    private readonly IDiContainer _diContainer;
+    private readonly IServiceProvider _serviceProvider;
 
-    public ViewLocator(IViewModelToViewMappings viewModelToViewMappings, IDiContainer diContainer)
+    public ViewLocator(IViewModelToViewMappings viewModelToViewMappings, IServiceProvider serviceProvider)
     {
         _viewModelToViewMappings = viewModelToViewMappings;
-        _diContainer = diContainer;
+        _serviceProvider = serviceProvider;
     }
 
     public object CreateViewForViewModel(object viewModel)
@@ -26,7 +25,7 @@ public class ViewLocator : IViewLocator
     public object CreateViewForViewModel(object viewModel, object context)
     {
         var viewType = GetViewTypeForViewModel(viewModel, context);
-        var view = _diContainer.GetInstance(viewType) as DependencyObject;
+        var view = _serviceProvider.GetService(viewType) as DependencyObject;
         return view;
     }
 

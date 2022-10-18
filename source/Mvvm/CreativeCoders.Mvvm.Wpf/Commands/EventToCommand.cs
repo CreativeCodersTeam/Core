@@ -15,7 +15,7 @@ public class EventToCommand : TriggerAction<DependencyObject>
     public const string AlwaysInvokeCommandPropertyName = "AlwaysInvokeCommand";
 
     public static readonly DependencyProperty CommandParameterProperty =
-        DependencyProperty.Register("CommandParameter", typeof(object), typeof(EventToCommand),
+        DependencyProperty.Register(nameof(CommandParameter), typeof(object), typeof(EventToCommand),
             new PropertyMetadata(null, (s, _) =>
             {
                 var sender = s as EventToCommand;
@@ -33,7 +33,7 @@ public class EventToCommand : TriggerAction<DependencyObject>
         new PropertyMetadata(null, (s, e) => OnCommandChanged(s as EventToCommand, e)));
 
     public static readonly DependencyProperty MustToggleIsEnabledProperty =
-        DependencyProperty.Register("MustToggleIsEnabled", typeof(bool), typeof(EventToCommand),
+        DependencyProperty.Register(nameof(MustToggleIsEnabled), typeof(bool), typeof(EventToCommand),
             new PropertyMetadata(false, (s, _) =>
             {
                 var sender = s as EventToCommand;

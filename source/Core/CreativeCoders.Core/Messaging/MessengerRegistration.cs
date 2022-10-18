@@ -1,13 +1,10 @@
 ﻿using System;
-using CreativeCoders.Core.Logging;
 using CreativeCoders.Core.Weak;
 
 namespace CreativeCoders.Core.Messaging;
 
 internal class MessengerRegistration<TMessage> : IMessengerRegistration
 {
-    private static readonly ILogger Log = LogManager.GetLogger<MessengerRegistration<TMessage>>();
-
     private MessengerImpl _messenger;
 
     private bool _disposed;
@@ -27,9 +24,9 @@ internal class MessengerRegistration<TMessage> : IMessengerRegistration
         {
             _weakAction.Execute(message);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Log.Error("Sending message via action to subscriber failed!", e);
+            // TODO think about logging
         }
     }
 

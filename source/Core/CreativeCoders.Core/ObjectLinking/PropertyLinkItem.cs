@@ -16,8 +16,8 @@ public class PropertyLinkItem
         switch (Info.Direction)
         {
             case LinkDirection.TwoWay
-                when Info.Source == changedInstance && Info.SourceProperty.Name == changedPropertyName
-                     || Info.Target == changedInstance && Info.TargetProperty.Name == changedPropertyName:
+                when (Info.Source == changedInstance && Info.SourceProperty.Name == changedPropertyName)
+                     || (Info.Target == changedInstance && Info.TargetProperty.Name == changedPropertyName):
             {
                 if (Info.Source == changedInstance)
                 {

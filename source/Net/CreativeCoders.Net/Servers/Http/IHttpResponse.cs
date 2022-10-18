@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.Net.Servers.Http;
+﻿using JetBrains.Annotations;
 
+namespace CreativeCoders.Net.Servers.Http;
+
+[PublicAPI]
 public interface IHttpResponse
 {
     string ContentType { get; set; }

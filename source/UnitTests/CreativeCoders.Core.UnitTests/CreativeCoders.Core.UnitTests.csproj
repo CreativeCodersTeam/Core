@@ -9,7 +9,6 @@
 	<ItemGroup>
 		<PackageReference Include="FakeItEasy" Version="7.3.1" />
 		<PackageReference Include="FluentAssertions" Version="6.6.0" />
-		<PackageReference Include="log4net" Version="2.0.14" />
 		<PackageReference Include="System.IO.Abstractions" Version="16.1.25" />
 		<PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="16.1.25" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
@@ -30,15 +29,6 @@
 		<ProjectReference Include="..\..\Config\CreativeCoders.Config.Sources\CreativeCoders.Config.Sources.csproj" />
 		<ProjectReference Include="..\..\Config\CreativeCoders.Config\CreativeCoders.Config.csproj" />
 		<ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-		<ProjectReference Include="..\..\Di\CreativeCoders.Di.Autofac\CreativeCoders.Di.Autofac.csproj" />
-		<ProjectReference Include="..\..\Di\CreativeCoders.Di.MsServiceProvider\CreativeCoders.Di.MsServiceProvider.csproj" />
-		<ProjectReference Include="..\..\Di\CreativeCoders.Di.SimpleInjector\CreativeCoders.Di.SimpleInjector.csproj" />
-		<ProjectReference Include="..\..\Di\CreativeCoders.Di\CreativeCoders.Di.csproj" />
-		<ProjectReference Include="..\..\Logging\CreativeCoders.Logging.Console\CreativeCoders.Logging.Console.csproj" />
-		<ProjectReference Include="..\..\Logging\CreativeCoders.Logging.DebuggerOutput\CreativeCoders.Logging.DebuggerOutput.csproj" />
-		<ProjectReference Include="..\..\Logging\CreativeCoders.Logging.Delegate\CreativeCoders.Logging.Delegate.csproj" />
-		<ProjectReference Include="..\..\Logging\CreativeCoders.Logging.Log4net\CreativeCoders.Logging.Log4net.csproj" />
-		<ProjectReference Include="..\..\Logging\CreativeCoders.Logging.Nlog\CreativeCoders.Logging.Nlog.csproj" />
 		<ProjectReference Include="..\CreativeCoders.UnitTests\CreativeCoders.UnitTests.csproj" />
 	</ItemGroup>
 

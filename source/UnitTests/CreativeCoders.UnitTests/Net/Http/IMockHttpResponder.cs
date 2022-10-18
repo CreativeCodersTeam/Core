@@ -4,10 +4,12 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.UnitTests.Net.Http;
 
 /// <summary>   Interface for specifying a mocked HTTP response. </summary>
+[PublicAPI]
 public interface IMockHttpResponder
 {
     ///-------------------------------------------------------------------------------------------------

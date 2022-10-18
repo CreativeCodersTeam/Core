@@ -9,9 +9,9 @@ public class CSharpScriptClassDefinition
         Usings = new List<string>();
     }
 
-    public string NameSpace { get; set; }
+    public string NameSpace { get; init; }
 
-    public string ClassName { get; set; }
+    public string ClassName { get; init; }
 
     public string SourceCode { get; set; }
 
