@@ -4,9 +4,9 @@ using CreativeCoders.Windows.Window;
 
 namespace WindowsSampleApp;
 
-public class Program
+public static class Program
 {
-    public static void Main(string[] args)
+    public static void Main()
     {
         var win32Windows = new Win32Windows();
 

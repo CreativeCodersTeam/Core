@@ -1,9 +1,11 @@
 ﻿using System.Threading.Tasks;
 using CreativeCoders.Daemon.Base;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
 namespace WindowsServiceDaemonSampleApp;
 
+[UsedImplicitly]
 public class SampleDaemonService : IDaemonService
 {
     // ReSharper disable once SuggestBaseTypeForParameter

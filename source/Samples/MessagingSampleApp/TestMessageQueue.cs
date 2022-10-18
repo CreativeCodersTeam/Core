@@ -10,13 +10,17 @@ namespace MessagingSampleApp;
 
 public static class TestMessageQueue
 {
-    public static async Task Run()
+    public static async Task RunAsync()
     {
         var queue = new MessageQueue<string>() as IMessageQueue<string>;
             
         Enumerable
             .Range(0, 10)
-            .ForEach(index => new Thread(async () => await ProcessQueueEntry(index, queue)).Start());
+            .ForEach(index =>
+            {
+                async void ExecuteAsync() => await ProcessQueueEntry(index, queue);
+                new Thread(ExecuteAsync).Start();
+            });
 
         await Task.Delay(2000);
             
@@ -44,6 +48,6 @@ public static class TestMessageQueue
             
         var data = await queue.DequeueAsync();
             
-        Console.WriteLine($"Index = {workerIndex}, ThreadId = {Thread.CurrentThread.ManagedThreadId}: {data}");
+        Console.WriteLine($"Index = {workerIndex}, ThreadId = {Environment.CurrentManagedThreadId}: {data}");
     }
 }
