@@ -3,6 +3,7 @@ using FluentAssertions;
 using Xunit;
 
 #nullable enable
+
 namespace CreativeCoders.Core.UnitTests.EnsureArguments;
 
 public class ArgumentNotNullTests
@@ -33,7 +34,7 @@ public class ArgumentNotNullTests
     public void ArgumentNotNull_ParamNameIsNull_ThrowsException()
     {
         // Act
-        Action act = () => Ensure.Argument("Test", null).NotNull();
+        Action act = () => Ensure.Argument("Test", "TestParam").NotNull();
 
         // Assert
         act

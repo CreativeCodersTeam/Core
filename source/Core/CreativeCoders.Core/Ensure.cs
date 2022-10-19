@@ -6,6 +6,8 @@ using System.Linq;
 using CreativeCoders.Core.IO;
 using JetBrains.Annotations;
 
+#nullable enable
+
 namespace CreativeCoders.Core;
 
 /// <summary>   Static class with methods for parameter checking. </summary>
@@ -28,7 +30,7 @@ public static class Ensure
     ///-------------------------------------------------------------------------------------------------
     [ContractAnnotation("value: null => halt; value: notnull => notnull")]
     [return: System.Diagnostics.CodeAnalysis.NotNull]
-    public static T NotNull<T>(T value, string paramName)
+    public static T NotNull<T>(T? value, string paramName)
     {
         if (value is null)
         {
@@ -39,7 +41,7 @@ public static class Ensure
     }
 
     [ContractAnnotation("value: null => halt")]
-    public static void IsNotNull(object value, string paramName)
+    public static void IsNotNull(object? value, string paramName)
     {
         if (value is null)
         {
@@ -56,7 +58,7 @@ public static class Ensure
     ///                                 gets thrown, if <paramref name="value"/>  is null. </param>
     ///-------------------------------------------------------------------------------------------------
     [ContractAnnotation("halt <= value: null")]
-    public static void IsNotNull<T>(object value, Func<T> createException) where T : Exception
+    public static void IsNotNull<T>(object? value, Func<T> createException) where T : Exception
     {
         if (value == null)
         {
@@ -76,8 +78,7 @@ public static class Ensure
     /// <returns>   The <paramref name="value"/>. </returns>
     ///-------------------------------------------------------------------------------------------------
     [ContractAnnotation("halt <= value: null; value: notnull => notnull")]
-    [return: System.Diagnostics.CodeAnalysis.NotNull]
-    public static string IsNotNullOrEmpty(string value, string paramName)
+    public static string IsNotNullOrEmpty(string? value, string paramName)
     {
         if (string.IsNullOrEmpty(value))
         {
@@ -98,7 +99,7 @@ public static class Ensure
     /// <param name="paramName">    Name of the <paramref name="value"/>  parameter. </param>
     ///-------------------------------------------------------------------------------------------------
     [ContractAnnotation("halt <= value: null")]
-    public static void IsNotNullOrEmpty<T>(IEnumerable<T> value, string paramName)
+    public static void IsNotNullOrEmpty<T>(IEnumerable<T?>? value, string paramName)
     {
         if (value == null || !value.Any())
         {
@@ -118,8 +119,7 @@ public static class Ensure
     /// <returns>   The <paramref name="value"/>. </returns>
     ///-------------------------------------------------------------------------------------------------
     [ContractAnnotation("halt <= value: null; value: notnull => notnull")]
-    [return: System.Diagnostics.CodeAnalysis.NotNull]
-    public static string IsNotNullOrWhitespace(string value, string paramName)
+    public static string IsNotNullOrWhitespace(string? value, string paramName)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
@@ -297,8 +297,8 @@ public static class Ensure
     ///
     /// <returns>   An Argument&lt;T&gt; </returns>
     ///-------------------------------------------------------------------------------------------------
-    public static Argument<T> Argument<T>(T value, string paramName)
+    public static Argument<T?> Argument<T>(T? value, string paramName)
     {
-        return new Argument<T>(value, paramName);
+        return new Argument<T?>(value, paramName);
     }
 }
