@@ -20,7 +20,8 @@ public class StreamWrapper : Stream
     private readonly Stream _dataStream;
 
     public StreamWrapper(Stream dataStream)
-        : this (dataStream, _ => {}, _ => {})
+        : this (dataStream, NullAction<bool>.Instance,
+            NullAction<bool>.Instance)
     {
     }
 

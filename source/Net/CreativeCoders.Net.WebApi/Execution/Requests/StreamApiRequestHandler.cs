@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using CreativeCoders.Core;
 using CreativeCoders.Core.IO;
 using CreativeCoders.Net.WebApi.Specification;
 
@@ -19,8 +20,8 @@ public class StreamApiRequestHandler : ApiRequestHandlerBase
     {
         var response = await RequestResponseMessageAsync(requestData).ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
-
+        
         return new StreamWrapper(await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-            null, _ => response.Dispose());
+            NullAction<bool>.Instance, _ => response.Dispose());
     }
 }

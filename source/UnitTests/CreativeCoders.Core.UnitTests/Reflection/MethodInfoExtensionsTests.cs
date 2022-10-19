@@ -1,8 +1,11 @@
 ﻿using System.Reflection;
 using System.Text;
 using CreativeCoders.Core.Reflection;
+using FluentAssertions;
 using JetBrains.Annotations;
 using Xunit;
+
+#nullable enable
 
 namespace CreativeCoders.Core.UnitTests.Reflection;
 
@@ -16,7 +19,13 @@ public class MethodInfoExtensionsTests
         var test1Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test1));
         var test2Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test2));
 
-        Assert.False(test1Method.ParametersAreEqual(test2Method));
+        // Act
+        var areEqual = test1Method!.ParametersAreEqual(test2Method!);
+
+        // Assert
+        areEqual
+            .Should()
+            .BeFalse();
     }
 
     [Fact]
@@ -27,7 +36,13 @@ public class MethodInfoExtensionsTests
         var test1Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test1));
         var test3Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test3));
 
-        Assert.True(test1Method.ParametersAreEqual(test3Method));
+        // Act
+        var areEqual = test1Method!.ParametersAreEqual(test3Method!);
+
+        // Assert
+        areEqual
+            .Should()
+            .BeTrue();
     }
 
     [Fact]
