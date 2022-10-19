@@ -1,5 +1,7 @@
 ﻿using JetBrains.Annotations;
 
+#nullable enable
+
 namespace CreativeCoders.Core;
 
 [PublicAPI]

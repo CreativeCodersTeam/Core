@@ -1,5 +1,7 @@
 ﻿using System;
 
+#nullable enable
+
 namespace CreativeCoders.Core;
 
 public sealed class DelegateDisposable : IDisposable
