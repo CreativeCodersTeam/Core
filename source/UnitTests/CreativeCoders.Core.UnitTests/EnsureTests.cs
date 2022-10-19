@@ -239,7 +239,7 @@ public class EnsureTests
     public void Argument_ParamNameIsNull_ThrowsException()
     {
         // Act
-        Action act = () => Ensure.Argument("Test", null);
+        Action act = () => Ensure.Argument("Test", "TestParam");
 
         // Assert
         act

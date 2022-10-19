@@ -137,7 +137,7 @@ public static class Ensure
     ///
     /// <param name="fileName"> Name of the file to check. </param>
     ///-------------------------------------------------------------------------------------------------
-    public static void FileExists(string fileName)
+    public static void FileExists(string? fileName)
     {
         if (!FileSys.File.Exists(fileName))
         {
@@ -154,7 +154,7 @@ public static class Ensure
     ///
     /// <param name="directoryName">    Name of the directory to check. </param>
     ///-------------------------------------------------------------------------------------------------
-    public static void DirectoryExists(string directoryName)
+    public static void DirectoryExists(string? directoryName)
     {
         if (!FileSys.Directory.Exists(directoryName))
         {

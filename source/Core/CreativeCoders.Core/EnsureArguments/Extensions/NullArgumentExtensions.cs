@@ -6,7 +6,7 @@ namespace CreativeCoders.Core;
 
 public static class NullArgumentExtensions
 {
-    public static ArgumentNotNull<T> NotNull<T>(in this Argument<T> argument, string? message = null)
+    public static ArgumentNotNull<T> NotNull<T>(in this Argument<T?> argument, string? message = null)
     {
         if (argument.Value is null)
         {
@@ -16,7 +16,7 @@ public static class NullArgumentExtensions
         return new ArgumentNotNull<T>(argument.Value, argument.Name);
     }
 
-    public static T? Null<T>(in this Argument<T> argument, string? message = null)
+    public static T? Null<T>(in this Argument<T?> argument, string? message = null)
     {
         if (argument.Value is not null)
         {
