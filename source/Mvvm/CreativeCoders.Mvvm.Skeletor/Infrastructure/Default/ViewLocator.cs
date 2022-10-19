@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CreativeCoders.Mvvm.Skeletor.Infrastructure.Default;
 
@@ -25,7 +26,8 @@ public class ViewLocator : IViewLocator
     public object CreateViewForViewModel(object viewModel, object context)
     {
         var viewType = GetViewTypeForViewModel(viewModel, context);
-        var view = _serviceProvider.GetService(viewType) as DependencyObject;
+        var view =
+            ActivatorUtilities.GetServiceOrCreateInstance(_serviceProvider, viewType) as DependencyObject;
         return view;
     }
 

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using CreativeCoders.Net.XmlRpc.Client;
 using CreativeCoders.Net.XmlRpc.Definition;
 
 namespace CreativeCoders.Net.XmlRpc.Proxy.Execution.Requests;
 
+[SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class RequestData
 {
     public string MethodName { get; set; }

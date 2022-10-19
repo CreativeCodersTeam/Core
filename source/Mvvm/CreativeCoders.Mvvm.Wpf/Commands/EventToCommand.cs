@@ -28,7 +28,7 @@ public class EventToCommand : TriggerAction<DependencyObject>
                 sender.EnableDisableElement();
             }));
 
-    public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command",
+    public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(nameof(Command),
         typeof(ICommand), typeof(EventToCommand),
         new PropertyMetadata(null, (s, e) => OnCommandChanged(s as EventToCommand, e)));
 

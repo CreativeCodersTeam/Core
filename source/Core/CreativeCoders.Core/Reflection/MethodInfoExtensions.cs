@@ -6,8 +6,32 @@ using CreativeCoders.Core.Comparing;
 
 namespace CreativeCoders.Core.Reflection;
 
+#nullable enable
+
 public static class MethodInfoExtensions
 {
+    public static T? Execute<T>(this MethodInfo methodInfo, object instance,
+        IServiceProvider serviceProvider, params object[] args)
+    {
+        Ensure.NotNull(methodInfo, nameof(methodInfo));
+        Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+
+        var arguments = methodInfo.GetParameters().CreateArguments(serviceProvider, out var _, args);
+
+        return (T?) methodInfo.Invoke(instance, arguments);
+    }
+
+    public static void Execute(this MethodInfo methodInfo, object instance,
+        IServiceProvider serviceProvider, params object[] args)
+    {
+        Ensure.NotNull(methodInfo, nameof(methodInfo));
+        Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+
+        var arguments = methodInfo.GetParameters().CreateArguments(serviceProvider, out var _, args);
+
+        methodInfo.Invoke(instance, arguments);
+    }
+
     public static bool ParametersAreEqual(this MethodInfo methodInfo, MethodInfo methodInfoForCompare)
     {
         var parameters1 = methodInfo.GetParameters();
