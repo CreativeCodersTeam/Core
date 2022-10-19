@@ -2,6 +2,8 @@
 using System.IO.Abstractions;
 using JetBrains.Annotations;
 
+#nullable enable
+
 namespace CreativeCoders.Core.IO;
 
 [ExcludeFromCodeCoverage]

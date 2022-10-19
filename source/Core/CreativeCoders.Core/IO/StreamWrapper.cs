@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
+#nullable enable
+
 namespace CreativeCoders.Core.IO;
 
 [PublicAPI]
@@ -18,27 +20,27 @@ public class StreamWrapper : Stream
     private readonly Stream _dataStream;
 
     public StreamWrapper(Stream dataStream)
+        : this (dataStream, _ => {}, _ => {})
     {
-        Ensure.IsNotNull(dataStream, nameof(dataStream));
-
-        _dataStream = dataStream;
     }
 
     public StreamWrapper(Stream dataStream, Action<bool> disposeBeforeStreamAction,
-        Action<bool> disposeAfterStreamAction) : this(dataStream)
+        Action<bool> disposeAfterStreamAction)
     {
+        _dataStream = Ensure.NotNull(dataStream, nameof(dataStream));
+
         _disposeBeforeStreamAction = disposeBeforeStreamAction;
         _disposeAfterStreamAction = disposeAfterStreamAction;
     }
 
-    public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback,
-        object state)
+    public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback? callback,
+        object? state)
     {
         return _dataStream.BeginRead(buffer, offset, count, callback, state);
     }
 
-    public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback,
-        object state)
+    public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback? callback,
+        object? state)
     {
         return _dataStream.BeginWrite(buffer, offset, count, callback, state);
     }
@@ -55,11 +57,11 @@ public class StreamWrapper : Stream
 
     protected override void Dispose(bool disposing)
     {
-        _disposeBeforeStreamAction?.Invoke(disposing);
+        _disposeBeforeStreamAction.Invoke(disposing);
 
         _dataStream.Dispose();
 
-        _disposeAfterStreamAction?.Invoke(disposing);
+        _disposeAfterStreamAction.Invoke(disposing);
     }
 
     public override int EndRead(IAsyncResult asyncResult)
@@ -98,7 +100,7 @@ public class StreamWrapper : Stream
         _dataStream.WriteByte(value);
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return _dataStream.Equals(obj);
     }
@@ -108,7 +110,7 @@ public class StreamWrapper : Stream
         return _dataStream.GetHashCode();
     }
 
-    public override string ToString()
+    public override string? ToString()
     {
         return _dataStream.ToString();
     }
