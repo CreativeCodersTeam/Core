@@ -47,8 +47,9 @@ Welcome to your new app.
 {
     private Timer _timer;
 
+    // ReSharper disable MemberCanBePrivate.Global
     public BlazorObservableCollection<TestViewModel> ListItems { get; set; }
-        = new BlazorObservableCollection<TestViewModel>
+        = new()
         {
             new TestViewModel {IntValue = 1, Text = "Hello"},
             new TestViewModel {IntValue = 2, Text = "World"},
@@ -73,4 +74,5 @@ Welcome to your new app.
         }
         IsOutlined = !IsOutlined;
     }
+    // ReSharper restore MemberCanBePrivate.Global
 }

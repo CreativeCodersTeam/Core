@@ -1,4 +1,5 @@
 ﻿@page "/buttons"
+@using System.Diagnostics.CodeAnalysis
 
 <h3>Buttons</h3>
 
@@ -33,6 +34,7 @@
 </div>
 
 @code {
+    // ReSharper disable MemberCanBePrivate.Global
     public IReadOnlyCollection<string> DropDownItems { get; set; } = new[] {"First Command", "More Info", "Quit"};
 
     public IReadOnlyCollection<string> SecondDropDownItems { get; set; } = new[] {"Settings", "Profile", "Packages"};
@@ -58,5 +60,5 @@
         _customClickedCounter++;
         CustomText = $"Custom Button clicked {_customClickedCounter} time(s)";
     }
-
+    // ReSharper restore MemberCanBePrivate.Global
 }

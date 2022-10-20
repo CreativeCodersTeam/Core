@@ -21,7 +21,8 @@
 @code {
     private Timer _timer;
 
-    public ExtendedObservableCollection<TestViewModel> Items { get; set; } = new ExtendedObservableCollection<TestViewModel>
+    // ReSharper disable MemberCanBePrivate.Global
+    public ExtendedObservableCollection<TestViewModel> Items { get; set; } = new()
     {
         new TestViewModel {IntValue = 1, Text = "First Element"},
         new TestViewModel {IntValue = 2, Text = "Second Element"},
@@ -41,5 +42,5 @@
 
         _timer.Change(1000, 1000);
     }
-
+    // ReSharper restore MemberCanBePrivate.Global
 }
