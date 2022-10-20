@@ -16,11 +16,11 @@ public class MethodInfoExtensionsTests
     {
         var interfaceType = typeof(ITestInterfaceWithMethods);
 
-        var test1Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test1));
+        var test1Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test1))!;
         var test2Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test2));
 
         // Act
-        var areEqual = test1Method!.ParametersAreEqual(test2Method!);
+        var areEqual = test1Method.ParametersAreEqual(test2Method!);
 
         // Assert
         areEqual
@@ -33,11 +33,11 @@ public class MethodInfoExtensionsTests
     {
         var interfaceType = typeof(ITestInterfaceWithMethods);
 
-        var test1Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test1));
+        var test1Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test1))!;
         var test3Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test3));
 
         // Act
-        var areEqual = test1Method!.ParametersAreEqual(test3Method!);
+        var areEqual = test1Method.ParametersAreEqual(test3Method!);
 
         // Assert
         areEqual
@@ -51,9 +51,9 @@ public class MethodInfoExtensionsTests
         var interfaceType = typeof(ITestInterfaceWithMethods);
 
         var test4Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test4));
-        var test5Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test5));
+        var test5Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test5))!;
 
-        Assert.False(test4Method.ParametersAreEqual(test5Method));
+        Assert.False(test4Method!.ParametersAreEqual(test5Method));
     }
 
     [Fact]
@@ -61,8 +61,8 @@ public class MethodInfoExtensionsTests
     {
         var interfaceType = typeof(ITestInterfaceWithMethods);
 
-        var test4Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test4));
-        var test6Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test6));
+        var test4Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test4))!;
+        var test6Method = interfaceType.GetMethod(nameof(ITestInterfaceWithMethods.Test6))!;
 
         Assert.True(test4Method.ParametersAreEqual(test6Method));
     }
@@ -72,10 +72,10 @@ public class MethodInfoExtensionsTests
     {
         var methodInfo = typeof(ITestInterfaceWithMethods)
             .GetMethod(nameof(ITestInterfaceWithMethods.TestGeneric1))?
-            .MakeGenericMethod(typeof(int));
+            .MakeGenericMethod(typeof(int))!;
 
         Assert.True(methodInfo.MatchesMethod(
-            typeof(ITestInterfaceWithMethods).GetMethod(nameof(ITestInterfaceWithMethods.TestGeneric1))));
+            typeof(ITestInterfaceWithMethods).GetMethod(nameof(ITestInterfaceWithMethods.TestGeneric1))!));
     }
 
     [Fact]
@@ -89,7 +89,7 @@ public class MethodInfoExtensionsTests
             .GetMethod(nameof(ITestInterfaceWithMethods.TestGeneric1))?
             .MakeGenericMethod(typeof(double));
 
-        Assert.False(methodInfoInt.MatchesMethod(methodInfoDouble));
+        Assert.False(methodInfoInt!.MatchesMethod(methodInfoDouble!));
     }
 }
 
@@ -147,6 +147,6 @@ public class TestInterfaceWithMethods : ITestInterfaceWithMethods
     public MethodInfo TestGeneric1<T>(int i)
     {
         var currentMethod = MethodBase.GetCurrentMethod();
-        return currentMethod as MethodInfo;
+        return (currentMethod as MethodInfo)!;
     }
 }

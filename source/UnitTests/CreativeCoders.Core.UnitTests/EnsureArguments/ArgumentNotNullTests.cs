@@ -34,7 +34,7 @@ public class ArgumentNotNullTests
     public void ArgumentNotNull_ParamNameIsNull_ThrowsException()
     {
         // Act
-        Action act = () => Ensure.Argument("Test", "TestParam").NotNull();
+        Action act = () => Ensure.Argument("Test", null!).NotNull();
 
         // Assert
         act

@@ -43,7 +43,7 @@ public static class MethodInfoExtensions
         }
 
         var parametersEqual = parameters1.SequenceEqual(parameters2,
-            new MultiFuncEqualityComparer<ParameterInfo, string, Type>(x => x.Name, x => x.ParameterType));
+            new MultiFuncEqualityComparer<ParameterInfo, string?, Type>(x => x.Name, x => x.ParameterType));
 
         return parametersEqual;
     }
