@@ -9,5 +9,5 @@ public class ComparableIntObject : ComparableObject<ComparableIntObject>
         InitComparableObject(x => x.IntValue);
     }
 
-    public int IntValue { get; set; }
+    public int IntValue { get; init; }
 }

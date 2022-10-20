@@ -101,11 +101,6 @@ public class RoutesBuilderTests
                 .ContainEquivalentOf(expectedRoutePart);
         }
     }
-
-    private static void Print(string text)
-    {
-        Console.WriteLine(text);
-    }
 }
 
 public class TestNoneController

@@ -42,8 +42,8 @@ public class ContainerBuilderExtensionsTests
 
         var serviceProvider = services.BuildServiceProvider();
 
-        var setting0 = serviceProvider.GetService<ISetting<DemoSetting>>();
-        var setting1 = serviceProvider.GetService<ISetting<DemoSetting>>();
+        var setting0 = serviceProvider.GetRequiredService<ISetting<DemoSetting>>();
+        var setting1 = serviceProvider.GetRequiredService<ISetting<DemoSetting>>();
 
         Assert.Equal("DemoValue", setting0.Value.Text);
         Assert.Equal("DemoValue", setting1.Value.Text);
@@ -63,8 +63,8 @@ public class ContainerBuilderExtensionsTests
 
         var serviceProvider = services.BuildServiceProvider();
 
-        var setting0 = serviceProvider.GetService<ISettingTransient<DemoSetting>>();
-        var setting1 = serviceProvider.GetService<ISettingTransient<DemoSetting>>();
+        var setting0 = serviceProvider.GetRequiredService<ISettingTransient<DemoSetting>>();
+        var setting1 = serviceProvider.GetRequiredService<ISettingTransient<DemoSetting>>();
 
         Assert.Equal("DemoValue", setting0.Value.Text);
         Assert.Equal("DemoValue", setting1.Value.Text);
@@ -85,13 +85,13 @@ public class ContainerBuilderExtensionsTests
         var serviceProvider = services.BuildServiceProvider();
 
         var scope = serviceProvider.CreateScope();
-        var setting0 = scope.ServiceProvider.GetService<ISettingScoped<DemoSetting>>();
-        var setting1 = scope.ServiceProvider.GetService<ISettingScoped<DemoSetting>>();
+        var setting0 = scope.ServiceProvider.GetRequiredService<ISettingScoped<DemoSetting>>();
+        var setting1 = scope.ServiceProvider.GetRequiredService<ISettingScoped<DemoSetting>>();
         scope.Dispose();
 
         var scope1 = serviceProvider.CreateScope();
-        var setting2 = scope1.ServiceProvider.GetService<ISettingScoped<DemoSetting>>();
-        var setting3 = scope1.ServiceProvider.GetService<ISettingScoped<DemoSetting>>();
+        var setting2 = scope1.ServiceProvider.GetRequiredService<ISettingScoped<DemoSetting>>();
+        var setting3 = scope1.ServiceProvider.GetRequiredService<ISettingScoped<DemoSetting>>();
         scope1.Dispose();
 
         Assert.Equal("DemoValue", setting0.Value.Text);
@@ -120,8 +120,8 @@ public class ContainerBuilderExtensionsTests
 
         var serviceProvider = services.BuildServiceProvider();
 
-        var settings0 = serviceProvider.GetService<ISettings<DemoSetting>>();
-        var settings1 = serviceProvider.GetService<ISettings<DemoSetting>>();
+        var settings0 = serviceProvider.GetRequiredService<ISettings<DemoSetting>>();
+        var settings1 = serviceProvider.GetRequiredService<ISettings<DemoSetting>>();
 
         Assert.Single(settings0.Values);
         Assert.Single(settings1.Values);
@@ -149,8 +149,8 @@ public class ContainerBuilderExtensionsTests
 
         var serviceProvider = services.BuildServiceProvider();
 
-        var settings0 = serviceProvider.GetService<ISettingsTransient<DemoSetting>>();
-        var settings1 = serviceProvider.GetService<ISettingsTransient<DemoSetting>>();
+        var settings0 = serviceProvider.GetRequiredService<ISettingsTransient<DemoSetting>>();
+        var settings1 = serviceProvider.GetRequiredService<ISettingsTransient<DemoSetting>>();
 
         Assert.Single(settings0.Values);
         Assert.Single(settings1.Values);
@@ -179,13 +179,13 @@ public class ContainerBuilderExtensionsTests
         var container = services.BuildServiceProvider();
 
         var scope0 = container.CreateScope();
-        var settings0 = scope0.ServiceProvider.GetService<ISettingsScoped<DemoSetting>>();
-        var settings1 = scope0.ServiceProvider.GetService<ISettingsScoped<DemoSetting>>();
+        var settings0 = scope0.ServiceProvider.GetRequiredService<ISettingsScoped<DemoSetting>>();
+        var settings1 = scope0.ServiceProvider.GetRequiredService<ISettingsScoped<DemoSetting>>();
         scope0.Dispose();
 
         var scope1 = container.CreateScope();
-        var settings2 = scope1.ServiceProvider.GetService<ISettingsScoped<DemoSetting>>();
-        var settings3 = scope1.ServiceProvider.GetService<ISettingsScoped<DemoSetting>>();
+        var settings2 = scope1.ServiceProvider.GetRequiredService<ISettingsScoped<DemoSetting>>();
+        var settings3 = scope1.ServiceProvider.GetRequiredService<ISettingsScoped<DemoSetting>>();
         scope1.Dispose();
 
         Assert.Single(settings0.Values);

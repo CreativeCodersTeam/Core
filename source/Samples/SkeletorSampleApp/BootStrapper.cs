@@ -2,6 +2,7 @@
 using CreativeCoders.Mvvm.Skeletor;
 using CreativeCoders.Mvvm.Skeletor.Infrastructure;
 using CreativeCoders.Mvvm.Skeletor.Infrastructure.Default;
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using SkeletorSampleApp.ViewModels;
 
@@ -9,6 +10,7 @@ namespace SkeletorSampleApp;
 
 public class BootStrapper : BootStrapperBase<MainViewModel>
 {
+    [UsedImplicitly]
     protected void Configure(IViewAttributeInitializer viewAttributeInitializer)
     {
         viewAttributeInitializer.InitFromAssembly(typeof(BootStrapper).Assembly);

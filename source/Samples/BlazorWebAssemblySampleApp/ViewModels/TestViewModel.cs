@@ -1,5 +1,6 @@
 ﻿using System;
 using CreativeCoders.Core;
+using JetBrains.Annotations;
 
 namespace BlazorWebAssemblySampleApp.ViewModels;
 
@@ -19,6 +20,7 @@ public class TestViewModel : ObservableObject
         }
     }
 
+    [UsedImplicitly]
     public int IntValue
     {
         get => _intValue;

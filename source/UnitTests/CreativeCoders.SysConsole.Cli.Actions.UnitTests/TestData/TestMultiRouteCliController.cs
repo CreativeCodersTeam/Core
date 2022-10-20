@@ -1,8 +1,10 @@
 ﻿using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Cli.Actions.Definition;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
 
+[PublicAPI]
 [CliController]
 [CliController("controller")]
 public class TestMultiRouteCliController

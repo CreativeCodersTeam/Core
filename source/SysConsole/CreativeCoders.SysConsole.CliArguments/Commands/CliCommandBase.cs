@@ -16,7 +16,7 @@ public abstract class CliCommandBase<TOptions> : ICliCommand<TOptions>
         if (options is not TOptions commandOptions)
         {
             throw new InvalidCastException(
-                $"Option must be of type '{typeof(TOptions).Name}' (type = '{options?.GetType().Name}')");
+                $"Option must be of type '{typeof(TOptions).Name}' (type = '{options.GetType().Name}')");
         }
 
         return ExecuteAsync(commandOptions);

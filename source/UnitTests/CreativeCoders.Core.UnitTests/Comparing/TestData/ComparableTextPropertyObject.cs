@@ -9,7 +9,7 @@ public class ComparableTextPropertyObject : ComparableObject<ComparableTextPrope
         InitComparableObject(x => x.TextValue);
     }
 
-    public string TextValue { get; set; }
+    public string TextValue { get; init; }
 
     public override string ToString() => TextValue;
 }

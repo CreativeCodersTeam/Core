@@ -1,8 +1,11 @@
 ﻿using System.Reflection;
 using System.Text;
+using CreativeCoders.Core.Executing;
 using CreativeCoders.Core.Reflection;
+using FakeItEasy;
 using FluentAssertions;
 using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 #nullable enable
@@ -90,6 +93,73 @@ public class MethodInfoExtensionsTests
             .MakeGenericMethod(typeof(double));
 
         Assert.False(methodInfoInt!.MatchesMethod(methodInfoDouble!));
+    }
+
+    [Fact]
+    public void Execute_VoidOneArgFromServiceProviderOneFromArgs_MethodIsCalledCorrect()
+    {
+        const string text = "TestText";
+
+        var executable = A.Fake<IExecutable<string>>();
+
+        var testExecute = new TestExecute();
+
+        var voidMethod = testExecute.GetType().GetMethod(nameof(TestExecute.VoidMethod));
+
+        var services = new ServiceCollection();
+
+        services.AddSingleton(executable);
+
+        // Act
+        voidMethod!.Execute(testExecute, services.BuildServiceProvider(), text);
+
+        // Arrange
+        A.CallTo(() => executable.Execute(text)).MustHaveHappenedOnceExactly();
+    }
+
+    [Fact]
+    public void Execute_ResultWithOneArgFromServiceProviderOneFromArgs_MethodIsCalledCorrectAndReturnsResult()
+    {
+        const string text = "TestText";
+
+        var executable = new TestExecutable();
+
+        var testExecute = new TestExecute();
+
+        var textMethod = testExecute.GetType().GetMethod(nameof(TestExecute.TextMethod));
+
+        var services = new ServiceCollection();
+
+        services.AddSingleton(executable);
+
+        // Act
+        var result = textMethod!.Execute<string>(testExecute, services.BuildServiceProvider(), text);
+
+        // Arrange
+        result
+            .Should()
+            .Be($"{text}{text}");
+    }
+}
+
+public class TestExecutable
+{
+    public string DoSomeThing(string text)
+    {
+        return $"{text}{text}";
+    }
+}
+
+public class TestExecute
+{
+    public void VoidMethod(IExecutable<string> executable, string text)
+    {
+        executable.Execute(text);
+    }
+
+    public string TextMethod(TestExecutable executable, string text)
+    {
+        return executable.DoSomeThing(text);
     }
 }
 

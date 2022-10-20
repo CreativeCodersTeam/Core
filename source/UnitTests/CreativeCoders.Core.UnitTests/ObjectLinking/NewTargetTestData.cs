@@ -1,5 +1,6 @@
 ﻿using CreativeCoders.Core.ObjectLinking;
 using CreativeCoders.Core.ObjectLinking.Converters;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.UnitTests.ObjectLinking;
 
@@ -28,6 +29,7 @@ public class NewTargetTestData : TargetTestData
         set => Set(ref _isVisible, value);
     }
 
+    [UsedImplicitly]
     [PropertyLink(typeof(NewSourceTestData), nameof(NewSourceTestData.BoolWithDefault),
         Direction = LinkDirection.TwoWay,
         Converter = typeof(NullableTargetPropertyConverter<bool>), ConverterParameter = true)]
@@ -37,6 +39,7 @@ public class NewTargetTestData : TargetTestData
         set => Set(ref _boolWithDefault, value);
     }
 
+    [UsedImplicitly]
     public string InitialText
     {
         get => _initialText;

@@ -13,7 +13,7 @@
     [Parameter]
     public EventCallback<string> EditorValueChanged { get; set; }
 
-    public async Task OnValueChanged(ChangeEventArgs e)
+    private async Task OnValueChanged(ChangeEventArgs e)
     {
         EditorValue = e.Value?.ToString();
         await EditorValueChanged.InvokeAsync(EditorValue);

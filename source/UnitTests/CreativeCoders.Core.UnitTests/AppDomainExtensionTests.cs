@@ -2,12 +2,13 @@
 
 namespace CreativeCoders.Core.UnitTests;
 
+[PublicAPI]
 public interface ITestIntf
 {
     int IntValue { get; }
 }
 
-[UsedImplicitly]
+[PublicAPI]
 public class TestIntfClass : ITestIntf
 {
     public int IntValue => 11;

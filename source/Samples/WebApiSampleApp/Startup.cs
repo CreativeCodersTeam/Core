@@ -1,6 +1,7 @@
 using CreativeCoders.AspNetCore.Jwt;
 using CreativeCoders.AspNetCore.TokenAuth;
 using CreativeCoders.Core.Text;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ public class Startup
         Configuration = configuration;
     }
 
+    [UsedImplicitly]
     public IConfiguration Configuration { get; }
 
     // This method gets called by the runtime. Use this method to add services to the container.
@@ -48,6 +50,7 @@ public class Startup
     }
 }
 
+[UsedImplicitly]
 public class DefaultUserAuthProvider : IUserAuthProvider
 {
     public bool CheckUser(string userName, string password, string domain)
