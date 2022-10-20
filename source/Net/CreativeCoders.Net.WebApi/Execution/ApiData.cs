@@ -5,9 +5,9 @@ namespace CreativeCoders.Net.WebApi.Execution;
 
 public class ApiData
 {
-    public string BaseUri { get; set; }
+    public string BaseUri { get; init; }
 
-    public HttpClient HttpClient { get; set; }
+    public HttpClient HttpClient { get; init; }
 
-    public IDataFormatter DefaultDataFormatter { get; set; }
+    public IDataFormatter DefaultDataFormatter { get; init; }
 }

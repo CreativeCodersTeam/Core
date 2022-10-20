@@ -4,9 +4,9 @@ namespace CreativeCoders.Net.WebApi.Specification;
 
 public class ApiStructure
 {
-    public IEnumerable<ApiMethodInfo> MethodInfos { get; set; }
+    public IEnumerable<ApiMethodInfo> MethodInfos { get; init; }
 
-    public IEnumerable<RequestHeader> HeaderDefinitions { get; set; }
+    public IEnumerable<RequestHeader> HeaderDefinitions { get; init; }
 
-    public IEnumerable<ApiPropertyInfo> PropertyInfos { get; set; }
+    public IEnumerable<ApiPropertyInfo> PropertyInfos { get; init; }
 }

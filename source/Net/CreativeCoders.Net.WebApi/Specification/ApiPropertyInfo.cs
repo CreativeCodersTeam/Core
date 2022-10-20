@@ -5,9 +5,9 @@ namespace CreativeCoders.Net.WebApi.Specification;
 
 public class ApiPropertyInfo
 {
-    public IEnumerable<PropertyHeaderDefinition> HeaderDefinitions { get; set; }
+    public IEnumerable<PropertyHeaderDefinition> HeaderDefinitions { get; init; }
 
-    public IEnumerable<PropertyQueryDefinition> QueryParameterDefinitions { get; set; }
+    public IEnumerable<PropertyQueryDefinition> QueryParameterDefinitions { get; init; }
 
-    public PropertyPathDefinition PathDefinition { get; set; }
+    public PropertyPathDefinition PathDefinition { get; init; }
 }

@@ -4,9 +4,9 @@ namespace CreativeCoders.Net.WebApi.Specification;
 
 public class ApiMethodArgumentInfo
 {
-    public ParameterHeaderDefinition HeaderDefinition { get; set; }
+    public ParameterHeaderDefinition HeaderDefinition { get; init; }
 
-    public ParameterQueryDefinition QueryDefinition { get; set; }
+    public ParameterQueryDefinition QueryDefinition { get; init; }
 
-    public ParameterPathDefinition PathDefinition { get; set; }
+    public ParameterPathDefinition PathDefinition { get; init; }
 }
