@@ -14,4 +14,16 @@ public interface IDemoWebApi
 
     [Get("item/{itemId}")]
     Task<DemoItem> GetItemAsync(string itemId);
+
+    [Post("create")]
+    Task<DemoItem> CreateItemAsync([ViaBody] DemoItem item);
+
+    [Get("one-header")]
+    [Header("TestHeader", "HeaderValue0")]
+    Task GetWithOneHeaderAsync();
+
+    [Get("two-headers")]
+    [Header("TheHeader", "HeaderValueOne")]
+    [Header("ThatHeader")]
+    Task GetWithTwoHeadersAsync();
 }

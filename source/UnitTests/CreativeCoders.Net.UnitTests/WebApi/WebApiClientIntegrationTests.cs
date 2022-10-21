@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 using CreativeCoders.Net.UnitTests.WebApi.TestData;
@@ -27,6 +28,7 @@ public class WebApiClientIntegrationTests
 
         context
             .Respond()
+            .WithVerb(HttpMethod.Get)
             .ForUri("http://demo.app/one-item")
             .ReturnText(JsonSerializer.Serialize(new DemoItem {Text = expectedText}), HttpStatusCode.OK);
 
@@ -64,6 +66,7 @@ public class WebApiClientIntegrationTests
 
         context
             .Respond()
+            .WithVerb(HttpMethod.Get)
             .ForUri("http://demo.app/items")
             .ReturnText(expectedItems, HttpStatusCode.OK);
 
@@ -107,6 +110,7 @@ public class WebApiClientIntegrationTests
 
         context
             .Respond()
+            .WithVerb(HttpMethod.Get)
             .ForUri($"http://demo.app/item/{expectedItemId}")
             .ReturnText(JsonSerializer.Serialize(new DemoItem {Text = expectedItemId}), HttpStatusCode.OK);
 
@@ -129,6 +133,129 @@ public class WebApiClientIntegrationTests
         item.Text
             .Should()
             .Be(expectedItemId);
+    }
+
+    [Fact]
+    public async Task CreateItemAsync_WithItemAsArgument_NewDemoItemIsReturnedByClient()
+    {
+        const string expectedText = "1234";
+
+        var context = new MockHttpClientContext();
+
+        context
+            .Respond()
+            .WithVerb(HttpMethod.Post)
+            .ForUri("http://demo.app/create")
+            .ReturnText(JsonSerializer.Serialize(new DemoItem {Text = $"{expectedText}:{expectedText}"}), HttpStatusCode.OK);
+
+        var httpClientFactory = A.Fake<IHttpClientFactory>();
+
+        var newItem = new DemoItem {Text = expectedText};
+
+        A
+            .CallTo(() => httpClientFactory.CreateClient(Options.DefaultName))
+            .Returns(context.CreateClient());
+
+        var webApi = CreateServiceProvider(httpClientFactory).GetRequiredService<IDemoWebApi>();
+
+        // Act
+        var item = await webApi.CreateItemAsync(newItem);
+
+        // Assert
+        item
+            .Should()
+            .NotBeNull();
+
+        item.Text
+            .Should()
+            .Be($"{expectedText}:{expectedText}");
+
+        context
+            .CallShouldBeMade("http://demo.app/create")
+            .WithVerb(HttpMethod.Post)
+            .WithContentText(JsonSerializer.Serialize(newItem));
+    }
+
+    [Fact]
+    public async Task GetWithOneHeaderAsync_OneHeaderSet_OneHeaderIsSentWithApiCall()
+    {
+        var context = new MockHttpClientContext();
+
+        context
+            .Respond()
+            .WithVerb(HttpMethod.Get)
+            .ForUri("http://demo.app/one-header")
+            .ReturnText("", HttpStatusCode.OK);
+
+        var httpClientFactory = A.Fake<IHttpClientFactory>();
+
+        A
+            .CallTo(() => httpClientFactory.CreateClient(Options.DefaultName))
+            .Returns(context.CreateClient());
+
+        var webApi = CreateServiceProvider(httpClientFactory).GetRequiredService<IDemoWebApi>();
+
+        // Act
+        await webApi.GetWithOneHeaderAsync();
+
+        // Assert
+        context
+            .CallShouldBeMade("http://demo.app/one-header")
+            .RequestMeets(x =>
+                x.Headers.Count() == 1 &&
+                x.Headers.Count(CheckOneHeader) == 1,
+                "Header is set correct");
+    }
+
+    [Fact]
+    public async Task GetWithTwoHeadersAsync_TwoHeadersSet_TwoHeadersAreSentWithApiCall()
+    {
+        var context = new MockHttpClientContext();
+
+        context
+            .Respond()
+            .WithVerb(HttpMethod.Get)
+            .ForUri("http://demo.app/two-headers")
+            .ReturnText("", HttpStatusCode.OK);
+
+        var httpClientFactory = A.Fake<IHttpClientFactory>();
+
+        A
+            .CallTo(() => httpClientFactory.CreateClient(Options.DefaultName))
+            .Returns(context.CreateClient());
+
+        var webApi = CreateServiceProvider(httpClientFactory).GetRequiredService<IDemoWebApi>();
+
+        // Act
+        await webApi.GetWithTwoHeadersAsync();
+
+        // Assert
+        context
+            .CallShouldBeMade("http://demo.app/two-headers")
+            .RequestMeets(x => CheckTwoHeaders(x.Headers),
+                "Header is set correct");
+    }
+
+    private static bool CheckTwoHeaders(HttpRequestHeaders httpHeaders)
+    {
+        var headers = httpHeaders.ToArray();
+
+        return headers.Length == 2 &&
+               headers.Count(x =>
+                   x.Key == "TheHeader" &&
+                   x.Value.Count() == 1 &&
+                   x.Value.Any(headerValue => headerValue == "HeaderValueOne")) == 1 &&
+               headers.Count(x =>
+                   x.Key == "ThatHeader" &&
+                   x.Value.Count() == 1 &&
+                   x.Value.Any(headerValue => headerValue == string.Empty)) == 1;
+    }
+
+    private static bool CheckOneHeader(KeyValuePair<string, IEnumerable<string>> header)
+    {
+        return header.Key == "TestHeader" &&
+               header.Value.Count() == 1 &&
+               header.Value.Count(x => x == "HeaderValue0") == 1;
     }
 
     private static IEnumerable<DemoItem> CreateDemoItems(params string[] textItems)
