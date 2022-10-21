@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.Core;
 using JetBrains.Annotations;
 using Nuke.Common.IO;
@@ -6,6 +7,7 @@ using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.BuildActions;
 
+[ExcludeFromCodeCoverage]
 [PublicAPI]
 public class PushBuildAction : BuildActionBase<PushBuildAction>
 {

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
 
@@ -98,6 +99,7 @@ public class ConcurrentList<T> : IList<T>, IReadOnlyCollection<T>
         set { _locking.Write(() => _items[index] = value); }
     }
 
+    [ExcludeFromCodeCoverage]
     public int Capacity
     {
         get => _locking.Read(() => _items.Capacity);

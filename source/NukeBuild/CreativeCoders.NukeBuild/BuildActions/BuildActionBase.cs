@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Nuke.Common;
 
 namespace CreativeCoders.NukeBuild.BuildActions;
 
+[ExcludeFromCodeCoverage]
 public abstract class BuildActionBase<TBuildAction> : IBuildAction<TBuildAction>
     where TBuildAction : BuildActionBase<TBuildAction>, new()
 {

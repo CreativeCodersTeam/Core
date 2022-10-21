@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 namespace CreativeCoders.Core.Threading;
@@ -30,6 +31,7 @@ public class MutexLock : IDisposable
         _hasMutexLock = _mutex.WaitOne();
     }
 
+    [ExcludeFromCodeCoverage]
     private void Dispose(bool disposing)
     {
         if (_disposed)

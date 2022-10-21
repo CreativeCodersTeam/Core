@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using Xunit;
 
@@ -40,5 +41,41 @@ public class ArgumentNotNullTests
         act
             .Should()
             .Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void Cast_StringValueToEnumerableOfChar_EnumerableForStringIsReturned()
+    {
+        const string text = "1234";
+
+        var argument = Ensure.Argument(text, nameof(text)).NotNull();
+
+        // Act
+        var value = argument.Cast<IEnumerable<char>>();
+
+        // Arrange
+        value
+            .Should()
+            .HaveCount(text.Length);
+
+        value.ToString()
+            .Should()
+            .Be(text);
+    }
+
+    [Fact]
+    public void ImplicitCast_StringValueToEnumerableOfChar_EnumerableForStringIsReturned()
+    {
+        const string text = "1234";
+
+        var argument = Ensure.Argument(text, nameof(text)).NotNull();
+
+        // Act
+        string value = argument;
+
+        // Arrange
+        value
+            .Should()
+            .Be(text);
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Nuke.Common.IO;
 using Nuke.Common.Utilities.Collections;
 
 namespace CreativeCoders.NukeBuild.BuildActions;
 
+[ExcludeFromCodeCoverage]
 public class CleanBuildAction : BuildActionBase<CleanBuildAction>
 {
     private readonly IList<AbsolutePath> _cleanDirectories;
