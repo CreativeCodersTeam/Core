@@ -23,6 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Net\CreativeCoders.Net.WebApi\CreativeCoders.Net.WebApi.csproj" />
 		<ProjectReference Include="..\..\Net\CreativeCoders.Net.XmlRpc\CreativeCoders.Net.XmlRpc.csproj" />
 		<ProjectReference Include="..\CreativeCoders.UnitTests\CreativeCoders.UnitTests.csproj" />
 	</ItemGroup>

@@ -26,7 +26,7 @@ public class GitVersionWrapperTests
         // Act
         var actualVersion = versionWrapper.GetAssemblySemVer();
 
-        // Arrange
+        // Assert
         actualVersion
             .Should()
             .Be(expectedVersion);
@@ -50,7 +50,7 @@ public class GitVersionWrapperTests
         // Act
         var actualVersion = versionWrapper.GetAssemblySemVer();
 
-        // Arrange
+        // Assert
         actualVersion
             .Should()
             .Be(expectedVersion);
@@ -72,7 +72,7 @@ public class GitVersionWrapperTests
         // Act
         var actualVersion = versionWrapper.GetAssemblySemVer();
 
-        // Arrange
+        // Assert
         actualVersion
             .Should()
             .Be(expectedVersion);
@@ -96,7 +96,7 @@ public class GitVersionWrapperTests
         // Act
         var actualVersion = versionWrapper.GetAssemblySemFileVer();
 
-        // Arrange
+        // Assert
         actualVersion
             .Should()
             .Be(expectedVersion);
@@ -120,7 +120,7 @@ public class GitVersionWrapperTests
         // Act
         var actualVersion = versionWrapper.GetAssemblySemFileVer();
 
-        // Arrange
+        // Assert
         actualVersion
             .Should()
             .Be(expectedVersion);
@@ -142,7 +142,7 @@ public class GitVersionWrapperTests
         // Act
         var actualVersion = versionWrapper.GetAssemblySemFileVer();
 
-        // Arrange
+        // Assert
         actualVersion
             .Should()
             .Be(expectedVersion);
@@ -166,7 +166,7 @@ public class GitVersionWrapperTests
         // Act
         var actualVersion = versionWrapper.InformationalVersion;
 
-        // Arrange
+        // Assert
         actualVersion
             .Should()
             .Be(expectedVersion);
@@ -190,7 +190,7 @@ public class GitVersionWrapperTests
         // Act
         var actualVersion = versionWrapper.InformationalVersion;
 
-        // Arrange
+        // Assert
         actualVersion
             .Should()
             .Be(expectedVersion);
@@ -212,7 +212,7 @@ public class GitVersionWrapperTests
         // Act
         var actualVersion = versionWrapper.InformationalVersion;
 
-        // Arrange
+        // Assert
         actualVersion
             .Should()
             .Be(expectedVersion);
@@ -236,7 +236,7 @@ public class GitVersionWrapperTests
         // Act
         var actualVersion = versionWrapper.NuGetVersionV2;
 
-        // Arrange
+        // Assert
         actualVersion
             .Should()
             .Be(expectedVersion);
@@ -260,7 +260,7 @@ public class GitVersionWrapperTests
         // Act
         var actualVersion = versionWrapper.NuGetVersionV2;
 
-        // Arrange
+        // Assert
         actualVersion
             .Should()
             .Be(expectedVersion);
@@ -282,7 +282,7 @@ public class GitVersionWrapperTests
         // Act
         var actualVersion = versionWrapper.NuGetVersionV2;
 
-        // Arrange
+        // Assert
         actualVersion
             .Should()
             .Be(expectedVersion);

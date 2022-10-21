@@ -24,7 +24,7 @@ public class SysConsoleExtensionsTests
         // Act
         var selectedItem = console.SelectItem(items);
 
-        // Arrange
+        // Assert
         selectedItem
             .Should()
             .Be(expectedItem);
@@ -51,7 +51,7 @@ public class SysConsoleExtensionsTests
         // Act
         var selectedItem = console.SelectItem(items, expectedItem);
 
-        // Arrange
+        // Assert
         selectedItem
             .Should()
             .Be(expectedItem);
