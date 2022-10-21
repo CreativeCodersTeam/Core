@@ -6,7 +6,7 @@ using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution;
 
-public class ApiInvocator<T> : InterceptorWithPropertiesBase<T>
+internal class ApiInvocator<T> : InterceptorWithPropertiesBase<T>
     where T : class
 {
     private readonly ApiData _apiData;

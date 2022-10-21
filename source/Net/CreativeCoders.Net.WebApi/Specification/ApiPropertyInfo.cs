@@ -3,7 +3,7 @@ using CreativeCoders.Net.WebApi.Specification.Properties;
 
 namespace CreativeCoders.Net.WebApi.Specification;
 
-public class ApiPropertyInfo
+internal class ApiPropertyInfo
 {
     public IEnumerable<PropertyHeaderDefinition> HeaderDefinitions { get; init; }
 

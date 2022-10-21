@@ -1,6 +1,6 @@
 ﻿namespace CreativeCoders.Net.WebApi.Specification;
 
-public class RequestHeader
+internal class RequestHeader
 {
     public RequestHeader(string name, string value)
     {

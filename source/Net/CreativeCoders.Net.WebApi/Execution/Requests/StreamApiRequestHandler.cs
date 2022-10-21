@@ -7,7 +7,7 @@ using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution.Requests;
 
-public class StreamApiRequestHandler : ApiRequestHandlerBase
+internal class StreamApiRequestHandler : ApiRequestHandlerBase
 {
     public StreamApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.Stream, httpClient) { }
 
@@ -20,7 +20,7 @@ public class StreamApiRequestHandler : ApiRequestHandlerBase
     {
         var response = await RequestResponseMessageAsync(requestData).ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
-        
+
         return new StreamWrapper(await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
             NullAction<bool>.Instance, _ => response.Dispose());
     }

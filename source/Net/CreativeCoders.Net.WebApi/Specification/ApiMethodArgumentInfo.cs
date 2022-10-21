@@ -2,7 +2,7 @@
 
 namespace CreativeCoders.Net.WebApi.Specification;
 
-public class ApiMethodArgumentInfo
+internal class ApiMethodArgumentInfo
 {
     public ParameterHeaderDefinition HeaderDefinition { get; init; }
 

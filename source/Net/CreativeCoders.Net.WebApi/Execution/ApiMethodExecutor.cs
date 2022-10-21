@@ -7,7 +7,7 @@ using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution;
 
-public class ApiMethodExecutor
+internal class ApiMethodExecutor
 {
     private readonly ApiStructure _apiStructure;
 

@@ -2,7 +2,7 @@
 
 namespace CreativeCoders.Net.WebApi.Execution.Requests;
 
-public interface IApiRequestHandler
+internal interface IApiRequestHandler
 {
     ApiMethodReturnType MethodReturnType { get; }
 

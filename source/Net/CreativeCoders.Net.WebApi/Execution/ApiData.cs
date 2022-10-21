@@ -3,7 +3,7 @@ using CreativeCoders.Net.WebApi.Serialization;
 
 namespace CreativeCoders.Net.WebApi.Execution;
 
-public class ApiData
+internal class ApiData
 {
     public string BaseUri { get; init; }
 

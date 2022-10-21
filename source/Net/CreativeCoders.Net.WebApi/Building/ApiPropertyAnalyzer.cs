@@ -7,7 +7,7 @@ using CreativeCoders.Net.WebApi.Specification.Properties;
 
 namespace CreativeCoders.Net.WebApi.Building;
 
-public class ApiPropertyAnalyzer
+internal class ApiPropertyAnalyzer
 {
     private readonly PropertyInfo _propertyInfo;
 

@@ -5,7 +5,7 @@ using CreativeCoders.Net.WebApi.Serialization;
 
 namespace CreativeCoders.Net.WebApi.Building;
 
-public class ApiBuilder : IApiBuilder
+internal class ApiBuilder : IApiBuilder
 {
     private readonly HttpClient _httpClient;
 

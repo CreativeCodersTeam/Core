@@ -8,7 +8,7 @@ using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution;
 
-public class RequestDataCreator
+internal class RequestDataCreator
 {
     private readonly object _target;
 

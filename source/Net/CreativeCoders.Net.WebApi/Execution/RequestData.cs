@@ -8,7 +8,7 @@ using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution;
 
-public class RequestData
+internal class RequestData
 {
     public IEnumerable<RequestHeader> Headers { get; init; }
 

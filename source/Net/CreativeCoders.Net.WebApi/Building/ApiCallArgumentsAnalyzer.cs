@@ -12,7 +12,7 @@ using CreativeCoders.Net.WebApi.Specification.Parameters;
 
 namespace CreativeCoders.Net.WebApi.Building;
 
-public class ApiCallArgumentsAnalyzer
+internal class ApiCallArgumentsAnalyzer
 {
     private readonly ApiMethodInfo _apiMethodInfo;
 

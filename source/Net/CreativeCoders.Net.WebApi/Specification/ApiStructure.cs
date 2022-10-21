@@ -2,7 +2,7 @@
 
 namespace CreativeCoders.Net.WebApi.Specification;
 
-public class ApiStructure
+internal class ApiStructure
 {
     public IEnumerable<ApiMethodInfo> MethodInfos { get; init; }
 

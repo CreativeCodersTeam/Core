@@ -6,7 +6,7 @@ using CreativeCoders.Net.WebApi.Specification.Parameters;
 
 namespace CreativeCoders.Net.WebApi.Specification;
 
-public class ApiMethodInfo
+internal class ApiMethodInfo
 {
     public MethodInfo Method { get; init; }
 
