@@ -236,6 +236,50 @@ public class WebApiClientIntegrationTests
                 "Header is set correct");
     }
 
+    [Fact]
+    public async Task GetItemResponseAsync_ApiClientIsCalled_DemoItemIsReturnedWithResponseByClient()
+    {
+        const string expectedText = "TestText";
+
+        var context = new MockHttpClientContext();
+
+        context
+            .Respond()
+            .WithVerb(HttpMethod.Get)
+            .ForUri("http://demo.app/misc/item-with-response")
+            .ReturnText(JsonSerializer.Serialize(new DemoItem {Text = expectedText}), HttpStatusCode.OK);
+
+        var httpClientFactory = A.Fake<IHttpClientFactory>();
+
+        A
+            .CallTo(() => httpClientFactory.CreateClient(Options.DefaultName))
+            .Returns(context.CreateClient());
+
+        var webApi = CreateServiceProvider(httpClientFactory).GetRequiredService<IDemoWebApi>();
+
+        // Act
+        using var response = await webApi.GetItemResponseAsync();
+
+        // Assert
+        response
+            .Should()
+            .NotBeNull();
+
+        response.ResponseMessage.StatusCode
+            .Should()
+            .Be(HttpStatusCode.OK);
+
+        var data = response.Data;
+
+        data.Text
+            .Should()
+            .Be(expectedText);
+
+        response.Data
+            .Should()
+            .BeSameAs(data);
+    }
+
     private static bool CheckTwoHeaders(HttpRequestHeaders httpHeaders)
     {
         var headers = httpHeaders.ToArray();

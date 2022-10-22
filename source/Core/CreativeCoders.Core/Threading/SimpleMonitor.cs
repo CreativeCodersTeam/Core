@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace CreativeCoders.Core.Threading;
 
-public class SimpleMonitor : IDisposable
+public sealed class SimpleMonitor : IDisposable
 {
     private long _counter;
 

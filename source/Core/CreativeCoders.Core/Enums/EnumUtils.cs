@@ -76,6 +76,6 @@ public static class EnumUtils
     public static IDictionary<Enum, FieldInfo> GetEnumFieldInfos<T>()
         where T : Enum
     {
-        return EnumUtils.GetEnumFieldInfos(typeof(T));
+        return GetEnumFieldInfos(typeof(T));
     }
 }

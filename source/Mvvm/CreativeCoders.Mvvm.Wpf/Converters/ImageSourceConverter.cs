@@ -22,15 +22,15 @@ public class ImageSourceConverter : IValueConverter
             return imageUrl;
         }
 
-        var url = imageUrl.Substring(6);
+        var url = imageUrl[6..];
         var asmIndex = url.IndexOf("/", StringComparison.InvariantCultureIgnoreCase);
         if (asmIndex < 0)
         {
             return imageUrl;
         }
 
-        var assemblyName = url.Substring(0, asmIndex);
-        var path = url.Substring(asmIndex);
+        var assemblyName = url[..asmIndex];
+        var path = url[asmIndex..];
         return $"pack://application:,,,/{assemblyName};component{path}";
     }
 

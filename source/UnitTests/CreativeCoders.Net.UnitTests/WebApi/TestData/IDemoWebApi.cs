@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CreativeCoders.Net.WebApi;
 using CreativeCoders.Net.WebApi.Definition;
 
 namespace CreativeCoders.Net.UnitTests.WebApi.TestData;
@@ -26,4 +27,7 @@ public interface IDemoWebApi
     [Header("TheHeader", "HeaderValueOne")]
     [Header("ThatHeader")]
     Task GetWithTwoHeadersAsync();
+
+    [Get("misc/item-with-response")]
+    Task<Response<DemoItem>> GetItemResponseAsync();
 }

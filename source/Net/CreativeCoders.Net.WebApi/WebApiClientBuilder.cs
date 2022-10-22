@@ -19,7 +19,7 @@ public class WebApiClientBuilder<T> : IWebApiClientBuilder<T>
     {
         if (!typeof(T).IsInterface)
         {
-            throw new ArgumentException("Only interfaces are allowed");
+            throw new InvalidOperationException("Only interfaces are allowed");
         }
 
         return _apiBuilder.BuildApi<T>(baseUri, DefaultDataFormatter);

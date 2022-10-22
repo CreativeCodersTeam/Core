@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace CreativeCoders.Core.Threading;
 
-public class MutexLock : IDisposable
+public sealed class MutexLock : IDisposable
 {
     private Mutex _mutex;
 

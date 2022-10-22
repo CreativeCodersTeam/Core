@@ -5,7 +5,7 @@ using CreativeCoders.Core.Collections;
 
 namespace CreativeCoders.Core.ObjectLinking;
 
-public class ObjectLink : IDisposable
+public sealed class ObjectLink : IDisposable
 {
     private readonly object _instance0;
 
