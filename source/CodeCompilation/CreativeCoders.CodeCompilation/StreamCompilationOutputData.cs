@@ -3,7 +3,7 @@ using System.IO;
 
 namespace CreativeCoders.CodeCompilation;
 
-public sealed class StreamCompilationOutputData : ICompilationOutputData, IDisposable
+public class StreamCompilationOutputData : ICompilationOutputData, IDisposable
 {
     private readonly Stream _stream;
 
@@ -20,5 +20,7 @@ public sealed class StreamCompilationOutputData : ICompilationOutputData, IDispo
     public void Dispose()
     {
         _stream?.Dispose();
+
+        GC.SuppressFinalize(this);
     }
 }
