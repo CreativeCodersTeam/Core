@@ -68,12 +68,12 @@ public class ViewModelArea<TViewModel> : ContainerControlBase, IDisposable
 
     public void Dispose()
     {
-        if (ViewModel == null)
+        if (ViewModel != null)
         {
-            return;
+            ViewModel.PropertyChanged -= ViewModelOnPropertyChanged;
         }
 
-        ViewModel.PropertyChanged -= ViewModelOnPropertyChanged;
+        GC.SuppressFinalize(this);
     }
 
     [Parameter] public TViewModel ViewModel { get; set; }

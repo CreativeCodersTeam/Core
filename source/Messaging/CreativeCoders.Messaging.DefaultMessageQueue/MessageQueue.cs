@@ -6,7 +6,7 @@ using CreativeCoders.Messaging.Core;
 
 namespace CreativeCoders.Messaging.DefaultMessageQueue;
 
-public class MessageQueue<T> : IMessageQueue<T>
+public sealed class MessageQueue<T> : IMessageQueue<T>
 {
     private readonly BufferBlock<T> _bufferBlock;
 

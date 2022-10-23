@@ -3,7 +3,7 @@ using System.IO;
 
 namespace CreativeCoders.CodeCompilation;
 
-public class StreamCompilationOutputData : ICompilationOutputData, IDisposable
+public sealed class StreamCompilationOutputData : ICompilationOutputData, IDisposable
 {
     private readonly Stream _stream;
 
