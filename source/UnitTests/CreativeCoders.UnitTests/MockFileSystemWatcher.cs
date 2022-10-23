@@ -24,12 +24,12 @@ public class MockFileSystemWatcher : FileSystemWatcherBase
 
     public override WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType)
     {
-        return new();
+        return new WaitForChangedResult();
     }
 
     public override WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType, int timeout)
     {
-        return new();
+        return new WaitForChangedResult();
     }
 
     public override bool IncludeSubdirectories { get; set; }

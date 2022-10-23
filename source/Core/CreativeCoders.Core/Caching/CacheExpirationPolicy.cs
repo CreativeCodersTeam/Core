@@ -15,7 +15,7 @@ public class CacheExpirationPolicy : ICacheExpirationPolicy
 
     public static CacheExpirationPolicy AfterAbsoluteDateTime(DateTime absoluteDateTime)
     {
-        return new(CacheExpirationMode.AbsoluteDateTime)
+        return new CacheExpirationPolicy(CacheExpirationMode.AbsoluteDateTime)
         {
             AbsoluteDateTime = absoluteDateTime
         };
@@ -23,7 +23,7 @@ public class CacheExpirationPolicy : ICacheExpirationPolicy
 
     public static CacheExpirationPolicy AfterSlidingTimeSpan(TimeSpan slidingTimeSpan)
     {
-        return new(CacheExpirationMode.SlidingTimeSpan)
+        return new CacheExpirationPolicy(CacheExpirationMode.SlidingTimeSpan)
         {
             SlidingTimeSpan = slidingTimeSpan
         };

@@ -32,7 +32,7 @@ internal class RequestDataCreator
 
     public RequestData Create()
     {
-        return new()
+        return new RequestData
         {
             Headers = CreateHeaders(),
             RequestUri = BuildRequestUri(),

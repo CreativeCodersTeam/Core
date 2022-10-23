@@ -37,7 +37,7 @@ public sealed class MessageQueue<T> : IMessageQueue<T>
 
     public static MessageQueue<T> Create(int maxQueueLength)
     {
-        return new(maxQueueLength);
+        return new MessageQueue<T>(maxQueueLength);
     }
 
     public async Task EnqueueAsync(T message)
