@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Net.WebApi;
 
 [PublicAPI]
-public class Response<T> : IDisposable
+public sealed class Response<T> : IDisposable
     where T : class
 {
     private readonly Func<T> _getData;

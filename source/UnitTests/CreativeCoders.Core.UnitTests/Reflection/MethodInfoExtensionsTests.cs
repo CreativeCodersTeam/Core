@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Text;
 using CreativeCoders.Core.Executing;
 using CreativeCoders.Core.Reflection;
@@ -142,6 +143,8 @@ public class MethodInfoExtensionsTests
     }
 }
 
+[SuppressMessage("Performance", "CA1822")]
+[SuppressMessage("ReSharper", "MemberCanBeMadeStatic.Global")]
 public class TestExecutable
 {
     public string DoSomeThing(string text)
@@ -150,6 +153,7 @@ public class TestExecutable
     }
 }
 
+[SuppressMessage("Performance", "CA1822")]
 public class TestExecute
 {
     public void VoidMethod(IExecutable<string> executable, string text)

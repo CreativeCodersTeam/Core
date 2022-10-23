@@ -86,6 +86,12 @@ public class StreamWrapper : Stream
         return _dataStream.ReadAsync(buffer, offset, count, cancellationToken);
     }
 
+    public override ValueTask<int> ReadAsync(Memory<byte> buffer,
+        CancellationToken cancellationToken = new())
+    {
+        return _dataStream.ReadAsync(buffer, cancellationToken);
+    }
+
     public override int ReadByte()
     {
         return _dataStream.ReadByte();
@@ -94,6 +100,12 @@ public class StreamWrapper : Stream
     public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
     {
         return _dataStream.WriteAsync(buffer, offset, count, cancellationToken);
+    }
+
+    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer,
+        CancellationToken cancellationToken = new())
+    {
+        return _dataStream.WriteAsync(buffer, cancellationToken);
     }
 
     public override void WriteByte(byte value)
@@ -124,6 +136,11 @@ public class StreamWrapper : Stream
     public override int Read(byte[] buffer, int offset, int count)
     {
         return _dataStream.Read(buffer, offset, count);
+    }
+
+    public override int Read(Span<byte> buffer)
+    {
+        return _dataStream.Read(buffer);
     }
 
     public override long Seek(long offset, SeekOrigin origin)

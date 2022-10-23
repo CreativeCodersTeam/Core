@@ -1,9 +1,11 @@
 ﻿using CreativeCoders.Net.WebApi.Building;
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CreativeCoders.Net.WebApi;
 
+[PublicAPI]
 public static class ServiceCollectionExtensions
 {
     public static void AddWebApiClient(this IServiceCollection services)
@@ -18,7 +20,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddWebApiClient();
 
-        services.TryAddSingleton<T>(sp =>
+        services.TryAddSingleton(sp =>
         {
             var webApiClientFactory = sp.GetRequiredService<IWebApiClientFactory>();
 

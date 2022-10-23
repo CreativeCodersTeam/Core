@@ -26,8 +26,8 @@ public static class ParameterInfoExtensions
             {
                 var index = argList.FindIndex(argType =>
                     x.ParameterType == argType.GetType()
-                    || (argType.GetType().GetInterfaces()
-                        .Any(interfaceType => interfaceType == x.ParameterType)));
+                    || argType.GetType().GetInterfaces()
+                        .Any(interfaceType => interfaceType == x.ParameterType));
 
                 if (index == -1)
                 {

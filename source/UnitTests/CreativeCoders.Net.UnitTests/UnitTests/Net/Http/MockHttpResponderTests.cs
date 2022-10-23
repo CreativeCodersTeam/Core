@@ -14,7 +14,7 @@ public class MockHttpResponderTests
     [Fact]
     public async Task Execute_NoReturn_ThrowsException()
     {
-        var requestMessage = new HttpRequestMessage()
+        var requestMessage = new HttpRequestMessage
         {
             RequestUri = new Uri("http://test.com")
         };
@@ -31,7 +31,7 @@ public class MockHttpResponderTests
         const string expectedContent = "TestData";
         const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
-        var requestMessage = new HttpRequestMessage()
+        var requestMessage = new HttpRequestMessage
         {
             RequestUri = new Uri("http://test.com")
         };
@@ -60,7 +60,7 @@ public class MockHttpResponderTests
         const string expectedContent = "TestData";
         const HttpStatusCode expectedStatusCode = HttpStatusCode.Accepted;
 
-        var requestMessage = new HttpRequestMessage()
+        var requestMessage = new HttpRequestMessage
         {
             RequestUri = new Uri("http://test.com")
         };
@@ -89,7 +89,7 @@ public class MockHttpResponderTests
         const string expectedContent = "TestData";
         const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
-        var requestMessage = new HttpRequestMessage()
+        var requestMessage = new HttpRequestMessage
         {
             RequestUri = new Uri("http://test.com")
         };
@@ -113,7 +113,7 @@ public class MockHttpResponderTests
         const string expectedContent = "TestData";
         const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
-        var requestMessage = new HttpRequestMessage()
+        var requestMessage = new HttpRequestMessage
         {
             RequestUri = new Uri("http://nic.com")
         };
@@ -136,7 +136,7 @@ public class MockHttpResponderTests
         const string expectedContent = "TestData";
         const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
-        var requestMessage = new HttpRequestMessage()
+        var requestMessage = new HttpRequestMessage
         {
             Method = HttpMethod.Get
         };
@@ -160,7 +160,7 @@ public class MockHttpResponderTests
         const string expectedContent = "TestData";
         const HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
-        var requestMessage = new HttpRequestMessage()
+        var requestMessage = new HttpRequestMessage
         {
             Method = HttpMethod.Post
         };
@@ -182,7 +182,7 @@ public class MockHttpResponderTests
     {
         var expectedData = new {Text = "TestText"};
 
-        var requestMessage = new HttpRequestMessage()
+        var requestMessage = new HttpRequestMessage
         {
             RequestUri = new Uri("http://test.com")
         };
@@ -207,7 +207,7 @@ public class MockHttpResponderTests
         const HttpStatusCode expectedStatusCode = HttpStatusCode.Accepted;
         var expectedData = new {Text = "TestText"};
 
-        var requestMessage = new HttpRequestMessage()
+        var requestMessage = new HttpRequestMessage
         {
             RequestUri = new Uri("http://test.com")
         };
@@ -231,7 +231,7 @@ public class MockHttpResponderTests
     {
         var expectedData = new {Text = "TestText"};
 
-        var requestMessage = new HttpRequestMessage()
+        var requestMessage = new HttpRequestMessage
         {
             RequestUri = new Uri("http://test.com")
         };
@@ -255,7 +255,7 @@ public class MockHttpResponderTests
         const HttpStatusCode expectedStatusCode = HttpStatusCode.Unauthorized;
         const HttpStatusCode expectedSecondStatusCode = HttpStatusCode.OK;
 
-        var requestMessage = new HttpRequestMessage()
+        var requestMessage = new HttpRequestMessage
         {
             RequestUri = new Uri("http://test.com/")
         };
@@ -294,7 +294,7 @@ public class MockHttpResponderTests
         const HttpStatusCode expectedStatusCode = HttpStatusCode.Unauthorized;
         const HttpStatusCode expectedSecondStatusCode = HttpStatusCode.OK;
 
-        var requestMessage = new HttpRequestMessage()
+        var requestMessage = new HttpRequestMessage
         {
             RequestUri = new Uri("http://test.com/")
         };

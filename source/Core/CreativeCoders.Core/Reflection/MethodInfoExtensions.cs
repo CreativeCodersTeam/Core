@@ -16,7 +16,7 @@ public static class MethodInfoExtensions
         Ensure.NotNull(methodInfo, nameof(methodInfo));
         Ensure.NotNull(serviceProvider, nameof(serviceProvider));
 
-        var arguments = methodInfo.GetParameters().CreateArguments(serviceProvider, out var _, args);
+        var arguments = methodInfo.GetParameters().CreateArguments(serviceProvider, out _, args);
 
         return (T?) methodInfo.Invoke(instance, arguments);
     }
@@ -27,7 +27,7 @@ public static class MethodInfoExtensions
         Ensure.NotNull(methodInfo, nameof(methodInfo));
         Ensure.NotNull(serviceProvider, nameof(serviceProvider));
 
-        var arguments = methodInfo.GetParameters().CreateArguments(serviceProvider, out var _, args);
+        var arguments = methodInfo.GetParameters().CreateArguments(serviceProvider, out _, args);
 
         methodInfo.Invoke(instance, arguments);
     }

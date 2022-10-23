@@ -84,7 +84,7 @@ internal class CliActionRuntimeBuilder : ICliActionRuntimeBuilder
 
         foreach (var middlewareRegistration in _middlewareRegistrations.Reverse())
         {
-            Func<CliActionContext, Task> next = CreateNext(lastMiddleware, executeActionAsync);
+            var next = CreateNext(lastMiddleware, executeActionAsync);
 
             lastMiddleware = middlewareRegistration.CreateMiddleware(next, _serviceProvider);
         }
@@ -95,7 +95,7 @@ internal class CliActionRuntimeBuilder : ICliActionRuntimeBuilder
     private static Func<CliActionContext, Task> CreateNext(CliActionMiddlewareBase? middleware,
         Func<CliActionContext, Task> executeActionAsync)
     {
-        Func<CliActionContext, Task> next = middleware != null
+        var next = middleware != null
             ? middleware.InvokeAsync
             : executeActionAsync;
 

@@ -12,7 +12,7 @@ namespace CreativeCoders.Windows.Security;
 /// <seealso cref="IDisposable"/>
 ///-------------------------------------------------------------------------------------------------
 [PublicAPI]
-public class Impersonation : IDisposable
+public sealed class Impersonation : IDisposable
 {
     private SafeAccessTokenHandle _safeAccessTokenHandle;
 

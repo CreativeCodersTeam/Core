@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.UnitTests.Reflection;
 
 [PublicAPI]
+[SuppressMessage("Performance", "CA1822")]
 public class GenericMethodTestClass
 {
     public void DoSomething<T>(T data)

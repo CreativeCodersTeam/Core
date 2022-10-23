@@ -22,7 +22,7 @@
     private Timer _timer;
 
     // ReSharper disable MemberCanBePrivate.Global
-    public ExtendedObservableCollection<TestViewModel> Items { get; set; } = new()
+    public ExtendedObservableCollection<TestViewModel> Items { get; } = new()
     {
         new TestViewModel {IntValue = 1, Text = "First Element"},
         new TestViewModel {IntValue = 2, Text = "Second Element"},

@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace CreativeCoders.Net.Servers.Http.AspNetCore;
 
 [PublicAPI]
-public class AspNetCoreWebHost : IDisposable
+public sealed class AspNetCoreWebHost : IDisposable
 {
     private IHost _webHost;
 

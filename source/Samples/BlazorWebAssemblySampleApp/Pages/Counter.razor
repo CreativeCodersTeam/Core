@@ -1,5 +1,6 @@
 ﻿@page "/counter"
 @using System.Threading
+@using System.Diagnostics.CodeAnalysis
 
 <h1>Counter</h1>
 
@@ -27,6 +28,7 @@
         Console.WriteLine("Rendered");
     }
 
+    [SuppressMessage("ReSharper", "AsyncVoidLambda")]
     private void IncrementCount()
     {
         ThreadPool.QueueUserWorkItem(async _ =>

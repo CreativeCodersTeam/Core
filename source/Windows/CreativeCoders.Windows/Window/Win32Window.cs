@@ -27,22 +27,18 @@ internal class Win32Window : IWindow
         {
             var sb = new StringBuilder(255);
 
-            User32Api.GetWindowText(WindowHandle, sb, sb.Capacity);
-
-            return sb.ToString();
+            return User32Api.GetWindowText(WindowHandle, sb, sb.Capacity) == 0
+                ? sb.ToString()
+                : string.Empty;
         }
     }
 
     public bool IsVisible => User32Api.IsWindowVisible(WindowHandle);
 
-    public int ProcessId
-    {
-        get
-        {
-            User32Api.GetWindowThreadProcessId(WindowHandle, out var processId);
-            return (int) processId;
-        }
-    }
+    public int ProcessId =>
+        User32Api.GetWindowThreadProcessId(WindowHandle, out var processId) == 0
+            ? (int) processId
+            : -1;
 
     public IntPtr WindowHandle { get; }
 }

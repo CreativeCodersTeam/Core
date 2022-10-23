@@ -3,6 +3,7 @@
 namespace CreativeCoders.Core.UnitTests.Reflection;
 
 [SuppressMessage("ReSharper", "MemberCanBeMadeStatic.Global")]
+[SuppressMessage("Performance", "CA1822")]
 public class CreateCallTestClass
 {
     public string GetData() => Data;

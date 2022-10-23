@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Caching;
 using FakeItEasy;
@@ -11,7 +10,7 @@ public class CachedValueTests
     [Fact]
     public void Value_GetOrAddMode_ReturnsValueFromCache()
     {
-        Func<string> getValue = () => "Test1234";
+        var getValue = () => "Test1234";
 
         var cache = A.Fake<ICache<int, string>>(x => x.Strict());
         A.CallTo(() => cache.GetOrAdd(1, getValue, CacheExpirationPolicy.NeverExpire, null))
@@ -29,7 +28,7 @@ public class CachedValueTests
     [Fact]
     public void Value_GetOrAddModeWithRegions_ReturnsValueFromCache()
     {
-        Func<string> getValue = () => "Test1234";
+        var getValue = () => "Test1234";
 
         var cache = A.Fake<ICache<int, string>>(x => x.Strict());
         A.CallTo(() => cache.GetOrAdd(1, getValue, CacheExpirationPolicy.NeverExpire, "Region1"))
@@ -48,7 +47,7 @@ public class CachedValueTests
     [Fact]
     public async Task GetValueAsync_GetOrAddMode_ReturnsValueFromCache()
     {
-        Func<string> getValue = () => "Test1234";
+        var getValue = () => "Test1234";
 
         var cache = A.Fake<ICache<int, string>>(x => x.Strict());
         A.CallTo(() => cache.GetOrAddAsync(1, getValue, CacheExpirationPolicy.NeverExpire, null))
@@ -66,7 +65,7 @@ public class CachedValueTests
     [Fact]
     public async Task GetValueAsync_GetOrAddModeWithRegions_ReturnsValueFromCache()
     {
-        Func<string> getValue = () => "Test1234";
+        var getValue = () => "Test1234";
 
         var cache = A.Fake<ICache<int, string>>(x => x.Strict());
         A.CallTo(() => cache.GetOrAddAsync(1, getValue, CacheExpirationPolicy.NeverExpire, "Region1"))

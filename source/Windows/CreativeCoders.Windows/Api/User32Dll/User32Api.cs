@@ -7,7 +7,7 @@ namespace CreativeCoders.Windows.Api.User32Dll;
 
 /// <summary>   Static class containing WinApi function imports from User32.dll. </summary>
 [ExcludeFromCodeCoverage]
-public static class User32Api
+internal static class User32Api
 {
     private const string User32DllName = "user32.dll";
 
@@ -51,12 +51,12 @@ public static class User32Api
     ///-------------------------------------------------------------------------------------------------
     /// <summary>   User32.dll GetWindowText function. See Microsoft WinApi documentation. </summary>
     ///-------------------------------------------------------------------------------------------------
-    [DllImport(User32DllName, SetLastError = true)]
+    [DllImport(User32DllName, SetLastError = true, CharSet = CharSet.Unicode)]
     public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpWindowText, int nMaxCount);
 
     ///-------------------------------------------------------------------------------------------------
     /// <summary>   User32.dll LoadString function. See Microsoft WinApi documentation. </summary>
     ///-------------------------------------------------------------------------------------------------
-    [DllImport(User32DllName)]
+    [DllImport(User32DllName, CharSet = CharSet.Unicode)]
     public static extern int LoadString(IntPtr hInstance, uint uId, StringBuilder lpBuffer, int nBufferMax);
 }

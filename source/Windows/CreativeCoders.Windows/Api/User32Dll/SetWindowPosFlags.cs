@@ -8,6 +8,7 @@ namespace CreativeCoders.Windows.Api.User32Dll;
 [Flags]
 [SuppressMessage("ReSharper", "CommentTypo")]
 [PublicAPI]
+[SuppressMessage("Design", "CA1069")]
 public enum SetWindowPosFlags : uint
 {
     /// <summary>If the calling thread and the thread that owns the window are attached to different input queues,
@@ -79,5 +80,5 @@ public enum SetWindowPosFlags : uint
 
     /// <summary>Displays the window.</summary>
     /// <remarks>SWP_SHOWWINDOW</remarks>
-    ShowWindow = 0x0040,
+    ShowWindow = 0x0040
 }

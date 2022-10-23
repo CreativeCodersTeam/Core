@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Threading.Tasks;
 using CreativeCoders.DynamicCode.Proxying;
@@ -11,6 +12,7 @@ using JetBrains.Annotations;
 
 namespace XmlRpcSampleApp;
 
+[SuppressMessage("Performance", "CA1822")]
 public class XmlRpcSample
 {
     public async Task RunAsync()
@@ -20,7 +22,7 @@ public class XmlRpcSample
         xmlRpcServer.Methods.RegisterMethods(this);
 
         await xmlRpcServer.StartAsync();
-            
+
         var xmlRpcClient = new XmlRpcProxyBuilder<ISampleXmlRpcClient>(new ProxyBuilder<ISampleXmlRpcClient>(), new DelegateHttpClientFactory(_ => new HttpClient()))
             .ForUrl("http://localhost:12345")
             .Build();
@@ -28,9 +30,9 @@ public class XmlRpcSample
         var result = await xmlRpcClient.DoSomething("qwertz");
 
         Console.WriteLine($"Method result: {result}");
-            
+
         var asyncResult = await xmlRpcClient.DoSomethingAsync("12345");
-            
+
         Console.WriteLine($"Async method result: {asyncResult}");
 
         await xmlRpcServer.StopAsync();
@@ -43,7 +45,7 @@ public class XmlRpcSample
         await Task.Delay(5000);
         return "Async HelloWorld" + text;
     }
-        
+
     [UsedImplicitly]
     [XmlRpcMethod("DoSomething")]
     private string DoSomething(string text)
@@ -56,7 +58,7 @@ public interface ISampleXmlRpcClient
 {
     [XmlRpcMethod]
     Task<string> DoSomethingAsync(string text);
-        
+
     [XmlRpcMethod]
     Task<string> DoSomething(string text);
 }

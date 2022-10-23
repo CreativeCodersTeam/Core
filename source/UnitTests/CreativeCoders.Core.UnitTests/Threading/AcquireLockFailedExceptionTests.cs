@@ -9,7 +9,7 @@ public class AcquireLockFailedExceptionTests
     public void CtorTest()
     {
         // ReSharper disable once ObjectCreationAsStatement
-        new AcquireLockFailedException("test", 1234);
+        var _ = new AcquireLockFailedException("test", 1234);
     }
 
     [Fact]
