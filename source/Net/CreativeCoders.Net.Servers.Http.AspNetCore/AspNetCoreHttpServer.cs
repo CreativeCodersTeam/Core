@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 namespace CreativeCoders.Net.Servers.Http.AspNetCore;
 
 [PublicAPI]
-public class AspNetCoreHttpServer : HttpServerBase<HttpContext>, IWebHostConfig, IDisposable
+public sealed class AspNetCoreHttpServer : HttpServerBase<HttpContext>, IWebHostConfig, IDisposable
 {
     private readonly AspNetCoreWebHost _aspNetCoreWebHost;
 

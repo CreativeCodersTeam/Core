@@ -19,13 +19,18 @@ public abstract class ParameterDefinitionBase<TValue>
 
     public TValue GetValue(object[] arguments)
     {
-        if (ParameterInfo.Position >= arguments.Length)
-        {
-            throw new ArgumentOutOfRangeException();
-        }
-
-        var value = arguments[ParameterInfo.Position];
+        var value = GetArgument(arguments, ParameterInfo.Position);
 
         return _transformValue(value);
+    }
+
+    private static object GetArgument(object[] arguments, int index)
+    {
+        if (index < 0 || index >= arguments.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(index));
+        }
+
+        return arguments[index];
     }
 }

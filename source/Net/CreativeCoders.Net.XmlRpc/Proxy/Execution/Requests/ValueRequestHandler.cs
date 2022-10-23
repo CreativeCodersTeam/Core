@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Reflection;
 using CreativeCoders.Net.XmlRpc.Proxy.Specification;
@@ -22,7 +23,8 @@ public class ValueRequestHandler : XmlRpcRequestHandlerBase
             requestData).ConfigureAwait(false);
     }
 
-    // ReSharper disable once MemberCanBeMadeStatic.Local
+    [SuppressMessage("ReSharper", "MemberCanBeMadeStatic.Local")]
+    [SuppressMessage("Performance", "CA1822")]
     private async Task<T> GetValueInternalAsync<T>(RequestData requestData)
     {
         var response = await requestData.Client.InvokeAsync(requestData.MethodName, requestData.Arguments)

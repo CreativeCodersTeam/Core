@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Reflection;
@@ -43,7 +44,8 @@ public class DictionaryRequestHandler : XmlRpcRequestHandlerBase
         return value;
     }
 
-    // ReSharper disable once MemberCanBeMadeStatic.Local
+    [SuppressMessage("ReSharper", "MemberCanBeMadeStatic.Local")]
+    [SuppressMessage("Performance", "CA1822")]
     private T GetItem<T>(XmlRpcValue xmlRpcValue)
     {
         var xmlRpcValueToDataConverter = new XmlRpcValueToDataConverter();

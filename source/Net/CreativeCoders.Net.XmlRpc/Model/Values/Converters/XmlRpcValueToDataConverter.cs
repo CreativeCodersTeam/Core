@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using CreativeCoders.Core.Collections;
@@ -123,7 +124,7 @@ public class XmlRpcValueToDataConverter : IXmlRpcValueToDataConverter
         return Convert;
     }
 
-    // ReSharper disable once MemberCanBeMadeStatic.Local
+    [SuppressMessage("Performance", "CA1822")]
     private IDictionary<string, TElement> ToDictionary<TElement>(IDictionary sourceDictionary,
         Func<XmlRpcValue, Type, object> convertValue)
     {
