@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Windows.Shell;
 
 [PublicAPI]
+[ExcludeFromCodeCoverage]
 public class ShellCommand
 {
     public ShellCommand()

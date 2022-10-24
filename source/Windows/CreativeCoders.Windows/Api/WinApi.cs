@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using Microsoft.Win32.SafeHandles;
 
 namespace CreativeCoders.Windows.Api;
 
+[ExcludeFromCodeCoverage]
 [PublicAPI]
 internal static class WinApi
 {
