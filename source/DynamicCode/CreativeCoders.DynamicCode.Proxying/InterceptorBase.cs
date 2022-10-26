@@ -58,9 +58,9 @@ public class InterceptorBase<T> : IInterceptor
         ExecuteMethod(invocation);
     }
 
-    protected virtual void SetProperty(PropertyInfo propertyInfo, object value) { }
+    protected virtual void SetProperty(PropertyInfo propertyInfo, object? value) { }
 
-    protected virtual object GetProperty(PropertyInfo propertyInfo)
+    protected virtual object? GetProperty(PropertyInfo propertyInfo)
     {
         return propertyInfo.PropertyType.GetDefault();
     }

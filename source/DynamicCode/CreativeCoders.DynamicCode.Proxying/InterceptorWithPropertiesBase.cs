@@ -9,19 +9,19 @@ namespace CreativeCoders.DynamicCode.Proxying;
 public class InterceptorWithPropertiesBase<T> : InterceptorBase<T>
     where T : class
 {
-    private readonly IDictionary<PropertyInfo, object> _propertyValues;
+    private readonly IDictionary<PropertyInfo, object?> _propertyValues;
 
     public InterceptorWithPropertiesBase()
     {
-        _propertyValues = new ConcurrentDictionary<PropertyInfo, object>();
+        _propertyValues = new ConcurrentDictionary<PropertyInfo, object?>();
     }
 
-    protected override void SetProperty(PropertyInfo propertyInfo, object value)
+    protected override void SetProperty(PropertyInfo propertyInfo, object? value)
     {
         _propertyValues[propertyInfo] = value;
     }
 
-    protected override object GetProperty(PropertyInfo propertyInfo)
+    protected override object? GetProperty(PropertyInfo propertyInfo)
     {
         if (_propertyValues.TryGetValue(propertyInfo, out var propertyValue))
         {

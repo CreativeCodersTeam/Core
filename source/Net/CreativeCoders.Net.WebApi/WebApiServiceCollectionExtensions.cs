@@ -1,4 +1,5 @@
-﻿using CreativeCoders.Net.WebApi.Building;
+﻿using CreativeCoders.DynamicCode.Proxying;
+using CreativeCoders.Net.WebApi.Building;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -6,10 +7,12 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace CreativeCoders.Net.WebApi;
 
 [PublicAPI]
-public static class ServiceCollectionExtensions
+public static class WebApiServiceCollectionExtensions
 {
     public static void AddWebApiClient(this IServiceCollection services)
     {
+        services.AddProxyBuilder();
+
         services.TryAddSingleton<IApiBuilder, ApiBuilder>();
 
         services.TryAddSingleton<IWebApiClientFactory, WebApiClientFactory>();
