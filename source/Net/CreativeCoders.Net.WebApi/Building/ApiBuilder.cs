@@ -8,13 +8,13 @@ namespace CreativeCoders.Net.WebApi.Building;
 
 internal class ApiBuilder : IApiBuilder
 {
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientFactory _httpClientFactory;
 
     private readonly IProxyBuilderFactory _proxyBuilderFactory;
 
-    public ApiBuilder(HttpClient httpClient, IProxyBuilderFactory proxyBuilderFactory)
+    public ApiBuilder(IHttpClientFactory httpClientFactory, IProxyBuilderFactory proxyBuilderFactory)
     {
-        _httpClient = Ensure.NotNull(httpClient, nameof(httpClient));
+        _httpClientFactory = Ensure.NotNull(httpClientFactory, nameof(httpClientFactory));
         _proxyBuilderFactory = Ensure.NotNull(proxyBuilderFactory, nameof(proxyBuilderFactory));
     }
 
@@ -24,7 +24,7 @@ internal class ApiBuilder : IApiBuilder
         var apiData = new ApiData
         {
             BaseUri = baseUri,
-            HttpClient = _httpClient,
+            HttpClient = _httpClientFactory.CreateClient(),
             DefaultDataFormatter = defaultDataFormatter
         };
 

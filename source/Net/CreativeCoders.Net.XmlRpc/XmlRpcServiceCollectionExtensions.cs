@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CreativeCoders.DynamicCode.Proxying;
+using CreativeCoders.Net.XmlRpc.Proxy;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CreativeCoders.Net.XmlRpc;
 
@@ -8,6 +11,8 @@ public static class XmlRpcServiceCollectionExtensions
     {
         services.AddHttpClient();
 
-        //services.add
+        services.AddProxyBuilder();
+
+        services.TryAddSingleton(typeof(IXmlRpcProxyBuilder<>), typeof(XmlRpcProxyBuilder<>));
     }
 }

@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using CreativeCoders.DynamicCode.Proxying;
 using CreativeCoders.Net.Http;
 using CreativeCoders.Net.Servers.Http.AspNetCore;
+using CreativeCoders.Net.XmlRpc;
 using CreativeCoders.Net.XmlRpc.Definition;
 using CreativeCoders.Net.XmlRpc.Proxy;
 using CreativeCoders.Net.XmlRpc.Server;
 using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace XmlRpcSampleApp;
 
@@ -17,13 +19,19 @@ public class XmlRpcSample
 {
     public async Task RunAsync()
     {
+        var services = new ServiceCollection();
+
+        services.AddXmlRpc();
+
+        var sp = services.BuildServiceProvider();
+
         var xmlRpcServer = new XmlRpcServer(new AspNetCoreHttpServer());
         xmlRpcServer.Urls.Add("http://localhost:12345/");
         xmlRpcServer.Methods.RegisterMethods(this);
 
         await xmlRpcServer.StartAsync();
 
-        var xmlRpcClient = new XmlRpcProxyBuilder<ISampleXmlRpcClient>(new ProxyBuilder<ISampleXmlRpcClient>(), new DelegateHttpClientFactory(_ => new HttpClient()))
+        var xmlRpcClient = sp.GetRequiredService<IXmlRpcProxyBuilder<ISampleXmlRpcClient>>()
             .ForUrl("http://localhost:12345")
             .Build();
 

@@ -15,7 +15,7 @@ public static class WebApiServiceCollectionExtensions
 
         services.TryAddSingleton<IApiBuilder, ApiBuilder>();
 
-        services.TryAddSingleton<IWebApiClientFactory, WebApiClientFactory>();
+        services.TryAddSingleton(typeof(IWebApiClientBuilder<>), typeof(WebApiClientBuilder<>));
     }
 
     public static void AddWebApiClient<T>(this IServiceCollection services, string baseUri)
@@ -25,9 +25,9 @@ public static class WebApiServiceCollectionExtensions
 
         services.TryAddSingleton(sp =>
         {
-            var webApiClientFactory = sp.GetRequiredService<IWebApiClientFactory>();
+            var webApiClientFactory = sp.GetRequiredService<IWebApiClientBuilder<T>>();
 
-            return webApiClientFactory.CreateBuilder<T>().Build(baseUri);
+            return webApiClientFactory.Build(baseUri);
         });
     }
 }
