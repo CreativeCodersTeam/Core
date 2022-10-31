@@ -56,7 +56,7 @@ public class XmlRpcIntegrationTests
     {
         var xmlRpcDemoService = new XmlRpcDemoService();
 
-        var xmlRpcServer = new XmlRpcServer(new AspNetCoreHttpServer());
+        var xmlRpcServer = new XmlRpcServer(new AspNetCoreHttpServer(), true);
         xmlRpcServer.Urls.Add("http://localhost:12345/");
         xmlRpcServer.Methods.RegisterMethods(xmlRpcDemoService);
 

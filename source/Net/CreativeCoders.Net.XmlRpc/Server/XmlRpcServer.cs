@@ -23,6 +23,7 @@ namespace CreativeCoders.Net.XmlRpc.Server;
 public sealed class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler, IDisposable
 {
     private readonly IHttpServer _httpServer;
+    private readonly bool _disposeHttpServer;
 
     private readonly XmlRpcMethodExecutor _executor;
 
@@ -30,11 +31,11 @@ public sealed class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler, IDisposab
 
     private readonly DataToXmlRpcValueConverter _dataToXmlRpcValueConverter;
 
-    public XmlRpcServer(IHttpServer httpServer)
+    public XmlRpcServer(IHttpServer httpServer, bool disposeHttpServer)
     {
-        Ensure.IsNotNull(httpServer, nameof(httpServer));
+        _httpServer = Ensure.NotNull(httpServer, nameof(httpServer));
 
-        _httpServer = httpServer;
+        _disposeHttpServer = disposeHttpServer;
         Encoding = Encoding.UTF8;
 
         Urls = new List<string>();
@@ -162,7 +163,10 @@ public sealed class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler, IDisposab
 
     public void Dispose()
     {
-        (_httpServer as IDisposable)?.Dispose();
+        if (_disposeHttpServer)
+        {
+            (_httpServer as IDisposable)?.Dispose();
+        }
     }
 
     public IXmlRpcServerMethods Methods { get; }
