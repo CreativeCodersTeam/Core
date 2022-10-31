@@ -13,13 +13,50 @@ namespace CreativeCoders.Net.UnitTests.XmlRpc;
 public class XmlRpcIntegrationTests
 {
     [Fact]
-    public async Task Test()
+    public async Task DoSomethingAsync_Call_ParameterIsPassedToService()
     {
         const string expectedText = "HelloWorld";
 
+        var (server, demoService, client) = await CreateXmlRpcServerAndClient().ConfigureAwait(false);
+
+        // Act
+        await client.DoSomethingAsync(expectedText).ConfigureAwait(false);
+
+        await server.StopAsync().ConfigureAwait(false);
+        server.Dispose();
+
+        // Assert
+        demoService.Text
+            .Should()
+            .Be(expectedText);
+    }
+
+    [Fact]
+    public async Task DoubleTextAsync_CallWithTextAndIndex_CorrectReturnValueIsReturned()
+    {
+        const string expectedReturnValue = "abcdabcd1234";
+        const string text = "abcd";
+        const int index = 1234;
+
+        var (server, demoService, client) = await CreateXmlRpcServerAndClient().ConfigureAwait(false);
+
+        // Act
+        var actualText = await client.DoubleTextAsync(text, index).ConfigureAwait(false);
+
+        await server.StopAsync().ConfigureAwait(false);
+        server.Dispose();
+
+        // Assert
+        actualText
+            .Should()
+            .Be(expectedReturnValue);
+    }
+
+    private static async Task<(XmlRpcServer server, XmlRpcDemoService demoService, IXmlRpcDemoClient client)> CreateXmlRpcServerAndClient()
+    {
         var xmlRpcDemoService = new XmlRpcDemoService();
 
-        using var xmlRpcServer = new XmlRpcServer(new AspNetCoreHttpServer());
+        var xmlRpcServer = new XmlRpcServer(new AspNetCoreHttpServer());
         xmlRpcServer.Urls.Add("http://localhost:12345/");
         xmlRpcServer.Methods.RegisterMethods(xmlRpcDemoService);
 
@@ -35,15 +72,7 @@ public class XmlRpcIntegrationTests
             .ForUrl("http://localhost:12345")
             .Build();
 
-        // Act
-        await xmlRpcClient.DoSomethingAsync(expectedText).ConfigureAwait(false);
-
-        await xmlRpcServer.StopAsync().ConfigureAwait(false);
-
-        // Assert
-        xmlRpcDemoService.Text
-            .Should()
-            .Be(expectedText);
+        return (xmlRpcServer, xmlRpcDemoService, xmlRpcClient);
     }
 }
 
@@ -57,6 +86,12 @@ public class XmlRpcDemoService
         return Task.CompletedTask;
     }
 
+    [XmlRpcMethod]
+    public Task<string> DoubleText(string text, int index)
+    {
+        return Task.FromResult($"{text}{text}{index}");
+    }
+
     public string Text { get; set; }
 }
 
@@ -64,4 +99,7 @@ public interface IXmlRpcDemoClient
 {
     [XmlRpcMethod(nameof(XmlRpcDemoService.DoSomething))]
     Task DoSomethingAsync(string text);
+
+    [XmlRpcMethod(nameof(XmlRpcDemoService.DoubleText))]
+    Task<string> DoubleTextAsync(string text, int index);
 }

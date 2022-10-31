@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -7,6 +8,7 @@ using JetBrains.Annotations;
 
 namespace CreativeCoders.Net;
 
+[ExcludeFromCodeCoverage]
 [PublicAPI]
 public class NetworkInfo : INetworkInfo
 {
