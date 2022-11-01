@@ -25,7 +25,7 @@ public class XmlRpcSample
 
         var sp = services.BuildServiceProvider();
 
-        var xmlRpcServer = new XmlRpcServer(new AspNetCoreHttpServer());
+        using var xmlRpcServer = new XmlRpcServer(new AspNetCoreHttpServer(), true);
         xmlRpcServer.Urls.Add("http://localhost:12345/");
         xmlRpcServer.Methods.RegisterMethods(this);
 
