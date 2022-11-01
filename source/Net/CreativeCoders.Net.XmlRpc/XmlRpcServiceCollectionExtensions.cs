@@ -17,5 +17,7 @@ public static class XmlRpcServiceCollectionExtensions
         services.TryAddSingleton(typeof(IXmlRpcProxyBuilder<>), typeof(XmlRpcProxyBuilder<>));
 
         services.TryAddTransient<IXmlRpcServer, XmlRpcServer>();
+
+        services.TryAddSingleton<IXmlRpcServerFactory, XmlRpcServerFactory>();
     }
 }

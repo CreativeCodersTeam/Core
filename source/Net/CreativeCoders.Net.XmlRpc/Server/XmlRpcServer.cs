@@ -20,7 +20,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Net.XmlRpc.Server;
 
 [PublicAPI]
-public sealed class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler, IDisposable
+public sealed class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler
 {
     private readonly IHttpServer _httpServer;
     private readonly bool _disposeHttpServer;

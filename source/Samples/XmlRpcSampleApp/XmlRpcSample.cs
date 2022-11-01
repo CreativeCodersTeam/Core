@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using CreativeCoders.DynamicCode.Proxying;
 using CreativeCoders.Net.Http;
+using CreativeCoders.Net.Servers.Http;
 using CreativeCoders.Net.Servers.Http.AspNetCore;
 using CreativeCoders.Net.XmlRpc;
 using CreativeCoders.Net.XmlRpc.Definition;
@@ -23,9 +24,12 @@ public class XmlRpcSample
 
         services.AddXmlRpc();
 
+        services.AddTransient<IHttpServer, AspNetCoreHttpServer>();
+
         var sp = services.BuildServiceProvider();
 
-        using var xmlRpcServer = new XmlRpcServer(new AspNetCoreHttpServer(), true);
+        using var xmlRpcServer = sp.GetRequiredService<IXmlRpcServerFactory>().CreateServer();
+
         xmlRpcServer.Urls.Add("http://localhost:12345/");
         xmlRpcServer.Methods.RegisterMethods(this);
 
