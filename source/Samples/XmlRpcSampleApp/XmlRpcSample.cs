@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Net.Http;
 using System.Threading.Tasks;
-using CreativeCoders.DynamicCode.Proxying;
-using CreativeCoders.Net.Http;
 using CreativeCoders.Net.Servers.Http;
 using CreativeCoders.Net.Servers.Http.AspNetCore;
 using CreativeCoders.Net.XmlRpc;
 using CreativeCoders.Net.XmlRpc.Definition;
 using CreativeCoders.Net.XmlRpc.Proxy;
-using CreativeCoders.Net.XmlRpc.Server;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 
