@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using Microsoft.Win32.SafeHandles;
 
 namespace CreativeCoders.Windows.Api;
 
+[ExcludeFromCodeCoverage]
 [PublicAPI]
-public static class WinApi
+internal static class WinApi
 {
     private const string Kernel32Dll = "kernel32.dll";
 
@@ -19,7 +21,7 @@ public static class WinApi
     [DllImport(Kernel32Dll, SetLastError = true)]
     public static extern IntPtr LoadResource(IntPtr hModule, IntPtr hResInfo);
 
-    [DllImport(Kernel32Dll, CharSet = CharSet.Auto)]
+    [DllImport(Kernel32Dll, CharSet = CharSet.Unicode)]
     public static extern IntPtr LoadLibrary(string lpFileName);
 
     [DllImport(Advapi32Dll, SetLastError = true, CharSet = CharSet.Unicode)]

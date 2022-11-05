@@ -1,7 +1,9 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Net.Http.Auth.Jwt;
 
+[PublicAPI]
 public class JwtTokenNotFoundException : Exception
 {
     internal JwtTokenNotFoundException(string tokenPropertyName, string response)

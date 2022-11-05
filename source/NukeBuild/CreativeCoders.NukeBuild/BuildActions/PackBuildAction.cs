@@ -1,9 +1,11 @@
-﻿using CreativeCoders.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+using CreativeCoders.Core;
 using JetBrains.Annotations;
 using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.BuildActions;
 
+[ExcludeFromCodeCoverage]
 [PublicAPI]
 public class PackBuildAction : BuildActionBase<PackBuildAction>
 {

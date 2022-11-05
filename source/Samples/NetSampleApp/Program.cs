@@ -7,9 +7,9 @@ public static class Program
 {
     public static async Task Main()
     {
-        //await new HttpClientAuthTest().Run();
+        await HttpClientAuthTest.RunAsync();
             
-        //await new HttpClientTest().Run();
+        await HttpClientTest.RunAsync();
             
         await AvmTest.Run();
             

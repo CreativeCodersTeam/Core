@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
@@ -8,6 +9,7 @@ using CreativeCoders.SysConsole.Core.Abstractions;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Help;
 
+[ExcludeFromCodeCoverage]
 public class CliActionHelpPrinter : ICliActionHelpPrinter
 {
     private readonly ISysConsole _sysConsole;

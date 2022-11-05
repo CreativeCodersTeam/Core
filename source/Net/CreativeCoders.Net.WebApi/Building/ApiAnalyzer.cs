@@ -7,7 +7,7 @@ using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Building;
 
-public class ApiAnalyzer<T>
+internal class ApiAnalyzer<T>
     where T : class
 {
     private readonly Type _apiType;

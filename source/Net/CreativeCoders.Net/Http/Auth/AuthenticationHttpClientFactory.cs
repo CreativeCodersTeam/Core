@@ -17,7 +17,7 @@ public class AuthenticationHttpClientFactory : IAuthenticationHttpClientFactory
 
     public AuthenticationHttpClient CreateClient(string name)
     {
-        return new(_httpMessageHandlerFactory, name);
+        return new AuthenticationHttpClient(_httpMessageHandlerFactory, name);
     }
 
     public AuthenticationHttpClient CreateClient()

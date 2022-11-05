@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using CreativeCoders.Windows.Api;
 using CreativeCoders.Windows.Api.User32Dll;
 using JetBrains.Annotations;
@@ -6,6 +7,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Windows;
 
 /// <summary>   Class with different methods for working with buttons. </summary>
+[ExcludeFromCodeCoverage]
 [PublicAPI]
 public static class WindowsButtonUtils
 {

@@ -3,7 +3,7 @@
 namespace CreativeCoders.Net.WebApi.Specification;
 
 [PublicAPI]
-public class QueryDefinition
+internal class QueryDefinition
 {
     public QueryDefinition(string key, string value)
     {

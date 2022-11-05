@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CreativeCoders.Core.Logging;
 
 namespace CreativeCoders.Net.Servers.Http;
 
 public abstract class HttpServerBase<THttpContext> : IHttpServer
     where THttpContext : class
 {
-    private static readonly ILogger Log = LogManager.GetLogger<HttpServerBase<THttpContext>>();
-
     private IHttpRequestHandler _requestHandler;
 
     protected HttpServerBase()
@@ -27,8 +24,6 @@ public abstract class HttpServerBase<THttpContext> : IHttpServer
 
     protected async Task HandleRequestAsync(THttpContext httpContext)
     {
-        Log.Debug("Start handle http request");
-
         var request = GetRequest(httpContext);
         var response = GetResponse(httpContext);
 
@@ -37,8 +32,6 @@ public abstract class HttpServerBase<THttpContext> : IHttpServer
         await response.Body.FlushAsync().ConfigureAwait(false);
 
         await FlushAndCloseOutputStreamAsync(httpContext).ConfigureAwait(false);
-
-        Log.Debug("End handle http request");
     }
 
     protected abstract Task FlushAndCloseOutputStreamAsync(THttpContext httpContext);

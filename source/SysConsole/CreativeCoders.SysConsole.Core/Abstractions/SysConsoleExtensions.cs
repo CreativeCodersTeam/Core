@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CreativeCoders.Core.Collections;
 using JetBrains.Annotations;
@@ -40,7 +41,7 @@ public static class SysConsoleExtensions
 
         if (!int.TryParse(selection, out var selectionNumber))
         {
-            throw new InvalidOperationException();
+            return defaultItem;
         }
 
         var selectedItem = selectionList.FirstOrDefault(x => x.Number == selectionNumber);
@@ -50,6 +51,7 @@ public static class SysConsoleExtensions
             : selectedItem.Item;
     }
 
+    [ExcludeFromCodeCoverage]
     public static string? ReadLine(this ISysConsole sysConsole, string text)
     {
         return sysConsole

@@ -8,8 +8,7 @@ public class CallbackMessage : MessageBase
 
     public CallbackMessage(Action callback)
     {
-        Ensure.IsNotNull(callback, "callback");
-        _callback = callback;
+        _callback = Ensure.NotNull(callback, nameof(callback));
     }
 
     public void Execute()

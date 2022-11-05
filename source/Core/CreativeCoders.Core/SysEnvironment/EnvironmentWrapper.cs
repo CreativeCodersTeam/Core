@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using CreativeCoders.Core.IO;
+
+#nullable enable
 
 namespace CreativeCoders.Core.SysEnvironment;
 
@@ -20,12 +23,12 @@ public class EnvironmentWrapper : IEnvironment
         return Environment.ExpandEnvironmentVariables(name);
     }
 
-    public void FailFast(string message)
+    public void FailFast(string? message)
     {
         Environment.FailFast(message);
     }
 
-    public void FailFast(string message, Exception exception)
+    public void FailFast(string? message, Exception? exception)
     {
         Environment.FailFast(message, exception);
     }
@@ -35,19 +38,19 @@ public class EnvironmentWrapper : IEnvironment
         return Environment.GetCommandLineArgs();
     }
 
-    public string GetEnvironmentVariable(string variable)
+    public string? GetEnvironmentVariable(string variable)
     {
         return Environment.GetEnvironmentVariable(variable);
     }
 
-    public string GetEnvironmentVariable(string variable, EnvironmentVariableTarget target)
+    public string? GetEnvironmentVariable(string variable, EnvironmentVariableTarget target)
     {
         return Environment.GetEnvironmentVariable(variable, target);
     }
 
-    public IDictionary<string, object> GetEnvironmentVariables()
+    public IDictionary<string, object?> GetEnvironmentVariables()
     {
-        var variables = new Dictionary<string, object>();
+        var variables = new Dictionary<string, object?>();
 
         // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
         foreach (DictionaryEntry environmentVariable in Environment.GetEnvironmentVariables())
@@ -65,9 +68,9 @@ public class EnvironmentWrapper : IEnvironment
         return variables;
     }
 
-    public IDictionary<string, object> GetEnvironmentVariables(EnvironmentVariableTarget target)
+    public IDictionary<string, object?> GetEnvironmentVariables(EnvironmentVariableTarget target)
     {
-        var variables = new Dictionary<string, object>();
+        var variables = new Dictionary<string, object?>();
 
         // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
         foreach (DictionaryEntry environmentVariable in Environment.GetEnvironmentVariables(target))
@@ -100,12 +103,12 @@ public class EnvironmentWrapper : IEnvironment
         return Environment.GetLogicalDrives();
     }
 
-    public void SetEnvironmentVariable(string variable, string value)
+    public void SetEnvironmentVariable(string variable, string? value)
     {
         Environment.SetEnvironmentVariable(variable, value);
     }
 
-    public void SetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target)
+    public void SetEnvironmentVariable(string variable, string? value, EnvironmentVariableTarget target)
     {
         Environment.SetEnvironmentVariable(variable, value, target);
     }
@@ -117,7 +120,8 @@ public class EnvironmentWrapper : IEnvironment
 
     public string GetAppFileName()
     {
-        return Process.GetCurrentProcess().MainModule?.FileName;
+        return Process.GetCurrentProcess().MainModule?.FileName
+            ?? Environment.GetCommandLineArgs().FirstOrDefault(string.Empty);
     }
 
     public string CommandLine => Environment.CommandLine;

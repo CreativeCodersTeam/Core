@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using CreativeCoders.Core.Logging;
 using CreativeCoders.Core.Threading;
 using JetBrains.Annotations;
 
@@ -11,8 +10,6 @@ namespace CreativeCoders.Mvvm.Skeletor.Infrastructure.Default;
 [PublicAPI]
 public class ViewModelToViewMappings : IViewModelToViewMappings
 {
-    private static ILogger Log { get; } = LogManager.GetLogger<ViewModelToViewMappings>();
-
     private readonly IList<ViewModelToViewMapping> _mappings;
 
     public ViewModelToViewMappings()
@@ -32,7 +29,6 @@ public class ViewModelToViewMappings : IViewModelToViewMappings
         var existingMapping = FindMapping(typeof(TViewModel), name);
         if (existingMapping != null)
         {
-            Log.Warn("Existing view registration gets replaced");
             _mappings.Remove(existingMapping);
         }
 
@@ -45,7 +41,6 @@ public class ViewModelToViewMappings : IViewModelToViewMappings
         var existingMapping = FindMapping(viewModelType);
         if (existingMapping != null)
         {
-            Log.Warn("Existing view registration gets replaced");
             _mappings.Remove(existingMapping);
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Reflection;
@@ -26,7 +27,8 @@ public class EnumerableRequestHandler : XmlRpcRequestHandlerBase
             requestData).ConfigureAwait(false);
     }
 
-    // ReSharper disable once MemberCanBeMadeStatic.Local
+    [SuppressMessage("ReSharper", "MemberCanBeMadeStatic.Local")]
+    [SuppressMessage("Performance", "CA1822")]
     private async Task<IEnumerable<T>> GetEnumerableInternalAsync<T>(RequestData requestData)
     {
         var xmlRpcResponse = await requestData.Client

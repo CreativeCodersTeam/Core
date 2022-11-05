@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
+#nullable enable
+
 namespace CreativeCoders.Core.Collections;
 
 [PublicAPI]

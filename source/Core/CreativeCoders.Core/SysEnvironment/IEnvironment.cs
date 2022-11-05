@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable enable
+
 namespace CreativeCoders.Core.SysEnvironment;
 
 public interface IEnvironment
@@ -9,19 +11,19 @@ public interface IEnvironment
 
     string ExpandEnvironmentVariables(string name);
 
-    void FailFast(string message);
+    void FailFast(string? message);
 
-    void FailFast(string message, Exception exception);
+    void FailFast(string? message, Exception? exception);
 
     string[] GetCommandLineArgs();
 
-    string GetEnvironmentVariable(string variable);
+    string? GetEnvironmentVariable(string variable);
 
-    string GetEnvironmentVariable(string variable, EnvironmentVariableTarget target);
+    string? GetEnvironmentVariable(string variable, EnvironmentVariableTarget target);
 
-    IDictionary<string, object> GetEnvironmentVariables();
+    IDictionary<string, object?> GetEnvironmentVariables();
 
-    IDictionary<string, object> GetEnvironmentVariables(EnvironmentVariableTarget target);
+    IDictionary<string, object?> GetEnvironmentVariables(EnvironmentVariableTarget target);
 
     string GetFolderPath(Environment.SpecialFolder folder);
 
@@ -29,9 +31,9 @@ public interface IEnvironment
 
     string[] GetLogicalDrives();
 
-    void SetEnvironmentVariable(string variable, string value);
+    void SetEnvironmentVariable(string variable, string? value);
 
-    void SetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target);
+    void SetEnvironmentVariable(string variable, string? value, EnvironmentVariableTarget target);
 
     string GetAppDirectory();
 

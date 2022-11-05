@@ -31,7 +31,7 @@ public static class ExpressionExtensions
 
     private static string InternalGetMemberName<T>(Expression<T> memberExpression)
     {
-        Ensure.IsNotNull(memberExpression, "memberExpression");
+        Ensure.IsNotNull(memberExpression, nameof(memberExpression));
         var body = memberExpression.Body as MemberExpression;
 
         Ensure.IsNotNull(body, "body");

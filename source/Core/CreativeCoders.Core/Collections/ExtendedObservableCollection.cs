@@ -9,6 +9,8 @@ using System.Threading;
 using CreativeCoders.Core.Threading;
 using JetBrains.Annotations;
 
+#nullable enable
+
 namespace CreativeCoders.Core.Collections;
 
 [PublicAPI]
@@ -17,7 +19,7 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
 {
     private const string IndexerName = "Item[]";
 
-    private readonly SynchronizationContext _synchronizationContext;
+    private readonly SynchronizationContext? _synchronizationContext;
 
     private readonly SynchronizationMethod _synchronizationMethod;
 
@@ -39,11 +41,11 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         : this(SynchronizationContext.Current, SynchronizationMethod.Send,
             () => new LockSlimLockingMechanism(), items) { }
 
-    public ExtendedObservableCollection(SynchronizationContext synchronizationContext,
+    public ExtendedObservableCollection(SynchronizationContext? synchronizationContext,
         SynchronizationMethod synchronizationMethod, Func<ILockingMechanism> lockingMechanism)
         : this(synchronizationContext, synchronizationMethod, lockingMechanism, Array.Empty<T>()) { }
 
-    public ExtendedObservableCollection(SynchronizationContext synchronizationContext,
+    public ExtendedObservableCollection(SynchronizationContext? synchronizationContext,
         SynchronizationMethod synchronizationMethod, Func<ILockingMechanism> lockingMechanism,
         IEnumerable<T> items)
     {
@@ -272,20 +274,25 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
     {
         using (BlockReentrancy())
         {
-            switch (_synchronizationMethod)
-            {
-                case SynchronizationMethod.None:
-                    execute();
-                    break;
-                case SynchronizationMethod.Post:
-                    _synchronizationContext.Post(_ => execute(), null);
-                    break;
-                case SynchronizationMethod.Send:
-                    _synchronizationContext.Send(_ => execute(), null);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            DoSynchronization(_synchronizationMethod, execute);
+        }
+    }
+
+    private void DoSynchronization(SynchronizationMethod synchronizationMethod, Action execute)
+    {
+        switch (synchronizationMethod)
+        {
+            case SynchronizationMethod.None:
+                execute();
+                break;
+            case SynchronizationMethod.Post:
+                _synchronizationContext!.Post(_ => execute(), null);
+                break;
+            case SynchronizationMethod.Send:
+                _synchronizationContext!.Send(_ => execute(), null);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(synchronizationMethod));
         }
     }
 
@@ -358,15 +365,15 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         });
     }
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    public event NotifyCollectionChangedEventHandler CollectionChanged;
+    public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
     protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {

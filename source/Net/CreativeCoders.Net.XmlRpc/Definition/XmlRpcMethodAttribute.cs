@@ -1,7 +1,10 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Net.XmlRpc.Definition;
 
+[PublicAPI]
+[AttributeUsage(AttributeTargets.Method)]
 public class XmlRpcMethodAttribute : Attribute
 {
     public XmlRpcMethodAttribute() : this(string.Empty) { }

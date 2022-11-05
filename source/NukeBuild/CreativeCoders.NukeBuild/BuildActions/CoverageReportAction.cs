@@ -1,9 +1,11 @@
-﻿using CreativeCoders.Core.SysEnvironment;
+﻿using System.Diagnostics.CodeAnalysis;
+using CreativeCoders.Core.SysEnvironment;
 using JetBrains.Annotations;
 using Nuke.Common.Tools.ReportGenerator;
 
 namespace CreativeCoders.NukeBuild.BuildActions;
 
+[ExcludeFromCodeCoverage]
 [PublicAPI]
 public class CoverageReportAction : BuildActionBase<CoverageReportAction>
 {

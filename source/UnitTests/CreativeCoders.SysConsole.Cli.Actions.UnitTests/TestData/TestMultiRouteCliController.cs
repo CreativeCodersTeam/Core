@@ -1,8 +1,10 @@
 ﻿using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Cli.Actions.Definition;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
 
+[PublicAPI]
 [CliController]
 [CliController("controller")]
 public class TestMultiRouteCliController
@@ -19,11 +21,9 @@ public class TestMultiRouteCliController
     [CliAction("execute")]
     public Task<CliActionResult> ExecuteAsync(DoCmdOptions options)
     {
-        if (string.IsNullOrEmpty(options.Text))
-        {
-            return Task.FromResult(new CliActionResult(ExecuteReturnCode));
-        }
-
-        return Task.FromResult(new CliActionResult(options.Text.GetHashCode()));
+        return Task.FromResult(
+            string.IsNullOrEmpty(options.Text)
+                ? new CliActionResult(ExecuteReturnCode)
+                : new CliActionResult(options.Text.GetHashCode()));
     }
 }

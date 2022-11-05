@@ -2,9 +2,10 @@
 
 namespace CreativeCoders.Core.UnitTests.Comparing.TestData;
 
+[PublicAPI]
 public interface IComparableStringInterfaceObject
 {
-    [UsedImplicitly] string TextValue { get; set; }
+    string TextValue { get; set; }
 
     string ToString();
 }

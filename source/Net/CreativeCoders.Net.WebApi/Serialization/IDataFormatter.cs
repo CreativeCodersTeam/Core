@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.Net.WebApi.Serialization;
+﻿using JetBrains.Annotations;
 
+namespace CreativeCoders.Net.WebApi.Serialization;
+
+[PublicAPI]
 public interface IDataFormatter
 {
     IDataDeserializer GetDeserializer();

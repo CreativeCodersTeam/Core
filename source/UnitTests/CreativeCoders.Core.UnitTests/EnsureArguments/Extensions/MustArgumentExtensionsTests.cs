@@ -61,7 +61,7 @@ public class MustArgumentExtensionsTests
 
         // Act
         var argument = Ensure.Argument(testValue, nameof(testValue)).NotNull()
-            .Must(x => x?.StartsWith("Te") == true);
+            .Must(x => x.StartsWith("Te", StringComparison.Ordinal));
 
         // Assert
         argument.Value
@@ -76,7 +76,7 @@ public class MustArgumentExtensionsTests
 
         // Act
         Action act = () => Ensure.Argument(testValue, nameof(testValue)).NotNull()
-            .Must(x => x?.StartsWith("12") == true);
+            .Must(x => x.StartsWith("12", StringComparison.Ordinal));
 
         // Assert
         act
@@ -92,7 +92,8 @@ public class MustArgumentExtensionsTests
 
         // Act
         Action act = () => Ensure.Argument(testValue, nameof(testValue)).NotNull()
-            .Must(x => x?.StartsWith("12") == true, message);
+            .Must(x => x.StartsWith("12", StringComparison.Ordinal),
+                message);
 
         // Assert
         act
@@ -156,7 +157,7 @@ public class MustArgumentExtensionsTests
 
         // Act
         var argument = Ensure.Argument(testValue, nameof(testValue)).NotNull()
-            .MustNot(x => x?.StartsWith("12") == true);
+            .MustNot(x => x.StartsWith("12", StringComparison.Ordinal));
 
         // Assert
         argument.Value
@@ -171,7 +172,7 @@ public class MustArgumentExtensionsTests
 
         // Act
         Action act = () => Ensure.Argument(testValue, nameof(testValue)).NotNull()
-            .MustNot(x => x?.StartsWith("Te") == true);
+            .MustNot(x => x.StartsWith("Te", StringComparison.Ordinal));
 
         // Assert
         act
@@ -187,7 +188,8 @@ public class MustArgumentExtensionsTests
 
         // Act
         Action act = () => Ensure.Argument(testValue, nameof(testValue)).NotNull()
-            .MustNot(x => x?.StartsWith("Te") == true, message);
+            .MustNot(x => x.StartsWith("Te", StringComparison.Ordinal),
+                message);
 
         // Assert
         act

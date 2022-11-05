@@ -2,59 +2,64 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
+
+#nullable enable
 
 namespace CreativeCoders.Core.Collections;
 
 [PublicAPI]
-public class ObservableCollectionSynchronizer<TMasterElement, TSlaveElement> : IDisposable
+public sealed class ObservableCollectionSynchronizer<TSourceElement, TReplicaElement> : IDisposable
 {
-    private readonly ObservableCollection<TMasterElement> _masterCollection;
+    private readonly ObservableCollection<TSourceElement> _sourceCollection;
 
-    private readonly ObservableCollection<TSlaveElement> _slaveCollection;
+    private readonly ObservableCollection<TReplicaElement> _replicaCollection;
 
-    private readonly Func<TMasterElement, TSlaveElement> _createSlave;
+    private readonly Func<TSourceElement, TReplicaElement> _createReplicaItemForSourceItem;
 
-    private readonly Func<TMasterElement, TSlaveElement> _getSlaveForMaster;
+    private readonly Func<TSourceElement, TReplicaElement> _getReplicaItemForSourceItem;
 
-    public ObservableCollectionSynchronizer(ObservableCollection<TMasterElement> masterCollection,
-        ObservableCollection<TSlaveElement> slaveCollection, Func<TMasterElement, TSlaveElement> createSlave,
-        Func<TMasterElement, TSlaveElement> getSlaveForMaster)
+    public ObservableCollectionSynchronizer(ObservableCollection<TSourceElement> sourceCollection,
+        ObservableCollection<TReplicaElement> replicaCollection, Func<TSourceElement,
+            TReplicaElement> createReplicaItemForSourceItem,
+        Func<TSourceElement, TReplicaElement> getReplicaItemForSourceItem)
     {
-        _masterCollection = masterCollection;
-        _slaveCollection = slaveCollection;
-        _createSlave = createSlave;
-        _getSlaveForMaster = getSlaveForMaster;
+        _sourceCollection = sourceCollection;
+        _replicaCollection = replicaCollection;
+        _createReplicaItemForSourceItem = createReplicaItemForSourceItem;
+        _getReplicaItemForSourceItem = getReplicaItemForSourceItem;
 
-        _masterCollection.CollectionChanged += MasterCollectionOnCollectionChanged;
+        _sourceCollection.CollectionChanged += SourceCollectionOnCollectionChanged;
 
-        _slaveCollection.AddRange(_masterCollection.Select(_createSlave));
+        _replicaCollection.AddRange(_sourceCollection.Select(_createReplicaItemForSourceItem));
     }
 
-    private void MasterCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    [SuppressMessage("Usage", "CA2208:Instantiate argument exceptions correctly")]
+    private void SourceCollectionOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         switch (e.Action)
         {
             case NotifyCollectionChangedAction.Add:
                 var newStartingIndex = e.NewStartingIndex;
                 e.NewItems?
-                    .Cast<TMasterElement>()
-                    .ForEach(x => AddElement(newStartingIndex++, x));
+                    .Cast<TSourceElement>()
+                    .ForEach(x => AddReplicaElement(newStartingIndex++, x));
                 break;
             case NotifyCollectionChangedAction.Move:
-                _slaveCollection.Move(e.OldStartingIndex, e.NewStartingIndex);
+                _replicaCollection.Move(e.OldStartingIndex, e.NewStartingIndex);
                 break;
             case NotifyCollectionChangedAction.Remove:
                 RemoveElements(e.OldStartingIndex,
-                    e.OldItems?.Cast<TMasterElement>() ?? Array.Empty<TMasterElement>());
+                    e.OldItems?.Cast<TSourceElement>() ?? Array.Empty<TSourceElement>());
                 break;
             case NotifyCollectionChangedAction.Replace:
                 ReplaceElement(e);
                 break;
             case NotifyCollectionChangedAction.Reset:
-                _slaveCollection.Clear();
-                _slaveCollection.AddRange(_masterCollection.Select(_createSlave));
+                _replicaCollection.Clear();
+                _replicaCollection.AddRange(_sourceCollection.Select(_createReplicaItemForSourceItem));
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(e) + "." + nameof(e.Action),
@@ -70,38 +75,38 @@ public class ObservableCollectionSynchronizer<TMasterElement, TSlaveElement> : I
             return;
         }
 
-        var masterElement = eventArgs.NewItems.Cast<TMasterElement>().First();
+        var masterElement = eventArgs.NewItems.Cast<TSourceElement>().First();
 
-        _slaveCollection[eventArgs.NewStartingIndex] =
-            _createSlave(masterElement);
+        _replicaCollection[eventArgs.NewStartingIndex] =
+            _createReplicaItemForSourceItem(masterElement);
     }
 
-    private void AddElement(int newStartingIndex, TMasterElement masterElement)
+    private void AddReplicaElement(int newStartingIndex, TSourceElement masterElement)
     {
         if (newStartingIndex == -1)
         {
-            _slaveCollection.Add(_createSlave(masterElement));
+            _replicaCollection.Add(_createReplicaItemForSourceItem(masterElement));
         }
         else
         {
-            _slaveCollection.Insert(newStartingIndex, _createSlave(masterElement));
+            _replicaCollection.Insert(newStartingIndex, _createReplicaItemForSourceItem(masterElement));
         }
     }
 
-    private void RemoveElements(int oldStartingIndex, IEnumerable<TMasterElement> masterElements)
+    private void RemoveElements(int oldStartingIndex, IEnumerable<TSourceElement> sourceElements)
     {
         if (oldStartingIndex == -1)
         {
-            masterElements.ForEach(x => _slaveCollection.Remove(_getSlaveForMaster(x)));
+            sourceElements.ForEach(x => _replicaCollection.Remove(_getReplicaItemForSourceItem(x)));
         }
         else
         {
-            _slaveCollection.RemoveAt(oldStartingIndex);
+            _replicaCollection.RemoveAt(oldStartingIndex);
         }
     }
 
     public void Dispose()
     {
-        _masterCollection.CollectionChanged -= MasterCollectionOnCollectionChanged;
+        _sourceCollection.CollectionChanged -= SourceCollectionOnCollectionChanged;
     }
 }

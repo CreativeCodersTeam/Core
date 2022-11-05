@@ -37,7 +37,7 @@ public class DependencyTreeBuilder<T>
     ///-------------------------------------------------------------------------------------------------
     public DependencyTreeNode<T> Build(T element)
     {
-        return new(element, GetSubNodes(_dependencyObjectCollection.GetDependencyObject(element)));
+        return new DependencyTreeNode<T>(element, GetSubNodes(_dependencyObjectCollection.GetDependencyObject(element)));
     }
 
     private static IEnumerable<DependencyTreeNode<T>> GetSubNodes(DependencyObject<T> dependencyObject)

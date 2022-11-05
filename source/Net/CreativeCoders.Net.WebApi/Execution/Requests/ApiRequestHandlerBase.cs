@@ -10,7 +10,7 @@ using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution.Requests;
 
-public abstract class ApiRequestHandlerBase : IApiRequestHandler
+internal abstract class ApiRequestHandlerBase : IApiRequestHandler
 {
     private readonly HttpClient _httpClient;
 

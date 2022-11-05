@@ -19,9 +19,9 @@ public class OptionParameterProperty : OptionPropertyBase
     {
         var optionArgument = optionArguments
             .FirstOrDefault(x =>
-                x.Kind == OptionArgumentKind.ShortName
-                && x.OptionName == _optionParameterAttribute.ShortName.ToString() ||
-                x.Kind == OptionArgumentKind.LongName && x.OptionName == _optionParameterAttribute.LongName);
+                (x.Kind == OptionArgumentKind.ShortName
+                 && x.OptionName == _optionParameterAttribute.ShortName.ToString()) ||
+                (x.Kind == OptionArgumentKind.LongName && x.OptionName == _optionParameterAttribute.LongName));
 
         return SetPropertyValue(optionArgument, optionObject);
     }

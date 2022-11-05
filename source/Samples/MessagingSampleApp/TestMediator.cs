@@ -11,7 +11,7 @@ public class TestMediator
 {
     private IMediator _mediator;
         
-    public async Task Run()
+    public async Task RunAsync()
     {
         _mediator = new Mediator();
 

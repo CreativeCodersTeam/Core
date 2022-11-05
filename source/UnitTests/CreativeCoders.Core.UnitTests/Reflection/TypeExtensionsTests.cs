@@ -109,7 +109,7 @@ public class TypeExtensionsTests
 
         var services = new ServiceCollection();
 
-        var options = new TestSimpleClassOptions() {Value = expectedText};
+        var options = new TestSimpleClassOptions {Value = expectedText};
 
         services.AddTransient<ITestSimpleClassOptions>(_ => options);
 
@@ -136,7 +136,7 @@ public class TypeExtensionsTests
 
         var services = new ServiceCollection();
 
-        var options = new TestSimpleClassOptions() {Value = expectedText};
+        var options = new TestSimpleClassOptions {Value = expectedText};
 
         var sp = services.BuildServiceProvider();
 

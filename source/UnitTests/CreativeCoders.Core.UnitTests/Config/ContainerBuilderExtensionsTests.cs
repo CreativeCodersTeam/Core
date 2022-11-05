@@ -3,11 +3,9 @@ using System.Linq;
 using CreativeCoders.Config;
 using CreativeCoders.Config.Base;
 using CreativeCoders.Config.Sources;
-using CreativeCoders.Di.Building;
-using CreativeCoders.Di.SimpleInjector;
 using FakeItEasy;
 using JetBrains.Annotations;
-using SimpleInjector;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Config;
@@ -15,30 +13,18 @@ namespace CreativeCoders.Core.UnitTests.Config;
 public class ContainerBuilderExtensionsTests
 {
     [Fact]
-    public void ConfigureTest()
-    {
-        var builder = A.Fake<IDiContainerBuilder>();
-
-        Assert.Throws<ArgumentNullException>(() => builder.Configure(null));
-
-        var config = A.Fake<IConfiguration>();
-
-        builder.Configure(config);
-    }
-
-    [Fact]
     public void ConfigureTestConfiguration()
     {
-        var builder = new SimpleInjectorDiContainerBuilder(new Container());
+        var services = new ServiceCollection();
 
         var config = A.Fake<IConfiguration>();
 
-        builder.Configure(config);
+        services.AddConfigSystem(config);
 
-        var container = builder.Build();
+        var serviceProvider = services.BuildServiceProvider();
 
-        var config0 = container.GetInstance<IConfiguration>();
-        var config1 = container.GetInstance<IConfiguration>();
+        var config0 = serviceProvider.GetService<IConfiguration>();
+        var config1 = serviceProvider.GetService<IConfiguration>();
 
         Assert.Same(config, config0);
         Assert.Same(config, config1);
@@ -47,17 +33,17 @@ public class ContainerBuilderExtensionsTests
     [Fact]
     public void ConfigureTestSetting()
     {
-        var builder = new SimpleInjectorDiContainerBuilder(new Container());
+        var services = new ServiceCollection();
 
         var config = new Configuration();
         config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting {Text = "DemoValue"}));
 
-        builder.Configure(config);
+        services.AddConfigSystem(config);
 
-        var container = builder.Build();
+        var serviceProvider = services.BuildServiceProvider();
 
-        var setting0 = container.GetInstance<ISetting<DemoSetting>>();
-        var setting1 = container.GetInstance<ISetting<DemoSetting>>();
+        var setting0 = serviceProvider.GetRequiredService<ISetting<DemoSetting>>();
+        var setting1 = serviceProvider.GetRequiredService<ISetting<DemoSetting>>();
 
         Assert.Equal("DemoValue", setting0.Value.Text);
         Assert.Equal("DemoValue", setting1.Value.Text);
@@ -68,17 +54,17 @@ public class ContainerBuilderExtensionsTests
     [Fact]
     public void ConfigureTestSettingTransient()
     {
-        var builder = new SimpleInjectorDiContainerBuilder(new Container());
+        var services = new ServiceCollection();
 
         var config = new Configuration();
         config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting {Text = "DemoValue"}));
 
-        builder.Configure(config);
+        services.AddConfigSystem(config);
 
-        var container = builder.Build();
+        var serviceProvider = services.BuildServiceProvider();
 
-        var setting0 = container.GetInstance<ISettingTransient<DemoSetting>>();
-        var setting1 = container.GetInstance<ISettingTransient<DemoSetting>>();
+        var setting0 = serviceProvider.GetRequiredService<ISettingTransient<DemoSetting>>();
+        var setting1 = serviceProvider.GetRequiredService<ISettingTransient<DemoSetting>>();
 
         Assert.Equal("DemoValue", setting0.Value.Text);
         Assert.Equal("DemoValue", setting1.Value.Text);
@@ -89,23 +75,23 @@ public class ContainerBuilderExtensionsTests
     [Fact]
     public void ConfigureTestSettingScoped()
     {
-        var builder = new SimpleInjectorDiContainerBuilder(new Container());
+        var services = new ServiceCollection();
 
         var config = new Configuration();
         config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting {Text = "DemoValue"}));
 
-        builder.Configure(config);
+        services.AddConfigSystem(config);
 
-        var container = builder.Build();
+        var serviceProvider = services.BuildServiceProvider();
 
-        var scope = container.CreateScope();
-        var setting0 = scope.Container.GetInstance<ISettingScoped<DemoSetting>>();
-        var setting1 = scope.Container.GetInstance<ISettingScoped<DemoSetting>>();
+        var scope = serviceProvider.CreateScope();
+        var setting0 = scope.ServiceProvider.GetRequiredService<ISettingScoped<DemoSetting>>();
+        var setting1 = scope.ServiceProvider.GetRequiredService<ISettingScoped<DemoSetting>>();
         scope.Dispose();
 
-        var scope1 = container.CreateScope();
-        var setting2 = scope1.Container.GetInstance<ISettingScoped<DemoSetting>>();
-        var setting3 = scope1.Container.GetInstance<ISettingScoped<DemoSetting>>();
+        var scope1 = serviceProvider.CreateScope();
+        var setting2 = scope1.ServiceProvider.GetRequiredService<ISettingScoped<DemoSetting>>();
+        var setting3 = scope1.ServiceProvider.GetRequiredService<ISettingScoped<DemoSetting>>();
         scope1.Dispose();
 
         Assert.Equal("DemoValue", setting0.Value.Text);
@@ -125,17 +111,17 @@ public class ContainerBuilderExtensionsTests
     [Fact]
     public void ConfigureTestSettings()
     {
-        var builder = new SimpleInjectorDiContainerBuilder(new Container());
+        var services = new ServiceCollection();
 
         var config = new Configuration();
         config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting {Text = "DemoValue"}));
 
-        builder.Configure(config);
+        services.AddConfigSystem(config);
 
-        var container = builder.Build();
+        var serviceProvider = services.BuildServiceProvider();
 
-        var settings0 = container.GetInstance<ISettings<DemoSetting>>();
-        var settings1 = container.GetInstance<ISettings<DemoSetting>>();
+        var settings0 = serviceProvider.GetRequiredService<ISettings<DemoSetting>>();
+        var settings1 = serviceProvider.GetRequiredService<ISettings<DemoSetting>>();
 
         Assert.Single(settings0.Values);
         Assert.Single(settings1.Values);
@@ -154,17 +140,17 @@ public class ContainerBuilderExtensionsTests
     [Fact]
     public void ConfigureTestSettingsTransient()
     {
-        var builder = new SimpleInjectorDiContainerBuilder(new Container());
+        var services = new ServiceCollection();
 
         var config = new Configuration();
         config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting {Text = "DemoValue"}));
 
-        builder.Configure(config);
+        services.AddConfigSystem(config);
 
-        var container = builder.Build();
+        var serviceProvider = services.BuildServiceProvider();
 
-        var settings0 = container.GetInstance<ISettingsTransient<DemoSetting>>();
-        var settings1 = container.GetInstance<ISettingsTransient<DemoSetting>>();
+        var settings0 = serviceProvider.GetRequiredService<ISettingsTransient<DemoSetting>>();
+        var settings1 = serviceProvider.GetRequiredService<ISettingsTransient<DemoSetting>>();
 
         Assert.Single(settings0.Values);
         Assert.Single(settings1.Values);
@@ -183,23 +169,23 @@ public class ContainerBuilderExtensionsTests
     [Fact]
     public void ConfigureTestSettingsScoped()
     {
-        var builder = new SimpleInjectorDiContainerBuilder(new Container());
+        var services = new ServiceCollection();
 
         var config = new Configuration();
         config.AddSource(new ConfigurationSource<DemoSetting>(() => new DemoSetting {Text = "DemoValue"}));
 
-        builder.Configure(config);
+        services.AddConfigSystem(config);
 
-        var container = builder.Build();
+        var container = services.BuildServiceProvider();
 
         var scope0 = container.CreateScope();
-        var settings0 = scope0.Container.GetInstance<ISettingsScoped<DemoSetting>>();
-        var settings1 = scope0.Container.GetInstance<ISettingsScoped<DemoSetting>>();
+        var settings0 = scope0.ServiceProvider.GetRequiredService<ISettingsScoped<DemoSetting>>();
+        var settings1 = scope0.ServiceProvider.GetRequiredService<ISettingsScoped<DemoSetting>>();
         scope0.Dispose();
 
         var scope1 = container.CreateScope();
-        var settings2 = scope0.Container.GetInstance<ISettingsScoped<DemoSetting>>();
-        var settings3 = scope0.Container.GetInstance<ISettingsScoped<DemoSetting>>();
+        var settings2 = scope1.ServiceProvider.GetRequiredService<ISettingsScoped<DemoSetting>>();
+        var settings3 = scope1.ServiceProvider.GetRequiredService<ISettingsScoped<DemoSetting>>();
         scope1.Dispose();
 
         Assert.Single(settings0.Values);

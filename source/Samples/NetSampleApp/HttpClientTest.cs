@@ -9,9 +9,9 @@ using CreativeCoders.UnitTests.Net.Http;
 namespace NetSampleApp;
 
 [SuppressMessage("ReSharper", "UnusedVariable")]
-public class HttpClientTest
+public static class HttpClientTest
 {
-    public async Task Run()
+    public static async Task RunAsync()
     {
         var mockHttpClientContext = new MockHttpClientContext();
 

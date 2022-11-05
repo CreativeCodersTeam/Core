@@ -1,4 +1,6 @@
-﻿namespace CreativeCoders.Core.Collections;
+﻿#nullable enable
+
+namespace CreativeCoders.Core.Collections;
 
 public class ItemWithIndex<T>
 {

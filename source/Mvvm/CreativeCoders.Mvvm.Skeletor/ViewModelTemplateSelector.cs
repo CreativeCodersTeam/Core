@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using CreativeCoders.Di;
 using CreativeCoders.Mvvm.Skeletor.Infrastructure;
 using CreativeCoders.Mvvm.Wpf;
 
@@ -19,8 +18,8 @@ public class ViewModelTemplateSelector : DataTemplateSelector
             return;
         }
 
-        _viewLocator = ServiceLocator.GetInstance<IViewLocator>();
-        _dataTemplateGenerator = ServiceLocator.GetInstance<IDataTemplateGenerator>();
+        _viewLocator = SkeletorServiceLocator.GetRequiredService<IViewLocator>();
+        _dataTemplateGenerator = SkeletorServiceLocator.GetRequiredService<IDataTemplateGenerator>();
     }
 
     public override DataTemplate SelectTemplate(object item, DependencyObject container)

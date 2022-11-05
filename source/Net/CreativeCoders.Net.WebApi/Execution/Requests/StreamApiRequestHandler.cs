@@ -1,12 +1,13 @@
 ﻿using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using CreativeCoders.Core;
 using CreativeCoders.Core.IO;
 using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution.Requests;
 
-public class StreamApiRequestHandler : ApiRequestHandlerBase
+internal class StreamApiRequestHandler : ApiRequestHandlerBase
 {
     public StreamApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.Stream, httpClient) { }
 
@@ -21,6 +22,6 @@ public class StreamApiRequestHandler : ApiRequestHandlerBase
         response.EnsureSuccessStatusCode();
 
         return new StreamWrapper(await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-            null, _ => response.Dispose());
+            NullAction<bool>.Instance, _ => response.Dispose());
     }
 }

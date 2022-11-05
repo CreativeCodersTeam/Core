@@ -2,11 +2,11 @@
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
-using CreativeCoders.Di;
-using CreativeCoders.Di.Building;
+using CreativeCoders.Core.Reflection;
 using CreativeCoders.Mvvm.Skeletor.Infrastructure;
 using CreativeCoders.Mvvm.Wpf;
 using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CreativeCoders.Mvvm.Skeletor;
 
@@ -37,7 +37,7 @@ public abstract class BootStrapperBase
 
         Application = Application.Current;
         InitApplication();
-        CreateDiContainer();
+        BuildServiceProvider();
         ExecuteConfigure();
     }
 
@@ -45,10 +45,8 @@ public abstract class BootStrapperBase
     {
         var configureMethod =
             GetType().GetMethod("Configure", BindingFlags.NonPublic | BindingFlags.Instance);
-        if (configureMethod != null)
-        {
-            MethodExecutor.Execute(DiContainer, this, configureMethod);
-        }
+
+        configureMethod?.Execute(this, ServiceProvider);
     }
 
     protected virtual void InitApplication()
@@ -58,17 +56,16 @@ public abstract class BootStrapperBase
         Application.Exit += OnAppExit;
     }
 
-    private void CreateDiContainer()
+    private void BuildServiceProvider()
     {
-        var containerBuilder = CreateDiContainerBuilder();
+        var services = new ServiceCollection();
 
-        ConfigureDiContainer(containerBuilder);
+        ConfigureServices(services);
 
-        DiContainer = containerBuilder.Build();
-        ServiceLocator.Init(() => DiContainer);
+        ServiceProvider = services.BuildServiceProvider();
+
+        SkeletorServiceLocator.Init(ServiceProvider);
     }
-
-    protected abstract IDiContainerBuilder CreateDiContainerBuilder();
 
     private void OnAppExit(object sender, ExitEventArgs e)
     {
@@ -100,7 +97,7 @@ public abstract class BootStrapperBase
 
     protected virtual void OnUnhandledException(DispatcherUnhandledExceptionEventArgs e) { }
 
-    protected virtual void ConfigureDiContainer(IDiContainerBuilder containerBuilder) { }
+    protected virtual void ConfigureServices(IServiceCollection services) { }
 
     protected abstract DependencyObject CreateShell();
 
@@ -108,7 +105,7 @@ public abstract class BootStrapperBase
 
     protected bool AutoShowShellWindow { get; set; }
 
-    protected IDiContainer DiContainer { get; private set; }
+    protected IServiceProvider ServiceProvider { get; private set; }
 }
 
 [PublicAPI]
@@ -119,11 +116,11 @@ public abstract class BootStrapperBase<TMainViewModel> : BootStrapperBase
 
     protected sealed override DependencyObject CreateShell()
     {
-        var mainViewModel = DiContainer.GetInstance<TMainViewModel>();
+        var mainViewModel = ServiceProvider.GetRequiredService<TMainViewModel>();
 
         _configureMainViewModel?.Invoke(mainViewModel);
 
-        var mainWindow = DiContainer.GetInstance<IWindowManager>().CreateWindow(mainViewModel);
+        var mainWindow = ServiceProvider.GetRequiredService<IWindowManager>().CreateWindow(mainViewModel);
 
         return mainWindow;
     }

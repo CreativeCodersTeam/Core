@@ -6,15 +6,15 @@ namespace CreativeCoders.Net.XmlRpc.Proxy.Specification;
 
 public class ApiMethodInfo
 {
-    public MethodInfo Method { get; set; }
+    public MethodInfo Method { get; init; }
 
     public ApiMethodReturnType ReturnType { get; set; }
 
-    public string MethodName { get; set; }
+    public string MethodName { get; init; }
 
     public Type ValueType { get; set; }
 
-    public IMethodExceptionHandler ExceptionHandler { get; set; }
+    public IMethodExceptionHandler ExceptionHandler { get; init; }
 
-    public object DefaultResult { get; set; }
+    public object DefaultResult { get; init; }
 }

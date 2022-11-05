@@ -10,11 +10,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-		<ProjectReference Include="..\..\Di\CreativeCoders.Di\CreativeCoders.Di.csproj" />
 		<ProjectReference Include="..\CreativeCoders.Data\CreativeCoders.Data.csproj" />
 	</ItemGroup>
 

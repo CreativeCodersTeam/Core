@@ -54,6 +54,7 @@ public class MainViewModel : ViewModelBase
 
     public ICommandEx ShowSecondDetailsCommand { get; }
 
+    [UsedImplicitly]
     public object Details
     {
         get => _details;

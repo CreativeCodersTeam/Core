@@ -2,6 +2,8 @@
 using System.Text;
 using System.Threading.Tasks;
 
+#nullable enable
+
 namespace CreativeCoders.Core.IO;
 
 public static class StreamExtensions

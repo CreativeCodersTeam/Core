@@ -31,6 +31,6 @@ internal static class RoslynConvert
 
     public static TextSpan ConvertTextSpan(Microsoft.CodeAnalysis.Text.TextSpan locationSourceSpan)
     {
-        return new(locationSourceSpan.Start, locationSourceSpan.Length);
+        return new TextSpan(locationSourceSpan.Start, locationSourceSpan.Length);
     }
 }

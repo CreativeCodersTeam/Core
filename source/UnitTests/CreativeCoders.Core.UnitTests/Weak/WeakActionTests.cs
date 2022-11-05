@@ -108,7 +108,7 @@ public class WeakActionTests
     [Fact]
     public void CtorKeepAliveActionTarget()
     {
-        Action action = () => { };
+        var action = () => { };
         var weakAction = new WeakAction(action, KeepOwnerAliveMode.NotKeepAlive);
 
         Assert.False(weakAction.KeepOwnerAlive);

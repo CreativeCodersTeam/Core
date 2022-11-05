@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using JetBrains.Annotations;
 using Nuke.Common.IO;
@@ -6,6 +7,7 @@ using Nuke.Common.Utilities.Collections;
 
 namespace CreativeCoders.NukeBuild.BuildActions;
 
+[ExcludeFromCodeCoverage]
 [PublicAPI]
 public class CopyToArtifactsBuildAction : BuildActionBase<CopyToArtifactsBuildAction>
 {

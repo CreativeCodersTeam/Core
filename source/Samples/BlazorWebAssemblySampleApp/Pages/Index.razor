@@ -35,6 +35,7 @@
 
 Welcome to your new app.
 
+@* ReSharper disable once Asp.Entity *@
 <div style="content: url('https://api.iconify.design/ic:baseline-add-circle.svg?width=64px&height=64px'); vertical-align: -0.125em;"></div>
 
 <ItemsControl TItem="TestViewModel" ItemsSource="@ListItems">
@@ -47,8 +48,9 @@ Welcome to your new app.
 {
     private Timer _timer;
 
-    public BlazorObservableCollection<TestViewModel> ListItems { get; set; }
-        = new BlazorObservableCollection<TestViewModel>
+    // ReSharper disable MemberCanBePrivate.Global
+    public BlazorObservableCollection<TestViewModel> ListItems { get; }
+        = new()
         {
             new TestViewModel {IntValue = 1, Text = "Hello"},
             new TestViewModel {IntValue = 2, Text = "World"},
@@ -73,4 +75,5 @@ Welcome to your new app.
         }
         IsOutlined = !IsOutlined;
     }
+    // ReSharper restore MemberCanBePrivate.Global
 }

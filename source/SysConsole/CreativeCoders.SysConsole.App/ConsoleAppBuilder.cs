@@ -126,14 +126,21 @@ public class ConsoleAppBuilder
             return;
         }
 
-        if (Activator.CreateInstance(_startupType) is not IStartup startup)
-        {
-            throw new ArgumentException("Startup could not be created", nameof(_startupType));
-        }
+        var startup = CreateStartup(_startupType);
 
         startup.ConfigureServices(services, configuration);
 
         services.AddSingleton(startup);
+    }
+
+    private static IStartup CreateStartup(Type startupType)
+    {
+        if (Activator.CreateInstance(startupType) is not IStartup startup)
+        {
+            throw new ArgumentException("Startup could not be created", nameof(startupType));
+        }
+
+        return startup;
     }
 
     private IServiceProvider CreateServiceProvider()

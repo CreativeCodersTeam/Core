@@ -6,19 +6,19 @@ using CreativeCoders.Net.WebApi.Specification.Parameters;
 
 namespace CreativeCoders.Net.WebApi.Specification;
 
-public class ApiMethodInfo
+internal class ApiMethodInfo
 {
-    public MethodInfo Method { get; set; }
+    public MethodInfo Method { get; init; }
 
-    public ApiMethodReturnType ReturnType { get; set; }
+    public ApiMethodReturnType ReturnType { get; init; }
 
-    public HttpRequestMethod RequestMethod { get; set; }
+    public HttpRequestMethod RequestMethod { get; init; }
 
-    public IEnumerable<RequestHeader> HeaderDefinitions { get; set; }
+    public IEnumerable<RequestHeader> HeaderDefinitions { get; init; }
 
     public ApiMethodArgumentInfo[] ArgumentInfos { get; set; }
 
-    public string MethodUri { get; set; }
+    public string MethodUri { get; init; }
 
     public ParameterBodyDefinition Body { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Reflection;
 using CreativeCoders.Net.XmlRpc.Model.Values.Converters;
@@ -23,7 +24,8 @@ public class ObjectValueRequestHandler : XmlRpcRequestHandlerBase
             requestData).ConfigureAwait(false);
     }
 
-    // ReSharper disable once MemberCanBeMadeStatic.Local
+    [SuppressMessage("ReSharper", "MemberCanBeMadeStatic.Local")]
+    [SuppressMessage("Performance", "CA1822")]
     private async Task<T> GetObjectValueInternalAsync<T>(RequestData requestData)
     {
         var xmlRpcResponse = await requestData.Client

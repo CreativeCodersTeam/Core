@@ -20,5 +20,7 @@ public class StreamCompilationOutputData : ICompilationOutputData, IDisposable
     public void Dispose()
     {
         _stream?.Dispose();
+
+        GC.SuppressFinalize(this);
     }
 }

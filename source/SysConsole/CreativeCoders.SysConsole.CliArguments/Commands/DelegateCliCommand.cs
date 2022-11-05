@@ -10,7 +10,7 @@ public class DelegateCliCommand<TOptions> : CliCommandBase<TOptions>
     [SuppressMessage("ReSharper", "ConstantConditionalAccessQualifier")]
     [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "<Pending>")]
     public override Task<CliCommandResult> ExecuteAsync(TOptions options) =>
-        OnExecuteAsync?.Invoke(options) ?? throw new NotImplementedException();
+        OnExecuteAsync.Invoke(options) ?? throw new NotImplementedException();
 
     public override string Name { get; set; } = string.Empty;
 

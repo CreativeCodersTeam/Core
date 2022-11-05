@@ -7,7 +7,7 @@ using NHibernate;
 namespace CreativeCoders.Data.Nhibernate;
 
 [PublicAPI]
-public class NhibernateUnitOfWork : UnitOfWorkBase
+public sealed class NhibernateUnitOfWork : UnitOfWorkBase
 {
     private readonly ISession _session;
 
@@ -15,7 +15,7 @@ public class NhibernateUnitOfWork : UnitOfWorkBase
 
     public NhibernateUnitOfWork(ISessionFactory sessionFactory)
     {
-        Ensure.IsNotNull(sessionFactory, "sessionFactory");
+        Ensure.IsNotNull(sessionFactory, nameof(sessionFactory));
 
         _session = sessionFactory.OpenSession();
         _transaction = _session.BeginTransaction(IsolationLevel.ReadCommitted);
@@ -38,7 +38,8 @@ public class NhibernateUnitOfWork : UnitOfWorkBase
             _session.Close();
         }
 
-        GC.SuppressFinalize(this);
+        _transaction.Dispose();
+        _session.Dispose();
     }
 
     public override void Commit()

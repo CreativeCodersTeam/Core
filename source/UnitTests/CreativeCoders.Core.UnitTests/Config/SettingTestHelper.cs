@@ -10,6 +10,7 @@ namespace CreativeCoders.Core.UnitTests.Config;
 [SuppressMessage("ReSharper", "MemberCanBeMadeStatic.Global")]
 public class SettingTestHelper
 {
+    [SuppressMessage("Performance", "CA1822")]
     public void TestSettingCtor<T>(Func<ISettingFactory<T>, ISetting<T>> createSetting)
         where T : class
     {
@@ -22,6 +23,7 @@ public class SettingTestHelper
         Xunit.Assert.NotNull(setting);
     }
 
+    [SuppressMessage("Performance", "CA1822")]
     public void TestSettingValue<T>(Func<ISettingFactory<T>, ISetting<T>> createSetting, Func<T> createValue)
         where T : class
     {
@@ -41,6 +43,7 @@ public class SettingTestHelper
         Xunit.Assert.Same(value0, value1);
     }
 
+    [SuppressMessage("Performance", "CA1822")]
     public void TestSettingsCtor<T>(Func<ISettingsFactory<T>, ISettings<T>> createSettings)
         where T : class
     {
@@ -53,6 +56,7 @@ public class SettingTestHelper
         Xunit.Assert.NotNull(settings);
     }
 
+    [SuppressMessage("Performance", "CA1822")]
     public void TestSettingsValues<T>(Func<ISettingsFactory<T>, ISettings<T>> createSettings,
         Func<IEnumerable<T>> createValues)
         where T : class

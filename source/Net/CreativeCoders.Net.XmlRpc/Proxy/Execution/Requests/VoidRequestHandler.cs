@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using CreativeCoders.Net.XmlRpc.Proxy.Specification;
 
 namespace CreativeCoders.Net.XmlRpc.Proxy.Execution.Requests;
@@ -12,7 +13,8 @@ public class VoidRequestHandler : XmlRpcRequestHandlerBase
         return ExecuteAsync(requestData);
     }
 
-    // ReSharper disable once MemberCanBeMadeStatic.Local
+    [SuppressMessage("ReSharper", "MemberCanBeMadeStatic.Local")]
+    [SuppressMessage("Performance", "CA1822")]
     private async Task ExecuteAsync(RequestData requestData)
     {
         await ExecuteWithExceptionHandlingAsync(

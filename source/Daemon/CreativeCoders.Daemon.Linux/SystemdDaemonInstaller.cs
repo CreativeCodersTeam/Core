@@ -30,7 +30,7 @@ public class SystemdDaemonInstaller
 
     private static DaemonInfo LoadDaemonInfo()
     {
-        var path = Env.GetAppDirectory() ?? string.Empty;
+        var path = Env.GetAppDirectory();
         var fileName = FileSys.Path.Combine(path, "daemon.json");
         var infoFile = new DaemonInfoFile(fileName);
         return infoFile.LoadInfo();

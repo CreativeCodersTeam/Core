@@ -16,7 +16,7 @@ public static class MockHttpClientContextExtensions
     ///-------------------------------------------------------------------------------------------------
     public static HttpClient CreateClient(this MockHttpClientContext httpClientContext)
     {
-        return new(httpClientContext.CreateMessageHandler());
+        return new HttpClient(httpClientContext.CreateMessageHandler());
     }
 
     ///-------------------------------------------------------------------------------------------------

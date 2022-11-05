@@ -3,6 +3,7 @@ using System.Reflection;
 using CreativeCoders.Core;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 
 namespace CreativeCoders.Localization;
@@ -34,9 +35,9 @@ public static class LocalizationServiceCollectionExtensions
 
         services.AddLocalization(opts => opts.ResourcesPath = resourcesPath);
 
-        services.AddSingleton<IStringLocalizer, DefaultStringLocalizer>();
+        services.TryAddSingleton<IStringLocalizer, DefaultStringLocalizer>();
 
-        services.AddSingleton(typeof(IExtendedStringLocalizer<>),
+        services.TryAddSingleton(typeof(IExtendedStringLocalizer<>),
             typeof(DefaultExtendedStringLocalizer<>));
     }
 }

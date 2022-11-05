@@ -10,11 +10,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace NetSampleApp;
 
-public class HttpClientAuthTest
+public static class HttpClientAuthTest
 {
     private const string TokenRequestUrl = "http://localhost:5000/auth/tokenauth/requesttoken";
         
-    public async Task Run()
+    public static async Task RunAsync()
     {
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddHttpClient();

@@ -1,17 +1,21 @@
 ﻿using System.Net.Http;
+using CreativeCoders.Core;
 using CreativeCoders.DynamicCode.Proxying;
 using CreativeCoders.Net.WebApi.Execution;
 using CreativeCoders.Net.WebApi.Serialization;
 
 namespace CreativeCoders.Net.WebApi.Building;
 
-public class ApiBuilder : IApiBuilder
+internal class ApiBuilder : IApiBuilder
 {
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientFactory _httpClientFactory;
 
-    public ApiBuilder(HttpClient httpClient)
+    private readonly IProxyBuilderFactory _proxyBuilderFactory;
+
+    public ApiBuilder(IHttpClientFactory httpClientFactory, IProxyBuilderFactory proxyBuilderFactory)
     {
-        _httpClient = httpClient;
+        _httpClientFactory = Ensure.NotNull(httpClientFactory, nameof(httpClientFactory));
+        _proxyBuilderFactory = Ensure.NotNull(proxyBuilderFactory, nameof(proxyBuilderFactory));
     }
 
     public T BuildApi<T>(string baseUri, IDataFormatter defaultDataFormatter)
@@ -20,14 +24,14 @@ public class ApiBuilder : IApiBuilder
         var apiData = new ApiData
         {
             BaseUri = baseUri,
-            HttpClient = _httpClient,
+            HttpClient = _httpClientFactory.CreateClient(),
             DefaultDataFormatter = defaultDataFormatter
         };
 
         var apiStructure = new ApiAnalyzer<T>().Analyze();
 
         var interceptor = new ApiInvocator<T>(apiData, apiStructure);
-        var api = new ProxyBuilder<T>().Build(interceptor);
+        var api = _proxyBuilderFactory.Create<T>().Build(interceptor);
 
         return api;
     }

@@ -406,7 +406,7 @@ public class OptionParserTests
             .Should()
             .HaveCount(1)
             .And
-            .BeEquivalentTo(new[] {new OptionArgument() {Kind = OptionArgumentKind.Value, Value = "test"}});
+            .BeEquivalentTo(new[] {new OptionArgument {Kind = OptionArgumentKind.Value, Value = "test"}});
     }
 
     [Theory]

@@ -4,7 +4,7 @@ using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution.Requests;
 
-public class VoidApiRequestHandler : ApiRequestHandlerBase
+internal class VoidApiRequestHandler : ApiRequestHandlerBase
 {
     public VoidApiRequestHandler(HttpClient httpClient) : base(ApiMethodReturnType.Void, httpClient) { }
 

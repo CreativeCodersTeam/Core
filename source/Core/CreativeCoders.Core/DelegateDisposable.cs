@@ -1,8 +1,10 @@
 ﻿using System;
 
+#nullable enable
+
 namespace CreativeCoders.Core;
 
-public class DelegateDisposable : IDisposable
+public sealed class DelegateDisposable : IDisposable
 {
     private readonly Action _dispose;
 

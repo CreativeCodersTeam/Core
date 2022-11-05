@@ -6,7 +6,7 @@ namespace CreativeCoders.Core.Weak;
 
 [PublicAPI]
 [ExcludeFromCodeCoverage]
-public class NullDisposable : IDisposable
+public sealed class NullDisposable : IDisposable
 {
     public void Dispose() { }
 }

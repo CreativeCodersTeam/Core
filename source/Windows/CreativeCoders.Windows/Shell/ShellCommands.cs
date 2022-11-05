@@ -1,7 +1,9 @@
-﻿using JetBrains.Annotations;
+﻿using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Windows.Shell;
 
+[ExcludeFromCodeCoverage]
 [PublicAPI]
 public static class ShellCommands
 {

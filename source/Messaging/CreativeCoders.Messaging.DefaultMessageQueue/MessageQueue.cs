@@ -6,7 +6,7 @@ using CreativeCoders.Messaging.Core;
 
 namespace CreativeCoders.Messaging.DefaultMessageQueue;
 
-public class MessageQueue<T> : IMessageQueue<T>
+public sealed class MessageQueue<T> : IMessageQueue<T>
 {
     private readonly BufferBlock<T> _bufferBlock;
 
@@ -37,7 +37,7 @@ public class MessageQueue<T> : IMessageQueue<T>
 
     public static MessageQueue<T> Create(int maxQueueLength)
     {
-        return new(maxQueueLength);
+        return new MessageQueue<T>(maxQueueLength);
     }
 
     public async Task EnqueueAsync(T message)

@@ -14,7 +14,7 @@ public class ConfigurationTests
     public void CtorTest()
     {
         // ReSharper disable once ObjectCreationAsStatement
-        new Configuration();
+        var _ = new Configuration();
     }
 
     [Fact]

@@ -1,6 +1,6 @@
 ﻿namespace CreativeCoders.Net.WebApi.Specification;
 
-public class PathVariable
+internal class PathVariable
 {
     public PathVariable(string name, string value)
     {

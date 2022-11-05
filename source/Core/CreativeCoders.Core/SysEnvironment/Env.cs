@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
+#nullable enable
+
 namespace CreativeCoders.Core.SysEnvironment;
 
 [PublicAPI]
@@ -28,12 +30,12 @@ public static class Env
         return EnvironmentInstance.ExpandEnvironmentVariables(name);
     }
 
-    public static void FailFast(string message)
+    public static void FailFast(string? message)
     {
         EnvironmentInstance.FailFast(message);
     }
 
-    public static void FailFast(string message, Exception exception)
+    public static void FailFast(string? message, Exception? exception)
     {
         EnvironmentInstance.FailFast(message, exception);
     }
@@ -43,22 +45,22 @@ public static class Env
         return EnvironmentInstance.GetCommandLineArgs();
     }
 
-    public static string GetEnvironmentVariable(string variable)
+    public static string? GetEnvironmentVariable(string variable)
     {
         return EnvironmentInstance.GetEnvironmentVariable(variable);
     }
 
-    public static string GetEnvironmentVariable(string variable, EnvironmentVariableTarget target)
+    public static string? GetEnvironmentVariable(string variable, EnvironmentVariableTarget target)
     {
         return EnvironmentInstance.GetEnvironmentVariable(variable, target);
     }
 
-    public static IDictionary<string, object> GetEnvironmentVariables()
+    public static IDictionary<string, object?> GetEnvironmentVariables()
     {
         return EnvironmentInstance.GetEnvironmentVariables();
     }
 
-    public static IDictionary<string, object> GetEnvironmentVariables(EnvironmentVariableTarget target)
+    public static IDictionary<string, object?> GetEnvironmentVariables(EnvironmentVariableTarget target)
     {
         return EnvironmentInstance.GetEnvironmentVariables(target);
     }
@@ -79,12 +81,12 @@ public static class Env
         return EnvironmentInstance.GetLogicalDrives();
     }
 
-    public static void SetEnvironmentVariable(string variable, string value)
+    public static void SetEnvironmentVariable(string variable, string? value)
     {
         EnvironmentInstance.SetEnvironmentVariable(variable, value);
     }
 
-    public static void SetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target)
+    public static void SetEnvironmentVariable(string variable, string? value, EnvironmentVariableTarget target)
     {
         EnvironmentInstance.SetEnvironmentVariable(variable, value, target);
     }

@@ -69,7 +69,7 @@ public class HttpClientJwtExtensionsTests
             .WithVerb(HttpMethod.Post)
             .WithContentType(ContentMediaTypes.Application.Json)
             .WithContentText(JsonSerializer.Serialize(expectedTokenRequest,
-                new JsonSerializerOptions() {PropertyNamingPolicy = JsonNamingPolicy.CamelCase}));
+                new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase}));
     }
 
     [Fact]

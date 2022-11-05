@@ -34,7 +34,7 @@ public class ResponseModelWriter : ModelWriterBase<XmlRpcResponse>
 
     private XDocument CreateMultiCallResponse(XmlRpcResponse xmlRpcResponse, Encoding encoding)
     {
-        return new(new XDeclaration("1.0", encoding.BodyName.ToUpper(), null),
+        return new XDocument(new XDeclaration("1.0", encoding.BodyName.ToUpper(), null),
             CreateMultiCallResultValues(xmlRpcResponse.Results));
     }
 

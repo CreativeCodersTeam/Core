@@ -14,9 +14,7 @@ public class NhibernateRepository<TKey, TEntity> : IRepository<TKey, TEntity>
 
     public NhibernateRepository(ISession session)
     {
-        Ensure.IsNotNull(session, "session");
-
-        _session = session;
+        _session = Ensure.NotNull(session, nameof(session));
     }
 
     public IIncludableDataQueryable<TEntity> QueryAll()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
@@ -6,7 +7,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Net.XmlRpc.Server;
 
 [PublicAPI]
-public interface IXmlRpcServer
+public interface IXmlRpcServer : IDisposable
 {
     Task StartAsync();
 

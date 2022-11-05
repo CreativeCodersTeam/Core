@@ -2,10 +2,12 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Mvvm.Wpf;
 
 [ExcludeFromCodeCoverage]
+[PublicAPI]
 public static class GuiDevHelper
 {
     private static readonly Lazy<bool> IsInDesignModeLazy =

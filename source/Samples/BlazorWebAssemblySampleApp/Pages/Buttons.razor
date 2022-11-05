@@ -33,9 +33,10 @@
 </div>
 
 @code {
-    public IReadOnlyCollection<string> DropDownItems { get; set; } = new[] {"First Command", "More Info", "Quit"};
+    // ReSharper disable MemberCanBePrivate.Global
+    public IReadOnlyCollection<string> DropDownItems { get; } = new[] {"First Command", "More Info", "Quit"};
 
-    public IReadOnlyCollection<string> SecondDropDownItems { get; set; } = new[] {"Settings", "Profile", "Packages"};
+    public IReadOnlyCollection<string> SecondDropDownItems { get; } = new[] {"Settings", "Profile", "Packages"};
 
     public string FirstButtonText = "First Button";
 
@@ -58,5 +59,5 @@
         _customClickedCounter++;
         CustomText = $"Custom Button clicked {_customClickedCounter} time(s)";
     }
-
+    // ReSharper restore MemberCanBePrivate.Global
 }

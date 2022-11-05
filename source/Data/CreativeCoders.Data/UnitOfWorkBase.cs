@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Data;
 
@@ -16,6 +17,8 @@ public abstract class UnitOfWorkBase : IUnitOfWork
 
         _isDisposed = true;
         Dispose(true);
+
+        GC.SuppressFinalize(this);
     }
 
     protected abstract void Dispose(bool disposing);

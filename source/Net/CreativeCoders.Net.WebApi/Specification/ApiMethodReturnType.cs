@@ -1,6 +1,6 @@
 ﻿namespace CreativeCoders.Net.WebApi.Specification;
 
-public enum ApiMethodReturnType
+internal enum ApiMethodReturnType
 {
     Void,
     HttpResponseMessage,

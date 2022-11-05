@@ -47,5 +47,7 @@ public class ItemsControlBase<TItem> : ControlBase, IDisposable
         {
             ItemsSource.CollectionChanged -= ItemsSourceOnCollectionChanged;
         }
+
+        GC.SuppressFinalize(this);
     }
 }

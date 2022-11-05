@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Core.ObjectLinking;
 
 [PublicAPI]
+[AttributeUsage(AttributeTargets.Property)]
 public class PropertyLinkAttribute : Attribute
 {
     public PropertyLinkAttribute(Type targetType, string targetPropertyName)

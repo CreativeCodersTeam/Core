@@ -1,3 +1,4 @@
+using System;
 using System.Security;
 using System.Text;
 using CreativeCoders.Core.SysEnvironment;
@@ -164,12 +165,16 @@ public class StringExtensionTests
     }
 
     [Fact]
-    public void ToNormalString_NullSecureString_ReturnsEmptyString()
+    public void ToNormalString_NullSecureString_ThrowsException()
     {
         SecureString secureString = null;
 
         // ReSharper disable once ExpressionIsAlwaysNull
-        Assert.Equal(string.Empty, secureString.ToNormalString());
+        Action act = () => secureString!.ToNormalString();
+
+        act
+            .Should()
+            .Throw<ArgumentNullException>();
     }
 
     [Fact]

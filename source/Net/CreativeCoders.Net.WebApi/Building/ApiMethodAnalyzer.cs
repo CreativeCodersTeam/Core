@@ -10,7 +10,7 @@ using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Building;
 
-public class ApiMethodAnalyzer
+internal class ApiMethodAnalyzer
 {
     private readonly MethodInfo _methodInfo;
 

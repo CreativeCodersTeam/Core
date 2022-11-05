@@ -56,7 +56,7 @@ internal class CliActionRouter : ICliActionRouter
             }
         }
 
-        var route = routes.OrderByDescending(x => x.RouteParts.Length).FirstOrDefault();
+        var route = routes.MaxBy(x => x.RouteParts.Length);
 
         if (route == null)
         {

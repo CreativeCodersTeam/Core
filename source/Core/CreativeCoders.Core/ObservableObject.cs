@@ -6,14 +6,16 @@ using System.Runtime.CompilerServices;
 using CreativeCoders.Core.Reflection;
 using JetBrains.Annotations;
 
+#nullable enable
+
 namespace CreativeCoders.Core;
 
 [PublicAPI]
 public class ObservableObject : INotifyPropertyChanged, INotifyPropertyChanging
 {
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
@@ -24,7 +26,7 @@ public class ObservableObject : INotifyPropertyChanged, INotifyPropertyChanging
         OnPropertyChanged(propertyName);
     }
 
-    protected void Set<T>(ref T value, T newValue, [CallerMemberName] string propertyName = null)
+    protected void Set<T>(ref T? value, T? newValue, [CallerMemberName] string? propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(value, newValue))
         {
@@ -36,15 +38,15 @@ public class ObservableObject : INotifyPropertyChanged, INotifyPropertyChanging
         OnPropertyChanged(propertyName);
     }
 
-    protected void Set<T>(ref T value, T newValue, Expression<Func<T>> propertyExpression)
+    protected void Set<T>(ref T? value, T? newValue, Expression<Func<T>> propertyExpression)
     {
         var propertyName = propertyExpression.GetMemberName();
         Set(ref value, newValue, propertyName);
     }
 
-    public event PropertyChangingEventHandler PropertyChanging;
+    public event PropertyChangingEventHandler? PropertyChanging;
 
-    protected virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
+    protected virtual void OnPropertyChanging([CallerMemberName] string? propertyName = null)
     {
         PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
     }

@@ -5,6 +5,8 @@ using System.Security;
 using System.Text;
 using JetBrains.Annotations;
 
+#nullable enable
+
 namespace CreativeCoders.Core.Text;
 
 [PublicAPI]
@@ -17,7 +19,7 @@ public static class StringExtension
     ///
     /// <returns>   Text as a SecureString. </returns>
     ///-------------------------------------------------------------------------------------------------
-    public static SecureString ToSecureString(this string text)
+    public static SecureString ToSecureString(this string? text)
     {
         return ToSecureString(text, false);
     }
@@ -30,7 +32,7 @@ public static class StringExtension
     ///
     /// <returns>   Text as a readonly SecureString. </returns>
     ///-------------------------------------------------------------------------------------------------
-    public static SecureString ToSecureString(this string text, bool makeReadOnly)
+    public static SecureString ToSecureString(this string? text, bool makeReadOnly)
     {
         var result = new SecureString();
 
@@ -59,15 +61,17 @@ public static class StringExtension
     ///
     /// <returns>   SecureString as a string. </returns>
     ///-------------------------------------------------------------------------------------------------
-    public static string ToNormalString(this SecureString secureString)
+    public static string? ToNormalString(this SecureString secureString)
     {
-        if (secureString == null || secureString.Length == 0)
+        Ensure.NotNull(secureString, nameof(secureString));
+
+        if (secureString.Length == 0)
         {
             return string.Empty;
         }
 
         var ptr = IntPtr.Zero;
-        string result;
+        string? result;
 
         try
         {

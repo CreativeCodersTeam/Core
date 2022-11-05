@@ -1,7 +1,9 @@
-﻿using Nuke.Common.Tools.DotNet;
+﻿using System.Diagnostics.CodeAnalysis;
+using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.BuildActions;
 
+[ExcludeFromCodeCoverage]
 public class RestoreBuildAction : BuildActionBase<RestoreBuildAction>
 {
     protected override void OnExecute()

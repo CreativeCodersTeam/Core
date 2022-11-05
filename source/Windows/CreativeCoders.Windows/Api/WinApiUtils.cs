@@ -1,9 +1,11 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Windows.Api;
 
 /// <summary>   Misc methods for working with LCID. </summary>
+[ExcludeFromCodeCoverage]
 [PublicAPI]
 public class WinApiUtils
 {

@@ -7,7 +7,7 @@ using CreativeCoders.Net.WebApi.Specification;
 
 namespace CreativeCoders.Net.WebApi.Execution.Requests;
 
-public class ResponseApiRequestHandler : ApiRequestHandlerBase
+internal class ResponseApiRequestHandler : ApiRequestHandlerBase
 {
     public ResponseApiRequestHandler(HttpClient httpClient) :
         base(ApiMethodReturnType.Response, httpClient) { }

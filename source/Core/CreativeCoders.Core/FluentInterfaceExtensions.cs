@@ -2,6 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
+#nullable enable
+
 namespace CreativeCoders.Core;
 
 [ExcludeFromCodeCoverage]

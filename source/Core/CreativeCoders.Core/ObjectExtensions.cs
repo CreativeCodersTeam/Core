@@ -2,23 +2,24 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
+#nullable enable
+
 namespace CreativeCoders.Core;
 
 [PublicAPI]
 public static class ObjectExtensions
 {
-    public static string ToStringSafe(this object obj, string defaultValue)
+    public static string ToStringSafe(this object? obj, string defaultValue)
     {
         return obj?.ToString() ?? defaultValue;
     }
 
-    [return: System.Diagnostics.CodeAnalysis.NotNull]
-    public static string ToStringSafe(this object obj)
+    public static string ToStringSafe(this object? obj)
     {
         return obj.ToStringSafe(string.Empty);
     }
 
-    public static T As<T>(this object instance, T defaultValue)
+    public static T? As<T>(this object instance, T? defaultValue)
     {
         if (instance is T value)
         {
@@ -28,7 +29,7 @@ public static class ObjectExtensions
         return defaultValue;
     }
 
-    public static T As<T>(this object instance) => As<T>(instance, default);
+    public static T? As<T>(this object instance) => As<T>(instance, default);
 
     public static async ValueTask TryDisposeAsync(this object instance)
     {
@@ -43,7 +44,7 @@ public static class ObjectExtensions
         }
     }
 
-    public static T GetPropertyValue<T>(this object instance, string propertyName)
+    public static T? GetPropertyValue<T>(this object instance, string propertyName)
     {
         var propInfo = instance.GetType().GetProperty(propertyName);
 
@@ -52,10 +53,10 @@ public static class ObjectExtensions
             throw new MissingMemberException(instance.GetType().Name, propertyName);
         }
 
-        return (T) propInfo.GetValue(instance);
+        return (T?) propInfo.GetValue(instance);
     }
 
-    public static void SetPropertyValue<T>(this object instance, string propertyName, T value)
+    public static void SetPropertyValue<T>(this object instance, string propertyName, T? value)
     {
         var propInfo = instance.GetType().GetProperty(propertyName);
 

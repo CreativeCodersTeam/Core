@@ -4,5 +4,5 @@ namespace CreativeCoders.Net.XmlRpc.Proxy.Specification;
 
 public class ApiStructure
 {
-    public IEnumerable<ApiMethodInfo> MethodInfos { get; set; }
+    public IEnumerable<ApiMethodInfo> MethodInfos { get; init; }
 }

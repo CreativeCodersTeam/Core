@@ -2,6 +2,8 @@
 using System.Security.Cryptography;
 using JetBrains.Annotations;
 
+#nullable enable
+
 namespace CreativeCoders.Core.Text;
 
 /// <summary>   A static class for creating a random string. </summary>

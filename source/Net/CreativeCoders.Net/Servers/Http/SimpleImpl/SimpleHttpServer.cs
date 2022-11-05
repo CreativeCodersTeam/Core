@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Net.Servers.Http.SimpleImpl;
 
 [PublicAPI]
-public class SimpleHttpServer : IHttpServer, IDisposable
+public sealed class SimpleHttpServer : IHttpServer, IDisposable
 {
     private readonly HttpListener _httpListener;
 
