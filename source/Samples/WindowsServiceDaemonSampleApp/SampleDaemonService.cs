@@ -11,7 +11,7 @@ public class SampleDaemonService : IDaemonService
     // ReSharper disable once SuggestBaseTypeForParameter
     public SampleDaemonService(ILogger<SampleDaemonService> logger, SampleWorkerConfig workerConfig)
     {
-        logger.LogInformation("SampleDaemonService created. TestData = {testData}", workerConfig.TestData);
+        logger.LogInformation("SampleDaemonService created. TestData = {TestData}", workerConfig.TestData);
     }
 
     public Task StartAsync()
