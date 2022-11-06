@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using CreativeCoders.Net.Servers.Http.AspNetCore;
 using CreativeCoders.Net.XmlRpc;
 using CreativeCoders.Net.XmlRpc.Definition;
@@ -38,7 +39,7 @@ public class XmlRpcIntegrationTests
         const string text = "abcd";
         const int index = 1234;
 
-        var (server, demoService, client) = await CreateXmlRpcServerAndClient().ConfigureAwait(false);
+        var (server, _, client) = await CreateXmlRpcServerAndClient().ConfigureAwait(false);
 
         // Act
         var actualText = await client.DoubleTextAsync(text, index).ConfigureAwait(false);
@@ -87,12 +88,13 @@ public class XmlRpcDemoService
     }
 
     [XmlRpcMethod]
+    [SuppressMessage("Performance", "CA1822")]
     public Task<string> DoubleText(string text, int index)
     {
         return Task.FromResult($"{text}{text}{index}");
     }
 
-    public string Text { get; set; }
+    public string Text { get; private set; }
 }
 
 public interface IXmlRpcDemoClient
