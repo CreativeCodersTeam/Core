@@ -32,6 +32,8 @@ public static class ServiceCollectionExtensions
 
     public static void AddObjectFactory(this IServiceCollection services)
     {
+        services.TryAddSingleton<IObjectFactory, DefaultObjectFactory>();
+
         services.TryAddSingleton(typeof(IObjectFactory<>), typeof(DefaultObjectFactory<>));
     }
 }
