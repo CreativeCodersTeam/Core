@@ -10,5 +10,5 @@ internal class DaemonHostSetupInfo
 
     public string UninstallArg { get; set; } = "--uninstall";
 
-
+    public string? DefinitionFileName { get; set; }
 }

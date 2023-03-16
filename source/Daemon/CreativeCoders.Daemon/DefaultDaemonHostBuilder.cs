@@ -48,6 +48,13 @@ internal class DefaultDaemonHostBuilder<TDaemonService> : IDaemonHostBuilder
         return this;
     }
 
+    public IDaemonHostBuilder WithDefinitionFile(string fileName)
+    {
+        _daemonHostSetupInfo.DefinitionFileName = fileName;
+
+        return this;
+    }
+
     public IDaemonHost Build()
     {
         var builder = _daemonHostSetupInfo.Args != null

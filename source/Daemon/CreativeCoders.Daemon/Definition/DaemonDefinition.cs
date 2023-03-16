@@ -7,13 +7,13 @@ namespace CreativeCoders.Daemon.Definition;
 public class DaemonDefinition
 {
     /// <summary> Gets or sets the name of the daemon. </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     /// <summary> Gets or sets the display name of the daemon. </summary>
-    public string DisplayName { get; set; }
+    public string DisplayName { get; set; } = string.Empty;
 
     /// <summary> Gets or sets the description. </summary>
-    public string Description { get; set; }
+    public string Description { get; set; } = string.Empty;
 
     /// <summary> Gets or sets the arguments. </summary>
     public string[] Arguments { get; set; } = Array.Empty<string>();
@@ -22,10 +22,10 @@ public class DaemonDefinition
     public DaemonAccount Account { get; set; } = DaemonAccount.LocalSystem;
 
     /// <summary> Gets or sets the user. </summary>
-    public string User { get; set; }
+    public string? User { get; set; }
 
     /// <summary> Gets or sets the password. </summary>
-    public string Password { get; set; }
+    public string? Password { get; set; }
 
     /// <summary> Gets or sets the start mode. </summary>
     public DaemonStartMode StartMode { get; set; } = DaemonStartMode.Manual;
@@ -37,13 +37,13 @@ public class DaemonDefinition
     public string[] DaemonsDependedOn { get; set; } = Array.Empty<string>();
 
     /// <summary> Gets or sets the working directory. </summary>
-    public string WorkingDirectory { get; set; }
+    public string WorkingDirectory { get; set; } = string.Empty;
 
     /// <summary> Gets or sets the identifier for syslog. </summary>
-    public string SyslogIdentifier { get; set; }
+    public string SyslogIdentifier { get; set; } = string.Empty;
 
     /// <summary> Gets or sets the environment. </summary>
-    public string Environment { get; set; }
+    public string Environment { get; set; } = string.Empty;
 
     /// <summary> Gets or sets daemons to start before this daemon gets started. </summary>
     public string[] StartBeforeDaemons { get; set; } = Array.Empty<string>();

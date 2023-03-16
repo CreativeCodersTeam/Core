@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using CreativeCoders.Daemon.Definition;
+using Microsoft.Extensions.Hosting;
 
 namespace CreativeCoders.Daemon;
 
@@ -18,15 +19,33 @@ internal class DefaultDaemonHost : IDaemonHost
     {
         if (_daemonHostSetupInfo.Args?.Contains(_daemonHostSetupInfo.InstallArg) == true)
         {
-            //CreateInstaller().Install();
+            await RunInstallerAsync((definition, installer) => installer.Install(definition));
         }
 
         if (_daemonHostSetupInfo.Args?.Contains(_daemonHostSetupInfo.UninstallArg) == true)
         {
-            //CreateInstaller().Uninstall();
+            await RunInstallerAsync((definition, installer) => installer.Uninstall(definition));
         }
 
         await _host.RunAsync().ConfigureAwait(false);
+    }
+
+    private async Task RunInstallerAsync(Action<DaemonDefinition, IDaemonInstaller> execute)
+    {
+        if (string.IsNullOrWhiteSpace(_daemonHostSetupInfo.DefinitionFileName))
+        {
+            throw new InvalidOperationException("No definition file set");
+        }
+
+        var definition = await DaemonDefinitionFile.LoadAsync(_daemonHostSetupInfo.DefinitionFileName)
+            .ConfigureAwait(false);
+
+        if (definition == null)
+        {
+            throw new InvalidOperationException("Definition could not be deserialized");
+        }
+
+        execute(definition, CreateInstaller());
     }
 
     private IDaemonInstaller CreateInstaller()

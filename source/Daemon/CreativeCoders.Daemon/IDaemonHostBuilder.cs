@@ -14,5 +14,7 @@ public interface IDaemonHostBuilder
     IDaemonHostBuilder WithInstaller<TInstaller>()
         where TInstaller : class, IDaemonInstaller;
 
+    IDaemonHostBuilder WithDefinitionFile(string fileName);
+
     IDaemonHost Build();
 }
