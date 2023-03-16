@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
+using CreativeCoders.Daemon;
 using CreativeCoders.Daemon.Windows;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WindowsServiceDaemonSampleApp;
 
@@ -12,6 +14,13 @@ public static class Program
             TestData = "SampleData"
         };
 
-        await new WindowsServiceDaemon<SampleDaemonService, SampleWorkerConfig>(workerConfig).RunAsync(args);
+        await DaemonHostBuilder
+            .CreateBuilder<SampleDaemonService>()
+            .WithArgs(args)
+            .ConfigureServices(x => x.AddSingleton(workerConfig))
+            .UseWindowsService()
+            .Build()
+            .RunAsync()
+            .ConfigureAwait(false);
     }
 }
