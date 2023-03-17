@@ -2,7 +2,7 @@
 
 namespace CreativeCoders.Daemon;
 
-public class DaemonWorker : BackgroundService
+internal class DaemonWorker : BackgroundService
 {
     private readonly IDaemonService _daemonService;
 
@@ -10,11 +10,11 @@ public class DaemonWorker : BackgroundService
     {
         _daemonService = daemonService;
     }
-    
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await _daemonService.StartAsync().ConfigureAwait(false);
-        
+
         while (!stoppingToken.IsCancellationRequested)
         {
             await Task.Delay(1000, stoppingToken).ConfigureAwait(false);

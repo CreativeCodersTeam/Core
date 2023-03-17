@@ -3,10 +3,12 @@ using System.Text;
 using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.Core.Text;
 using CreativeCoders.Daemon.Definition;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Daemon.Windows;
 
 /// <summary> The windows service daemon installer. </summary>
+[UsedImplicitly]
 public class WindowsServiceInstaller : IDaemonInstaller
 {
     /// <summary> Installs a windows service based on the daemon.json file in the app directory. </summary>
@@ -39,7 +41,7 @@ public class WindowsServiceInstaller : IDaemonInstaller
         }
     }
 
-    private string GetStartMode(DaemonDefinition daemonDefinition)
+    private static string GetStartMode(DaemonDefinition daemonDefinition)
     {
         return daemonDefinition.StartMode switch
         {
@@ -53,7 +55,7 @@ public class WindowsServiceInstaller : IDaemonInstaller
         };
     }
 
-    private string GetUser(DaemonDefinition daemonDefinition)
+    private static string GetUser(DaemonDefinition daemonDefinition)
     {
         return daemonDefinition.Account switch
         {

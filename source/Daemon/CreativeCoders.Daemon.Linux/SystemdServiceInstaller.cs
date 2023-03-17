@@ -4,10 +4,12 @@ using System.Text;
 using CreativeCoders.Core.Text;
 using CreativeCoders.Core.IO;
 using CreativeCoders.Daemon.Definition;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Daemon.Linux;
 
 /// <summary>   A systemd daemon installer. </summary>
+[UsedImplicitly]
 public class SystemdServiceInstaller : IDaemonInstaller
 {
     private const string SystemdConfigPath = "/etc/systemd/system";
@@ -49,7 +51,7 @@ public class SystemdServiceInstaller : IDaemonInstaller
         Process.Start(command, string.Join(" ", args)).WaitForExit();
     }
 
-    private string CreateServiceConfig(DaemonDefinition daemonDefinition)
+    private static string CreateServiceConfig(DaemonDefinition daemonDefinition)
     {
         var serviceConfig = new StringBuilder();
 
