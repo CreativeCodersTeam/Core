@@ -11,7 +11,10 @@ namespace CreativeCoders.Daemon.Windows;
 [UsedImplicitly]
 public class WindowsServiceInstaller : IDaemonInstaller
 {
-    /// <summary> Installs a windows service based on the daemon.json file in the app directory. </summary>
+    /// <summary>
+    /// Installs a windows service based daemon definition.
+    /// </summary>
+    /// <param name="daemonDefinition">The definition to install</param>
     public void Install(DaemonDefinition daemonDefinition)
     {
         var startMode = GetStartMode(daemonDefinition);
@@ -69,8 +72,9 @@ public class WindowsServiceInstaller : IDaemonInstaller
     }
 
     /// <summary>
-    ///     Uninstalls the windows service specified in the daemon.json file in the app directory.
+    /// Uninstalls the windows service specified in the daemon definition.
     /// </summary>
+    /// <param name="daemonDefinition"></param>
     public void Uninstall(DaemonDefinition daemonDefinition)
     {
         var startInfo = new ProcessStartInfo("sc.exe", $"delete {daemonDefinition.Name}");

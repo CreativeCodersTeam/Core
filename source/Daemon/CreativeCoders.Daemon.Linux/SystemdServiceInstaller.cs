@@ -15,8 +15,9 @@ public class SystemdServiceInstaller : IDaemonInstaller
     private const string SystemdConfigPath = "/etc/systemd/system";
 
     /// <summary>
-    /// Installs a systemd service based on the daemon.json file in the app directory.
+    /// Installs a systemd service based daemon definition.
     /// </summary>
+    /// <param name="daemonDefinition">The definition to install</param>
     public void Install(DaemonDefinition daemonDefinition)
     {
         var configContent = CreateServiceConfig(daemonDefinition);
@@ -32,8 +33,9 @@ public class SystemdServiceInstaller : IDaemonInstaller
     }
 
     /// <summary>
-    /// Uninstalls the systemd service specified in the daemon.json file in the app directory.
+    /// Uninstalls the systemd service specified in the daemon definition.
     /// </summary>
+    /// <param name="daemonDefinition"></param>
     public void Uninstall(DaemonDefinition daemonDefinition)
     {
         var serviceName = daemonDefinition.Name + ".service";
@@ -76,11 +78,13 @@ public class SystemdServiceInstaller : IDaemonInstaller
                 !(daemonDefinition.StartBeforeDaemons.Length > 1))
             .AppendLine("")
             .AppendLine("[Service]")
+            .AppendLine("Type=notify")
             .AppendLine($"WorkingDirectory={daemonDefinition.WorkingDirectory}")
             .AppendLine($"ExecStart=/usr/bin/dotnet {Assembly.GetEntryAssembly()?.Location}")
             .AppendLine("Restart=always")
             .AppendLine("RestartSec=10")
-            .AppendLine($"SyslogIdentifier={daemonDefinition.SyslogIdentifier}")
+            .AppendLine($"SyslogIdentifier={daemonDefinition.SyslogIdentifier}",
+                !string.IsNullOrWhiteSpace(daemonDefinition.SyslogIdentifier))
             .AppendLine($"User={daemonDefinition.User}", string.IsNullOrWhiteSpace(daemonDefinition.User))
             .AppendLine($"Environment={daemonDefinition.Environment}",
                 string.IsNullOrWhiteSpace(daemonDefinition.Environment))
