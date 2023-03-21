@@ -6,6 +6,11 @@ namespace CreativeCoders.Daemon.Linux;
 
 public static class DaemonHostBuilderExtensions
 {
+    /// <summary>
+    /// Setup the <see cref="IDaemonHostBuilder"/> for building a systemd daemon service
+    /// </summary>
+    /// <param name="daemonHostBuilder"></param>
+    /// <returns>The same instance of <see cref="IDaemonHostBuilder"/></returns>
     public static IDaemonHostBuilder UseSystemd(this IDaemonHostBuilder daemonHostBuilder)
     {
         return daemonHostBuilder

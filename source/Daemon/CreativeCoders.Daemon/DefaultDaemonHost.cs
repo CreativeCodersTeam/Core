@@ -19,12 +19,18 @@ internal class DefaultDaemonHost : IDaemonHost
     {
         if (_daemonHostSetupInfo.Args?.Contains(_daemonHostSetupInfo.InstallArg) == true)
         {
-            await RunInstallerAsync((definition, installer) => installer.Install(definition));
+            await RunInstallerAsync((definition, installer) => installer.Install(definition))
+                .ConfigureAwait(false);
+
+            return;
         }
 
         if (_daemonHostSetupInfo.Args?.Contains(_daemonHostSetupInfo.UninstallArg) == true)
         {
-            await RunInstallerAsync((definition, installer) => installer.Uninstall(definition));
+            await RunInstallerAsync((definition, installer) => installer.Uninstall(definition))
+                .ConfigureAwait(false);
+
+            return;
         }
 
         await _host.RunAsync().ConfigureAwait(false);

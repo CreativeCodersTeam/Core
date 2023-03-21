@@ -25,6 +25,10 @@ public class SystemdServiceInstaller : IDaemonInstaller
 
         var serviceConfigFileName = FileSys.Path.Combine(SystemdConfigPath, serviceName);
         FileSys.File.WriteAllText(serviceConfigFileName, configContent);
+
+        RunAndWaitSystemctl("enable", serviceName);
+
+        RunAndWaitSystemctl("start", serviceName);
     }
 
     /// <summary>

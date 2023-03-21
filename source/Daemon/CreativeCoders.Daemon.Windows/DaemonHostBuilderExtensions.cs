@@ -6,6 +6,11 @@ namespace CreativeCoders.Daemon.Windows;
 
 public static class DaemonHostBuilderExtensions
 {
+    /// <summary>
+    /// Setup the <see cref="IDaemonHostBuilder"/> for building a Windows service
+    /// </summary>
+    /// <param name="daemonHostBuilder"></param>
+    /// <returns>The same instance of <see cref="IDaemonHostBuilder"/></returns>
     public static IDaemonHostBuilder UseWindowsService(this IDaemonHostBuilder daemonHostBuilder)
     {
         return daemonHostBuilder
