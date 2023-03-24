@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using CreativeCoders.Daemon.Base;
+using CreativeCoders.Daemon;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
