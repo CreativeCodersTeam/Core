@@ -1,10 +1,11 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Xml.Linq;
 using CreativeCoders.Core.IO;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Daemon.Definition;
 
+[PublicAPI]
 public static class DaemonDefinitionFile
 {
     /// <summary>

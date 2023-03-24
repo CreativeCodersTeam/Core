@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace CreativeCoders.Daemon;
 
+[PublicAPI]
 public interface IDaemonHostBuilder
 {
     /// <summary>
@@ -33,6 +35,17 @@ public interface IDaemonHostBuilder
     /// <typeparam name="TInstaller">Type of the installer used</typeparam>
     /// <returns>The same instance of the <see cref="IDaemonHostBuilder"/> for chaining.</returns>
     IDaemonHostBuilder WithInstaller<TInstaller>()
+        where TInstaller : class, IDaemonInstaller;
+
+    /// <summary>
+    /// Use installer with type <typeparamref name="TInstaller"/> and set arguments for install and
+    /// uninstall via console arguments
+    /// </summary>
+    /// <param name="installArg"></param>
+    /// <param name="uninstallArg"></param>
+    /// <typeparam name="TInstaller"></typeparam>
+    /// <returns></returns>
+    IDaemonHostBuilder WithInstaller<TInstaller>(string installArg, string uninstallArg)
         where TInstaller : class, IDaemonInstaller;
 
     /// <summary>

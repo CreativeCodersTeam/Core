@@ -48,6 +48,15 @@ internal class DefaultDaemonHostBuilder<TDaemonService> : IDaemonHostBuilder
         return this;
     }
 
+    public IDaemonHostBuilder WithInstaller<TInstaller>(string installArg, string uninstallArg)
+        where TInstaller : class, IDaemonInstaller
+    {
+        _daemonHostSetupInfo.InstallArg = installArg;
+        _daemonHostSetupInfo.UninstallArg = uninstallArg;
+
+        return WithInstaller<TInstaller>();
+    }
+
     public IDaemonHostBuilder WithDefinitionFile(string fileName)
     {
         _daemonHostSetupInfo.DefinitionFileName = fileName;
