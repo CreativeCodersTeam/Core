@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace CreativeCoders.Daemon;
+﻿namespace CreativeCoders.Daemon;
 
 public interface IDaemonService
 {

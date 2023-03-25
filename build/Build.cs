@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.NukeBuild;
 using CreativeCoders.NukeBuild.BuildActions;
-using CreativeCoders.NukeBuild.Components;
 using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
@@ -16,7 +14,6 @@ using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.GitVersion;
-using Octokit;
 using Project = Nuke.Common.ProjectModel.Project;
 
 [PublicAPI]

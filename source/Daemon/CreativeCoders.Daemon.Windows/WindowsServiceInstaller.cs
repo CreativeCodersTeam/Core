@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text;
 using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.Core.Text;
