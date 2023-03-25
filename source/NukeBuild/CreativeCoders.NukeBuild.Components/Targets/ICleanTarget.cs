@@ -1,45 +1,31 @@
-﻿using System.Linq;
-using CreativeCoders.Core;
-using CreativeCoders.Core.Collections;
+﻿using CreativeCoders.Core;
 using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
 using Nuke.Common;
-using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.Components.Targets;
 
-public interface ICleanTarget : INukeBuild
+public interface ICleanTarget : INukeBuild, ICleanTargetSettings
 {
     Target Clean => _ => _
         .Before<IRestoreTarget>()
         .Executes(() =>
         {
-            var settings = new CleanTargetSettings()
-                .Apply(ConfigureCleanSettings);
+            DotNetTasks.DotNetClean(x => x
+                .Apply(ConfigureCleanSettings));
 
-            DotNetTasks.DotNetClean(settings);
-
-            settings.DirectoriesToClean.SafeDeleteDirectories();
+            DirectoriesToClean.SafeDeleteDirectories();
         });
 
-    CleanTargetSettings ConfigureCleanSettings(CleanTargetSettings cleanSettings)
+    DotNetCleanSettings ConfigureCleanSettings(DotNetCleanSettings cleanSettings)
         => ConfigureDefaultCleanSettings(cleanSettings);
 
-    sealed CleanTargetSettings ConfigureDefaultCleanSettings(CleanTargetSettings cleanSettings)
+    sealed DotNetCleanSettings ConfigureDefaultCleanSettings(DotNetCleanSettings cleanSettings)
     {
-        var settings = cleanSettings.When(this.TryAs<ISolutionParameter>(out var solutionParameter), x => x
-            .SetProject(solutionParameter!.Solution));
-
-        if (!this.TryAs<ISourceDirectoryParameter>(out var sourceDirectoryParameter))
-        {
-            return settings;
-        }
-
-        return sourceDirectoryParameter
-            .SourceDirectory
-            .GlobDirectories("**/bin", "**/obj")
-            .Aggregate(settings, (currentSettings, path) => currentSettings.AddDirectoryForClean(path));;
+        return cleanSettings
+            .When(this.TryAs<ISolutionParameter>(out var solutionParameter),
+                x => x.SetProject(solutionParameter!.Solution));
     }
 }

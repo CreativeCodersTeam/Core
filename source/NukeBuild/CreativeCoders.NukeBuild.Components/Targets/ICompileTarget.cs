@@ -28,6 +28,6 @@ public interface ICompileTarget : INukeBuild, IRestoreTarget, ISolutionParameter
                 .SetAssemblyVersion(gitVersion.AssemblySemVer)
                 .SetFileVersion(gitVersion.AssemblySemFileVer)
                 .SetInformationalVersion(gitVersion.InformationalVersion))
-            .EnableNoRestore();
+            .SetNoRestore(SucceededTargets.Contains(this.As<IRestoreTarget>()?.Restore));
     }
 }

@@ -86,16 +86,11 @@
             "enum": [
               "Clean",
               "Compile",
-              "CoverageReport",
-              "CreateNuGetPackages",
-              "DeployToDevNuGet",
-              "DeployToNuGet",
               "Pack",
               "PushToDevNuGet",
               "PushToNuGet",
               "Restore",
               "RunBuild",
-              "RunTest",
               "Test"
             ]
           }
@@ -112,16 +107,11 @@
             "enum": [
               "Clean",
               "Compile",
-              "CoverageReport",
-              "CreateNuGetPackages",
-              "DeployToDevNuGet",
-              "DeployToNuGet",
               "Pack",
               "PushToDevNuGet",
               "PushToNuGet",
               "Restore",
               "RunBuild",
-              "RunTest",
               "Test"
             ]
           }

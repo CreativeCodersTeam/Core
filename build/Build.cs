@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.NukeBuild;
 using CreativeCoders.NukeBuild.BuildActions;
 using CreativeCoders.NukeBuild.Components;
@@ -28,22 +29,11 @@ class Build : NukeBuild, IBuildInfo,
     ICleanTarget, ICompileTarget, IRestoreTarget, ITestTarget
 {
 
-    public Build()
-    {
-        ISourceDirectoryParameter.SourceDirectoryRelativePath = "source1";
-        
-    }
-
-    CleanTargetSettings ICleanTarget.ConfigureCleanSettings(CleanTargetSettings settings)
-    {
-        return (this as ICleanTarget).ConfigureDefaultCleanSettings(settings)
-            .AddDirectoryForClean(((AbsolutePath) @"C:\temp\nextjs")!);
-    }
+    IList<AbsolutePath> ICleanTargetSettings.DirectoriesToClean =>
+        this.As<ICleanTargetSettings>().DefaultDirectoriesToClean
+            .AddRange(this.As<ITestTargetSettings>().TestBaseDirectory);
     
     public static int Main() => Execute<Build>(x => x.RunBuild);
-
-    // [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-    // readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Parameter] string DevNuGetSource;
 
@@ -63,13 +53,13 @@ class Build : NukeBuild, IBuildInfo,
 
     AbsolutePath ArtifactsDirectory => RootDirectory / ".artifacts";
 
-    AbsolutePath TestBaseDirectory => RootDirectory / ".tests";
+    //AbsolutePath TestBaseDirectory => RootDirectory / ".tests";
 
-    AbsolutePath TestResultsDirectory => TestBaseDirectory / "results";
+    //AbsolutePath TestResultsDirectory => TestBaseDirectory / "results";
 
     AbsolutePath TestProjectsBasePath => (this as ISourceDirectoryParameter).SourceDirectory / "UnitTests";
 
-    AbsolutePath CoverageDirectory => TestBaseDirectory / "coverage";
+    //AbsolutePath CoverageDirectory => TestBaseDirectory / "coverage";
 
     AbsolutePath TempNukeDirectory => RootDirectory / ".nuke" / "temp";
 
@@ -91,12 +81,12 @@ class Build : NukeBuild, IBuildInfo,
         ? solutionParameter.Solution.GetProjects("*.UnitTests")
         : Array.Empty<Project>();
 
-    Target CoverageReport => _ => _
-        .After<ITestTarget>()
-        .UseBuildAction<CoverageReportAction>(this,
-            x => x
-                .SetReports(TestBaseDirectory / "coverage" / "**" / "*.xml")
-                .SetTargetDirectory(TestBaseDirectory / "coverage_report"));
+    // Target CoverageReport => _ => _
+    //     .After<ITestTarget>()
+    //     .UseBuildAction<CoverageReportAction>(this,
+    //         x => x
+    //             .SetReports(TestBaseDirectory / "coverage" / "**" / "*.xml")
+    //             .SetTargetDirectory(TestBaseDirectory / "coverage_report"));
 
     Target Pack => _ => _
         .After((this as ICompileTarget).Compile)
@@ -126,22 +116,22 @@ class Build : NukeBuild, IBuildInfo,
         .DependsOn((this as ICleanTarget).Clean)
         .DependsOn((this as ICompileTarget).Compile);
 
-    Target RunTest => _ => _
-        .DependsOn(RunBuild)
-        .DependsOn<ITestTarget>()
-        .DependsOn(CoverageReport);
+    // Target RunTest => _ => _
+    //     .DependsOn(RunBuild)
+    //     .DependsOn<ITestTarget>()
+    //     .DependsOn(CoverageReport);
 
-    Target CreateNuGetPackages => _ => _
-        .DependsOn(RunTest)
-        .DependsOn(Pack);
+    // Target CreateNuGetPackages => _ => _
+    //     .DependsOn(RunTest)
+    //     .DependsOn(Pack);
 
-    Target DeployToDevNuGet => _ => _
-        .DependsOn(CreateNuGetPackages)
-        .DependsOn(PushToDevNuGet);
+    // Target DeployToDevNuGet => _ => _
+    //     .DependsOn(CreateNuGetPackages)
+    //     .DependsOn(PushToDevNuGet);
 
-    Target DeployToNuGet => _ => _
-        .DependsOn(CreateNuGetPackages)
-        .DependsOn(PushToNuGet);
+    // Target DeployToNuGet => _ => _
+    //     .DependsOn(CreateNuGetPackages)
+    //     .DependsOn(PushToNuGet);
 
     string IBuildInfo.Configuration => (this as IConfigurationParameter).Configuration;
 
