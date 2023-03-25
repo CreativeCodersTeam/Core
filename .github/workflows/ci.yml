@@ -15,19 +15,19 @@ jobs:
       contents: read
       checks: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: actions/setup-dotnet@v1
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '6.0.x'
           source-url: https://nuget.pkg.github.com/CreativeCodersTeam/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Prepare environment
-        run: |
-          dotnet tool install --global GitVersion.Tool
+#      - name: Prepare environment
+#        run: |
+#          dotnet tool install --global GitVersion.Tool
 
       - name: Build Solution
         shell: pwsh
