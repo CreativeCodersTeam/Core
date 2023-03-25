@@ -215,6 +215,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Daemon.Linux
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Daemon.Windows", "Daemon\CreativeCoders.Daemon.Windows\CreativeCoders.Daemon.Windows.csproj", "{30E75E1A-146F-422E-8C14-3AE0F7FB99B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.NukeBuild.Components", "NukeBuild\CreativeCoders.NukeBuild.Components\CreativeCoders.NukeBuild.Components.csproj", "{5D68956E-580F-4A2A-B13F-1477E6DE6FCF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -511,6 +513,10 @@ Global
 		{30E75E1A-146F-422E-8C14-3AE0F7FB99B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30E75E1A-146F-422E-8C14-3AE0F7FB99B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30E75E1A-146F-422E-8C14-3AE0F7FB99B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D68956E-580F-4A2A-B13F-1477E6DE6FCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D68956E-580F-4A2A-B13F-1477E6DE6FCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D68956E-580F-4A2A-B13F-1477E6DE6FCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D68956E-580F-4A2A-B13F-1477E6DE6FCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -611,6 +617,7 @@ Global
 		{3D078D4E-0437-4AD1-90DE-1FD858DA595B} = {99FFD9AA-7AEB-4A9D-881D-00B7277C3494}
 		{74B31A58-28CB-4B90-B2A4-C64F339FC93D} = {99FFD9AA-7AEB-4A9D-881D-00B7277C3494}
 		{30E75E1A-146F-422E-8C14-3AE0F7FB99B1} = {99FFD9AA-7AEB-4A9D-881D-00B7277C3494}
+		{5D68956E-580F-4A2A-B13F-1477E6DE6FCF} = {20FCFF4D-882F-4663-81F4-A146D17B62A0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}

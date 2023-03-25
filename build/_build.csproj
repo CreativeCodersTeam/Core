@@ -17,6 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\source\NukeBuild\CreativeCoders.NukeBuild.Components\CreativeCoders.NukeBuild.Components.csproj" />
 	  <ProjectReference Include="..\source\NukeBuild\CreativeCoders.NukeBuild\CreativeCoders.NukeBuild.csproj" />
 	</ItemGroup>
 

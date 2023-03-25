@@ -1,6 +1,8 @@
 using System;
 using CreativeCoders.NukeBuild;
 using CreativeCoders.NukeBuild.BuildActions;
+using CreativeCoders.NukeBuild.Components;
+using CreativeCoders.NukeBuild.Components.Parameters;
 using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.Execution;
@@ -12,12 +14,12 @@ using Nuke.Common.Tools.GitVersion;
 [PublicAPI]
 [CheckBuildProjectConfigurations(TimeoutInMilliseconds = 10000)]
 [UnsetVisualStudioEnvironmentVariables]
-class Build : NukeBuild, IBuildInfo
+class Build : NukeBuild, IBuildInfo, ISolutionParameter, IConfigurationParameter, IBuild
 {
     public static int Main() => Execute<Build>(x => x.RunBuild);
 
-    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+    // [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
+    // readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Parameter] string DevNuGetSource;
 
@@ -27,7 +29,7 @@ class Build : NukeBuild, IBuildInfo
 
     [Parameter] string NuGetApiKey;
 
-    [Solution] readonly Solution Solution;
+    //[Solution] readonly Solution Solution;
 
     [GitRepository] readonly GitRepository GitRepository;
 
@@ -129,9 +131,9 @@ class Build : NukeBuild, IBuildInfo
         .DependsOn(CreateNuGetPackages)
         .DependsOn(PushToNuGet);
 
-    string IBuildInfo.Configuration => Configuration;
+    string IBuildInfo.Configuration => (this as IConfigurationParameter).Configuration;
 
-    Solution IBuildInfo.Solution => Solution;
+    Solution IBuildInfo.Solution => (this as ISolutionParameter).Solution;
 
     GitRepository IBuildInfo.GitRepository => GitRepository;
 
