@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using CreativeCoders.Core;
 using CreativeCoders.NukeBuild;
 using CreativeCoders.NukeBuild.BuildActions;
 using CreativeCoders.NukeBuild.Components;
@@ -13,6 +16,7 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.GitVersion;
 using Octokit;
+using Project = Nuke.Common.ProjectModel.Project;
 
 [PublicAPI]
 [UnsetVisualStudioEnvironmentVariables]
@@ -21,12 +25,13 @@ class Build : NukeBuild, IBuildInfo,
     IConfigurationParameter,
     IGitVersionParameter,
     ISourceDirectoryParameter,
-    ICleanTarget, ICompileTarget, IRestoreTarget
+    ICleanTarget, ICompileTarget, IRestoreTarget, ITestTarget
 {
 
     public Build()
     {
-        //(this as ISourceDirectoryParameter).SourceDirectory
+        ISourceDirectoryParameter.SourceDirectoryRelativePath = "source1";
+        
     }
 
     CleanTargetSettings ICleanTarget.ConfigureCleanSettings(CleanTargetSettings settings)
@@ -70,24 +75,24 @@ class Build : NukeBuild, IBuildInfo,
 
     const string PackageProjectUrl = "https://github.com/CreativeCodersTeam/Core";
 
-    // Target Restore => _ => _
-    //     .Before((this as ICompileTarget).Compile)
-    //     .UseBuildAction<RestoreBuildAction>(this);
+    // Target Test => _ => _
+    //     .After((this as ICompileTarget).Compile)
+    //     .UseBuildAction<DotNetTestAction>(this,
+    //         x => x
+    //             .SetTestProjectsBaseDirectory(TestProjectsBasePath)
+    //             .SetProjectsPattern("**/*.csproj")
+    //             .SetResultsDirectory(TestResultsDirectory)
+    //             .UseLogger("trx")
+    //             .SetResultFileExt("trx")
+    //             .EnableCoverage()
+    //             .SetCoverageDirectory(CoverageDirectory));
 
-    Target Test => _ => _
-        .After((this as ICompileTarget).Compile)
-        .UseBuildAction<DotNetTestAction>(this,
-            x => x
-                .SetTestProjectsBaseDirectory(TestProjectsBasePath)
-                .SetProjectsPattern("**/*.csproj")
-                .SetResultsDirectory(TestResultsDirectory)
-                .UseLogger("trx")
-                .SetResultFileExt("trx")
-                .EnableCoverage()
-                .SetCoverageDirectory(CoverageDirectory));
+    public IEnumerable<Project> TestProjects => this.TryAs<ISolutionParameter>(out var solutionParameter)
+        ? solutionParameter.Solution.GetProjects("*.UnitTests")
+        : Array.Empty<Project>();
 
     Target CoverageReport => _ => _
-        .After(Test)
+        .After<ITestTarget>()
         .UseBuildAction<CoverageReportAction>(this,
             x => x
                 .SetReports(TestBaseDirectory / "coverage" / "**" / "*.xml")
@@ -123,7 +128,7 @@ class Build : NukeBuild, IBuildInfo,
 
     Target RunTest => _ => _
         .DependsOn(RunBuild)
-        .DependsOn(Test)
+        .DependsOn<ITestTarget>()
         .DependsOn(CoverageReport);
 
     Target CreateNuGetPackages => _ => _

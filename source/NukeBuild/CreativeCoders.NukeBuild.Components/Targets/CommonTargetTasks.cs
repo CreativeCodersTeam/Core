@@ -2,6 +2,7 @@
 using CreativeCoders.Core.IO;
 using JetBrains.Annotations;
 using Nuke.Common.IO;
+using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.Components.Targets;
 
@@ -21,5 +22,10 @@ public static class CommonTargetTasks
     public static void SafeDeleteDirectories(this IEnumerable<AbsolutePath> directories)
     {
         directories.ForEach(SafeDeleteDirectory);
+    }
+
+    public static void TestProject(string testProjectFile, DotNetTestSettings settings)
+    {
+
     }
 }
