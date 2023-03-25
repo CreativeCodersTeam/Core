@@ -1,4 +1,6 @@
-﻿namespace CreativeCoders.Daemon;
+﻿using System;
+
+namespace CreativeCoders.Daemon;
 
 internal class DaemonHostSetupInfo
 {

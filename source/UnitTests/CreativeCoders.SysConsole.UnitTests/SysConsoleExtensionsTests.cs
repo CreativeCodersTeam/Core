@@ -3,7 +3,7 @@ using FakeItEasy;
 using FluentAssertions;
 using Xunit;
 
-namespace CreativeCoders.SysConsole;
+namespace CreativeCoders.SysConsole.UnitTests;
 
 public class SysConsoleExtensionsTests
 {
