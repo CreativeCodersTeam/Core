@@ -3,6 +3,8 @@ using CreativeCoders.NukeBuild;
 using CreativeCoders.NukeBuild.BuildActions;
 using CreativeCoders.NukeBuild.Components;
 using CreativeCoders.NukeBuild.Components.Parameters;
+using CreativeCoders.NukeBuild.Components.Targets;
+using CreativeCoders.NukeBuild.Components.Targets.Settings;
 using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.Execution;
@@ -10,12 +12,29 @@ using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.GitVersion;
+using Octokit;
 
 [PublicAPI]
-[CheckBuildProjectConfigurations(TimeoutInMilliseconds = 10000)]
 [UnsetVisualStudioEnvironmentVariables]
-class Build : NukeBuild, IBuildInfo, ISolutionParameter, IConfigurationParameter, IBuild
+class Build : NukeBuild, IBuildInfo,
+    ISolutionParameter,
+    IConfigurationParameter,
+    IGitVersionParameter,
+    ISourceDirectoryParameter,
+    ICleanTarget, ICompileTarget, IRestoreTarget
 {
+
+    public Build()
+    {
+        //(this as ISourceDirectoryParameter).SourceDirectory
+    }
+
+    CleanTargetSettings ICleanTarget.ConfigureCleanSettings(CleanTargetSettings settings)
+    {
+        return (this as ICleanTarget).ConfigureDefaultCleanSettings(settings)
+            .AddDirectoryForClean(((AbsolutePath) @"C:\temp\nextjs")!);
+    }
+    
     public static int Main() => Execute<Build>(x => x.RunBuild);
 
     // [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
@@ -35,7 +54,7 @@ class Build : NukeBuild, IBuildInfo, ISolutionParameter, IConfigurationParameter
 
     [GitVersion] readonly GitVersion GitVersion;
 
-    AbsolutePath SourceDirectory => RootDirectory / "source";
+    //AbsolutePath SourceDirectory => RootDirectory / "source";
 
     AbsolutePath ArtifactsDirectory => RootDirectory / ".artifacts";
 
@@ -43,7 +62,7 @@ class Build : NukeBuild, IBuildInfo, ISolutionParameter, IConfigurationParameter
 
     AbsolutePath TestResultsDirectory => TestBaseDirectory / "results";
 
-    AbsolutePath TestProjectsBasePath => SourceDirectory / "UnitTests";
+    AbsolutePath TestProjectsBasePath => (this as ISourceDirectoryParameter).SourceDirectory / "UnitTests";
 
     AbsolutePath CoverageDirectory => TestBaseDirectory / "coverage";
 
@@ -51,23 +70,12 @@ class Build : NukeBuild, IBuildInfo, ISolutionParameter, IConfigurationParameter
 
     const string PackageProjectUrl = "https://github.com/CreativeCodersTeam/Core";
 
-    Target Clean => _ => _
-        .Before(Restore)
-        .UseBuildAction<CleanBuildAction>(this,
-            x => x
-                .AddDirectoryForClean(ArtifactsDirectory)
-                .AddDirectoryForClean(TestBaseDirectory));
-
-    Target Restore => _ => _
-        .Before(Compile)
-        .UseBuildAction<RestoreBuildAction>(this);
-
-    Target Compile => _ => _
-        .After(Clean)
-        .UseBuildAction<DotNetCompileBuildAction>(this);
+    // Target Restore => _ => _
+    //     .Before((this as ICompileTarget).Compile)
+    //     .UseBuildAction<RestoreBuildAction>(this);
 
     Target Test => _ => _
-        .After(Compile)
+        .After((this as ICompileTarget).Compile)
         .UseBuildAction<DotNetTestAction>(this,
             x => x
                 .SetTestProjectsBaseDirectory(TestProjectsBasePath)
@@ -86,7 +94,7 @@ class Build : NukeBuild, IBuildInfo, ISolutionParameter, IConfigurationParameter
                 .SetTargetDirectory(TestBaseDirectory / "coverage_report"));
 
     Target Pack => _ => _
-        .After(Compile)
+        .After((this as ICompileTarget).Compile)
         .UseBuildAction<PackBuildAction>(this,
             x => x
                 .SetPackageLicenseExpression(PackageLicenseExpressions.ApacheLicense20)
@@ -110,9 +118,8 @@ class Build : NukeBuild, IBuildInfo, ISolutionParameter, IConfigurationParameter
                 .SetApiKey(NuGetApiKey));
 
     Target RunBuild => _ => _
-        .DependsOn(Clean)
-        .DependsOn(Restore)
-        .DependsOn(Compile);
+        .DependsOn((this as ICleanTarget).Clean)
+        .DependsOn((this as ICompileTarget).Compile);
 
     Target RunTest => _ => _
         .DependsOn(RunBuild)
@@ -139,7 +146,7 @@ class Build : NukeBuild, IBuildInfo, ISolutionParameter, IConfigurationParameter
 
     IVersionInfo IBuildInfo.VersionInfo => new GitVersionWrapper(GitVersion, "0.0.0", 1);
 
-    AbsolutePath IBuildInfo.SourceDirectory => SourceDirectory;
+    AbsolutePath IBuildInfo.SourceDirectory => (this as ISourceDirectoryParameter).SourceDirectory;
 
     AbsolutePath IBuildInfo.ArtifactsDirectory => ArtifactsDirectory;
 }

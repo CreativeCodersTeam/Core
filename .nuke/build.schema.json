@@ -84,7 +84,6 @@
           "items": {
             "type": "string",
             "enum": [
-              "Build",
               "Clean",
               "Compile",
               "CoverageReport",
@@ -111,7 +110,6 @@
           "items": {
             "type": "string",
             "enum": [
-              "Build",
               "Clean",
               "Compile",
               "CoverageReport",

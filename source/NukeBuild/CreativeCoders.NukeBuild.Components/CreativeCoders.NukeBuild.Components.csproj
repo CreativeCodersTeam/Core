@@ -10,4 +10,8 @@
         <PackageReference Include="Nuke.Common" Version="6.3.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+    </ItemGroup>
+
 </Project>
