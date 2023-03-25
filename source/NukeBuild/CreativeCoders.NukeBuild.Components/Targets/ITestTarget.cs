@@ -10,7 +10,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 public interface ITestTarget : INukeBuild, ITestTargetSettings, ICompileTarget
 {
     Target Test => _ => _
-        .After(Compile)
+        .DependsOn(Compile)
         .Executes(() =>
         {
             DotNetTasks.DotNetTest(x => x
