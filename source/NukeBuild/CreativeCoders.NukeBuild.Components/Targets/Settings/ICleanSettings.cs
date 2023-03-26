@@ -5,7 +5,7 @@ using Nuke.Common.IO;
 
 namespace CreativeCoders.NukeBuild.Components.Targets.Settings;
 
-public interface ICleanTargetSettings
+public interface ICleanSettings
 {
     IList<AbsolutePath> DirectoriesToClean => DefaultDirectoriesToClean;
 

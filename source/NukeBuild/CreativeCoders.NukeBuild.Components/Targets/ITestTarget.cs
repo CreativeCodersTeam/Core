@@ -7,7 +7,7 @@ using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.Components.Targets;
 
-public interface ITestTarget : INukeBuild, ITestTargetSettings, ICompileTarget
+public interface ITestTarget : ICompileTarget, ITestSettings
 {
     Target Test => _ => _
         .DependsOn(Compile)
@@ -21,7 +21,7 @@ public interface ITestTarget : INukeBuild, ITestTargetSettings, ICompileTarget
     DotNetTestSettings ConfigureTestProjectSettings(DotNetTestSettings settings, Project project)
         => ConfigureDefaultTestProjectSettings(settings, project);
 
-    DotNetTestSettings ConfigureDefaultTestProjectSettings(DotNetTestSettings settings, Project project)
+    sealed DotNetTestSettings ConfigureDefaultTestProjectSettings(DotNetTestSettings settings, Project project)
     {
         var testResultFile = Path.Combine(TestResultsDirectory, $"{project.Name}.trx");
         return settings
@@ -37,9 +37,8 @@ public interface ITestTarget : INukeBuild, ITestTargetSettings, ICompileTarget
         return testSettings
             .WhenNotNull(this as IConfigurationParameter, (x, configurationParameter) => x
                 .SetConfiguration(configurationParameter.Configuration))
-            .WhenNotNull(this as ICodeCoverageSettings, (x, codeCoverageSettings) => x
-                .When(codeCoverageSettings.CodeCoverageIsEnabled, x => x
-                    .SetDataCollector("XPlat Code Coverage")
-                    .SetResultsDirectory(codeCoverageSettings.CoverageDirectory)));
+            .When(GenerateCodeCoverage, x => x
+                .SetDataCollector("XPlat Code Coverage")
+                .SetResultsDirectory(CoverageDirectory));
     }
 }

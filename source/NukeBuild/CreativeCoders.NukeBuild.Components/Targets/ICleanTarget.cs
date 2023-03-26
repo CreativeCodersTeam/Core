@@ -7,7 +7,7 @@ using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.Components.Targets;
 
-public interface ICleanTarget : INukeBuild, ICleanTargetSettings
+public interface ICleanTarget : INukeBuild, ICleanSettings
 {
     Target Clean => _ => _
         .Before<IRestoreTarget>()

@@ -6,10 +6,10 @@ using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.Components.Targets;
 
-public interface ICompileTarget : INukeBuild, IRestoreTarget, ISolutionParameter
+public interface ICompileTarget : ISolutionParameter
 {
     Target Compile => _ => _
-        .DependsOn(Restore)
+        .TryDependsOn<IRestoreTarget>()
         .Executes(() => DotNetTasks.DotNetBuild(x => x
             .Apply(ConfigureCompileSettings)
         ));

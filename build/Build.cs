@@ -23,12 +23,13 @@ class Build : NukeBuild, IBuildInfo,
     IConfigurationParameter,
     IGitVersionParameter,
     ISourceDirectoryParameter,
-    ICleanTarget, ICompileTarget, IRestoreTarget, ITestTarget, ICodeCoverageSettings
+    IArtifactsSettings,
+    ICleanTarget, ICompileTarget, IRestoreTarget, ITestTarget, ICodeCoverageReportTarget, IPackTarget
 {
 
-    IList<AbsolutePath> ICleanTargetSettings.DirectoriesToClean =>
-        this.As<ICleanTargetSettings>().DefaultDirectoriesToClean
-            .AddRange(this.As<ITestTargetSettings>().TestBaseDirectory);
+    IList<AbsolutePath> ICleanSettings.DirectoriesToClean =>
+        this.As<ICleanSettings>().DefaultDirectoriesToClean
+            .AddRange(this.As<ITestSettings>().TestBaseDirectory);
     
     public static int Main() => Execute<Build>(x => x.RunBuild);
 
@@ -40,59 +41,28 @@ class Build : NukeBuild, IBuildInfo,
 
     [Parameter] string NuGetApiKey;
 
-    //[Solution] readonly Solution Solution;
-
     [GitRepository] readonly GitRepository GitRepository;
-
-    [GitVersion] readonly GitVersion GitVersion;
-
-    //AbsolutePath SourceDirectory => RootDirectory / "source";
 
     AbsolutePath ArtifactsDirectory => RootDirectory / ".artifacts";
 
-    //AbsolutePath TestBaseDirectory => RootDirectory / ".tests";
+    //AbsolutePath TestProjectsBasePath => (this as ISourceDirectoryParameter).SourceDirectory / "UnitTests";
 
-    //AbsolutePath TestResultsDirectory => TestBaseDirectory / "results";
-
-    AbsolutePath TestProjectsBasePath => (this as ISourceDirectoryParameter).SourceDirectory / "UnitTests";
-
-    //AbsolutePath CoverageDirectory => TestBaseDirectory / "coverage";
-
-    AbsolutePath TempNukeDirectory => RootDirectory / ".nuke" / "temp";
+    //AbsolutePath TempNukeDirectory => RootDirectory / ".nuke" / "temp";
 
     const string PackageProjectUrl = "https://github.com/CreativeCodersTeam/Core";
-
-    // Target Test => _ => _
-    //     .After((this as ICompileTarget).Compile)
-    //     .UseBuildAction<DotNetTestAction>(this,
-    //         x => x
-    //             .SetTestProjectsBaseDirectory(TestProjectsBasePath)
-    //             .SetProjectsPattern("**/*.csproj")
-    //             .SetResultsDirectory(TestResultsDirectory)
-    //             .UseLogger("trx")
-    //             .SetResultFileExt("trx")
-    //             .EnableCoverage()
-    //             .SetCoverageDirectory(CoverageDirectory));
 
     public IEnumerable<Project> TestProjects => this.TryAs<ISolutionParameter>(out var solutionParameter)
         ? solutionParameter.Solution.GetProjects("*.UnitTests")
         : Array.Empty<Project>();
 
-    // Target CoverageReport => _ => _
-    //     .After<ITestTarget>()
-    //     .UseBuildAction<CoverageReportAction>(this,
+    // Target Pack => _ => _
+    //     .After((this as ICompileTarget).Compile)
+    //     .UseBuildAction<PackBuildAction>(this,
     //         x => x
-    //             .SetReports(TestBaseDirectory / "coverage" / "**" / "*.xml")
-    //             .SetTargetDirectory(TestBaseDirectory / "coverage_report"));
-
-    Target Pack => _ => _
-        .After((this as ICompileTarget).Compile)
-        .UseBuildAction<PackBuildAction>(this,
-            x => x
-                .SetPackageLicenseExpression(PackageLicenseExpressions.ApacheLicense20)
-                .SetPackageProjectUrl(PackageProjectUrl)
-                .SetCopyright($"{DateTime.Now.Year} CreativeCoders")
-                .SetEnableNoBuild(false));
+    //             .SetPackageLicenseExpression(PackageLicenseExpressions.ApacheLicense20)
+    //             .SetPackageProjectUrl(PackageProjectUrl)
+    //             .SetCopyright($"{DateTime.Now.Year} CreativeCoders")
+    //             .SetEnableNoBuild(false));
 
     Target PushToDevNuGet => _ => _
         .Requires(() => DevNuGetSource)
@@ -136,7 +106,7 @@ class Build : NukeBuild, IBuildInfo,
 
     GitRepository IBuildInfo.GitRepository => GitRepository;
 
-    IVersionInfo IBuildInfo.VersionInfo => new GitVersionWrapper(GitVersion, "0.0.0", 1);
+    IVersionInfo IBuildInfo.VersionInfo => new GitVersionWrapper((this as IGitVersionParameter).GitVersion, "0.0.0", 1);
 
     AbsolutePath IBuildInfo.SourceDirectory => (this as ISourceDirectoryParameter).SourceDirectory;
 
