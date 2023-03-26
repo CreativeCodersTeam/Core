@@ -11,6 +11,4 @@ public interface ITestTargetSettings : INukeBuild
     AbsolutePath TestBaseDirectory => RootDirectory / ".tests";
 
     AbsolutePath TestResultsDirectory => TestBaseDirectory / "results";
-
-    AbsolutePath CoverageDirectory => TestBaseDirectory / "coverage";
 }

@@ -23,7 +23,7 @@ class Build : NukeBuild, IBuildInfo,
     IConfigurationParameter,
     IGitVersionParameter,
     ISourceDirectoryParameter,
-    ICleanTarget, ICompileTarget, IRestoreTarget, ITestTarget
+    ICleanTarget, ICompileTarget, IRestoreTarget, ITestTarget, ICodeCoverageSettings
 {
 
     IList<AbsolutePath> ICleanTargetSettings.DirectoriesToClean =>
