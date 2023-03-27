@@ -26,13 +26,12 @@ class Build : NukeBuild,
     IArtifactsSettings,
     ICleanTarget, ICompileTarget, IRestoreTarget, ITestTarget, ICodeCoverageReportTarget, IPackTarget
 {
+    public static int Main() => Execute<Build>(x => ((ITestTarget)x).Test);
 
     IList<AbsolutePath> ICleanSettings.DirectoriesToClean =>
         this.As<ICleanSettings>().DefaultDirectoriesToClean
             .AddRange(this.As<ITestSettings>().TestBaseDirectory);
     
-    public static int Main() => Execute<Build>(x => ((ITestTarget)x).Test);
-
     public IEnumerable<Project> TestProjects => this.TryAs<ISolutionParameter>(out var solutionParameter)
         ? solutionParameter.Solution.GetProjects("*.UnitTests")
         : Array.Empty<Project>();

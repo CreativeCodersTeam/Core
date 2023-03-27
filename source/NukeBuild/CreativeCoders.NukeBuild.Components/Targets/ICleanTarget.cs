@@ -1,16 +1,18 @@
 ﻿using CreativeCoders.Core;
 using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
+using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.Components.Targets;
 
+[PublicAPI]
 public interface ICleanTarget : INukeBuild, ICleanSettings
 {
     Target Clean => _ => _
-        .Before<IRestoreTarget>()
+        .TryBefore<IRestoreTarget>()
         .Executes(() =>
         {
             DotNetTasks.DotNetClean(x => x

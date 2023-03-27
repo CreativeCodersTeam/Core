@@ -2,17 +2,18 @@
 using CreativeCoders.Core;
 using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
+using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.Components.Targets;
 
-public interface IPackTarget : INukeBuild, ICompileTarget, IPackSettings
+[PublicAPI]
+public interface IPackTarget : IPackSettings, ISolutionParameter
 {
-
     Target Pack => _ => _
-        .DependsOn<ICompileTarget>()
+        .TryDependsOn<ICompileTarget>()
         .Executes(() =>
         {
             DotNetTasks.DotNetPack(s => s

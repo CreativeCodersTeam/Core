@@ -1,5 +1,6 @@
 ﻿using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
+using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
@@ -7,10 +8,11 @@ using Nuke.Common.Tools.DotNet;
 
 namespace CreativeCoders.NukeBuild.Components.Targets;
 
-public interface ITestTarget : ICompileTarget, ITestSettings
+[PublicAPI]
+public interface ITestTarget : ITestSettings
 {
     Target Test => _ => _
-        .DependsOn(Compile)
+        .TryBefore<ICodeCoverageReportTarget>()
         .Executes(() =>
         {
             DotNetTasks.DotNetTest(x => x

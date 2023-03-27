@@ -1,11 +1,10 @@
 ﻿using CreativeCoders.Core;
 using CreativeCoders.Core.SysEnvironment;
-using Nuke.Common;
 using Nuke.Common.IO;
 
 namespace CreativeCoders.NukeBuild.Components.Targets.Settings;
 
-public interface ICodeCoverageReportSettings : INukeBuild, ITestSettings
+public interface ICodeCoverageReportSettings : ITestSettings
 {
     AbsolutePath TargetDirectory => this.TryAs<ITestSettings>(out var testSettings)
         ? testSettings.TestBaseDirectory / "coverage_report"
