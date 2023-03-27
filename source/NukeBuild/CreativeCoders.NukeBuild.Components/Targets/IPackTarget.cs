@@ -36,15 +36,14 @@ public interface IPackTarget : INukeBuild, ICompileTarget, IPackSettings
                 .SetOutputDirectory(OutputDirectory))
             .WhenNotNull(this as IGitVersionParameter, (x, gitVersionParameter) => x
                 .SetVersion(gitVersionParameter.GitVersion?.NuGetVersionV2))
-            //.FluentIf(_enableNoBuild, x => x.EnableNoBuild())
+            .SetNoBuild(SucceededTargets.Contains(this.As<ICompileTarget>()?.Compile))
             .When(!string.IsNullOrWhiteSpace(Copyright), x => x
-                .SetCopyright(Copyright));
-            // .FluentIf(!string.IsNullOrWhiteSpace(_copyright), x => x.SetCopyright(_copyright))
-            // .FluentIf(!string.IsNullOrWhiteSpace(_packageProjectUrl),
-            //     x => x.SetPackageProjectUrl(_packageProjectUrl))
-            // .FluentIf(!string.IsNullOrEmpty(_packageLicenseUrl),
-            //     x => x.SetPackageLicenseUrl(_packageLicenseUrl))
-            // .FluentIf(!string.IsNullOrWhiteSpace(_packageLicenseExpression),
-            //     x => x.SetProperty("PackageLicenseExpression", _packageLicenseExpression))
+                .SetCopyright(Copyright))
+            .When(!string.IsNullOrWhiteSpace(PackageProjectUrl), x => x
+                .SetPackageProjectUrl(PackageProjectUrl))
+            .When(!string.IsNullOrWhiteSpace(PackageLicenseUrl), x => x
+                .SetPackageLicenseUrl(PackageLicenseUrl))
+            .When(!string.IsNullOrWhiteSpace(PackageLicenseExpression), x => x
+                .SetProperty("PackageLicenseExpression", PackageLicenseExpression));
     }
 }

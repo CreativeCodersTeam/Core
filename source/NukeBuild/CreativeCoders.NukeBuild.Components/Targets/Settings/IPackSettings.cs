@@ -8,5 +8,11 @@ public interface IPackSettings
         ? artifactsSettings.ArtifactsDirectory / "nuget"
         : string.Empty;
 
-    string Copyright => $"{DateTime.Now.Year} CreativeCoders";
+    string Copyright => string.Empty;
+
+    string PackageProjectUrl => string.Empty;
+
+    string PackageLicenseUrl => string.Empty;
+
+    string PackageLicenseExpression => string.Empty;
 }
