@@ -31,7 +31,7 @@ jobs:
 
       - name: Build Solution
         shell: pwsh
-        run: ./build.ps1 pack
+        run: ./build.ps1 clean restore compile test codecoveragereport pack
 
 #      - name: Test Report
 #        uses: dorny/test-reporter@v1
