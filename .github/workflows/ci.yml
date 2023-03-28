@@ -10,10 +10,10 @@ jobs:
   build:
     name: CI/CD build
     runs-on: windows-latest
-    permissions:
-      packages: write
-      contents: read
-      checks: write
+#    permissions:
+#      packages: write
+#      contents: read
+#      checks: write
     steps:
       - uses: actions/checkout@v3
         with:

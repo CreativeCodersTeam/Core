@@ -54,30 +54,6 @@ class Build : NukeBuild,
         ? solutionParameter.Solution.GetProjects("*.UnitTests")
         : Array.Empty<Project>();
 
-    // Target PushToNuGet => _ => _
-    //     .Requires(() => NuGetApiKey)
-    //     .UseBuildAction<PushBuildAction>(this,
-    //         x => x
-    //             .SetSource(NuGetSource)
-    //             .SetApiKey(NuGetApiKey));
-    //
-    // Target RunTest => _ => _
-    //     .DependsOn(RunBuild)
-    //     .DependsOn<ITestTarget>()
-    //     .DependsOn(CoverageReport);
-
-    // Target CreateNuGetPackages => _ => _
-    //     .DependsOn(RunTest)
-    //     .DependsOn(Pack);
-
-    // Target DeployToDevNuGet => _ => _
-    //     .DependsOn(CreateNuGetPackages)
-    //     .DependsOn(PushToDevNuGet);
-
-    // Target DeployToNuGet => _ => _
-    //     .DependsOn(CreateNuGetPackages)
-    //     .DependsOn(PushToNuGet);
-
     string IPackSettings.PackageProjectUrl => "https://github.com/CreativeCodersTeam/Core";
 
     string IPackSettings.PackageLicenseExpression => PackageLicenseExpressions.ApacheLicense20;
