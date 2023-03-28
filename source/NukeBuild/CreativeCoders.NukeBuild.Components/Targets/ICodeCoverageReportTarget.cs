@@ -1,4 +1,5 @@
-﻿using CreativeCoders.NukeBuild.Components.Targets.Settings;
+﻿using System.IO.Compression;
+using CreativeCoders.NukeBuild.Components.Targets.Settings;
 using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.Tools.ReportGenerator;
@@ -18,5 +19,7 @@ public interface ICodeCoverageReportTarget : ITestTarget, ICodeCoverageReportSet
                 .SetFramework(Framework)
                 .SetReports(Reports)
                 .SetTargetDirectory(TargetDirectory));
+
+            ZipFile.CreateFromDirectory(TargetDirectory, CoverageReportArchive);
         });
 }

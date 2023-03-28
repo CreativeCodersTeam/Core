@@ -6,6 +6,7 @@ using Nuke.Common;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.ReportGenerator;
 
 namespace CreativeCoders.NukeBuild.Components.Targets;
 

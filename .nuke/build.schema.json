@@ -18,6 +18,12 @@
           "type": "boolean",
           "description": "Indicates to continue a previously failed build attempt"
         },
+        "DevNuGetApiKey": {
+          "type": "string"
+        },
+        "DevNuGetFeedUrl": {
+          "type": "string"
+        },
         "Help": {
           "type": "boolean",
           "description": "Shows the help text for this build assembly"
@@ -46,6 +52,12 @@
         "NoLogo": {
           "type": "boolean",
           "description": "Disables displaying the NUKE logo"
+        },
+        "NuGetOrgApiKey": {
+          "type": "string"
+        },
+        "NuGetOrgFeedUrl": {
+          "type": "string"
         },
         "Partition": {
           "type": "string",
@@ -76,6 +88,7 @@
               "CodeCoverageReport",
               "Compile",
               "Pack",
+              "PushNuGet",
               "Restore",
               "Test"
             ]
@@ -95,6 +108,7 @@
               "CodeCoverageReport",
               "Compile",
               "Pack",
+              "PushNuGet",
               "Restore",
               "Test"
             ]

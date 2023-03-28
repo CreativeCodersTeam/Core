@@ -15,6 +15,10 @@ using Nuke.Common.ProjectModel;
 
 [PublicAPI]
 [UnsetVisualStudioEnvironmentVariables]
+[GitHubActions("integration", GitHubActionsImage.WindowsLatest,
+    OnPushBranches = new[]{"feature/**"},
+    InvokedTargets = new []{"clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"},
+    PublishArtifacts = true)]
 class Build : NukeBuild,
     ISolutionParameter,
     IGitRepositoryParameter,
@@ -24,7 +28,7 @@ class Build : NukeBuild,
     IArtifactsSettings,
     ICleanTarget, ICompileTarget, IRestoreTarget, ITestTarget, ICodeCoverageReportTarget, IPackTarget, IPushNuGetTarget
 {
-    public static int Main() => Execute<Build>(x => ((ITestTarget)x).Test);
+    public static int Main() => Execute<Build>(x => ((ICodeCoverageReportTarget)x).CodeCoverageReport);
 
     [Parameter(Name = "DevNuGetFeedUrl")] string DevNuGetFeedUrl;
     
