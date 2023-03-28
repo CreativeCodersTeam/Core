@@ -1,4 +1,5 @@
-﻿using CreativeCoders.NukeBuild.Components.Parameters;
+﻿using CreativeCoders.Core;
+using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
 using JetBrains.Annotations;
 using Nuke.Common;
@@ -37,6 +38,7 @@ public interface ITestTarget : ITestSettings
     sealed DotNetTestSettings ConfigureDefaultTestSettings(DotNetTestSettings testSettings)
     {
         return testSettings
+            .SetNoBuild(SucceededTargets.Contains(this.As<ICompileTarget>()?.Compile))
             .WhenNotNull(this as IConfigurationParameter, (x, configurationParameter) => x
                 .SetConfiguration(configurationParameter.Configuration))
             .When(GenerateCodeCoverage, x => x

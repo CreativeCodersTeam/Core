@@ -2,24 +2,22 @@ using System;
 using System.Collections.Generic;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
-using CreativeCoders.NukeBuild;
 using CreativeCoders.NukeBuild.BuildActions;
 using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
 using JetBrains.Annotations;
 using Nuke.Common;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
-using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.Tools.GitVersion;
-using Project = Nuke.Common.ProjectModel.Project;
 
 [PublicAPI]
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild,
     ISolutionParameter,
+    IGitRepositoryParameter,
     IConfigurationParameter,
     IGitVersionParameter,
     ISourceDirectoryParameter,
@@ -28,6 +26,26 @@ class Build : NukeBuild,
 {
     public static int Main() => Execute<Build>(x => ((ITestTarget)x).Test);
 
+    [Parameter(Name = "DevNuGetFeedUrl")] string DevNuGetFeedUrl;
+    
+    [Parameter(Name = "DevNuGetApiKey")] string DevNuGetApiKey;
+    
+    [Parameter(Name = "NuGetOrgFeedUrl")] string NuGetOrgFeedUrl;
+    
+    [Parameter(Name = "NuGetOrgApiKey")] string NuGetOrgApiKey;
+
+    GitHubActions GitHubActions = GitHubActions.Instance;
+    
+    string IPushNuGetSettings.NuGetFeedUrl =>
+        GitHubActions.Ref.StartsWith("refs/tags/v", StringComparison.Ordinal)
+            ? NuGetOrgFeedUrl
+            : DevNuGetFeedUrl;
+    
+    string IPushNuGetSettings.NuGetApiKey =>
+        GitHubActions.Ref.StartsWith("refs/tags/v", StringComparison.Ordinal)
+            ? NuGetOrgApiKey
+            : DevNuGetApiKey;
+    
     IList<AbsolutePath> ICleanSettings.DirectoriesToClean =>
         this.As<ICleanSettings>().DefaultDirectoriesToClean
             .AddRange(this.As<ITestSettings>().TestBaseDirectory);
@@ -36,14 +54,6 @@ class Build : NukeBuild,
         ? solutionParameter.Solution.GetProjects("*.UnitTests")
         : Array.Empty<Project>();
 
-    // Target PushToDevNuGet => _ => _
-    //     .Requires(() => DevNuGetSource)
-    //     .Requires(() => DevNuGetApiKey)
-    //     .UseBuildAction<PushBuildAction>(this,
-    //         x => x
-    //             .SetSource(DevNuGetSource)
-    //             .SetApiKey(DevNuGetApiKey));
-
     // Target PushToNuGet => _ => _
     //     .Requires(() => NuGetApiKey)
     //     .UseBuildAction<PushBuildAction>(this,
@@ -51,10 +61,6 @@ class Build : NukeBuild,
     //             .SetSource(NuGetSource)
     //             .SetApiKey(NuGetApiKey));
     //
-    // Target RunBuild => _ => _
-    //     .DependsOn((this as ICleanTarget).Clean)
-    //     .DependsOn((this as ICompileTarget).Compile);
-
     // Target RunTest => _ => _
     //     .DependsOn(RunBuild)
     //     .DependsOn<ITestTarget>()
