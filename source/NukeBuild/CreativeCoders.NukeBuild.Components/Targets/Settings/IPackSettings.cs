@@ -1,12 +1,14 @@
 ﻿using CreativeCoders.Core;
+using Nuke.Common;
+using Nuke.Common.IO;
 
 namespace CreativeCoders.NukeBuild.Components.Targets.Settings;
 
-public interface IPackSettings
+public interface IPackSettings : INukeBuild
 {
-    string OutputDirectory => this.TryAs<IArtifactsSettings>(out var artifactsSettings)
+    AbsolutePath OutputDirectory => this.TryAs<IArtifactsSettings>(out var artifactsSettings)
         ? artifactsSettings.ArtifactsDirectory / "nuget"
-        : string.Empty;
+        : TemporaryDirectory / "nuget";
 
     string Copyright => string.Empty;
 

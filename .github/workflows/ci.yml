@@ -21,9 +21,9 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '6.0.x'
-          source-url: https://nuget.pkg.github.com/CreativeCodersTeam/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+#          source-url: https://nuget.pkg.github.com/CreativeCodersTeam/index.json
+#        env:
+#          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
 #      - name: Prepare environment
 #        run: |
@@ -31,7 +31,10 @@ jobs:
 
       - name: Build Solution
         shell: pwsh
-        run: ./build.ps1 clean restore compile test codecoveragereport pack
+        run: ./build.ps1 clean restore compile test codecoveragereport pack pushnuget
+        env:
+          NuGetApiKey: ${{secrets.GITHUB_TOKEN}}
+          NuGetFeedUrl: https://nuget.pkg.github.com/CreativeCodersTeam/index.json
 
 #      - name: Test Report
 #        uses: dorny/test-reporter@v1

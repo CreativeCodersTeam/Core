@@ -24,7 +24,7 @@ class Build : NukeBuild,
     IGitVersionParameter,
     ISourceDirectoryParameter,
     IArtifactsSettings,
-    ICleanTarget, ICompileTarget, IRestoreTarget, ITestTarget, ICodeCoverageReportTarget, IPackTarget
+    ICleanTarget, ICompileTarget, IRestoreTarget, ITestTarget, ICodeCoverageReportTarget, IPackTarget, IPushNuGetTarget
 {
     public static int Main() => Execute<Build>(x => ((ITestTarget)x).Test);
 
