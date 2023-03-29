@@ -43,7 +43,7 @@ class Build : NukeBuild,
 {
     public static int Main() => Execute<Build>(x => ((ICodeCoverageReportTarget)x).CodeCoverageReport);
 
-    [Parameter(Name = "DevNuGetApiKey")] string DevNuGetApiKey;
+    [Parameter(Name = "GITHUB_TOKEN")] string DevNuGetApiKey;
     
     [Parameter(Name = "NUGET_ORG_TOKEN")] string NuGetOrgApiKey;
 
