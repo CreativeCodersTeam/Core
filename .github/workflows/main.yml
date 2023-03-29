@@ -9,17 +9,19 @@
 #
 #     - To trigger manual generation invoke:
 #
-#         nuke --generate-configuration GitHubActions_integration --host GitHubActions
+#         nuke --generate-configuration GitHubActions_main --host GitHubActions
 #
 # </auto-generated>
 # ------------------------------------------------------------------------------
 
-name: integration
+name: main
 
 on:
   push:
     branches:
-      - 'feature/**'
+      - main
+    tags:
+      - 'refs/tags/v**'
 
 jobs:
   windows-latest:

@@ -18,7 +18,20 @@ using Nuke.Common.ProjectModel;
 [GitHubActions("integration", GitHubActionsImage.WindowsLatest,
     OnPushBranches = new[]{"feature/**"},
     InvokedTargets = new []{"clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"},
-    PublishArtifacts = true)]
+    ImportSecrets = new []{"NUGET_ORG_TOKEN"},
+    EnableGitHubToken = true,
+    PublishArtifacts = true,
+    FetchDepth = 0
+    )]
+[GitHubActions("main", GitHubActionsImage.WindowsLatest,
+    OnPushBranches = new[]{"main"},
+    OnPushTags = new []{"refs/tags/v**"},
+    InvokedTargets = new []{"clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"},
+    ImportSecrets = new []{"NUGET_ORG_TOKEN"},
+    EnableGitHubToken = true,
+    PublishArtifacts = true,
+    FetchDepth = 0
+)]
 class Build : NukeBuild,
     ISolutionParameter,
     IGitRepositoryParameter,
@@ -30,20 +43,16 @@ class Build : NukeBuild,
 {
     public static int Main() => Execute<Build>(x => ((ICodeCoverageReportTarget)x).CodeCoverageReport);
 
-    [Parameter(Name = "DevNuGetFeedUrl")] string DevNuGetFeedUrl;
-    
     [Parameter(Name = "DevNuGetApiKey")] string DevNuGetApiKey;
     
-    [Parameter(Name = "NuGetOrgFeedUrl")] string NuGetOrgFeedUrl;
-    
-    [Parameter(Name = "NuGetOrgApiKey")] string NuGetOrgApiKey;
+    [Parameter(Name = "NUGET_ORG_TOKEN")] string NuGetOrgApiKey;
 
     GitHubActions GitHubActions = GitHubActions.Instance;
     
     string IPushNuGetSettings.NuGetFeedUrl =>
         GitHubActions.Ref.StartsWith("refs/tags/v", StringComparison.Ordinal)
-            ? NuGetOrgFeedUrl
-            : DevNuGetFeedUrl;
+            ? "nuget.org"
+            : "https://nuget.pkg.github.com/CreativeCodersTeam/index.json";
     
     string IPushNuGetSettings.NuGetApiKey =>
         GitHubActions.Ref.StartsWith("refs/tags/v", StringComparison.Ordinal)

@@ -12,7 +12,7 @@ public interface ICodeCoverageReportTarget : ITestTarget, ICodeCoverageReportSet
     Target CodeCoverageReport => _ => _
         .TryBefore<IPackTarget>()
         .DependsOn<ITestTarget>()
-        .Produces(TargetDirectory)
+        .Produces(TargetDirectory / "*.*")
         .Executes(() =>
         {
             ReportGeneratorTasks.ReportGenerator(x => x

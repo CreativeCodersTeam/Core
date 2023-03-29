@@ -21,9 +21,6 @@
         "DevNuGetApiKey": {
           "type": "string"
         },
-        "DevNuGetFeedUrl": {
-          "type": "string"
-        },
         "Help": {
           "type": "boolean",
           "description": "Shows the help text for this build assembly"
@@ -53,10 +50,7 @@
           "type": "boolean",
           "description": "Disables displaying the NUKE logo"
         },
-        "NuGetOrgApiKey": {
-          "type": "string"
-        },
-        "NuGetOrgFeedUrl": {
+        "NUGET_ORG_TOKEN": {
           "type": "string"
         },
         "Partition": {
