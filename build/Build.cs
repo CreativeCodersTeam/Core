@@ -58,7 +58,7 @@ class Build : NukeBuild,
 
     public Build()
     {
-        Console.WriteLine($"GitHub Action: {GitHubActions?.Action}");
+        Console.WriteLine($"GitHub Action: {GitHubActions?.Job}");
     }
     
     string IPushNuGetSettings.NuGetFeedUrl =>
