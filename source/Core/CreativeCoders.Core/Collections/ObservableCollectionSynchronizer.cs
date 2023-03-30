@@ -69,7 +69,7 @@ public sealed class ObservableCollectionSynchronizer<TSourceElement, TReplicaEle
 
     private void ReplaceElement(NotifyCollectionChangedEventArgs eventArgs)
     {
-        if ((eventArgs.NewStartingIndex <= -1 && eventArgs.OldStartingIndex <= -1) ||
+        if (eventArgs is { NewStartingIndex: <= -1, OldStartingIndex: <= -1 } ||
             eventArgs.NewStartingIndex != eventArgs.OldStartingIndex || eventArgs.NewItems == null)
         {
             return;

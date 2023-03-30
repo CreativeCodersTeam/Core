@@ -61,7 +61,7 @@ public static class CliBuilderExtensions
 
         var cliModuleTypes = assembly
             .ExportedTypes
-            .Where(x => !x.IsAbstract && !x.IsInterface && x.IsAssignableTo(typeof(ICliModule)));
+            .Where(x => x is { IsAbstract: false, IsInterface: false } && x.IsAssignableTo(typeof(ICliModule)));
 
         cliModuleTypes.ForEach(x => cliBuilder.AddModule(x));
 

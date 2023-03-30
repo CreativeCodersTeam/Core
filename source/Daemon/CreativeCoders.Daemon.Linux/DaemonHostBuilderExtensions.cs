@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace CreativeCoders.Daemon.Linux;
 
+[PublicAPI]
 public static class DaemonHostBuilderExtensions
 {
     /// <summary>
