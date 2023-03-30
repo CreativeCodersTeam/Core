@@ -58,11 +58,6 @@ class Build : NukeBuild,
 
     GitHubActions GitHubActions = GitHubActions.Instance;
 
-    public Build()
-    {
-        Console.WriteLine($"GitHub Action: {GitHubActions?.Workflow}");
-    }
-    
     string IPushNuGetSettings.NuGetFeedUrl =>
         GitHubActions?.Workflow == ReleaseWorkflow
             ? "nuget.org"
