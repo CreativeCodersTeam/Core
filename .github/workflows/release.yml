@@ -19,7 +19,7 @@ name: release
 on:
   push:
     tags:
-      - 'refs/tags/v**'
+      - 'v**'
 
 jobs:
   windows-latest:

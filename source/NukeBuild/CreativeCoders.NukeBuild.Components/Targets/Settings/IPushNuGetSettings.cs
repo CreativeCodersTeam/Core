@@ -9,4 +9,6 @@ public interface IPushNuGetSettings : INukeBuild
 
     [Parameter(Name = "NuGetApiKey")]
     string NuGetApiKey => TryGetValue(() => NuGetApiKey) ?? string.Empty;
+
+    bool SkipPush => false;
 }

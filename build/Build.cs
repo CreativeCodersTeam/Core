@@ -26,13 +26,13 @@ using Nuke.Common.ProjectModel;
     )]
 [GitHubActions("main", GitHubActionsImage.WindowsLatest,
     OnPushBranches = new[]{"main"},
-    InvokedTargets = new []{"clean", "restore", "compile", "test", "codecoveragereport", "pack"},
+    InvokedTargets = new []{"clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"},
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
 )]
-[GitHubActions("release", GitHubActionsImage.WindowsLatest,
-    OnPushTags = new []{"refs/tags/v**"},
+[GitHubActions(ReleaseWorkflow, GitHubActionsImage.WindowsLatest,
+    OnPushTags = new []{"v**"},
     InvokedTargets = new []{"clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"},
     ImportSecrets = new []{"NUGET_ORG_TOKEN"},
     EnableGitHubToken = true,
@@ -48,6 +48,8 @@ class Build : NukeBuild,
     IArtifactsSettings,
     ICleanTarget, ICompileTarget, IRestoreTarget, ITestTarget, ICodeCoverageReportTarget, IPackTarget, IPushNuGetTarget
 {
+    public const string ReleaseWorkflow = "release";
+    
     public static int Main() => Execute<Build>(x => ((ICodeCoverageReportTarget)x).CodeCoverageReport);
 
     [Parameter(Name = "GITHUB_TOKEN")] string DevNuGetApiKey;
@@ -55,14 +57,16 @@ class Build : NukeBuild,
     [Parameter(Name = "NUGET_ORG_TOKEN")] string NuGetOrgApiKey;
 
     GitHubActions GitHubActions = GitHubActions.Instance;
-    
+
+    bool IPushNuGetSettings.SkipPush => GitHubActions?.IsPullRequest == true;
+
     string IPushNuGetSettings.NuGetFeedUrl =>
-        GitHubActions.Ref.StartsWith("refs/tags/v", StringComparison.Ordinal)
+        GitHubActions?.Workflow == ReleaseWorkflow
             ? "nuget.org"
             : "https://nuget.pkg.github.com/CreativeCodersTeam/index.json";
     
     string IPushNuGetSettings.NuGetApiKey =>
-        GitHubActions.Ref.StartsWith("refs/tags/v", StringComparison.Ordinal)
+        GitHubActions?.Workflow == ReleaseWorkflow
             ? NuGetOrgApiKey
             : DevNuGetApiKey;
     
