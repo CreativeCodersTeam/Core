@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
@@ -30,6 +31,18 @@ public static class ObjectExtensions
     }
 
     public static T? As<T>(this object instance) => As<T>(instance, default);
+
+    public static bool TryAs<T>(this object instance, [MaybeNullWhen(false)] out T asInstance)
+    {
+        if (instance is T value)
+        {
+            asInstance = value;
+            return true;
+        }
+
+        asInstance = default;
+        return false;
+    }
 
     public static async ValueTask TryDisposeAsync(this object instance)
     {

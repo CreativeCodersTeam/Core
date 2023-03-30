@@ -27,7 +27,7 @@ public class ListExtensionsTests
 
         var list = new List<int>(data) as IList<int>;
 
-        list.AddRange(new[] {5});
+        list.AddRange(5);
 
         Assert.True(list.SequenceEqual(dataResult));
     }
@@ -40,7 +40,7 @@ public class ListExtensionsTests
 
         var list = new List<int>(data) as IList<int>;
 
-        list.AddRange(new[] {5, 6});
+        list.AddRange(5, 6);
 
         Assert.True(list.SequenceEqual(dataResult));
     }
