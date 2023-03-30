@@ -32,7 +32,7 @@ using Nuke.Common.ProjectModel;
     FetchDepth = 0
 )]
 [GitHubActions("release", GitHubActionsImage.WindowsLatest,
-    OnPushTags = new []{"refs/tags/v**"},
+    OnPushTags = new []{"v**"},
     InvokedTargets = new []{"clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"},
     ImportSecrets = new []{"NUGET_ORG_TOKEN"},
     EnableGitHubToken = true,
@@ -55,6 +55,11 @@ class Build : NukeBuild,
     [Parameter(Name = "NUGET_ORG_TOKEN")] string NuGetOrgApiKey;
 
     GitHubActions GitHubActions = GitHubActions.Instance;
+
+    public Build()
+    {
+        Console.WriteLine($"GitHub Action: {GitHubActions?.Action}");
+    }
     
     string IPushNuGetSettings.NuGetFeedUrl =>
         GitHubActions.Ref.StartsWith("refs/tags/v", StringComparison.Ordinal)
