@@ -17,6 +17,7 @@ using Nuke.Common.ProjectModel;
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("integration", GitHubActionsImage.WindowsLatest,
     OnPushBranches = new[]{"feature/**"},
+    OnPullRequestBranches = new[]{"main"},
     InvokedTargets = new []{"clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"},
     ImportSecrets = new []{"NUGET_ORG_TOKEN"},
     EnableGitHubToken = true,

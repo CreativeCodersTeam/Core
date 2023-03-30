@@ -20,6 +20,9 @@ on:
   push:
     branches:
       - 'feature/**'
+  pull_request:
+    branches:
+      - main
 
 jobs:
   windows-latest:
