@@ -18,7 +18,7 @@
           "type": "boolean",
           "description": "Indicates to continue a previously failed build attempt"
         },
-        "DevNuGetApiKey": {
+        "GITHUB_TOKEN": {
           "type": "string"
         },
         "Help": {

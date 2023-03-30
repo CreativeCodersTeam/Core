@@ -25,6 +25,12 @@ using Nuke.Common.ProjectModel;
     )]
 [GitHubActions("main", GitHubActionsImage.WindowsLatest,
     OnPushBranches = new[]{"main"},
+    InvokedTargets = new []{"clean", "restore", "compile", "test", "codecoveragereport", "pack"},
+    EnableGitHubToken = true,
+    PublishArtifacts = true,
+    FetchDepth = 0
+)]
+[GitHubActions("release", GitHubActionsImage.WindowsLatest,
     OnPushTags = new []{"refs/tags/v**"},
     InvokedTargets = new []{"clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"},
     ImportSecrets = new []{"NUGET_ORG_TOKEN"},

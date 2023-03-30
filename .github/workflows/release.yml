@@ -9,17 +9,15 @@
 #
 #     - To trigger manual generation invoke:
 #
-#         nuke --generate-configuration GitHubActions_main --host GitHubActions
+#         nuke --generate-configuration GitHubActions_release --host GitHubActions
 #
 # </auto-generated>
 # ------------------------------------------------------------------------------
 
-name: main
+name: release
 
 on:
   push:
-    branches:
-      - main
     tags:
       - 'refs/tags/v**'
 
