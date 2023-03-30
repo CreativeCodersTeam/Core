@@ -58,6 +58,8 @@ class Build : NukeBuild,
 
     GitHubActions GitHubActions = GitHubActions.Instance;
 
+    bool IPushNuGetSettings.SkipPush => GitHubActions?.PullRequestNumber.HasValue == true;
+
     string IPushNuGetSettings.NuGetFeedUrl =>
         GitHubActions?.Workflow == ReleaseWorkflow
             ? "nuget.org"
