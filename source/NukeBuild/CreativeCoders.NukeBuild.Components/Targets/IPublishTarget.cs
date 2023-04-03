@@ -13,6 +13,9 @@ public interface IPublishTarget : IPublishSettings
 {
     Target Publish => _ => _
         .TryAfter<ICodeCoverageReportTarget>()
+        .Produces(PublishingItems.Any()
+            ? PublishingItems.Select(x => x.OutputPath.ToString()).ToArray()
+            : new string[] {PublishOutputPath})
         .Executes(() =>
         {
             if (PublishingItems.Any())
