@@ -54,7 +54,7 @@ public interface IPublishTarget : IPublishSettings
         PublishingItem publishingItem)
         => ConfigureDefaultPublishItemSettings(publishSettings, publishingItem);
 
-    sealed DotNetPublishSettings ConfigureDefaultPublishItemSettings(DotNetPublishSettings publishSettings,
+    static DotNetPublishSettings ConfigureDefaultPublishItemSettings(DotNetPublishSettings publishSettings,
         PublishingItem publishingItem)
     {
         return publishSettings

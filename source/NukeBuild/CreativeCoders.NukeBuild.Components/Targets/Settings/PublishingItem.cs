@@ -1,7 +1,9 @@
-﻿using Nuke.Common.IO;
+﻿using JetBrains.Annotations;
+using Nuke.Common.IO;
 
 namespace CreativeCoders.NukeBuild.Components.Targets.Settings;
 
+[PublicAPI]
 public class PublishingItem
 {
     public PublishingItem(AbsolutePath projectPath, AbsolutePath outputPath)
