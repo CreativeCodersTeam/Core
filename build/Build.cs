@@ -19,7 +19,6 @@ using Nuke.Common.ProjectModel;
     OnPushBranches = new[]{"feature/**"},
     OnPullRequestBranches = new[]{"main"},
     InvokedTargets = new []{"clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"},
-    ImportSecrets = new []{"NUGET_ORG_TOKEN"},
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
@@ -40,13 +39,12 @@ using Nuke.Common.ProjectModel;
     FetchDepth = 0
 )]
 class Build : NukeBuild,
-    ISolutionParameter,
     IGitRepositoryParameter,
     IConfigurationParameter,
     IGitVersionParameter,
     ISourceDirectoryParameter,
     IArtifactsSettings,
-    ICleanTarget, ICompileTarget, IRestoreTarget, ITestTarget, ICodeCoverageReportTarget, IPackTarget, IPushNuGetTarget
+    ICleanTarget, ICompileTarget, IRestoreTarget, ICodeCoverageReportTarget, IPushNuGetTarget
 {
     public const string ReleaseWorkflow = "release";
     
