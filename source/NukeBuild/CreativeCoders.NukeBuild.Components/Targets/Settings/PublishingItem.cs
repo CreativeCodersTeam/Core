@@ -19,4 +19,6 @@ public class PublishingItem
     public string? Runtime { get; set; }
 
     public bool SelfContained { get; set; }
+
+    public bool ProduceArtifact { get; set; }
 }
