@@ -2,7 +2,6 @@
 using SharpCompress.Archives;
 using SharpCompress.Archives.Tar;
 using SharpCompress.Common;
-using SharpCompress.Writers;
 using SharpCompress.Writers.GZip;
 using SharpCompress.Writers.Tar;
 

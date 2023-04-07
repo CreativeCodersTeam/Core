@@ -19,6 +19,14 @@ public interface ICreateDistPackagesTarget : INukeBuild, ICreateDistPackagesSett
                         .AddFromDirectory(x.DistFolder, "*.*", true)
                         .Create(true);
                 }
+
+                if (x.Format == DistPackageFormat.Zip)
+                {
+                    new ZipArchiveCreator()
+                        .SetArchiveFileName(DistOutputPath / $"{x.Name}.zip")
+                        .AddFromDirectory(x.DistFolder, "*.*", true)
+                        .Create();
+                }
             });
         });
 }
