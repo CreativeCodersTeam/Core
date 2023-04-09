@@ -5,7 +5,7 @@ using Nuke.Common;
 namespace CreativeCoders.NukeBuild.Components.Targets;
 
 [PublicAPI]
-public interface ICreateGithubRelease : ICreateGithubReleaseSettings
+public interface ICreateGithubReleaseTarget : ICreateGithubReleaseSettings
 {
     Target CreateGithubRelease => _ => _
         .Executes(async () =>
