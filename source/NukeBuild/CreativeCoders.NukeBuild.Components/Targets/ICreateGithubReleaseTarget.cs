@@ -8,6 +8,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 public interface ICreateGithubReleaseTarget : ICreateGithubReleaseSettings
 {
     Target CreateGithubRelease => _ => _
+        .TryAfter<ICreateDistPackagesTarget>()
         .Executes(async () =>
         {
             await new GithubReleaseTasks(GithubToken)

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using CreativeCoders.Core;
 using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
 using JetBrains.Annotations;
@@ -13,6 +14,8 @@ public interface IPublishTarget : IPublishSettings
 {
     Target Publish => _ => _
         .TryAfter<ICodeCoverageReportTarget>()
+        .TryAfter<ITestTarget>()
+        .DependsOn<ICompileTarget>()
         .Produces(PublishingItems.Any()
             ? PublishingItems
                 .Where(x => x.ProduceArtifact)
@@ -41,6 +44,7 @@ public interface IPublishTarget : IPublishSettings
     sealed DotNetPublishSettings ConfigureDefaultPublishSettings(DotNetPublishSettings publishSettings)
     {
         return publishSettings
+            .SetNoBuild(SucceededTargets.Contains(this.As<ICompileTarget>()?.Compile))
             .WhenNotNull(this as ISolutionParameter, (x, solutionParameter) => x
                 .SetProject(solutionParameter.Solution))
             .SetOutput(PublishOutputPath)
