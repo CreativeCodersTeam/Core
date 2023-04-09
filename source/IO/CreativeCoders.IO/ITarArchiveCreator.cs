@@ -1,5 +1,8 @@
+using JetBrains.Annotations;
+
 namespace CreativeCoders.IO;
 
+[PublicAPI]
 public interface ITarArchiveCreator
 {
     ITarArchiveCreator SetArchiveFileName(string archiveFileName);

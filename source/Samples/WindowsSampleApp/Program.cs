@@ -1,7 +1,5 @@
 ﻿using System;
-using CreativeCoders.Core.Collections;
 using CreativeCoders.IO;
-using CreativeCoders.Windows.Window;
 
 namespace WindowsSampleApp;
 

@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.IO;
+﻿using JetBrains.Annotations;
 
+namespace CreativeCoders.IO;
+
+[PublicAPI]
 public interface IZipArchiveCreator
 {
     IZipArchiveCreator SetArchiveFileName(string archiveFileName);
