@@ -14,7 +14,10 @@ public interface IPublishTarget : IPublishSettings
     Target Publish => _ => _
         .TryAfter<ICodeCoverageReportTarget>()
         .Produces(PublishingItems.Any()
-            ? PublishingItems.Select(x => x.OutputPath.ToString()).ToArray()
+            ? PublishingItems
+                .Where(x => x.ProduceArtifact)
+                .Select(x => x.OutputPath.ToString())
+                .ToArray()
             : new string[] {PublishOutputPath})
         .Executes(() =>
         {

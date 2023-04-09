@@ -217,6 +217,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.NukeBuild.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.SysConsole.UnitTests", "UnitTests\CreativeCoders.SysConsole.UnitTests\CreativeCoders.SysConsole.UnitTests.csproj", "{2E43D7C0-8135-4AD6-A081-069667ABA573}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IO", "IO", "{F31389F0-613B-48B1-AA99-6BFC3D8D7D1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.IO", "IO\CreativeCoders.IO\CreativeCoders.IO.csproj", "{3B1E60AF-5B5C-4BED-8AAF-79167CF5E2C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -517,6 +521,10 @@ Global
 		{2E43D7C0-8135-4AD6-A081-069667ABA573}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E43D7C0-8135-4AD6-A081-069667ABA573}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E43D7C0-8135-4AD6-A081-069667ABA573}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B1E60AF-5B5C-4BED-8AAF-79167CF5E2C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B1E60AF-5B5C-4BED-8AAF-79167CF5E2C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B1E60AF-5B5C-4BED-8AAF-79167CF5E2C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B1E60AF-5B5C-4BED-8AAF-79167CF5E2C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -618,6 +626,8 @@ Global
 		{30E75E1A-146F-422E-8C14-3AE0F7FB99B1} = {99FFD9AA-7AEB-4A9D-881D-00B7277C3494}
 		{5D68956E-580F-4A2A-B13F-1477E6DE6FCF} = {20FCFF4D-882F-4663-81F4-A146D17B62A0}
 		{2E43D7C0-8135-4AD6-A081-069667ABA573} = {9A3F55B8-E867-4EA2-B1FA-0C01DE79463E}
+		{F31389F0-613B-48B1-AA99-6BFC3D8D7D1A} = {2A7105AA-05B6-469A-93F5-719723A4D90D}
+		{3B1E60AF-5B5C-4BED-8AAF-79167CF5E2C0} = {F31389F0-613B-48B1-AA99-6BFC3D8D7D1A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}
