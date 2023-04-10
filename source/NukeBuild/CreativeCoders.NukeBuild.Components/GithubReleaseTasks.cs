@@ -44,7 +44,7 @@ public class GithubReleaseTasks
     private async Task<Release> CreateReleaseDraftAsync(string releaseVersion, string name, string body, bool isPreRelease)
     {
         return await _githubClient.Repository.Release
-            .Create(GitHubActions.Instance.RepositoryOwner, GitHubActions.Instance.Repository,
+            .Create(GitHubActions.Instance.RepositoryOwner, GetRepositoryName(),
                 new NewRelease(releaseVersion)
                 {
                     Name = name,
@@ -53,5 +53,15 @@ public class GithubReleaseTasks
                     Prerelease = isPreRelease
                 })
             .ConfigureAwait(false);
+    }
+
+    private static string GetRepositoryName()
+    {
+        var index = GitHubActions.Instance.Repository.LastIndexOf('/');
+
+        return index > -1
+            ? GitHubActions.Instance.Repository.Substring(index)
+            : throw new ArgumentException("No repository name",
+                nameof(GitHubActions.Instance.Repository));
     }
 }
