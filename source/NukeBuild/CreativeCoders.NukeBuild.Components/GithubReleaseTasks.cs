@@ -2,6 +2,7 @@
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
 using Nuke.Common.CI.GitHubActions;
 using Octokit;
+using Serilog;
 
 namespace CreativeCoders.NukeBuild.Components;
 
@@ -24,7 +25,7 @@ public class GithubReleaseTasks
         await UploadReleaseAssets(release, releaseAssets).ConfigureAwait(false);
 
         await _githubClient.Repository.Release
-            .Edit(GitHubActions.Instance.RepositoryOwner, GitHubActions.Instance.Repository, release.Id, new ReleaseUpdate { Draft = false });
+            .Edit(GitHubActions.Instance.RepositoryOwner, GetRepositoryName(), release.Id, new ReleaseUpdate { Draft = false });
     }
 
     private async Task UploadReleaseAssets(Release release,
@@ -43,8 +44,18 @@ public class GithubReleaseTasks
 
     private async Task<Release> CreateReleaseDraftAsync(string releaseVersion, string name, string body, bool isPreRelease)
     {
+        var repositoryOwner = GitHubActions.Instance.RepositoryOwner;
+        var repositoryName = GetRepositoryName();
+
+        Log.Debug($"Create github release");
+        Log.Debug($"Repo Owner: {repositoryOwner}");
+        Log.Debug($"Repo name: {repositoryName}");
+        Log.Debug($"Version: {releaseVersion}");
+        Log.Debug($"Name: {name}");
+        Log.Debug($"Body: {body}");
+
         return await _githubClient.Repository.Release
-            .Create(GitHubActions.Instance.RepositoryOwner, GetRepositoryName(),
+            .Create(repositoryOwner, repositoryName,
                 new NewRelease(releaseVersion)
                 {
                     Name = name,
@@ -60,7 +71,7 @@ public class GithubReleaseTasks
         var index = GitHubActions.Instance.Repository.LastIndexOf('/');
 
         return index > -1
-            ? GitHubActions.Instance.Repository.Substring(index)
+            ? GitHubActions.Instance.Repository[(index + 1)..]
             : throw new ArgumentException("No repository name",
                 nameof(GitHubActions.Instance.Repository));
     }
