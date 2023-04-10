@@ -71,7 +71,7 @@ public class GithubReleaseTasks
         var index = GitHubActions.Instance.Repository.LastIndexOf('/');
 
         return index > -1
-            ? GitHubActions.Instance.Repository.Substring(index)
+            ? GitHubActions.Instance.Repository[(index + 1)..]
             : throw new ArgumentException("No repository name",
                 nameof(GitHubActions.Instance.Repository));
     }
