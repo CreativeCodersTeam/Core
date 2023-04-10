@@ -25,7 +25,7 @@ public class GithubReleaseTasks
         await UploadReleaseAssets(release, releaseAssets).ConfigureAwait(false);
 
         await _githubClient.Repository.Release
-            .Edit(GitHubActions.Instance.RepositoryOwner, GitHubActions.Instance.Repository, release.Id, new ReleaseUpdate { Draft = false });
+            .Edit(GitHubActions.Instance.RepositoryOwner, GetRepositoryName(), release.Id, new ReleaseUpdate { Draft = false });
     }
 
     private async Task UploadReleaseAssets(Release release,
