@@ -93,8 +93,8 @@ class Build : NukeBuild,
 
     public IEnumerable<GithubReleaseAsset> ReleaseAssets => new[]
     {
-        new GithubReleaseAsset(this.As<ISourceDirectoryParameter>().SourceDirectory / "LICENSE",
-                FileSys.File.OpenRead(this.As<ISourceDirectoryParameter>().SourceDirectory / "LICENSE"))
+        new GithubReleaseAsset(RootDirectory / "LICENSE",
+                FileSys.File.OpenRead(RootDirectory / "LICENSE"))
             { DisposeStreamAfterUse = true }
     };
 }
