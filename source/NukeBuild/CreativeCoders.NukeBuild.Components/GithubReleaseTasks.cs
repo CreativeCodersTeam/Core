@@ -2,6 +2,7 @@
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
 using Nuke.Common.CI.GitHubActions;
 using Octokit;
+using Serilog;
 
 namespace CreativeCoders.NukeBuild.Components;
 
@@ -43,8 +44,18 @@ public class GithubReleaseTasks
 
     private async Task<Release> CreateReleaseDraftAsync(string releaseVersion, string name, string body, bool isPreRelease)
     {
+        var repositoryOwner = GitHubActions.Instance.RepositoryOwner;
+        var repositoryName = GetRepositoryName();
+
+        Log.Debug($"Create github release");
+        Log.Debug($"Repo Owner: {repositoryOwner}");
+        Log.Debug($"Repo name: {repositoryName}");
+        Log.Debug($"Version: {releaseVersion}");
+        Log.Debug($"Name: {name}");
+        Log.Debug($"Body: {body}");
+
         return await _githubClient.Repository.Release
-            .Create(GitHubActions.Instance.RepositoryOwner, GetRepositoryName(),
+            .Create(repositoryOwner, repositoryName,
                 new NewRelease(releaseVersion)
                 {
                     Name = name,

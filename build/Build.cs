@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
+using CreativeCoders.Core.IO;
 using CreativeCoders.NukeBuild.BuildActions;
 using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets;
@@ -44,7 +45,7 @@ class Build : NukeBuild,
     IGitVersionParameter,
     ISourceDirectoryParameter,
     IArtifactsSettings,
-    ICleanTarget, ICompileTarget, IRestoreTarget, ICodeCoverageReportTarget, IPushNuGetTarget
+    ICleanTarget, ICompileTarget, IRestoreTarget, ICodeCoverageReportTarget, IPushNuGetTarget, ICreateGithubReleaseTarget
 {
     public const string ReleaseWorkflow = "release";
     
@@ -81,4 +82,19 @@ class Build : NukeBuild,
     string IPackSettings.PackageLicenseExpression => PackageLicenseExpressions.ApacheLicense20;
     
     string IPackSettings.Copyright => $"{DateTime.Now.Year} CreativeCoders";
+    
+    string GetVersion() => ((IGitVersionParameter) this).GitVersion?.NuGetVersionV2 ?? "0.1-unknown";
+    
+    public string ReleaseName => $"Release {GetVersion()}";
+    
+    public string ReleaseBody => $"Release {GetVersion()}";
+
+    public string ReleaseVersion => GetVersion();
+
+    public IEnumerable<GithubReleaseAsset> ReleaseAssets => new[]
+    {
+        new GithubReleaseAsset(this.As<ISourceDirectoryParameter>().SourceDirectory / "LICENSE",
+                FileSys.File.OpenRead(this.As<ISourceDirectoryParameter>().SourceDirectory / "LICENSE"))
+            { DisposeStreamAfterUse = true }
+    };
 }
