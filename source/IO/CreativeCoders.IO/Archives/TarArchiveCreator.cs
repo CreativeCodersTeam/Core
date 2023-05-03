@@ -5,7 +5,7 @@ using SharpCompress.Common;
 using SharpCompress.Writers.GZip;
 using SharpCompress.Writers.Tar;
 
-namespace CreativeCoders.IO;
+namespace CreativeCoders.IO.Archives;
 
 public class TarArchiveCreator : ITarArchiveCreator
 {

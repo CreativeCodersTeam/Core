@@ -1,5 +1,6 @@
 ﻿using System;
 using CreativeCoders.IO;
+using CreativeCoders.IO.Archives;
 
 namespace WindowsSampleApp;
 

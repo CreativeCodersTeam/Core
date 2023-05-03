@@ -2,7 +2,7 @@ using CreativeCoders.Core.IO;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
 
-namespace CreativeCoders.IO;
+namespace CreativeCoders.IO.Archives;
 
 public class ZipArchiveCreator : IZipArchiveCreator
 {

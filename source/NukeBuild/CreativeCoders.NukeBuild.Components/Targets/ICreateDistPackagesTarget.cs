@@ -1,5 +1,6 @@
 ﻿using CreativeCoders.Core.Collections;
 using CreativeCoders.IO;
+using CreativeCoders.IO.Archives;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
 using JetBrains.Annotations;
 using Nuke.Common;

@@ -21,7 +21,7 @@ public class IoArgumentExtensionsTests
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>
             {
-                {fileName, MockFileData.NullObject}
+                {fileName, new MockFileData(string.Empty)}
             },
             @"C:\");
 
@@ -68,7 +68,7 @@ public class IoArgumentExtensionsTests
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>
             {
-                {fileName, MockFileData.NullObject}
+                {fileName, new MockFileData(string.Empty)}
             },
             @"C:\");
 
@@ -136,7 +136,7 @@ public class IoArgumentExtensionsTests
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>
             {
-                {fileName, MockFileData.NullObject}
+                {fileName, new MockFileData(string.Empty)}
             },
             @"C:\");
 
@@ -184,7 +184,7 @@ public class IoArgumentExtensionsTests
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>
             {
-                {fileName, MockFileData.NullObject}
+                {fileName, new MockFileData(string.Empty)}
             },
             @"C:\");
 
