@@ -1,19 +1,14 @@
+using System.Text;
+using JetBrains.Annotations;
+
 namespace CreativeCoders.IO.Archives;
 
-public interface ITarArchiveWriter : IDisposable, IAsyncDisposable
+[PublicAPI]
+public interface ITarArchiveWriter : IAsyncDisposable
 {
+    Task AddFileAsync(string fileName, string fileNameInArchive);
 
-}
+    Task AddFromDirectoryAsync(string path, string removePrefix);
 
-public class DefaultTarArchiveWriter : ITarArchiveWriter
-{
-    public void Dispose()
-    {
-        throw new NotImplementedException();
-    }
-
-    public ValueTask DisposeAsync()
-    {
-        throw new NotImplementedException();
-    }
+    Task AddFromDirectoryAsync(string path);
 }

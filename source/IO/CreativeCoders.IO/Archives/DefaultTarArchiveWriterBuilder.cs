@@ -1,24 +1,42 @@
+using System.IO.Compression;
+
 namespace CreativeCoders.IO.Archives;
 
 public class DefaultTarArchiveWriterBuilder : ITarArchiveWriterBuilder
 {
+    private bool _withGZip;
+
+    private bool _withOwnerAndGroup;
+
+    private bool _preserveFileMode;
+
     public ITarArchiveWriterBuilder WithGZip()
     {
-        throw new NotImplementedException();
+        _withGZip = true;
+
+        return this;
     }
 
     public ITarArchiveWriterBuilder WithOwnerAndGroup()
     {
-        throw new NotImplementedException();
+        _withOwnerAndGroup = true;
+
+        return this;
     }
 
     public ITarArchiveWriterBuilder PreserveFileMode()
     {
-        throw new NotImplementedException();
+        _preserveFileMode = true;
+
+        return this;
     }
 
     public ITarArchiveWriter Build(Stream outputStream)
     {
-        throw new NotImplementedException();
+        var tarStream = _withGZip
+            ? new GZipStream(outputStream, CompressionLevel.Optimal)
+            : outputStream;
+
+        return new DefaultTarArchiveWriter(tarStream, _preserveFileMode, _withOwnerAndGroup);
     }
 }
