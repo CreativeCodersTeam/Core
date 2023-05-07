@@ -13,10 +13,10 @@ public static class Program
         var outputStream = FileSys.File.Create(@"c:\temp\test.tar.gz");
 
         var tarArchiveWriter = new DefaultTarArchiveWriterBuilder()
+            .PreserveFileMode()
+            .WithOwnerAndGroup()
             .WithGZip()
             .Build(outputStream);
-
-        //await tarArchiveWriter.AddFileAsync("test1.txt", @"c:\temp\test1.txt").ConfigureAwait(false);
 
         await tarArchiveWriter.AddFromDirectoryAsync(@"c:\temp\simbasrv", @"c:\temp\").ConfigureAwait(false);
 

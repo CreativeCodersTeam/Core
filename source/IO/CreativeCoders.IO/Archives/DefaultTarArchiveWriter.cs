@@ -15,11 +15,15 @@ public class DefaultTarArchiveWriter : ITarArchiveWriter
 
     private readonly ArchiveBuilder _archiveBuilder;
 
+    private readonly ITarFileInfoAccess _tarFileInfoAccess;
+
     public DefaultTarArchiveWriter(Stream tarStream, bool preserveFileMode, bool withOwnerAndGroup)
     {
         _tarStream = Ensure.NotNull(tarStream);
         _preserveFileMode = preserveFileMode;
         _withOwnerAndGroup = withOwnerAndGroup;
+
+        _tarFileInfoAccess = new WindowsTarFileInfoAccess();
 
         _archiveBuilder = new ArchiveBuilder(_tarStream, true);
     }
@@ -35,18 +39,27 @@ public class DefaultTarArchiveWriter : ITarArchiveWriter
 
     public async Task AddFileAsync(string fileName, string fileNameInArchive)
     {
-        var (userId, groupId) = GetOwner();
+        var ownerInfo = GetOwner(fileName);
 
         await using var fs = FileSys.File.OpenRead(fileName);
 
+        await AddFileAsync(fileNameInArchive, fs, fs.Length, GetFileMode(fileName), GetOwner(fileName))
+            .ConfigureAwait(false);
+    }
+
+    public async Task AddFileAsync(string fileNameInArchive, Stream fileContent, long contentSize,
+        int fileMode, TarFileOwnerInfo fileOwnerInfo)
+    {
         await _archiveBuilder.WriteItemAsync(
                 new UstarItem(PrePosixType.RegularFile, ItemName.FromFileSystem(fileNameInArchive, false))
                 {
-                    Content = fs,
-                    Size = fs.Length,
-                    Mode = GetFileMode(fileName),
-                    UserId = userId,
-                    GroupId = groupId
+                    Content = fileContent,
+                    Size = contentSize,
+                    Mode = fileMode,
+                    UserId = fileOwnerInfo.UserId,
+                    GroupId = fileOwnerInfo.GroupId,
+                    UserName = fileOwnerInfo.UserName,
+                    GroupName = fileOwnerInfo.GroupName
                 },
                 null)
             .ConfigureAwait(false);
@@ -84,11 +97,15 @@ public class DefaultTarArchiveWriter : ITarArchiveWriter
 
     private int GetFileMode(string fileName)
     {
-        return !_preserveFileMode ? 0 : 0;
+        return _preserveFileMode
+            ? _tarFileInfoAccess.GetFileMode(fileName)
+            : 0;
     }
 
-    private (int userId, int groupId) GetOwner()
+    private TarFileOwnerInfo GetOwner(string fileName)
     {
-        return !_withOwnerAndGroup ? (0, 0) : (0, 0);
+        return _withOwnerAndGroup
+            ? _tarFileInfoAccess.GetOwner(fileName)
+            : new TarFileOwnerInfo();
     }
 }
