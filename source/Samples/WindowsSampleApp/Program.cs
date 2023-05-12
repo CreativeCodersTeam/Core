@@ -10,7 +10,7 @@ public static class Program
 {
     public static async Task Main()
     {
-        var outputStream = FileSys.File.Create(@"c:\temp\test.tar.gz");
+        var outputStream = FileSys.File.Create(@"c:\temp\test1.tar.gz");
 
         var tarArchiveWriter = new DefaultTarArchiveWriterBuilder()
             .PreserveFileMode()
