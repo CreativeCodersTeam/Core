@@ -1,4 +1,5 @@
-﻿using TapeArchive;
+﻿using CreativeCoders.Core.IO;
+using TapeArchive;
 
 namespace CreativeCoders.IO.Archives;
 
@@ -23,5 +24,10 @@ public class WindowsTarFileInfoAccess : ITarFileInfoAccess
         {
             UserName = Environment.UserName
         };
+    }
+
+    public DateTime GetModificationTime(string path)
+    {
+        return FileSys.File.GetLastWriteTime(path);
     }
 }

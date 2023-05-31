@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using CreativeCoders.Core;
+using CreativeCoders.Core.IO;
 using ICSharpCode.SharpZipLib.Tar;
 
 namespace CreativeCoders.IO.Archives;
@@ -25,9 +26,16 @@ public class SharpZipLibTarArchiveWriter : TarArchiveWriterBase
     }
 
     public override async Task AddFileAsync(string fileNameInArchive, Stream fileContent, long contentSize, int fileMode,
-        TarFileOwnerInfo fileOwnerInfo)
+        TarFileOwnerInfo fileOwnerInfo, DateTime modificationTime)
     {
-        var tarEntry = TarEntry.CreateTarEntry(fileNameInArchive);
+        var tarEntry = TarEntry.CreateTarEntry(fileNameInArchive.Replace(FileSys.Path.DirectorySeparatorChar, '/'));
+
+        tarEntry.UserName = fileOwnerInfo.UserName;
+        tarEntry.UserId = fileOwnerInfo.UserId;
+        tarEntry.GroupName = fileOwnerInfo.GroupName;
+        tarEntry.GroupId = fileOwnerInfo.GroupId;
+        tarEntry.TarHeader.Mode = fileMode;
+        tarEntry.ModTime = modificationTime.ToUniversalTime();
 
         tarEntry.Size = contentSize;
 

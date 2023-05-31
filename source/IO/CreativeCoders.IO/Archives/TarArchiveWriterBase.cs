@@ -25,12 +25,13 @@ public abstract class TarArchiveWriterBase : ITarArchiveWriter
     {
         await using var fs = FileSys.File.OpenRead(fileName);
 
-        await AddFileAsync(fileNameInArchive, fs, fs.Length, GetFileMode(fileName), GetOwner(fileName))
+        await AddFileAsync(fileNameInArchive, fs, fs.Length, GetFileMode(fileName), GetOwner(fileName),
+                _tarFileInfoAccess.GetModificationTime(fileName))
             .ConfigureAwait(false);
     }
 
     public abstract Task AddFileAsync(string fileNameInArchive, Stream fileContent, long contentSize,
-        int fileMode, TarFileOwnerInfo fileOwnerInfo);
+        int fileMode, TarFileOwnerInfo fileOwnerInfo, DateTime modificationTime);
 
     public async Task AddFromDirectoryAsync(string path, string removePrefix)
     {

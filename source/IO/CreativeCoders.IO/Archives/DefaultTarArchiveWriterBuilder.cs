@@ -37,6 +37,7 @@ public class DefaultTarArchiveWriterBuilder : ITarArchiveWriterBuilder
             ? new GZipStream(outputStream, CompressionLevel.Optimal)
             : outputStream;
 
-        return new SharpZipLibTarArchiveWriter(tarStream, _preserveFileMode, _withOwnerAndGroup);
+        return new DefaultTarArchiveWriter(tarStream, _preserveFileMode, _withOwnerAndGroup);
+        //return new SharpZipLibTarArchiveWriter(tarStream, _preserveFileMode, _withOwnerAndGroup);
     }
 }

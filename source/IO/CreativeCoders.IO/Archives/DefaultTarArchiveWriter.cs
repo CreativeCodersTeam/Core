@@ -37,10 +37,12 @@ public class DefaultTarArchiveWriter : TarArchiveWriterBase
     // }
 
     public override async Task AddFileAsync(string fileNameInArchive, Stream fileContent, long contentSize,
-        int fileMode, TarFileOwnerInfo fileOwnerInfo)
+        int fileMode, TarFileOwnerInfo fileOwnerInfo, DateTime modificationTime)
     {
+        var itemName = ItemName.FromFileSystem(fileNameInArchive, false);
+
         await _archiveBuilder.WriteItemAsync(
-                new UstarItem(PrePosixType.RegularFile, ItemName.FromFileSystem(fileNameInArchive, false))
+                new UstarItem(PrePosixType.RegularFile, itemName)
                 {
                     Content = fileContent,
                     Size = contentSize,
@@ -48,7 +50,8 @@ public class DefaultTarArchiveWriter : TarArchiveWriterBase
                     UserId = fileOwnerInfo.UserId,
                     GroupId = fileOwnerInfo.GroupId,
                     UserName = fileOwnerInfo.UserName,
-                    GroupName = fileOwnerInfo.GroupName
+                    GroupName = fileOwnerInfo.GroupName,
+                    ModificationTime = modificationTime
                 },
                 null)
             .ConfigureAwait(false);
