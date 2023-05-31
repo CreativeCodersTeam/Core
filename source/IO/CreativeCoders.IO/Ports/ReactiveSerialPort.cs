@@ -8,17 +8,17 @@ namespace CreativeCoders.IO.Ports;
 [PublicAPI]
 public sealed class ReactiveSerialPort : IObservable<byte[]>, IDisposable
 {
-    private readonly SerialPort _serialPort;
+    private readonly ISerialPort _serialPort;
 
     private readonly IObservable<byte[]> _dataObservable;
 
     public ReactiveSerialPort(string portName)
-        : this(new SerialPort(Ensure.NotNull(portName, nameof(portName))))
+        : this(new ExtendedSerialPort(Ensure.NotNull(portName, nameof(portName))))
     {
 
     }
 
-    public ReactiveSerialPort(SerialPort serialPort)
+    public ReactiveSerialPort(ISerialPort serialPort)
     {
         _serialPort = Ensure.NotNull(serialPort, nameof(serialPort));
 
@@ -37,19 +37,10 @@ public sealed class ReactiveSerialPort : IObservable<byte[]>, IDisposable
                 handler => _serialPort.DataReceived -= handler)
             .Select(args =>
             {
-                var data = ReadAllBytes().ToArray();
+                var data = _serialPort.ReadAllBytes().ToArray();
 
                 return data;
             });
-    }
-
-    private IEnumerable<byte> ReadAllBytes()
-    {
-        var buffer = new byte[_serialPort.BytesToRead];
-
-        var bytesRead = _serialPort.Read(buffer, 0, buffer.Length);
-
-        return buffer.Take(bytesRead);
     }
 
     public void Open()
