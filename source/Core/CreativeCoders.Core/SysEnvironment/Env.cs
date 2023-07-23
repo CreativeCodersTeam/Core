@@ -91,7 +91,7 @@ public static class Env
         EnvironmentInstance.SetEnvironmentVariable(variable, value, target);
     }
 
-    public static string GetAppDirectory()
+    public static string? GetAppDirectory()
     {
         return EnvironmentInstance.GetAppDirectory();
     }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CreativeCoders.Core.IO;
-using CreativeCoders.IO;
 using CreativeCoders.IO.Archives;
 
 namespace WindowsSampleApp;

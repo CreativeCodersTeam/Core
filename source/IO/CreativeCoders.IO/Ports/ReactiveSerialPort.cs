@@ -35,7 +35,7 @@ public sealed class ReactiveSerialPort : IObservable<byte[]>, IDisposable
                 },
                 handler => _serialPort.DataReceived += handler,
                 handler => _serialPort.DataReceived -= handler)
-            .Select(args =>
+            .Select(_ =>
             {
                 var data = _serialPort.ReadAllBytes().ToArray();
 

@@ -32,6 +32,8 @@ public class ZipArchiveCreator : IZipArchiveCreator
 
     public void Create()
     {
+        ArgumentNullException.ThrowIfNull(_archiveFileName);
+
         using var outputStream = FileSys.File.Create(_archiveFileName);
 
         _archive.SaveTo(outputStream);

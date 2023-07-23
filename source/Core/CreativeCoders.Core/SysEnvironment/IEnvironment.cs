@@ -35,7 +35,7 @@ public interface IEnvironment
 
     void SetEnvironmentVariable(string variable, string? value, EnvironmentVariableTarget target);
 
-    string GetAppDirectory();
+    string? GetAppDirectory();
 
     string GetAppFileName();
 

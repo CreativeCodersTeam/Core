@@ -40,6 +40,8 @@ public class TarArchiveCreator : ITarArchiveCreator
 
     public void Create(bool gzipArchive)
     {
+        ArgumentNullException.ThrowIfNull(_archiveFileName);
+
         using var outputStream = FileSys.File.Create(_archiveFileName);
 
         _archive.SaveTo(

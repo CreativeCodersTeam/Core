@@ -64,7 +64,8 @@ public class SystemdServiceInstaller : IDaemonInstaller
         if (string.IsNullOrWhiteSpace(daemonDefinition.WorkingDirectory))
         {
             daemonDefinition.WorkingDirectory =
-                FileSys.Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+                FileSys.Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)
+                ?? string.Empty;
         }
 
         serviceConfig

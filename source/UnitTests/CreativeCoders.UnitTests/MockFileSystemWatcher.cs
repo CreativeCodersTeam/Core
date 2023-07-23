@@ -3,9 +3,11 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Abstractions;
 using CreativeCoders.Core;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.UnitTests;
 
+[PublicAPI]
 public class MockFileSystemWatcher : FileSystemWatcherBase
 {
     public MockFileSystemWatcher(IFileSystem fileSystem)

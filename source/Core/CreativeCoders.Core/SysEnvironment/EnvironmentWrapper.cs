@@ -113,7 +113,7 @@ public class EnvironmentWrapper : IEnvironment
         Environment.SetEnvironmentVariable(variable, value, target);
     }
 
-    public string GetAppDirectory()
+    public string? GetAppDirectory()
     {
         return FileSys.Path.GetDirectoryName(GetAppFileName());
     }
