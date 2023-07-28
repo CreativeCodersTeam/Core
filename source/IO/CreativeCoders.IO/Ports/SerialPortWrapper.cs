@@ -29,7 +29,7 @@ public class SerialPortWrapper : ISerialPort
 
     public IEnumerable<byte> ReadAllBytes()
     {
-        throw new NotImplementedException();
+        return _serialPort.ReadAllBytes();
     }
 
     public event SerialDataReceivedEventHandler? DataReceived
