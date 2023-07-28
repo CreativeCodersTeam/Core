@@ -11,10 +11,6 @@ public class ExtendedSerialPort : SerialPort, ISerialPort
 
     public IEnumerable<byte> ReadAllBytes()
     {
-        var buffer = new byte[BytesToRead];
-
-        var bytesRead = Read(buffer, 0, buffer.Length);
-
-        return buffer.Take(bytesRead);
+        return SerialPortExtensions.ReadAllBytes(this);
     }
 }

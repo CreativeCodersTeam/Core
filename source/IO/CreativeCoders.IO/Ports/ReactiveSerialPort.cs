@@ -22,25 +22,7 @@ public sealed class ReactiveSerialPort : IObservable<byte[]>, IDisposable
     {
         _serialPort = Ensure.NotNull(serialPort, nameof(serialPort));
 
-        _dataObservable = Observable
-            .FromEvent<SerialDataReceivedEventHandler, SerialDataReceivedEventArgs>(
-                handler =>
-                {
-                    void SdHandler(object sender, SerialDataReceivedEventArgs args)
-                    {
-                        handler(args);
-                    }
-
-                    return SdHandler;
-                },
-                handler => _serialPort.DataReceived += handler,
-                handler => _serialPort.DataReceived -= handler)
-            .Select(_ =>
-            {
-                var data = _serialPort.ReadAllBytes().ToArray();
-
-                return data;
-            });
+        _dataObservable = _serialPort.ToDataObservable();
     }
 
     public void Open()
