@@ -1,5 +1,4 @@
-﻿using System.IO.Ports;
-using System.Reactive.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.Core;
 using JetBrains.Annotations;
 
@@ -12,6 +11,7 @@ public sealed class ReactiveSerialPort : IObservable<byte[]>, IDisposable
 
     private readonly IObservable<byte[]> _dataObservable;
 
+    [ExcludeFromCodeCoverage]
     public ReactiveSerialPort(string portName)
         : this(new ExtendedSerialPort(Ensure.NotNull(portName, nameof(portName))))
     {

@@ -1,4 +1,5 @@
-﻿using CreativeCoders.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+using CreativeCoders.Core;
 using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
 using JetBrains.Annotations;
@@ -11,7 +12,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 [PublicAPI]
 public interface ICleanTarget : INukeBuild, ICleanSettings
 {
-    Target Clean => _ => _
+    Target Clean => d => d
         .TryBefore<IRestoreTarget>()
         .Executes(() =>
         {
@@ -24,6 +25,7 @@ public interface ICleanTarget : INukeBuild, ICleanSettings
     DotNetCleanSettings ConfigureCleanSettings(DotNetCleanSettings cleanSettings)
         => ConfigureDefaultCleanSettings(cleanSettings);
 
+    [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
     sealed DotNetCleanSettings ConfigureDefaultCleanSettings(DotNetCleanSettings cleanSettings)
     {
         return cleanSettings

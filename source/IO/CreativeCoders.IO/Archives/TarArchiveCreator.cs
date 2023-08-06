@@ -9,14 +9,9 @@ namespace CreativeCoders.IO.Archives;
 
 public class TarArchiveCreator : ITarArchiveCreator
 {
-    private readonly TarArchive _archive;
+    private readonly TarArchive _archive = TarArchive.Create();
 
     private string? _archiveFileName;
-
-    public TarArchiveCreator()
-    {
-        _archive = TarArchive.Create();
-    }
 
     public ITarArchiveCreator SetArchiveFileName(string archiveFileName)
     {

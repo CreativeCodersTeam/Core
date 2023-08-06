@@ -23,7 +23,8 @@ public abstract class TarArchiveWriterBase : ITarArchiveWriter
 
     public async Task AddFileAsync(string fileName, string fileNameInArchive)
     {
-        await using var fs = FileSys.File.OpenRead(fileName);
+        var fs = FileSys.File.OpenRead(fileName);
+        await using var _ = fs.ConfigureAwait(false);
 
         await AddFileAsync(fileNameInArchive, fs, fs.Length, GetFileMode(fileName), GetOwner(fileName),
                 _tarFileInfoAccess.GetModificationTime(fileName))

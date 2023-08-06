@@ -3,7 +3,7 @@ using TapeArchive;
 
 namespace CreativeCoders.IO.Archives;
 
-public class DefaultTarArchiveWriter : TarArchiveWriterBase
+public sealed class DefaultTarArchiveWriter : TarArchiveWriterBase
 {
     private readonly Stream _tarStream;
 
@@ -25,16 +25,6 @@ public class DefaultTarArchiveWriter : TarArchiveWriterBase
 
         await _tarStream.DisposeAsync().ConfigureAwait(false);
     }
-
-    // public async Task AddFileAsync(string fileName, string fileNameInArchive)
-    // {
-    //     var ownerInfo = GetOwner(fileName);
-    //
-    //     await using var fs = FileSys.File.OpenRead(fileName);
-    //
-    //     await AddFileAsync(fileNameInArchive, fs, fs.Length, GetFileMode(fileName), GetOwner(fileName))
-    //         .ConfigureAwait(false);
-    // }
 
     public override async Task AddFileAsync(string fileNameInArchive, Stream fileContent, long contentSize,
         int fileMode, TarFileOwnerInfo fileOwnerInfo, DateTime modificationTime)

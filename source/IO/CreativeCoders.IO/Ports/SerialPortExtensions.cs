@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO.Ports;
 using System.Reactive.Linq;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.IO.Ports;
 
+[PublicAPI]
 public static class SerialPortExtensions
 {
     [ExcludeFromCodeCoverage]
@@ -13,12 +15,12 @@ public static class SerialPortExtensions
             .FromEvent<SerialDataReceivedEventHandler, SerialDataReceivedEventArgs>(
                 handler =>
                 {
+                    return SdHandler;
+
                     void SdHandler(object sender, SerialDataReceivedEventArgs args)
                     {
                         handler(args);
                     }
-
-                    return SdHandler;
                 },
                 handler => serialPort.DataReceived += handler,
                 handler => serialPort.DataReceived -= handler);
@@ -30,19 +32,19 @@ public static class SerialPortExtensions
             .FromEvent<SerialDataReceivedEventHandler, SerialDataReceivedEventArgs>(
                 handler =>
                 {
+                    return SdHandler;
+
                     void SdHandler(object sender, SerialDataReceivedEventArgs args)
                     {
                         handler(args);
                     }
-
-                    return SdHandler;
                 },
                 handler => serialPort.DataReceived += handler,
                 handler => serialPort.DataReceived -= handler);
     }
 
     [ExcludeFromCodeCoverage]
-    public static byte[] ReadAllBytes(this SerialPort serialPort)
+    public static IEnumerable<byte> ReadAllBytes(this SerialPort serialPort)
     {
         var buffer = new byte[serialPort.BytesToRead];
 

@@ -2,10 +2,12 @@
 using CreativeCoders.Core;
 using CreativeCoders.Core.IO;
 using ICSharpCode.SharpZipLib.Tar;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.IO.Archives;
 
-public class SharpZipLibTarArchiveWriter : TarArchiveWriterBase
+[PublicAPI]
+public sealed class SharpZipLibTarArchiveWriter : TarArchiveWriterBase
 {
     private readonly Stream _tarStream;
 

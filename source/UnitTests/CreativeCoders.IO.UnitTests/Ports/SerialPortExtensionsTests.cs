@@ -1,4 +1,5 @@
-﻿using System.IO.Ports;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO.Ports;
 using System.Reflection;
 using System.Text;
 using CreativeCoders.IO.Ports;
@@ -12,6 +13,7 @@ public class SerialPortExtensionsTests
     [Fact]
     public void ToObservable_DataReceivedEventsFired_DataPushedToObservable()
     {
+        // Arrange
         var serialPort = A.Fake<ISerialPort>();
 
         var observable = serialPort.ToObservable();
@@ -27,9 +29,11 @@ public class SerialPortExtensionsTests
 
         var eventArgs = CreateMockedSerialDataReceivedEventArgs();
 
+        // Act
         serialPort.DataReceived +=
             Raise.FreeForm<SerialDataReceivedEventHandler>.With(serialPort, eventArgs);
 
+        // Assert
         dataReceived
             .Should()
             .BeTrue();
@@ -40,8 +44,10 @@ public class SerialPortExtensionsTests
     }
 
     [Fact]
-    public void ToDataObservable()
+    [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
+    public void ToDataObservable_StringDataReceivedEventsFired_StringPushedToObservable()
     {
+        // Arrange
         var serialPort = A.Fake<ISerialPort>();
 
         var observable = serialPort.ToDataObservable();
@@ -61,9 +67,11 @@ public class SerialPortExtensionsTests
 
         var eventArgs = CreateMockedSerialDataReceivedEventArgs();
 
+        // Act
         serialPort.DataReceived +=
             Raise.FreeForm<SerialDataReceivedEventHandler>.With(serialPort, eventArgs);
 
+        // Assert
         eventData
             .Should()
             .NotBeNull();
@@ -73,6 +81,41 @@ public class SerialPortExtensionsTests
         dataText
             .Should()
             .Be("test");
+    }
+
+    [Fact]
+    public void ToObservable_DataReceivedEventsFiredAfterSubscriberDispose_NoDataPushedToObservable()
+    {
+        // Arrange
+        var serialPort = A.Fake<ISerialPort>();
+
+        var observable = serialPort.ToObservable();
+
+        var dataReceived = false;
+        SerialDataReceivedEventArgs? eventData = null;
+
+        var subscription = observable.Subscribe(data =>
+        {
+            eventData = data;
+            dataReceived = true;
+        });
+
+        // Act
+        subscription.Dispose();
+
+        var eventArgs = CreateMockedSerialDataReceivedEventArgs();
+
+        serialPort.DataReceived +=
+            Raise.FreeForm<SerialDataReceivedEventHandler>.With(serialPort, eventArgs);
+
+        // Assert
+        dataReceived
+            .Should()
+            .BeFalse();
+
+        eventData
+            .Should()
+            .BeNull();
     }
 
     private static SerialDataReceivedEventArgs CreateMockedSerialDataReceivedEventArgs()

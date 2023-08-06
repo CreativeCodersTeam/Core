@@ -11,7 +11,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 [PublicAPI]
 public interface IPushNuGetTarget : IPackTarget, IPushNuGetSettings
 {
-    Target PushNuGet => _ => _
+    Target PushNuGet => d => d
         .OnlyWhenDynamic(() => !SkipPush)
         .DependsOn<IPackTarget>()
         .Executes(() =>

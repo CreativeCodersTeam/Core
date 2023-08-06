@@ -7,7 +7,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 [PublicAPI]
 public interface ICreateGithubReleaseTarget : ICreateGithubReleaseSettings
 {
-    Target CreateGithubRelease => _ => _
+    Target CreateGithubRelease => d => d
         .TryAfter<IPublishTarget>()
         .TryAfter<ICompileTarget>()
         .TryAfter<ICreateDistPackagesTarget>()

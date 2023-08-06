@@ -6,14 +6,9 @@ namespace CreativeCoders.IO.Archives;
 
 public class ZipArchiveCreator : IZipArchiveCreator
 {
-    private readonly ZipArchive _archive;
+    private readonly ZipArchive _archive = ZipArchive.Create();
 
     private string? _archiveFileName;
-
-    public ZipArchiveCreator()
-    {
-        _archive = ZipArchive.Create();
-    }
 
     public IZipArchiveCreator SetArchiveFileName(string archiveFileName)
     {

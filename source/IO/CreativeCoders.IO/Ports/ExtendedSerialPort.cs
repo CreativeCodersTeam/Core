@@ -1,7 +1,9 @@
-﻿using System.IO.Ports;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO.Ports;
 
 namespace CreativeCoders.IO.Ports;
 
+[ExcludeFromCodeCoverage]
 public class ExtendedSerialPort : SerialPort, ISerialPort
 {
     public ExtendedSerialPort(string portName) : base(portName)

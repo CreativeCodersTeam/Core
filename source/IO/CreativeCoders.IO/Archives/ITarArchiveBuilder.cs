@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.IO.Archives;
+﻿using JetBrains.Annotations;
 
+namespace CreativeCoders.IO.Archives;
+
+[PublicAPI]
 public interface ITarArchiveWriterBuilder
 {
     ITarArchiveWriterBuilder WithGZip();

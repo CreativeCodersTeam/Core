@@ -12,7 +12,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 [PublicAPI]
 public interface IPublishTarget : IPublishSettings
 {
-    Target Publish => _ => _
+    Target Publish => d => d
         .TryAfter<ICodeCoverageReportTarget>()
         .TryAfter<ITestTarget>()
         .DependsOn<ICompileTarget>()

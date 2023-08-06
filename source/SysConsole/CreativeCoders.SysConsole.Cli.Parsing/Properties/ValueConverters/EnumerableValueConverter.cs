@@ -9,7 +9,7 @@ namespace CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters;
 
 public class EnumerableValueConverter : ICliValueConverter
 {
-    public object Convert(object? value, Type targetType, OptionBaseAttribute optionAttribute)
+    public object? Convert(object? value, Type targetType, OptionBaseAttribute optionAttribute)
     {
         if (value == null)
         {

@@ -9,7 +9,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 [PublicAPI]
 public interface ICreateDistPackagesTarget : INukeBuild, ICreateDistPackagesSettings
 {
-    Target CreateDistPackages => _ => _
+    Target CreateDistPackages => d => d
         .TryAfter<IPublishTarget>()
         .Executes(() =>
         {

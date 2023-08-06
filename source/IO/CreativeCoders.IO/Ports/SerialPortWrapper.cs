@@ -1,9 +1,13 @@
-﻿using System.IO.Ports;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO.Ports;
 using CreativeCoders.Core;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.IO.Ports;
 
-public class SerialPortWrapper : ISerialPort
+[ExcludeFromCodeCoverage]
+[PublicAPI]
+public sealed class SerialPortWrapper : ISerialPort
 {
     private readonly SerialPort _serialPort;
 

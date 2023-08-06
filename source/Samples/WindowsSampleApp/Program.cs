@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CreativeCoders.Core.IO;
 using CreativeCoders.IO.Archives;
 
@@ -19,10 +18,11 @@ public static class Program
 
         await tarArchiveWriter.AddFromDirectoryAsync(@"c:\temp\simbasrv", @"c:\temp\").ConfigureAwait(false);
 
-        await tarArchiveWriter.DisposeAsync();
+        await tarArchiveWriter.DisposeAsync().ConfigureAwait(false);
 
-        return;
+        //return;
 
+/*
         var archiveCreator = new TarArchiveCreator()
             .SetArchiveFileName(@"c:\temp\test.tar")
             .AddFromDirectory(@"c:\temp\simbasrv", "*.*", true);
@@ -41,5 +41,6 @@ public static class Program
 
         Console.WriteLine("Press key to exit...");
         Console.ReadKey();
+*/
     }
 }

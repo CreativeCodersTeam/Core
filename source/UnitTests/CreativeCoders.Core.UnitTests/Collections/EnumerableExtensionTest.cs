@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Comparing;
@@ -830,6 +831,7 @@ public class EnumerableExtensionTest
     [Theory]
     [InlineData(new object[] {1, 2, 3, 4, 5}, 5, typeof(IEnumerable<int>), typeof(int))]
     [InlineData(new object[] {"1", "2", "3", "4", "5"}, 5, typeof(IEnumerable<string>), typeof(string))]
+    [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
     public void OfType_ObjectEnumerableWithIntegers_ReturnsIEnumerableOfInt(IEnumerable dataArray,
         int expectedCount, Type targetType, Type itemType)
     {

@@ -27,22 +27,22 @@ public static class StreamExtensions
         return streamReader.ReadToEnd();
     }
 
-    public static Task<string> ReadAsStringAsync(this Stream stream)
+    public static async Task<string> ReadAsStringAsync(this Stream stream)
     {
         using var streamReader = new StreamReader(stream);
-        return streamReader.ReadToEndAsync();
+        return await streamReader.ReadToEndAsync().ConfigureAwait(false);
     }
 
-    public static Task<string> ReadAsStringAsync(this Stream stream, Encoding encoding)
+    public static async Task<string> ReadAsStringAsync(this Stream stream, Encoding encoding)
     {
         using var streamReader = new StreamReader(stream, encoding);
-        return streamReader.ReadToEndAsync();
+        return await streamReader.ReadToEndAsync().ConfigureAwait(false);
     }
 
-    public static Task<string> ReadAsStringAsync(this Stream stream, Encoding encoding,
+    public static async Task<string> ReadAsStringAsync(this Stream stream, Encoding encoding,
         bool detectEncodingFromByteOrderMarks)
     {
         using var streamReader = new StreamReader(stream, encoding, detectEncodingFromByteOrderMarks);
-        return streamReader.ReadToEndAsync();
+        return await streamReader.ReadToEndAsync().ConfigureAwait(false);
     }
 }
