@@ -9,7 +9,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 [PublicAPI]
 public interface ICodeCoverageReportTarget : ITestTarget, ICodeCoverageReportSettings
 {
-    Target CodeCoverageReport => _ => _
+    Target CodeCoverageReport => d => d
         .TryBefore<IPackTarget>()
         .DependsOn<ITestTarget>()
         .Produces(TargetDirectory / "*.*")

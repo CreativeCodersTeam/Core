@@ -1,12 +1,28 @@
-﻿using System;
-using CreativeCoders.IO;
+﻿using System.Threading.Tasks;
+using CreativeCoders.Core.IO;
+using CreativeCoders.IO.Archives;
 
 namespace WindowsSampleApp;
 
 public static class Program
 {
-    public static void Main()
+    public static async Task Main()
     {
+        var outputStream = FileSys.File.Create(@"c:\temp\test1.tar.gz");
+
+        var tarArchiveWriter = new DefaultTarArchiveWriterBuilder()
+            .PreserveFileMode()
+            .WithOwnerAndGroup()
+            .WithGZip()
+            .Build(outputStream);
+
+        await tarArchiveWriter.AddFromDirectoryAsync(@"c:\temp\simbasrv", @"c:\temp\").ConfigureAwait(false);
+
+        await tarArchiveWriter.DisposeAsync().ConfigureAwait(false);
+
+        //return;
+
+/*
         var archiveCreator = new TarArchiveCreator()
             .SetArchiveFileName(@"c:\temp\test.tar")
             .AddFromDirectory(@"c:\temp\simbasrv", "*.*", true);
@@ -25,5 +41,6 @@ public static class Program
 
         Console.WriteLine("Press key to exit...");
         Console.ReadKey();
+*/
     }
 }

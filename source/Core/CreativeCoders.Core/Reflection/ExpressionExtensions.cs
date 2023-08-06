@@ -34,7 +34,7 @@ public static class ExpressionExtensions
         Ensure.IsNotNull(memberExpression, nameof(memberExpression));
         var body = memberExpression.Body as MemberExpression;
 
-        Ensure.IsNotNull(body, "body");
+        Ensure.IsNotNull(body);
 
         return body.Member.Name;
     }

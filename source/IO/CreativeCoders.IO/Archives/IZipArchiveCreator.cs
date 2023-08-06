@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.IO;
+namespace CreativeCoders.IO.Archives;
 
 [PublicAPI]
 public interface IZipArchiveCreator

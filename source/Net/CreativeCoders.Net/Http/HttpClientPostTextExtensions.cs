@@ -31,10 +31,9 @@ public static class HttpClientPostTextExtensions
         string content, string mediaType, HttpCompletionOption completionOption,
         CancellationToken cancellationToken)
     {
-        using var httpPostRequest = new HttpRequestMessage(HttpMethod.Post, requestUri)
-        {
-            Content = new StringContent(content, Encoding.UTF8, mediaType)
-        };
+        using var httpPostRequest = new HttpRequestMessage(HttpMethod.Post, requestUri);
+
+        httpPostRequest.Content = new StringContent(content, Encoding.UTF8, mediaType);
 
         var response = await httpClient.SendAsync(httpPostRequest, completionOption, cancellationToken);
 

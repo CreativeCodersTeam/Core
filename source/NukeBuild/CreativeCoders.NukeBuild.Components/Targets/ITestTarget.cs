@@ -12,7 +12,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 [PublicAPI]
 public interface ITestTarget : ITestSettings
 {
-    Target Test => _ => _
+    Target Test => d => d
         .TryBefore<ICodeCoverageReportTarget>()
         .Executes(() =>
         {

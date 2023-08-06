@@ -25,8 +25,9 @@ public static class HttpClientPostWithoutBodyExtensions
     public static Task<HttpResponseMessage> PostAsync(this HttpClient httpClient, Uri requestUri,
         HttpCompletionOption completionOption, CancellationToken cancellationToken)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Post, requestUri)
-            {Content = new ByteArrayContent(Array.Empty<byte>())};
+        using var request = new HttpRequestMessage(HttpMethod.Post, requestUri);
+
+        request.Content = new ByteArrayContent(Array.Empty<byte>());
 
         return httpClient.SendAsync(request, completionOption, cancellationToken);
     }

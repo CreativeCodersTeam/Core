@@ -19,16 +19,16 @@ public class MockFileSystemEx : MockFileSystem, IFileSystemEx
 
     public FileSystemWatcherBase CreateFileSystemWatcher()
     {
-        return new MockFileSystemWatcher();
+        return new MockFileSystemWatcher(this);
     }
 
     public FileSystemWatcherBase CreateFileSystemWatcher(string path)
     {
-        return new MockFileSystemWatcher();
+        return new MockFileSystemWatcher(this);
     }
 
     public FileSystemWatcherBase CreateFileSystemWatcher(string path, string filter)
     {
-        return new MockFileSystemWatcher();
+        return new MockFileSystemWatcher(this);
     }
 }

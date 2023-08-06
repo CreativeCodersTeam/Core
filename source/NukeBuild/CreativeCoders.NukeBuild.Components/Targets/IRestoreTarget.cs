@@ -10,7 +10,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 [PublicAPI]
 public interface IRestoreTarget : INukeBuild
 {
-    Target Restore => _ => _
+    Target Restore => d => d
         .TryBefore<ICompileTarget>()
         .Executes(() =>
         {

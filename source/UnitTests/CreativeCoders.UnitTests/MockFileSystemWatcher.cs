@@ -2,13 +2,18 @@
 using System.ComponentModel;
 using System.IO;
 using System.IO.Abstractions;
+using CreativeCoders.Core;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.UnitTests;
 
+[PublicAPI]
 public class MockFileSystemWatcher : FileSystemWatcherBase
 {
-    public MockFileSystemWatcher()
+    public MockFileSystemWatcher(IFileSystem fileSystem)
     {
+        FileSystem = Ensure.NotNull(fileSystem, nameof(fileSystem));
+
         Filters = new Collection<string>();
     }
 
@@ -22,15 +27,19 @@ public class MockFileSystemWatcher : FileSystemWatcherBase
         throw new System.NotImplementedException();
     }
 
-    public override WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType)
+    public override IWaitForChangedResult WaitForChanged(WatcherChangeTypes changeType)
     {
-        return new WaitForChangedResult();
+        return new MockWaitForChangedResult();
     }
 
-    public override WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType, int timeout)
+    public override IWaitForChangedResult WaitForChanged(WatcherChangeTypes changeType, int timeout)
     {
-        return new WaitForChangedResult();
+        return new MockWaitForChangedResult();
     }
+
+    public override IContainer Container { get; }
+
+    public override IFileSystem FileSystem { get; }
 
     public override bool IncludeSubdirectories { get; set; }
 

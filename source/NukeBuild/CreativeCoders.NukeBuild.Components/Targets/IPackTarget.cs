@@ -12,7 +12,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 [PublicAPI]
 public interface IPackTarget : IPackSettings, ISolutionParameter
 {
-    Target Pack => _ => _
+    Target Pack => d => d
         .TryDependsOn<ICompileTarget>()
         .Executes(() =>
         {

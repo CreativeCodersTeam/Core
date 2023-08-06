@@ -17,16 +17,16 @@ public class FileSystemEx : FileSystem, IFileSystemEx
 
     public FileSystemWatcherBase CreateFileSystemWatcher()
     {
-        return new FileSystemWatcherWrapper();
+        return new FileSystemWatcherWrapper(this);
     }
 
     public FileSystemWatcherBase CreateFileSystemWatcher(string path)
     {
-        return new FileSystemWatcherWrapper(path);
+        return new FileSystemWatcherWrapper(this, path);
     }
 
     public FileSystemWatcherBase CreateFileSystemWatcher(string path, string filter)
     {
-        return new FileSystemWatcherWrapper(path, filter);
+        return new FileSystemWatcherWrapper(this, path, filter);
     }
 }

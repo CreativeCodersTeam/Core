@@ -14,7 +14,8 @@ namespace CreativeCoders.Core;
 [PublicAPI]
 public readonly struct Argument<T>
 {
-    internal Argument(T? value, string name)
+    internal Argument(T? value,
+        [CallerArgumentExpression("value")] string name = "[unknown]")
     {
         Value = value;
         Name = name ?? throw new ArgumentNullException(nameof(name));

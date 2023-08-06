@@ -1,5 +1,5 @@
 ﻿using CreativeCoders.Core.Collections;
-using CreativeCoders.IO;
+using CreativeCoders.IO.Archives;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
 using JetBrains.Annotations;
 using Nuke.Common;
@@ -9,7 +9,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 [PublicAPI]
 public interface ICreateDistPackagesTarget : INukeBuild, ICreateDistPackagesSettings
 {
-    Target CreateDistPackages => _ => _
+    Target CreateDistPackages => d => d
         .TryAfter<IPublishTarget>()
         .Executes(() =>
         {

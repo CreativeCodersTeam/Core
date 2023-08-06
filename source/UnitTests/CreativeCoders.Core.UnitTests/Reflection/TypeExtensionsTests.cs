@@ -18,7 +18,7 @@ public class TypeExtensionsTests
 
         Assert.NotNull(instance);
         Assert.IsType<GenericClass<int>>(instance);
-        Assert.Equal(0, ((GenericClass<int>) instance!).Data);
+        Assert.Equal(0, ((GenericClass<int>) instance).Data);
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class TypeExtensionsTests
 
         Assert.NotNull(instance);
         Assert.IsType<GenericClass<int>>(instance);
-        Assert.Equal(1234, ((GenericClass<int>) instance!).Data);
+        Assert.Equal(1234, ((GenericClass<int>) instance).Data);
     }
 
     [Fact]

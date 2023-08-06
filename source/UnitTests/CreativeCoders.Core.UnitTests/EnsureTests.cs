@@ -13,6 +13,82 @@ namespace CreativeCoders.Core.UnitTests;
 public class EnsureTests
 {
     [Fact]
+    public void IsNotNull_NoParamNameGiven_ParamNameIsSetByCompiler()
+    {
+        object? objectInstance = null;
+
+        var act = () => Ensure.IsNotNull(objectInstance);
+
+        act
+            .Should()
+            .Throw<ArgumentNullException>()
+            .And.ParamName
+            .Should()
+            .Be(nameof(objectInstance));
+    }
+
+    [Fact]
+    public void NotNull_NoParamNameGiven_ParamNameIsSetByCompiler()
+    {
+        object? objectInstance = null;
+
+        var act = () => Ensure.NotNull(objectInstance);
+
+        act
+            .Should()
+            .Throw<ArgumentNullException>()
+            .And.ParamName
+            .Should()
+            .Be(nameof(objectInstance));
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    public void IsNotNullOrEmpty_NoParamNameGiven_ParamNameIsSetByCompiler(string? text)
+    {
+        var act = () => Ensure.IsNotNullOrEmpty(text);
+
+        act
+            .Should()
+            .Throw<ArgumentException>()
+            .And.ParamName
+            .Should()
+            .Be(nameof(text));
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    [InlineData(" ")]
+    public void IsNotNullOrWhitespace_NoParamNameGiven_ParamNameIsSetByCompiler(string? text)
+    {
+        var act = () => Ensure.IsNotNullOrWhitespace(text);
+
+        act
+            .Should()
+            .Throw<ArgumentException>()
+            .And.ParamName
+            .Should()
+            .Be(nameof(text));
+    }
+
+    [Theory]
+    [InlineData(new int[0])]
+    [InlineData(null)]
+    public void IsNotNullOrEmpty_ForEnumerableNoParamNameGiven_ParamNameIsSetByCompiler(IEnumerable<int> items)
+    {
+        var act = () => Ensure.IsNotNullOrEmpty(items);
+
+        act
+            .Should()
+            .Throw<ArgumentException>()
+            .And.ParamName
+            .Should()
+            .Be(nameof(items));
+    }
+
+    [Fact]
     public void IsNotNull_AssertTestIsNotNull()
     {
         var instance = new object();
@@ -160,7 +236,7 @@ public class EnsureTests
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>
             {
-                {fileName, MockFileData.NullObject}
+                {fileName, new MockFileData(string.Empty)}
             },
             @"C:\");
 
@@ -190,7 +266,7 @@ public class EnsureTests
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>
             {
-                {fileName, MockFileData.NullObject}
+                {fileName, new MockFileData(string.Empty)}
             },
             @"C:\");
 

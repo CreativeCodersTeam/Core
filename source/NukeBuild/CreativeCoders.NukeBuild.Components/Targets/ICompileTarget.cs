@@ -10,7 +10,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 [PublicAPI]
 public interface ICompileTarget : ISolutionParameter
 {
-    Target Compile => _ => _
+    Target Compile => d => d
         .TryBefore<ITestTarget>()
         .Executes(() => DotNetTasks.DotNetBuild(x => x
             .Apply(ConfigureCompileSettings)
