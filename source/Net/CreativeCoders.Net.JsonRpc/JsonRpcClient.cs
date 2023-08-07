@@ -2,10 +2,8 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
-using JetBrains.Annotations;
 
 namespace CreativeCoders.Net.JsonRpc;
 
@@ -41,7 +39,7 @@ public class JsonRpcClient : IJsonRpcClient
     }
 
     [ExcludeFromCodeCoverage]
-    private static void CheckJsonRpcResponse<T>([System.Diagnostics.CodeAnalysis.NotNull] JsonRpcResponse<T>? jsonRpcResponse)
+    private static void CheckJsonRpcResponse<T>([NotNull] JsonRpcResponse<T>? jsonRpcResponse)
     {
         if (jsonRpcResponse == null)
         {

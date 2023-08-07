@@ -50,9 +50,9 @@ public class JsonRpcApiInterceptor<T> : InterceptorWithPropertiesBase<T>
         invocation.ReturnValue = result;
     }
 
-    private IEnumerable<object?> CreateArguments(JsonRpcMethodInfo methodInfo, object?[] arguments)
+    private IEnumerable<object?> CreateArguments(JsonRpcMethodInfo methodInfo, IReadOnlyList<object?> arguments)
     {
-        for (var i = 0; i < arguments.Length; i++)
+        for (var i = 0; i < arguments.Count; i++)
         {
             var argument = arguments[i];
 
@@ -67,21 +67,21 @@ public class JsonRpcApiInterceptor<T> : InterceptorWithPropertiesBase<T>
 
     public async Task<JsonRpcResponse<TResult>> ExecuteWithJsonResponse<TResult>(string methodName, object?[] arguments)
     {
-        var response = await _jsonRpcClient.ExecuteAsync<TResult>(_url, methodName, arguments);
+        var response = await _jsonRpcClient.ExecuteAsync<TResult>(_url, methodName, arguments).ConfigureAwait(false);
 
         return response;
     }
 
     public async Task<TResult?> ExecuteWithOutJsonResponse<TResult>(string methodName, object?[] arguments)
     {
-        var response = await _jsonRpcClient.ExecuteAsync<TResult>(_url, methodName, arguments);
+        var response = await _jsonRpcClient.ExecuteAsync<TResult>(_url, methodName, arguments).ConfigureAwait(false);
 
         response.EnsureSuccess(methodName);
 
         return response.Result;
     }
 
-    private JsonRpcMethodInfo CreateMethodInfo(MethodInfo methodInfo)
+    private static JsonRpcMethodInfo CreateMethodInfo(MethodInfo methodInfo)
     {
         var methodAttribute = methodInfo.GetCustomAttribute<JsonRpcMethodAttribute>();
 

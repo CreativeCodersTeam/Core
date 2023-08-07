@@ -32,7 +32,7 @@ public class JsonRpcClientTests
         const string methodName = "TestMethod";
         var arguments = new object[] { 1, "test" };
 
-        var rpcCallResponse = new JsonRpcResponse<string>()
+        var rpcCallResponse = new JsonRpcResponse<string>
         {
             Result = "TestResult",
             Id = 1234
@@ -103,7 +103,7 @@ public class JsonRpcClientTests
         const string methodName = "TestMethod";
         var arguments = new object[] { 1, "test" };
 
-        var rpcCallResponse = new JsonRpcResponse<string>()
+        var rpcCallResponse = new JsonRpcResponse<string>
         {
             Result = "TestResult",
             Id = 1234

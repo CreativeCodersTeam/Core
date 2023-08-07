@@ -1,8 +1,10 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Net.JsonRpc.ApiBuilder;
 
-public interface IJsonRpcApiBuilder<T>
+[PublicAPI]
+public interface IJsonRpcApiBuilder<out T>
     where T : class
 {
     IJsonRpcApiBuilder<T> ForUrl(Uri url);
