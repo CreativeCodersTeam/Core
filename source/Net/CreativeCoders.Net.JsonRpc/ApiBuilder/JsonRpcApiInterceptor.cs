@@ -109,7 +109,7 @@ public class JsonRpcApiInterceptor<T> : InterceptorWithPropertiesBase<T>
         return new JsonRpcMethodInfo
         {
             ArgumentNames = argumentNames,
-            RpcMethodName = methodAttribute?.MethodName ?? throw new InvalidOperationException("No JSON RPC method name given"),
+            RpcMethodName = methodAttribute?.MethodName ?? methodInfo.Name ?? throw new InvalidOperationException("No JSON RPC method name given"),
             HasCompleteJsonResponse = hasCompleteJsonResponse,
             ResultType = hasCompleteJsonResponse ? resultType.GetGenericArguments()[0] : resultType
         };

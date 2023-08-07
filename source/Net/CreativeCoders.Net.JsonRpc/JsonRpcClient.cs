@@ -13,11 +13,14 @@ public class JsonRpcClient : IJsonRpcClient
 
     public JsonRpcClient(HttpClient httpClient)
     {
-        _httpClient = Ensure.NotNull(httpClient, nameof(httpClient));
+        _httpClient = Ensure.NotNull(httpClient);
     }
 
     public async Task<JsonRpcResponse<T>> ExecuteAsync<T>(Uri url, string methodName, params object?[] arguments)
     {
+        Ensure.NotNull(url);
+        Ensure.IsNotNullOrEmpty(methodName);
+
         var jsonRpcRequest = new JsonRpcRequest(methodName, arguments);
 
         var httpResponse = await _httpClient.PostAsJsonAsync(url, jsonRpcRequest).ConfigureAwait(false);

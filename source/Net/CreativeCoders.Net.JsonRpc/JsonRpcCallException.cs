@@ -4,7 +4,7 @@ namespace CreativeCoders.Net.JsonRpc;
 
 public class JsonRpcCallException : Exception
 {
-    public JsonRpcCallException(int errorCode, string? errorMessage, string rpcMethodName)
+    public JsonRpcCallException(int errorCode, string? errorMessage, string? rpcMethodName)
         : base($"Json RPC method '{rpcMethodName}' call failed ({errorCode}): {errorMessage}")
     {
         ErrorCode = errorCode;
@@ -16,5 +16,5 @@ public class JsonRpcCallException : Exception
 
     public string? ErrorMessage { get; }
 
-    public string RpcMethodName { get; }
+    public string? RpcMethodName { get; }
 }
