@@ -1,8 +1,11 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 using CreativeCoders.Core;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Net.JsonRpc;
 
@@ -27,10 +30,7 @@ public class JsonRpcClient : IJsonRpcClient
             .ReadFromJsonAsync<JsonRpcResponse<T>>()
             .ConfigureAwait(false);
 
-        if (jsonRpcResponse == null)
-        {
-            throw new InvalidOperationException();
-        }
+        CheckJsonRpcResponse(jsonRpcResponse);
 
         if (jsonRpcResponse.Id != jsonRpcRequest.Id)
         {
@@ -38,5 +38,14 @@ public class JsonRpcClient : IJsonRpcClient
         }
 
         return jsonRpcResponse;
+    }
+
+    [ExcludeFromCodeCoverage]
+    private static void CheckJsonRpcResponse<T>([System.Diagnostics.CodeAnalysis.NotNull] JsonRpcResponse<T>? jsonRpcResponse)
+    {
+        if (jsonRpcResponse == null)
+        {
+            throw new InvalidOperationException("JSON RPC response is null");
+        }
     }
 }
