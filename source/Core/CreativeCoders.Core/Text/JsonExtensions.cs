@@ -18,4 +18,14 @@ public static class JsonExtensions
     {
         JsonSerializer.Serialize(utf8Json, data, jsonSerializerOptions);
     }
+
+    public static T ReadAsJson<T>(this Stream utf8Json, JsonSerializerOptions jsonSerializerOptions = null)
+    {
+        return JsonSerializer.Deserialize<T>(utf8Json, jsonSerializerOptions);
+    }
+
+    public static T ReadAsJson<T>(this string json, JsonSerializerOptions jsonSerializerOptions = null)
+    {
+        return JsonSerializer.Deserialize<T>(json, jsonSerializerOptions);
+    }
 }
