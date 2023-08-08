@@ -25,14 +25,14 @@ public class JsonRpcApiInterceptorTests
         var args = new object[] {"TestArg", 1234 };
 
         A
-            .CallTo(() => jsonRpcClient.ExecuteAsync<string>(url, "TestMethod",
+            .CallTo(() => jsonRpcClient.ExecuteAsync<string>(url, nameof(ITestJsonRpcApi.TestMethod),
                 A<object[]>.That.Matches(x => x[0] == args[0] && x[1] == args[1])))
             .Returns(Task.FromResult(new JsonRpcResponse<string> { Result = expectedResult }));
 
         var invocation = A.Fake<IInvocation>();
 
         A.CallTo(() => invocation.Method)
-            .Returns(typeof(ITestJsonRpcApi).GetMethod("TestMethod"));
+            .Returns(typeof(ITestJsonRpcApi).GetMethod(nameof(ITestJsonRpcApi.TestMethod)));
 
         A.CallTo(() => invocation.Arguments)
             .Returns(args);
@@ -43,6 +43,63 @@ public class JsonRpcApiInterceptorTests
         var result = await ((Task<string>)invocation.ReturnValue).ConfigureAwait(false);
 
         // Assert
-        result.Should().Be(expectedResult);
+        result
+            .Should()
+            .Be(expectedResult);
+    }
+
+    [Fact]
+    public async Task ExecuteMethod_WithTaskOfJsonRpcResponse_ReturnsResult()
+    {
+        // Arrange
+        var expectedResult = "422";
+        var jsonRpcClient = A.Fake<IJsonRpcClient>();
+        var url = new Uri("http://localhost:1234");
+        var interceptor = new JsonRpcApiInterceptor<ITestJsonRpcApi>(jsonRpcClient, url);
+
+        var args = new object[] {"TestArg", 1234 };
+
+        A
+            .CallTo(() => jsonRpcClient.ExecuteAsync<string>(url, nameof(ITestJsonRpcApi.TestMethodWithJsonRpcResponse),
+                A<object[]>.That.Matches(x => x[0] == args[0] && x[1] == args[1])))
+            .Returns(Task.FromResult(new JsonRpcResponse<string> { Result = expectedResult }));
+
+        var invocation = A.Fake<IInvocation>();
+
+        A.CallTo(() => invocation.Method)
+            .Returns(typeof(ITestJsonRpcApi).GetMethod(nameof(ITestJsonRpcApi.TestMethodWithJsonRpcResponse)));
+
+        A.CallTo(() => invocation.Arguments)
+            .Returns(args);
+
+        // Act
+        interceptor.Intercept(invocation);
+
+        var rpcResponse = await ((Task<JsonRpcResponse<string>>)invocation.ReturnValue).ConfigureAwait(false);
+
+        // Assert
+        rpcResponse.Result
+            .Should()
+            .Be(expectedResult);
+    }
+
+    [Fact]
+    public void ExecuteMethod_InvalidReturnType_ThrowsException()
+    {
+        // Arrange
+        var interceptor = new JsonRpcApiInterceptor<ITestJsonRpcApi>(A.Fake<IJsonRpcClient>(), new Uri("http://localhost:1234"));
+
+        var args = new object[] {"TestArg", 1234 };
+
+        var invocation = A.Fake<IInvocation>();
+
+        A.CallTo(() => invocation.Method)
+            .Returns(typeof(ITestJsonRpcApi).GetMethod(nameof(ITestJsonRpcApi.InvalidMethod)));
+
+        // Act & Assert
+        interceptor
+            .Invoking(x => x.Intercept(invocation))
+            .Should()
+            .Throw<InvalidOperationException>();
     }
 }
