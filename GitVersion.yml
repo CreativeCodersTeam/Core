@@ -8,7 +8,7 @@ mode: ContinuousDeployment
 branches:
   feature:
     mode: ContinuousDeployment
-    tag: alpha.{BranchName}
+    tag: feature.{BranchName}
     increment: Minor
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
