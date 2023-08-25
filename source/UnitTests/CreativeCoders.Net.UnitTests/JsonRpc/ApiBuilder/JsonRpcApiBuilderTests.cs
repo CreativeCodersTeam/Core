@@ -11,7 +11,7 @@ using Xunit;
 
 namespace CreativeCoders.Net.UnitTests.JsonRpc.ApiBuilder;
 
-public class JsonRpcAApiBuilderTests
+public class JsonRpcApiBuilderTests
 {
     [Fact]
     public async Task Build_UrlIsGiven_TheJsonRpcCallIsMadeViaJsonRpcClient()
