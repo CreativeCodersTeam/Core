@@ -13,11 +13,17 @@ public static class Env
 {
     private static IEnvironment EnvironmentInstance = new EnvironmentWrapper();
 
-    public static void SetEnvironmentImpl(IEnvironment environment)
+    public static IDisposable SetEnvironmentImpl(IEnvironment environment)
     {
         Ensure.IsNotNull(environment, nameof(environment));
 
+        var oldEnvironment = EnvironmentInstance;
+
+        var resetEnvImpl = new DelegateDisposable(() => EnvironmentInstance = oldEnvironment, true);
+
         EnvironmentInstance = environment;
+
+        return resetEnvImpl;
     }
 
     public static void Exit(int exitCode)
