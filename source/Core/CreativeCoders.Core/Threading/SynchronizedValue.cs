@@ -31,7 +31,12 @@ public class SynchronizedValue<T>
 
     public void SetValue(Func<T, T> setValue)
     {
-        _lockingMechanism.Write(() => _value = setValue(_value));
+        _lockingMechanism.Write(() => _value = SetValueCore(setValue));
+    }
+
+    private T SetValueCore(Func<T, T> setValue)
+    {
+        return setValue(_value);
     }
 
     public T Value
