@@ -59,8 +59,8 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         _lockingMechanism = lockingMechanism();
 
         _items = new List<T>(items);
-        _updateCounter = new SynchronizedValue<int>(lockingMechanism());
-        _collectionHasChanged = new SynchronizedValue<bool>(lockingMechanism());
+        _updateCounter = SynchronizedValue.Create<int>(lockingMechanism());
+        _collectionHasChanged = SynchronizedValue.Create<bool>(lockingMechanism());
         _reentrancyMonitor = new SimpleMonitor();
     }
 
