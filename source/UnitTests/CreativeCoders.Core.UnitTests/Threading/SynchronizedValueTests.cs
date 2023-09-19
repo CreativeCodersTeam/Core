@@ -94,7 +94,7 @@ public class SynchronizedValueTests
         long readTimeMs = 0;
 
         // Act
-        var setTask = Task.Run(() =>
+        var setTask = new Thread(() =>
         {
             synchronizedValue.SetValue(_ =>
             {
@@ -103,7 +103,9 @@ public class SynchronizedValueTests
             });
         });
 
-        var getTask = Task.Run(() =>
+        setTask.Start();
+
+        var getTask = new Thread(() =>
         {
             Thread.Sleep(100);
 
@@ -116,7 +118,11 @@ public class SynchronizedValueTests
             readTimeMs = stopwatch.ElapsedMilliseconds;
         });
 
-        Task.WaitAll(setTask, getTask);
+        getTask.Start();
+
+        setTask.Join();
+
+        getTask.Join();
 
         // Assert
         readValue
