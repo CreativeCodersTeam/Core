@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Threading;
@@ -16,7 +15,8 @@ public class SynchronizedValueTests
         const int expectedValue = 12345;
 
         // Arrange & Act
-        var value = new SynchronizedValue<int> { Value = expectedValue };
+        var value = SynchronizedValue.Create<int>();
+        value.Value = expectedValue;
 
         // Assert
         value.Value
@@ -30,7 +30,8 @@ public class SynchronizedValueTests
         const int expectedValue = 12345;
 
         // Arrange & Act
-        var value = new SynchronizedValue<int>(new LockLockingMechanism()) {Value = expectedValue};
+        var value = SynchronizedValue.Create<int>(new LockLockingMechanism());
+        value.Value = expectedValue;
 
         // Assert
         value.Value
@@ -45,7 +46,7 @@ public class SynchronizedValueTests
         const int expectedValue = 12345;
 
         // Arrange
-        var value = new SynchronizedValue<int>(oldValue);
+        var value = SynchronizedValue.Create(oldValue);
 
         // Act
         value.SetValue(x =>
@@ -70,7 +71,7 @@ public class SynchronizedValueTests
         const int expectedValue = 12345;
 
         // Arrange
-        var value = new SynchronizedValue<int>(oldValue);
+        var value = SynchronizedValue.Create(oldValue);
 
         // Act
         value.Value = expectedValue;
@@ -80,14 +81,14 @@ public class SynchronizedValueTests
             .Should()
             .Be(expectedValue);
     }
-
+#nullable enable
     [Fact]
     public void SetValue_ParallelReadValue_ValueAfterSetIsReturned()
     {
         const int expectedValue = 12345;
 
         // Arrange
-        var synchronizedValue = new SynchronizedValue<int>(new LockSlimLockingMechanism());
+        var synchronizedValue = SynchronizedValue.Create<int>(new LockSlimLockingMechanism());
 
         var readValue = 0;
         long readTimeMs = 0;

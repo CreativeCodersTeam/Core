@@ -1,7 +1,34 @@
 ﻿using System;
 using JetBrains.Annotations;
 
+#nullable enable
+
 namespace CreativeCoders.Core.Threading;
+
+public static class SynchronizedValue
+{
+    public static SynchronizedValue<T> Create<T>()
+        where T : struct
+    {
+        return new SynchronizedValue<T>(default);
+    }
+
+    public static SynchronizedValue<T> Create<T>(T value)
+    {
+        return new SynchronizedValue<T>(value);
+    }
+
+    public static SynchronizedValue<T> Create<T>(ILockingMechanism lockingMechanism)
+        where T : struct
+    {
+        return new SynchronizedValue<T>(lockingMechanism, default);
+    }
+
+    public static SynchronizedValue<T> Create<T>(ILockingMechanism lockingMechanism, T value)
+    {
+        return new SynchronizedValue<T>(lockingMechanism, value);
+    }
+}
 
 [PublicAPI]
 public class SynchronizedValue<T>
@@ -10,13 +37,9 @@ public class SynchronizedValue<T>
 
     private T _value;
 
-    public SynchronizedValue() : this(default(T)) { }
+    internal SynchronizedValue(T value) : this(DefaultLockingMechanism(), value) { }
 
-    public SynchronizedValue(ILockingMechanism lockingMechanism) : this(lockingMechanism, default) { }
-
-    public SynchronizedValue(T value) : this(DefaultLockingMechanism(), value) { }
-
-    public SynchronizedValue(ILockingMechanism lockingMechanism, T value)
+    internal SynchronizedValue(ILockingMechanism lockingMechanism, T value)
     {
         Ensure.IsNotNull(lockingMechanism, nameof(lockingMechanism));
 
