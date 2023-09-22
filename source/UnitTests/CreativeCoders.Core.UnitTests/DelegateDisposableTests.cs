@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using FluentAssertions;
+using Xunit;
 
 namespace CreativeCoders.Core.UnitTests;
 
@@ -11,7 +12,9 @@ public class DelegateDisposableTests
 
         var _ = new DelegateDisposable(() => actionCalled = true, true);
 
-        Assert.False(actionCalled);
+        actionCalled
+            .Should()
+            .BeFalse();
     }
 
     [Fact]
@@ -23,7 +26,9 @@ public class DelegateDisposableTests
 
         d.Dispose();
 
-        Assert.True(actionCalled);
+        actionCalled
+            .Should()
+            .BeTrue();
     }
 
     [Fact]
@@ -36,7 +41,9 @@ public class DelegateDisposableTests
         d.Dispose();
         d.Dispose();
 
-        Assert.Equal(2, actionCalledCounter);
+        actionCalledCounter
+            .Should()
+            .Be(2);
     }
 
     [Fact]
@@ -49,6 +56,8 @@ public class DelegateDisposableTests
         d.Dispose();
         d.Dispose();
 
-        Assert.Equal(1, actionCalledCounter);
+        actionCalledCounter
+            .Should()
+            .Be(1);
     }
 }
