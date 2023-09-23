@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Net.XmlRpc.Proxy;
@@ -7,7 +8,7 @@ namespace CreativeCoders.Net.XmlRpc.Proxy;
 public interface IXmlRpcProxyBuilder<out T>
     where T : class
 {
-    IXmlRpcProxyBuilder<T> ForUrl(string url);
+    IXmlRpcProxyBuilder<T> ForUrl(Uri url);
 
     IXmlRpcProxyBuilder<T> UseEncoding(Encoding encoding);
 

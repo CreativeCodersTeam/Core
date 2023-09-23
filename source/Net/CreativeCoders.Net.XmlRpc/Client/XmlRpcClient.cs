@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -129,7 +130,7 @@ public class XmlRpcClient : IXmlRpcClient
         return (T) resultConverter.Convert(result);
     }
 
-    public string Url { get; set; }
+    public Uri Url { get; set; }
 
     public Encoding XmlEncoding
     {

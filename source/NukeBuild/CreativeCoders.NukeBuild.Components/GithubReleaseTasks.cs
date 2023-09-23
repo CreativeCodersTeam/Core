@@ -47,7 +47,7 @@ public class GithubReleaseTasks
         var repositoryOwner = GitHubActions.Instance.RepositoryOwner;
         var repositoryName = GetRepositoryName();
 
-        Log.Debug($"Create github release");
+        Log.Debug("Create github release");
         Log.Debug($"Repo Owner: {repositoryOwner}");
         Log.Debug($"Repo name: {repositoryName}");
         Log.Debug($"Version: {releaseVersion}");

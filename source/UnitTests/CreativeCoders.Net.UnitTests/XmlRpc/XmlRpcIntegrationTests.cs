@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using CreativeCoders.Net.Servers.Http.AspNetCore;
 using CreativeCoders.Net.XmlRpc;
@@ -70,7 +71,7 @@ public class XmlRpcIntegrationTests
         var sp = services.BuildServiceProvider();
 
         var xmlRpcClient = sp.GetRequiredService<IXmlRpcProxyBuilder<IXmlRpcDemoClient>>()
-            .ForUrl("http://localhost:12345")
+            .ForUrl(new Uri("http://localhost:12345"))
             .Build();
 
         return (xmlRpcServer, xmlRpcDemoService, xmlRpcClient);
