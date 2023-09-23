@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using CreativeCoders.Net.XmlRpc.Definition;
 using JetBrains.Annotations;
@@ -23,7 +24,7 @@ public interface IXmlRpcClient
     Task<T> InvokeExAsync<T, TInvoke>(string methodName, object[] parameters,
         IMethodResultConverter resultConverter);
 
-    string Url { get; set; }
+    Uri Url { get; set; }
 
     Encoding XmlEncoding { get; set; }
 

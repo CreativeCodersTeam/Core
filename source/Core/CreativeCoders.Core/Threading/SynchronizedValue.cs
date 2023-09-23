@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Threading;
 
+[PublicAPI]
 public static class SynchronizedValue
 {
     public static SynchronizedValue<T> Create<T>()

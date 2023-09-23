@@ -32,7 +32,7 @@ public class XmlRpcSample
         await xmlRpcServer.StartAsync();
 
         var xmlRpcClient = sp.GetRequiredService<IXmlRpcProxyBuilder<ISampleXmlRpcClient>>()
-            .ForUrl("http://localhost:12345")
+            .ForUrl(new Uri("http://localhost:12345"))
             .Build();
 
         var result = await xmlRpcClient.DoSomething("qwertz");

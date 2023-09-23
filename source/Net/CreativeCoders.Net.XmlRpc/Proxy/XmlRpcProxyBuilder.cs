@@ -17,7 +17,7 @@ public class XmlRpcProxyBuilder<T> : IXmlRpcProxyBuilder<T>
 
     private readonly IHttpClientFactory _httpClientFactory;
 
-    private string _url;
+    private Uri _url;
 
     private Encoding _encoding;
 
@@ -46,7 +46,7 @@ public class XmlRpcProxyBuilder<T> : IXmlRpcProxyBuilder<T>
         _contentType = ContentMediaTypes.Text.Xml;
     }
 
-    public IXmlRpcProxyBuilder<T> ForUrl(string url)
+    public IXmlRpcProxyBuilder<T> ForUrl(Uri url)
     {
         _url = url;
         return this;
