@@ -13,12 +13,12 @@ public class LiteDbRepositoryBuilder : ILiteDbRepositoryBuilder
         _services = Ensure.NotNull(services);
     }
 
-    public ILiteDbRepositoryBuilder AddCollection<T, TKey>(string? name = null) where T : class, IDocumentKey<TKey>
+    public ILiteDbRepositoryBuilder AddRepository<T, TKey>(string? name = null) where T : class, IDocumentKey<TKey>
     {
-        return AddCollection<T, TKey>(_ => { }, name);
+        return AddRepository<T, TKey>(_ => { }, name);
     }
 
-    public ILiteDbRepositoryBuilder AddCollection<T, TKey>(Action<ILiteCollectionIndexBuilder<T>> buildIndex, string? name = null) where T : class, IDocumentKey<TKey>
+    public ILiteDbRepositoryBuilder AddRepository<T, TKey>(Action<ILiteCollectionIndexBuilder<T>> buildIndex, string? name = null) where T : class, IDocumentKey<TKey>
     {
         _services.AddTransient<IDocumentRepository<T, TKey>, LiteDbDocumentRepository<T, TKey>>();
 
