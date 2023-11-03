@@ -12,6 +12,8 @@ public class FileCleanUpTests
     [Fact]
     public void Dispose_FileNotExistsNoThrow_NotThrowsException()
     {
+        Directory.CreateDirectory(Path.GetTempPath());
+        
         var fileName = Path.GetTempFileName();
 
         // Arrange
@@ -30,6 +32,8 @@ public class FileCleanUpTests
     [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
     public void Dispose_FileNotExistsThrow_ThrowsException()
     {
+        Directory.CreateDirectory(Path.GetTempPath());
+        
         var fileName = Path.GetTempFileName();
 
         // Arrange
@@ -51,6 +55,8 @@ public class FileCleanUpTests
     [Fact]
     public void Dispose_FileExistsNoThrow_NotThrowsExceptionAndFileIsDeleted()
     {
+        Directory.CreateDirectory(Path.GetTempPath());
+        
         var fileName = Path.GetTempFileName();
 
         // Arrange
