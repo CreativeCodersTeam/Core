@@ -11,14 +11,14 @@ public sealed class LiteDbTestContext<T, TKey> : IDisposable
 
     private readonly ServiceProvider _serviceProvider;
 
-    public LiteDbTestContext()
+    public LiteDbTestContext(Action<ILiteCollectionIndexBuilder<T>>? indexBuilder = null)
     {
         var services = new ServiceCollection();
 
         _dbFile = new FileCleanUp(FileSys.Path.GetTempFileName());
         
         services.AddLiteDbDocumentRepositories(_dbFile.FileName)
-            .AddRepository<T, TKey>("test");
+            .AddRepository<T, TKey>(indexBuilder ?? (x => {}), "test");
         
         _serviceProvider = services.BuildServiceProvider();
         

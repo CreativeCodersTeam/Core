@@ -18,7 +18,8 @@ public class LiteDbRepositoryBuilder : ILiteDbRepositoryBuilder
         return AddRepository<T, TKey>(_ => { }, name);
     }
 
-    public ILiteDbRepositoryBuilder AddRepository<T, TKey>(Action<ILiteCollectionIndexBuilder<T>> buildIndex, string? name = null) where T : class, IDocumentKey<TKey>
+    public ILiteDbRepositoryBuilder AddRepository<T, TKey>(Action<ILiteCollectionIndexBuilder<T>> buildIndex, string? name = null)
+        where T : class, IDocumentKey<TKey>
     {
         _services.AddTransient<IDocumentRepository<T, TKey>, LiteDbDocumentRepository<T, TKey>>();
 

@@ -1,4 +1,5 @@
-﻿using CreativeCoders.Core;
+﻿using System.Linq.Expressions;
+using CreativeCoders.Core;
 using LiteDB;
 
 namespace CreativeCoders.Data.NoSql.LiteDb;
@@ -13,14 +14,15 @@ public class LiteDbDocumentRepository<T, TKey> : IDocumentRepository<T, TKey>
         _liteDbCollection = Ensure.NotNull(liteDbCollection);
     }
 
-    public Task<T> AddAsync(T entity)
+    public Task<TKey> AddAsync(T entity)
     {
         Ensure.NotNull(entity);
         var id = _liteDbCollection.Insert(entity);
 
-        entity.Id = (TKey) id.RawValue;
+        var key = (TKey)id.RawValue;
+        entity.Id = key;
 
-        return Task.FromResult(entity);
+        return Task.FromResult(key);
     }
 
     public Task DeleteAsync(TKey id)
@@ -35,12 +37,18 @@ public class LiteDbDocumentRepository<T, TKey> : IDocumentRepository<T, TKey>
     {
         Ensure.NotNull(id);
 
+        //return Task.FromResult(_liteDbCollection.Query().Where(x => id.Equals(x.Id)).FirstOrDefault());
         return Task.FromResult(_liteDbCollection.FindOne(x => id.Equals(x.Id)));
     }
 
     public Task<IEnumerable<T>> GetAllAsync()
     {
         return Task.FromResult(_liteDbCollection.FindAll());
+    }
+
+    public Task<IEnumerable<T>> QueryAsync(Expression<Func<T, bool>> query)
+    {
+        return Task.FromResult(_liteDbCollection.Query().Where(query).ToEnumerable());
     }
 
     public Task UpdateAsync(T entity)
