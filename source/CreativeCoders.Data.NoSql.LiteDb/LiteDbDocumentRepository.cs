@@ -6,6 +6,7 @@ namespace CreativeCoders.Data.NoSql.LiteDb;
 
 public class LiteDbDocumentRepository<T, TKey> : IDocumentRepository<T, TKey>
     where T : class, IDocumentKey<TKey>
+    where TKey : IEquatable<TKey>
 {
     private readonly ILiteCollection<T> _liteDbCollection;
 
@@ -33,12 +34,19 @@ public class LiteDbDocumentRepository<T, TKey> : IDocumentRepository<T, TKey>
         return Task.CompletedTask;
     }
 
-    public Task<T> GetAsync(TKey id)
+    public Task DeleteAsync(Expression<Func<T, bool>> predicate)
+    {
+        Ensure.NotNull(predicate);
+
+        _liteDbCollection.DeleteMany(predicate);
+        return Task.CompletedTask;
+    }
+
+    public Task<T?> GetAsync(TKey id)
     {
         Ensure.NotNull(id);
 
-        //return Task.FromResult(_liteDbCollection.Query().Where(x => id.Equals(x.Id)).FirstOrDefault());
-        return Task.FromResult(_liteDbCollection.FindOne(x => id.Equals(x.Id)));
+        return Task.FromResult<T?>(_liteDbCollection.FindById(new BsonValue(id)));
     }
 
     public Task<IEnumerable<T>> GetAllAsync()

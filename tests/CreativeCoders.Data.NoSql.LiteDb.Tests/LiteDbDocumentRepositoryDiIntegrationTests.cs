@@ -253,4 +253,150 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
             .And
             .BeEquivalentTo(testDoc);
     }
+    
+    [Fact]
+    public async Task DeleteAsync_RepoWithMultipleEntitiesDeleteOne_DeletedEntryMissing()
+    {
+        // Arrange
+        var testDoc0 = new TestDocument { Id = Guid.NewGuid().ToString(), Name = "Test1234", Version = 1234 };
+        var testDoc1 = new TestDocument
+            { Id = Guid.NewGuid().ToString(), Name = "TestQwertz", Version = 6789 };
+        var testDoc2 = new TestDocument { Id = Guid.NewGuid().ToString(), Name = "ABCD", Version = 3456 };
+        var testDoc3 = new TestDocument { Id = Guid.NewGuid().ToString(), Name = "1234", Version = 5678 };
+
+        using var context = new LiteDbTestContext<TestDocument, string>(
+            indexBuilder => indexBuilder.AddIndex(x => x.Name, true));
+
+        await context.Repository.AddAsync(testDoc0);
+        await context.Repository.AddAsync(testDoc1);
+        await context.Repository.AddAsync(testDoc2);
+        await context.Repository.AddAsync(testDoc3);
+
+        // Act
+        await context.Repository.DeleteAsync(testDoc1.Id);
+
+        // Assert
+        var allDocs = (await context.Repository.GetAllAsync()).ToArray();
+        
+        allDocs
+            .Should()
+            .HaveCount(3)
+            .And
+            .BeEquivalentTo(new[] { testDoc0, testDoc2, testDoc3 });
+    }
+    
+    [Fact]
+    public async Task DeleteAsync_RepoWithMultipleEntitiesDeleteMany_DeletedEntriesMissing()
+    {
+        // Arrange
+        var testDoc0 = new TestDocument { Id = Guid.NewGuid().ToString(), Name = "Test1234", Version = 1234 };
+        var testDoc1 = new TestDocument
+            { Id = Guid.NewGuid().ToString(), Name = "TestQwertz", Version = 6789 };
+        var testDoc2 = new TestDocument { Id = Guid.NewGuid().ToString(), Name = "ABCD", Version = 3456 };
+        var testDoc3 = new TestDocument { Id = Guid.NewGuid().ToString(), Name = "1234", Version = 5678 };
+
+        using var context = new LiteDbTestContext<TestDocument, string>(
+            indexBuilder => indexBuilder.AddIndex(x => x.Name, true));
+
+        await context.Repository.AddAsync(testDoc0);
+        await context.Repository.AddAsync(testDoc1);
+        await context.Repository.AddAsync(testDoc2);
+        await context.Repository.AddAsync(testDoc3);
+
+        // Act
+        await context.Repository.DeleteAsync(x => x.Name != null && x.Name.Contains("1234"));
+
+        // Assert
+        var allDocs = (await context.Repository.GetAllAsync()).ToArray();
+        
+        allDocs
+            .Should()
+            .HaveCount(2)
+            .And
+            .BeEquivalentTo(new[] { testDoc1, testDoc2 });
+    }
+    
+    [Fact]
+    public async Task ClearAsync_RepoWithMultipleEntities_RepoIsEmpty()
+    {
+        // Arrange
+        var testDoc0 = new TestDocument { Id = Guid.NewGuid().ToString(), Name = "Test1234", Version = 1234 };
+        var testDoc1 = new TestDocument
+            { Id = Guid.NewGuid().ToString(), Name = "TestQwertz", Version = 6789 };
+        var testDoc2 = new TestDocument { Id = Guid.NewGuid().ToString(), Name = "ABCD", Version = 3456 };
+        var testDoc3 = new TestDocument { Id = Guid.NewGuid().ToString(), Name = "1234", Version = 5678 };
+
+        using var context = new LiteDbTestContext<TestDocument, string>(
+            indexBuilder => indexBuilder.AddIndex(x => x.Name, true));
+
+        await context.Repository.AddAsync(testDoc0);
+        await context.Repository.AddAsync(testDoc1);
+        await context.Repository.AddAsync(testDoc2);
+        await context.Repository.AddAsync(testDoc3);
+
+        // Act
+        await context.Repository.ClearAsync();
+
+        // Assert
+        var allDocs = (await context.Repository.GetAllAsync()).ToArray();
+        
+        allDocs
+            .Should()
+            .BeEmpty();
+    }
+    
+    [Fact]
+    public async Task UpdateAsync_UpdateOneDoc_DocIsUpdated()
+    {
+        // Arrange
+        var testDoc0 = new TestDocument { Id = Guid.NewGuid().ToString(), Name = "Test1234", Version = 1234 };
+        var testDoc1 = new TestDocument
+            { Id = Guid.NewGuid().ToString(), Name = "TestQwertz", Version = 6789 };
+        var testDoc2 = new TestDocument { Id = Guid.NewGuid().ToString(), Name = "ABCD", Version = 3456 };
+        var testDoc3 = new TestDocument { Id = Guid.NewGuid().ToString(), Name = "1234", Version = 5678 };
+
+        using var context = new LiteDbTestContext<TestDocument, string>(
+            indexBuilder => indexBuilder.AddIndex(x => x.Name, true));
+
+        await context.Repository.AddAsync(testDoc0);
+        await context.Repository.AddAsync(testDoc1);
+        await context.Repository.AddAsync(testDoc2);
+        await context.Repository.AddAsync(testDoc3);
+
+        // Act
+        testDoc1.Name = "TestQwertzUpdated";
+        await context.Repository.UpdateAsync(testDoc1);
+
+        // Assert
+        var doc = await context.Repository.GetAsync(testDoc1.Id);
+
+        doc
+            .Should()
+            .NotBeSameAs(testDoc1)
+            .And
+            .BeEquivalentTo(testDoc1);
+    }
+    
+    [Fact]
+    [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
+    public async Task UpdateAsync_IdIsNull_ExceptionIsThrown()
+    {
+        // Arrange
+        var testDoc0 = new TestDocument { Id = Guid.NewGuid().ToString(), Name = "Test1234", Version = 1234 };
+
+        using var context = new LiteDbTestContext<TestDocument, string>(
+            indexBuilder => indexBuilder.AddIndex(x => x.Name, true));
+
+        await context.Repository.AddAsync(testDoc0);
+
+        // Act
+        testDoc0.Id = null;
+        var act = async() => await context.Repository.UpdateAsync(testDoc0);
+
+        // Assert
+        await act
+            .Should()
+            .ThrowAsync<InvalidOperationException>()
+            .WithMessage("Entity has no id");
+    }
 }

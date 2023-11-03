@@ -9,7 +9,9 @@ public interface IDocumentRepository<T, TKey>
 
     Task DeleteAsync(TKey id);
 
-    Task<T> GetAsync(TKey id);
+    Task DeleteAsync(Expression<Func<T, bool>> predicate);
+
+    Task<T?> GetAsync(TKey id);
 
     Task<IEnumerable<T>> GetAllAsync();
 

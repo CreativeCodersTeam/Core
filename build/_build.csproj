@@ -8,6 +8,7 @@
 		<NoWarn>CS0649;CS0169;IDE0044;IDE0051;CA1822</NoWarn>
 		<NukeRootDirectory>..</NukeRootDirectory>
 		<NukeScriptDirectory>..</NukeScriptDirectory>
+		<NukeTelemetryVersion>1</NukeTelemetryVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

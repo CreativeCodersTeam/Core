@@ -1,11 +1,11 @@
 ﻿using CreativeCoders.Core.IO;
-using CreativeCoders.Data.NoSql.LiteDb.Tests.TestData;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CreativeCoders.Data.NoSql.LiteDb.Tests;
 
 public sealed class LiteDbTestContext<T, TKey> : IDisposable
     where T : class, IDocumentKey<TKey>
+    where TKey : IEquatable<TKey>
 {
     private readonly FileCleanUp _dbFile;
 
