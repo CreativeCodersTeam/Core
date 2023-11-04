@@ -1,20 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.IO.Abstractions.TestingHelpers;
 using CreativeCoders.Core.IO;
+using CreativeCoders.UnitTests;
 using FluentAssertions;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.IO;
 
+[Collection("FileSys")]
 public class FileCleanUpTests
 {
     [Fact]
     public void Dispose_FileNotExistsNoThrow_NotThrowsException()
     {
-        Directory.CreateDirectory(Path.GetTempPath());
+        var mockFileSystem = new MockFileSystemEx(
+            new Dictionary<string, MockFileData>(),
+            @"C:\");
+
+        mockFileSystem.Install();
         
-        var fileName = Path.GetTempFileName();
+        var fileName = FileSys.Path.GetTempFileName();
 
         // Arrange
         var fcu = new FileCleanUp(fileName);
@@ -32,14 +40,22 @@ public class FileCleanUpTests
     [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
     public void Dispose_FileNotExistsThrow_ThrowsException()
     {
-        Directory.CreateDirectory(Path.GetTempPath());
+        var mockFileSystem = new MockFileSystemEx(
+            new Dictionary<string, MockFileData>(),
+            @"C:\");
+
+        mockFileSystem.Install();
         
-        var fileName = Path.GetTempFileName();
+        var fileName = FileSys.Path.GetTempFileName();
+
+        FileSys.Directory.CreateDirectory(FileSys.Path.GetDirectoryName(fileName)!);
 
         // Arrange
-        using var fcu = new FileCleanUp(fileName, true);
+        var fcu = new FileCleanUp(fileName, true);
 
-        using var fileStream = File.OpenWrite(fileName);
+        FileSys.File.WriteAllText(fileName, "test");
+        
+        FileSys.FileInfo.New(fileName).IsReadOnly = true;
 
         // Act
         var act = () => fcu.Dispose();
@@ -47,28 +63,26 @@ public class FileCleanUpTests
         // Assert
         act
             .Should()
-            .Throw<IOException>();
-
-        fileStream.Dispose();
+            .Throw<UnauthorizedAccessException>();
     }
 
     [Fact]
     public void Dispose_FileExistsNoThrow_NotThrowsExceptionAndFileIsDeleted()
     {
-        Directory.CreateDirectory(Path.GetTempPath());
-        
-        var fileName = Path.GetTempFileName();
+        var fileName = FileSys.Path.GetTempFileName();
+
+        FileSys.Directory.CreateDirectory(FileSys.Path.GetDirectoryName(fileName)!);
 
         // Arrange
         var fcu = new FileCleanUp(fileName);
 
-        File.WriteAllText(fileName, "test");
+        FileSys.File.WriteAllText(fileName, "test");
 
         // Act
         fcu.Dispose();
 
         // Assert
-        File.Exists(fileName)
+        FileSys.File.Exists(fileName)
             .Should()
             .BeFalse();
     }
