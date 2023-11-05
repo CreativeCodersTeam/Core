@@ -13,9 +13,9 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 public interface IPublishTarget : IPublishSettings
 {
     Target Publish => d => d
-        .TryAfter<ICodeCoverageReportTarget>()
-        .TryAfter<ITestTarget>()
-        .DependsOn<ICompileTarget>()
+        .TryAfter<ICodeCoverageReportTarget>(x => x.CodeCoverageReport)
+        .TryAfter<ITestTarget>(x => x.Test)
+        .DependsOn<ICompileTarget>(x => x.Compile)
         .Produces(PublishingItems.Any()
             ? PublishingItems
                 .Where(x => x.ProduceArtifact)

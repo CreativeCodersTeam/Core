@@ -10,7 +10,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 public interface ICreateDistPackagesTarget : INukeBuild, ICreateDistPackagesSettings
 {
     Target CreateDistPackages => d => d
-        .TryAfter<IPublishTarget>()
+        .TryAfter<IPublishTarget>(x => x.Publish)
         .Executes(() =>
         {
             DistPackages.ForEach(x =>

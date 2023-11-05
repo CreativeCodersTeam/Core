@@ -11,7 +11,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 public interface IRestoreTarget : INukeBuild
 {
     Target Restore => d => d
-        .TryBefore<ICompileTarget>()
+        .TryBefore<ICompileTarget>(x => x.Compile)
         .Executes(() =>
         {
             DotNetTasks.DotNetRestore(x => x
