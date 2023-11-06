@@ -1,6 +1,7 @@
 ﻿using CreativeCoders.Core;
 using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CreativeCoders.Data.NoSql.LiteDb;
 
@@ -24,9 +25,9 @@ public class LiteDbRepositoryBuilder : ILiteDbRepositoryBuilder
         where T : class, IDocumentKey<TKey>
         where TKey : IEquatable<TKey>
     {
-        _services.AddTransient<IDocumentRepository<T, TKey>, LiteDbDocumentRepository<T, TKey>>();
+        _services.TryAddScoped<IDocumentRepository<T, TKey>, LiteDbDocumentRepository<T, TKey>>();
 
-        _services.AddTransient<ILiteCollection<T>>(sp =>
+        _services.TryAddScoped<ILiteCollection<T>>(sp =>
         {
             var liteDb = sp.GetRequiredService<ILiteDatabase>();
 
