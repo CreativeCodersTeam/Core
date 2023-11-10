@@ -67,11 +67,6 @@ public class ExceptionHandlingMiddlewareTests
 
         Exception? exception = null;
 
-        void ErrorHandler(CliActionContext x)
-        {
-            exception = x.Exception;
-        }
-
         var router = A.Fake<ICliActionRouter>();
 
         A.CallTo(() => router.FindRoute(A<string[]>.Ignored)).Returns(route);
@@ -105,6 +100,12 @@ public class ExceptionHandlingMiddlewareTests
         exception!.Message
             .Should()
             .Be(TestErrorMiddleware.ErrorMessage);
+        return;
+
+        void ErrorHandler(CliActionContext x)
+        {
+            exception = x.Exception;
+        }
     }
 }
 

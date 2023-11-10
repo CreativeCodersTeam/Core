@@ -2,12 +2,7 @@
 
 public class StringSourcePropertyConverter<T> : IPropertyValueConverter
 {
-    private readonly StringTargetPropertyConverter<T> _stringTargetPropertyConverter;
-
-    public StringSourcePropertyConverter()
-    {
-        _stringTargetPropertyConverter = new StringTargetPropertyConverter<T>();
-    }
+    private readonly StringTargetPropertyConverter<T> _stringTargetPropertyConverter = new();
 
     public object Convert(object value, object parameter)
     {

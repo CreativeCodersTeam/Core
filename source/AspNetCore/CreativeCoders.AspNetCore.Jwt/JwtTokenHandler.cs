@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using CreativeCoders.AspNetCore.TokenAuth;
+using CreativeCoders.Core;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CreativeCoders.AspNetCore.Jwt;
@@ -13,11 +14,13 @@ public class JwtTokenHandler : ITokenHandler
 
     public JwtTokenHandler(ISymSecurityKeyConfig symSecurityKeyConfig)
     {
-        _symSecurityKeyConfig = symSecurityKeyConfig;
+        _symSecurityKeyConfig = Ensure.NotNull(symSecurityKeyConfig);
     }
 
     public string CreateToken(TokenRequest request)
     {
+        Ensure.NotNull(request.UserName);
+
         var claims = new[]
         {
             new Claim(ClaimTypes.Name, request.UserName)

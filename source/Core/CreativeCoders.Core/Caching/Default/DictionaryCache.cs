@@ -5,12 +5,7 @@ namespace CreativeCoders.Core.Caching.Default;
 
 public class DictionaryCache<TKey, TValue> : CacheBase<TKey, TValue>
 {
-    private readonly CacheRegions<TKey, TValue> _regions;
-
-    public DictionaryCache()
-    {
-        _regions = new CacheRegions<TKey, TValue>();
-    }
+    private readonly CacheRegions<TKey, TValue> _regions = new();
 
     public override TValue GetOrAdd(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy,
         string regionName = null)

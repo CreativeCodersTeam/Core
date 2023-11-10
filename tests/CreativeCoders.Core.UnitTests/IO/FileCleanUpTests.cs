@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.IO.Abstractions.TestingHelpers;
 using CreativeCoders.Core.IO;
 using CreativeCoders.UnitTests;
@@ -21,7 +20,7 @@ public class FileCleanUpTests
             @"C:\");
 
         mockFileSystem.Install();
-        
+
         var fileName = FileSys.Path.GetTempFileName();
 
         // Arrange
@@ -45,7 +44,7 @@ public class FileCleanUpTests
             @"C:\");
 
         mockFileSystem.Install();
-        
+
         var fileName = FileSys.Path.GetTempFileName();
 
         FileSys.Directory.CreateDirectory(FileSys.Path.GetDirectoryName(fileName)!);
@@ -54,7 +53,7 @@ public class FileCleanUpTests
         var fcu = new FileCleanUp(fileName, true);
 
         FileSys.File.WriteAllText(fileName, "test");
-        
+
         FileSys.FileInfo.New(fileName).IsReadOnly = true;
 
         // Act

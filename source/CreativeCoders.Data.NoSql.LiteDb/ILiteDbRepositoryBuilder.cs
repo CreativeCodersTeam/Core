@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.Data.NoSql.LiteDb;
+﻿using JetBrains.Annotations;
 
+namespace CreativeCoders.Data.NoSql.LiteDb;
+
+[PublicAPI]
 public interface ILiteDbRepositoryBuilder
 {
     ILiteDbRepositoryBuilder AddRepository<T, TKey>(string? name = null)

@@ -20,8 +20,6 @@ public class HttpClientSettingsTests
 
         var httpClientSettings = new HttpClientSettings() as IHttpClientSettings;
 
-        void ConfigureAction(HttpClientFactoryOptions x) => configuredOptions = x;
-
         // Act
         httpClientSettings.Add("Test", ConfigureAction);
 
@@ -33,6 +31,9 @@ public class HttpClientSettingsTests
         configuredOptions
             .Should()
             .BeSameAs(options);
+        return;
+
+        void ConfigureAction(HttpClientFactoryOptions x) => configuredOptions = x;
     }
 
     [Fact]

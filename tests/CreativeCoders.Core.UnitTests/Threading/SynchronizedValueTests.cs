@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
 using CreativeCoders.Core.Threading;
 using FluentAssertions;
 using Xunit;

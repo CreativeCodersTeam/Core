@@ -10,12 +10,7 @@ namespace CreativeCoders.Core.Messaging;
 
 internal class MessengerImpl : IMessenger
 {
-    private readonly ConcurrentDictionary<Type, IList<IMessengerRegistration>> _registrationsForMessages;
-
-    public MessengerImpl()
-    {
-        _registrationsForMessages = new ConcurrentDictionary<Type, IList<IMessengerRegistration>>();
-    }
+    private readonly ConcurrentDictionary<Type, IList<IMessengerRegistration>> _registrationsForMessages = new();
 
     public IDisposable Register<TMessage>(object receiver, Action<TMessage> action)
     {

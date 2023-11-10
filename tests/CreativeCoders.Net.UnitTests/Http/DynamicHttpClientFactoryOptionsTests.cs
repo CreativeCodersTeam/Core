@@ -19,8 +19,6 @@ public class DynamicHttpClientFactoryOptionsTests
 
         var options = new HttpClientFactoryOptions();
 
-        void Configure(HttpClientFactoryOptions x) => configuredOptions = x;
-
         A.CallTo(() => httpClientSettings.Get("Test"))
             .Returns(Configure);
 
@@ -31,5 +29,8 @@ public class DynamicHttpClientFactoryOptionsTests
         configuredOptions
             .Should()
             .BeSameAs(options);
+        return;
+
+        void Configure(HttpClientFactoryOptions x) => configuredOptions = x;
     }
 }

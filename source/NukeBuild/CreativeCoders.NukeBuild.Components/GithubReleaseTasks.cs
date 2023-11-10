@@ -25,7 +25,7 @@ public class GithubReleaseTasks
         await UploadReleaseAssets(release, releaseAssets).ConfigureAwait(false);
 
         await _githubClient.Repository.Release
-            .Edit(GitHubActions.Instance.RepositoryOwner, GetRepositoryName(), release.Id, new ReleaseUpdate { Draft = false });
+            .Edit(GitHubActions.Instance.RepositoryOwner, GetRepositoryName(), release.Id, new ReleaseUpdate { Draft = false }).ConfigureAwait(false);
     }
 
     private async Task UploadReleaseAssets(Release release,
@@ -38,7 +38,7 @@ public class GithubReleaseTasks
                      RawData = FileSys.File.OpenRead(releaseAsset.FileName)
                  }))
         {
-            var _ = await _githubClient.Repository.Release.UploadAsset(release, releaseAssetUpload);
+            _ = await _githubClient.Repository.Release.UploadAsset(release, releaseAssetUpload).ConfigureAwait(false);
         }
     }
 
@@ -48,11 +48,11 @@ public class GithubReleaseTasks
         var repositoryName = GetRepositoryName();
 
         Log.Debug("Create github release");
-        Log.Debug($"Repo Owner: {repositoryOwner}");
-        Log.Debug($"Repo name: {repositoryName}");
-        Log.Debug($"Version: {releaseVersion}");
-        Log.Debug($"Name: {name}");
-        Log.Debug($"Body: {body}");
+        Log.Debug("Repo Owner: {RepositoryOwner}", repositoryOwner);
+        Log.Debug("Repo name: {RepositoryName}", repositoryName);
+        Log.Debug("Version: {ReleaseVersion}", releaseVersion);
+        Log.Debug("Name: {Name}", name);
+        Log.Debug("Body: {Body}", body);
 
         return await _githubClient.Repository.Release
             .Create(repositoryOwner, repositoryName,

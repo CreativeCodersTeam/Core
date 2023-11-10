@@ -78,7 +78,8 @@ public class XmlRpcClient : IXmlRpcClient
     {
         var requestModelWriter = new RequestModelWriter(new ValueWriters());
 
-        await using var stream = new MemoryStream();
+        var stream = new MemoryStream();
+        await using var _ = stream.ConfigureAwait(false);
 
         await requestModelWriter.WriteAsync(stream, request, XmlEncoding).ConfigureAwait(false);
 

@@ -6,6 +6,7 @@
 		<Authors>CreativeCoders</Authors>
 		<Description>JSON Web Token implementation of token authentication for CreativeCoders.AspNetCore.TokenAuth</Description>
 		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>

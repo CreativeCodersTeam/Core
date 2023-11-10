@@ -47,7 +47,8 @@ public class RawRequestBodyFormatter : InputFormatter
             return await InputFormatterResult.FailureAsync().ConfigureAwait(false);
         }
 
-        await using (var ms = new MemoryStream(2048))
+        var ms = new MemoryStream(2048);
+        await using (ms.ConfigureAwait(false))
         {
             await request.Body.CopyToAsync(ms).ConfigureAwait(false);
             var content = ms.ToArray();

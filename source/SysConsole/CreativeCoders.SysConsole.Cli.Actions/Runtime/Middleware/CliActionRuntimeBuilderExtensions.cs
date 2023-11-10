@@ -14,10 +14,10 @@ public static class CliActionRuntimeBuilderExtensions
     public static ICliActionRuntimeBuilder UseExceptionHandling(this ICliActionRuntimeBuilder runtimeBuilder,
         int errorReturnCode = ExceptionHandlerMiddleware.DefaultErrorReturnCode)
     {
-        static void Nop(CliActionContext _) { }
-
         return runtimeBuilder.UseMiddleware<ExceptionHandlerMiddleware>((Action<CliActionContext>) Nop,
             errorReturnCode);
+
+        static void Nop(CliActionContext _) { }
     }
 
     public static ICliActionRuntimeBuilder UseExceptionHandling(this ICliActionRuntimeBuilder runtimeBuilder,
