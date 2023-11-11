@@ -42,7 +42,7 @@ public sealed class MessageQueue<T> : IMessageQueue<T>
 
     public async Task EnqueueAsync(T message)
     {
-        var messageEnqueued = await _bufferBlock.SendAsync(message);
+        var messageEnqueued = await _bufferBlock.SendAsync(message).ConfigureAwait(false);
 
         if (!messageEnqueued)
         {

@@ -11,12 +11,7 @@ namespace CreativeCoders.Mvvm.Wpf;
 [PublicAPI]
 public class ItemTypeTemplateSelector : DataTemplateSelector
 {
-    private readonly IDictionary<Type, Func<DataTemplate>> _typeTemplates;
-
-    public ItemTypeTemplateSelector()
-    {
-        _typeTemplates = new Dictionary<Type, Func<DataTemplate>>();
-    }
+    private readonly Dictionary<Type, Func<DataTemplate>> _typeTemplates = new();
 
     protected void AddTypeTemplateMapping(Type type, Func<DataTemplate> getTemplate)
     {

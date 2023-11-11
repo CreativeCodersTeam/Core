@@ -71,7 +71,7 @@ public class EnumStringConverterTests
     {
         var converter = new EnumStringConverter();
 
-        var _ = converter.Convert<TestEnum>("first entry");
+        _ = converter.Convert<TestEnum>("first entry");
         var secondEnumValue = converter.Convert<TestEnum>("first entry");
 
         Assert.Equal(TestEnum.FirstEntry, secondEnumValue);

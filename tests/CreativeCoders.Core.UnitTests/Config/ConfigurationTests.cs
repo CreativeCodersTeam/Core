@@ -14,7 +14,7 @@ public class ConfigurationTests
     public void CtorTest()
     {
         // ReSharper disable once ObjectCreationAsStatement
-        var _ = new Configuration();
+        _ = new Configuration();
     }
 
     [Fact]
@@ -63,7 +63,7 @@ public class ConfigurationTests
     {
         var config = new Configuration();
 
-        var _ = new object();
+        _ = new object();
         var source = A.Fake<IConfigurationSource<object>>();
         A.CallTo(() => source.GetSettingObject()).Throws(_ => new FileNotFoundException());
 

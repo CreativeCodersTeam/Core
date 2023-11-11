@@ -12,7 +12,7 @@ public class ConcurrentListTests
     [Fact]
     public void CtorTest()
     {
-        var _ = new ConcurrentList<int>();
+        _ = new ConcurrentList<int>();
     }
 
     [Fact]
@@ -30,13 +30,13 @@ public class ConcurrentListTests
     [Fact]
     public void CtorWithLockMechanismTest()
     {
-        var _ = new ConcurrentList<int>(new LockLockingMechanism());
+        _ = new ConcurrentList<int>(new LockLockingMechanism());
     }
 
     [Fact]
     public void CtorWithEnumerableAndLockMechanismTest()
     {
-        var _ = new ConcurrentList<int>(new[] {1, 2, 3, 4}, new LockLockingMechanism());
+        _ = new ConcurrentList<int>(new[] {1, 2, 3, 4}, new LockLockingMechanism());
     }
 
     [Fact]

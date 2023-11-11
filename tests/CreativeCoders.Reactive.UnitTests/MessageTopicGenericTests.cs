@@ -10,7 +10,7 @@ public class MessageTopicGenericTests
     [Fact]
     public void CtorTest()
     {
-        var _ = new MessageTopic<object>();
+        _ = new MessageTopic<object>();
     }
 
     [Fact]

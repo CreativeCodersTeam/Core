@@ -10,7 +10,7 @@ public class MessageTopicTests
     [Fact]
     public void CtorTest()
     {
-        var _ = new MessageTopic();
+        _ = new MessageTopic();
     }
 
     [Fact]

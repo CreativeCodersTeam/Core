@@ -8,16 +8,11 @@ namespace CreativeCoders.Windows.Shell;
 [ExcludeFromCodeCoverage]
 public class ShellCommand
 {
-    public ShellCommand()
-    {
-        FileExtensions = new List<string>();
-    }
-
     public string Name { get; set; }
 
     public string DisplayName { get; set; }
 
-    public IList<string> FileExtensions { get; }
+    public IList<string> FileExtensions { get; } = new List<string>();
 
     public string Command { get; set; }
 

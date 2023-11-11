@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using CreativeCoders.SysConsole.CliArguments.Building;
 using CreativeCoders.SysConsole.CliArguments.Commands;
 using CreativeCoders.SysConsole.CliArguments.UnitTests.TestData;
@@ -8,6 +9,7 @@ using Xunit;
 
 namespace CreativeCoders.SysConsole.CliArguments.UnitTests;
 
+[SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
 public class CliBuilderExtensionsTests
 {
     [Fact]

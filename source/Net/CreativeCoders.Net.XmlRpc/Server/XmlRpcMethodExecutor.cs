@@ -47,7 +47,7 @@ public class XmlRpcMethodExecutor
 
         var task = (Task) methodRegistration.Method.Invoke(methodRegistration.Target, parameters);
 
-        return await task.ToTask<object>();
+        return await task.ToTask<object>().ConfigureAwait(false);
     }
 
     private static object[] GetParameters(IReadOnlyList<ParameterInfo> parameterInfos,

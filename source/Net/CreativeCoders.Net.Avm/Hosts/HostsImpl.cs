@@ -83,13 +83,13 @@ internal class HostsImpl : IHosts
 
     private async Task<IEnumerable<HostEntry>> InternalGetAllHostEntriesAsync()
     {
-        var hostCount = await GetHostCountAsync();
+        var hostCount = await GetHostCountAsync().ConfigureAwait(false);
 
         var hosts = new List<HostEntry>();
 
         for (var i = 0; i < hostCount; i++)
         {
-            hosts.Add(await GetHostEntryAsync(i));
+            hosts.Add(await GetHostEntryAsync(i).ConfigureAwait(false));
         }
 
         return hosts;

@@ -12,12 +12,6 @@ namespace CreativeCoders.AspNetCore.Blazor.Components.Base;
 [PublicAPI]
 public class ControlBase : ComponentBase
 {
-    public ControlBase()
-    {
-        Classes = new ClassesAttributeBuilder();
-        Styles = new StyleAttributeBuilder();
-    }
-
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -43,9 +37,9 @@ public class ControlBase : ComponentBase
                 : null);
     }
 
-    public ClassesAttributeBuilder Classes { get; }
+    public ClassesAttributeBuilder Classes { get; } = new();
 
-    public StyleAttributeBuilder Styles { get; }
+    public StyleAttributeBuilder Styles { get; } = new();
 
     [Parameter] public string Id { get; set; }
 

@@ -52,7 +52,7 @@ public class MockHttpClientContext
         CancellationToken cancellationToken)
     {
         var recordedRequest = new RecordedHttpRequest(requestMessage, cancellationToken);
-        await recordedRequest.CloneContent();
+        await recordedRequest.CloneContent().ConfigureAwait(false);
 
         _recordedRequests.Add(recordedRequest);
 

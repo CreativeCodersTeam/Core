@@ -15,14 +15,14 @@ public class JwtClient : IJwtClient
 
     public async Task<string> RequestTokenAsync(Uri requestUri, JwtTokenRequest tokenRequest)
     {
-        var tokenInfo = await RequestTokenInfoAsync(requestUri, tokenRequest);
+        var tokenInfo = await RequestTokenInfoAsync(requestUri, tokenRequest).ConfigureAwait(false);
 
         return tokenInfo.Token;
     }
 
     public async Task<JwtTokenInfo> RequestTokenInfoAsync(Uri requestUri, JwtTokenRequest tokenRequest)
     {
-        var authToken = await _httpClient.RequestJwtTokenAsync(requestUri, tokenRequest);
+        var authToken = await _httpClient.RequestJwtTokenAsync(requestUri, tokenRequest).ConfigureAwait(false);
 
         return new JwtTokenInfo(authToken.Token);
     }

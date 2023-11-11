@@ -13,9 +13,8 @@ public class ObservableCollectionSynchronizerTests
         var integerList = new ObservableCollection<int> {1, 3};
         var stringList = new ObservableCollection<string>();
 
-        var _ =
-            new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
-                x => x.ToString());
+        _ = new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
+            x => x.ToString());
 
         Assert.Equal(2, stringList.Count);
         Assert.Equal("1", stringList.First());
@@ -28,9 +27,8 @@ public class ObservableCollectionSynchronizerTests
         var integerList = new ObservableCollection<int>();
         var stringList = new ObservableCollection<string>();
 
-        var _ =
-            new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
-                x => x.ToString());
+        _ = new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
+            x => x.ToString());
 
         integerList.Add(1);
         integerList.Add(3);
@@ -46,9 +44,8 @@ public class ObservableCollectionSynchronizerTests
         var integerList = new ObservableCollection<int>();
         var stringList = new ObservableCollection<string>();
 
-        var _ =
-            new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
-                x => x.ToString());
+        _ = new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
+            x => x.ToString());
 
         integerList.Add(1);
         integerList.Add(3);
@@ -66,9 +63,8 @@ public class ObservableCollectionSynchronizerTests
         var integerList = new ObservableCollection<int>();
         var stringList = new ObservableCollection<string>();
 
-        var _ =
-            new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
-                x => x.ToString());
+        _ = new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
+            x => x.ToString());
 
         integerList.Add(1);
         integerList.Add(2);
@@ -89,9 +85,8 @@ public class ObservableCollectionSynchronizerTests
         var integerList = new ObservableCollection<int>();
         var stringList = new ObservableCollection<string>();
 
-        var _ =
-            new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
-                x => x.ToString());
+        _ = new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
+            x => x.ToString());
 
         integerList.Add(1);
         integerList.Add(2);
@@ -112,9 +107,8 @@ public class ObservableCollectionSynchronizerTests
         var integerList = new ObservableCollection<int>();
         var stringList = new ObservableCollection<string>();
 
-        var _ =
-            new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
-                x => x.ToString());
+        _ = new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
+            x => x.ToString());
 
         integerList.Add(1);
         integerList.Add(2);
@@ -132,9 +126,8 @@ public class ObservableCollectionSynchronizerTests
         var integerList = new ObservableCollection<int>();
         var stringList = new ObservableCollection<string>();
 
-        var _ =
-            new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
-                x => x.ToString());
+        _ = new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
+            x => x.ToString());
 
         integerList.Add(1);
         integerList.Add(2);
@@ -156,9 +149,8 @@ public class ObservableCollectionSynchronizerTests
         var integerList = new ObservableCollection<int>();
         var stringList = new ObservableCollection<string>();
 
-        var _ =
-            new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
-                x => x.ToString());
+        _ = new ObservableCollectionSynchronizer<int, string>(integerList, stringList, x => x.ToString(),
+            x => x.ToString());
 
         integerList.Add(1);
         integerList.Add(2);

@@ -87,7 +87,7 @@ public class AcquireUpgradeableReaderLockTests
                 Assert.Throws<AcquireLockFailedException>(() =>
                 {
                     executed = true;
-                    var _ = upgradeableLock.UseWriteLock(1);
+                    _ = upgradeableLock.UseWriteLock(1);
                 });
             }
         });

@@ -160,7 +160,7 @@ public class RecordedRequestVerifierTests
 
         var client = context.CreateClient();
 
-        var _ = await client.PostAsync("http://test.com",
+        _ = await client.PostAsync("http://test.com",
                 new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream))
             .ConfigureAwait(false);
 
@@ -178,7 +178,7 @@ public class RecordedRequestVerifierTests
 
         var client = context.CreateClient();
 
-        var _ = await client.PostAsync("http://test.com",
+        _ = await client.PostAsync("http://test.com",
                 new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream))
             .ConfigureAwait(false);
 
@@ -197,7 +197,7 @@ public class RecordedRequestVerifierTests
 
         var client = context.CreateClient();
 
-        var _ = await client.PostAsync("http://test.com",
+        _ = await client.PostAsync("http://test.com",
                 new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream))
             .ConfigureAwait(false);
 
@@ -215,11 +215,11 @@ public class RecordedRequestVerifierTests
 
         var client = context.CreateClient();
 
-        var _ = await client.PostAsync("http://test.com",
+        _ = await client.PostAsync("http://test.com",
                 new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream))
             .ConfigureAwait(false);
 
-        var __ = await client.PostAsync("http://test.com",
+        _ = await client.PostAsync("http://test.com",
                 new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream))
             .ConfigureAwait(false);
 

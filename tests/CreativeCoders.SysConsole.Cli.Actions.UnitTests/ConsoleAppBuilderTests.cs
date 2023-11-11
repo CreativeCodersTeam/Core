@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.App;
@@ -22,7 +22,7 @@ public class ConsoleAppBuilderTests
             .Build();
 
         // Act
-        var result = await consoleApp.RunAsync();
+        var result = await consoleApp.RunAsync().ConfigureAwait(false);
 
         // Assert
         result
@@ -40,7 +40,7 @@ public class ConsoleAppBuilderTests
             .Build();
 
         // Act
-        var result = await consoleApp.RunAsync();
+        var result = await consoleApp.RunAsync().ConfigureAwait(false);
 
         // Assert
         result
@@ -58,12 +58,12 @@ public class ConsoleAppBuilderTests
             .Build();
 
         // Act
-        Func<Task> act = async () => await consoleApp.ReThrowExceptions(true).RunAsync();
+        var act = async () => await consoleApp.ReThrowExceptions(true).RunAsync().ConfigureAwait(false);
 
         // Assert
         var exception = (await act
                 .Should()
-                .ThrowAsync<AmbiguousRouteException>())
+                .ThrowAsync<AmbiguousRouteException>().ConfigureAwait(false))
             .Which;
 
         exception.Arguments
@@ -94,6 +94,7 @@ public class ConsoleAppBuilderTests
     [InlineData("controller", "execute")]
     [InlineData("controller", "execute", "this")]
     [InlineData]
+    [SuppressMessage("Performance", "CA1825")]
     public async Task RunSync_DifferentRoutesToDefaultAction_ActionIsExecuted(params string[] args)
     {
         var consoleApp = new ConsoleAppBuilder(args)
@@ -102,7 +103,7 @@ public class ConsoleAppBuilderTests
             .Build();
 
         // Act
-        var result = await consoleApp.RunAsync();
+        var result = await consoleApp.RunAsync().ConfigureAwait(false);
 
         // Assert
         result
@@ -117,6 +118,7 @@ public class ConsoleAppBuilderTests
     [InlineData("controller", "execute")]
     [InlineData("controller", "execute", "this")]
     [InlineData]
+    [SuppressMessage("Performance", "CA1825")]
     public async Task RunSync_AddControllerWithTypeParamDifferentRoutesToDefaultAction_ActionIsExecuted(
         params string[] args)
     {
@@ -126,7 +128,7 @@ public class ConsoleAppBuilderTests
             .Build();
 
         // Act
-        var result = await consoleApp.RunAsync();
+        var result = await consoleApp.RunAsync().ConfigureAwait(false);
 
         // Assert
         result
@@ -149,7 +151,7 @@ public class ConsoleAppBuilderTests
             .Build();
 
         // Act
-        var result = await consoleApp.RunAsync();
+        var result = await consoleApp.RunAsync().ConfigureAwait(false);
 
         // Assert
         result

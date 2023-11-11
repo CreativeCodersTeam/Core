@@ -8,7 +8,7 @@ public class EnumStringValueAttributeTests
     [Fact]
     public void Ctor_CallWithNullText_ThrowsException()
     {
-        var _ = new EnumStringValueAttribute(null);
+        _ = new EnumStringValueAttribute(null);
     }
 
     [Fact]

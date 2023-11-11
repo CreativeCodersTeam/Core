@@ -8,11 +8,6 @@ public abstract class HttpServerBase<THttpContext> : IHttpServer
 {
     private IHttpRequestHandler _requestHandler;
 
-    protected HttpServerBase()
-    {
-        Urls = new List<string>();
-    }
-
     public abstract Task StartAsync();
 
     public abstract Task StopAsync();
@@ -40,5 +35,5 @@ public abstract class HttpServerBase<THttpContext> : IHttpServer
 
     protected abstract IHttpResponse GetResponse(THttpContext httpContext);
 
-    public IList<string> Urls { get; }
+    public IList<string> Urls { get; } = new List<string>();
 }

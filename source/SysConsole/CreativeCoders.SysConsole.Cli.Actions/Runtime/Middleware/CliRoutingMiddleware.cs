@@ -21,6 +21,6 @@ public class CliRoutingMiddleware : CliActionMiddlewareBase
 
         context.ActionRoute = route;
 
-        await Next(context);
+        await Next(context).ConfigureAwait(false);
     }
 }

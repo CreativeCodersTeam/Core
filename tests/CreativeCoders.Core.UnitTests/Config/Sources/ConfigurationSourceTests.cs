@@ -61,11 +61,6 @@ public class ConfigurationSourceTests
 
     private class TestSetting
     {
-        public TestSetting()
-        {
-            Text = "DefaultCtorText";
-        }
-
-        public string Text { get; init; }
+        public string Text { get; init; } = "DefaultCtorText";
     }
 }

@@ -11,7 +11,7 @@ public class ObjectLinkTests
         var sourceTestData = new SourceTestData();
         var targetTestData = new TargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         sourceTestData.SourceText = "Test";
 
@@ -24,7 +24,7 @@ public class ObjectLinkTests
         var sourceTestData = new SourceTestData();
         var targetTestData = new TargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         sourceTestData.SourceText = "Test";
 
@@ -40,7 +40,7 @@ public class ObjectLinkTests
         var sourceTestData = new SourceTestData {SourceText = "Test"};
         var targetTestData = new TargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         Assert.Equal("Test", targetTestData.TargetText);
     }
@@ -51,7 +51,7 @@ public class ObjectLinkTests
         var sourceTestData = new SourceTestData();
         var targetTestData = new TargetTestData {TargetText = "Test"};
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         Assert.Null(sourceTestData.SourceText);
     }
@@ -62,7 +62,7 @@ public class ObjectLinkTests
         var sourceTestData = new SourceTestData();
         var targetTestData = new TargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         sourceTestData.SourceName = "Test";
 
@@ -75,7 +75,7 @@ public class ObjectLinkTests
         var sourceTestData = new SourceTestData();
         var targetTestData = new TargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         targetTestData.TargetName = "Test";
 
@@ -88,7 +88,7 @@ public class ObjectLinkTests
         var sourceTestData = new SourceTestData();
         var targetTestData = new TargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         targetTestData.TargetName = "1234";
 
@@ -104,7 +104,7 @@ public class ObjectLinkTests
         var sourceTestData = new SourceTestData();
         var targetTestData = new TargetTestData {TargetName = "Hello"};
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         Assert.Equal("Hello", sourceTestData.SourceName);
     }
@@ -115,7 +115,7 @@ public class ObjectLinkTests
         var sourceTestData = new SourceTestData {SourceName = "Test"};
         var targetTestData = new TargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         Assert.Null(targetTestData.TargetName);
     }
@@ -141,7 +141,7 @@ public class ObjectLinkTests
         var sourceTestData = new SourceTestData();
         var targetTestData = new TargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         sourceTestData.TwoWayProperty = "Test";
 
@@ -160,7 +160,7 @@ public class ObjectLinkTests
         var sourceTestData = new SourceTestData();
         var targetTestData = new NewTargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         sourceTestData.TwoWayProperty = "Test";
 
@@ -179,7 +179,7 @@ public class ObjectLinkTests
         var sourceTestData = new NewSourceTestData();
         var targetTestData = new NewTargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         sourceTestData.TwoWayProperty = "Test";
         sourceTestData.SourceName = "HelloWorld";
@@ -204,7 +204,7 @@ public class ObjectLinkTests
         var sourceTestData = new NewSourceTestData {InitialText = "Test"};
         var targetTestData = new NewTargetTestData {InitialText = "1234"};
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         Assert.Equal("1234", sourceTestData.InitialText);
 

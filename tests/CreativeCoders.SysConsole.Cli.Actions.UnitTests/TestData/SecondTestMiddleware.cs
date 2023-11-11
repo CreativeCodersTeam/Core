@@ -22,7 +22,7 @@ public class SecondTestMiddleware : CliActionMiddlewareBase
 
         IsCalled = true;
 
-        await Next(context);
+        await Next(context).ConfigureAwait(false);
     }
 
     public static bool IsCalled { get; private set; }

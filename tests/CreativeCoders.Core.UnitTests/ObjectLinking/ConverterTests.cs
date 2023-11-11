@@ -11,7 +11,7 @@ public class ConverterTests
         var sourceTestData = new SourceTestData();
         var targetTestData = new TargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         sourceTestData.SecondIntValue = 1;
         targetTestData.DoubleValue = 1234;
@@ -26,7 +26,7 @@ public class ConverterTests
         var sourceTestData = new SourceTestData();
         var targetTestData = new TargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         sourceTestData.IntValue = 1234;
         targetTestData.SecondStringValue = "Hello";
@@ -40,7 +40,7 @@ public class ConverterTests
         var sourceTestData = new SourceTestData();
         var targetTestData = new TargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         sourceTestData.IntValue = 5678;
 
@@ -57,7 +57,7 @@ public class ConverterTests
         var sourceTestData = new SourceTestData();
         var targetTestData = new TargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         sourceTestData.IntValue = 1234;
         targetTestData.StringValue = "Hello";
@@ -71,7 +71,7 @@ public class ConverterTests
         var sourceTestData = new NewSourceTestData();
         var targetTestData = new NewTargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         targetTestData.IsVisible = true;
 
@@ -88,7 +88,7 @@ public class ConverterTests
         var sourceTestData = new NewSourceTestData();
         var targetTestData = new NewTargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         sourceTestData.IsVisible = true;
 
@@ -105,7 +105,7 @@ public class ConverterTests
         var sourceTestData = new NewSourceTestData();
         var targetTestData = new NewTargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         targetTestData.IsChecked = true;
 
@@ -122,7 +122,7 @@ public class ConverterTests
         var sourceTestData = new NewSourceTestData();
         var targetTestData = new NewTargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         sourceTestData.IsChecked = true;
 
@@ -139,7 +139,7 @@ public class ConverterTests
         var sourceTestData = new NewSourceTestData();
         var targetTestData = new NewTargetTestData();
 
-        var _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
+        _ = new ObjectLinkBuilder(sourceTestData, targetTestData).Build();
 
         sourceTestData.BoolWithDefault = true;
 

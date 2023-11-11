@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using CreativeCoders.Core.Collections;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Scripting.Base;
@@ -7,12 +6,7 @@ namespace CreativeCoders.Scripting.Base;
 [PublicAPI]
 public class ScriptContext : IScriptContext
 {
-    private readonly IList<IInjection> _injections;
-
-    public ScriptContext()
-    {
-        _injections = new List<IInjection>();
-    }
+    private readonly List<IInjection> _injections = new();
 
     public static IScriptContext Empty { get; } = new ScriptContext();
 

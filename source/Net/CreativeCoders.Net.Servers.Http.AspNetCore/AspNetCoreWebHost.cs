@@ -44,7 +44,7 @@ public sealed class AspNetCoreWebHost : IDisposable
 
     public async Task StopAsync()
     {
-        await _webHost.StopAsync();
+        await _webHost.StopAsync().ConfigureAwait(false);
         _webHost.Dispose();
     }
 

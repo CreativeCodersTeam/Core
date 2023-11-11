@@ -8,12 +8,7 @@ namespace CreativeCoders.Scripting.CSharp.ClassTemplating;
 [PublicAPI]
 public class ScriptClassMembers : IEnumerable<ScriptClassMember>
 {
-    private readonly IList<ScriptClassMember> _members;
-
-    public ScriptClassMembers()
-    {
-        _members = new List<ScriptClassMember>();
-    }
+    private readonly List<ScriptClassMember> _members = new();
 
     public ScriptClassMethod AddMethod(string methodName, string methodSourceCode)
     {

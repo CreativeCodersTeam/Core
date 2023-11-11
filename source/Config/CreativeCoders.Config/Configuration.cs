@@ -10,17 +10,10 @@ namespace CreativeCoders.Config;
 
 public class Configuration : IConfiguration
 {
-    private readonly IList<SourceRegistration> _sourceRegistrations;
+    private readonly ConcurrentList<SourceRegistration> _sourceRegistrations = new();
 
-    private readonly IList<Action<IConfigurationSource, Exception, SourceExceptionHandleResult>>
-        _onSourceExceptions;
-
-    public Configuration()
-    {
-        _sourceRegistrations = new ConcurrentList<SourceRegistration>();
-        _onSourceExceptions =
-            new ConcurrentList<Action<IConfigurationSource, Exception, SourceExceptionHandleResult>>();
-    }
+    private readonly ConcurrentList<Action<IConfigurationSource, Exception, SourceExceptionHandleResult>>
+        _onSourceExceptions = new();
 
     public IConfiguration AddSource<T>(IConfigurationSource<T> source)
         where T : class

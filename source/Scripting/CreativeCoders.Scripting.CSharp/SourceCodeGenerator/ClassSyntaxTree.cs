@@ -7,11 +7,6 @@ namespace CreativeCoders.Scripting.CSharp.SourceCodeGenerator;
 
 public class ClassSyntaxTree
 {
-    public ClassSyntaxTree()
-    {
-        RootNode = new ClassSyntaxTreeNode();
-    }
-
     public string Emit(string sourceCode)
     {
         Ensure.IsNotNull(sourceCode, nameof(sourceCode));
@@ -25,5 +20,5 @@ public class ClassSyntaxTree
         return sb.ToString();
     }
 
-    public ClassSyntaxTreeNode RootNode { get; }
+    public ClassSyntaxTreeNode RootNode { get; } = new();
 }

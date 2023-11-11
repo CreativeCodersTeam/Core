@@ -17,7 +17,7 @@ public static class TaskExtensions
     {
         try
         {
-            await task;
+            await task.ConfigureAwait(false);
         }
         catch (Exception e)
         {
@@ -27,7 +27,7 @@ public static class TaskExtensions
 
     public static async Task<T> ToTask<T>(this Task task)
     {
-        await task;
+        await task.ConfigureAwait(false);
 
         var resultProperty = task.GetType().GetProperty("Result")
                              ?? throw new InvalidCastException(

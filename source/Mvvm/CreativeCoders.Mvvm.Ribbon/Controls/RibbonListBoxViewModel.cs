@@ -7,12 +7,7 @@ public class RibbonListBoxViewModel : RibbonControlViewModel
 {
     private RibbonControlViewModel _selectedItem;
 
-    public RibbonListBoxViewModel()
-    {
-        Items = new RibbonItemCollection<RibbonControlViewModel>();
-    }
-
-    public RibbonItemCollection<RibbonControlViewModel> Items { get; }
+    public RibbonItemCollection<RibbonControlViewModel> Items { get; } = new();
 
     public RibbonControlViewModel SelectedItem
     {

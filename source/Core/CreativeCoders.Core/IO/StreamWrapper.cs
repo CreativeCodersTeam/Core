@@ -60,6 +60,7 @@ public class StreamWrapper : Stream
     {
         _disposeBeforeStreamAction.Invoke(disposing);
 
+        Dispose();
         _dataStream.Dispose();
 
         _disposeAfterStreamAction.Invoke(disposing);

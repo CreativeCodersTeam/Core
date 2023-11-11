@@ -19,7 +19,7 @@ public class HttpClientPostWithoutBodyExtensionsTests
 
         var client = mockHttpClientContext.CreateClient();
 
-        var _ = await client.PostAsync(new Uri("http://test.com"));
+        _ = await client.PostAsync(new Uri("http://test.com"));
 
         Assert.Single(mockHttpClientContext.RecordedRequests);
 

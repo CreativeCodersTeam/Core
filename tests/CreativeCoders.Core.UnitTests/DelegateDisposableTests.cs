@@ -10,7 +10,7 @@ public class DelegateDisposableTests
     {
         var actionCalled = false;
 
-        var _ = new DelegateDisposable(() => actionCalled = true, true);
+        _ = new DelegateDisposable(() => actionCalled = true, true);
 
         actionCalled
             .Should()

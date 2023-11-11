@@ -25,7 +25,7 @@ public class ExceptionHandlerMiddleware : CliActionMiddlewareBase
     {
         try
         {
-            await Next(context);
+            await Next(context).ConfigureAwait(false);
         }
         catch (Exception e)
         {

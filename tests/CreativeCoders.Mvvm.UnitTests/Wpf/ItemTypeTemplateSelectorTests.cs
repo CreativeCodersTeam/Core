@@ -11,7 +11,7 @@ public class ItemTypeTemplateSelectorTests
     [Fact]
     public void CtorTest()
     {
-        var _ = new ItemTypeTemplateSelector();
+        _ = new ItemTypeTemplateSelector();
     }
 
     [Fact]

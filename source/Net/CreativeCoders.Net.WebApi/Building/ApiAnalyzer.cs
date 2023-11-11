@@ -10,12 +10,7 @@ namespace CreativeCoders.Net.WebApi.Building;
 internal class ApiAnalyzer<T>
     where T : class
 {
-    private readonly Type _apiType;
-
-    public ApiAnalyzer()
-    {
-        _apiType = typeof(T);
-    }
+    private readonly Type _apiType = typeof(T);
 
     public ApiStructure Analyze()
     {

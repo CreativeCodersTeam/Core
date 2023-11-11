@@ -71,7 +71,7 @@ public class ConsoleApplicationBuilderTests
         builder.UseStartup<TestStartup>();
 
         // Act
-        var _ = builder.Build();
+        _ = builder.Build();
 
         // Assert
         TestStartup.ConfigureServicesIsCalled

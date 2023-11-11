@@ -35,7 +35,9 @@ public static class HttpClientPostTextExtensions
 
         httpPostRequest.Content = new StringContent(content, Encoding.UTF8, mediaType);
 
-        var response = await httpClient.SendAsync(httpPostRequest, completionOption, cancellationToken);
+        var response = await httpClient
+            .SendAsync(httpPostRequest, completionOption, cancellationToken)
+            .ConfigureAwait(false);
 
         return response;
     }

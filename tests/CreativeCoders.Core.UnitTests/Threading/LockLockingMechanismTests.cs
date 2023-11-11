@@ -9,7 +9,7 @@ public class LockLockingMechanismTests
     [Fact]
     public void CtorTest()
     {
-        var _ = new LockLockingMechanism();
+        _ = new LockLockingMechanism();
     }
 
     [Fact]
@@ -21,7 +21,7 @@ public class LockLockingMechanismTests
     [Fact]
     public void CtorTestReaderWriterLockSlim()
     {
-        var _ = new LockLockingMechanism(new object());
+        _ = new LockLockingMechanism(new object());
     }
 
     [Fact]

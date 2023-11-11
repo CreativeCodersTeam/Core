@@ -16,21 +16,21 @@ public sealed class LiteDbTestContext<T, TKey> : IDisposable
         var services = new ServiceCollection();
 
         _dbFile = new FileCleanUp(FileSys.Path.GetTempFileName());
-        
+
         services.AddLiteDbDocumentRepositories(_dbFile.FileName)
-            .AddRepository<T, TKey>(indexBuilder ?? (x => {}), "test");
-        
+            .AddRepository<T, TKey>(indexBuilder ?? (_ => {}), "test");
+
         _serviceProvider = services.BuildServiceProvider();
-        
+
         Repository = _serviceProvider.GetRequiredService<IDocumentRepository<T, TKey>>();
     }
-    
+
     public void Dispose()
     {
         _serviceProvider.Dispose();
-        
+
         _dbFile.Dispose();
     }
-    
+
     public IDocumentRepository<T, TKey> Repository { get; }
 }

@@ -11,7 +11,7 @@ public class TextSpanTests
     {
         Assert.Throws<ArgumentException>(() => new TextSpan(-1, 10));
         Assert.Throws<ArgumentException>(() => new TextSpan(0, -1));
-        var _ = new TextSpan(0, 10);
+        _ = new TextSpan(0, 10);
     }
 
     [Fact]

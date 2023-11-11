@@ -19,11 +19,13 @@ public class HtmlInclude : ControlBase
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
+        await base.OnInitializedAsync().ConfigureAwait(false);
 
         try
         {
-            var html = ContentLoader != null ? await ContentLoader() : await HttpClient.GetStringAsync(Url);
+            var html = ContentLoader != null
+                ? await ContentLoader().ConfigureAwait(false)
+                : await HttpClient.GetStringAsync(Url).ConfigureAwait(false);
 
             Content = new MarkupString(html);
 

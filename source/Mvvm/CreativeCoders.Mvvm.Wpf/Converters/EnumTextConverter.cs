@@ -10,12 +10,7 @@ namespace CreativeCoders.Mvvm.Wpf.Converters;
 [ValueConversion(typeof(Enum), typeof(string))]
 public class EnumTextConverter : IValueConverter
 {
-    private readonly EnumStringConverter _converter;
-
-    public EnumTextConverter()
-    {
-        _converter = new EnumStringConverter();
-    }
+    private readonly EnumStringConverter _converter = new();
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

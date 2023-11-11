@@ -1,8 +1,10 @@
 ﻿using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.IO;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.IO.Archives;
 
+[PublicAPI]
 public abstract class TarArchiveWriterBase : ITarArchiveWriter
 {
     private readonly bool _preserveFileMode;

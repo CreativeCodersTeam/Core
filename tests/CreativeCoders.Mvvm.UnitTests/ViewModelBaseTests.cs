@@ -10,14 +10,14 @@ public class ViewModelBaseTests
     [Fact]
     public void CtorTest()
     {
-        var _ = new ViewModelBase();
+        _ = new ViewModelBase();
     }
 
     [Fact]
     public void CtorTestWithMessenger()
     {
         var messenger = A.Fake<IMessenger>();
-        var _ = new ViewModelBase(messenger);
+        _ = new ViewModelBase(messenger);
     }
 
     [Fact]

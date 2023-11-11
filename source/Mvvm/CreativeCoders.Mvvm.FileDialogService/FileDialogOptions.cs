@@ -5,18 +5,11 @@ namespace CreativeCoders.Mvvm.FileDialogService;
 [PublicAPI]
 public class FileDialogOptions
 {
-    public FileDialogOptions()
-    {
-        CheckPathExists = true;
-        AddExtension = true;
-        FilterIndex = 1;
-    }
-
-    public bool AddExtension { get; set; }
+    public bool AddExtension { get; set; } = true;
 
     public bool CheckFileExists { get; set; }
 
-    public bool CheckPathExists { get; set; }
+    public bool CheckPathExists { get; set; } = true;
 
     public string DefaultExt { get; set; }
 
@@ -28,7 +21,7 @@ public class FileDialogOptions
 
     public string Filter { get; set; }
 
-    public int FilterIndex { get; set; }
+    public int FilterIndex { get; set; } = 1;
 
     public string InitialDirectory { get; set; }
 
