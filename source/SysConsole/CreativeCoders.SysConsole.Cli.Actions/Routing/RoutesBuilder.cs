@@ -9,12 +9,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing;
 
 public class RoutesBuilder : IRoutesBuilder
 {
-    private readonly IList<Type> _controllerTypes;
-
-    public RoutesBuilder()
-    {
-        _controllerTypes = new List<Type>();
-    }
+    private readonly List<Type> _controllerTypes = new();
 
     public void AddController(Type controllerType)
     {

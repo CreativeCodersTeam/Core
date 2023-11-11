@@ -13,7 +13,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 public interface ICleanTarget : INukeBuild, ICleanSettings
 {
     Target Clean => d => d
-        .TryBefore<IRestoreTarget>()
+        .TryBefore<IRestoreTarget>(x => x.Restore)
         .Executes(() =>
         {
             DotNetTasks.DotNetClean(x => x

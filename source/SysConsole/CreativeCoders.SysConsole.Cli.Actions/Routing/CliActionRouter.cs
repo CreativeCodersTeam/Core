@@ -8,12 +8,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing;
 
 internal class CliActionRouter : ICliActionRouter
 {
-    private readonly IList<CliActionRoute> _actionRoutes;
-
-    public CliActionRouter()
-    {
-        _actionRoutes = new List<CliActionRoute>();
-    }
+    private readonly List<CliActionRoute> _actionRoutes = new();
 
     public CliActionRoute? FindRoute(IList<string> args)
     {

@@ -2,19 +2,13 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using CreativeCoders.Core;
-using CreativeCoders.Core.Collections;
 using Microsoft.Extensions.Http;
 
 namespace CreativeCoders.Net.Http;
 
 public class HttpClientSetup : IHttpClientSetup
 {
-    private readonly IList<Action<HttpClientFactoryOptions>> _configureActions;
-
-    public HttpClientSetup()
-    {
-        _configureActions = new List<Action<HttpClientFactoryOptions>>();
-    }
+    private readonly List<Action<HttpClientFactoryOptions>> _configureActions = new();
 
     public IHttpClientSetup ConfigureClient(Action<HttpClient> configureClient)
     {

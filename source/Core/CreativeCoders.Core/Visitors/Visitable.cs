@@ -10,12 +10,7 @@ public abstract class Visitable<TVisitor, TVisitableObject> : IVisitable,
     where TVisitor : class, IVisitor<TVisitor, TVisitableObject>
     where TVisitableObject : Visitable<TVisitor, TVisitableObject>
 {
-    private readonly IDictionary<Type, Action<object>> _visitors;
-
-    protected Visitable()
-    {
-        _visitors = new Dictionary<Type, Action<object>>();
-    }
+    private readonly IDictionary<Type, Action<object>> _visitors = new Dictionary<Type, Action<object>>();
 
     public void Accept(TVisitor visitor)
     {

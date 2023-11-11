@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CreativeCoders.Windows.Api.User32Dll;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Windows.Window;
 
 ///<inheritdoc/>
 [ExcludeFromCodeCoverage]
+[PublicAPI]
 public class Win32Windows : IWin32Windows
 {
     public IEnumerable<IWindow> EnumerateWindowsForProcess(int processId)

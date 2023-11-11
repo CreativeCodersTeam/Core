@@ -10,14 +10,9 @@ public abstract class CommandBase : ICommandEx
 {
     private EventHandler _canExecuteChanged;
 
-    private readonly SynchronizationContext _synchronizationContext;
+    private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
 
     public abstract bool CanExecute(object parameter);
-
-    protected CommandBase()
-    {
-        _synchronizationContext = SynchronizationContext.Current;
-    }
 
     public abstract void Execute(object parameter);
 

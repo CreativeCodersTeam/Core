@@ -28,7 +28,9 @@ public abstract class ModelReaderBase
             IgnoreComments = true
         });
 
-        var xmlDoc = await XDocument.LoadAsync(xmlReader, LoadOptions.None, CancellationToken.None);
+        var xmlDoc = await XDocument
+            .LoadAsync(xmlReader, LoadOptions.None, CancellationToken.None)
+            .ConfigureAwait(false);
 
         return xmlDoc;
     }

@@ -10,12 +10,7 @@ namespace CreativeCoders.NukeBuild.BuildActions;
 [PublicAPI]
 public class CleanBuildAction : BuildActionBase<CleanBuildAction>
 {
-    private readonly IList<AbsolutePath> _cleanDirectories;
-
-    public CleanBuildAction()
-    {
-        _cleanDirectories = new List<AbsolutePath>();
-    }
+    private readonly List<AbsolutePath> _cleanDirectories = new();
 
     protected override void OnExecute()
     {

@@ -19,14 +19,14 @@ public class DefaultCliExecutor : ICliExecutor
     {
         Ensure.NotNull(args, nameof(args));
 
-        var (groupCommandIsExecuted, groupCommandResult) = await TryExecuteGroupCommandAsync(args);
+        var (groupCommandIsExecuted, groupCommandResult) = await TryExecuteGroupCommandAsync(args).ConfigureAwait(false);
 
         if (groupCommandIsExecuted)
         {
             return groupCommandResult?.ReturnCode ?? _context.DefaultErrorReturnCode;
         }
 
-        var (commandIsExecuted, commandResult) = await TryExecuteCommandAsync(args);
+        var (commandIsExecuted, commandResult) = await TryExecuteCommandAsync(args).ConfigureAwait(false);
 
         if (commandIsExecuted)
         {
@@ -40,7 +40,7 @@ public class DefaultCliExecutor : ICliExecutor
 
         var defaultOptions = new OptionParser(_context.DefaultCommand.OptionsType).Parse(args);
 
-        var defaultCommandResult = await _context.DefaultCommand.ExecuteAsync(defaultOptions);
+        var defaultCommandResult = await _context.DefaultCommand.ExecuteAsync(defaultOptions).ConfigureAwait(false);
 
         return defaultCommandResult.ReturnCode;
     }
@@ -58,7 +58,7 @@ public class DefaultCliExecutor : ICliExecutor
 
         var options = new OptionParser(command.OptionsType).Parse(args.Skip(1).ToArray());
 
-        var commandResult = await command.ExecuteAsync(options);
+        var commandResult = await command.ExecuteAsync(options).ConfigureAwait(false);
 
         return (true, commandResult);
     }
@@ -78,7 +78,7 @@ public class DefaultCliExecutor : ICliExecutor
 
         var options = new OptionParser(groupCommand.OptionsType).Parse(args.Skip(2).ToArray());
 
-        return (true, await groupCommand.ExecuteAsync(options));
+        return (true, await groupCommand.ExecuteAsync(options).ConfigureAwait(false));
     }
 
     public int DefaultErrorReturnCode => _context.DefaultErrorReturnCode;

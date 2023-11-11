@@ -10,8 +10,8 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 public interface ICodeCoverageReportTarget : ITestTarget, ICodeCoverageReportSettings
 {
     Target CodeCoverageReport => d => d
-        .TryBefore<IPackTarget>()
-        .DependsOn<ITestTarget>()
+        .TryBefore<IPackTarget>(x => x.Pack)
+        .DependsOn<ITestTarget>(x => x.Test)
         .Produces(TargetDirectory / "*.*")
         .Executes(() =>
         {

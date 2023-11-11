@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CreativeCoders.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CreativeCoders.AspNetCore.TokenAuth;
@@ -13,8 +14,8 @@ public class TokenAuthController : ControllerBase
 
     public TokenAuthController(IUserAuthProvider userAuthProvider, ITokenHandler tokenHandler)
     {
-        _userAuthProvider = userAuthProvider;
-        _tokenHandler = tokenHandler;
+        _userAuthProvider = Ensure.NotNull(userAuthProvider);
+        _tokenHandler = Ensure.NotNull(tokenHandler);
     }
 
     [Route("RequestToken")]
@@ -22,6 +23,11 @@ public class TokenAuthController : ControllerBase
     [HttpPost]
     public IActionResult RequestToken([FromBody] TokenRequest request)
     {
+        if (request.UserName == null || request.Password == null)
+        {
+            return BadRequest("Invalid credentials");
+        }
+
         if (!_userAuthProvider.CheckUser(request.UserName, request.Password, request.Domain))
         {
             return BadRequest("Could not verify username and password");

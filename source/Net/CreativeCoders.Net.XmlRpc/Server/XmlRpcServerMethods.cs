@@ -10,12 +10,7 @@ namespace CreativeCoders.Net.XmlRpc.Server;
 [PublicAPI]
 public class XmlRpcServerMethods : IXmlRpcServerMethods
 {
-    private readonly IList<MethodRegistration> _methods;
-
-    public XmlRpcServerMethods()
-    {
-        _methods = new List<MethodRegistration>();
-    }
+    private readonly List<MethodRegistration> _methods = new();
 
     public void RegisterMethods<T>(string methodSuffix, T methodsInterface)
         where T : class

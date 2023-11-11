@@ -13,7 +13,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 public interface IPackTarget : IPackSettings, ISolutionParameter
 {
     Target Pack => d => d
-        .TryDependsOn<ICompileTarget>()
+        .TryDependsOn<ICompileTarget>(x => x.Compile)
         .Executes(() =>
         {
             DotNetTasks.DotNetPack(s => s

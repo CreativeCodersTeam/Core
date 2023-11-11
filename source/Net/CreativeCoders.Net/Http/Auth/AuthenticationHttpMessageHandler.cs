@@ -27,8 +27,9 @@ public class AuthenticationHttpMessageHandler : DelegatingHandler
                 x.StatusCode == HttpStatusCode.Unauthorized &&
                 _authenticationProvider?.ClientAuthenticator?.CanAuthenticate(request.RequestUri) == true)
             .RetryAsync(1,
-                async (_, _) => await RetryAsync(request))
-            .ExecuteAsync(async () => await base.SendAsync(request, cancellationToken));
+                async (_, _) => await RetryAsync(request).ConfigureAwait(false))
+            .ExecuteAsync(async () => await base.SendAsync(request, cancellationToken).ConfigureAwait(false))
+            .ConfigureAwait(false);
     }
 
     private async Task RetryAsync(HttpRequestMessage request)
@@ -40,7 +41,7 @@ public class AuthenticationHttpMessageHandler : DelegatingHandler
             throw new ArgumentException("Authenticator not set.");
         }
 
-        await authenticator.AuthenticateAsync(request.RequestUri);
+        await authenticator.AuthenticateAsync(request.RequestUri).ConfigureAwait(false);
 
         authenticator.PrepareHttpRequest(request);
     }

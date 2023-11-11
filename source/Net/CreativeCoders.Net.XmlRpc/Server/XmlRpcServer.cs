@@ -93,7 +93,7 @@ public sealed class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler
         {
             var xmlRpcRequest = await ReadXmlRpcRequestFromBodyAsync(request).ConfigureAwait(false);
 
-            xmlRpcResponse = await ExecuteMethods(xmlRpcRequest);
+            xmlRpcResponse = await ExecuteMethods(xmlRpcRequest).ConfigureAwait(false);
         }
         catch (Exception)
         {
@@ -107,7 +107,8 @@ public sealed class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler
 
     private async Task SendResponseAsync(IHttpResponse response, XmlRpcResponse xmlRpcResponse)
     {
-        await using var contentStream = await CreateContentStreamAsync(xmlRpcResponse).ConfigureAwait(false);
+        var contentStream = await CreateContentStreamAsync(xmlRpcResponse).ConfigureAwait(false);
+        await using var _ = contentStream.ConfigureAwait(false);
 
         var responseStream = response.Body.GetStream();
 
@@ -146,7 +147,7 @@ public sealed class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler
 
         foreach (var methodCall in xmlRpcRequest.Methods)
         {
-            var callResult = await InvokeMethod(methodCall);
+            var callResult = await InvokeMethod(methodCall).ConfigureAwait(false);
 
             results.Add(callResult);
         }
@@ -158,7 +159,7 @@ public sealed class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler
 
     private async Task<object> InvokeMethod(XmlRpcMethodCall methodCall)
     {
-        return await _executor.Invoke(methodCall);
+        return await _executor.Invoke(methodCall).ConfigureAwait(false);
     }
 
     public void Dispose()

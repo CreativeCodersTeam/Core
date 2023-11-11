@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using CreativeCoders.Core.Threading;
@@ -10,12 +9,7 @@ namespace CreativeCoders.Mvvm.Skeletor.Infrastructure.Default;
 [PublicAPI]
 public class ViewModelToViewMappings : IViewModelToViewMappings
 {
-    private readonly IList<ViewModelToViewMapping> _mappings;
-
-    public ViewModelToViewMappings()
-    {
-        _mappings = new ConcurrentList<ViewModelToViewMapping>();
-    }
+    private readonly ConcurrentList<ViewModelToViewMapping> _mappings = new();
 
     public void AddMapping<TViewModel, TView>()
         where TView : DependencyObject

@@ -286,10 +286,24 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
                 execute();
                 break;
             case SynchronizationMethod.Post:
-                _synchronizationContext!.Post(_ => execute(), null);
+                if (_synchronizationContext == null)
+                {
+                    execute();
+                }
+                else
+                {
+                    _synchronizationContext.Post(_ => execute(), null);
+                }
                 break;
             case SynchronizationMethod.Send:
-                _synchronizationContext!.Send(_ => execute(), null);
+                if (_synchronizationContext == null)
+                {
+                    execute();
+                }
+                else
+                {
+                    _synchronizationContext.Send(_ => execute(), null);
+                }
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(synchronizationMethod));

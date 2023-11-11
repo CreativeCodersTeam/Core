@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using CreativeCoders.Core;
 using Microsoft.Extensions.Http;
 
@@ -9,12 +8,7 @@ namespace CreativeCoders.Net.Http;
 #nullable enable
 public class HttpClientSettings : IHttpClientSettings
 {
-    private readonly IDictionary<string, Action<HttpClientFactoryOptions>> _options;
-
-    public HttpClientSettings()
-    {
-        _options = new ConcurrentDictionary<string, Action<HttpClientFactoryOptions>>();
-    }
+    private readonly ConcurrentDictionary<string, Action<HttpClientFactoryOptions>> _options = new();
 
     public void Add(string name, Action<HttpClientFactoryOptions> configure)
     {

@@ -13,7 +13,7 @@ public interface IPushNuGetTarget : IPackTarget, IPushNuGetSettings
 {
     Target PushNuGet => d => d
         .OnlyWhenDynamic(() => !SkipPush)
-        .DependsOn<IPackTarget>()
+        .DependsOn<IPackTarget>(x => x.Pack)
         .Executes(() =>
         {
             OutputDirectory

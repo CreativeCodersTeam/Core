@@ -29,7 +29,7 @@ internal class CliActionRuntime : ICliActionRuntime
 
         var context = new CliActionContext(new CliActionRequest(args));
 
-        await _middlewarePipeline(context);
+        await _middlewarePipeline(context).ConfigureAwait(false);
 
         return context.ReturnCode;
     }

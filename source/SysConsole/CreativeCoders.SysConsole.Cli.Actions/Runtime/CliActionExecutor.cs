@@ -25,7 +25,7 @@ internal class CliActionExecutor : ICliActionExecutor
             throw new NoActionException();
         }
 
-        await ExecuteActionRouteAsync(context);
+        await ExecuteActionRouteAsync(context).ConfigureAwait(false);
     }
 
     private async Task ExecuteActionRouteAsync(CliActionContext context)
@@ -52,7 +52,7 @@ internal class CliActionExecutor : ICliActionExecutor
 
         if (resultType == typeof(Task<CliActionResult>))
         {
-            var actionResult = await (Task<CliActionResult>) result;
+            var actionResult = await ((Task<CliActionResult>) result).ConfigureAwait(false);
 
             context.ReturnCode = actionResult.ReturnCode;
 
@@ -61,7 +61,7 @@ internal class CliActionExecutor : ICliActionExecutor
 
         if (resultType == typeof(Task<int>))
         {
-            var returnCode = await (Task<int>) result;
+            var returnCode = await ((Task<int>) result).ConfigureAwait(false);
 
             context.ReturnCode = returnCode;
 
@@ -70,7 +70,7 @@ internal class CliActionExecutor : ICliActionExecutor
 
         if (result is Task taskResult)
         {
-            await taskResult;
+            await taskResult.ConfigureAwait(false);
 
             return;
         }

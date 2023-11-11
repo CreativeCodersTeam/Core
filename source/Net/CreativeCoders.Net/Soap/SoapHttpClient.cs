@@ -34,9 +34,12 @@ public class SoapHttpClient : ISoapHttpClient
 
         var soapRequestInfo = CreateRequestInfo(actionRequest, uri);
 
-        var response = await _httpClient.SendAsync(CreateRequestMessage(soapRequestInfo));
+        var response = await _httpClient
+            .SendAsync(CreateRequestMessage(soapRequestInfo))
+            .ConfigureAwait(false);
 
-        await using var responseStream = await response.Content.ReadAsStreamAsync();
+        var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+        await using var _ = responseStream.ConfigureAwait(false);
 
         var responseInfo = CreateResponseInfo<TResponse>();
         var responseData = new SoapResponder<TResponse>(responseStream, responseInfo).Eval();

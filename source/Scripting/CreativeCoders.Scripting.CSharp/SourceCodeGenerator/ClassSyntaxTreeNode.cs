@@ -7,14 +7,9 @@ namespace CreativeCoders.Scripting.CSharp.SourceCodeGenerator;
 
 public class ClassSyntaxTreeNode : IVisitableSubItems
 {
-    private readonly IList<ClassSyntaxTreeNode> _subNodes;
+    private readonly List<ClassSyntaxTreeNode> _subNodes = new();
 
     private IVisitable _asVisitable;
-
-    public ClassSyntaxTreeNode()
-    {
-        _subNodes = new List<ClassSyntaxTreeNode>();
-    }
 
     public void AddSubNode(ClassSyntaxTreeNode subNode)
     {

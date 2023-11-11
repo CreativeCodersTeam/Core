@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
 
@@ -9,12 +8,7 @@ namespace CreativeCoders.DynamicCode.Proxying;
 public class InterceptorWithPropertiesBase<T> : InterceptorBase<T>
     where T : class
 {
-    private readonly IDictionary<PropertyInfo, object?> _propertyValues;
-
-    public InterceptorWithPropertiesBase()
-    {
-        _propertyValues = new ConcurrentDictionary<PropertyInfo, object?>();
-    }
+    private readonly ConcurrentDictionary<PropertyInfo, object?> _propertyValues = new();
 
     protected override void SetProperty(PropertyInfo propertyInfo, object? value)
     {

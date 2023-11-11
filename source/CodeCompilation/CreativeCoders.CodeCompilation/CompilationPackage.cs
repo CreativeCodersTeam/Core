@@ -7,13 +7,6 @@ namespace CreativeCoders.CodeCompilation;
 [PublicAPI]
 public class CompilationPackage
 {
-    public CompilationPackage()
-    {
-        AddNetStandardReferences = true;
-        ReferencedAssemblyFiles = new List<string>();
-        SourceCodes = new List<SourceCodeUnit>();
-    }
-
     public void AddReferenceAssembly(Assembly assembly)
     {
         ReferencedAssemblyFiles.Add(assembly.Location);
@@ -21,11 +14,11 @@ public class CompilationPackage
 
     public string AssemblyName { get; set; }
 
-    public IList<SourceCodeUnit> SourceCodes { get; }
+    public IList<SourceCodeUnit> SourceCodes { get; } = new List<SourceCodeUnit>();
 
-    public IList<string> ReferencedAssemblyFiles { get; }
+    public IList<string> ReferencedAssemblyFiles { get; } = new List<string>();
 
-    public bool AddNetStandardReferences { get; set; }
+    public bool AddNetStandardReferences { get; set; } = true;
 
     public bool AddAllLoadedAssemblyReferences { get; set; }
 }

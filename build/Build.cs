@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
-using CreativeCoders.Core.IO;
 using CreativeCoders.NukeBuild.BuildActions;
 using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets;
@@ -72,9 +72,10 @@ class Build : NukeBuild,
     IList<AbsolutePath> ICleanSettings.DirectoriesToClean =>
         this.As<ICleanSettings>().DefaultDirectoriesToClean
             .AddRange(this.As<ITestSettings>().TestBaseDirectory);
-    
+
     public IEnumerable<Project> TestProjects => this.TryAs<ISolutionParameter>(out var solutionParameter)
-        ? solutionParameter.Solution.GetProjects("*.UnitTests")
+        ? solutionParameter.Solution.GetProjects("*")
+            .Where(x => ((string)x.Path)?.StartsWith(RootDirectory / "tests") == true).ToArray()
         : Array.Empty<Project>();
 
     string IPackSettings.PackageProjectUrl => "https://github.com/CreativeCodersTeam/Core";

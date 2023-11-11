@@ -9,16 +9,11 @@ namespace CreativeCoders.NukeBuild.BuildActions;
 [PublicAPI]
 public class CoverageReportAction : BuildActionBase<CoverageReportAction>
 {
-    private string _framework;
+    private string _framework = $"net{Env.Version.Major}.0";
 
     private string[] _reports;
 
     private string _targetDirectory;
-
-    public CoverageReportAction()
-    {
-        _framework = $"net{Env.Version.Major}.0";
-    }
 
     protected override void OnExecute()
     {

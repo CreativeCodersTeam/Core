@@ -49,7 +49,7 @@ public static class ObjectExtensions
         switch (instance)
         {
             case IAsyncDisposable asyncDisposable:
-                await asyncDisposable.DisposeAsync();
+                await asyncDisposable.DisposeAsync().ConfigureAwait(false);
                 break;
             case IDisposable disposable:
                 disposable.Dispose();

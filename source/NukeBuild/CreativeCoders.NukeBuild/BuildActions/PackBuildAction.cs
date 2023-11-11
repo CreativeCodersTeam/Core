@@ -9,7 +9,7 @@ namespace CreativeCoders.NukeBuild.BuildActions;
 [PublicAPI]
 public class PackBuildAction : BuildActionBase<PackBuildAction>
 {
-    private DotNetSymbolPackageFormat _symbolPackageFormat;
+    private DotNetSymbolPackageFormat _symbolPackageFormat = DotNetSymbolPackageFormat.snupkg;
 
     private string _packageLicenseUrl;
 
@@ -20,11 +20,6 @@ public class PackBuildAction : BuildActionBase<PackBuildAction>
     private string _copyright;
 
     private bool _enableNoBuild;
-
-    public PackBuildAction()
-    {
-        _symbolPackageFormat = DotNetSymbolPackageFormat.snupkg;
-    }
 
     protected override void OnExecute()
     {

@@ -11,7 +11,8 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 public interface ICompileTarget : ISolutionParameter
 {
     Target Compile => d => d
-        .TryBefore<ITestTarget>()
+        .TryBefore<ITestTarget>(x => x.Test)
+        .TryDependsOn<IRestoreTarget>(x => x.Restore)
         .Executes(() => DotNetTasks.DotNetBuild(x => x
             .Apply(ConfigureCompileSettings)
         ));
