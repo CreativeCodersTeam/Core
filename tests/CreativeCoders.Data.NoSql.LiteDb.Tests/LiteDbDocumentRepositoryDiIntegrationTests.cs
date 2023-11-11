@@ -11,55 +11,33 @@ namespace CreativeCoders.Data.NoSql.LiteDb.Tests;
 public class LiteDbDocumentRepositoryDiIntegrationTests
 {
     [Fact]
-    public void RegisterService_GetServiceFromProvider_ServiceInstanceIsReturned()
-    {
-        // Arrange
-        var services = new ServiceCollection();
-
-        using var fcu = new FileCleanUp(FileSys.Path.GetTempFileName());
-        
-        services.AddLiteDbDocumentRepositories(fcu.FileName)
-            .AddRepository<TestDocument, string>("test");
-        
-        using var sp = services.BuildServiceProvider();
-        
-        // Act
-        var repo = sp.GetRequiredService<IDocumentRepository<TestDocument, string>>();
-
-        // Assert
-        repo
-            .Should()
-            .NotBeNull();
-    }
-
-    [Fact]
     public async Task AddAsync_EmptyRepoWithStringId_NewDocumentIsInserted()
     {
         // Arrange
         var testDoc = new TestDocument { Id = Guid.NewGuid().ToString(),Name = "Test1234", Version = 1234};
 
         using var context = new LiteDbTestContext<TestDocument, string>();
-        
+
         // Act
         await context.Repository.AddAsync(testDoc);
 
         // Assert
         var docs = (await context.Repository.GetAllAsync()).ToArray();
-        
+
         docs
             .Should()
             .HaveCount(1);
-        
+
         var doc = docs.First();
 
         doc.Should()
             .NotBeSameAs(testDoc);
-        
+
         doc
             .Should()
             .BeEquivalentTo(testDoc);
     }
-    
+
     [Fact]
     public async Task AddAsync_EmptyRepoWithObjectId_NewDocumentIsInserted()
     {
@@ -67,17 +45,17 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
         var testDoc = new TestDocumentWithObjectId { Name = "Test1234", Version = 1234};
 
         using var context = new LiteDbTestContext<TestDocumentWithObjectId, ObjectId>();
-        
+
         // Act
         await context.Repository.AddAsync(testDoc);
 
         // Assert
         var docs = (await context.Repository.GetAllAsync()).ToArray();
-        
+
         docs
             .Should()
             .HaveCount(1);
-        
+
         var doc = docs.First();
 
         doc.Should()
@@ -88,13 +66,13 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
             .NotBeNull()
             .And
             .NotBe(ObjectId.Empty);
-            
-        
+
+
         doc
             .Should()
             .BeEquivalentTo(testDoc);
     }
-    
+
     [Fact]
     [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
     public async Task AddAsync_RepoWithOneEntityWithSameId_ExceptionIsThrown()
@@ -103,9 +81,9 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
         var testDoc = new TestDocument { Id = Guid.NewGuid().ToString(),Name = "Test1234", Version = 1234};
 
         using var context = new LiteDbTestContext<TestDocument, string>();
-        
+
         await context.Repository.AddAsync(testDoc);
-        
+
         // Act
         var act = async () => await context.Repository.AddAsync(testDoc);
 
@@ -114,7 +92,7 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
             .Should()
             .ThrowAsync<LiteException>();
     }
-    
+
     [Fact]
     [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
     public async Task AddAsync_RepoWithOneEntityWithUniqueIndexViolation_ExceptionIsThrown()
@@ -124,9 +102,9 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
 
         using var context = new LiteDbTestContext<TestDocument, string>(
             indexBuilder => indexBuilder.AddIndex(x => x.Name, true));
-        
+
         await context.Repository.AddAsync(testDoc);
-        
+
         // Act
         testDoc.Id = Guid.NewGuid().ToString();
         var act = async () => await context.Repository.AddAsync(testDoc);
@@ -137,7 +115,7 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
             .ThrowAsync<LiteException>()
             .WithMessage("*unique index 'Name'*");
     }
-    
+
     [Fact]
     public async Task QueryAsync_RepoWithOneEntityQueriedByExistingId_QueryReturnsThisDocument()
     {
@@ -146,9 +124,9 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
 
         using var context = new LiteDbTestContext<TestDocument, string>(
             indexBuilder => indexBuilder.AddIndex(x => x.Name, true));
-        
+
         await context.Repository.AddAsync(testDoc);
-        
+
         // Act
         var docs = (await context.Repository.QueryAsync(x => x.Id == testDoc.Id)).ToArray();
 
@@ -163,7 +141,7 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
             .And
             .BeEquivalentTo(testDoc);
     }
-    
+
     [Fact]
     public async Task QueryAsync_RepoWithTwoEntityQueriedByOneExistingId_QueryReturnsOneDocument()
     {
@@ -173,10 +151,10 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
 
         using var context = new LiteDbTestContext<TestDocument, string>(
             indexBuilder => indexBuilder.AddIndex(x => x.Name, true));
-        
+
         await context.Repository.AddAsync(testDoc0);
         await context.Repository.AddAsync(testDoc1);
-        
+
         // Act
         var docs = (await context.Repository.QueryAsync(x => x.Id == testDoc1.Id)).ToArray();
 
@@ -231,7 +209,7 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
             .And
             .BeEquivalentTo(new[] { testDoc0, testDoc3 });
     }
-    
+
     [Fact]
     public async Task GetAsync_RepoWithOneEntityQueriedByExistingId_QueryReturnsThisDocument()
     {
@@ -240,9 +218,9 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
 
         using var context = new LiteDbTestContext<TestDocument, string>(
             indexBuilder => indexBuilder.AddIndex(x => x.Name, true));
-        
+
         await context.Repository.AddAsync(testDoc);
-        
+
         // Act
         var doc = await context.Repository.GetAsync(testDoc.Id);
 
@@ -253,7 +231,7 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
             .And
             .BeEquivalentTo(testDoc);
     }
-    
+
     [Fact]
     public async Task DeleteAsync_RepoWithMultipleEntitiesDeleteOne_DeletedEntryMissing()
     {
@@ -277,14 +255,14 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
 
         // Assert
         var allDocs = (await context.Repository.GetAllAsync()).ToArray();
-        
+
         allDocs
             .Should()
             .HaveCount(3)
             .And
             .BeEquivalentTo(new[] { testDoc0, testDoc2, testDoc3 });
     }
-    
+
     [Fact]
     public async Task DeleteAsync_RepoWithMultipleEntitiesDeleteMany_DeletedEntriesMissing()
     {
@@ -308,14 +286,14 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
 
         // Assert
         var allDocs = (await context.Repository.GetAllAsync()).ToArray();
-        
+
         allDocs
             .Should()
             .HaveCount(2)
             .And
             .BeEquivalentTo(new[] { testDoc1, testDoc2 });
     }
-    
+
     [Fact]
     public async Task ClearAsync_RepoWithMultipleEntities_RepoIsEmpty()
     {
@@ -339,12 +317,12 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
 
         // Assert
         var allDocs = (await context.Repository.GetAllAsync()).ToArray();
-        
+
         allDocs
             .Should()
             .BeEmpty();
     }
-    
+
     [Fact]
     public async Task UpdateAsync_UpdateOneDoc_DocIsUpdated()
     {
@@ -376,7 +354,7 @@ public class LiteDbDocumentRepositoryDiIntegrationTests
             .And
             .BeEquivalentTo(testDoc1);
     }
-    
+
     [Fact]
     [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
     public async Task UpdateAsync_IdIsNull_ExceptionIsThrown()

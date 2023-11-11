@@ -17,8 +17,16 @@ public sealed class LiteDbTestContext<T, TKey> : IDisposable
 
         _dbFile = new FileCleanUp(FileSys.Path.GetTempFileName());
 
-        services.AddLiteDbDocumentRepositories(_dbFile.FileName)
-            .AddRepository<T, TKey>(indexBuilder ?? (_ => {}), "test");
+        if (indexBuilder == null)
+        {
+            services.AddLiteDbDocumentRepositories(_dbFile.FileName)
+                .AddRepository<T, TKey>("test");
+        }
+        else
+        {
+            services.AddLiteDbDocumentRepositories(_dbFile.FileName)
+                .AddRepository<T, TKey>(indexBuilder, "test");
+        }
 
         _serviceProvider = services.BuildServiceProvider();
 
