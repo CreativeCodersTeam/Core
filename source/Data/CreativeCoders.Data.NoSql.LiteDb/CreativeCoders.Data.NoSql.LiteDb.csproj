@@ -9,8 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-      <ProjectReference Include="..\Data\CreativeCoders.Data.NoSql\CreativeCoders.Data.NoSql.csproj" />
+      <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+      <ProjectReference Include="..\CreativeCoders.Data.NoSql\CreativeCoders.Data.NoSql.csproj" />
     </ItemGroup>
 
     <ItemGroup>

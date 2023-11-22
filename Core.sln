@@ -3,6 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{D0A3F2FC-664B-4A9D-ACF9-F00EF8E9DFE1}"
+	ProjectSection(SolutionItems) = preProject
+		source\Core\README.md = source\Core\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Core", "source\Core\CreativeCoders.Core\CreativeCoders.Core.csproj", "{606AB477-7D63-48EB-814C-46DFE03CB6DE}"
 EndProject
@@ -107,12 +110,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__global", "__global", "{92288F2D-DE57-4018-855B-BD7F2344265F}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		..\.gitattributes = ..\.gitattributes
-		..\.gitignore = ..\.gitignore
-		..\LICENSE = ..\LICENSE
-		..\README.md = ..\README.md
-		..\GitVersion.yml = ..\GitVersion.yml
-		..\global.json = ..\global.json
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+		GitVersion.yml = GitVersion.yml
+		global.json = global.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RibbonSampleApp", "source\Samples\RibbonSampleApp\RibbonSampleApp.csproj", "{5424651E-ACDD-4C7F-BE70-819A89308152}"
@@ -194,8 +197,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NoSql", "NoSql", "{F708D571
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Data.NoSql", "source\Data\CreativeCoders.Data.NoSql\CreativeCoders.Data.NoSql.csproj", "{E6D5CE84-542C-4125-B094-D8C67A11AF13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Data.NoSql.LiteDb", "source\CreativeCoders.Data.NoSql.LiteDb\CreativeCoders.Data.NoSql.LiteDb.csproj", "{99B4CC7E-6029-4284-8400-9CBDBEBE3B15}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5A3FFD14-2258-4007-AC77-BAFB3B3EB26F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Data.NoSql.LiteDb.Tests", "tests\CreativeCoders.Data.NoSql.LiteDb.Tests\CreativeCoders.Data.NoSql.LiteDb.Tests.csproj", "{584D2981-461B-4146-B19A-3F9E574E1E88}"
@@ -233,6 +234,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.SysConsole.CliArguments.UnitTests", "tests\CreativeCoders.SysConsole.CliArguments.UnitTests\CreativeCoders.SysConsole.CliArguments.UnitTests.csproj", "{45A11758-5E80-4646-9E18-59F71D2D3591}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.SysConsole.UnitTests", "tests\CreativeCoders.SysConsole.UnitTests\CreativeCoders.SysConsole.UnitTests.csproj", "{26E2B34B-8D7C-42B8-841C-D27F4BFCCD8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Data.NoSql.LiteDb", "source\Data\CreativeCoders.Data.NoSql.LiteDb\CreativeCoders.Data.NoSql.LiteDb.csproj", "{5E712E88-317E-4412-8097-1D5922056EDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -482,10 +485,6 @@ Global
 		{E6D5CE84-542C-4125-B094-D8C67A11AF13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6D5CE84-542C-4125-B094-D8C67A11AF13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6D5CE84-542C-4125-B094-D8C67A11AF13}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99B4CC7E-6029-4284-8400-9CBDBEBE3B15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99B4CC7E-6029-4284-8400-9CBDBEBE3B15}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99B4CC7E-6029-4284-8400-9CBDBEBE3B15}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99B4CC7E-6029-4284-8400-9CBDBEBE3B15}.Release|Any CPU.Build.0 = Release|Any CPU
 		{584D2981-461B-4146-B19A-3F9E574E1E88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{584D2981-461B-4146-B19A-3F9E574E1E88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{584D2981-461B-4146-B19A-3F9E574E1E88}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -558,6 +557,10 @@ Global
 		{26E2B34B-8D7C-42B8-841C-D27F4BFCCD8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26E2B34B-8D7C-42B8-841C-D27F4BFCCD8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26E2B34B-8D7C-42B8-841C-D27F4BFCCD8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E712E88-317E-4412-8097-1D5922056EDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E712E88-317E-4412-8097-1D5922056EDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E712E88-317E-4412-8097-1D5922056EDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E712E88-317E-4412-8097-1D5922056EDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -648,7 +651,6 @@ Global
 		{0D77E6F7-5D76-4DF0-BE57-BA459951CD2F} = {354E69EA-9EA1-4F7E-A3C2-372DFB259C35}
 		{F708D571-2BF4-4F2D-9711-B00D245A0BB3} = {D913C0D3-85B9-4E89-82D6-8371FB6C99E7}
 		{E6D5CE84-542C-4125-B094-D8C67A11AF13} = {F708D571-2BF4-4F2D-9711-B00D245A0BB3}
-		{99B4CC7E-6029-4284-8400-9CBDBEBE3B15} = {F708D571-2BF4-4F2D-9711-B00D245A0BB3}
 		{584D2981-461B-4146-B19A-3F9E574E1E88} = {5A3FFD14-2258-4007-AC77-BAFB3B3EB26F}
 		{069660C3-2C29-481B-8872-2973300E4D51} = {5A3FFD14-2258-4007-AC77-BAFB3B3EB26F}
 		{8041FA2E-F624-40A3-BE38-DBFA19459427} = {5A3FFD14-2258-4007-AC77-BAFB3B3EB26F}
@@ -668,6 +670,7 @@ Global
 		{45A11758-5E80-4646-9E18-59F71D2D3591} = {5A3FFD14-2258-4007-AC77-BAFB3B3EB26F}
 		{26E2B34B-8D7C-42B8-841C-D27F4BFCCD8A} = {5A3FFD14-2258-4007-AC77-BAFB3B3EB26F}
 		{9A3F55B8-E867-4EA2-B1FA-0C01DE79463E} = {2A7105AA-05B6-469A-93F5-719723A4D90D}
+		{5E712E88-317E-4412-8097-1D5922056EDB} = {F708D571-2BF4-4F2D-9711-B00D245A0BB3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}
