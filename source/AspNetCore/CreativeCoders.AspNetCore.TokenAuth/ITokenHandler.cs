@@ -1,6 +1,8 @@
-﻿namespace CreativeCoders.AspNetCore.TokenAuth;
+﻿using System.Threading.Tasks;
+
+namespace CreativeCoders.AspNetCore.TokenAuth;
 
 public interface ITokenHandler
 {
-    string CreateToken(TokenRequest request);
+    Task<string> CreateTokenAsync(TokenRequest request);
 }

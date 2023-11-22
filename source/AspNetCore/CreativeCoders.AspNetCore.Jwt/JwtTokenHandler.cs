@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using CreativeCoders.AspNetCore.TokenAuth;
 using CreativeCoders.Core;
 using Microsoft.IdentityModel.Tokens;
@@ -17,7 +18,7 @@ public class JwtTokenHandler : ITokenHandler
         _symSecurityKeyConfig = Ensure.NotNull(symSecurityKeyConfig);
     }
 
-    public string CreateToken(TokenRequest request)
+    public Task<string> CreateTokenAsync(TokenRequest request)
     {
         Ensure.NotNull(request.UserName);
 
@@ -36,6 +37,6 @@ public class JwtTokenHandler : ITokenHandler
             expires: DateTime.Now.AddMinutes(30),
             signingCredentials: credentials);
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        return Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
     }
 }

@@ -1,9 +1,10 @@
-﻿using JetBrains.Annotations;
+﻿using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.AspNetCore.TokenAuth;
 
 [PublicAPI]
 public interface IUserAuthProvider
 {
-    bool CheckUser(string userName, string password, string? domain);
+    Task<bool> CheckUserAsync(string userName, string password, string? domain);
 }

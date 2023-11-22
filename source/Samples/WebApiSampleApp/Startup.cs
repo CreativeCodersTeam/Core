@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CreativeCoders.AspNetCore.Jwt;
 using CreativeCoders.AspNetCore.TokenAuth;
 using CreativeCoders.Core.Text;
@@ -53,8 +54,8 @@ public class Startup
 [UsedImplicitly]
 public class DefaultUserAuthProvider : IUserAuthProvider
 {
-    public bool CheckUser(string userName, string password, string domain)
+    public Task<bool> CheckUserAsync(string userName, string password, string domain)
     {
-        return true;
+        return Task.FromResult(true);
     }
 }

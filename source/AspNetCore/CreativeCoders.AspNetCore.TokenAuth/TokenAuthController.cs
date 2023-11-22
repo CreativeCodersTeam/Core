@@ -1,4 +1,5 @@
-﻿using CreativeCoders.Core;
+﻿using System.Threading.Tasks;
+using CreativeCoders.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,22 +19,21 @@ public class TokenAuthController : ControllerBase
         _tokenHandler = Ensure.NotNull(tokenHandler);
     }
 
-    [Route("RequestToken")]
     [AllowAnonymous]
-    [HttpPost]
-    public IActionResult RequestToken([FromBody] TokenRequest request)
+    [HttpPost("request-token")]
+    public async Task<IActionResult> RequestTokenAsync([FromBody] TokenRequest request)
     {
         if (request.UserName == null || request.Password == null)
         {
             return BadRequest("Invalid credentials");
         }
 
-        if (!_userAuthProvider.CheckUser(request.UserName, request.Password, request.Domain))
+        if (!await _userAuthProvider.CheckUserAsync(request.UserName, request.Password, request.Domain).ConfigureAwait(false))
         {
             return BadRequest("Could not verify username and password");
         }
 
-        var jwt = _tokenHandler.CreateToken(request);
+        var jwt = await _tokenHandler.CreateTokenAsync(request).ConfigureAwait(false);
 
         return Ok(new
         {
