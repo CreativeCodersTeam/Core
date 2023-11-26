@@ -8,6 +8,7 @@ public class StringArgumentExtensionsTests
 {
     [Theory]
     [InlineData("test", 5)]
+    [InlineData("test", 6)]
     [InlineData("test1234qwertz", 20)]
     public void HasMinLength_StringIsToShort_ThrowsException(string text, uint minLength)
     {
@@ -40,7 +41,10 @@ public class StringArgumentExtensionsTests
 
     [Theory]
     [InlineData("test", 4)]
-    public void HasMinLength_StringIsLonger_ReturnsArgument(string text, uint minLength)
+    [InlineData("test", 3)]
+    [InlineData("test1234qwertz", 14)]
+    [InlineData("test1234qwertz", 1)]
+    public void HasMinLength_StringIsLonger_ReturnsArgumentNotNull(string text, uint minLength)
     {
         // Act
         var argument = Ensure.Argument(text).HasMinLength(minLength);

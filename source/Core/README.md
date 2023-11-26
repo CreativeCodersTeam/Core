@@ -5,8 +5,8 @@ Basic classes and interfaces for .NET applications.
 ## Arguments ensuring
 Ensure arguments are as expected
 
+### Simple argument checks for null, empty, etc.
 [Ensure.cs](CreativeCoders.Core/Ensure.cs)
-Simple argument checks for null, empty, etc.
 ```csharp
 // Argument name can be given via second parameter or via nameof. If none is given, the name of variable is used.
 Ensure.NotNull(instance); // throws ArgumentNullException if instance is null
@@ -17,9 +17,8 @@ Ensure.FileExists(fileName); // throws ArgumentException if fileName not exists
 Ensure.DirectoryExists(dirName); // throws ArgumentException if dirName not exists
 // for more checks see Ensure.cs
 ```
-
-[EnsureArguments](CreativeCoders.Core/EnsureArguments)  
-More complex argument checks for null, empty, etc.
+### More complex argument checks for null, empty, etc.
+[Ensure.Argument Extensions](CreativeCoders.Core/EnsureArguments/Extensions)
 ```csharp
 Ensure.Argument(instance).NotNull(); // throws ArgumentNullException if instance is null
 Ensure.Argument(nameof(str), str).IsNullOrEmpty(); // throws ArgumentException if str is null or empty
