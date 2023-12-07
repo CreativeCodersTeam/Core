@@ -20,11 +20,14 @@ Ensure.DirectoryExists(dirName); // throws ArgumentException if dirName not exis
 ### More complex argument checks for null, empty, etc.
 [Ensure.Argument Extensions](CreativeCoders.Core/EnsureArguments/Extensions)
 ```csharp
+// Argument name can be given via second parameter or via nameof. If none is given, the name of variable is used.
+// you can chain the checks to ensure multiple conditions at once
 Ensure.Argument(instance).NotNull(); // throws ArgumentNullException if instance is null
-Ensure.Argument(nameof(str), str).IsNullOrEmpty(); // throws ArgumentException if str is null or empty
-Ensure.Argument(nameof(items), items).IsNullOrEmpty(); // throws ArgumentException if items is null or empty
-Ensure.Argument(nameof(fileName), fileName).FileExists(); // throws ArgumentException if fileName not exists
-Ensure.Argument(nameof(dirName), dirName).DirectoryExists(); // throws ArgumentException if dirName not exists
+Ensure.Argument(text).IsNullOrEmpty(); // throws ArgumentException if str is null or empty
+Ensure.Argument(items).IsNullOrEmpty(); // throws ArgumentException if items is null or empty
+Ensure.Argument(fileName).FileExists(); // throws ArgumentException if fileName not exists
+Ensure.Argument(dirName).DirectoryExists(); // throws ArgumentException if dirName not exists
+Ensure.Argument(text).NotNull().HasMaxLength(maxLength); // throws if text is null or exceeds max length
 ```
 
 ## Threading

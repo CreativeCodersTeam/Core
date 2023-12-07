@@ -56,4 +56,37 @@ public class StringArgumentExtensionsTests
             .And
             .BeOfType<ArgumentNotNull<string>>();
     }
+
+    [Theory]
+    [InlineData("test", 5)]
+    [InlineData("test", 6)]
+    [InlineData("test1234qwertz", 20)]
+    public void HasMinLength_NotNullStringIsToShort_ThrowsException(string text, uint minLength)
+    {
+        // Act
+        var act = () => Ensure.Argument(text).NotNull().HasMinLength(minLength);
+
+        // Assert
+        act
+            .Should()
+            .Throw<ArgumentException>();
+    }
+
+    [Theory]
+    [InlineData("test", 4)]
+    [InlineData("test", 3)]
+    [InlineData("test1234qwertz", 14)]
+    [InlineData("test1234qwertz", 1)]
+    public void HasMinLength_NotNullStringIsLonger_ReturnsArgumentNotNull(string text, uint minLength)
+    {
+        // Act
+        var argument = Ensure.Argument(text).NotNull().HasMinLength(minLength);
+
+        // Assert
+        argument
+            .Should()
+            .NotBeNull()
+            .And
+            .BeOfType<ArgumentNotNull<string>>();
+    }
 }
