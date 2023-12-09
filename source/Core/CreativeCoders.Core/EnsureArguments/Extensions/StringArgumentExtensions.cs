@@ -31,4 +31,30 @@ public static class StringArgumentExtensions
 
         return ref argument;
     }
+
+    public static ArgumentNotNull<string> HasMaxLength(this Argument<string> argument, uint maxLength,
+        string? message = null)
+    {
+        if (argument.Value is null)
+        {
+            ExceptionThrower.ThrowArgumentNullException(argument.Name, message);
+        }
+
+        if (argument.Value.Length > maxLength)
+        {
+            throw new ArgumentException(message ?? $"Argument '{argument.Name}' has exceeded the maximum length of {maxLength}", argument.Name);
+        }
+
+        return new ArgumentNotNull<string>(argument.Value, argument.Name);
+    }
+
+    public static ref readonly ArgumentNotNull<string> HasMaxLength(this in ArgumentNotNull<string> argument, uint maxLength, string? message = null)
+    {
+        if (argument.Value.Length > maxLength)
+        {
+            throw new ArgumentException(message ?? $"Argument '{argument.Name}' has exceeded the maximum length of {maxLength}", argument.Name);
+        }
+
+        return ref argument;
+    }
 }
