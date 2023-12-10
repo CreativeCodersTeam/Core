@@ -36,6 +36,27 @@ Thread-safe collections, synchronization primitives
 ## Enums
 Enum extensions and helpers
 
+```csharp
+enum MyEnum
+{
+    [EnumStringValue("Value1")]
+    ValueOne,
+    [EnumStringValue("Value2")]
+    ValueTwo
+}
+
+// Instantiate a new EnumStringConverter
+var enumConverter = new EnumStringConverter();
+
+// Convert enum to string
+string enumString = enumConverter.Convert(MyEnum.ValueOne); 
+Console.WriteLine(enumString); // Outputs: Value1
+
+// Convert string to enum
+MyEnum enumValue = enumConverter.Convert<MyEnum>("Value2");
+Console.WriteLine(enumValue); // Outputs: ValueTwo
+```
+
 ## Visitor pattern
 Visitor pattern implementation
 
@@ -56,6 +77,42 @@ Classes for building and resolving dependency trees
 
 ## SysEnvironment
 Abstraction for Environment class to enable mocking for unit tests
+
+#### Use static methods from Env
+```csharp
+string desktopPath = Env.GetFolderPath(Environment.SpecialFolder.Desktop);
+```
+
+#### Use IEnvironment via DI
+```csharp
+// First register service
+services.AddEnvironment();
+
+// Sample app
+public class MyApp
+{
+    private readonly IEnvironment _environment;
+
+    public MyApp(IEnvironment environment)
+    {
+        _environment = environment;
+    }
+
+    public void Run()
+    {
+        // Use the IEnvironment instance
+        Console.WriteLine("Current Directory: " + _environment.CurrentDirectory);
+        Console.WriteLine("Machine Name: " + _environment.MachineName);
+        Console.WriteLine("User Name: " + _environment.UserName);
+
+        Console.WriteLine("Environment Variables:");
+        foreach (var envVar in _environment.GetEnvironmentVariables())
+        {
+            Console.WriteLine($"Key: {envVar.Key}, Value: {envVar.Value}");
+        }
+    }
+}
+```
 
 ## Null objects
 Null objects for various types
