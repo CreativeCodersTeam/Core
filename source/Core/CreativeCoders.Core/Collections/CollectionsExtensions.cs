@@ -94,7 +94,18 @@ public static class CollectionsExtensions
     {
         return items.TryGetCollectionCount(out var count)
             ? count == 0
-            : !items.GetEnumerator().MoveNext();
+            : !MoveNext();
+
+        bool MoveNext()
+        {
+            var enumerator = items.GetEnumerator();
+
+            var result = enumerator.MoveNext();
+
+            (enumerator as IDisposable)?.Dispose();
+
+            return result;
+        }
     }
 
     ///-------------------------------------------------------------------------------------------------

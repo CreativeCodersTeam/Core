@@ -16,10 +16,13 @@ public static class EnumerableArgumentExtensions
             ExceptionThrower.ThrowArgumentNullException(argument.Name, message);
         }
 
-        if (!argument.Value.GetEnumerator().MoveNext())
+        var enumerator = argument.Value.GetEnumerator();
+        if (!enumerator.MoveNext())
         {
             throw new ArgumentException(message ?? "Argument is empty", argument.Name);
         }
+
+        (enumerator as IDisposable)?.Dispose();
 
         return new ArgumentNotNull<T>(argument.Value, argument.Name);
     }
