@@ -17,6 +17,7 @@ Ensure.FileExists(fileName); // throws ArgumentException if fileName not exists
 Ensure.DirectoryExists(dirName); // throws ArgumentException if dirName not exists
 // for more checks see Ensure.cs
 ```
+
 ### More complex argument checks for null, empty, etc.
 [Ensure.Argument Extensions](CreativeCoders.Core/EnsureArguments/Extensions)
 ```csharp
