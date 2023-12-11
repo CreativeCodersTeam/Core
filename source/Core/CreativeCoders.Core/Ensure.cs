@@ -32,7 +32,7 @@ public static class Ensure
     [ContractAnnotation("value: null => halt; value: notnull => notnull")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [return: System.Diagnostics.CodeAnalysis.NotNull]
-    public static T NotNull<T>([System.Diagnostics.CodeAnalysis.NotNull] T? value,
+    public static T NotNull<T>([System.Diagnostics.CodeAnalysis.NotNull][NoEnumeration] T? value,
         [CallerArgumentExpression("value")] string paramName = "[unknown]")
     {
         if (value is null)
@@ -45,7 +45,7 @@ public static class Ensure
 
     [ContractAnnotation("value: null => halt")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void IsNotNull([System.Diagnostics.CodeAnalysis.NotNull] object? value,
+    public static void IsNotNull([System.Diagnostics.CodeAnalysis.NotNull][NoEnumeration] object? value,
         [CallerArgumentExpression("value")] string paramName = "[unknown]")
     {
         if (value is null)
@@ -64,7 +64,8 @@ public static class Ensure
     ///-------------------------------------------------------------------------------------------------
     [ContractAnnotation("halt <= value: null")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void IsNotNull<T>(object? value, Func<T> createException) where T : Exception
+    public static void IsNotNull<T>([System.Diagnostics.CodeAnalysis.NotNull][NoEnumeration] object? value,
+        Func<T> createException) where T : Exception
     {
         if (value == null)
         {

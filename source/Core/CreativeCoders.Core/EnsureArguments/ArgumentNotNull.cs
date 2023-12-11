@@ -16,7 +16,7 @@ namespace CreativeCoders.Core;
 [PublicAPI]
 public readonly struct ArgumentNotNull<T>
 {
-    internal ArgumentNotNull(T value,
+    public ArgumentNotNull(T value,
         [CallerArgumentExpression("value")] string name = "[unknown]")
     {
         if (value is null)
