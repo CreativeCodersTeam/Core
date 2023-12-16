@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using CreativeCoders.AspNetCore.TokenAuth;
@@ -9,30 +12,25 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CreativeCoders.AspNetCore.Jwt;
 
-public class JwtTokenHandler : ITokenHandler
+public class JwtTokenCreator : ITokenCreator
 {
     private readonly ISymSecurityKeyConfig _symSecurityKeyConfig;
 
-    public JwtTokenHandler(ISymSecurityKeyConfig symSecurityKeyConfig)
+    public JwtTokenCreator(ISymSecurityKeyConfig symSecurityKeyConfig)
     {
         _symSecurityKeyConfig = Ensure.NotNull(symSecurityKeyConfig);
     }
 
-    public Task<string> CreateTokenAsync(TokenRequest request)
+    public Task<string> CreateTokenAsync(string issuer, string userName, IEnumerable<Claim> claims)
     {
-        Ensure.NotNull(request.UserName);
-
-        var claims = new[]
-        {
-            new Claim(ClaimTypes.Name, request.UserName)
-        };
+        Ensure.NotNull(userName);
 
         var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_symSecurityKeyConfig.SecurityKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            request.Domain,
-            request.Domain,
+            issuer,
+            "",
             claims,
             expires: DateTime.Now.AddMinutes(30),
             signingCredentials: credentials);

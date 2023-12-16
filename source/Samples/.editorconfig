@@ -1,2 +1,0 @@
-﻿[*.{cs,vb}]
-configure_await_analysis_mode = disabled

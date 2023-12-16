@@ -1,8 +1,10 @@
 ﻿using System.Text;
+using System.Threading.Tasks;
 using CreativeCoders.AspNetCore.TokenAuth;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CreativeCoders.AspNetCore.Jwt;
@@ -10,14 +12,16 @@ namespace CreativeCoders.AspNetCore.Jwt;
 [PublicAPI]
 public static class JwtServicesRegistrationExtensions
 {
-    public static IServiceCollection AddJwtSupport<TUserAuthProvider>(
-        this IServiceCollection serviceCollection, string symSecurityKey)
+    public static IServiceCollection AddJwtSupport<TUserAuthProvider, TUserClaimsProvider>(
+        this IServiceCollection services, string symSecurityKey)
         where TUserAuthProvider : class, IUserAuthProvider
+        where TUserClaimsProvider: class, IUserClaimsProvider
     {
-        serviceCollection
+        services
             .AddScoped<IUserAuthProvider, TUserAuthProvider>()
+            .AddScoped<IUserClaimsProvider, TUserClaimsProvider>()
             .AddSingleton<ISymSecurityKeyConfig>(_ => new SymSecurityKeyConfig(symSecurityKey))
-            .AddSingleton<ITokenHandler, JwtTokenHandler>()
+            .AddSingleton<ITokenCreator, JwtTokenCreator>()
             .AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -36,17 +40,27 @@ public static class JwtServicesRegistrationExtensions
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+
+                // x.Events = new JwtBearerEvents
+                // {
+                //     OnMessageReceived = context =>
+                //     {
+                //         context.Token = context.Request.Cookies["jwt"];
+                //         return Task.CompletedTask;
+                //     }
+                // };
             });
 
-        return serviceCollection;
+        return services;
     }
 
-    public static IMvcBuilder AddJwtSupport<TUserAuthProvider>(this IMvcBuilder builder,
+    public static IMvcBuilder AddJwtSupport<TUserAuthProvider, TUserClaimsProvider>(this IMvcBuilder builder,
         string symSecurityKey)
         where TUserAuthProvider : class, IUserAuthProvider
+        where TUserClaimsProvider : class, IUserClaimsProvider
     {
         builder.Services
-            .AddJwtSupport<TUserAuthProvider>(symSecurityKey);
+            .AddJwtSupport<TUserAuthProvider, TUserClaimsProvider>(symSecurityKey);
 
         return builder;
     }

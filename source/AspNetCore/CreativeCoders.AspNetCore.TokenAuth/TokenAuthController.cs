@@ -5,39 +5,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CreativeCoders.AspNetCore.TokenAuth;
 
-[Route("auth/[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class TokenAuthController : ControllerBase
 {
-    private readonly IUserAuthProvider _userAuthProvider;
+    private readonly ITokenAuthHandler _tokenAuthHandler;
 
-    private readonly ITokenHandler _tokenHandler;
-
-    public TokenAuthController(IUserAuthProvider userAuthProvider, ITokenHandler tokenHandler)
+    public TokenAuthController(ITokenAuthHandler tokenAuthHandler)
     {
-        _userAuthProvider = Ensure.NotNull(userAuthProvider);
-        _tokenHandler = Ensure.NotNull(tokenHandler);
+        _tokenAuthHandler = Ensure.NotNull(tokenAuthHandler);
     }
 
     [AllowAnonymous]
-    [HttpPost("request-token")]
-    public async Task<IActionResult> RequestTokenAsync([FromBody] TokenRequest request)
+    [HttpPost("login")]
+    public Task<IActionResult> LoginAsync([FromBody] LoginRequest loginRequest)
     {
-        if (request.UserName == null || request.Password == null)
-        {
-            return BadRequest("Invalid credentials");
-        }
+        return _tokenAuthHandler.LoginAsync(loginRequest, Response);
+    }
 
-        if (!await _userAuthProvider.CheckUserAsync(request.UserName, request.Password, request.Domain).ConfigureAwait(false))
-        {
-            return BadRequest("Could not verify username and password");
-        }
-
-        var jwt = await _tokenHandler.CreateTokenAsync(request).ConfigureAwait(false);
-
-        return Ok(new
-        {
-            authToken = jwt
-        });
+    [HttpPost("refresh-token")]
+    public Task<IActionResult> RefreshTokenAsync()
+    {
+        return _tokenAuthHandler.RefreshTokenAsync();
     }
 }

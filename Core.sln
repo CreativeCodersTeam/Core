@@ -97,7 +97,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NukeBuild", "NukeBuild", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.NukeBuild", "source\NukeBuild\CreativeCoders.NukeBuild\CreativeCoders.NukeBuild.csproj", "{4687771E-6F0E-40C8-8C0A-DEDC20260604}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{72E179CA-7AE6-412A-856D-7BD13838E8E3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{72E179CA-7AE6-412A-856D-7BD13838E8E3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Mvvm.Ribbon.FluentRibbon", "source\Mvvm\CreativeCoders.Mvvm.Ribbon.FluentRibbon\CreativeCoders.Mvvm.Ribbon.FluentRibbon.csproj", "{3F7DDD23-5DED-4008-B637-F618DE9AD1F1}"
 EndProject
@@ -118,11 +118,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__global", "__global", "{92
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RibbonSampleApp", "source\Samples\RibbonSampleApp\RibbonSampleApp.csproj", "{5424651E-ACDD-4C7F-BE70-819A89308152}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RibbonSampleApp", "samples\RibbonSampleApp\RibbonSampleApp.csproj", "{5424651E-ACDD-4C7F-BE70-819A89308152}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkeletorSampleApp", "source\Samples\SkeletorSampleApp\SkeletorSampleApp.csproj", "{84500D7A-8C0E-4A55-B1CA-AB67D159F8C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkeletorSampleApp", "samples\SkeletorSampleApp\SkeletorSampleApp.csproj", "{84500D7A-8C0E-4A55-B1CA-AB67D159F8C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XmlRpcSampleApp", "source\Samples\XmlRpcSampleApp\XmlRpcSampleApp.csproj", "{61B4DBCC-2F85-4F8F-9DF9-E5A4EC17334B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XmlRpcSampleApp", "samples\XmlRpcSampleApp\XmlRpcSampleApp.csproj", "{61B4DBCC-2F85-4F8F-9DF9-E5A4EC17334B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Messaging", "Messaging", "{7B596434-1314-49F9-B31C-F09D9CC288E0}"
 EndProject
@@ -130,25 +130,25 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Messaging.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Messaging.DefaultMediator", "source\Messaging\CreativeCoders.Messaging.DefaultMediator\CreativeCoders.Messaging.DefaultMediator.csproj", "{8B8FA74D-FF25-42E0-9191-7C2E4112B714}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagingSampleApp", "source\Samples\MessagingSampleApp\MessagingSampleApp.csproj", "{9943E5E7-1FB9-4BF5-899A-034B008E13C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagingSampleApp", "samples\MessagingSampleApp\MessagingSampleApp.csproj", "{9943E5E7-1FB9-4BF5-899A-034B008E13C8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Messaging.DefaultMessageQueue", "source\Messaging\CreativeCoders.Messaging.DefaultMessageQueue\CreativeCoders.Messaging.DefaultMessageQueue.csproj", "{BF7FE66B-6631-4530-A02E-90C8166F155B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetSampleApp", "source\Samples\NetSampleApp\NetSampleApp.csproj", "{BA8F9211-0427-4A3C-8F86-124B7CE4AECA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetSampleApp", "samples\NetSampleApp\NetSampleApp.csproj", "{BA8F9211-0427-4A3C-8F86-124B7CE4AECA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Scripting.Base", "source\Scripting\CreativeCoders.Scripting.Base\CreativeCoders.Scripting.Base.csproj", "{B025B02B-B0A0-4467-A3B2-786D32622DD3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Scripting.CSharp", "source\Scripting\CreativeCoders.Scripting.CSharp\CreativeCoders.Scripting.CSharp.csproj", "{7E7EBA16-07F8-4F04-A0E0-803F6222FF98}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsServiceDaemonSampleApp", "source\Samples\WindowsServiceDaemonSampleApp\WindowsServiceDaemonSampleApp.csproj", "{B4AF92DA-D4F4-45AF-BC8D-C45DE6348BE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsServiceDaemonSampleApp", "samples\WindowsServiceDaemonSampleApp\WindowsServiceDaemonSampleApp.csproj", "{B4AF92DA-D4F4-45AF-BC8D-C45DE6348BE5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWebAssemblySampleApp", "source\Samples\BlazorWebAssemblySampleApp\BlazorWebAssemblySampleApp.csproj", "{AA55240A-F447-43F8-9E0E-1B2D29C2C918}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWebAssemblySampleApp", "samples\BlazorWebAssemblySampleApp\BlazorWebAssemblySampleApp.csproj", "{AA55240A-F447-43F8-9E0E-1B2D29C2C918}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.AspNetCore.Blazor", "source\AspNetCore\CreativeCoders.AspNetCore.Blazor\CreativeCoders.AspNetCore.Blazor.csproj", "{3D6B25D4-1358-4043-9B94-0E9EB27DF9C5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsSampleApp", "source\Samples\WindowsSampleApp\WindowsSampleApp.csproj", "{4F0D9652-96FB-4BD2-B40A-CED6EE2EB507}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsSampleApp", "samples\WindowsSampleApp\WindowsSampleApp.csproj", "{4F0D9652-96FB-4BD2-B40A-CED6EE2EB507}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiSampleApp", "source\Samples\WebApiSampleApp\WebApiSampleApp.csproj", "{2B60142B-B9D6-4843-A8DB-DF148B2B5670}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiSampleApp", "samples\WebApiSampleApp\WebApiSampleApp.csproj", "{2B60142B-B9D6-4843-A8DB-DF148B2B5670}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Mvvm.DialogServices.TaskDialog", "source\Mvvm\CreativeCoders.Mvvm.DialogServices.TaskDialog\CreativeCoders.Mvvm.DialogServices.TaskDialog.csproj", "{F458B646-D28E-41FD-ACB1-15FB267C4CD2}"
 EndProject

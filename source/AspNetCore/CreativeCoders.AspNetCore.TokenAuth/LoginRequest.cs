@@ -3,7 +3,7 @@
 namespace CreativeCoders.AspNetCore.TokenAuth;
 
 [PublicAPI]
-public class TokenRequest
+public class LoginRequest
 {
     public string? UserName { get; set; }
 
