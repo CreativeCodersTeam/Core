@@ -1,0 +1,34 @@
+﻿<fluent:RibbonWindow x:Class="RibbonSampleApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fluent="urn:fluent-ribbon"
+        xmlns:ribbonSampleApp="clr-namespace:RibbonSampleApp"
+        xmlns:wpf="clr-namespace:CreativeCoders.Mvvm.Wpf;assembly=CreativeCoders.Mvvm.Wpf"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        d:DataContext="{d:DesignInstance ribbonSampleApp:MainWindow}">
+    
+    <Window.Resources>
+        <ResourceDictionary Source="pack://application:,,,/CreativeCoders.Mvvm.Ribbon.FluentRibbon;Component/FluentRibbonResources.xaml"></ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <fluent:Ribbon Grid.Row="0">
+            <fluent:RibbonTabItem wpf:ElementProperties.ObjectLink="{Binding Path=FirstTab}">
+            </fluent:RibbonTabItem>
+        </fluent:Ribbon>
+        
+        <StackPanel Grid.Row="1">
+            <Button Click="ChangeTab_OnClick">Change Tab</Button>
+            <Button Click="AddTab_OnClick">Add Tab</Button>
+        </StackPanel>
+    </Grid>
+    
+</fluent:RibbonWindow>

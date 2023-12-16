@@ -1,0 +1,23 @@
+﻿@using System.Linq.Expressions
+<h3>PropertyEditor</h3>
+
+<EditForm Model="this">
+    <input class="form-text" type="text" value="@EditorValue" @oninput="@(OnValueChanged)"/>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public string EditorValue { get; set; }
+
+    [Parameter]
+    public EventCallback<string> EditorValueChanged { get; set; }
+
+    private async Task OnValueChanged(ChangeEventArgs e)
+    {
+        EditorValue = e.Value?.ToString();
+        await EditorValueChanged.InvokeAsync(EditorValue);
+        Console.WriteLine("Value changed to " + EditorValue);
+    }
+
+}

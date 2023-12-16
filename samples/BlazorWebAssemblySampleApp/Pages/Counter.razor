@@ -1,0 +1,48 @@
+﻿@page "/counter"
+@using System.Threading
+@using System.Diagnostics.CodeAnalysis
+
+<h1>Counter</h1>
+
+<p>Current count: @_currentCount</p>
+
+<Button ElementType="@(ButtonElementType.Div)" Clicked="@(_ => IncrementCount())" class="btn-primary">Click me</Button>
+
+<EditForm Model="this">
+    <InputText class="form-text" @bind-value="TestText" ValueExpression="() => TestText"></InputText>
+
+    @*<InputText @bind-Value="TestText" @bind-Value:event=""></InputText>*@
+
+    <input type="text" class="form-text" @bind-value="TestText" @bind-value:event="oninput"/>
+</EditForm>
+
+
+@code {
+    private string TestText { get; set; } = "TestText";
+
+    private int _currentCount;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        Console.WriteLine("Rendered");
+    }
+
+    [SuppressMessage("ReSharper", "AsyncVoidLambda")]
+    private void IncrementCount()
+    {
+        ThreadPool.QueueUserWorkItem(async _ =>
+        {
+            Console.WriteLine($"Thread in Task: {Thread.CurrentThread.ManagedThreadId}");
+            await Task.Delay(4000);
+            _currentCount += _currentCount;
+            await InvokeAsync(StateHasChanged);
+        });
+
+        Console.WriteLine($"Thread in Event: {Thread.CurrentThread.ManagedThreadId}");
+
+        _currentCount++;
+        StateHasChanged();
+    }
+
+}

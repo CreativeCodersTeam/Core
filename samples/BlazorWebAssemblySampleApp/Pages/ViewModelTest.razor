@@ -1,0 +1,29 @@
+﻿@page "/viewmodeltest"
+@using BlazorWebAssemblySampleApp.ViewModels
+@inject TestViewModel ViewModel
+
+<h3>ViewModelTest</h3>
+
+<ViewModelArea TViewModel="TestViewModel" ViewModel="@ViewModel">
+
+    <PropertyEditor @bind-EditorValue="@ViewModel.Text"></PropertyEditor>
+
+    @*<EditForm Model="this">
+        <input class="form-text" type="text" @bind-value="@ViewModel.Text" @bind-value:event="oninput" />
+    </EditForm>*@
+
+</ViewModelArea>
+
+<ViewModelArea TViewModel="TestViewModel" ViewModel="@ViewModel">
+
+    <PropertyEditor @bind-EditorValue="@ViewModel.Text"></PropertyEditor>
+
+    @*<EditForm Model="this">
+            <input class="form-text" type="text" @bind-value="@ViewModel.Text" @bind-value:event="oninput" />
+        </EditForm>*@
+
+</ViewModelArea>
+
+@code {
+
+}
