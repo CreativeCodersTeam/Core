@@ -13,8 +13,4 @@
 		<ProjectReference Include="..\..\source\Mvvm\CreativeCoders.Mvvm\CreativeCoders.Mvvm.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="SimpleInjector" Version="5.4.1" />
-	</ItemGroup>
-
 </Project>
