@@ -1,6 +1,6 @@
 ﻿using CreativeCoders.Core;
 
-namespace CreativeCoders.AspNetCore.Jwt;
+namespace CreativeCoders.AspNetCore.TokenAuth.Jwt;
 
 public class SymSecurityKeyConfig : ISymSecurityKeyConfig
 {

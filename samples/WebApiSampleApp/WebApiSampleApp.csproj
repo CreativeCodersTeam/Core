@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.Jwt\CreativeCoders.AspNetCore.Jwt.csproj" />
+      <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.TokenAuth.Jwt\CreativeCoders.AspNetCore.TokenAuth.Jwt.csproj" />
       <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.TokenAuth\CreativeCoders.AspNetCore.TokenAuth.csproj" />
     </ItemGroup>
 

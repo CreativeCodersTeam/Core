@@ -1,4 +1,4 @@
-﻿namespace CreativeCoders.AspNetCore.Jwt;
+﻿namespace CreativeCoders.AspNetCore.TokenAuth.Jwt;
 
 public interface ISymSecurityKeyConfig
 {

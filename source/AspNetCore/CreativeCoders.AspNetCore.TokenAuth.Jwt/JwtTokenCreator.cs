@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using CreativeCoders.AspNetCore.TokenAuth;
+using CreativeCoders.AspNetCore.TokenAuth.Abstractions;
 using CreativeCoders.Core;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CreativeCoders.AspNetCore.Jwt;
+namespace CreativeCoders.AspNetCore.TokenAuth.Jwt;
 
 public class JwtTokenCreator : ITokenCreator
 {

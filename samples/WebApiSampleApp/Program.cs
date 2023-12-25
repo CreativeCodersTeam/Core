@@ -1,6 +1,7 @@
 using System.Security.Claims;
-using CreativeCoders.AspNetCore.Jwt;
 using CreativeCoders.AspNetCore.TokenAuth;
+using CreativeCoders.AspNetCore.TokenAuth.Abstractions;
+using CreativeCoders.AspNetCore.TokenAuth.Jwt;
 using CreativeCoders.Core.Text;
 using JetBrains.Annotations;
 
@@ -14,11 +15,11 @@ public class Program
 
         // Add services to the container.
 
-        builder.Services.AddControllers().AddTokenAuthController();
+        builder.Services.AddControllers().AddTokenAuthApiController();
 
-        builder.Services.AddTokenAuth(x =>
+        builder.Services.AddJwtTokenAuthApi(x =>
         {
-            x.UseCookies = true;
+            //x.UseCookies = true;
         });
         builder.Services.AddJwtSupport<DefaultUserAuthProvider, DefaultUserClaimsProvider>(RandomString.Create());
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -48,7 +49,7 @@ public class Program
 [UsedImplicitly]
 public class DefaultUserAuthProvider : IUserAuthProvider
 {
-    public Task<bool> CheckUserAsync(string userName, string password, string domain)
+    public Task<bool> AuthenticateAsync(string userName, string password, string domain)
     {
         return Task.FromResult(true);
     }
@@ -57,7 +58,7 @@ public class DefaultUserAuthProvider : IUserAuthProvider
 [UsedImplicitly]
 public class DefaultUserClaimsProvider : IUserClaimsProvider
 {
-    public Task<IEnumerable<Claim>> GetUserClaimsAsync(string userName)
+    public Task<IEnumerable<Claim>> GetUserClaimsAsync(string userName, string? domain)
     {
         return Task.FromResult(new[]
         {

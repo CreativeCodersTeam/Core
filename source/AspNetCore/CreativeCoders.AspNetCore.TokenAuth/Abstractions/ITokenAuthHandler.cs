@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
+using CreativeCoders.AspNetCore.TokenAuth.Api;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CreativeCoders.AspNetCore.TokenAuth;
+namespace CreativeCoders.AspNetCore.TokenAuth.Abstractions;
 
 public interface ITokenAuthHandler
 {

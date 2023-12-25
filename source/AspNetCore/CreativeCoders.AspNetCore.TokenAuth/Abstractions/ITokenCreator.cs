@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace CreativeCoders.AspNetCore.TokenAuth;
+namespace CreativeCoders.AspNetCore.TokenAuth.Abstractions;
 
 public interface ITokenCreator
 {

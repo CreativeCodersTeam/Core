@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using CreativeCoders.AspNetCore.TokenAuth.Abstractions;
+using CreativeCoders.AspNetCore.TokenAuth.Api;
 using CreativeCoders.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +36,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
             return new BadRequestObjectResult(new { error = "Invalid credentials" });
         }
 
-        if (!await _userAuthProvider.CheckUserAsync(loginRequest.UserName,
+        if (!await _userAuthProvider.AuthenticateAsync(loginRequest.UserName,
                     loginRequest.Password,
                     loginRequest.Domain)
                 .ConfigureAwait(false))
@@ -45,7 +48,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
                 });
         }
 
-        var claims = await _userClaimsProvider.GetUserClaimsAsync(loginRequest.UserName)
+        var claims = await _userClaimsProvider.GetUserClaimsAsync(loginRequest.UserName, loginRequest.Domain)
             .ConfigureAwait(false);
 
         // TODO make issuer configurable
@@ -54,7 +57,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
 
         if (_options.UseCookies)
         {
-            httpResponse.Cookies.Append("jwt", token, new CookieOptions
+            httpResponse.Cookies.Append(_options.AuthTokenName, token, new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
@@ -63,10 +66,9 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
                 //Path =
             });
         }
-
-        if (!_options.UseCookies)
+        else
         {
-            return new OkObjectResult(new { jwt = token });
+            return new OkObjectResult(new Dictionary<string, string>(){{_options.AuthTokenName, token}});
         }
 
         return new OkResult();

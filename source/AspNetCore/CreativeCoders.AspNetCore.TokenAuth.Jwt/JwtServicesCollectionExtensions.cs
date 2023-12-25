@@ -1,16 +1,14 @@
 ﻿using System.Text;
-using System.Threading.Tasks;
-using CreativeCoders.AspNetCore.TokenAuth;
+using CreativeCoders.AspNetCore.TokenAuth.Abstractions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CreativeCoders.AspNetCore.Jwt;
+namespace CreativeCoders.AspNetCore.TokenAuth.Jwt;
 
 [PublicAPI]
-public static class JwtServicesRegistrationExtensions
+public static class JwtServicesCollectionExtensions
 {
     public static IServiceCollection AddJwtSupport<TUserAuthProvider, TUserClaimsProvider>(
         this IServiceCollection services, string symSecurityKey)
@@ -21,7 +19,6 @@ public static class JwtServicesRegistrationExtensions
             .AddScoped<IUserAuthProvider, TUserAuthProvider>()
             .AddScoped<IUserClaimsProvider, TUserClaimsProvider>()
             .AddSingleton<ISymSecurityKeyConfig>(_ => new SymSecurityKeyConfig(symSecurityKey))
-            .AddSingleton<ITokenCreator, JwtTokenCreator>()
             .AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -29,7 +26,6 @@ public static class JwtServicesRegistrationExtensions
             })
             .AddJwtBearer(x =>
             {
-                x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
