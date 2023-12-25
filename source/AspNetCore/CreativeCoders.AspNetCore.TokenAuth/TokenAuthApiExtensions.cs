@@ -10,9 +10,9 @@ using Microsoft.Extensions.Options;
 namespace CreativeCoders.AspNetCore.TokenAuth;
 
 [PublicAPI]
-public static class TokenAuthServiceCollectionExtensions
+public static class TokenAuthApiExtensions
 {
-    public static void AddTokenAuthApi(this IServiceCollection services, Action<TokenAuthOptions> configureOptions)
+    public static TokenAuthApiBuilder AddTokenAuthApi(this IServiceCollection services)
     {
         Ensure.NotNull(services);
 
@@ -20,19 +20,23 @@ public static class TokenAuthServiceCollectionExtensions
 
         services.TryAddScoped<ITokenAuthHandler, DefaultTokenAuthHandler>();
 
-        services.Configure(configureOptions);
+        return new TokenAuthApiBuilder(services);
     }
 
-    public static void AddTokenAuthApi<TConfig>(this IServiceCollection services)
+    public static TokenAuthApiBuilder ConfigureOptions(this TokenAuthApiBuilder tokenAuthApiBuilder,
+        Action<TokenAuthOptions> configureOptions)
+    {
+        tokenAuthApiBuilder.Services.Configure(configureOptions);
+
+        return tokenAuthApiBuilder;
+    }
+
+    public static TokenAuthApiBuilder ConfigureOptions<TConfig>(this TokenAuthApiBuilder tokenAuthApiBuilder)
         where TConfig : class, IConfigureOptions<TokenAuthOptions>
     {
-        Ensure.NotNull(services);
+        tokenAuthApiBuilder.Services.TryAddTransient<IConfigureOptions<TokenAuthOptions>, TConfig>();
 
-        services.AddOptions();
-
-        services.TryAddScoped<ITokenAuthHandler, DefaultTokenAuthHandler>();
-
-        services.TryAddTransient<IConfigureOptions<TokenAuthOptions>, TConfig>();
+        return tokenAuthApiBuilder;
     }
 
     public static IMvcBuilder AddTokenAuthApiController(this IMvcBuilder mvcBuilder)

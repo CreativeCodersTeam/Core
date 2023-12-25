@@ -1,11 +1,9 @@
 using System.Security.Claims;
-using System.Text;
 using CreativeCoders.AspNetCore.TokenAuth;
 using CreativeCoders.AspNetCore.TokenAuth.Abstractions;
 using CreativeCoders.AspNetCore.TokenAuth.Jwt;
 using CreativeCoders.Core.Text;
 using JetBrains.Annotations;
-using Microsoft.IdentityModel.Tokens;
 
 namespace WebApiSampleApp;
 
@@ -19,12 +17,15 @@ public class Program
 
         builder.Services.AddControllers().AddTokenAuthApiController();
 
-        builder.Services.AddJwtTokenAuthApi(x =>
-        {
-            //x.SecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(RandomString.Create()));
-            //x.UseCookies = true;
-        });
-        builder.Services.AddJwtSupport<DefaultUserAuthProvider, DefaultUserClaimsProvider>(RandomString.Create());
+        builder.Services
+            .AddJwtTokenAuthApi<DefaultUserAuthProvider, DefaultUserClaimsProvider>()
+            .ConfigureOptions(x =>
+            {
+                //x.SecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(RandomString.Create()));
+                x.UseCookies = true;
+            });
+
+        builder.Services.AddJwtTokenAuthentication(RandomString.Create());
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -52,7 +53,7 @@ public class Program
 [UsedImplicitly]
 public class DefaultUserAuthProvider : IUserAuthProvider
 {
-    public Task<bool> AuthenticateAsync(string userName, string password, string domain)
+    public Task<bool> AuthenticateAsync(string userName, string password, string? domain)
     {
         return Task.FromResult(true);
     }

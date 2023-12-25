@@ -1,8 +1,11 @@
 ﻿using System.Text;
 using CreativeCoders.AspNetCore.TokenAuth.Abstractions;
+using CreativeCoders.Core;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CreativeCoders.AspNetCore.TokenAuth.Jwt;
@@ -10,20 +13,17 @@ namespace CreativeCoders.AspNetCore.TokenAuth.Jwt;
 [PublicAPI]
 public static class JwtServicesCollectionExtensions
 {
-    public static IServiceCollection AddJwtSupport<TUserAuthProvider, TUserClaimsProvider>(
+    public static IServiceCollection AddJwtTokenAuthentication(
         this IServiceCollection services, string symSecurityKey)
-        where TUserAuthProvider : class, IUserAuthProvider
-        where TUserClaimsProvider: class, IUserClaimsProvider
     {
         services
-            .AddScoped<IUserAuthProvider, TUserAuthProvider>()
-            .AddScoped<IUserClaimsProvider, TUserClaimsProvider>()
             .AddSingleton<ISymSecurityKeyConfig>(_ => new SymSecurityKeyConfig(symSecurityKey))
             .AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
+            //.AddJwtBearer();
             .AddJwtBearer(x =>
             {
                 x.SaveToken = true;
@@ -47,17 +47,32 @@ public static class JwtServicesCollectionExtensions
                 // };
             });
 
+        services.TryAddTransient<IConfigureOptions<JwtBearerOptions>, JwtBearerConfiguration>();
+
         return services;
     }
+}
 
-    public static IMvcBuilder AddJwtSupport<TUserAuthProvider, TUserClaimsProvider>(this IMvcBuilder builder,
-        string symSecurityKey)
-        where TUserAuthProvider : class, IUserAuthProvider
-        where TUserClaimsProvider : class, IUserClaimsProvider
+public class JwtBearerConfiguration : IConfigureOptions<JwtBearerOptions>
+{
+    private readonly ISymSecurityKeyConfig _symSecurityKeyConfig;
+
+    public JwtBearerConfiguration(ISymSecurityKeyConfig symSecurityKeyConfig)
     {
-        builder.Services
-            .AddJwtSupport<TUserAuthProvider, TUserClaimsProvider>(symSecurityKey);
+        _symSecurityKeyConfig = Ensure.NotNull(symSecurityKeyConfig);
+    }
 
-        return builder;
+    public void Configure(JwtBearerOptions options)
+    {
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_symSecurityKeyConfig.SecurityKey)),
+            ValidIssuer = string.Empty,
+            ValidAudience = string.Empty,
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
     }
 }
