@@ -39,7 +39,7 @@ public class JsonRpcApiInterceptorTests
         // Act
         interceptor.Intercept(invocation);
 
-        var result = await ((Task<string>)invocation.ReturnValue).ConfigureAwait(false);
+        var result = await ((Task<string>)invocation.ReturnValue);
 
         // Assert
         result
@@ -74,7 +74,7 @@ public class JsonRpcApiInterceptorTests
         // Act
         interceptor.Intercept(invocation);
 
-        var rpcResponse = await ((Task<JsonRpcResponse<string>>)invocation.ReturnValue).ConfigureAwait(false);
+        var rpcResponse = await ((Task<JsonRpcResponse<string>>)invocation.ReturnValue);
 
         // Assert
         rpcResponse.Result
@@ -127,7 +127,7 @@ public class JsonRpcApiInterceptorTests
         // Act
         interceptor.Intercept(invocation);
 
-        var result = await ((Task<string>)invocation.ReturnValue).ConfigureAwait(false);
+        var result = await ((Task<string>)invocation.ReturnValue);
 
         // Assert
         result
@@ -162,7 +162,7 @@ public class JsonRpcApiInterceptorTests
         // Act
         interceptor.Intercept(invocation);
 
-        var result = await ((Task<string>)invocation.ReturnValue).ConfigureAwait(false);
+        var result = await ((Task<string>)invocation.ReturnValue);
 
         // Assert
         result

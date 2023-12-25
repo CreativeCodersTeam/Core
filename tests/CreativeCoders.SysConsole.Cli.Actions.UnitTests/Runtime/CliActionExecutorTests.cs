@@ -21,12 +21,12 @@ public class CliActionExecutorTests
         var context = CreateTestContext(nameof(ActionExecutorTestClass.ExecuteNull));
 
         // Act
-        var act = async () => await executor.ExecuteAsync(context).ConfigureAwait(false);
+        var act = async () => await executor.ExecuteAsync(context);
 
         // Assert
         await act
             .Should()
-            .ThrowAsync<ActionReturnValueNullException>().ConfigureAwait(false);
+            .ThrowAsync<ActionReturnValueNullException>();
     }
 
     [Fact]
@@ -39,12 +39,12 @@ public class CliActionExecutorTests
         var context = CreateTestContext(nameof(ActionExecutorTestClass.ExecuteInvalidReturnType));
 
         // Act
-        var act = async () => await executor.ExecuteAsync(context).ConfigureAwait(false);
+        var act = async () => await executor.ExecuteAsync(context);
 
         // Assert
         (await act
                 .Should()
-                .ThrowAsync<ActionReturnTypeNotSupportedException>().ConfigureAwait(false))
+                .ThrowAsync<ActionReturnTypeNotSupportedException>())
             .Which.ReturnType
             .Should()
             .Be<string>();
@@ -60,7 +60,7 @@ public class CliActionExecutorTests
         var context = CreateTestContext(nameof(ActionExecutorTestClass.ExecuteWithActionResultAsync));
 
         // Act
-        await executor.ExecuteAsync(context).ConfigureAwait(false);
+        await executor.ExecuteAsync(context);
 
         // Assert
         context.ReturnCode
@@ -78,7 +78,7 @@ public class CliActionExecutorTests
         var context = CreateTestContext(nameof(ActionExecutorTestClass.ExecuteWithIntAsync));
 
         // Act
-        await executor.ExecuteAsync(context).ConfigureAwait(false);
+        await executor.ExecuteAsync(context);
 
         // Assert
         context.ReturnCode
@@ -100,7 +100,7 @@ public class CliActionExecutorTests
         context.ReturnCode = expectedReturnCode;
 
         // Act
-        await executor.ExecuteAsync(context).ConfigureAwait(false);
+        await executor.ExecuteAsync(context);
 
         // Assert
         context.ReturnCode
@@ -118,7 +118,7 @@ public class CliActionExecutorTests
         var context = CreateTestContext(nameof(ActionExecutorTestClass.ExecuteWithInt));
 
         // Act
-        await executor.ExecuteAsync(context).ConfigureAwait(false);
+        await executor.ExecuteAsync(context);
 
         // Assert
         context.ReturnCode
@@ -136,7 +136,7 @@ public class CliActionExecutorTests
         var context = CreateTestContext(nameof(ActionExecutorTestClass.ExecuteWithActionResult));
 
         // Act
-        await executor.ExecuteAsync(context).ConfigureAwait(false);
+        await executor.ExecuteAsync(context);
 
         // Assert
         context.ReturnCode
@@ -158,7 +158,7 @@ public class CliActionExecutorTests
         context.ReturnCode = expectedReturnCode;
 
         // Act
-        await executor.ExecuteAsync(context).ConfigureAwait(false);
+        await executor.ExecuteAsync(context);
 
         // Assert
         context.ReturnCode

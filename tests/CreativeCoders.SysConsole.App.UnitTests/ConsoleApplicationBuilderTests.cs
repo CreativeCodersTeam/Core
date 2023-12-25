@@ -183,7 +183,7 @@ public class ConsoleApplicationBuilderTests
             .Build();
 
         // Act
-        var result = await consoleApp.RunAsync().ConfigureAwait(false);
+        var result = await consoleApp.RunAsync();
 
         // Assert
         result
@@ -203,7 +203,7 @@ public class ConsoleApplicationBuilderTests
             .Build();
 
         // Act
-        var result = await consoleApp.RunAsync().ConfigureAwait(false);
+        var result = await consoleApp.RunAsync();
 
         // Assert
         result
@@ -224,7 +224,7 @@ public class ConsoleApplicationBuilderTests
             .Build();
 
         // Act
-        var result = await consoleApp.RunAsync().ConfigureAwait(false);
+        var result = await consoleApp.RunAsync();
 
         // Assert
         result

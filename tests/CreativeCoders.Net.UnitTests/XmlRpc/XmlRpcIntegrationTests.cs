@@ -19,12 +19,12 @@ public class XmlRpcIntegrationTests
     {
         const string expectedText = "HelloWorld";
 
-        var (server, demoService, client) = await CreateXmlRpcServerAndClient().ConfigureAwait(false);
+        var (server, demoService, client) = await CreateXmlRpcServerAndClient();
 
         // Act
-        await client.DoSomethingAsync(expectedText).ConfigureAwait(false);
+        await client.DoSomethingAsync(expectedText);
 
-        await server.StopAsync().ConfigureAwait(false);
+        await server.StopAsync();
         server.Dispose();
 
         // Assert
@@ -40,12 +40,12 @@ public class XmlRpcIntegrationTests
         const string text = "abcd";
         const int index = 1234;
 
-        var (server, _, client) = await CreateXmlRpcServerAndClient().ConfigureAwait(false);
+        var (server, _, client) = await CreateXmlRpcServerAndClient();
 
         // Act
-        var actualText = await client.DoubleTextAsync(text, index).ConfigureAwait(false);
+        var actualText = await client.DoubleTextAsync(text, index);
 
-        await server.StopAsync().ConfigureAwait(false);
+        await server.StopAsync();
         server.Dispose();
 
         // Assert

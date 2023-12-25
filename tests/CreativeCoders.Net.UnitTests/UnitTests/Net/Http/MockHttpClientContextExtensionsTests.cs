@@ -27,7 +27,7 @@ public class MockHttpClientContextExtensionsTests
 
         var client = context.CreateClient();
 
-        var response = await client.GetStringAsync("http://test.com").ConfigureAwait(false);
+        var response = await client.GetStringAsync("http://test.com");
 
         Assert.Equal("TestData", response);
 
@@ -45,7 +45,7 @@ public class MockHttpClientContextExtensionsTests
 
         var client = context.CreateClient();
 
-        var response = await client.GetStringAsync("http://test1.com").ConfigureAwait(false);
+        var response = await client.GetStringAsync("http://test1.com");
 
         Assert.Equal("TestData", response);
 

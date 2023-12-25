@@ -34,7 +34,7 @@ public class JsonRpcApiBuilderTests
         // Act
         var api = apiBuilder.ForUrl(apiUrl).Build();
 
-        await api.TestMethod(argStringValue, argIntValue).ConfigureAwait(false);
+        await api.TestMethod(argStringValue, argIntValue);
 
         // Assert
         A

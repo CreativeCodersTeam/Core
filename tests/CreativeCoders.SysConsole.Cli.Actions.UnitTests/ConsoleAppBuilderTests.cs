@@ -22,7 +22,7 @@ public class ConsoleAppBuilderTests
             .Build();
 
         // Act
-        var result = await consoleApp.RunAsync().ConfigureAwait(false);
+        var result = await consoleApp.RunAsync();
 
         // Assert
         result
@@ -40,7 +40,7 @@ public class ConsoleAppBuilderTests
             .Build();
 
         // Act
-        var result = await consoleApp.RunAsync().ConfigureAwait(false);
+        var result = await consoleApp.RunAsync();
 
         // Assert
         result
@@ -58,12 +58,12 @@ public class ConsoleAppBuilderTests
             .Build();
 
         // Act
-        var act = async () => await consoleApp.ReThrowExceptions(true).RunAsync().ConfigureAwait(false);
+        var act = async () => await consoleApp.ReThrowExceptions(true).RunAsync();
 
         // Assert
         var exception = (await act
                 .Should()
-                .ThrowAsync<AmbiguousRouteException>().ConfigureAwait(false))
+                .ThrowAsync<AmbiguousRouteException>())
             .Which;
 
         exception.Arguments
@@ -103,7 +103,7 @@ public class ConsoleAppBuilderTests
             .Build();
 
         // Act
-        var result = await consoleApp.RunAsync().ConfigureAwait(false);
+        var result = await consoleApp.RunAsync();
 
         // Assert
         result
@@ -128,7 +128,7 @@ public class ConsoleAppBuilderTests
             .Build();
 
         // Act
-        var result = await consoleApp.RunAsync().ConfigureAwait(false);
+        var result = await consoleApp.RunAsync();
 
         // Assert
         result
@@ -151,7 +151,7 @@ public class ConsoleAppBuilderTests
             .Build();
 
         // Act
-        var result = await consoleApp.RunAsync().ConfigureAwait(false);
+        var result = await consoleApp.RunAsync();
 
         // Assert
         result

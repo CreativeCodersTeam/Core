@@ -49,7 +49,7 @@ public class JsonRpcClientTests
         var httpClient = httpContext.CreateClient();
         var jsonRpcClient = new JsonRpcClient(httpClient);
 
-        var response = await jsonRpcClient.ExecuteAsync<string>(url, methodName, arguments).ConfigureAwait(false);
+        var response = await jsonRpcClient.ExecuteAsync<string>(url, methodName, arguments);
 
         // Assert
         response.Result
@@ -84,8 +84,7 @@ public class JsonRpcClientTests
         await jsonRpcClient
             .Awaiting(x => x.ExecuteAsync<int>(url, methodName, arguments))
             .Should()
-            .ThrowAsync<InvalidOperationException>()
-            .ConfigureAwait(false);
+            .ThrowAsync<InvalidOperationException>();
     }
 
 
@@ -124,6 +123,6 @@ public class JsonRpcClientTests
         await jsonRpcClient
             .Awaiting(x => x.ExecuteAsync<string>(url, methodName, arguments))
             .Should()
-            .ThrowAsync<InvalidOperationException>().ConfigureAwait(false);
+            .ThrowAsync<InvalidOperationException>();
     }
 }
