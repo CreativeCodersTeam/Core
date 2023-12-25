@@ -1,4 +1,6 @@
-﻿namespace CreativeCoders.AspNetCore.TokenAuth;
+﻿using Microsoft.IdentityModel.Tokens;
+
+namespace CreativeCoders.AspNetCore.TokenAuth;
 
 public class TokenAuthOptions
 {

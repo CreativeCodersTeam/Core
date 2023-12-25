@@ -1,9 +1,11 @@
 using System.Security.Claims;
+using System.Text;
 using CreativeCoders.AspNetCore.TokenAuth;
 using CreativeCoders.AspNetCore.TokenAuth.Abstractions;
 using CreativeCoders.AspNetCore.TokenAuth.Jwt;
 using CreativeCoders.Core.Text;
 using JetBrains.Annotations;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WebApiSampleApp;
 
@@ -19,6 +21,7 @@ public class Program
 
         builder.Services.AddJwtTokenAuthApi(x =>
         {
+            //x.SecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(RandomString.Create()));
             //x.UseCookies = true;
         });
         builder.Services.AddJwtSupport<DefaultUserAuthProvider, DefaultUserClaimsProvider>(RandomString.Create());
