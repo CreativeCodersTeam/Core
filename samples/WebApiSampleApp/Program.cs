@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text;
+using CreativeCoders.AspNetCore.TokenAuth.Jwt;
 using CreativeCoders.AspNetCore.TokenAuthApi;
 using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 using CreativeCoders.AspNetCore.TokenAuthApi.Jwt;
@@ -28,12 +29,12 @@ public class Program
             });
 
         var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(RandomString.Create()));
-        builder.Services.Configure<JwtTokenAuthOptions>(x =>
+        builder.Services.Configure<JwtTokenAuthApiOptions>(x =>
         {
             x.SecurityKey = securityKey;
         });
 
-        builder.Services.AddJwtTokenAuthentication();
+        builder.Services.AddJwtTokenAuthentication(x => x.SecurityKey = securityKey);
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

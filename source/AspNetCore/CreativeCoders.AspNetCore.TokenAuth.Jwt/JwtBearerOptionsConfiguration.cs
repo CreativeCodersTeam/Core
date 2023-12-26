@@ -1,16 +1,17 @@
-﻿using System;
-using CreativeCoders.Core;
+﻿using CreativeCoders.Core;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CreativeCoders.AspNetCore.TokenAuthApi.Jwt;
+namespace CreativeCoders.AspNetCore.TokenAuth.Jwt;
 
+[UsedImplicitly]
 public class JwtBearerOptionsConfiguration : IConfigureNamedOptions<JwtBearerOptions>
 {
     private readonly SecurityKey? _securityKey;
 
-    public JwtBearerOptionsConfiguration(IOptions<JwtTokenAuthOptions> options)
+    public JwtBearerOptionsConfiguration(IOptions<JwtAuthenticationOptions> options)
     {
         _securityKey = Ensure.NotNull(options).Value.SecurityKey;
 

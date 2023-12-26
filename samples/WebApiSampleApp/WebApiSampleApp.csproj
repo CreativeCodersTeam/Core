@@ -12,9 +12,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.TokenAuth.Jwt\CreativeCoders.AspNetCore.TokenAuth.Jwt.csproj" />
       <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.TokenAuthApi.Jwt\CreativeCoders.AspNetCore.TokenAuthApi.Jwt.csproj" />
       <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.TokenAuthApi\CreativeCoders.AspNetCore.TokenAuthApi.csproj" />
-      <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.TokenAuth\CreativeCoders.AspNetCore.TokenAuth.csproj" />
     </ItemGroup>
 
 </Project>

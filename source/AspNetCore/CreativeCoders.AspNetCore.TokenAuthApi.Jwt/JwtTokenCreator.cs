@@ -14,7 +14,7 @@ public class JwtTokenCreator : ITokenCreator
 {
     private readonly SecurityKey? _securityKey;
 
-    public JwtTokenCreator(IOptions<JwtTokenAuthOptions> options)
+    public JwtTokenCreator(IOptions<JwtTokenAuthApiOptions> options)
     {
         _securityKey = Ensure.NotNull(options).Value.SecurityKey;
 
