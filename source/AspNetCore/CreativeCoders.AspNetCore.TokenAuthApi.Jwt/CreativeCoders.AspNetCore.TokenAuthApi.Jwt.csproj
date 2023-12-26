@@ -17,6 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\CreativeCoders.AspNetCore.TokenAuthApi\CreativeCoders.AspNetCore.TokenAuthApi.csproj" />
 		<ProjectReference Include="..\CreativeCoders.AspNetCore.TokenAuth\CreativeCoders.AspNetCore.TokenAuth.csproj" />
 	</ItemGroup>
 

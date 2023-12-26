@@ -1,6 +1,9 @@
-﻿namespace CreativeCoders.AspNetCore.TokenAuth;
+﻿using JetBrains.Annotations;
 
-public class TokenAuthOptions
+namespace CreativeCoders.AspNetCore.TokenAuthApi;
+
+[PublicAPI]
+public class TokenAuthApiOptions
 {
     public bool UseCookies { get; set; }
 

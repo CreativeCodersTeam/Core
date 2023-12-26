@@ -1,7 +1,7 @@
 ﻿using CreativeCoders.Core;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CreativeCoders.AspNetCore.TokenAuth;
+namespace CreativeCoders.AspNetCore.TokenAuthApi;
 
 public class TokenAuthApiBuilder
 {

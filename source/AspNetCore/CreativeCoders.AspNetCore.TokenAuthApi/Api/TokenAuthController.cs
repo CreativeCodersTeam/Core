@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using CreativeCoders.AspNetCore.TokenAuth.Abstractions;
+﻿using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 using CreativeCoders.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CreativeCoders.AspNetCore.TokenAuth.Api;
+namespace CreativeCoders.AspNetCore.TokenAuthApi.Api;
 
 [Route("api/[controller]")]
 [ApiController]

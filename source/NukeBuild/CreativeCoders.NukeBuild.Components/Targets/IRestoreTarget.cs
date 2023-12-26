@@ -25,6 +25,7 @@ public interface IRestoreTarget : INukeBuild
     {
         return buildSettings
             .When(this.TryAs<ISolutionParameter>(out var solutionParameter), x => x
+                // ReSharper disable once NullableWarningSuppressionIsUsed
                 .SetProjectFile(solutionParameter!.Solution));
     }
 }

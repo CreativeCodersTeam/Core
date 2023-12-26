@@ -53,7 +53,7 @@ public class AsyncSimpleRelayCommand : AsyncCommandBase
             return;
         }
 
-        await _execute();
+        await _execute().ConfigureAwait(true);
 
         RaiseCanExecuteChanged();
     }

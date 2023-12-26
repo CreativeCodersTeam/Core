@@ -1,7 +1,6 @@
-﻿using System.Threading.Tasks;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.AspNetCore.TokenAuth.Abstractions;
+namespace CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 
 [PublicAPI]
 public interface IUserAuthProvider

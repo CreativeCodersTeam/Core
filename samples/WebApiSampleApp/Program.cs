@@ -1,9 +1,11 @@
 using System.Security.Claims;
-using CreativeCoders.AspNetCore.TokenAuth;
-using CreativeCoders.AspNetCore.TokenAuth.Abstractions;
-using CreativeCoders.AspNetCore.TokenAuth.Jwt;
+using System.Text;
+using CreativeCoders.AspNetCore.TokenAuthApi;
+using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
+using CreativeCoders.AspNetCore.TokenAuthApi.Jwt;
 using CreativeCoders.Core.Text;
 using JetBrains.Annotations;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WebApiSampleApp;
 
@@ -22,10 +24,16 @@ public class Program
             .ConfigureOptions(x =>
             {
                 //x.SecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(RandomString.Create()));
-                x.UseCookies = true;
+                //x.UseCookies = true;
             });
 
-        builder.Services.AddJwtTokenAuthentication(RandomString.Create());
+        var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(RandomString.Create()));
+        builder.Services.Configure<JwtTokenAuthOptions>(x =>
+        {
+            x.SecurityKey = securityKey;
+        });
+
+        builder.Services.AddJwtTokenAuthentication();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

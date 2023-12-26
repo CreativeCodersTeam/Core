@@ -39,10 +39,9 @@ public class ConcurrentList<T> : IList<T>, IReadOnlyCollection<T>
         return new LockSlimLockingMechanism();
     }
 
+    [MustDisposeResource]
     public IEnumerator<T> GetEnumerator()
-    {
-        return _locking.Read(() => _items.ToList().GetEnumerator());
-    }
+        => _locking.Read([MustDisposeResource]() => _items.ToList().GetEnumerator());
 
     IEnumerator IEnumerable.GetEnumerator()
     {

@@ -42,7 +42,7 @@ public class AsyncRelayCommand<T> : AsyncCommandBase<T>
             return;
         }
 
-        await _execute(parameter);
+        await _execute(parameter).ConfigureAwait(true);;
 
         RaiseCanExecuteChanged();
     }

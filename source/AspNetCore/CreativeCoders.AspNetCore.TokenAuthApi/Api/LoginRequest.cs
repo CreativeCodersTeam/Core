@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace CreativeCoders.AspNetCore.TokenAuth.Api;
+namespace CreativeCoders.AspNetCore.TokenAuthApi.Api;
 
 [PublicAPI]
 public class LoginRequest
