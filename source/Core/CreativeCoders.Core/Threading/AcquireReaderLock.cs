@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Core.Threading;
 
 [PublicAPI]
-public class AcquireReaderLock : IDisposable
+public sealed class AcquireReaderLock : IDisposable
 {
     private readonly ReaderWriterLockSlim _lockSlim;
 
@@ -19,7 +19,7 @@ public class AcquireReaderLock : IDisposable
 
     public AcquireReaderLock(ReaderWriterLockSlim lockSlim, int timeout)
     {
-        Ensure.IsNotNull(lockSlim, nameof(lockSlim));
+        Ensure.IsNotNull(lockSlim);
 
         _lockSlim = lockSlim;
         if (!_lockSlim.TryEnterReadLock(timeout))
@@ -31,7 +31,6 @@ public class AcquireReaderLock : IDisposable
     public void Dispose()
     {
         Dispose(true);
-        GC.SuppressFinalize(this);
     }
 
     private void Dispose(bool disposing)

@@ -28,9 +28,9 @@ public class AsyncRelayCommand : AsyncCommandBase
     public AsyncRelayCommand(Func<object, Task> execute, Func<object, bool> canExecute,
         IErrorHandler errorHandler)
     {
-        Ensure.IsNotNull(execute, nameof(execute));
-        Ensure.IsNotNull(canExecute, nameof(canExecute));
-        Ensure.IsNotNull(errorHandler, nameof(errorHandler));
+        Ensure.IsNotNull(execute);
+        Ensure.IsNotNull(canExecute);
+        Ensure.IsNotNull(errorHandler);
 
         _execute = execute;
         _canExecute = canExecute;
@@ -54,7 +54,7 @@ public class AsyncRelayCommand : AsyncCommandBase
             return;
         }
 
-        await _execute(parameter).ConfigureAwait(true);;
+        await _execute(parameter).ConfigureAwait(true);
 
         RaiseCanExecuteChanged();
     }

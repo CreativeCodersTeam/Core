@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace WebApiSampleApp;
 
-public class Program
+public static class Program
 {
     public static void Main(string[] args)
     {
@@ -24,8 +24,7 @@ public class Program
             .AddJwtTokenAuthApi<DefaultUserAuthProvider, DefaultUserClaimsProvider>()
             .ConfigureOptions(x =>
             {
-                //x.SecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(RandomString.Create()));
-                //x.UseCookies = true;
+                x.UseCookies = true;
             });
 
         var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(RandomString.Create()));

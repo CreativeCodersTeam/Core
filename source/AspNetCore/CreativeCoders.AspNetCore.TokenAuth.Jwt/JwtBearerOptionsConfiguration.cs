@@ -9,13 +9,13 @@ namespace CreativeCoders.AspNetCore.TokenAuth.Jwt;
 [UsedImplicitly]
 public class JwtBearerOptionsConfiguration : IConfigureNamedOptions<JwtBearerOptions>
 {
-    private readonly SecurityKey? _securityKey;
+    private readonly JwtAuthenticationOptions _options;
 
     public JwtBearerOptionsConfiguration(IOptions<JwtAuthenticationOptions> options)
     {
-        _securityKey = Ensure.NotNull(options).Value.SecurityKey;
+        _options = Ensure.NotNull(options).Value;
 
-        if (_securityKey == null)
+        if (_options.SecurityKey == null)
         {
             throw new InvalidOperationException("Security key must not be null");
         }
@@ -27,7 +27,7 @@ public class JwtBearerOptionsConfiguration : IConfigureNamedOptions<JwtBearerOpt
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = _securityKey,
+            IssuerSigningKey = _options.SecurityKey,
             ValidIssuer = string.Empty,
             ValidAudience = string.Empty,
             ValidateIssuer = false,

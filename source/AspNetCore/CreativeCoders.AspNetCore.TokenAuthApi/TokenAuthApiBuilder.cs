@@ -1,8 +1,10 @@
-﻿using CreativeCoders.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+using CreativeCoders.Core;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CreativeCoders.AspNetCore.TokenAuthApi;
 
+[ExcludeFromCodeCoverage]
 public class TokenAuthApiBuilder
 {
     internal TokenAuthApiBuilder(IServiceCollection services)

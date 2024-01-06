@@ -49,8 +49,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
         var claims = await _userClaimsProvider.GetUserClaimsAsync(loginRequest.UserName, loginRequest.Domain)
             .ConfigureAwait(false);
 
-        // TODO make issuer configurable
-        var token = await _tokenCreator.CreateTokenAsync("Issuer", loginRequest.UserName, claims)
+        var token = await _tokenCreator.CreateTokenAsync(_apiOptions.Issuer, loginRequest.UserName, claims)
             .ConfigureAwait(false);
 
         if (_apiOptions.UseCookies)
@@ -59,9 +58,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
             {
                 HttpOnly = true,
                 Secure = true,
-                // TODO only allow specific domains
-                //Domain = ,
-                //Path =
+                Domain = _apiOptions.CookieDomain
             });
         }
         else

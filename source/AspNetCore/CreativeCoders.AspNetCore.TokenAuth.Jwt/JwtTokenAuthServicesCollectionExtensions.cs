@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace CreativeCoders.AspNetCore.TokenAuth.Jwt;
 
 [PublicAPI]
-public static class JwtServicesCollectionExtensions
+public static class JwtTokenAuthServicesCollectionExtensions
 {
     public static IServiceCollection AddJwtTokenAuthentication(
         this IServiceCollection services, Action<JwtAuthenticationOptions>? configureOptions = null)
