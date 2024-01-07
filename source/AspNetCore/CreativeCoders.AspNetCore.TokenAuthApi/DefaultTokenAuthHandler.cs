@@ -31,7 +31,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
         if (string.IsNullOrWhiteSpace(loginRequest.UserName) ||
             string.IsNullOrWhiteSpace(loginRequest.Password))
         {
-            return new BadRequestObjectResult(new { error = "Invalid credentials" });
+            return new UnauthorizedObjectResult(new { error = "Invalid credentials" });
         }
 
         if (!await _userAuthProvider.AuthenticateAsync(loginRequest.UserName,

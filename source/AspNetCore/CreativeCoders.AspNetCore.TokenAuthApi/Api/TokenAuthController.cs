@@ -24,7 +24,7 @@ public class TokenAuthController : ControllerBase
 
         if (string.IsNullOrWhiteSpace(loginRequest.UserName) || string.IsNullOrWhiteSpace(loginRequest.Password))
         {
-            return BadRequest(new { error = "Invalid credentials" });
+            return Unauthorized(new { error = "Invalid credentials" });
         }
 
         return await _tokenAuthHandler.LoginAsync(loginRequest, Response).ConfigureAwait(false);

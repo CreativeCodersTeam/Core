@@ -51,7 +51,7 @@ public class DefaultTokenAuthHandlerTests
             await _handler.LoginAsync(loginRequest, A.Fake<HttpResponse>());
 
         // Assert
-        result.Should().BeOfType<BadRequestObjectResult>();
+        result.Should().BeOfType<UnauthorizedObjectResult>();
     }
 
     [Fact]

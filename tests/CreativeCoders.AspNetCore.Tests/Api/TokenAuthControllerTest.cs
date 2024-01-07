@@ -37,7 +37,7 @@ namespace CreativeCoders.AspNetCore.Tests.Api
             // Assert
             result
                 .Should()
-                .BeOfType<BadRequestObjectResult>();
+                .BeOfType<UnauthorizedObjectResult>();
 
             A.CallTo(() => _fakeTokenAuthHandler.LoginAsync(loginRequest, A<HttpResponse>.Ignored))
                 .MustNotHaveHappened();
