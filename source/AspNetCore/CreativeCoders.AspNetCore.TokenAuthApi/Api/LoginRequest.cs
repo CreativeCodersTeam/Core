@@ -1,8 +1,10 @@
-﻿using JetBrains.Annotations;
+﻿using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.AspNetCore.TokenAuthApi.Api;
 
 [PublicAPI]
+[ExcludeFromCodeCoverage]
 public class LoginRequest
 {
     public string? UserName { get; set; }

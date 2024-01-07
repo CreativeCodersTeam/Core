@@ -1,9 +1,11 @@
-﻿using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
+﻿using System.Diagnostics.CodeAnalysis;
+using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CreativeCoders.AspNetCore.TokenAuthApi.Jwt;
 
+[ExcludeFromCodeCoverage]
 public static class JwtTokenAuthApiExtensions
 {
     public static TokenAuthApiBuilder AddJwtTokenAuthApi<TUserAuthProvider, TUserClaimsProvider>(

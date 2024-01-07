@@ -18,9 +18,16 @@ public class TokenAuthController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("login")]
-    public Task<IActionResult> LoginAsync([FromBody] LoginRequest loginRequest)
+    public async Task<IActionResult> LoginAsync([FromBody] LoginRequest loginRequest)
     {
-        return _tokenAuthHandler.LoginAsync(loginRequest, Response);
+        Ensure.NotNull(loginRequest);
+
+        if (string.IsNullOrWhiteSpace(loginRequest.UserName) || string.IsNullOrWhiteSpace(loginRequest.Password))
+        {
+            return BadRequest(new { error = "Invalid credentials" });
+        }
+
+        return await _tokenAuthHandler.LoginAsync(loginRequest, Response).ConfigureAwait(false);
     }
 
     [HttpPost("refresh-token")]

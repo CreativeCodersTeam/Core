@@ -3,11 +3,8 @@ using CreativeCoders.AspNetCore.TokenAuthApi;
 using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 using CreativeCoders.AspNetCore.TokenAuthApi.Api;
 using CreativeCoders.UnitTests;
-using FakeItEasy;
-using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace CreativeCoders.AspNetCore.Tests.TokenAuthApi;
 

@@ -28,12 +28,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.TokenAuthApi.Jwt\CreativeCoders.AspNetCore.TokenAuthApi.Jwt.csproj" />
       <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.TokenAuthApi\CreativeCoders.AspNetCore.TokenAuthApi.csproj" />
       <ProjectReference Include="..\..\source\UnitTests\CreativeCoders.UnitTests\CreativeCoders.UnitTests.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="TokenAuthApi\Jwt\" />
+      <Folder Include="TokenAuthApi\Api\" />
     </ItemGroup>
 
 </Project>
