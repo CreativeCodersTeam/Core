@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CreativeCoders.AspNetCore.TokenAuthApi.Jwt;
 
+/// Represents a class that is responsible for creating JWT tokens.
 public class JwtTokenCreator : ITokenCreator
 {
     private readonly SecurityKey? _securityKey;

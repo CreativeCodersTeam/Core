@@ -8,14 +8,14 @@ namespace CreativeCoders.AspNetCore.TokenAuthApi.Jwt;
 [ExcludeFromCodeCoverage]
 public static class JwtTokenAuthApiExtensions
 {
-    public static TokenAuthApiBuilder AddJwtTokenAuthApi<TUserAuthProvider, TUserClaimsProvider>(
+    /// <summary>
+    /// Adds a JWT token authentication API.
+    /// </summary>
+    /// <param name="services">The service collection to configure.</param>
+    /// <returns>A builder to configure the token authentication.</returns>
+    public static TokenAuthApiBuilder AddJwtTokenAuthApi(
         this IServiceCollection services)
-        where TUserAuthProvider : class, IUserAuthProvider
-        where TUserClaimsProvider: class, IUserClaimsProvider
     {
-        services.TryAddScoped<IUserAuthProvider, TUserAuthProvider>();
-        services.TryAddScoped<IUserClaimsProvider, TUserClaimsProvider>();
-
         services.TryAddScoped<ITokenCreator, JwtTokenCreator>();
 
         return services.AddTokenAuthApi();

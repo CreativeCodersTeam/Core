@@ -14,7 +14,7 @@ public class TestStartup
         services.AddControllers().AddTokenAuthApiController();
 
         services
-            .AddJwtTokenAuthApi<TestUserAuthProvider, TestUserClaimsProvider>()
+            .AddJwtTokenAuthApi()
             .ConfigureOptions(x =>
             {
                 x.UseCookies = true;

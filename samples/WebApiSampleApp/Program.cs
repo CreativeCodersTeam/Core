@@ -20,8 +20,11 @@ public static class Program
 
         builder.Services.AddControllers().AddTokenAuthApiController();
 
+        builder.Services.AddScoped<IUserAuthProvider, DefaultUserAuthProvider>();
+        builder.Services.AddScoped<IUserClaimsProvider, DefaultUserClaimsProvider>();
+
         builder.Services
-            .AddJwtTokenAuthApi<DefaultUserAuthProvider, DefaultUserClaimsProvider>()
+            .AddJwtTokenAuthApi()
             .ConfigureOptions(x =>
             {
                 x.UseCookies = true;

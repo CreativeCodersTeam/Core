@@ -18,11 +18,13 @@ public sealed class TestServerContext<TStartup> : IAsyncDisposable
         HttpClient = _testServer.CreateClient();
     }
 
-    public TestServerContext(IUserAuthProvider userAuthProvider, IUserClaimsProvider userClaimsProvider)
+    public TestServerContext(IUserAuthProvider userAuthProvider, IUserClaimsProvider userClaimsProvider,
+        ITokenCreator tokenCreator)
         : this(services =>
         {
-            services.AddScoped<IUserAuthProvider>(_ => new TestUserAuthProvider(userAuthProvider));
-            services.AddScoped<IUserClaimsProvider>(_ => new TestUserClaimsProvider(userClaimsProvider));
+            services.AddScoped<IUserAuthProvider>(_ => userAuthProvider);
+            services.AddScoped<IUserClaimsProvider>(_ => userClaimsProvider);
+            services.AddScoped<ITokenCreator>(_ => tokenCreator);
         })
     {
 

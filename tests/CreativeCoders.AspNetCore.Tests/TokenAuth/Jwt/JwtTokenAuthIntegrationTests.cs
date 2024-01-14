@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Security.Claims;
 using CreativeCoders.AspNetCore.Tests.TokenAuth.Jwt.TestServerSetup;
 using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 using CreativeCoders.AspNetCore.TokenAuthApi.Api;
@@ -13,12 +14,15 @@ public sealed class JwtTokenAuthIntegrationTests : IDisposable
 
     private readonly IUserClaimsProvider _userClaimsProvider;
 
+    private readonly ITokenCreator _tokenCreator;
+
     public JwtTokenAuthIntegrationTests()
     {
         _userAuthProvider = A.Fake<IUserAuthProvider>();
         _userClaimsProvider = A.Fake<IUserClaimsProvider>();
+        _tokenCreator = A.Fake<ITokenCreator>();
 
-        _testContext = new TestServerContext<TestStartup>(_userAuthProvider, _userClaimsProvider);
+        _testContext = new TestServerContext<TestStartup>(_userAuthProvider, _userClaimsProvider, _tokenCreator);
     }
 
     [Fact]
@@ -40,6 +44,8 @@ public sealed class JwtTokenAuthIntegrationTests : IDisposable
     [Fact]
     public async Task Login_WithCredentials_ReturnsToken()
     {
+        const string token = "123456789012";
+
         // Arrange
         var loginRequest = new LoginRequest
         {
@@ -47,6 +53,9 @@ public sealed class JwtTokenAuthIntegrationTests : IDisposable
             Password = "password",
             Domain = "example.com"
         };
+
+        A.CallTo(() => _tokenCreator.CreateTokenAsync(A<string>.Ignored, A<string>.Ignored, A<IEnumerable<Claim>>.Ignored))
+            .Returns(Task.FromResult(token));
 
         A.CallTo(() =>
                 _userAuthProvider.AuthenticateAsync(loginRequest.UserName, loginRequest.Password,
@@ -62,9 +71,11 @@ public sealed class JwtTokenAuthIntegrationTests : IDisposable
             .Should()
             .Be(HttpStatusCode.OK);
 
-        response.Headers.GetValues("set-cookie").First()
+        var cookie = response.Headers.GetValues("set-cookie").First();
+
+        cookie
             .Should()
-            .NotBeNullOrWhiteSpace();
+            .Be($"auth_token={token}; path=/; secure; httponly");
     }
 
     public void Dispose()
