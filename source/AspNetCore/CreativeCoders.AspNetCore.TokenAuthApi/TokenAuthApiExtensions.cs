@@ -11,11 +11,22 @@ namespace CreativeCoders.AspNetCore.TokenAuthApi;
 public static class TokenAuthApiExtensions
 {
     /// <summary>
-    /// Adds the a token based auth Api to the service collection.
+    ///     Adds token-based authentication API capabilities to the provided <see cref="IServiceCollection" />.
     /// </summary>
-    /// <param name="services">The service collection to add to.</param>
-    /// <returns>A TokenAuthApiBuilder instance that can be used to configure the TokenAuthApi.</returns>
-    public static TokenAuthApiBuilder AddTokenAuthApi(this IServiceCollection services)
+    /// <param name="services">The <see cref="IServiceCollection" /> to add the token-based authentication API services to.</param>
+    /// <param name="configureOptions">
+    ///     An optional <see cref="Action{T}" /> delegate that is used to configure the
+    ///     <see cref="TokenAuthApiOptions" />.
+    /// </param>
+    /// <returns>A <see cref="TokenAuthApiBuilder" /> instance that can be used to configure the TokenAuthApi.</returns>
+    /// <exception cref="System.ArgumentNullException"><paramref name="services" /> argument is null.</exception>
+    /// <remarks>
+    ///     This method adds the necessary services to the IServiceCollection to enable token-based authentication API.
+    ///     Services added include options configuration, scoped default token authentication handler, and any supplied
+    ///     configurable options.
+    /// </remarks>
+    public static void AddTokenAuthApi(this IServiceCollection services,
+        Action<TokenAuthApiOptions>? configureOptions = null)
     {
         Ensure.NotNull(services);
 
@@ -23,19 +34,14 @@ public static class TokenAuthApiExtensions
 
         services.TryAddScoped<ITokenAuthHandler, DefaultTokenAuthHandler>();
 
-        return new TokenAuthApiBuilder(services);
-    }
-
-    public static TokenAuthApiBuilder ConfigureOptions(this TokenAuthApiBuilder tokenAuthApiBuilder,
-        Action<TokenAuthApiOptions> configureOptions)
-    {
-        tokenAuthApiBuilder.Services.Configure(configureOptions);
-
-        return tokenAuthApiBuilder;
+        if (configureOptions != null)
+        {
+            services.Configure(configureOptions);
+        }
     }
 
     /// <summary>
-    /// Extension method to add the TokenAuthApiController to the IMvcBuilder.
+    ///     Extension method to add the TokenAuthApiController to the IMvcBuilder.
     /// </summary>
     /// <param name="mvcBuilder">The IMvcBuilder instance.</param>
     /// <returns>The IMvcBuilder instance with the TokenAuthApiController added as an application part.</returns>
