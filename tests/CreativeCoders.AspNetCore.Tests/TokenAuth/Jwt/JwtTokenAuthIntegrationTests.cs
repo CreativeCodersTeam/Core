@@ -10,11 +10,11 @@ public sealed class JwtTokenAuthIntegrationTests : IDisposable
 {
     private readonly TestServerContext<TestStartup> _testContext;
 
+    private readonly ITokenCreator _tokenCreator;
+
     private readonly IUserAuthProvider _userAuthProvider;
 
     private readonly IUserClaimsProvider _userClaimsProvider;
-
-    private readonly ITokenCreator _tokenCreator;
 
     public JwtTokenAuthIntegrationTests()
     {
@@ -22,7 +22,13 @@ public sealed class JwtTokenAuthIntegrationTests : IDisposable
         _userClaimsProvider = A.Fake<IUserClaimsProvider>();
         _tokenCreator = A.Fake<ITokenCreator>();
 
-        _testContext = new TestServerContext<TestStartup>(_userAuthProvider, _userClaimsProvider, _tokenCreator);
+        _testContext =
+            new TestServerContext<TestStartup>(_userAuthProvider, _userClaimsProvider, _tokenCreator);
+    }
+
+    public void Dispose()
+    {
+        _testContext.DisposeAsync().AsTask().GetAwaiter().GetResult();
     }
 
     [Fact]
@@ -51,10 +57,13 @@ public sealed class JwtTokenAuthIntegrationTests : IDisposable
         {
             UserName = "test",
             Password = "password",
-            Domain = "example.com"
+            Domain = "example.com",
+            UseCookies = true
         };
 
-        A.CallTo(() => _tokenCreator.CreateTokenAsync(A<string>.Ignored, A<string>.Ignored, A<IEnumerable<Claim>>.Ignored))
+        A.CallTo(() =>
+                _tokenCreator.CreateTokenAsync(A<string>.Ignored, A<string>.Ignored,
+                    A<IEnumerable<Claim>>.Ignored))
             .Returns(Task.FromResult(token));
 
         A.CallTo(() =>
@@ -76,10 +85,5 @@ public sealed class JwtTokenAuthIntegrationTests : IDisposable
         cookie
             .Should()
             .Be($"auth_token={token}; path=/; secure; httponly");
-    }
-
-    public void Dispose()
-    {
-        _testContext.DisposeAsync().AsTask().GetAwaiter().GetResult();
     }
 }

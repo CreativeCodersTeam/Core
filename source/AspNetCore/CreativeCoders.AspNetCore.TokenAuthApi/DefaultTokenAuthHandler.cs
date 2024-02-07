@@ -52,7 +52,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
         var token = await _tokenCreator.CreateTokenAsync(_apiOptions.Issuer, loginRequest.UserName, claims)
             .ConfigureAwait(false);
 
-        if (_apiOptions.UseCookies)
+        if (loginRequest.UseCookies)
         {
             httpResponse.Cookies.Append(_apiOptions.AuthTokenName, token, new CookieOptions
             {
@@ -63,7 +63,8 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
         }
         else
         {
-            return new OkObjectResult(new Dictionary<string, string> { { _apiOptions.AuthTokenName, token } });
+            return new OkObjectResult(new Dictionary<string, string>
+                { { _apiOptions.AuthTokenName, token } });
         }
 
         return new OkResult();

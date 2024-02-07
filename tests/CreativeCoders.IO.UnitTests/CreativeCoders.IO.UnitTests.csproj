@@ -9,12 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FakeItEasy" Version="8.0.0" />
-        <PackageReference Include="FluentAssertions" Version="6.12.0" />
-        <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-        <PackageReference Include="System.IO.Ports" Version="6.0.0" />
-        <PackageReference Include="xunit" Version="2.6.4" />
+        <PackageReference Include="FakeItEasy" Version="8.1.0"/>
+        <PackageReference Include="FluentAssertions" Version="6.12.0"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2023.3.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
+        <PackageReference Include="System.IO.Ports" Version="6.0.0"/>
+        <PackageReference Include="xunit" Version="2.6.6"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
@@ -23,11 +23,11 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="XunitXml.TestLogger" Version="3.1.17" />
+        <PackageReference Include="XunitXml.TestLogger" Version="3.1.17"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\source\IO\CreativeCoders.IO\CreativeCoders.IO.csproj" />
+        <ProjectReference Include="..\..\source\IO\CreativeCoders.IO\CreativeCoders.IO.csproj"/>
     </ItemGroup>
 
 </Project>

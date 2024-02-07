@@ -14,17 +14,10 @@ public class TestStartup
         services.AddControllers().AddTokenAuthApiController();
 
         services
-            .AddJwtTokenAuthApi()
-            .ConfigureOptions(x =>
-            {
-                x.UseCookies = true;
-            });
+            .AddJwtTokenAuthApi();
 
         var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(RandomString.Create()));
-        services.Configure<JwtTokenAuthApiOptions>(x =>
-        {
-            x.SecurityKey = securityKey;
-        });
+        services.Configure<JwtTokenAuthApiOptions>(x => { x.SecurityKey = securityKey; });
 
         services.AddJwtTokenAuthentication(x => x.SecurityKey = securityKey);
     }

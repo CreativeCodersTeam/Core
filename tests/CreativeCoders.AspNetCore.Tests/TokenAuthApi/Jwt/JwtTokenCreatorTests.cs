@@ -50,7 +50,10 @@ public class JwtTokenCreatorTests
         var jwtTokenCreator = new JwtTokenCreator(options);
 
         // Act
-        var act = async () => { await jwtTokenCreator.CreateTokenAsync("issuer", null!, Array.Empty<Claim>()); };
+        var act = async () =>
+        {
+            await jwtTokenCreator.CreateTokenAsync("issuer", null!, Array.Empty<Claim>());
+        };
 
         // Assert
         await act
@@ -93,7 +96,8 @@ public class JwtTokenCreatorTests
     public async Task CreateTokenAsync_GivenNotNullParametersAndSecurityKeyHaveSpaces_Successful()
     {
         // Arrange
-        var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("test key with spaces"));
+        var securityKey = new SymmetricSecurityKey(
+            Encoding.ASCII.GetBytes("test key with spaces test key with spaces test key with spaces"));
 
         var options = Options.Create(new JwtTokenAuthApiOptions { SecurityKey = securityKey });
 

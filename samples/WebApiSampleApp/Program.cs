@@ -24,17 +24,10 @@ public static class Program
         builder.Services.AddScoped<IUserClaimsProvider, DefaultUserClaimsProvider>();
 
         builder.Services
-            .AddJwtTokenAuthApi()
-            .ConfigureOptions(x =>
-            {
-                x.UseCookies = true;
-            });
+            .AddJwtTokenAuthApi();
 
         var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(RandomString.Create()));
-        builder.Services.Configure<JwtTokenAuthApiOptions>(x =>
-        {
-            x.SecurityKey = securityKey;
-        });
+        builder.Services.Configure<JwtTokenAuthApiOptions>(x => { x.SecurityKey = securityKey; });
 
         builder.Services.AddJwtTokenAuthentication(x => x.SecurityKey = securityKey);
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

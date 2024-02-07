@@ -4,72 +4,65 @@ using JetBrains.Annotations;
 namespace CreativeCoders.AspNetCore.TokenAuthApi;
 
 /// <summary>
-/// Represents the options for configuring token authentication API.
+///     Represents the options for configuring token authentication API.
 /// </summary>
 [PublicAPI]
 [ExcludeFromCodeCoverage]
 public class TokenAuthApiOptions
 {
     /// <summary>
-    /// Gets or sets a value indicating whether cookies are used for token transport.
-    /// </summary>
-    /// <value>
-    /// <c>true</c> if cookies are used, otherwise <c>false</c>.
-    /// </value>
-    public bool UseCookies { get; set; }
-
-    /// <summary>
-    /// Gets or sets the domain for which the cookie is valid.
+    ///     Gets or sets the domain for which the cookie is valid.
     /// </summary>
     /// <remarks>
-    /// The CookieDomain property represents the domain for which the cookie is valid.
-    /// The domain can be specified as a fully qualified domain name (e.g. "example.com")
-    /// or as a sub-domain (e.g. "subdomain.example.com").
-    /// If the CookieDomain property is not set, the cookie is valid for the current domain.
-    /// Setting the CookieDomain property to null or an empty string will cause the cookie
-    /// to be valid for the current domain only.
+    ///     The CookieDomain property represents the domain for which the cookie is valid.
+    ///     The domain can be specified as a fully qualified domain name (e.g. "example.com")
+    ///     or as a sub-domain (e.g. "subdomain.example.com").
+    ///     If the CookieDomain property is not set, the cookie is valid for the current domain.
+    ///     Setting the CookieDomain property to null or an empty string will cause the cookie
+    ///     to be valid for the current domain only.
     /// </remarks>
     /// <value>
-    /// A string representing the domain for which the cookie is valid.
-    /// If not set, the cookie is valid for the current domain.
+    ///     A string representing the domain for which the cookie is valid.
+    ///     If not set, the cookie is valid for the current domain.
     /// </value>
     public string? CookieDomain { get; set; }
 
     /// <summary>
-    /// Gets or sets the path for the cookie.
+    ///     Gets or sets the path for the cookie.
     /// </summary>
     /// <remarks>
-    /// The path determines the scope or visibility of the cookie. Only requests within the specified path will include the cookie.
+    ///     The path determines the scope or visibility of the cookie. Only requests within the specified path will include the
+    ///     cookie.
     /// </remarks>
     public string CookiePath { get; set; } = "/";
 
     /// <summary>
-    /// Gets or sets a boolean value indicating whether to use refresh tokens for authentication.
+    ///     Gets or sets a boolean value indicating whether to use refresh tokens for authentication.
     /// </summary>
     /// <value>
-    /// <c>true</c> if refresh tokens are used, otherwise <c>false</c>.
+    ///     <c>true</c> if refresh tokens are used, otherwise <c>false</c>.
     /// </value>
     public bool UseRefreshTokens { get; set; }
 
     /// <summary>
-    /// The name of the authentication token.
+    ///     The name of the authentication token.
     /// </summary>
     /// <value>
-    /// A string representing the name of the authentication token.
-    /// The default value is "auth_token".
+    ///     A string representing the name of the authentication token.
+    ///     The default value is "auth_token".
     /// </value>
     public string AuthTokenName { get; set; } = "auth_token";
 
     /// <summary>
-    /// Gets or sets the name of the refresh token property.
+    ///     Gets or sets the name of the refresh token property.
     /// </summary>
     public string RefreshTokenName { get; set; } = "refresh_auth_token";
 
     /// <summary>
-    /// The issuer of a auth token.
+    ///     The issuer of a auth token.
     /// </summary>
     /// <value>
-    /// The issuer represents the entity or authority that issues the token.
+    ///     The issuer represents the entity or authority that issues the token.
     /// </value>
     public string Issuer { get; set; } = string.Empty;
 }

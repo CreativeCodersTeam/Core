@@ -1,4 +1,5 @@
-﻿using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
+﻿using System.Net.Mime;
+using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 using CreativeCoders.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ namespace CreativeCoders.AspNetCore.TokenAuthApi.Api;
 
 [Route("api/[controller]")]
 [ApiController]
+[Produces(MediaTypeNames.Application.Json)]
 public class TokenAuthController : ControllerBase
 {
     private readonly ITokenAuthHandler _tokenAuthHandler;
@@ -22,7 +24,8 @@ public class TokenAuthController : ControllerBase
     {
         Ensure.NotNull(loginRequest);
 
-        if (string.IsNullOrWhiteSpace(loginRequest.UserName) || string.IsNullOrWhiteSpace(loginRequest.Password))
+        if (string.IsNullOrWhiteSpace(loginRequest.UserName) ||
+            string.IsNullOrWhiteSpace(loginRequest.Password))
         {
             return Unauthorized(new { error = "Invalid credentials" });
         }

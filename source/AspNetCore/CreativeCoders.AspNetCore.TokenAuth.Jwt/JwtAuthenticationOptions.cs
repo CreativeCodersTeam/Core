@@ -8,5 +8,5 @@ public class JwtAuthenticationOptions
 
     public bool UseCookies { get; set; }
 
-    public string AuthTokenName { get; set; } = "auth_token";
+    public string AuthTokenName { get; set; } = "jwt_auth_token";
 }

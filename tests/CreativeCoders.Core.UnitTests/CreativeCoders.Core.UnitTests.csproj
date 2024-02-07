@@ -1,35 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<OutputType>Library</OutputType>
-		<TargetFramework>net6.0</TargetFramework>
-		<IsPackable>false</IsPackable>
-	</PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="FakeItEasy" Version="8.0.0" />
-		<PackageReference Include="FluentAssertions" Version="6.12.0" />
-		<PackageReference Include="System.IO.Abstractions" Version="20.0.4" />
-		<PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="20.0.4" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-		<PackageReference Include="xunit" Version="2.6.4" />
-		<PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<PackageReference Include="coverlet.collector" Version="6.0.0">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<PackageReference Include="XunitXml.TestLogger" Version="3.1.17" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="FakeItEasy" Version="8.1.0"/>
+        <PackageReference Include="FluentAssertions" Version="6.12.0"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2023.3.0"/>
+        <PackageReference Include="System.IO.Abstractions" Version="20.0.4"/>
+        <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="20.0.4"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
+        <PackageReference Include="xunit" Version="2.6.6"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.collector" Version="6.0.0">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="XunitXml.TestLogger" Version="3.1.17"/>
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\source\Config\CreativeCoders.Config.Base\CreativeCoders.Config.Base.csproj" />
-		<ProjectReference Include="..\..\source\Config\CreativeCoders.Config.Sources\CreativeCoders.Config.Sources.csproj" />
-		<ProjectReference Include="..\..\source\Config\CreativeCoders.Config\CreativeCoders.Config.csproj" />
-		<ProjectReference Include="..\..\source\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-		<ProjectReference Include="..\..\source\UnitTests\CreativeCoders.UnitTests\CreativeCoders.UnitTests.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\source\Config\CreativeCoders.Config.Base\CreativeCoders.Config.Base.csproj"/>
+        <ProjectReference Include="..\..\source\Config\CreativeCoders.Config.Sources\CreativeCoders.Config.Sources.csproj"/>
+        <ProjectReference Include="..\..\source\Config\CreativeCoders.Config\CreativeCoders.Config.csproj"/>
+        <ProjectReference Include="..\..\source\Core\CreativeCoders.Core\CreativeCoders.Core.csproj"/>
+        <ProjectReference Include="..\..\source\UnitTests\CreativeCoders.UnitTests\CreativeCoders.UnitTests.csproj"/>
+    </ItemGroup>
 
 </Project>

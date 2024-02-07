@@ -10,15 +10,14 @@ namespace CreativeCoders.AspNetCore.Tests.TokenAuthApi;
 
 public class DefaultTokenAuthHandlerTests
 {
-    private readonly DefaultTokenAuthHandler _handler;
-
     private readonly IUserAuthProvider _authProvider;
 
     private readonly IUserClaimsProvider _claimsProvider;
-
-    private readonly ITokenCreator _tokenCreator;
+    private readonly DefaultTokenAuthHandler _handler;
 
     private readonly TokenAuthApiOptions _options;
+
+    private readonly ITokenCreator _tokenCreator;
 
     public DefaultTokenAuthHandlerTests()
     {
@@ -29,7 +28,6 @@ public class DefaultTokenAuthHandlerTests
         {
             Issuer = "testIssuer",
             AuthTokenName = "authToken",
-            UseCookies = true,
             CookieDomain = "cookieDomain"
         };
         _handler = new DefaultTokenAuthHandler(_authProvider, _claimsProvider, _tokenCreator,
@@ -79,8 +77,6 @@ public class DefaultTokenAuthHandlerTests
     public async Task LoginAsync_WithCookies_ReturnsOkObjectResultIfCookiesOff()
     {
         // Arrange
-        _options.UseCookies = false;
-
         var loginRequest = SetupSuccessfulLogin();
         var httpResponse = A.Fake<HttpResponse>();
 
@@ -95,9 +91,8 @@ public class DefaultTokenAuthHandlerTests
     public async Task LoginAsync_WithCookies_SetsCookieIfCookiesOn()
     {
         // Arrange
-        _options.UseCookies = true;
-
         var loginRequest = SetupSuccessfulLogin();
+        loginRequest.UseCookies = true;
 
         var httpResponse = A.Fake<HttpResponse>();
 
@@ -105,7 +100,7 @@ public class DefaultTokenAuthHandlerTests
         {
             HttpOnly = true,
             Secure = true,
-            Domain = _options.CookieDomain
+            Domain = _options.CookieDomain,
         };
 
         // Act

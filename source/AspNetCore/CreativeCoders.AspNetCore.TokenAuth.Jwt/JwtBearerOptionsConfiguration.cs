@@ -1,4 +1,5 @@
 ﻿using CreativeCoders.Core;
+using CreativeCoders.Core.Tasking;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
@@ -32,6 +33,23 @@ public class JwtBearerOptionsConfiguration : IConfigureNamedOptions<JwtBearerOpt
             ValidAudience = string.Empty,
             ValidateIssuer = false,
             ValidateAudience = false
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var token = context.HttpContext.Request.Headers.Authorization.FirstOrDefault();
+
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    token = context.HttpContext.Request.Cookies[_options.AuthTokenName];
+                }
+
+                context.Token = token;
+
+                return Task.CompletedTask;
+            }
         };
     }
 
