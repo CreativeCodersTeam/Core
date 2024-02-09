@@ -1,6 +1,4 @@
-﻿using CreativeCoders.AspNetCore.Tests.TokenAuth.Jwt.TestServerSetup;
-using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
-using Microsoft.AspNetCore.TestHost;
+﻿using Microsoft.AspNetCore.TestHost;
 
 namespace CreativeCoders.AspNetCore.Tests.TokenAuth.Jwt;
 
@@ -18,29 +16,7 @@ public sealed class TestServerContext<TStartup> : IAsyncDisposable
         HttpClient = _testServer.CreateClient();
     }
 
-    public TestServerContext(IUserAuthProvider userAuthProvider, IUserClaimsProvider userClaimsProvider,
-        ITokenCreator tokenCreator)
-        : this(services =>
-        {
-            services.AddScoped<IUserAuthProvider>(_ => userAuthProvider);
-            services.AddScoped<IUserClaimsProvider>(_ => userClaimsProvider);
-            services.AddScoped<ITokenCreator>(_ => tokenCreator);
-        })
-    {
-
-    }
-
-    private IWebHostBuilder SetupWebHostBuilder(Action<IServiceCollection>? configureServices)
-    {
-        return new WebHostBuilder()
-            .ConfigureServices(services => configureServices?.Invoke(services))
-            .UseStartup<TStartup>();
-        //WebApplication.CreateBuilder().Build()
-
-        return WebApplication.CreateBuilder().WebHost
-            .ConfigureServices(services => configureServices?.Invoke(services))
-            .UseStartup<TStartup>();
-    }
+    public HttpClient HttpClient { get; }
 
     public async ValueTask DisposeAsync()
     {
@@ -49,5 +25,10 @@ public sealed class TestServerContext<TStartup> : IAsyncDisposable
         _testServer.Dispose();
     }
 
-    public HttpClient HttpClient { get; }
+    private IWebHostBuilder SetupWebHostBuilder(Action<IServiceCollection>? configureServices)
+    {
+        return new WebHostBuilder()
+            .ConfigureServices(services => configureServices?.Invoke(services))
+            .UseStartup<TStartup>();
+    }
 }
