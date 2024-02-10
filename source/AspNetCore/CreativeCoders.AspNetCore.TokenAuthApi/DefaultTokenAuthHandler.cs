@@ -9,13 +9,12 @@ namespace CreativeCoders.AspNetCore.TokenAuthApi;
 
 public class DefaultTokenAuthHandler : ITokenAuthHandler
 {
+    private readonly TokenAuthApiOptions _apiOptions;
+
+    private readonly ITokenCreator _tokenCreator;
     private readonly IUserAuthProvider _userAuthProvider;
 
     private readonly IUserClaimsProvider _userClaimsProvider;
-
-    private readonly ITokenCreator _tokenCreator;
-
-    private readonly TokenAuthApiOptions _apiOptions;
 
     public DefaultTokenAuthHandler(IUserAuthProvider userAuthProvider, IUserClaimsProvider userClaimsProvider,
         ITokenCreator tokenCreator, IOptions<TokenAuthApiOptions> options)
@@ -49,25 +48,14 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
         var claims = await _userClaimsProvider.GetUserClaimsAsync(loginRequest.UserName, loginRequest.Domain)
             .ConfigureAwait(false);
 
-        var token = await _tokenCreator.CreateTokenAsync(_apiOptions.Issuer, loginRequest.UserName, claims)
-            .ConfigureAwait(false);
-
-        if (loginRequest.UseCookies)
+        var loginAuthTokens = new LoginAuthTokens
         {
-            httpResponse.Cookies.Append(_apiOptions.AuthTokenName, token, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                Domain = _apiOptions.CookieDomain
-            });
-        }
-        else
-        {
-            return new OkObjectResult(new Dictionary<string, string>
-                { { _apiOptions.AuthTokenName, token } });
-        }
+            AuthToken = await _tokenCreator
+                .CreateTokenAsync(_apiOptions.Issuer, loginRequest.UserName, claims)
+                .ConfigureAwait(false)
+        };
 
-        return new OkResult();
+        return CreateLoginResponse(loginRequest.UseCookies, loginAuthTokens, httpResponse);
     }
 
     public Task<IActionResult> RefreshTokenAsync()
@@ -78,5 +66,40 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
     public Task<IActionResult> LogoutAsync()
     {
         throw new NotSupportedException("Logout is currently not supported");
+    }
+
+    private IActionResult CreateLoginResponse(bool useCookies, LoginAuthTokens tokens,
+        HttpResponse httpResponse)
+    {
+        return useCookies
+            ? CreateLoginResponseWithCookies(tokens, httpResponse)
+            : CreateLoginResponseAsJson(tokens);
+    }
+
+    private IActionResult CreateLoginResponseWithCookies(LoginAuthTokens tokens, HttpResponse httpResponse)
+    {
+        httpResponse.Cookies.Append(_apiOptions.AuthTokenName, tokens.AuthToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            Domain = _apiOptions.CookieDomain
+        });
+
+        return new OkResult();
+    }
+
+    private IActionResult CreateLoginResponseAsJson(LoginAuthTokens tokens)
+    {
+        if (string.IsNullOrEmpty(tokens.RefreshToken))
+        {
+            return new OkObjectResult(new Dictionary<string, string>
+                { { _apiOptions.AuthTokenName, tokens.AuthToken } });
+        }
+
+        return new OkObjectResult(new Dictionary<string, string>
+        {
+            { _apiOptions.AuthTokenName, tokens.AuthToken },
+            { _apiOptions.RefreshTokenName, tokens.RefreshToken }
+        });
     }
 }

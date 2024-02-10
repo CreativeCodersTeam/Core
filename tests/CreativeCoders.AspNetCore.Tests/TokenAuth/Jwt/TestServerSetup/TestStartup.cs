@@ -13,9 +13,6 @@ public class TestStartup
     {
         services.AddControllers().AddTokenAuthApiController();
 
-        services
-            .AddJwtTokenAuthApi();
-
         var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(RandomString.Create()));
         services.Configure<JwtTokenAuthApiOptions>(x => { x.SecurityKey = securityKey; });
 
