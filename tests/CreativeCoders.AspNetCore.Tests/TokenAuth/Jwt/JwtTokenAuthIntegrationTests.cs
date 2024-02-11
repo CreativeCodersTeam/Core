@@ -215,4 +215,67 @@ public sealed class JwtTokenAuthIntegrationTests
             .Should()
             .Be($"refresh_auth_token={expectedToken}; path=/; secure; httponly");
     }
+
+    [Fact]
+    public async Task Login_WithCredentialsWithRefreshToken_ReturnsAuthAndRefreshTokenInPayload()
+    {
+        const string expectedAuthToken = "123456789012";
+        const string expectedRefreshToken = "24680";
+
+        // Arrange
+        await using var context = new TestServerContext<TestStartup>(null, null,
+            x => x.UseRefreshTokens = true);
+
+        var loginRequest = new LoginRequest
+        {
+            UserName = "test",
+            Password = "password",
+            Domain = "example.com",
+            UseCookies = false
+        };
+
+        A.CallTo(() =>
+                context.TokenCreator.CreateTokenAsync(A<string>.Ignored, A<string>.Ignored,
+                    A<IEnumerable<Claim>>.Ignored))
+            .Returns(Task.FromResult(expectedAuthToken))
+            .Once()
+            .Then
+            .Returns(Task.FromResult(expectedRefreshToken));
+
+        A.CallTo(() =>
+                context.UserAuthProvider.AuthenticateAsync(loginRequest.UserName, loginRequest.Password,
+                    loginRequest.Domain))
+            .Returns(Task.FromResult(true));
+
+        // Act
+        var response = await context.HttpClient.PostAsync(
+            new Uri("api/TokenAuth/login", UriKind.Relative), JsonContent.Create(loginRequest));
+
+        // Assert
+        response.StatusCode
+            .Should()
+            .Be(HttpStatusCode.OK);
+
+        var content = await response.Content.ReadFromJsonAsync<IDictionary<string, string>>();
+
+        content
+            .Should()
+            .NotBeNull()
+            .And
+            .HaveCount(2);
+
+        // ReSharper disable once NullableWarningSuppressionIsUsed
+        var authToken = content!["auth_token"];
+
+        authToken
+            .Should()
+            .Be(expectedAuthToken);
+
+        // ReSharper disable once NullableWarningSuppressionIsUsed
+        var refreshToken = content!["refresh_auth_token"];
+
+        refreshToken
+            .Should()
+            .Be(expectedRefreshToken);
+    }
 }
