@@ -1,4 +1,5 @@
-﻿using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
+﻿using System.Security.Claims;
+using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 using CreativeCoders.AspNetCore.TokenAuthApi.Api;
 using CreativeCoders.Core;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
     private readonly TokenAuthApiOptions _apiOptions;
 
     private readonly ITokenCreator _tokenCreator;
+
     private readonly IUserAuthProvider _userAuthProvider;
 
     private readonly IUserClaimsProvider _userClaimsProvider;
@@ -48,11 +50,16 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
         var claims = await _userClaimsProvider.GetUserClaimsAsync(loginRequest.UserName, loginRequest.Domain)
             .ConfigureAwait(false);
 
+        var authToken = await _tokenCreator
+            .CreateTokenAsync(_apiOptions.Issuer, loginRequest.UserName, claims)
+            .ConfigureAwait(false);
+
         var loginAuthTokens = new LoginAuthTokens
         {
-            AuthToken = await _tokenCreator
-                .CreateTokenAsync(_apiOptions.Issuer, loginRequest.UserName, claims)
-                .ConfigureAwait(false)
+            AuthToken = authToken,
+            RefreshToken = _apiOptions.UseRefreshTokens
+                ? await CreateRefreshTokenAsync(loginRequest.UserName, authToken).ConfigureAwait(false)
+                : string.Empty
         };
 
         return CreateLoginResponse(loginRequest.UseCookies, loginAuthTokens, httpResponse);
@@ -66,6 +73,12 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
     public Task<IActionResult> LogoutAsync()
     {
         throw new NotSupportedException("Logout is currently not supported");
+    }
+
+    private Task<string> CreateRefreshTokenAsync(string userName, string authToken)
+    {
+        return _tokenCreator.CreateTokenAsync(_apiOptions.Issuer, userName,
+            new[] { new Claim("auth_token", authToken) });
     }
 
     private IActionResult CreateLoginResponse(bool useCookies, LoginAuthTokens tokens,
@@ -82,7 +95,16 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
         {
             HttpOnly = true,
             Secure = true,
-            Domain = _apiOptions.CookieDomain
+            Domain = _apiOptions.CookieDomain,
+            Path = _apiOptions.CookiePath
+        });
+
+        httpResponse.Cookies.Append(_apiOptions.RefreshTokenName, tokens.RefreshToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            Domain = _apiOptions.RefreshCookieDomain,
+            Path = _apiOptions.RefreshCookiePath
         });
 
         return new OkResult();

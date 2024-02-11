@@ -70,13 +70,17 @@ public sealed class JwtTokenAuthIntegrationTests
     }
 
     [Fact]
-    public async Task Login_WithCredentialsRequestingCookieCustomCookieName_ReturnsAuthCookie()
+    public async Task Login_WithCredentialsRequestingCookieCustomCookieNameAndPath_ReturnsAuthCookie()
     {
         const string expectedToken = "123456789012";
 
         // Arrange
-        await using var context = new TestServerContext<TestStartup>(_ => { },
-            null, x => x.AuthTokenName = "test_auth_token");
+        await using var context = new TestServerContext<TestStartup>(null,
+            null, x =>
+            {
+                x.AuthTokenName = "test_auth_token";
+                x.CookiePath = "/api";
+            });
 
         var loginRequest = new LoginRequest
         {
@@ -109,7 +113,7 @@ public sealed class JwtTokenAuthIntegrationTests
 
         cookie
             .Should()
-            .Be($"test_auth_token={expectedToken}; path=/; secure; httponly");
+            .Be($"test_auth_token={expectedToken}; path=/api; secure; httponly");
     }
 
     [Fact]
@@ -159,5 +163,56 @@ public sealed class JwtTokenAuthIntegrationTests
         token
             .Should()
             .Be(expectedToken);
+    }
+
+    [Fact]
+    public async Task Login_WithCredentialsRequestingCookieWithRefreshCookie_ReturnsAuthAndRefreshCookie()
+    {
+        const string expectedToken = "123456789012";
+
+        // Arrange
+        await using var context = new TestServerContext<TestStartup>(null,
+            null, x => x.UseRefreshTokens = true);
+
+        var loginRequest = new LoginRequest
+        {
+            UserName = "test",
+            Password = "password",
+            Domain = "example.com",
+            UseCookies = true
+        };
+
+        A.CallTo(() =>
+                context.TokenCreator.CreateTokenAsync(A<string>.Ignored, A<string>.Ignored,
+                    A<IEnumerable<Claim>>.Ignored))
+            .Returns(Task.FromResult(expectedToken));
+
+        A.CallTo(() =>
+                context.UserAuthProvider.AuthenticateAsync(loginRequest.UserName, loginRequest.Password,
+                    loginRequest.Domain))
+            .Returns(Task.FromResult(true));
+
+        // Act
+        var response = await context.HttpClient.PostAsync(
+            new Uri("api/TokenAuth/login", UriKind.Relative), JsonContent.Create(loginRequest));
+
+        // Assert
+        response.StatusCode
+            .Should()
+            .Be(HttpStatusCode.OK);
+
+        var cookies = response.Headers.GetValues("set-cookie").ToArray();
+
+        var authCookie = cookies[0];
+
+        authCookie
+            .Should()
+            .Be($"auth_token={expectedToken}; path=/; secure; httponly");
+
+        var refreshCookie = cookies[1];
+
+        refreshCookie
+            .Should()
+            .Be($"refresh_auth_token={expectedToken}; path=/; secure; httponly");
     }
 }

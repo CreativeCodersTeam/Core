@@ -37,14 +37,6 @@ public class TokenAuthApiOptions
     public string CookiePath { get; set; } = "/";
 
     /// <summary>
-    ///     Gets or sets a boolean value indicating whether to use refresh tokens for authentication.
-    /// </summary>
-    /// <value>
-    ///     <c>true</c> if refresh tokens are used, otherwise <c>false</c>.
-    /// </value>
-    public bool UseRefreshTokens { get; set; }
-
-    /// <summary>
     ///     The name of the authentication token.
     /// </summary>
     /// <value>
@@ -54,15 +46,49 @@ public class TokenAuthApiOptions
     public string AuthTokenName { get; set; } = "auth_token";
 
     /// <summary>
-    ///     Gets or sets the name of the refresh token property.
-    /// </summary>
-    public string RefreshTokenName { get; set; } = "refresh_auth_token";
-
-    /// <summary>
     ///     The issuer of a auth token.
     /// </summary>
     /// <value>
     ///     The issuer represents the entity or authority that issues the token.
     /// </value>
     public string Issuer { get; set; } = string.Empty;
+
+    /// <summary>
+    ///     Gets or sets a boolean value indicating whether to use refresh tokens for authentication.
+    /// </summary>
+    /// <value>
+    ///     <c>true</c> if refresh tokens are used, otherwise <c>false</c>.
+    /// </value>
+    public bool UseRefreshTokens { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the name of the refresh token property.
+    /// </summary>
+    public string RefreshTokenName { get; set; } = "refresh_auth_token";
+
+    /// <summary>
+    ///     Gets or sets the domain for which the refresh cookie is valid.
+    /// </summary>
+    /// <remarks>
+    ///     The CookieDomain property represents the domain for which the refresh cookie is valid.
+    ///     The domain can be specified as a fully qualified domain name (e.g. "example.com")
+    ///     or as a sub-domain (e.g. "subdomain.example.com").
+    ///     If the RefreshCookieDomain property is not set, the cookie is valid for the current domain.
+    ///     Setting the CookieDomain property to null or an empty string will cause the cookie
+    ///     to be valid for the current domain only.
+    /// </remarks>
+    /// <value>
+    ///     A string representing the domain for which the refresh cookie is valid.
+    ///     If not set, the refresh cookie is valid for the current domain.
+    /// </value>
+    public string? RefreshCookieDomain { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the path for the refresh cookie.
+    /// </summary>
+    /// <remarks>
+    ///     The path determines the scope or visibility of the refresh cookie. Only requests within the specified path will
+    ///     include the cookie.
+    /// </remarks>
+    public string RefreshCookiePath { get; set; } = "/";
 }
