@@ -1,5 +1,6 @@
 ﻿using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 using CreativeCoders.AspNetCore.TokenAuthApi.Api;
+using CreativeCoders.AspNetCore.TokenAuthApi.Default;
 using CreativeCoders.Core;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +19,6 @@ public static class TokenAuthApiExtensions
     ///     An optional <see cref="Action{T}" /> delegate that is used to configure the
     ///     <see cref="TokenAuthApiOptions" />.
     /// </param>
-    /// <returns>A <see cref="TokenAuthApiBuilder" /> instance that can be used to configure the TokenAuthApi.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="services" /> argument is null.</exception>
     /// <remarks>
     ///     This method adds the necessary services to the IServiceCollection to enable token-based authentication API.
@@ -33,6 +33,10 @@ public static class TokenAuthApiExtensions
         services.AddOptions();
 
         services.TryAddScoped<ITokenAuthHandler, DefaultTokenAuthHandler>();
+
+        services.TryAddScoped<IUserProvider, DefaultUserProvider>();
+
+        services.TryAddSingleton<IRefreshTokenStore, InMemoryRefreshTokenStore>();
 
         if (configureOptions != null)
         {

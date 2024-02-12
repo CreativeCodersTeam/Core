@@ -6,23 +6,23 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace CreativeCoders.AspNetCore.TokenAuthApi;
+namespace CreativeCoders.AspNetCore.TokenAuthApi.Default;
 
 public class DefaultTokenAuthHandler : ITokenAuthHandler
 {
     private readonly TokenAuthApiOptions _apiOptions;
 
+    private readonly IRefreshTokenStore _refreshTokenStore;
+
     private readonly ITokenCreator _tokenCreator;
 
-    private readonly IUserAuthProvider _userAuthProvider;
+    private readonly IUserProvider _userProvider;
 
-    private readonly IUserClaimsProvider _userClaimsProvider;
-
-    public DefaultTokenAuthHandler(IUserAuthProvider userAuthProvider, IUserClaimsProvider userClaimsProvider,
+    public DefaultTokenAuthHandler(IUserProvider userProvider, IRefreshTokenStore refreshTokenStore,
         ITokenCreator tokenCreator, IOptions<TokenAuthApiOptions> options)
     {
-        _userAuthProvider = Ensure.NotNull(userAuthProvider);
-        _userClaimsProvider = Ensure.NotNull(userClaimsProvider);
+        _userProvider = Ensure.NotNull(userProvider);
+        _refreshTokenStore = Ensure.NotNull(refreshTokenStore);
         _tokenCreator = Ensure.NotNull(tokenCreator);
         _apiOptions = Ensure.NotNull(options).Value;
     }
@@ -35,7 +35,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
             return new UnauthorizedObjectResult(new { error = "Invalid credentials" });
         }
 
-        if (!await _userAuthProvider.AuthenticateAsync(loginRequest.UserName,
+        if (!await _userProvider.AuthenticateAsync(loginRequest.UserName,
                     loginRequest.Password,
                     loginRequest.Domain)
                 .ConfigureAwait(false))
@@ -47,7 +47,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
                 });
         }
 
-        var claims = await _userClaimsProvider.GetUserClaimsAsync(loginRequest.UserName, loginRequest.Domain)
+        var claims = await _userProvider.GetUserClaimsAsync(loginRequest.UserName, loginRequest.Domain)
             .ConfigureAwait(false);
 
         var authToken = await _tokenCreator
@@ -75,10 +75,15 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
         throw new NotSupportedException("Logout is currently not supported");
     }
 
-    private Task<string> CreateRefreshTokenAsync(string userName, string authToken)
+    private async Task<string> CreateRefreshTokenAsync(string userName, string authToken)
     {
-        return _tokenCreator.CreateTokenAsync(_apiOptions.Issuer, userName,
-            new[] { new Claim("auth_token", authToken) });
+        var refreshToken = await _tokenCreator.CreateTokenAsync(_apiOptions.Issuer, userName,
+            new[] { new Claim("auth_token", authToken) }).ConfigureAwait(false);
+
+        await _refreshTokenStore.AddRefreshTokenAsync(refreshToken, authToken,
+            DateTimeOffset.Now.AddDays(7)).ConfigureAwait(false);
+
+        return refreshToken;
     }
 
     private IActionResult CreateLoginResponse(bool useCookies, LoginAuthTokens tokens,

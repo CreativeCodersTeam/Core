@@ -122,5 +122,49 @@ public class JwtTokenCreatorTests
         token.Claims
             .Should()
             .Contain(s => s.Type == ClaimTypes.Name && s.Value == "test");
+
+        token.ValidTo
+            .Should()
+            .BeCloseTo(DateTime.UtcNow.Add(options.Value.ExpirationTimeSpan), TimeSpan.FromSeconds(2));
+    }
+
+    [Fact]
+    public async Task CreateTokenAsync_GivenCustomExpirationTimeSpan_ValidToIsCorrect()
+    {
+        // Arrange
+        var securityKey = new SymmetricSecurityKey(
+            Encoding.ASCII.GetBytes("test key with spaces test key with spaces test key with spaces"));
+
+        var options = Options.Create(new JwtTokenAuthApiOptions
+        {
+            SecurityKey = securityKey,
+            ExpirationTimeSpan = TimeSpan.FromHours(2)
+        });
+
+        var jwtTokenCreator = new JwtTokenCreator(options);
+
+        // Act
+        var result = await jwtTokenCreator.CreateTokenAsync("issuer", "test",
+            new List<Claim> { new Claim(ClaimTypes.Name, "test") });
+
+        // Assert
+        result
+            .Should()
+            .NotBeNull();
+
+        var handler = new JwtSecurityTokenHandler();
+        var token = handler.ReadJwtToken(result);
+
+        token
+            .Should()
+            .NotBeNull();
+
+        token.Claims
+            .Should()
+            .Contain(s => s.Type == ClaimTypes.Name && s.Value == "test");
+
+        token.ValidTo
+            .Should()
+            .BeCloseTo(DateTime.UtcNow.Add(options.Value.ExpirationTimeSpan), TimeSpan.FromSeconds(2));
     }
 }

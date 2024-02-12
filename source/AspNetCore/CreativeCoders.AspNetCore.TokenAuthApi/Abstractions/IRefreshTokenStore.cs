@@ -4,5 +4,5 @@ public interface IRefreshTokenStore
 {
     Task AddRefreshTokenAsync(string refreshToken, string authToken, DateTimeOffset expire);
 
-    Task RemoveRefreshTokenAsync();
+    Task RemoveRefreshTokenAsync(string refreshToken);
 }
