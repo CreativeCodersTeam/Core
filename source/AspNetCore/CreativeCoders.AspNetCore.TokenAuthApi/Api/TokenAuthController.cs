@@ -34,8 +34,8 @@ public class TokenAuthController : ControllerBase
     }
 
     [HttpPost("refresh-token")]
-    public Task<IActionResult> RefreshTokenAsync()
+    public Task<IActionResult> RefreshTokenAsync([FromBody] RefreshTokenRequest refreshTokenRequest)
     {
-        return _tokenAuthHandler.RefreshTokenAsync();
+        return _tokenAuthHandler.RefreshTokenAsync(refreshTokenRequest, Request, Response);
     }
 }

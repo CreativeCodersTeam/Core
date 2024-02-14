@@ -1,6 +1,4 @@
-﻿using System.Collections.Concurrent;
-using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
-using CreativeCoders.Core.Threading;
+﻿using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 
 namespace CreativeCoders.AspNetCore.TokenAuthApi.Default;
 
@@ -23,6 +21,16 @@ public class InMemoryRefreshTokenStore : IRefreshTokenStore
         return Task.CompletedTask;
     }
 
+    public Task<bool> IsTokenValidAsync(string refreshToken)
+    {
+        lock (__items)
+        {
+            var item = __items.Find(x => x.RefreshToken == refreshToken);
+
+            return Task.FromResult(item != null && item.Expire > DateTimeOffset.Now);
+        }
+    }
+
     public Task RemoveRefreshTokenAsync(string refreshToken)
     {
         lock (__items)
@@ -32,13 +40,4 @@ public class InMemoryRefreshTokenStore : IRefreshTokenStore
 
         return Task.CompletedTask;
     }
-}
-
-internal class RefreshTokenItem
-{
-    public string RefreshToken { get; set; } = string.Empty;
-
-    public string AuthToken { get; set; } = string.Empty;
-
-    public DateTimeOffset Expire { get; set; }
 }

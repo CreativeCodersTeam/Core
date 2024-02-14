@@ -7,15 +7,33 @@ namespace CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 public interface ITokenAuthHandler
 {
     /// <summary>
-    /// Authenticates the user with the provided login credentials asynchronously.
+    ///     Authenticates the user with the provided login credentials asynchronously.
     /// </summary>
     /// <param name="loginRequest">The login request details containing the user's credentials.</param>
     /// <param name="httpResponse">The HTTP response to write the authentication result to.</param>
-    /// <returns>A task representing the asynchronous login operation.
-    /// The task result is an IActionResult representing the result of the authentication process.</returns>
+    /// <returns>
+    ///     A task representing the asynchronous login operation.
+    ///     The task result is an IActionResult representing the result of the authentication process.
+    /// </returns>
     Task<IActionResult> LoginAsync(LoginRequest loginRequest, HttpResponse httpResponse);
 
-    Task<IActionResult> RefreshTokenAsync();
-
     Task<IActionResult> LogoutAsync();
+
+    /// <summary>
+    ///     Asynchronously refreshes an existing token.
+    /// </summary>
+    /// <param name="refreshTokenRequest">
+    ///     An instance of <see cref="RefreshTokenRequest" /> containing the details of the token
+    ///     to be refreshed.
+    /// </param>
+    /// <param name="httpRequest">The original HTTP request that triggered the token refresh.</param>
+    /// <param name="httpResponse">The original HTTP response for that request</param>
+    /// <returns>
+    ///     A <see cref="Task" /> representing the asynchronous operation. The task result is an instance of
+    ///     <see cref="IActionResult" />.
+    ///     It represents the result of the refresh token process, typically contains data for a new valid token or an error if
+    ///     the refresh process failed.
+    /// </returns>
+    Task<IActionResult> RefreshTokenAsync(RefreshTokenRequest refreshTokenRequest, HttpRequest httpRequest,
+        HttpResponse httpResponse);
 }

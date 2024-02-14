@@ -29,7 +29,7 @@ namespace CreativeCoders.AspNetCore.Tests.Api
             var expectedResult = new OkResult();
 
             A.CallTo(() => _fakeTokenAuthHandler.LoginAsync(loginRequest, A<HttpResponse>.Ignored))
-             .Returns(expectedResult);
+                .Returns(expectedResult);
 
             // Act
             var result = await _tokenAuthController.LoginAsync(loginRequest);
@@ -81,18 +81,24 @@ namespace CreativeCoders.AspNetCore.Tests.Api
         public async Task RefreshTokenAsync_Should_Invoke_TokenAuthHandler_RefreshTokenAsync()
         {
             // Arrange
-            A.CallTo(() => _fakeTokenAuthHandler.RefreshTokenAsync())
-             .Returns(new OkResult());
+            var refreshTokenRequest = new RefreshTokenRequest();
+
+            A.CallTo(() =>
+                    _fakeTokenAuthHandler.RefreshTokenAsync(refreshTokenRequest, A<HttpRequest>.Ignored,
+                        A<HttpResponse>.Ignored))
+                .Returns(new OkResult());
 
             // Act
-            var result = await _tokenAuthController.RefreshTokenAsync();
+            var result = await _tokenAuthController.RefreshTokenAsync(refreshTokenRequest);
 
             // Assert
             result
                 .Should()
                 .BeOfType<OkResult>();
 
-            A.CallTo(() => _fakeTokenAuthHandler.RefreshTokenAsync())
+            A.CallTo(() =>
+                    _fakeTokenAuthHandler.RefreshTokenAsync(refreshTokenRequest, A<HttpRequest>.Ignored,
+                        A<HttpResponse>.Ignored))
                 .MustHaveHappenedOnceExactly();
         }
     }

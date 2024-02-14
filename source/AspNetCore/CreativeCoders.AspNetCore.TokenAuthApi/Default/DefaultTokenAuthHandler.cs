@@ -47,6 +47,57 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
                 });
         }
 
+        return await CreateLoginAuthTokensResponse(loginRequest, httpResponse).ConfigureAwait(false);
+    }
+
+    public async Task<IActionResult> RefreshTokenAsync(RefreshTokenRequest refreshTokenRequest,
+        HttpRequest httpRequest, HttpResponse httpResponse)
+    {
+        var useCookies = string.IsNullOrEmpty(refreshTokenRequest.RefreshToken);
+
+        var refreshToken = useCookies
+            ? httpRequest.Cookies[_apiOptions.RefreshTokenName]
+            : refreshTokenRequest.RefreshToken;
+
+        if (string.IsNullOrEmpty(refreshToken))
+        {
+            return new UnauthorizedObjectResult(new { error = "Refresh token invalid" });
+        }
+
+        if (!await _refreshTokenStore.IsTokenValidAsync(refreshToken).ConfigureAwait(false))
+        {
+            return new UnauthorizedObjectResult(new { error = "Refresh token invalid" });
+        }
+
+        var token = await _tokenCreator.ReadTokenFrom(refreshToken).ConfigureAwait(false);
+
+        var userName = token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+
+        if (string.IsNullOrEmpty(userName))
+        {
+            return new UnauthorizedObjectResult(new { error = "Refresh token invalid" });
+        }
+
+        var domain = token.Claims.FirstOrDefault(x => x.Type == "domain")?.Value;
+
+        return await CreateLoginAuthTokensResponse(
+                new LoginRequest
+                {
+                    UserName = userName,
+                    Domain = domain,
+                    UseCookies = useCookies
+                }, httpResponse)
+            .ConfigureAwait(false);
+    }
+
+    public Task<IActionResult> LogoutAsync()
+    {
+        throw new NotSupportedException("Logout is currently not supported");
+    }
+
+    private async Task<IActionResult> CreateLoginAuthTokensResponse(LoginRequest loginRequest,
+        HttpResponse httpResponse)
+    {
         var claims = await _userProvider.GetUserClaimsAsync(loginRequest.UserName, loginRequest.Domain)
             .ConfigureAwait(false);
 
@@ -58,27 +109,24 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
         {
             AuthToken = authToken,
             RefreshToken = _apiOptions.UseRefreshTokens
-                ? await CreateRefreshTokenAsync(loginRequest.UserName, authToken).ConfigureAwait(false)
+                ? await CreateRefreshTokenAsync(loginRequest.UserName, loginRequest.Domain, authToken)
+                    .ConfigureAwait(false)
                 : string.Empty
         };
 
         return CreateLoginResponse(loginRequest.UseCookies, loginAuthTokens, httpResponse);
     }
 
-    public Task<IActionResult> RefreshTokenAsync()
-    {
-        throw new NotSupportedException("Refresh is currently not supported");
-    }
-
-    public Task<IActionResult> LogoutAsync()
-    {
-        throw new NotSupportedException("Logout is currently not supported");
-    }
-
-    private async Task<string> CreateRefreshTokenAsync(string userName, string authToken)
+    private async Task<string> CreateRefreshTokenAsync(string userName, string? domain,
+        string authToken)
     {
         var refreshToken = await _tokenCreator.CreateTokenAsync(_apiOptions.Issuer, userName,
-            new[] { new Claim("auth_token", authToken) }).ConfigureAwait(false);
+            new[]
+            {
+                new Claim("auth_token", authToken),
+                new Claim(ClaimTypes.Name, userName),
+                new Claim("domain", domain ?? string.Empty)
+            }).ConfigureAwait(false);
 
         await _refreshTokenStore.AddRefreshTokenAsync(refreshToken, authToken,
             DateTimeOffset.Now.AddDays(7)).ConfigureAwait(false);
