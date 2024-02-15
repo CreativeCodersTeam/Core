@@ -50,7 +50,7 @@ public class JwtTokenCreator : ITokenCreator
         return Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
     }
 
-    public Task<AuthToken> ReadTokenFrom(string token)
+    public Task<AuthToken> ReadTokenFromAsync(string token)
     {
         var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
 

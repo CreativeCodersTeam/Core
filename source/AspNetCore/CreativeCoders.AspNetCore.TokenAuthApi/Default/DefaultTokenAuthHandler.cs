@@ -69,7 +69,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
             return new UnauthorizedObjectResult(new { error = "Refresh token invalid" });
         }
 
-        var token = await _tokenCreator.ReadTokenFrom(refreshToken).ConfigureAwait(false);
+        var token = await _tokenCreator.ReadTokenFromAsync(refreshToken).ConfigureAwait(false);
 
         var userName = token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
 
@@ -98,6 +98,11 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
     private async Task<IActionResult> CreateLoginAuthTokensResponse(LoginRequest loginRequest,
         HttpResponse httpResponse)
     {
+        if (string.IsNullOrEmpty(loginRequest.UserName))
+        {
+            return new UnauthorizedObjectResult(new { error = "Invalid login" });
+        }
+
         var claims = await _userProvider.GetUserClaimsAsync(loginRequest.UserName, loginRequest.Domain)
             .ConfigureAwait(false);
 

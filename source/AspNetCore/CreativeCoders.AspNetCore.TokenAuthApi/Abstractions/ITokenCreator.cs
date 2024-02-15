@@ -6,7 +6,7 @@ public interface ITokenCreator
 {
     Task<string> CreateTokenAsync(string issuer, string userName, IEnumerable<Claim> claims);
 
-    Task<AuthToken> ReadTokenFrom(string token);
+    Task<AuthToken> ReadTokenFromAsync(string token);
 }
 
 public class AuthToken

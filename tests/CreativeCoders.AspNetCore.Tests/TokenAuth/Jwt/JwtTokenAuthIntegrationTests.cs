@@ -2,6 +2,7 @@
 using System.Net;
 using System.Security.Claims;
 using CreativeCoders.AspNetCore.Tests.TokenAuth.Jwt.TestServerSetup;
+using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 using CreativeCoders.AspNetCore.TokenAuthApi.Api;
 
 namespace CreativeCoders.AspNetCore.Tests.TokenAuth.Jwt;
@@ -277,5 +278,91 @@ public sealed class JwtTokenAuthIntegrationTests
         refreshToken
             .Should()
             .Be(expectedRefreshToken);
+    }
+
+    [Fact]
+    [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
+    public async Task RefreshToken_WithCredentialsWithRefreshToken_ReturnsAuthAndRefreshTokenInPayload()
+    {
+        const string expectedAuthToken = "123456789012";
+        const string expectedRefreshToken = "24680";
+        const string expectedAuthToken2 = "2222123456789012";
+        const string expectedRefreshToken2 = "222224680";
+
+        // Arrange
+        await using var context = new TestServerContext<TestStartup>(null, null,
+            x => x.UseRefreshTokens = true);
+
+        var loginRequest = new LoginRequest
+        {
+            UserName = "test",
+            Password = "password",
+            Domain = "example.com",
+            UseCookies = false
+        };
+
+        A.CallTo(() =>
+                context.TokenCreator.CreateTokenAsync(A<string>.Ignored, A<string>.Ignored,
+                    A<IEnumerable<Claim>>.Ignored))
+            .Returns(Task.FromResult(expectedAuthToken))
+            .Once()
+            .Then
+            .Returns(Task.FromResult(expectedRefreshToken))
+            .Once()
+            .Then
+            .Returns(Task.FromResult(expectedAuthToken2))
+            .Once()
+            .Then
+            .Returns(expectedRefreshToken2);
+
+        A.CallTo(() => context.TokenCreator.ReadTokenFromAsync(A<string>.Ignored))
+            .Returns(Task.FromResult(new AuthToken
+            {
+                Claims = new[]
+                {
+                    new Claim(ClaimTypes.Name, "test")
+                }
+            }));
+
+        A.CallTo(() =>
+                context.UserAuthProvider.AuthenticateAsync(loginRequest.UserName, loginRequest.Password,
+                    loginRequest.Domain))
+            .Returns(Task.FromResult(true));
+
+        // Act
+        var response = await context.HttpClient.PostAsync(
+            new Uri("api/TokenAuth/login", UriKind.Relative), JsonContent.Create(loginRequest));
+
+        var loginResponseContent = await response.Content.ReadFromJsonAsync<IDictionary<string, string>>();
+
+        var refreshToken = loginResponseContent!["refresh_auth_token"];
+
+        var refreshResponse = await context.HttpClient.PostAsync(
+            new Uri("api/TokenAuth/refresh-token", UriKind.Relative),
+            JsonContent.Create(
+                new RefreshTokenRequest
+                {
+                    RefreshToken = refreshToken
+                }));
+
+        // Assert
+        refreshResponse.StatusCode
+            .Should()
+            .Be(HttpStatusCode.OK);
+
+        var refreshResponseContent =
+            await refreshResponse.Content.ReadFromJsonAsync<IDictionary<string, string>>();
+
+        var newAuthToken = refreshResponseContent!["auth_token"];
+
+        newAuthToken
+            .Should()
+            .Be(expectedAuthToken2);
+
+        var newRefreshToken = refreshResponseContent!["refresh_auth_token"];
+
+        newRefreshToken
+            .Should()
+            .Be(expectedRefreshToken2);
     }
 }
