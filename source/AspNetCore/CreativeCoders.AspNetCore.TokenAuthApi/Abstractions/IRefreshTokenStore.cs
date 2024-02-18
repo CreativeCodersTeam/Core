@@ -2,7 +2,7 @@
 
 public interface IRefreshTokenStore
 {
-    Task AddRefreshTokenAsync(string refreshToken, string authToken, DateTimeOffset expire);
+    Task AddRefreshTokenAsync(string refreshToken, DateTimeOffset expire);
 
     Task<bool> IsTokenValidAsync(string refreshToken);
 

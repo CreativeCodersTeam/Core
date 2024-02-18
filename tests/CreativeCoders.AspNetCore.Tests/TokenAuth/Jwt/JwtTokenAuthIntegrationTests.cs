@@ -273,7 +273,7 @@ public sealed class JwtTokenAuthIntegrationTests
             .Be(expectedAuthToken);
 
         // ReSharper disable once NullableWarningSuppressionIsUsed
-        var refreshToken = content!["refresh_auth_token"];
+        var refreshToken = content["refresh_auth_token"];
 
         refreshToken
             .Should()
@@ -315,7 +315,7 @@ public sealed class JwtTokenAuthIntegrationTests
             .Then
             .Returns(expectedRefreshToken2);
 
-        A.CallTo(() => context.TokenCreator.ReadTokenFromAsync(A<string>.Ignored))
+        A.CallTo(() => context.TokenCreator.ReadTokenFromStringAsync(A<string>.Ignored))
             .Returns(Task.FromResult(new AuthToken
             {
                 Claims = new[]
@@ -359,10 +359,90 @@ public sealed class JwtTokenAuthIntegrationTests
             .Should()
             .Be(expectedAuthToken2);
 
-        var newRefreshToken = refreshResponseContent!["refresh_auth_token"];
+        var newRefreshToken = refreshResponseContent["refresh_auth_token"];
 
         newRefreshToken
             .Should()
             .Be(expectedRefreshToken2);
+    }
+
+    [Fact]
+    public async Task RefreshToken_EmptyRefreshToken_ReturnUnauthorizedResult()
+    {
+        // Arrange
+        await using var context = new TestServerContext<TestStartup>();
+
+        var refreshTokenRequest = new RefreshTokenRequest();
+
+        // Act
+        var response = await context.HttpClient.PostAsync(
+            new Uri("api/TokenAuth/refresh-token", UriKind.Relative),
+            JsonContent.Create(refreshTokenRequest));
+
+        // Assert
+        response.StatusCode
+            .Should()
+            .Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task RefreshToken_InvalidRefreshToken_ReturnUnauthorizedResult()
+    {
+        // Arrange
+        var refreshTokenStore = A.Fake<IRefreshTokenStore>();
+
+        A.CallTo(() => refreshTokenStore.IsTokenValidAsync(A<string>.Ignored))
+            .Returns(false);
+
+        await using var context = new TestServerContext<TestStartup>(
+            services => services.AddSingleton(refreshTokenStore));
+
+        var refreshTokenRequest = new RefreshTokenRequest
+        {
+            RefreshToken = "1234567890"
+        };
+
+        // Act
+        var response = await context.HttpClient.PostAsync(
+            new Uri("api/TokenAuth/refresh-token", UriKind.Relative),
+            JsonContent.Create(refreshTokenRequest));
+
+        // Assert
+        response.StatusCode
+            .Should()
+            .Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task RefreshToken_RefreshTokenHasNoUser_ReturnUnauthorizedResult()
+    {
+        const string refreshToken = "1234567890";
+
+        // Arrange
+        var refreshTokenStore = A.Fake<IRefreshTokenStore>();
+
+        A.CallTo(() => refreshTokenStore.IsTokenValidAsync(A<string>.Ignored))
+            .Returns(true);
+
+        await using var context = new TestServerContext<TestStartup>(
+            services => services.AddSingleton(refreshTokenStore));
+
+        A.CallTo(() => context.TokenCreator.ReadTokenFromStringAsync(refreshToken))
+            .Returns(new AuthToken());
+
+        var refreshTokenRequest = new RefreshTokenRequest
+        {
+            RefreshToken = refreshToken
+        };
+
+        // Act
+        var response = await context.HttpClient.PostAsync(
+            new Uri("api/TokenAuth/refresh-token", UriKind.Relative),
+            JsonContent.Create(refreshTokenRequest));
+
+        // Assert
+        response.StatusCode
+            .Should()
+            .Be(HttpStatusCode.Unauthorized);
     }
 }

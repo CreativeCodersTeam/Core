@@ -4,16 +4,15 @@ namespace CreativeCoders.AspNetCore.TokenAuthApi.Default;
 
 public class InMemoryRefreshTokenStore : IRefreshTokenStore
 {
-    private static readonly List<RefreshTokenItem> __items = new List<RefreshTokenItem>();
+    private readonly List<RefreshTokenItem> _items = new List<RefreshTokenItem>();
 
-    public Task AddRefreshTokenAsync(string refreshToken, string authToken, DateTimeOffset expire)
+    public Task AddRefreshTokenAsync(string refreshToken, DateTimeOffset expire)
     {
-        lock (__items)
+        lock (_items)
         {
-            __items.Add(new RefreshTokenItem
+            _items.Add(new RefreshTokenItem
             {
                 RefreshToken = refreshToken,
-                AuthToken = authToken,
                 Expire = expire
             });
         }
@@ -23,9 +22,9 @@ public class InMemoryRefreshTokenStore : IRefreshTokenStore
 
     public Task<bool> IsTokenValidAsync(string refreshToken)
     {
-        lock (__items)
+        lock (_items)
         {
-            var item = __items.Find(x => x.RefreshToken == refreshToken);
+            var item = _items.Find(x => x.RefreshToken == refreshToken);
 
             return Task.FromResult(item != null && item.Expire > DateTimeOffset.Now);
         }
@@ -33,9 +32,9 @@ public class InMemoryRefreshTokenStore : IRefreshTokenStore
 
     public Task RemoveRefreshTokenAsync(string refreshToken)
     {
-        lock (__items)
+        lock (_items)
         {
-            __items.RemoveAll(x => x.RefreshToken == refreshToken);
+            _items.RemoveAll(x => x.RefreshToken == refreshToken);
         }
 
         return Task.CompletedTask;

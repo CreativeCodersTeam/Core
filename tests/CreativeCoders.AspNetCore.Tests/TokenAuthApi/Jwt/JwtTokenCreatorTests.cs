@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using CreativeCoders.AspNetCore.TokenAuthApi.Jwt;
@@ -11,6 +12,7 @@ namespace CreativeCoders.AspNetCore.Tests.TokenAuthApi.Jwt;
 public class JwtTokenCreatorTests
 {
     [Fact]
+    [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
     public void JwtTokenCreator_GivenNullOptions_ThrowsException()
     {
         // Arrange
@@ -41,6 +43,7 @@ public class JwtTokenCreatorTests
     }
 
     [Fact]
+    [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
     public async Task CreateTokenAsync_GivenNullUserName_ThrowsException()
     {
         // Arrange
@@ -166,5 +169,44 @@ public class JwtTokenCreatorTests
         token.ValidTo
             .Should()
             .BeCloseTo(DateTime.UtcNow.Add(options.Value.ExpirationTimeSpan), TimeSpan.FromSeconds(2));
+    }
+
+    [Fact]
+    public async Task ReadTokenFromStringAsync_ValidJwtTokenIsGiven_TokenIsRead()
+    {
+        const string testIssuer = "issuer";
+        const string testUser = "testUser";
+
+        // Arrange
+        var securityKey =
+            new SymmetricSecurityKey(Enumerable.Range(0, 127).Select(x => (byte)x).ToArray());
+        var options = Options.Create(new JwtTokenAuthApiOptions { SecurityKey = securityKey });
+
+        var jwtTokenCreator = new JwtTokenCreator(options);
+
+        var additionalClaims = new List<Claim> { new Claim(ClaimTypes.Name, testUser) };
+
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            testIssuer,
+            "",
+            additionalClaims,
+            expires: DateTime.Now.Add(TimeSpan.FromHours(1)),
+            signingCredentials: credentials);
+
+        var createdToken = new JwtSecurityTokenHandler().WriteToken(token);
+
+        // Act
+        var readToken = await jwtTokenCreator.ReadTokenFromStringAsync(createdToken);
+
+        // Assert
+        readToken
+            .Should()
+            .NotBeNull();
+
+        readToken.Claims
+            .Should()
+            .Contain(s => s.Type == ClaimTypes.Name && s.Value == testUser);
     }
 }

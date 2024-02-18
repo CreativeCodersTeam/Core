@@ -29,6 +29,9 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
 
     public async Task<IActionResult> LoginAsync(LoginRequest loginRequest, HttpResponse httpResponse)
     {
+        Ensure.NotNull(loginRequest);
+        Ensure.NotNull(httpResponse);
+
         if (string.IsNullOrWhiteSpace(loginRequest.UserName) ||
             string.IsNullOrWhiteSpace(loginRequest.Password))
         {
@@ -69,7 +72,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
             return new UnauthorizedObjectResult(new { error = "Refresh token invalid" });
         }
 
-        var token = await _tokenCreator.ReadTokenFromAsync(refreshToken).ConfigureAwait(false);
+        var token = await _tokenCreator.ReadTokenFromStringAsync(refreshToken).ConfigureAwait(false);
 
         var userName = token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
 
@@ -80,7 +83,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
 
         var domain = token.Claims.FirstOrDefault(x => x.Type == "domain")?.Value;
 
-        return await CreateLoginAuthTokensResponse(
+        var response = await CreateLoginAuthTokensResponse(
                 new LoginRequest
                 {
                     UserName = userName,
@@ -88,6 +91,10 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
                     UseCookies = useCookies
                 }, httpResponse)
             .ConfigureAwait(false);
+
+        await _refreshTokenStore.RemoveRefreshTokenAsync(refreshToken).ConfigureAwait(false);
+
+        return response;
     }
 
     public Task<IActionResult> LogoutAsync()
@@ -98,10 +105,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
     private async Task<IActionResult> CreateLoginAuthTokensResponse(LoginRequest loginRequest,
         HttpResponse httpResponse)
     {
-        if (string.IsNullOrEmpty(loginRequest.UserName))
-        {
-            return new UnauthorizedObjectResult(new { error = "Invalid login" });
-        }
+        Ensure.IsNotNullOrEmpty(loginRequest.UserName);
 
         var claims = await _userProvider.GetUserClaimsAsync(loginRequest.UserName, loginRequest.Domain)
             .ConfigureAwait(false);
@@ -133,7 +137,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
                 new Claim("domain", domain ?? string.Empty)
             }).ConfigureAwait(false);
 
-        await _refreshTokenStore.AddRefreshTokenAsync(refreshToken, authToken,
+        await _refreshTokenStore.AddRefreshTokenAsync(refreshToken,
             DateTimeOffset.Now.AddDays(7)).ConfigureAwait(false);
 
         return refreshToken;
