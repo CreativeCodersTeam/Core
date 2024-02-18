@@ -445,4 +445,74 @@ public sealed class JwtTokenAuthIntegrationTests
             .Should()
             .Be(HttpStatusCode.Unauthorized);
     }
+
+    [Fact]
+    public async Task Logout_AfterLogin_ReturnsOk()
+    {
+        const string expectedToken = "123456789012";
+
+        // Arrange
+        await using var context = new TestServerContext<TestStartup>(null,
+            null, x => x.UseRefreshTokens = true);
+
+        var loginRequest = new LoginRequest
+        {
+            UserName = "test",
+            Password = "password",
+            Domain = "example.com",
+            UseCookies = false
+        };
+
+        A.CallTo(() =>
+                context.TokenCreator.CreateTokenAsync(A<string>.Ignored, A<string>.Ignored,
+                    A<IEnumerable<Claim>>.Ignored))
+            .Returns(Task.FromResult(expectedToken));
+
+        A.CallTo(() =>
+                context.UserAuthProvider.AuthenticateAsync(loginRequest.UserName, loginRequest.Password,
+                    loginRequest.Domain))
+            .Returns(Task.FromResult(true));
+
+        // Act
+        var loginResponse = await context.HttpClient.PostAsync(
+            new Uri("api/TokenAuth/login", UriKind.Relative), JsonContent.Create(loginRequest));
+
+        var content = await loginResponse.Content.ReadFromJsonAsync<IDictionary<string, string>>();
+
+        // ReSharper disable once NullableWarningSuppressionIsUsed
+        var authToken = content!["auth_token"];
+
+        var logoutRequest = new LogoutRequest
+        {
+            AuthToken = authToken
+        };
+
+        var logoutResponse = await context.HttpClient.PostAsync(
+            new Uri("api/TokenAuth/logout", UriKind.Relative), JsonContent.Create(logoutRequest));
+
+        // Assert
+        logoutResponse.StatusCode
+            .Should()
+            .Be(HttpStatusCode.OK);
+    }
+
+    [Fact]
+    public async Task Logout_EmptyAuthToken_ReturnsUnauthorized()
+    {
+        // Arrange
+        await using var context = new TestServerContext<TestStartup>(null,
+            null, x => x.UseRefreshTokens = true);
+
+        // Act
+
+        var logoutRequest = new LogoutRequest();
+
+        var logoutResponse = await context.HttpClient.PostAsync(
+            new Uri("api/TokenAuth/logout", UriKind.Relative), JsonContent.Create(logoutRequest));
+
+        // Assert
+        logoutResponse.StatusCode
+            .Should()
+            .Be(HttpStatusCode.Unauthorized);
+    }
 }

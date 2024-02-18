@@ -2,6 +2,7 @@
 using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 using CreativeCoders.Core;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CreativeCoders.AspNetCore.TokenAuthApi.Api;
@@ -37,5 +38,11 @@ public class TokenAuthController : ControllerBase
     public Task<IActionResult> RefreshTokenAsync([FromBody] RefreshTokenRequest refreshTokenRequest)
     {
         return _tokenAuthHandler.RefreshTokenAsync(refreshTokenRequest, Request, Response);
+    }
+
+    [HttpPost("logout")]
+    public Task<IActionResult> LogoutAsync(LogoutRequest logoutRequest)
+    {
+        return _tokenAuthHandler.LogoutAsync(logoutRequest, Request, Response);
     }
 }

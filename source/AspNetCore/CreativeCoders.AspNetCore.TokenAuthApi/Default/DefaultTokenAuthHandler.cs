@@ -97,9 +97,24 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
         return response;
     }
 
-    public Task<IActionResult> LogoutAsync()
+    public async Task<IActionResult> LogoutAsync(LogoutRequest logoutRequest, HttpRequest request,
+        HttpResponse response)
     {
-        throw new NotSupportedException("Logout is currently not supported");
+        response.Cookies.Delete(_apiOptions.AuthTokenName);
+        response.Cookies.Delete(_apiOptions.RefreshTokenName);
+
+        var authToken = string.IsNullOrEmpty(logoutRequest.AuthToken)
+            ? request.Cookies[_apiOptions.AuthTokenName]
+            : logoutRequest.AuthToken;
+
+        if (string.IsNullOrEmpty(authToken))
+        {
+            return new UnauthorizedObjectResult(new { error = "Logout invalid" });
+        }
+
+        await _refreshTokenStore.RemoveRefreshTokenForAuthAsync(authToken).ConfigureAwait(false);
+
+        return new OkResult();
     }
 
     private async Task<IActionResult> CreateLoginAuthTokensResponse(LoginRequest loginRequest,
@@ -137,7 +152,7 @@ public class DefaultTokenAuthHandler : ITokenAuthHandler
                 new Claim("domain", domain ?? string.Empty)
             }).ConfigureAwait(false);
 
-        await _refreshTokenStore.AddRefreshTokenAsync(refreshToken,
+        await _refreshTokenStore.AddRefreshTokenAsync(authToken, refreshToken,
             DateTimeOffset.Now.AddDays(7)).ConfigureAwait(false);
 
         return refreshToken;

@@ -6,13 +6,14 @@ public class InMemoryRefreshTokenStore : IRefreshTokenStore
 {
     private readonly List<RefreshTokenItem> _items = new List<RefreshTokenItem>();
 
-    public Task AddRefreshTokenAsync(string refreshToken, DateTimeOffset expire)
+    public Task AddRefreshTokenAsync(string authToken, string refreshToken, DateTimeOffset expire)
     {
         lock (_items)
         {
             _items.Add(new RefreshTokenItem
             {
                 RefreshToken = refreshToken,
+                AuthToken = authToken,
                 Expire = expire
             });
         }
@@ -35,6 +36,16 @@ public class InMemoryRefreshTokenStore : IRefreshTokenStore
         lock (_items)
         {
             _items.RemoveAll(x => x.RefreshToken == refreshToken);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public Task RemoveRefreshTokenForAuthAsync(string authToken)
+    {
+        lock (_items)
+        {
+            _items.RemoveAll(x => x.AuthToken == authToken);
         }
 
         return Task.CompletedTask;

@@ -17,7 +17,20 @@ public interface ITokenAuthHandler
     /// </returns>
     Task<IActionResult> LoginAsync(LoginRequest loginRequest, HttpResponse httpResponse);
 
-    Task<IActionResult> LogoutAsync();
+    /// <summary>
+    ///     Asynchronously performs logout operation.
+    /// </summary>
+    /// <param name="logoutRequest"></param>
+    /// <param name="request"></param>
+    /// <param name="response">
+    ///     An instance of <see cref="Microsoft.AspNetCore.Http.HttpResponse" /> representing the HTTP response for the client.
+    /// </param>
+    /// <returns>
+    ///     A <see cref="System.Threading.Tasks.Task" /> that represents the asynchronous logout operation.
+    ///     The task result is an instance of <see cref="Microsoft.AspNetCore.Mvc.IActionResult" /> representing the result of
+    ///     the logout process.
+    /// </returns>
+    Task<IActionResult> LogoutAsync(LogoutRequest logoutRequest, HttpRequest request, HttpResponse response);
 
     /// <summary>
     ///     Asynchronously refreshes an existing token.
