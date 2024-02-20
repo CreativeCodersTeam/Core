@@ -54,7 +54,6 @@ public sealed class TestServerContext<TStartup> : IAsyncDisposable
     {
         return new WebHostBuilder()
             .ConfigureServices(services => configureServices?.Invoke(services))
-            .ConfigureLogging(x => x.AddConsole().AddDebug())
             .UseStartup<TStartup>();
     }
 }

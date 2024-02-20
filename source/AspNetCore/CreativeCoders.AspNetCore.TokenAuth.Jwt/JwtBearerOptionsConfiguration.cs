@@ -38,19 +38,7 @@ public class JwtBearerOptionsConfiguration : IConfigureNamedOptions<JwtBearerOpt
         {
             OnMessageReceived = context =>
             {
-                var token = context.HttpContext.Request.Headers.Authorization.FirstOrDefault();
-
-                if (!string.IsNullOrEmpty(token) && token.StartsWith("Bearer ", StringComparison.Ordinal))
-                {
-                    token = token["Bearer ".Length..];
-                }
-
-                if (string.IsNullOrWhiteSpace(token))
-                {
-                    token = context.HttpContext.Request.Cookies[_options.AuthTokenName];
-                }
-
-                context.Token = token;
+                context.Token = context.HttpContext.Request.GetJwtToken(_options.AuthTokenName);
 
                 return Task.CompletedTask;
             }
