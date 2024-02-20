@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Abstractions.TestingHelpers;
 using CreativeCoders.UnitTests;
@@ -76,7 +77,7 @@ public class EnsureTests
     [Theory]
     [InlineData(new int[0])]
     [InlineData(null)]
-    public void IsNotNullOrEmpty_ForEnumerableNoParamNameGiven_ParamNameIsSetByCompiler(IEnumerable<int> items)
+    public void IsNotNullOrEmpty_ForEnumerableNoParamNameGiven_ParamNameIsSetByCompiler(IEnumerable<int>? items)
     {
         var act = () => Ensure.IsNotNullOrEmpty(items);
 
@@ -93,7 +94,7 @@ public class EnsureTests
     {
         var instance = new object();
 
-        object nullObject = null!;
+        object? nullObject = null;
 
         Assert.Throws<ArgumentNullException>(() => Ensure.IsNotNull(nullObject, "param"));
         Ensure.IsNotNull(instance, nameof(instance));
@@ -312,6 +313,7 @@ public class EnsureTests
     }
 
     [Fact]
+    [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
     public void Argument_ParamNameIsNull_ThrowsException()
     {
         // Act

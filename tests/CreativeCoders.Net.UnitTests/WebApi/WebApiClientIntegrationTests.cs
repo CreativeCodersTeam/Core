@@ -80,7 +80,7 @@ public class WebApiClientIntegrationTests
 
         // Act
         var items =
-            (await webApi.GetItemsAsync().ConfigureAwait(false))
+            (await webApi.GetItemsAsync())
             .ToArray();
 
         // Assert

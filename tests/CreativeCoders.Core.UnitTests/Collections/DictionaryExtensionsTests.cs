@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using CreativeCoders.Core.Collections;
+using FluentAssertions;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Collections;
@@ -92,9 +93,13 @@ public class DictionaryExtensionsTests
 
         var output = dictionary.ToDictionary<string, string>(true);
 
-        Assert.Equal(1, output.Keys.Count);
+        output.Keys
+            .Should()
+            .HaveCount(1);
 
-        Assert.Equal("Value2", output["Key1"]);
+        output["Key1"]
+            .Should()
+            .Be("Value2");
     }
 
     [Fact]
@@ -108,9 +113,13 @@ public class DictionaryExtensionsTests
 
         var output = dictionary.ToDictionary<string, string>(true);
 
-        Assert.Equal(1, output.Keys.Count);
+        output.Keys
+            .Should()
+            .HaveCount(1);
 
-        Assert.Equal("Value2", output["Key1"]);
+        output["Key1"]
+            .Should()
+            .Be("Value2");
     }
 
     [Fact]
@@ -165,9 +174,13 @@ public class DictionaryExtensionsTests
 
         var output = dictionary.ToDictionary<string, string>(o => o.ToString(), true);
 
-        Assert.Equal(1, output.Keys.Count);
+        output.Keys
+            .Should()
+            .HaveCount(1);
 
-        Assert.Equal("5678", output["Key1"]);
+        output["Key1"]
+            .Should()
+            .Be("5678");
     }
 
     [Fact]

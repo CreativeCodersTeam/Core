@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.TokenAuth.Jwt\CreativeCoders.AspNetCore.TokenAuth.Jwt.csproj" />
+      <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.TokenAuthApi.Jwt\CreativeCoders.AspNetCore.TokenAuthApi.Jwt.csproj" />
+      <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.TokenAuthApi\CreativeCoders.AspNetCore.TokenAuthApi.csproj" />
+    </ItemGroup>
+
+</Project>

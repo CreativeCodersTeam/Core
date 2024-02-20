@@ -23,7 +23,7 @@ public class MockHttpClientFactoryTests
 
         var client = httpClientFactory.CreateClient(string.Empty);
 
-        var response = await client.GetStringAsync("http://test.com").ConfigureAwait(false);
+        var response = await client.GetStringAsync("http://test.com");
 
         Assert.Equal(expectedContent, response);
     }
@@ -44,7 +44,7 @@ public class MockHttpClientFactoryTests
 
         var client = httpClientFactory.CreateClient(string.Empty);
 
-        var response = await client.GetStringAsync("http://test.com").ConfigureAwait(false);
+        var response = await client.GetStringAsync("http://test.com");
 
         Assert.Equal(expectedContent, response);
     }

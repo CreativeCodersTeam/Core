@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using CreativeCoders.Core;
 using Microsoft.Extensions.Http;
 
@@ -33,8 +34,6 @@ public class HttpClientSettings : IHttpClientSettings
     {
         Ensure.NotNull(name, nameof(name));
 
-        return _options.TryGetValue(name, out var value)
-            ? value
-            : null;
+        return _options.GetValueOrDefault(name);
     }
 }

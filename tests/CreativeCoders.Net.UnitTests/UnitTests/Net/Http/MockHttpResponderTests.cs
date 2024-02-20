@@ -22,7 +22,7 @@ public class MockHttpResponderTests
         var mockResponse = new MockHttpResponder();
 
         await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            mockResponse.Execute(requestMessage, CancellationToken.None)).ConfigureAwait(false);
+            mockResponse.Execute(requestMessage, CancellationToken.None));
     }
 
     [Fact]
@@ -40,17 +40,15 @@ public class MockHttpResponderTests
 
         mockResponse.ReturnText(expectedContent);
 
-        var response = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
-        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync());
         Assert.Equal(expectedStatusCode, response.StatusCode);
 
         requestMessage.RequestUri = new Uri("https://nic.com");
-        var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
-        Assert.Equal(expectedContent, await secondResponse.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedContent, await secondResponse.Content.ReadAsStringAsync());
         Assert.Equal(expectedStatusCode, secondResponse.StatusCode);
     }
 
@@ -69,17 +67,15 @@ public class MockHttpResponderTests
 
         mockResponse.ReturnText(expectedContent, expectedStatusCode);
 
-        var response = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
-        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync());
         Assert.Equal(expectedStatusCode, response.StatusCode);
 
         requestMessage.RequestUri = new Uri("https://nic.com");
-        var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
-        Assert.Equal(expectedContent, await secondResponse.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedContent, await secondResponse.Content.ReadAsStringAsync());
         Assert.Equal(expectedStatusCode, secondResponse.StatusCode);
     }
 
@@ -100,10 +96,9 @@ public class MockHttpResponderTests
             .ForUri("http://test.com/")
             .ReturnText(expectedContent, expectedStatusCode);
 
-        var response = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
-        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync());
         Assert.Equal(expectedStatusCode, response.StatusCode);
     }
 
@@ -124,8 +119,7 @@ public class MockHttpResponderTests
             .ForUri("http://test.com/")
             .ReturnText(expectedContent, expectedStatusCode);
 
-        var response = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
         Assert.Null(response);
     }
@@ -147,10 +141,9 @@ public class MockHttpResponderTests
             .WithVerb(HttpMethod.Get)
             .ReturnText(expectedContent, expectedStatusCode);
 
-        var response = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
-        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync());
         Assert.Equal(expectedStatusCode, response.StatusCode);
     }
 
@@ -171,8 +164,7 @@ public class MockHttpResponderTests
             .WithVerb(HttpMethod.Get)
             .ReturnText(expectedContent, expectedStatusCode);
 
-        var response = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
         Assert.Null(response);
     }
@@ -191,8 +183,7 @@ public class MockHttpResponderTests
 
         mockResponse.ReturnJson(expectedData);
 
-        var response = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal(
@@ -216,8 +207,7 @@ public class MockHttpResponderTests
 
         mockResponse.ReturnJson(expectedData, expectedStatusCode);
 
-        var response = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
         Assert.Equal(expectedStatusCode, response.StatusCode);
         Assert.Equal(
@@ -240,8 +230,7 @@ public class MockHttpResponderTests
 
         mockResponse.ReturnJson(expectedData);
 
-        var response = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
         Assert.Equal(ContentMediaTypes.Application.Json, response.Content.Headers.ContentType?.MediaType);
     }
@@ -270,18 +259,16 @@ public class MockHttpResponderTests
             .Then()
             .ReturnText(expectedSecondContent, expectedSecondStatusCode);
 
-        var response = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
-        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync());
         Assert.Equal(expectedStatusCode, response.StatusCode);
 
         requestMessage.RequestUri = new Uri("http://test.com/");
-        var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
         Assert.Equal(expectedSecondContent,
-            await secondResponse.Content.ReadAsStringAsync().ConfigureAwait(false));
+            await secondResponse.Content.ReadAsStringAsync());
         Assert.Equal(expectedSecondStatusCode, secondResponse.StatusCode);
     }
 
@@ -309,24 +296,21 @@ public class MockHttpResponderTests
             .Then()
             .ReturnText(expectedSecondContent, expectedSecondStatusCode);
 
-        var response = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var response = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
-        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal(expectedContent, await response.Content.ReadAsStringAsync());
         Assert.Equal(expectedStatusCode, response.StatusCode);
 
         requestMessage.RequestUri = new Uri("http://test1.com/");
-        var otherResponse = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var otherResponse = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
         Assert.Null(otherResponse);
 
         requestMessage.RequestUri = new Uri("http://test.com/");
-        var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None)
-            .ConfigureAwait(false);
+        var secondResponse = await mockResponse.Execute(requestMessage, CancellationToken.None);
 
         Assert.Equal(expectedSecondContent,
-            await secondResponse.Content.ReadAsStringAsync().ConfigureAwait(false));
+            await secondResponse.Content.ReadAsStringAsync());
         Assert.Equal(expectedSecondStatusCode, secondResponse.StatusCode);
     }
 }

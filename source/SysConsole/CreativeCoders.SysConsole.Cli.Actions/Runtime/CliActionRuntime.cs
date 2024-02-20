@@ -17,6 +17,8 @@ internal class CliActionRuntime : ICliActionRuntime
 
     public void Init(Func<Func<CliActionContext, Task>, Func<CliActionContext, Task>> createPipeline)
     {
+        Ensure.NotNull(createPipeline);
+
         _middlewarePipeline = createPipeline(_actionExecutor.ExecuteAsync);
     }
 

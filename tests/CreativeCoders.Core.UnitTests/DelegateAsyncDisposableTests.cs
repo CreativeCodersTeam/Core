@@ -35,7 +35,7 @@ public class DelegateAsyncDisposableTests
             return ValueTask.CompletedTask;
         }, true);
 
-        await d.DisposeAsync().ConfigureAwait(false);
+        await d.DisposeAsync();
 
         actionCalled
             .Should()
@@ -54,8 +54,8 @@ public class DelegateAsyncDisposableTests
             return ValueTask.CompletedTask;
         }, false);
 
-        await d.DisposeAsync().ConfigureAwait(false);
-        await d.DisposeAsync().ConfigureAwait(false);
+        await d.DisposeAsync();
+        await d.DisposeAsync();
 
         actionCalledCounter
             .Should()
@@ -74,8 +74,8 @@ public class DelegateAsyncDisposableTests
             return ValueTask.CompletedTask;
         }, true);
 
-        await d.DisposeAsync().ConfigureAwait(false);
-        await d.DisposeAsync().ConfigureAwait(false);
+        await d.DisposeAsync();
+        await d.DisposeAsync();
 
         actionCalledCounter
             .Should()

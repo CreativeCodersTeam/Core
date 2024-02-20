@@ -64,9 +64,13 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         _reentrancyMonitor = new SimpleMonitor();
     }
 
-    public IEnumerator<T> GetEnumerator() => _lockingMechanism.Read(() => _items.ToList().GetEnumerator());
+    [MustDisposeResource]
+    public IEnumerator<T> GetEnumerator()
+        => _lockingMechanism.Read([MustDisposeResource]() => _items.ToList().GetEnumerator());
 
-    IEnumerator IEnumerable.GetEnumerator() => _lockingMechanism.Read(() => _items.ToList().GetEnumerator());
+    [MustDisposeResource]
+    IEnumerator IEnumerable.GetEnumerator()
+        => _lockingMechanism.Read([MustDisposeResource]() => _items.ToList().GetEnumerator());
 
     public void Add(T item)
     {

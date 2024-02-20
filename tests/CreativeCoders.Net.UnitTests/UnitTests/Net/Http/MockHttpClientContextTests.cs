@@ -14,8 +14,7 @@ public class MockHttpClientContextTests
 
         var client = context.CreateClient();
 
-        await Assert.ThrowsAsync<NoResponderFoundException>(() => client.GetStringAsync("http://test.com"))
-            .ConfigureAwait(false);
+        await Assert.ThrowsAsync<NoResponderFoundException>(() => client.GetStringAsync("http://test.com"));
     }
 
     [Fact]
@@ -32,7 +31,7 @@ public class MockHttpClientContextTests
 
         var client = context.CreateClient();
 
-        var response = await client.GetStringAsync("http://test.com").ConfigureAwait(false);
+        var response = await client.GetStringAsync("http://test.com");
 
         Assert.Equal(expectedContent, response);
     }
@@ -57,11 +56,11 @@ public class MockHttpClientContextTests
 
         var client = context.CreateClient();
 
-        var response = await client.GetStringAsync("http://test.com").ConfigureAwait(false);
+        var response = await client.GetStringAsync("http://test.com");
 
         Assert.Equal(expectedContent, response);
 
-        var secondResponse = await client.GetStringAsync("http://nic.com").ConfigureAwait(false);
+        var secondResponse = await client.GetStringAsync("http://nic.com");
 
         Assert.Equal(expectedSecondContent, secondResponse);
     }

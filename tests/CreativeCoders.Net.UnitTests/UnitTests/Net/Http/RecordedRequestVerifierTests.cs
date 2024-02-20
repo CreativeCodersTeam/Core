@@ -22,7 +22,7 @@ public class RecordedRequestVerifierTests
 
         var client = context.CreateClient();
 
-        var response = await client.GetStringAsync("http://test.com").ConfigureAwait(false);
+        var response = await client.GetStringAsync("http://test.com");
 
         Assert.Equal("TestData", response);
 
@@ -42,7 +42,7 @@ public class RecordedRequestVerifierTests
 
         var client = context.CreateClient();
 
-        var response = await client.GetStringAsync("http://test.com").ConfigureAwait(false);
+        var response = await client.GetStringAsync("http://test.com");
 
         Assert.Equal("TestData", response);
 
@@ -64,10 +64,9 @@ public class RecordedRequestVerifierTests
         var client = context.CreateClient();
 
         var response = await client.PostAsync("http://test.com",
-                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream))
-            .ConfigureAwait(false);
+                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
 
-        Assert.Equal("TestData", await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal("TestData", await response.Content.ReadAsStringAsync());
 
         context
             .CallShouldBeMade("http://test.com/")
@@ -86,10 +85,9 @@ public class RecordedRequestVerifierTests
         var client = context.CreateClient();
 
         var response = await client.PostAsync("http://test.com",
-                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream))
-            .ConfigureAwait(false);
+                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
 
-        Assert.Equal("TestData", await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal("TestData", await response.Content.ReadAsStringAsync());
 
         Assert.Throws<RecordedRequestVerificationFailedException>(() =>
             context
@@ -112,9 +110,9 @@ public class RecordedRequestVerifierTests
         var client = context.CreateClient();
 
         var response = await client.GetAsync("http://test.com", HttpCompletionOption.ResponseContentRead,
-            expectedCancellationToken).ConfigureAwait(false);
+            expectedCancellationToken);
 
-        Assert.Equal("TestData", await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal("TestData", await response.Content.ReadAsStringAsync());
 
         context
             .CallShouldBeMade("http://test.com/")
@@ -139,9 +137,9 @@ public class RecordedRequestVerifierTests
         cancellationTokenSource.Cancel();
 
         var response = await client.GetAsync("http://test.com", HttpCompletionOption.ResponseHeadersRead,
-            expectedCancellationToken).ConfigureAwait(false);
+            expectedCancellationToken);
 
-        Assert.Equal("TestData", await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        Assert.Equal("TestData", await response.Content.ReadAsStringAsync());
 
         context
             .CallShouldBeMade("http://test.com/")
@@ -161,8 +159,7 @@ public class RecordedRequestVerifierTests
         var client = context.CreateClient();
 
         _ = await client.PostAsync("http://test.com",
-                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream))
-            .ConfigureAwait(false);
+                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
 
         context.CallShouldBeMade("*").WithContentText("Test").RequestCount(1);
     }
@@ -179,8 +176,7 @@ public class RecordedRequestVerifierTests
         var client = context.CreateClient();
 
         _ = await client.PostAsync("http://test.com",
-                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream))
-            .ConfigureAwait(false);
+                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
 
         Assert.Throws<RecordedRequestVerificationFailedException>(() =>
             context.CallShouldBeMade("*").WithContentText("WrongTest"));
@@ -198,8 +194,7 @@ public class RecordedRequestVerifierTests
         var client = context.CreateClient();
 
         _ = await client.PostAsync("http://test.com",
-                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream))
-            .ConfigureAwait(false);
+                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
 
         context.CallShouldBeMade("*").RequestCount(1);
     }
@@ -216,12 +211,10 @@ public class RecordedRequestVerifierTests
         var client = context.CreateClient();
 
         _ = await client.PostAsync("http://test.com",
-                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream))
-            .ConfigureAwait(false);
+                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
 
         _ = await client.PostAsync("http://test.com",
-                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream))
-            .ConfigureAwait(false);
+                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
 
         Assert.Throws<RecordedRequestVerificationFailedException>(() =>
             context.CallShouldBeMade("*").RequestCount(1));

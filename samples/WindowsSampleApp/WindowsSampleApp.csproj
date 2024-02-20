@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\source\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
+		<ProjectReference Include="..\..\source\IO\CreativeCoders.IO\CreativeCoders.IO.csproj" />
+		<ProjectReference Include="..\..\source\Windows\CreativeCoders.Windows\CreativeCoders.Windows.csproj" />
+	</ItemGroup>
+
+</Project>

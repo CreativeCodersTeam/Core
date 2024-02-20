@@ -45,7 +45,7 @@ public class ExceptionHandlingMiddlewareTests
             .Build();
 
         // Act
-        var result = await runtime.ExecuteAsync(args).ConfigureAwait(false);
+        var result = await runtime.ExecuteAsync(args);
 
         // Assert
         result
@@ -86,7 +86,7 @@ public class ExceptionHandlingMiddlewareTests
             .Build();
 
         // Act
-        var result = await runtime.ExecuteAsync(args).ConfigureAwait(false);
+        var result = await runtime.ExecuteAsync(args);
 
         // Assert
         result
