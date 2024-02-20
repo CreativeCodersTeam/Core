@@ -1,8 +1,12 @@
-﻿using CreativeCoders.AspNetCore.TokenAuthApi;
+﻿using System.Text;
+using CreativeCoders.AspNetCore.TokenAuth.Jwt;
+using CreativeCoders.AspNetCore.TokenAuthApi;
 using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 using CreativeCoders.AspNetCore.TokenAuthApi.Jwt;
+using CreativeCoders.Core.Text;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CreativeCoders.AspNetCore.Tests.TokenAuth.Jwt;
 
@@ -13,7 +17,8 @@ public sealed class TestServerContext<TStartup> : IAsyncDisposable
 
     public TestServerContext(Action<IServiceCollection>? configureServices = null,
         Action<JwtTokenAuthApiOptions>? configureJwtApiOptions = null,
-        Action<TokenAuthApiOptions>? configureTokenApiOptions = null)
+        Action<TokenAuthApiOptions>? configureTokenApiOptions = null,
+        Action<JwtAuthenticationOptions>? configureJwtAuthOptions = null)
     {
         UserClaimsProvider = A.Fake<IUserClaimsProvider>();
         UserAuthProvider = A.Fake<IUserAuthProvider>();
@@ -28,6 +33,16 @@ public sealed class TestServerContext<TStartup> : IAsyncDisposable
             services.TryAddScoped(_ => TokenCreator);
 
             services.AddJwtTokenAuthApi(configureJwtApiOptions, configureTokenApiOptions);
+
+            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(RandomString.Create()));
+            services.Configure<JwtTokenAuthApiOptions>(x => { x.SecurityKey = securityKey; });
+
+            services.AddJwtTokenAuthentication(x =>
+            {
+                x.SecurityKey = securityKey;
+
+                configureJwtAuthOptions?.Invoke(x);
+            });
         });
 
         _testServer = new TestServer(webHostBuilder);

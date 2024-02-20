@@ -522,9 +522,21 @@ public sealed class JwtTokenAuthIntegrationTests
     public async Task CallEndpointWithAuthorization_LoginBeforeAndSendToken_RequestSucceeded()
     {
         // Arrange
+        const string authTokenName = "this_is_a_token";
+
         await using var context =
             new TestServerContext<TestStartup>(
-                x => x.AddScoped<ITokenCreator, JwtTokenCreator>());
+                x => x.AddScoped<ITokenCreator, JwtTokenCreator>(),
+                null, x =>
+                {
+                    x.AuthTokenName = authTokenName;
+                    x.Issuer = "my Issuer";
+                },
+                x =>
+                {
+                    x.AuthTokenName = authTokenName;
+                    x.Issuer = "my Issuer";
+                });
 
         var loginRequest = new LoginRequest
         {
@@ -548,7 +560,7 @@ public sealed class JwtTokenAuthIntegrationTests
         var httpRequestMsg =
             new HttpRequestMessage(HttpMethod.Get, new Uri("api/test/get-data", UriKind.Relative));
 
-        var authToken = content!["cc_auth_token"];
+        var authToken = content![authTokenName];
 
         httpRequestMsg.Headers.Authorization =
             new AuthenticationHeaderValue("Bearer", authToken);

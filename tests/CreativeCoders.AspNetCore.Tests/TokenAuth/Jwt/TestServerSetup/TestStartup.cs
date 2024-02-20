@@ -16,11 +16,6 @@ public class TestStartup
             .AddTokenAuthApiController()
             .AddApplicationPart(typeof(TestStartup).Assembly);
 
-        var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(RandomString.Create()));
-        services.Configure<JwtTokenAuthApiOptions>(x => { x.SecurityKey = securityKey; });
-
-        services.AddJwtTokenAuthentication(x => x.SecurityKey = securityKey);
-
         services.AddAuthorization(x =>
             x.AddPolicy("TestPolicy",
                 policy => policy.RequireAuthenticatedUser()

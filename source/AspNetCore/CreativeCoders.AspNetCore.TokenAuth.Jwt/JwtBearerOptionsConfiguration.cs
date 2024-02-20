@@ -1,4 +1,5 @@
-﻿using CreativeCoders.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+using CreativeCoders.Core;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
@@ -34,7 +35,18 @@ public class JwtBearerOptionsConfiguration : IConfigureNamedOptions<JwtBearerOpt
             ValidateAudience = false
         };
 
-        options.Events = new JwtBearerEvents
+        options.Events = CreateJwtBearerEvents();
+    }
+
+    public void Configure(string name, JwtBearerOptions options)
+    {
+        Configure(options);
+    }
+
+    [ExcludeFromCodeCoverage]
+    private JwtBearerEvents CreateJwtBearerEvents()
+    {
+        return new JwtBearerEvents
         {
             OnMessageReceived = context =>
             {
@@ -43,10 +55,5 @@ public class JwtBearerOptionsConfiguration : IConfigureNamedOptions<JwtBearerOpt
                 return Task.CompletedTask;
             }
         };
-    }
-
-    public void Configure(string name, JwtBearerOptions options)
-    {
-        Configure(options);
     }
 }
