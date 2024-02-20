@@ -8,7 +8,8 @@ namespace CreativeCoders.DynamicCode.Proxying;
 public class InterceptorWithPropertiesBase<T> : InterceptorBase<T>
     where T : class
 {
-    private readonly ConcurrentDictionary<PropertyInfo, object?> _propertyValues = new();
+    private readonly ConcurrentDictionary<PropertyInfo, object?> _propertyValues =
+        new ConcurrentDictionary<PropertyInfo, object?>();
 
     protected override void SetProperty(PropertyInfo propertyInfo, object? value)
     {

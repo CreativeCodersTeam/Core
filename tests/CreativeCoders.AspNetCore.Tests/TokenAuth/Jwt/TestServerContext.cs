@@ -50,10 +50,11 @@ public sealed class TestServerContext<TStartup> : IAsyncDisposable
         _testServer.Dispose();
     }
 
-    private IWebHostBuilder SetupWebHostBuilder(Action<IServiceCollection>? configureServices)
+    private static IWebHostBuilder SetupWebHostBuilder(Action<IServiceCollection>? configureServices)
     {
         return new WebHostBuilder()
             .ConfigureServices(services => configureServices?.Invoke(services))
+            .ConfigureLogging(x => x.AddConsole().AddDebug())
             .UseStartup<TStartup>();
     }
 }

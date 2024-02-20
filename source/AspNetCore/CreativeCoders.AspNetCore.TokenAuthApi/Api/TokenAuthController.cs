@@ -2,7 +2,6 @@
 using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 using CreativeCoders.Core;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CreativeCoders.AspNetCore.TokenAuthApi.Api;

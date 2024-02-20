@@ -1,5 +1,4 @@
 ﻿using CreativeCoders.Core;
-using CreativeCoders.Core.Tasking;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
@@ -29,9 +28,9 @@ public class JwtBearerOptionsConfiguration : IConfigureNamedOptions<JwtBearerOpt
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = _options.SecurityKey,
-            ValidIssuer = string.Empty,
+            ValidIssuer = _options.Issuer,
             ValidAudience = string.Empty,
-            ValidateIssuer = false,
+            ValidateIssuer = true,
             ValidateAudience = false
         };
 
@@ -40,6 +39,11 @@ public class JwtBearerOptionsConfiguration : IConfigureNamedOptions<JwtBearerOpt
             OnMessageReceived = context =>
             {
                 var token = context.HttpContext.Request.Headers.Authorization.FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(token) && token.StartsWith("Bearer ", StringComparison.Ordinal))
+                {
+                    token = token["Bearer ".Length..];
+                }
 
                 if (string.IsNullOrWhiteSpace(token))
                 {

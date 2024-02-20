@@ -43,7 +43,7 @@ public class TokenAuthApiOptions
     ///     A string representing the name of the authentication token.
     ///     The default value is "auth_token".
     /// </value>
-    public string AuthTokenName { get; set; } = "auth_token";
+    public string AuthTokenName { get; set; } = "cc_auth_token";
 
     /// <summary>
     ///     The issuer of a auth token.
@@ -51,7 +51,7 @@ public class TokenAuthApiOptions
     /// <value>
     ///     The issuer represents the entity or authority that issues the token.
     /// </value>
-    public string Issuer { get; set; } = string.Empty;
+    public string Issuer { get; set; } = "cc-token-auth-api";
 
     /// <summary>
     ///     Gets or sets a boolean value indicating whether to use refresh tokens for authentication.
@@ -64,7 +64,7 @@ public class TokenAuthApiOptions
     /// <summary>
     ///     Gets or sets the name of the refresh token property.
     /// </summary>
-    public string RefreshTokenName { get; set; } = "refresh_auth_token";
+    public string RefreshTokenName { get; set; } = "cc_refresh_auth_token";
 
     /// <summary>
     ///     Gets or sets the domain for which the refresh cookie is valid.

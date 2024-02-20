@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using CreativeCoders.AspNetCore.Tests.TokenAuth.Jwt.TestServerSetup;
 using CreativeCoders.AspNetCore.TokenAuthApi.Abstractions;
 using CreativeCoders.AspNetCore.TokenAuthApi.Api;
+using CreativeCoders.AspNetCore.TokenAuthApi.Jwt;
 
 namespace CreativeCoders.AspNetCore.Tests.TokenAuth.Jwt;
 
@@ -67,7 +69,7 @@ public sealed class JwtTokenAuthIntegrationTests
 
         cookie
             .Should()
-            .Be($"auth_token={expectedToken}; path=/; secure; httponly");
+            .Be($"cc_auth_token={expectedToken}; path=/; secure; httponly");
     }
 
     [Fact]
@@ -159,7 +161,7 @@ public sealed class JwtTokenAuthIntegrationTests
             .NotBeNull();
 
         // ReSharper disable once NullableWarningSuppressionIsUsed
-        var token = content!["auth_token"];
+        var token = content!["cc_auth_token"];
 
         token
             .Should()
@@ -208,13 +210,13 @@ public sealed class JwtTokenAuthIntegrationTests
 
         authCookie
             .Should()
-            .Be($"auth_token={expectedToken}; path=/; secure; httponly");
+            .Be($"cc_auth_token={expectedToken}; path=/; secure; httponly");
 
         var refreshCookie = cookies[1];
 
         refreshCookie
             .Should()
-            .Be($"refresh_auth_token={expectedToken}; path=/; secure; httponly");
+            .Be($"cc_refresh_auth_token={expectedToken}; path=/; secure; httponly");
     }
 
     [Fact]
@@ -266,14 +268,14 @@ public sealed class JwtTokenAuthIntegrationTests
             .HaveCount(2);
 
         // ReSharper disable once NullableWarningSuppressionIsUsed
-        var authToken = content!["auth_token"];
+        var authToken = content!["cc_auth_token"];
 
         authToken
             .Should()
             .Be(expectedAuthToken);
 
         // ReSharper disable once NullableWarningSuppressionIsUsed
-        var refreshToken = content["refresh_auth_token"];
+        var refreshToken = content["cc_refresh_auth_token"];
 
         refreshToken
             .Should()
@@ -335,7 +337,7 @@ public sealed class JwtTokenAuthIntegrationTests
 
         var loginResponseContent = await response.Content.ReadFromJsonAsync<IDictionary<string, string>>();
 
-        var refreshToken = loginResponseContent!["refresh_auth_token"];
+        var refreshToken = loginResponseContent!["cc_refresh_auth_token"];
 
         var refreshResponse = await context.HttpClient.PostAsync(
             new Uri("api/TokenAuth/refresh-token", UriKind.Relative),
@@ -353,13 +355,13 @@ public sealed class JwtTokenAuthIntegrationTests
         var refreshResponseContent =
             await refreshResponse.Content.ReadFromJsonAsync<IDictionary<string, string>>();
 
-        var newAuthToken = refreshResponseContent!["auth_token"];
+        var newAuthToken = refreshResponseContent!["cc_auth_token"];
 
         newAuthToken
             .Should()
             .Be(expectedAuthToken2);
 
-        var newRefreshToken = refreshResponseContent["refresh_auth_token"];
+        var newRefreshToken = refreshResponseContent["cc_refresh_auth_token"];
 
         newRefreshToken
             .Should()
@@ -480,7 +482,7 @@ public sealed class JwtTokenAuthIntegrationTests
         var content = await loginResponse.Content.ReadFromJsonAsync<IDictionary<string, string>>();
 
         // ReSharper disable once NullableWarningSuppressionIsUsed
-        var authToken = content!["auth_token"];
+        var authToken = content!["cc_auth_token"];
 
         var logoutRequest = new LogoutRequest
         {
@@ -504,7 +506,6 @@ public sealed class JwtTokenAuthIntegrationTests
             null, x => x.UseRefreshTokens = true);
 
         // Act
-
         var logoutRequest = new LogoutRequest();
 
         var logoutResponse = await context.HttpClient.PostAsync(
@@ -514,5 +515,130 @@ public sealed class JwtTokenAuthIntegrationTests
         logoutResponse.StatusCode
             .Should()
             .Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
+    public async Task CallEndpointWithAuthorization_LoginBeforeAndSendToken_RequestSucceeded()
+    {
+        // Arrange
+        await using var context =
+            new TestServerContext<TestStartup>(
+                x => x.AddScoped<ITokenCreator, JwtTokenCreator>());
+
+        var loginRequest = new LoginRequest
+        {
+            UserName = "test",
+            Password = "password",
+            Domain = "example.com",
+            UseCookies = false
+        };
+
+        A.CallTo(() =>
+                context.UserAuthProvider.AuthenticateAsync(loginRequest.UserName, loginRequest.Password,
+                    loginRequest.Domain))
+            .Returns(Task.FromResult(true));
+
+        // Act
+        var response = await context.HttpClient.PostAsync(
+            new Uri("api/TokenAuth/login", UriKind.Relative), JsonContent.Create(loginRequest));
+
+        var content = await response.Content.ReadFromJsonAsync<IDictionary<string, string>>();
+
+        var httpRequestMsg =
+            new HttpRequestMessage(HttpMethod.Get, new Uri("api/test/get-data", UriKind.Relative));
+
+        var authToken = content!["cc_auth_token"];
+
+        httpRequestMsg.Headers.Authorization =
+            new AuthenticationHeaderValue("Bearer", authToken);
+
+        var callResponse = await context.HttpClient.SendAsync(httpRequestMsg);
+
+        // Assert
+        callResponse.StatusCode
+            .Should()
+            .Be(HttpStatusCode.OK);
+
+        var callContent = await callResponse.Content.ReadFromJsonAsync<IDictionary<string, string>>();
+
+        callContent
+            .Should()
+            .NotBeNull();
+
+        var data = callContent!["testProp"];
+
+        data
+            .Should()
+            .Be("TestValue1");
+    }
+
+    [Fact]
+    [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
+    public async Task
+        CallEndpointWithAuthorization_LoginBeforeThenRefreshTokenAndSendThatToken_RequestSucceeded()
+    {
+        // Arrange
+        await using var context =
+            new TestServerContext<TestStartup>(
+                x => x.AddScoped<ITokenCreator, JwtTokenCreator>(),
+                null, x => x.UseRefreshTokens = true);
+
+        var loginRequest = new LoginRequest
+        {
+            UserName = "test",
+            Password = "password",
+            Domain = "example.com",
+            UseCookies = false
+        };
+
+        A.CallTo(() =>
+                context.UserAuthProvider.AuthenticateAsync(loginRequest.UserName, loginRequest.Password,
+                    loginRequest.Domain))
+            .Returns(Task.FromResult(true));
+
+        // Act
+        var loginResponse = await context.HttpClient.PostAsync(
+            new Uri("api/TokenAuth/login", UriKind.Relative), JsonContent.Create(loginRequest));
+
+        var content = await loginResponse.Content.ReadFromJsonAsync<IDictionary<string, string>>();
+
+        var refreshToken = content!["cc_refresh_auth_token"];
+
+        var refreshResponse = await context.HttpClient.PostAsync(
+            new Uri("api/TokenAuth/refresh-token", UriKind.Relative), JsonContent.Create(
+                new RefreshTokenRequest
+                {
+                    RefreshToken = refreshToken
+                }));
+
+        var refreshContent = await refreshResponse.Content.ReadFromJsonAsync<IDictionary<string, string>>();
+
+        var authToken = refreshContent!["cc_auth_token"];
+
+        var httpRequestMsg =
+            new HttpRequestMessage(HttpMethod.Get, new Uri("api/test/get-data", UriKind.Relative));
+
+        httpRequestMsg.Headers.Authorization =
+            new AuthenticationHeaderValue("Bearer", authToken);
+
+        var callResponse = await context.HttpClient.SendAsync(httpRequestMsg);
+
+        // Assert
+        callResponse.StatusCode
+            .Should()
+            .Be(HttpStatusCode.OK);
+
+        var callContent = await callResponse.Content.ReadFromJsonAsync<IDictionary<string, string>>();
+
+        callContent
+            .Should()
+            .NotBeNull();
+
+        var data = callContent!["testProp"];
+
+        data
+            .Should()
+            .Be("TestValue1");
     }
 }
