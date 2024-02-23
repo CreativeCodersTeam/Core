@@ -7,7 +7,7 @@ namespace CreativeCoders.UnitTests;
 [PublicAPI]
 public class UnitTestDemoObject
 {
-    public string Text { get; set; }
+    public string? Text { get; set; }
 
     public int IntValue { get; set; }
 

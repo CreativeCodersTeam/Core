@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
@@ -12,33 +14,29 @@ namespace CreativeCoders.Core.Text;
 [PublicAPI]
 public static class StringExtension
 {
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>   A string extension method that converts a text to a secure string. </summary>
-    ///
     /// <param name="text"> The text to convert. </param>
-    ///
     /// <returns>   Text as a SecureString. </returns>
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     public static SecureString ToSecureString(this string? text)
     {
         return ToSecureString(text, false);
     }
 
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>   A string extension method that converts a text to a secure string. </summary>
-    ///
     /// <param name="text">         The text to convert. </param>
     /// <param name="makeReadOnly"> True to make the SecureString read only. </param>
-    ///
     /// <returns>   Text as a readonly SecureString. </returns>
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     public static SecureString ToSecureString(this string? text, bool makeReadOnly)
     {
         var result = new SecureString();
 
         if (text != null)
         {
-            foreach (var secChar in text.ToCharArray())
+            foreach (var secChar in text)
             {
                 result.AppendChar(secChar);
             }
@@ -52,18 +50,16 @@ public static class StringExtension
         return result;
     }
 
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     A SecureString extension method that converts a SecureString to a normal string.
     /// </summary>
-    ///
     /// <param name="secureString"> The secureString to convert. </param>
-    ///
     /// <returns>   SecureString as a string. </returns>
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     public static string? ToNormalString(this SecureString secureString)
     {
-        Ensure.NotNull(secureString, nameof(secureString));
+        Ensure.NotNull(secureString);
 
         if (secureString.Length == 0)
         {
@@ -89,22 +85,30 @@ public static class StringExtension
         return result;
     }
 
-    public static bool IsNullOrEmpty(this string text)
+    [ContractAnnotation("text: null => true")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNullOrEmpty([NotNullWhen(false)] this string? text)
     {
         return string.IsNullOrEmpty(text);
     }
 
-    public static bool IsNotNullOrEmpty(this string text)
+    [ContractAnnotation("text: notnull => true")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNotNullOrEmpty([NotNullWhen(true)] this string? text)
     {
         return !string.IsNullOrEmpty(text);
     }
 
-    public static bool IsNullOrWhiteSpace(this string text)
+    [ContractAnnotation("text: null => true")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNullOrWhiteSpace([NotNullWhen(false)] this string? text)
     {
         return string.IsNullOrWhiteSpace(text);
     }
 
-    public static bool IsNotNullOrWhiteSpace(this string text)
+    [ContractAnnotation("text: notnull => true")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNotNullOrWhiteSpace([NotNullWhen(true)] this string? text)
     {
         return !string.IsNullOrWhiteSpace(text);
     }
@@ -139,12 +143,12 @@ public static class StringExtension
         return stringBuilder;
     }
 
-    public static string Filter(this string text, Func<char, bool> isAllowedChar)
+    public static string Filter(this string? text, Func<char, bool> isAllowedChar)
     {
         return text.IsNullOrEmpty() ? string.Empty : string.Join("", text.Where(isAllowedChar));
     }
 
-    public static string Filter(this string text, params char[] filteredChars)
+    public static string Filter(this string? text, params char[] filteredChars)
     {
         return text.Filter(c => !filteredChars.Contains(c));
     }

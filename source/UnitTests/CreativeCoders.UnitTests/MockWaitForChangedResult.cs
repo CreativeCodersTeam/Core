@@ -9,9 +9,9 @@ public class MockWaitForChangedResult : IWaitForChangedResult
 {
     public WatcherChangeTypes ChangeType { get; init; }
 
-    public string Name { get; init; }
+    public string? Name { get; init; }
 
-    public string OldName { get; init; }
+    public string? OldName { get; init; }
 
     public bool TimedOut { get; init; }
 }

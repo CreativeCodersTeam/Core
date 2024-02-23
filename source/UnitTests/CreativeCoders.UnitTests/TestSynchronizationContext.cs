@@ -1,16 +1,18 @@
 ﻿using System.Threading;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.UnitTests;
 
+[PublicAPI]
 public class TestSynchronizationContext : SynchronizationContext
 {
-    public override void Post(SendOrPostCallback callback, object state)
+    public override void Post(SendOrPostCallback d, object? state)
     {
-        callback(state);
+        d(state);
     }
 
-    public override void Send(SendOrPostCallback callback, object state)
+    public override void Send(SendOrPostCallback d, object? state)
     {
-        callback(state);
+        d(state);
     }
 }

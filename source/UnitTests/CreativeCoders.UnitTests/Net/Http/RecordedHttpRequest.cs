@@ -16,6 +16,20 @@ public class RecordedHttpRequest
         CancellationToken = cancellationToken;
     }
 
+    /// -------------------------------------------------------------------------------------------------
+    /// <summary>   Gets a message describing the recorded HTTP request. </summary>
+    /// <value> A message describing the recorded HTTP request. </value>
+    /// -------------------------------------------------------------------------------------------------
+    public HttpRequestMessage RequestMessage { get; }
+
+    /// -------------------------------------------------------------------------------------------------
+    /// <summary>   Gets the cancellation token of the recorded HTTP request. </summary>
+    /// <value> The cancellation token of the recorded HTTP request. </value>
+    /// -------------------------------------------------------------------------------------------------
+    public CancellationToken CancellationToken { get; }
+
+    public HttpContent? Content { get; private set; }
+
     internal async Task CloneContent()
     {
         var content = RequestMessage.Content;
@@ -33,20 +47,4 @@ public class RecordedHttpRequest
 
         Content = clone;
     }
-
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Gets a message describing the recorded HTTP request. </summary>
-    ///
-    /// <value> A message describing the recorded HTTP request. </value>
-    ///-------------------------------------------------------------------------------------------------
-    public HttpRequestMessage RequestMessage { get; }
-
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Gets the cancellation token of the recorded HTTP request. </summary>
-    ///
-    /// <value> The cancellation token of the recorded HTTP request. </value>
-    ///-------------------------------------------------------------------------------------------------
-    public CancellationToken CancellationToken { get; }
-
-    public HttpContent Content { get; private set; }
 }
