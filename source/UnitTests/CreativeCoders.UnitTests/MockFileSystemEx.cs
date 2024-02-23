@@ -2,9 +2,11 @@
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using CreativeCoders.Core.IO;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.UnitTests;
 
+[PublicAPI]
 public class MockFileSystemEx : MockFileSystem, IFileSystemEx
 {
     public MockFileSystemEx() { }

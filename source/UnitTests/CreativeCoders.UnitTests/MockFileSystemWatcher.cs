@@ -12,10 +12,32 @@ public class MockFileSystemWatcher : FileSystemWatcherBase
 {
     public MockFileSystemWatcher(IFileSystem fileSystem)
     {
-        FileSystem = Ensure.NotNull(fileSystem, nameof(fileSystem));
+        FileSystem = Ensure.NotNull(fileSystem);
 
         Filters = new Collection<string>();
     }
+
+    public override IContainer? Container { get; }
+
+    public override IFileSystem FileSystem { get; }
+
+    public override bool IncludeSubdirectories { get; set; }
+
+    public override bool EnableRaisingEvents { get; set; }
+
+    public override string Filter { get; set; } = string.Empty;
+
+    public override Collection<string> Filters { get; }
+
+    public override int InternalBufferSize { get; set; }
+
+    public override NotifyFilters NotifyFilter { get; set; }
+
+    public override string Path { get; set; } = string.Empty;
+
+    public override ISite? Site { get; set; }
+
+    public override ISynchronizeInvoke? SynchronizingObject { get; set; }
 
     public override void BeginInit()
     {
@@ -36,26 +58,4 @@ public class MockFileSystemWatcher : FileSystemWatcherBase
     {
         return new MockWaitForChangedResult();
     }
-
-    public override IContainer Container { get; }
-
-    public override IFileSystem FileSystem { get; }
-
-    public override bool IncludeSubdirectories { get; set; }
-
-    public override bool EnableRaisingEvents { get; set; }
-
-    public override string Filter { get; set; }
-
-    public override Collection<string> Filters { get; }
-
-    public override int InternalBufferSize { get; set; }
-
-    public override NotifyFilters NotifyFilter { get; set; }
-
-    public override string Path { get; set; }
-
-    public override ISite Site { get; set; }
-
-    public override ISynchronizeInvoke SynchronizingObject { get; set; }
 }
