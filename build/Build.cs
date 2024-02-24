@@ -65,7 +65,7 @@ class Build : NukeBuild,
             .AddRange(this.As<ITestSettings>().TestBaseDirectory);
 
     public IEnumerable<Project> TestProjects => this.TryAs<ISolutionParameter>(out var solutionParameter)
-        ? solutionParameter.Solution.Projects
+        ? solutionParameter.Solution.GetAllProjects("*")
             .Where(x => ((string)x.Path)?.StartsWith(RootDirectory / "tests") ?? false).ToArray()
         : Array.Empty<Project>();
 
