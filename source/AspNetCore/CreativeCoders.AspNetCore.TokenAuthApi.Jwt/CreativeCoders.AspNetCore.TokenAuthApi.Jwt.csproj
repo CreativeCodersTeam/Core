@@ -1,23 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<OutputType>Library</OutputType>
-		<TargetFramework>net6.0</TargetFramework>
-		<Authors>CreativeCoders</Authors>
-		<Description>JSON Web Token implementation of token authentication for CreativeCoders.AspNetCore.TokenAuth</Description>
-		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <Description>JSON Web Token implementation of token authentication for CreativeCoders.AspNetCore.TokenAuth</Description>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.0" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2023.3.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5"/>
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.0"/>
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\CreativeCoders.AspNetCore.TokenAuthApi\CreativeCoders.AspNetCore.TokenAuthApi.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\CreativeCoders.AspNetCore.TokenAuthApi\CreativeCoders.AspNetCore.TokenAuthApi.csproj"/>
+    </ItemGroup>
 
 </Project>

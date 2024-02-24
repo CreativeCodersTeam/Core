@@ -1,20 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<OutputType>Library</OutputType>
-		<TargetFramework>net6.0</TargetFramework>
-		<Authors>CreativeCoders</Authors>
-		<Description>Nuke build extensions</Description>
-		<IsPackable>true</IsPackable>
-		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
-	</PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <Description>Nuke build extensions</Description>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Nuke.Common" Version="6.3.0" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Nuke.Common" Version="6.3.0"/>
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj"/>
+    </ItemGroup>
 
 </Project>

@@ -1,15 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<OutputType>Library</OutputType>
-		<TargetFramework>net6.0</TargetFramework>
-		<Authors>CreativeCoders</Authors>
-		<Description>Abstractions and base types for code compilation</Description>
-		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
-	</PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <Description>Abstractions and base types for code compilation</Description>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj"/>
+    </ItemGroup>
 
 </Project>

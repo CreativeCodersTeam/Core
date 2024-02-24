@@ -1,21 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<OutputType>Library</OutputType>
-		<TargetFramework>net6.0</TargetFramework>
-		<Authors>CreativeCoders</Authors>
-		<Description>Network relatived classes and types. HttpClient extensions. Basic Soap support. Base classes and types for Http server abstraction.</Description>
-		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
-	</PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <Description>Network relatived classes and types. HttpClient extensions. Basic Soap support. Base classes and types for Http server abstraction.</Description>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="Polly" Version="8.2.0" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="Polly" Version="8.2.0"/>
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj"/>
+    </ItemGroup>
 
 </Project>

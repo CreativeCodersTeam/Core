@@ -1,0 +1,7 @@
+<Project>
+    <PropertyGroup>
+        <Authors>CreativeCoders</Authors>
+        <IsPackable>false</IsPackable>
+        <NoWarn>$(NoWarn);IDE0079</NoWarn>
+    </PropertyGroup>
+</Project>

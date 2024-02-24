@@ -5,16 +5,15 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Description>LiteDb based NoSql implementation</Description>
-        <RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-      <ProjectReference Include="..\CreativeCoders.Data.NoSql\CreativeCoders.Data.NoSql.csproj" />
+        <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj"/>
+        <ProjectReference Include="..\CreativeCoders.Data.NoSql\CreativeCoders.Data.NoSql.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="LiteDB" Version="5.0.17" />
+        <PackageReference Include="LiteDB" Version="5.0.17"/>
     </ItemGroup>
 
 </Project>
