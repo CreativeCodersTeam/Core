@@ -14,27 +14,32 @@ using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 
+#pragma warning disable S1144 // remove unused private members
+#pragma warning disable S3903 // move class to namespace
 [PublicAPI]
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("integration", GitHubActionsImage.WindowsLatest,
-    OnPushBranches = new[]{"feature/**"},
-    OnPullRequestBranches = new[]{"main"},
-    InvokedTargets = new []{"clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"},
+    OnPushBranches = new[] { "feature/**" },
+    OnPullRequestBranches = new[] { "main" },
+    InvokedTargets = new[]
+        { "clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget" },
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
-    )]
+)]
 [GitHubActions("main", GitHubActionsImage.WindowsLatest,
-    OnPushBranches = new[]{"main"},
-    InvokedTargets = new []{"clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"},
+    OnPushBranches = new[] { "main" },
+    InvokedTargets = new[]
+        { "clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget" },
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
 )]
 [GitHubActions(ReleaseWorkflow, GitHubActionsImage.WindowsLatest,
-    OnPushTags = new []{"v**"},
-    InvokedTargets = new []{"clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"},
-    ImportSecrets = new []{"NUGET_ORG_TOKEN"},
+    OnPushTags = new[] { "v**" },
+    InvokedTargets = new[]
+        { "clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget" },
+    ImportSecrets = new[] { "NUGET_ORG_TOKEN" },
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
@@ -49,13 +54,20 @@ class Build : NukeBuild,
 {
     public const string ReleaseWorkflow = "release";
 
-    public static int Main() => Execute<Build>(x => ((ICodeCoverageReportTarget)x).CodeCoverageReport);
+    readonly GitHubActions GitHubActions = GitHubActions.Instance;
 
     [Parameter(Name = "GITHUB_TOKEN")] string DevNuGetApiKey;
 
     [Parameter(Name = "NUGET_ORG_TOKEN")] string NuGetOrgApiKey;
 
-    GitHubActions GitHubActions = GitHubActions.Instance;
+    IList<AbsolutePath> ICleanSettings.DirectoriesToClean =>
+        this.As<ICleanSettings>().DefaultDirectoriesToClean
+            .AddRange(this.As<ITestSettings>().TestBaseDirectory);
+
+    public IEnumerable<Project> TestProjects => this.TryAs<ISolutionParameter>(out var solutionParameter)
+        ? solutionParameter.Solution.Projects
+            .Where(x => ((string)x.Path)?.StartsWith(RootDirectory / "tests") ?? false).ToArray()
+        : Array.Empty<Project>();
 
     bool IPushNuGetSettings.SkipPush => GitHubActions?.IsPullRequest == true;
 
@@ -69,18 +81,11 @@ class Build : NukeBuild,
             ? NuGetOrgApiKey
             : DevNuGetApiKey;
 
-    IList<AbsolutePath> ICleanSettings.DirectoriesToClean =>
-        this.As<ICleanSettings>().DefaultDirectoriesToClean
-            .AddRange(this.As<ITestSettings>().TestBaseDirectory);
-
-    public IEnumerable<Project> TestProjects => this.TryAs<ISolutionParameter>(out var solutionParameter)
-        ? solutionParameter.Solution.Projects
-            .Where(x => ((string)x.Path)?.StartsWith(RootDirectory / "tests") == true).ToArray()
-        : Array.Empty<Project>();
-
     string IPackSettings.PackageProjectUrl => "https://github.com/CreativeCodersTeam/Core";
 
     string IPackSettings.PackageLicenseExpression => PackageLicenseExpressions.ApacheLicense20;
 
     string IPackSettings.Copyright => $"{DateTime.Now.Year} CreativeCoders";
+
+    public static int Main() => Execute<Build>(x => ((ICodeCoverageReportTarget)x).CodeCoverageReport);
 }
