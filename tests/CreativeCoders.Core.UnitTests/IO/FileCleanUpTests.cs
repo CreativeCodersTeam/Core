@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.IO.Abstractions.TestingHelpers;
 using CreativeCoders.Core.IO;
 using CreativeCoders.UnitTests;
@@ -17,7 +18,7 @@ public class FileCleanUpTests
     {
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>(),
-            @"C:\");
+            Path.GetTempPath());
 
         mockFileSystem.Install();
 
@@ -37,11 +38,12 @@ public class FileCleanUpTests
 
     [Fact]
     [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
+    [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
     public void Dispose_FileNotExistsThrow_ThrowsException()
     {
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>(),
-            @"C:\");
+            Path.GetTempPath());
 
         mockFileSystem.Install();
 
@@ -66,6 +68,7 @@ public class FileCleanUpTests
     }
 
     [Fact]
+    [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
     public void Dispose_FileExistsNoThrow_NotThrowsExceptionAndFileIsDeleted()
     {
         var fileName = FileSys.Path.GetTempFileName();
