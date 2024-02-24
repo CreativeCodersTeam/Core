@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
         <Description>Abstractions and base types for code compilation</Description>
     </PropertyGroup>
 

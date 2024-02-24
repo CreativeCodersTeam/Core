@@ -48,11 +48,11 @@ class Build : NukeBuild,
     ICleanTarget, ICompileTarget, IRestoreTarget, ICodeCoverageReportTarget, IPushNuGetTarget
 {
     public const string ReleaseWorkflow = "release";
-    
+
     public static int Main() => Execute<Build>(x => ((ICodeCoverageReportTarget)x).CodeCoverageReport);
 
     [Parameter(Name = "GITHUB_TOKEN")] string DevNuGetApiKey;
-    
+
     [Parameter(Name = "NUGET_ORG_TOKEN")] string NuGetOrgApiKey;
 
     GitHubActions GitHubActions = GitHubActions.Instance;
@@ -63,24 +63,24 @@ class Build : NukeBuild,
         GitHubActions?.Workflow == ReleaseWorkflow
             ? "nuget.org"
             : "https://nuget.pkg.github.com/CreativeCodersTeam/index.json";
-    
+
     string IPushNuGetSettings.NuGetApiKey =>
         GitHubActions?.Workflow == ReleaseWorkflow
             ? NuGetOrgApiKey
             : DevNuGetApiKey;
-    
+
     IList<AbsolutePath> ICleanSettings.DirectoriesToClean =>
         this.As<ICleanSettings>().DefaultDirectoriesToClean
             .AddRange(this.As<ITestSettings>().TestBaseDirectory);
 
     public IEnumerable<Project> TestProjects => this.TryAs<ISolutionParameter>(out var solutionParameter)
-        ? solutionParameter.Solution.GetProjects("*")
+        ? solutionParameter.Solution.Projects
             .Where(x => ((string)x.Path)?.StartsWith(RootDirectory / "tests") == true).ToArray()
         : Array.Empty<Project>();
 
     string IPackSettings.PackageProjectUrl => "https://github.com/CreativeCodersTeam/Core";
 
     string IPackSettings.PackageLicenseExpression => PackageLicenseExpressions.ApacheLicense20;
-    
+
     string IPackSettings.Copyright => $"{DateTime.Now.Year} CreativeCoders";
 }

@@ -2,12 +2,11 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
         <Description>Nuke build extensions</Description>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Nuke.Common" Version="6.3.0"/>
+        <PackageReference Include="Nuke.Common" Version="8.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
