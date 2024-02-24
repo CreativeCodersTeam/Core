@@ -21,8 +21,8 @@ public class CleanBuildAction : BuildActionBase<CleanBuildAction>
 
     private static void SafeDeleteDirectory(AbsolutePath directory)
     {
-        FileSystemTasks.EnsureCleanDirectory(directory);
-        FileSystemTasks.DeleteDirectory(directory);
+        directory.CreateOrCleanDirectory();
+        directory.DeleteDirectory();
     }
 
     public CleanBuildAction AddDirectoryForClean(AbsolutePath directory)

@@ -16,7 +16,7 @@ public static class CommonTargetTasks
             return;
         }
 
-        FileSystemTasks.DeleteDirectory(directory);
+        directory.DeleteDirectory();
     }
 
     public static void SafeDeleteDirectories(this IEnumerable<AbsolutePath> directories)
@@ -24,8 +24,5 @@ public static class CommonTargetTasks
         directories.ForEach(SafeDeleteDirectory);
     }
 
-    public static void TestProject(string testProjectFile, DotNetTestSettings settings)
-    {
-
-    }
+    public static void TestProject(string testProjectFile, DotNetTestSettings settings) { }
 }

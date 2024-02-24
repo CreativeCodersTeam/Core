@@ -18,7 +18,7 @@ using Nuke.Common.ProjectModel;
 #pragma warning disable S3903 // move class to namespace
 [PublicAPI]
 [UnsetVisualStudioEnvironmentVariables]
-[GitHubActions("integration", GitHubActionsImage.WindowsLatest,
+[GitHubActions("integration", GitHubActionsImage.UbuntuLatest,
     OnPushBranches = new[] { "feature/**" },
     OnPullRequestBranches = new[] { "main" },
     InvokedTargets = new[]
