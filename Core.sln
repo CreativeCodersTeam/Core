@@ -156,6 +156,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Data.NoSql", "source\Data\CreativeCoders.Data.NoSql\CreativeCoders.Data.NoSql.csproj", "{E6D5CE84-542C-4125-B094-D8C67A11AF13}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5A3FFD14-2258-4007-AC77-BAFB3B3EB26F}"
+	ProjectSection(SolutionItems) = preProject
+		tests\Directory.Build.props = tests\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Data.NoSql.LiteDb.Tests", "tests\CreativeCoders.Data.NoSql.LiteDb.Tests\CreativeCoders.Data.NoSql.LiteDb.Tests.csproj", "{584D2981-461B-4146-B19A-3F9E574E1E88}"
 EndProject

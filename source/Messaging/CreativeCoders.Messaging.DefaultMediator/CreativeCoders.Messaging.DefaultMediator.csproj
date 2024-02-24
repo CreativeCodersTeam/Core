@@ -1,16 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<OutputType>Library</OutputType>
-		<TargetFramework>net6.0</TargetFramework>
-		<Authors>CreativeCoders</Authors>
-		<Description>Default mediator implementation for CreativeCoders.Messaging.Core</Description>
-		<RepositoryUrl>https://github.com/CreativeCodersTeam/Core</RepositoryUrl>
-	</PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <Description>Default mediator implementation for CreativeCoders.Messaging.Core</Description>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-		<ProjectReference Include="..\CreativeCoders.Messaging.Core\CreativeCoders.Messaging.Core.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj"/>
+        <ProjectReference Include="..\CreativeCoders.Messaging.Core\CreativeCoders.Messaging.Core.csproj"/>
+    </ItemGroup>
 
 </Project>
