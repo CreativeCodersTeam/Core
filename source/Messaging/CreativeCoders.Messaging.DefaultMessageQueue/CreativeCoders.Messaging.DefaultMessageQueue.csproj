@@ -2,12 +2,11 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
         <Description>Default message queue implementation for CreativeCoders.Messaging.Core</Description>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="System.Threading.Tasks.Dataflow" Version="6.0.0"/>
+        <PackageReference Include="System.Threading.Tasks.Dataflow" Version="8.0.0"/>
     </ItemGroup>
 
     <ItemGroup>

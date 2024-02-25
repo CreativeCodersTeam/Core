@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
         <Description>ASP.NET Core implementation of Http server for CreativeCoders.Net.Servers.Http</Description>
     </PropertyGroup>
 

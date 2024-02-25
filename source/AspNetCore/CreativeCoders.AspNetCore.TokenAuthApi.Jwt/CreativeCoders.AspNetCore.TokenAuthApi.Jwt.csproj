@@ -2,16 +2,15 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
         <Description>JSON Web Token implementation of token authentication for CreativeCoders.AspNetCore.TokenAuth</Description>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations" Version="2023.3.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2"/>
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5"/>
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.0"/>
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.3.1"/>
     </ItemGroup>
 
     <ItemGroup>

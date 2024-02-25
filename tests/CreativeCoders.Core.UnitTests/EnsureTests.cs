@@ -77,7 +77,8 @@ public class EnsureTests
     [Theory]
     [InlineData(new int[0])]
     [InlineData(null)]
-    public void IsNotNullOrEmpty_ForEnumerableNoParamNameGiven_ParamNameIsSetByCompiler(IEnumerable<int>? items)
+    public void IsNotNullOrEmpty_ForEnumerableNoParamNameGiven_ParamNameIsSetByCompiler(
+        IEnumerable<int>? items)
     {
         var act = () => Ensure.IsNotNullOrEmpty(items);
 
@@ -96,9 +97,9 @@ public class EnsureTests
 
         object? nullObject = null;
 
-        Assert.Throws<ArgumentNullException>(() => Ensure.IsNotNull(nullObject, "param"));
-        Ensure.IsNotNull(instance, nameof(instance));
-        var obj = Ensure.NotNull(instance, nameof(instance));
+        Assert.Throws<ArgumentNullException>(() => Ensure.IsNotNull(nullObject));
+        Ensure.IsNotNull(instance);
+        var obj = Ensure.NotNull(instance);
 
         obj
             .Should()
@@ -108,9 +109,9 @@ public class EnsureTests
     [Fact]
     public void IsNotNullOrEmpty_AssertTestIsNotNullOrEmpty()
     {
-        Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrEmpty(null, "string"));
-        Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrEmpty(string.Empty, "string"));
-        var value = Ensure.IsNotNullOrEmpty("test", "string");
+        Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrEmpty(null));
+        Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrEmpty(string.Empty));
+        var value = Ensure.IsNotNullOrEmpty("test");
 
         value
             .Should()
@@ -120,11 +121,11 @@ public class EnsureTests
     [Fact]
     public void IsNotNullOrWhitespace_AssertTestIsNotNullOrWhitespace()
     {
-        Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrWhitespace(null, "string"));
-        Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrWhitespace(string.Empty, "string"));
-        Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrWhitespace(" ", "string"));
+        Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrWhitespace(null));
+        Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrWhitespace(string.Empty));
+        Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrWhitespace(" "));
 
-        var value = Ensure.IsNotNullOrWhitespace("test", "string");
+        var value = Ensure.IsNotNullOrWhitespace("test");
 
         value
             .Should()
@@ -134,17 +135,17 @@ public class EnsureTests
     [Fact]
     public void GuidIsNotEmpty_AssertTestGuidIsNotEmpty()
     {
-        Assert.Throws<ArgumentException>(() => Ensure.GuidIsNotEmpty(Guid.Empty, "guid"));
-        Ensure.GuidIsNotEmpty(Guid.NewGuid(), "guid");
+        Assert.Throws<ArgumentException>(() => Ensure.GuidIsNotEmpty(Guid.Empty));
+        Ensure.GuidIsNotEmpty(Guid.NewGuid());
     }
 
     [Fact]
     public void That_AssertTestThat()
     {
-        Assert.Throws<ArgumentException>(() => Ensure.That(false, "param"));
-        Assert.Throws<ArgumentException>(() => Ensure.That(false, "message", "param"));
-        Ensure.That(true, "param");
-        Ensure.That(true, "message", "param");
+        Assert.Throws<ArgumentException>(() => Ensure.That(false));
+        Assert.Throws<ArgumentException>(() => Ensure.That(false, message: "param"));
+        Ensure.That(true);
+        Ensure.That(true, message: "param");
     }
 
     [Fact]
@@ -164,7 +165,7 @@ public class EnsureTests
     public void IsNotNullOrEmpty_AssertIsNotNullOrEmptyExceptionTestException(string? value)
     {
         var enumerable = value as IEnumerable<char>;
-        Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrEmpty(enumerable, nameof(value)));
+        Assert.Throws<ArgumentException>(() => Ensure.IsNotNullOrEmpty(enumerable));
     }
 
     [Theory]
@@ -173,21 +174,38 @@ public class EnsureTests
     public void IsNotNullOrEmpty_AssertIsNotNullOrEmptyExceptionTest(string value)
     {
         var enumerable = value as IEnumerable<char>;
-        Ensure.IsNotNullOrEmpty(enumerable, nameof(value));
+
+        // Act
+        var act = () => Ensure.IsNotNullOrEmpty(enumerable);
+
+        // Assert
+        act
+            .Should()
+            .NotThrow();
     }
 
     [Fact]
     public void ThatRange_AssertionTrue_PassWithoutException()
     {
-        Ensure.ThatRange(true, "paramName");
-        Ensure.ThatRange(true, "paramName", "Message");
+        // Act
+        var act0 = () => Ensure.ThatRange(true);
+        var act1 = () => Ensure.ThatRange(true, message: "Message");
+
+        // Assert
+        act0
+            .Should()
+            .NotThrow();
+
+        act1
+            .Should()
+            .NotThrow();
     }
 
     [Fact]
     public void ThatRange_AssertionFalse_ThrowsException()
     {
-        Assert.Throws<ArgumentOutOfRangeException>(() => Ensure.ThatRange(false, "paramName"));
-        Assert.Throws<ArgumentOutOfRangeException>(() => Ensure.ThatRange(false, "paramName", "Message"));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Ensure.ThatRange(false));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Ensure.ThatRange(false, message: "Message"));
     }
 
     [Theory]
@@ -197,7 +215,13 @@ public class EnsureTests
     [InlineData(-1, -2, 0)]
     public void IndexIsInRange_InRange_PassWithoutException(int index, int startIndex, int endIndex)
     {
-        Ensure.IndexIsInRange(index, startIndex, endIndex, "paramName");
+        // Act
+        var act = () => Ensure.IndexIsInRange(index, startIndex, endIndex);
+
+        // Assert
+        act
+            .Should()
+            .NotThrow();
     }
 
     [Theory]
@@ -207,7 +231,7 @@ public class EnsureTests
     public void IndexIsInRange_NotInRange_ThrowsException(int index, int startIndex, int endIndex)
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
-            Ensure.IndexIsInRange(index, startIndex, endIndex, "paramName"));
+            Ensure.IndexIsInRange(index, startIndex, endIndex));
     }
 
     [Theory]
@@ -216,7 +240,13 @@ public class EnsureTests
     [InlineData(2, 5)]
     public void IndexIsInRange_InRangeOfCollectionLength_PassWithoutException(int index, int collectionLength)
     {
-        Ensure.IndexIsInRange(index, collectionLength, "paramName");
+        // Act
+        var act = () => Ensure.IndexIsInRange(index, collectionLength);
+
+        // Assert
+        act
+            .Should()
+            .NotThrow();
     }
 
     [Theory]
@@ -226,30 +256,36 @@ public class EnsureTests
     public void IndexIsInRange_NotInRangeOfCollectionLength_ThrowsException(int index, int collectionLength)
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
-            Ensure.IndexIsInRange(index, collectionLength, "paramName"));
+            Ensure.IndexIsInRange(index, collectionLength));
     }
 
     [Fact]
     public void FileExists_ExistingFile_PassWithoutException()
     {
-        const string fileName = @"C:\temp_dir\test.txt";
+        var fileName = Path.GetTempFileName();
 
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>
             {
-                {fileName, new MockFileData(string.Empty)}
+                { fileName, new MockFileData(string.Empty) }
             },
-            @"C:\");
+            Path.GetTempPath());
 
         mockFileSystem.Install();
 
-        Ensure.FileExists(fileName);
+        // Act
+        var act = () => Ensure.FileExists(fileName);
+
+        // Assert
+        act
+            .Should()
+            .NotThrow();
     }
 
     [Fact]
     public void FileExists_NoneExistingFile_ThrowsException()
     {
-        const string fileName = @"C:\temp_dir\test.txt";
+        var fileName = Path.GetTempFileName();
 
         var mockFileSystem = new MockFileSystemEx();
 
@@ -261,25 +297,31 @@ public class EnsureTests
     [Fact]
     public void DirectoryExists_ExistingDirectory_PassWithoutException()
     {
-        const string dirName = @"C:\temp_dir";
-        const string fileName = dirName + @"\test.txt";
+        var dirName = Path.GetTempPath();
+        var fileName = Path.Combine(dirName, "test.txt");
 
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>
             {
-                {fileName, new MockFileData(string.Empty)}
+                { fileName, new MockFileData(string.Empty) }
             },
-            @"C:\");
+            Path.GetTempPath());
 
         mockFileSystem.Install();
 
-        Ensure.DirectoryExists(dirName);
+        // Act
+        var act = () => Ensure.DirectoryExists(dirName);
+
+        // Assert
+        act
+            .Should()
+            .NotThrow();
     }
 
     [Fact]
     public void DirectoryExists_NoneExistingDirectory_ThrowsException()
     {
-        const string fileName = @"C:\temp_dir\test.txt";
+        var fileName = Path.GetTempFileName();
 
         var mockFileSystem = new MockFileSystemEx();
 
@@ -296,7 +338,7 @@ public class EnsureTests
     public void Argument_DifferentValues_ValueAndNameAndHasValueAreCorrect(string? textValue)
     {
         // Act
-        var argument = Ensure.Argument(textValue, nameof(textValue));
+        var argument = Ensure.Argument(textValue);
 
         // Assert
         argument.Name
@@ -314,6 +356,7 @@ public class EnsureTests
 
     [Fact]
     [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
+    [SuppressMessage("SonarLint", "S3236")]
     public void Argument_ParamNameIsNull_ThrowsException()
     {
         // Act

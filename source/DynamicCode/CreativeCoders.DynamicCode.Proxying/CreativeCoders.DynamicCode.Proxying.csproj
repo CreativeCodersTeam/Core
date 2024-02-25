@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
         <Description>Dynamic proxy based on Caste.Core</Description>
         <Nullable>enable</Nullable>
     </PropertyGroup>

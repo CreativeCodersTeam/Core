@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.IO.Abstractions;
@@ -38,6 +39,11 @@ public class MockFileSystemWatcher : FileSystemWatcherBase
     public override ISite? Site { get; set; }
 
     public override ISynchronizeInvoke? SynchronizingObject { get; set; }
+
+    public override IWaitForChangedResult WaitForChanged(WatcherChangeTypes changeType, TimeSpan timeout)
+    {
+        throw new NotImplementedException();
+    }
 
     public override void BeginInit()
     {

@@ -1,19 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <OutputType>Library</OutputType>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MimeMapping" Version="2.0.0" />
-        <PackageReference Include="Nuke.Common" Version="6.3.0" />
+        <PackageReference Include="MimeMapping" Version="3.0.1"/>
+        <PackageReference Include="Nuke.Common" Version="8.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj" />
-      <ProjectReference Include="..\..\IO\CreativeCoders.IO\CreativeCoders.IO.csproj" />
+        <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj"/>
+        <ProjectReference Include="..\..\IO\CreativeCoders.IO\CreativeCoders.IO.csproj"/>
     </ItemGroup>
 
 </Project>

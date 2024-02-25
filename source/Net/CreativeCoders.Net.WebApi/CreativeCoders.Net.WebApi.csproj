@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
         <Description>Dynamic WebApi proxy generation based on attributes</Description>
     </PropertyGroup>
 

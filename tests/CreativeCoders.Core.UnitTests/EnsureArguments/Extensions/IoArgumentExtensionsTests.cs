@@ -16,19 +16,19 @@ public class IoArgumentExtensionsTests
     [Fact]
     public void FileExists_ExistingFileName_ReturnsArgument()
     {
-        const string fileName = @"C:\temp_dir\test.txt";
+        var fileName = Path.GetTempFileName();
 
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>
             {
-                {fileName, new MockFileData(string.Empty)}
+                { fileName, new MockFileData(string.Empty) }
             },
-            @"C:\");
+            Path.GetTempPath());
 
         mockFileSystem.Install();
 
         // Act
-        var argument = Ensure.Argument(fileName, nameof(fileName)).FileExists();
+        var argument = Ensure.Argument(fileName).FileExists();
 
         // Assert
         argument
@@ -43,16 +43,16 @@ public class IoArgumentExtensionsTests
     [Fact]
     public void FileExists_NotExistingFileName_ThrowsException()
     {
-        const string fileName = @"C:\temp_dir\test.txt";
+        var fileName = Path.GetTempFileName();
 
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>(),
-            @"C:\");
+            Path.GetTempPath());
 
         mockFileSystem.Install();
 
         // Act
-        Action act = () => Ensure.Argument(fileName, nameof(fileName)).FileExists();
+        Action act = () => Ensure.Argument(fileName).FileExists();
 
         // Assert
         act
@@ -63,19 +63,19 @@ public class IoArgumentExtensionsTests
     [Fact]
     public void FileExists_ArgNotNullExistingFileName_ReturnsArgument()
     {
-        const string fileName = @"C:\temp_dir\test.txt";
+        var fileName = Path.GetTempFileName();
 
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>
             {
-                {fileName, new MockFileData(string.Empty)}
+                { fileName, new MockFileData(string.Empty) }
             },
-            @"C:\");
+            Path.GetTempPath());
 
         mockFileSystem.Install();
 
         // Act
-        var argument = Ensure.Argument(fileName, nameof(fileName)).NotNull().FileExists();
+        var argument = Ensure.Argument(fileName).NotNull().FileExists();
 
         // Assert
         argument
@@ -90,16 +90,16 @@ public class IoArgumentExtensionsTests
     [Fact]
     public void FileExists_ArgNotNullNotExistingFileName_ThrowsException()
     {
-        const string fileName = @"C:\temp_dir\test.txt";
+        var fileName = Path.GetTempFileName();
 
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>(),
-            @"C:\");
+            Path.GetTempPath());
 
         mockFileSystem.Install();
 
         // Act
-        Action act = () => Ensure.Argument(fileName, nameof(fileName)).NotNull().FileExists();
+        Action act = () => Ensure.Argument(fileName).NotNull().FileExists();
 
         // Assert
         act
@@ -114,12 +114,12 @@ public class IoArgumentExtensionsTests
 
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>(),
-            @"C:\");
+            Path.GetTempPath());
 
         mockFileSystem.Install();
 
         // Act
-        Action act = () => Ensure.Argument(fileName, nameof(fileName)).FileExists();
+        Action act = () => Ensure.Argument(fileName).FileExists();
 
         // Assert
         act
@@ -130,20 +130,21 @@ public class IoArgumentExtensionsTests
     [Fact]
     public void DirectoryExists_ExistingDirectoryName_ReturnsArgument()
     {
-        const string fileName = @"C:\temp_dir\test.txt";
+        var fileName = Path.GetTempFileName();
+
         var directoryName = FileSys.Path.GetDirectoryName(fileName);
 
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>
             {
-                {fileName, new MockFileData(string.Empty)}
+                { fileName, new MockFileData(string.Empty) }
             },
-            @"C:\");
+            Path.GetTempPath());
 
         mockFileSystem.Install();
 
         // Act
-        var argument = Ensure.Argument(directoryName, nameof(directoryName)).DirectoryExists();
+        var argument = Ensure.Argument(directoryName).DirectoryExists();
 
         // Assert
         argument
@@ -158,16 +159,16 @@ public class IoArgumentExtensionsTests
     [Fact]
     public void DirectoryExists_NotExistingDirectoryName_ThrowsException()
     {
-        const string directoryName = @"C:\Temp12";
+        var directoryName = Path.Combine(Path.GetTempPath(), "sub_dir");
 
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>(),
-            @"C:\");
+            Path.GetTempPath());
 
         mockFileSystem.Install();
 
         // Act
-        Action act = () => Ensure.Argument(directoryName, nameof(directoryName)).DirectoryExists();
+        Action act = () => Ensure.Argument(directoryName).DirectoryExists();
 
         // Assert
         act
@@ -178,20 +179,20 @@ public class IoArgumentExtensionsTests
     [Fact]
     public void DirectoryExists_ArgNotNullExistingDirectoryName_ReturnsArgument()
     {
-        const string fileName = @"C:\temp_dir\test.txt";
+        var fileName = Path.GetTempFileName();
         var directoryName = FileSys.Path.GetDirectoryName(fileName);
 
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>
             {
-                {fileName, new MockFileData(string.Empty)}
+                { fileName, new MockFileData(string.Empty) }
             },
-            @"C:\");
+            Path.GetTempPath());
 
         mockFileSystem.Install();
 
         // Act
-        var argument = Ensure.Argument(directoryName, nameof(directoryName)).NotNull().DirectoryExists();
+        var argument = Ensure.Argument(directoryName).NotNull().DirectoryExists();
 
         // Assert
         argument
@@ -206,16 +207,16 @@ public class IoArgumentExtensionsTests
     [Fact]
     public void DirectoryExists_ArgNotNullNotExistingDirectoryName_ThrowsException()
     {
-        const string directoryName = @"C:\Temp12";
+        var directoryName = Path.Combine(Path.GetTempPath(), "sub_dir");
 
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>(),
-            @"C:\");
+            Path.GetTempPath());
 
         mockFileSystem.Install();
 
         // Act
-        Action act = () => Ensure.Argument(directoryName, nameof(directoryName)).NotNull().DirectoryExists();
+        Action act = () => Ensure.Argument(directoryName).NotNull().DirectoryExists();
 
         // Assert
         act
@@ -230,12 +231,12 @@ public class IoArgumentExtensionsTests
 
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>(),
-            @"C:\");
+            Path.GetTempPath());
 
         mockFileSystem.Install();
 
         // Act
-        Action act = () => Ensure.Argument(directoryName, nameof(directoryName)).DirectoryExists();
+        Action act = () => Ensure.Argument(directoryName).DirectoryExists();
 
         // Assert
         act
