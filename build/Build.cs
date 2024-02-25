@@ -19,27 +19,30 @@ using Nuke.Common.ProjectModel;
 [PublicAPI]
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("integration", GitHubActionsImage.UbuntuLatest,
-    OnPushBranches = new[] { "feature/**" },
-    OnPullRequestBranches = new[] { "main" },
-    InvokedTargets = new[]
-        { "clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget" },
+    OnPushBranches = ["feature/**"],
+    InvokedTargets = ["clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"],
+    EnableGitHubToken = true,
+    PublishArtifacts = true,
+    FetchDepth = 0
+)]
+[GitHubActions("pull-request", GitHubActionsImage.UbuntuLatest, GitHubActionsImage.WindowsLatest,
+    OnPullRequestBranches = ["main"],
+    InvokedTargets = ["clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"],
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
 )]
 [GitHubActions("main", GitHubActionsImage.WindowsLatest,
-    OnPushBranches = new[] { "main" },
-    InvokedTargets = new[]
-        { "clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget" },
+    OnPushBranches = ["main"],
+    InvokedTargets = ["clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"],
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
 )]
 [GitHubActions(ReleaseWorkflow, GitHubActionsImage.WindowsLatest,
-    OnPushTags = new[] { "v**" },
-    InvokedTargets = new[]
-        { "clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget" },
-    ImportSecrets = new[] { "NUGET_ORG_TOKEN" },
+    OnPushTags = ["v**"],
+    InvokedTargets = ["clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"],
+    ImportSecrets = ["NUGET_ORG_TOKEN"],
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
