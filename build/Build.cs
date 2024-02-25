@@ -32,14 +32,14 @@ using Nuke.Common.ProjectModel;
     PublishArtifacts = true,
     FetchDepth = 0
 )]
-[GitHubActions("main", GitHubActionsImage.WindowsLatest,
+[GitHubActions("main", GitHubActionsImage.UbuntuLatest,
     OnPushBranches = ["main"],
     InvokedTargets = ["clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"],
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
 )]
-[GitHubActions(ReleaseWorkflow, GitHubActionsImage.WindowsLatest,
+[GitHubActions(ReleaseWorkflow, GitHubActionsImage.UbuntuLatest,
     OnPushTags = ["v**"],
     InvokedTargets = ["clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"],
     ImportSecrets = ["NUGET_ORG_TOKEN"],
