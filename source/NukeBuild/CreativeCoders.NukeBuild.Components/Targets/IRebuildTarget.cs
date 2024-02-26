@@ -1,7 +1,9 @@
-﻿using Nuke.Common;
+﻿using JetBrains.Annotations;
+using Nuke.Common;
 
 namespace CreativeCoders.NukeBuild.Components.Targets;
 
+[PublicAPI]
 public interface IRebuildTarget
 {
     Target Rebuild => d => d

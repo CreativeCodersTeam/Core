@@ -21,7 +21,7 @@ public interface IPublishTarget : IPublishSettings
                 .Where(x => x.ProduceArtifact)
                 .Select(x => x.OutputPath.ToString())
                 .ToArray()
-            : new string[] { PublishOutputPath })
+            : [PublishOutputPath])
         .Executes(() =>
         {
             if (PublishingItems.Any())

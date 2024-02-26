@@ -13,19 +13,18 @@ namespace CreativeCoders.NukeBuild.BuildActions;
 [PublicAPI]
 public class DotNetTestAction : BuildActionBase<DotNetTestAction>
 {
-    private string _projectsPattern;
-
-    private string _resultsDirectory;
-
-    private AbsolutePath _testProjectsBaseDirectory;
-
     private AbsolutePath _coverageDirectory;
 
     private bool _enableCodeCoverage;
 
     private string _logger = "xunit";
+    private string _projectsPattern;
 
     private string _resultFileExt = "xml";
+
+    private string _resultsDirectory;
+
+    private AbsolutePath _testProjectsBaseDirectory;
 
     protected override void OnExecute()
     {
@@ -57,7 +56,7 @@ public class DotNetTestAction : BuildActionBase<DotNetTestAction>
             }
         }
 
-        if (failedTests.Any())
+        if (failedTests.Count > 0)
         {
             throw failedTests.First().Exception;
         }
