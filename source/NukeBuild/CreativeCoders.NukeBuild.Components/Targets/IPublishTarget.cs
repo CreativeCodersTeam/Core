@@ -13,15 +13,15 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 public interface IPublishTarget : IPublishSettings
 {
     Target Publish => d => d
-        .TryAfter<ICodeCoverageReportTarget>(x => x.CodeCoverageReport)
-        .TryAfter<ITestTarget>(x => x.Test)
-        .DependsOn<ICompileTarget>(x => x.Compile)
+        .TryAfter<ICodeCoverageTarget>()
+        .TryAfter<ITestTarget>()
+        .DependsOn<IBuildTarget>()
         .Produces(PublishingItems.Any()
             ? PublishingItems
                 .Where(x => x.ProduceArtifact)
                 .Select(x => x.OutputPath.ToString())
                 .ToArray()
-            : new string[] {PublishOutputPath})
+            : new string[] { PublishOutputPath })
         .Executes(() =>
         {
             if (PublishingItems.Any())
@@ -44,7 +44,7 @@ public interface IPublishTarget : IPublishSettings
     sealed DotNetPublishSettings ConfigureDefaultPublishSettings(DotNetPublishSettings publishSettings)
     {
         return publishSettings
-            .SetNoBuild(SucceededTargets.Contains(this.As<ICompileTarget>()?.Compile))
+            .SetNoBuild(SucceededTargets.Contains(this.As<IBuildTarget>()?.Build))
             .WhenNotNull(this as ISolutionParameter, (x, solutionParameter) => x
                 .SetProject(solutionParameter.Solution))
             .SetOutput(PublishOutputPath)

@@ -13,7 +13,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 public interface ITestTarget : ITestSettings
 {
     Target Test => d => d
-        .TryBefore<ICodeCoverageReportTarget>(x => x.CodeCoverageReport)
+        .TryBefore<ICodeCoverageTarget>()
         .Executes(() =>
         {
             DotNetTasks.DotNetTest(x => x
@@ -24,7 +24,8 @@ public interface ITestTarget : ITestSettings
     DotNetTestSettings ConfigureTestProjectSettings(DotNetTestSettings settings, Project project)
         => ConfigureDefaultTestProjectSettings(settings, project);
 
-    sealed DotNetTestSettings ConfigureDefaultTestProjectSettings(DotNetTestSettings settings, Project project)
+    sealed DotNetTestSettings ConfigureDefaultTestProjectSettings(DotNetTestSettings settings,
+        Project project)
     {
         var testResultFile = Path.Combine(TestResultsDirectory, $"{project.Name}.trx");
         return settings
@@ -38,7 +39,7 @@ public interface ITestTarget : ITestSettings
     sealed DotNetTestSettings ConfigureDefaultTestSettings(DotNetTestSettings testSettings)
     {
         return testSettings
-            .SetNoBuild(SucceededTargets.Contains(this.As<ICompileTarget>()?.Compile))
+            .SetNoBuild(SucceededTargets.Contains(this.As<IBuildTarget>()?.Build))
             .WhenNotNull(this as IConfigurationParameter, (x, configurationParameter) => x
                 .SetConfiguration(configurationParameter.Configuration))
             .When(GenerateCodeCoverage, x => x

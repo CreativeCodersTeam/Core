@@ -13,7 +13,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 public interface IPackTarget : IPackSettings, ISolutionParameter
 {
     Target Pack => d => d
-        .TryDependsOn<ICompileTarget>(x => x.Compile)
+        .TryDependsOn<IBuildTarget>()
         .Executes(() =>
         {
             DotNetTasks.DotNetPack(s => s
@@ -37,7 +37,7 @@ public interface IPackTarget : IPackSettings, ISolutionParameter
                 .SetOutputDirectory(OutputDirectory))
             .WhenNotNull(this as IGitVersionParameter, (x, gitVersionParameter) => x
                 .SetVersion(gitVersionParameter.GitVersion?.NuGetVersionV2))
-            .SetNoBuild(SucceededTargets.Contains(this.As<ICompileTarget>()?.Compile))
+            .SetNoBuild(SucceededTargets.Contains(this.As<IBuildTarget>()?.Build))
             .When(!string.IsNullOrWhiteSpace(Copyright), x => x
                 .SetCopyright(Copyright))
             .When(!string.IsNullOrWhiteSpace(PackageProjectUrl), x => x

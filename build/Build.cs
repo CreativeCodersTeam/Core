@@ -20,28 +20,28 @@ using Nuke.Common.ProjectModel;
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("integration", GitHubActionsImage.UbuntuLatest,
     OnPushBranches = ["feature/**"],
-    InvokedTargets = ["clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"],
+    InvokedTargets = ["deploynuget"],
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
 )]
 [GitHubActions("pull-request", GitHubActionsImage.UbuntuLatest, GitHubActionsImage.WindowsLatest,
     OnPullRequestBranches = ["main"],
-    InvokedTargets = ["clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"],
+    InvokedTargets = ["rebuild", "codecoverage", "pack"],
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
 )]
 [GitHubActions("main", GitHubActionsImage.UbuntuLatest,
     OnPushBranches = ["main"],
-    InvokedTargets = ["clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"],
+    InvokedTargets = ["deploynuget"],
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
 )]
 [GitHubActions(ReleaseWorkflow, GitHubActionsImage.UbuntuLatest,
     OnPushTags = ["v**"],
-    InvokedTargets = ["clean", "restore", "compile", "test", "codecoveragereport", "pack", "pushnuget"],
+    InvokedTargets = ["deploynuget"],
     ImportSecrets = ["NUGET_ORG_TOKEN"],
     EnableGitHubToken = true,
     PublishArtifacts = true,
@@ -53,7 +53,8 @@ class Build : NukeBuild,
     IGitVersionParameter,
     ISourceDirectoryParameter,
     IArtifactsSettings,
-    ICleanTarget, ICompileTarget, IRestoreTarget, ICodeCoverageReportTarget, IPushNuGetTarget
+    ICleanTarget, IBuildTarget, IRestoreTarget, ICodeCoverageTarget, IPushNuGetTarget, IRebuildTarget,
+    IDeployNuGetTarget
 {
     public const string ReleaseWorkflow = "release";
 
@@ -90,5 +91,5 @@ class Build : NukeBuild,
 
     string IPackSettings.Copyright => $"{DateTime.Now.Year} CreativeCoders";
 
-    public static int Main() => Execute<Build>(x => ((ICodeCoverageReportTarget)x).CodeCoverageReport);
+    public static int Main() => Execute<Build>(x => ((ICodeCoverageTarget)x).CodeCoverage);
 }
