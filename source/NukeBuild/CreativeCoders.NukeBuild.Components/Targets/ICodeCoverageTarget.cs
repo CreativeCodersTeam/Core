@@ -7,11 +7,11 @@ using Nuke.Common.Tools.ReportGenerator;
 namespace CreativeCoders.NukeBuild.Components.Targets;
 
 [PublicAPI]
-public interface ICodeCoverageReportTarget : ITestTarget, ICodeCoverageReportSettings
+public interface ICodeCoverageTarget : ITestTarget, ICodeCoverageReportSettings
 {
-    Target CodeCoverageReport => d => d
-        .TryBefore<IPackTarget>(x => x.Pack)
-        .DependsOn<ITestTarget>(x => x.Test)
+    Target CodeCoverage => d => d
+        .TryBefore<IPackTarget>()
+        .DependsOn<ITestTarget>()
         .Produces(TargetDirectory / "*.*")
         .Executes(() =>
         {

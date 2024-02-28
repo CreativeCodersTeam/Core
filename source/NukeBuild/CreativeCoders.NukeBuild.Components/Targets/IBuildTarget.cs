@@ -8,11 +8,11 @@ using Nuke.Common.Tools.DotNet;
 namespace CreativeCoders.NukeBuild.Components.Targets;
 
 [PublicAPI]
-public interface ICompileTarget : ISolutionParameter
+public interface IBuildTarget : ISolutionParameter
 {
-    Target Compile => d => d
-        .TryBefore<ITestTarget>(x => x.Test)
-        .TryDependsOn<IRestoreTarget>(x => x.Restore)
+    Target Build => d => d
+        .TryBefore<ITestTarget>()
+        .TryDependsOn<IRestoreTarget>()
         .Executes(() => DotNetTasks.DotNetBuild(x => x
             .Apply(ConfigureCompileSettings)
         ));

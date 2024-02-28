@@ -10,7 +10,7 @@ namespace CreativeCoders.NukeBuild.Components.Targets;
 public interface ICreateDistPackagesTarget : INukeBuild, ICreateDistPackagesSettings
 {
     Target CreateDistPackages => d => d
-        .TryAfter<IPublishTarget>(x => x.Publish)
+        .TryAfter<IPublishTarget>()
         .Executes(() =>
         {
             DistPackages.ForEach(x =>
@@ -30,7 +30,8 @@ public interface ICreateDistPackagesTarget : INukeBuild, ICreateDistPackagesSett
                             .Create();
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(x.Format), "Package format not supported");
+                        throw new ArgumentOutOfRangeException(nameof(x.Format),
+                            "Package format not supported");
                 }
             });
         });

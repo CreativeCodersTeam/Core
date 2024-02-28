@@ -78,11 +78,13 @@
           "items": {
             "type": "string",
             "enum": [
+              "Build",
               "Clean",
-              "CodeCoverageReport",
-              "Compile",
+              "CodeCoverage",
+              "DeployNuGet",
               "Pack",
               "PushNuGet",
+              "Rebuild",
               "Restore",
               "Test"
             ]
@@ -98,11 +100,13 @@
           "items": {
             "type": "string",
             "enum": [
+              "Build",
               "Clean",
-              "CodeCoverageReport",
-              "Compile",
+              "CodeCoverage",
+              "DeployNuGet",
               "Pack",
               "PushNuGet",
+              "Rebuild",
               "Restore",
               "Test"
             ]
