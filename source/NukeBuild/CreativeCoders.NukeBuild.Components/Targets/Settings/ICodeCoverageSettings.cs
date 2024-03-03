@@ -5,15 +5,16 @@ using Nuke.Common.IO;
 
 namespace CreativeCoders.NukeBuild.Components.Targets.Settings;
 
-public interface ICodeCoverageReportSettings : ITestSettings
+public interface ICodeCoverageSettings : ITestSettings
 {
     AbsolutePath TargetDirectory => this.TryAs<ITestSettings>(out var testSettings)
         ? testSettings.TestBaseDirectory / "coverage_report"
         : TemporaryDirectory / "coverage_report";
 
-    AbsolutePath CoverageReportArchive => TargetDirectory.Parent / FileSys.Path.ChangeExtension(TargetDirectory.Name, "zip");
+    AbsolutePath CoverageReportArchive =>
+        TargetDirectory.Parent / FileSys.Path.ChangeExtension(TargetDirectory.Name, "zip");
 
     string Framework => $"net{Env.Version.Major}.0";
 
-    IEnumerable<string> Reports => new string[] {TestBaseDirectory / "coverage" / "**" / "*.xml"};
+    IEnumerable<string> Reports => new string[] { TestBaseDirectory / "coverage" / "**" / "*.xml" };
 }
