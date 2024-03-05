@@ -20,28 +20,28 @@ using Nuke.Common.ProjectModel;
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("integration", GitHubActionsImage.UbuntuLatest,
     OnPushBranches = ["feature/**"],
-    InvokedTargets = ["deploynuget"],
+    InvokedTargets = [NukeTargets.DeployNuGet],
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
 )]
 [GitHubActions("pull-request", GitHubActionsImage.UbuntuLatest, GitHubActionsImage.WindowsLatest,
     OnPullRequestBranches = ["main"],
-    InvokedTargets = ["rebuild", "codecoverage", "pack"],
+    InvokedTargets = [NukeTargets.Rebuild, NukeTargets.CodeCoverage, NukeTargets.Pack],
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
 )]
 [GitHubActions("main", GitHubActionsImage.UbuntuLatest,
     OnPushBranches = ["main"],
-    InvokedTargets = ["deploynuget"],
+    InvokedTargets = [NukeTargets.DeployNuGet],
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
 )]
 [GitHubActions(ReleaseWorkflow, GitHubActionsImage.UbuntuLatest,
     OnPushTags = ["v**"],
-    InvokedTargets = ["deploynuget"],
+    InvokedTargets = [NukeTargets.DeployNuGet],
     ImportSecrets = ["NUGET_ORG_TOKEN"],
     EnableGitHubToken = true,
     PublishArtifacts = true,
@@ -68,10 +68,7 @@ class Build : NukeBuild,
         this.As<ICleanSettings>().DefaultDirectoriesToClean
             .AddRange(this.As<ITestSettings>().TestBaseDirectory);
 
-    public IEnumerable<Project> TestProjects => this.TryAs<ISolutionParameter>(out var solutionParameter)
-        ? solutionParameter.Solution.GetAllProjects("*")
-            .Where(x => ((string)x.Path)?.StartsWith(RootDirectory / "tests") ?? false).ToArray()
-        : Array.Empty<Project>();
+    public IEnumerable<Project> TestProjects => GetTestProjects();
 
     bool IPushNuGetSettings.SkipPush => GitHubActions?.IsPullRequest == true;
 
@@ -90,6 +87,12 @@ class Build : NukeBuild,
     string IPackSettings.PackageLicenseExpression => PackageLicenseExpressions.ApacheLicense20;
 
     string IPackSettings.Copyright => $"{DateTime.Now.Year} CreativeCoders";
+
+    Project[] GetTestProjects() =>
+        this.TryAs<ISolutionParameter>(out var solutionParameter)
+            ? solutionParameter.Solution.GetAllProjects("*")
+                .Where(x => ((string)x.Path)?.StartsWith(RootDirectory / "tests") ?? false).ToArray()
+            : Array.Empty<Project>();
 
     public static int Main() => Execute<Build>(x => ((ICodeCoverageTarget)x).CodeCoverage);
 }
