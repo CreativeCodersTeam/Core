@@ -1,4 +1,5 @@
 ﻿using CreativeCoders.Core;
+using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
 using Nuke.Common;
@@ -11,8 +12,8 @@ public static class NukeBuildExtensions
 {
     public static bool IsRunnerOs(this INukeBuild build, string runnerOs)
     {
-        return Environment.GetEnvironmentVariable("RUNNER_OS")?
-            .Equals(runnerOs, StringComparison.Ordinal) == true;
+        return Env.GetEnvironmentVariable("RUNNER_OS")?
+            .Equals(runnerOs, StringComparison.OrdinalIgnoreCase) == true;
     }
 
     public static GitVersion? GetGitVersion(this INukeBuild build)

@@ -3,12 +3,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.NukeBuild.Components.Targets.Settings;
 
 [PublicAPI]
-public class GithubReleaseAsset
+public class GithubReleaseAsset(string fileName)
 {
-    public GithubReleaseAsset(string fileName, Stream data)
-    {
-        FileName = fileName;
-    }
-
-    public string FileName { get; }
+    public string FileName { get; } = fileName;
 }
