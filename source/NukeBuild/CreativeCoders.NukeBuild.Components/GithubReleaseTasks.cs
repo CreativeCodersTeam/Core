@@ -6,26 +6,25 @@ using Serilog;
 
 namespace CreativeCoders.NukeBuild.Components;
 
-public class GithubReleaseTasks
+public class GithubReleaseTasks(string githubToken)
 {
-    private readonly GitHubClient _githubClient;
-
-    public GithubReleaseTasks(string githubToken)
-    {
-        _githubClient = new GitHubClient(new ProductHeaderValue("CreativeCoders.Nuke"))
+    private readonly GitHubClient _githubClient =
+        new GitHubClient(new ProductHeaderValue("CreativeCoders.Nuke"))
         {
             Credentials = new Credentials(githubToken)
         };
-    }
 
-    public async Task CreateReleaseAsync(string releaseVersion, string name, string body, bool isPreRelease, IEnumerable<GithubReleaseAsset> releaseAssets)
+    public async Task CreateReleaseAsync(string releaseVersion, string name, string body, bool isPreRelease,
+        IEnumerable<GithubReleaseAsset> releaseAssets)
     {
-        var release = await CreateReleaseDraftAsync(releaseVersion, name, body, isPreRelease).ConfigureAwait(false);
+        var release = await CreateReleaseDraftAsync(releaseVersion, name, body, isPreRelease)
+            .ConfigureAwait(false);
 
         await UploadReleaseAssets(release, releaseAssets).ConfigureAwait(false);
 
         await _githubClient.Repository.Release
-            .Edit(GitHubActions.Instance.RepositoryOwner, GetRepositoryName(), release.Id, new ReleaseUpdate { Draft = false }).ConfigureAwait(false);
+            .Edit(GitHubActions.Instance.RepositoryOwner, GetRepositoryName(), release.Id,
+                new ReleaseUpdate { Draft = false }).ConfigureAwait(false);
     }
 
     private async Task UploadReleaseAssets(Release release,
@@ -38,11 +37,13 @@ public class GithubReleaseTasks
                      RawData = FileSys.File.OpenRead(releaseAsset.FileName)
                  }))
         {
-            _ = await _githubClient.Repository.Release.UploadAsset(release, releaseAssetUpload).ConfigureAwait(false);
+            _ = await _githubClient.Repository.Release.UploadAsset(release, releaseAssetUpload)
+                .ConfigureAwait(false);
         }
     }
 
-    private async Task<Release> CreateReleaseDraftAsync(string releaseVersion, string name, string body, bool isPreRelease)
+    private async Task<Release> CreateReleaseDraftAsync(string releaseVersion, string name, string body,
+        bool isPreRelease)
     {
         var repositoryOwner = GitHubActions.Instance.RepositoryOwner;
         var repositoryName = GetRepositoryName();
@@ -72,7 +73,7 @@ public class GithubReleaseTasks
 
         return index > -1
             ? GitHubActions.Instance.Repository[(index + 1)..]
-            : throw new ArgumentException("No repository name",
-                nameof(GitHubActions.Instance.Repository));
+            : throw new InvalidOperationException(
+                $"No repository name found in '{GitHubActions.Instance.Repository}'");
     }
 }

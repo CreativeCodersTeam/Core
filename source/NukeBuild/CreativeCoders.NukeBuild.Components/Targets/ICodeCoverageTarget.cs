@@ -7,7 +7,7 @@ using Nuke.Common.Tools.ReportGenerator;
 namespace CreativeCoders.NukeBuild.Components.Targets;
 
 [PublicAPI]
-public interface ICodeCoverageTarget : ITestTarget, ICodeCoverageReportSettings
+public interface ICodeCoverageTarget : ITestTarget, ICodeCoverageSettings
 {
     Target CodeCoverage => d => d
         .TryBefore<IPackTarget>()

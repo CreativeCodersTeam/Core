@@ -13,24 +13,24 @@ public interface ICreateDistPackagesTarget : INukeBuild, ICreateDistPackagesSett
         .TryAfter<IPublishTarget>()
         .Executes(() =>
         {
-            DistPackages.ForEach(x =>
+            DistPackages.ForEach(distPackage =>
             {
-                switch (x.Format)
+                switch (distPackage.Format)
                 {
                     case DistPackageFormat.TarGz:
                         new TarArchiveCreator()
-                            .SetArchiveFileName(DistOutputPath / $"{x.Name}.tar.gz")
-                            .AddFromDirectory(x.DistFolder, "*.*", true)
+                            .SetArchiveFileName(DistOutputPath / $"{distPackage.Name}.tar.gz")
+                            .AddFromDirectory(distPackage.DistFolder, "*.*", true)
                             .Create(true);
                         break;
                     case DistPackageFormat.Zip:
                         new ZipArchiveCreator()
-                            .SetArchiveFileName(DistOutputPath / $"{x.Name}.zip")
-                            .AddFromDirectory(x.DistFolder, "*.*", true)
+                            .SetArchiveFileName(DistOutputPath / $"{distPackage.Name}.zip")
+                            .AddFromDirectory(distPackage.DistFolder, "*.*", true)
                             .Create();
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(x.Format),
+                        throw new ArgumentOutOfRangeException(nameof(distPackage),
                             "Package format not supported");
                 }
             });
