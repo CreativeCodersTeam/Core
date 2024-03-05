@@ -4,17 +4,11 @@ using Nuke.Common.IO;
 namespace CreativeCoders.NukeBuild.Components.Targets.Settings;
 
 [PublicAPI]
-public class DistPackage
+public class DistPackage(string name, AbsolutePath distFolder)
 {
-    public DistPackage(string name, AbsolutePath distFolder)
-    {
-        Name = name;
-        DistFolder = distFolder;
-    }
-
     public DistPackageFormat Format { get; set; }
 
-    public string Name { get; }
+    public string Name { get; } = name;
 
-    public AbsolutePath DistFolder { get; }
+    public AbsolutePath DistFolder { get; } = distFolder;
 }

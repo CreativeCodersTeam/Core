@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.NukeBuild.Components;
+﻿using JetBrains.Annotations;
 
+namespace CreativeCoders.NukeBuild.Components;
+
+[PublicAPI]
 public static class RunnerOs
 {
     public const string Windows = "Windows";

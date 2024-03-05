@@ -4,17 +4,11 @@ using Nuke.Common.IO;
 namespace CreativeCoders.NukeBuild.Components.Targets.Settings;
 
 [PublicAPI]
-public class PublishingItem
+public class PublishingItem(AbsolutePath projectPath, AbsolutePath outputPath)
 {
-    public PublishingItem(AbsolutePath projectPath, AbsolutePath outputPath)
-    {
-        ProjectPath = projectPath;
-        OutputPath = outputPath;
-    }
+    public AbsolutePath ProjectPath { get; } = projectPath;
 
-    public AbsolutePath ProjectPath { get; }
-
-    public AbsolutePath OutputPath { get; }
+    public AbsolutePath OutputPath { get; } = outputPath;
 
     public string? Runtime { get; set; }
 

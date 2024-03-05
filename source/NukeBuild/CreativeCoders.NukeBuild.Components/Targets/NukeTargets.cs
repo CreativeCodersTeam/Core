@@ -1,5 +1,8 @@
-﻿namespace CreativeCoders.NukeBuild.Components.Targets;
+﻿using JetBrains.Annotations;
 
+namespace CreativeCoders.NukeBuild.Components.Targets;
+
+[PublicAPI]
 public static class NukeTargets
 {
     public const string Restore = nameof(IRestoreTarget.Restore);
