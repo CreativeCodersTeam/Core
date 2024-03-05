@@ -31,7 +31,7 @@ public class NukeBuildExtensionsTests
             .Returns(environmentVariableValue);
 
         // Act
-        var actual = fakeBuild.IsRunnerOs(runnerOs);
+        var actual = fakeBuild.IsGitHubActionsRunnerOs(runnerOs);
 
         // Assert
         A.CallTo(() => env.GetEnvironmentVariable("RUNNER_OS"))
