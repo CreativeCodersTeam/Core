@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.NukeBuild.Components;
-using FakeItEasy;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Nuke.Common.IO;
@@ -10,39 +8,8 @@ using Nuke.Common.Tools.GitVersion;
 namespace CreativeCoders.NukeBuild.Tests;
 
 [TestSubject(typeof(NukeBuildExtensions))]
-[Collection("Env")]
 public class NukeBuildExtensionsTests
 {
-    [Theory]
-    [InlineData("Windows", "Windows", true)]
-    [InlineData("windows", "Windows", true)]
-    [InlineData("Linux", "Windows", false)]
-    [InlineData("macOS", "macos", true)]
-    public void IsRunnerOs_Always_CallsGetEnvironmentVariableAndReturnsExpectedResult(
-        string environmentVariableValue, string runnerOs, bool expectedResult)
-    {
-        // Arrange
-        var fakeBuild = new MockNukeBuild();
-
-        var env = A.Fake<IEnvironment>();
-        Env.SetEnvironmentImpl(env);
-
-        A.CallTo(() => env.GetEnvironmentVariable("RUNNER_OS"))
-            .Returns(environmentVariableValue);
-
-        // Act
-        var actual = fakeBuild.IsGitHubActionsRunnerOs(runnerOs);
-
-        // Assert
-        A.CallTo(() => env.GetEnvironmentVariable("RUNNER_OS"))
-            .MustHaveHappenedOnceExactly();
-
-        actual
-            .Should()
-            .Be(expectedResult);
-    }
-
-    // Test for GetGitVersion method
     [Fact]
     public void GetGitVersion_Always_ReturnsVersionFromGitVersionParameter()
     {
@@ -59,7 +26,6 @@ public class NukeBuildExtensionsTests
             .BeSameAs(expectedGitVersion);
     }
 
-    // Test for GetArtifactsDirectory method
     [Fact]
     public void GetArtifactsDirectory_Always_ReturnsPathFromArtifactsSettings()
     {

@@ -3,7 +3,7 @@
 namespace CreativeCoders.NukeBuild.Components;
 
 [PublicAPI]
-public static class RunnerOs
+public static class GitHubActionsRunnerOs
 {
     public const string Windows = "Windows";
 

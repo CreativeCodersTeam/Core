@@ -14,12 +14,6 @@ namespace CreativeCoders.NukeBuild.Components;
 [PublicAPI]
 public static class NukeBuildExtensions
 {
-    public static bool IsGitHubActionsRunnerOs(this INukeBuild build, string runnerOs)
-    {
-        return Env.GetEnvironmentVariable("RUNNER_OS")?
-            .Equals(runnerOs, StringComparison.OrdinalIgnoreCase) == true;
-    }
-
     public static GitVersion? GetGitVersion(this INukeBuild build)
     {
         return build.As<IGitVersionParameter>()?.GitVersion;
