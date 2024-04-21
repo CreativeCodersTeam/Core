@@ -12,14 +12,14 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Help;
 [ExcludeFromCodeCoverage]
 public class CliActionHelpPrinter : ICliActionHelpPrinter
 {
-    private readonly ISysConsole _sysConsole;
-
     private readonly ICliActionHelpGenerator _helpGenerator;
+
+    private readonly ISysConsole _sysConsole;
 
     public CliActionHelpPrinter(ICliActionHelpGenerator helpGenerator, ISysConsole sysConsole)
     {
-        _sysConsole = Ensure.NotNull(sysConsole, nameof(sysConsole));
-        _helpGenerator = Ensure.NotNull(helpGenerator, nameof(helpGenerator));
+        _sysConsole = Ensure.NotNull(sysConsole);
+        _helpGenerator = Ensure.NotNull(helpGenerator);
     }
 
     public void PrintHelp(IEnumerable<string> actionRouteParts)
