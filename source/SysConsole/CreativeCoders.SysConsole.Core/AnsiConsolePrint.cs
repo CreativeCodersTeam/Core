@@ -21,7 +21,7 @@ public class AnsiConsolePrint(IAnsiConsole ansiConsole) : IAnsiConsolePrint
 
     public IAnsiConsolePrint WriteLine(string text)
     {
-        _ansiConsole.WriteLine();
+        _ansiConsole.WriteLine(text);
 
         return this;
     }

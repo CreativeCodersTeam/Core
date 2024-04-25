@@ -209,6 +209,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.AspNetCore.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.NukeBuild.Tests", "tests\CreativeCoders.NukeBuild.Tests\CreativeCoders.NukeBuild.Tests.csproj", "{FC343B26-4AB3-47E7-B9EE-9EFFF0E02C7D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTestApp", "samples\ConsoleTestApp\ConsoleTestApp.csproj", "{037EDB81-3473-4EF6-82A9-BCE5FAE1DE00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -493,6 +495,10 @@ Global
 		{FC343B26-4AB3-47E7-B9EE-9EFFF0E02C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC343B26-4AB3-47E7-B9EE-9EFFF0E02C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC343B26-4AB3-47E7-B9EE-9EFFF0E02C7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{037EDB81-3473-4EF6-82A9-BCE5FAE1DE00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{037EDB81-3473-4EF6-82A9-BCE5FAE1DE00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{037EDB81-3473-4EF6-82A9-BCE5FAE1DE00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{037EDB81-3473-4EF6-82A9-BCE5FAE1DE00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -586,6 +592,7 @@ Global
 		{6C2862AB-9938-4802-8B90-6454CE24198D} = {B485D7EE-B71A-41DE-9518-60F9B7FA8AE4}
 		{9A2200C2-46F7-447A-8B9C-40A81D03D0B6} = {5A3FFD14-2258-4007-AC77-BAFB3B3EB26F}
 		{FC343B26-4AB3-47E7-B9EE-9EFFF0E02C7D} = {5A3FFD14-2258-4007-AC77-BAFB3B3EB26F}
+		{037EDB81-3473-4EF6-82A9-BCE5FAE1DE00} = {72E179CA-7AE6-412A-856D-7BD13838E8E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}

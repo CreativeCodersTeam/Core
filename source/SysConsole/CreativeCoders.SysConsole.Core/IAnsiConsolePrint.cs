@@ -1,9 +1,11 @@
 ﻿using System;
+using JetBrains.Annotations;
 using Spectre.Console;
 using Spectre.Console.Rendering;
 
 namespace CreativeCoders.SysConsole.Core;
 
+[PublicAPI]
 public interface IAnsiConsolePrint
 {
     IAnsiConsolePrint WriteLine();
