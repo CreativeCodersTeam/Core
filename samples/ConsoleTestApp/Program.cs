@@ -21,7 +21,8 @@ internal static class Program
             .Write("Five")
             .WriteLine("End")
             .WriteLine("2")
-            .Write("Test1234", style);
+            .Write("Test1234", style)
+            .WriteLine("https://www.heise.de", new Style(link: "https://www.heise.de/newsticker"));
 
         ansiConsole.Input.ReadKey(false);
     }
