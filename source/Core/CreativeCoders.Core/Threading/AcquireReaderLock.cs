@@ -22,9 +22,16 @@ public sealed class AcquireReaderLock : IDisposable
         Ensure.IsNotNull(lockSlim);
 
         _lockSlim = lockSlim;
-        if (!_lockSlim.TryEnterReadLock(timeout))
+        try
         {
-            throw new AcquireLockFailedException("Acquire reader lock failed", timeout);
+            if (!_lockSlim.TryEnterReadLock(timeout))
+            {
+                throw new AcquireLockFailedException("Acquire reader lock failed", timeout);
+            }
+        }
+        catch (LockRecursionException e)
+        {
+            throw new AcquireLockFailedException("Acquire reader lock failed (Lock recursion)", timeout, e);
         }
     }
 
