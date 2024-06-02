@@ -5,7 +5,7 @@ using System.Reflection;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.SysConsole.Cli.Parsing.Exceptions;
-using CreativeCoders.SysConsole.Cli.Parsing.Properties;
+using CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing;
 
@@ -15,10 +15,10 @@ public class OptionParser
 
     public OptionParser(Type optionType)
     {
-        _optionType = Ensure.NotNull(optionType, nameof(optionType));
+        _optionType = Ensure.NotNull(optionType);
     }
 
-    public object Parse(string[] args)
+    public object Parse(string[] args, bool throwExceptionOnPropertyReadFailed = false)
     {
         if (_optionType == typeof(string[]) || _optionType == typeof(IEnumerable<string>))
         {
@@ -41,11 +41,14 @@ public class OptionParser
             throw new OptionCreationFailedException(_optionType, e);
         }
 
-        var optionArguments = new ArgsToOptionArgumentsConverter(args).ReadOptionArguments();
+        var optionArguments = new ArgsToOptionArgumentsConverter(args).ReadOptionArguments().ToArray();
 
         ReadOptionProperties().ForEach(x =>
         {
-            if (!x.Read(optionArguments, option)) { }
+            if (!x.Read(optionArguments, option) && throwExceptionOnPropertyReadFailed)
+            {
+                throw new OptionParserException(x, option, optionArguments);
+            }
         });
 
         CheckAllArguments(optionArguments, option);
@@ -65,7 +68,7 @@ public class OptionParser
 
         var notMatchedArgs = optionArguments.Where(x => !x.IsProcessed).ToArray();
 
-        if (notMatchedArgs.Any())
+        if (notMatchedArgs.Length != 0)
         {
             throw new NotAllArgumentsMatchException(notMatchedArgs);
         }

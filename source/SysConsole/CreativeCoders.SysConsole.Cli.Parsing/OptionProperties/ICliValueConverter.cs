@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing.Properties;
+namespace CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
 
 public interface ICliValueConverter
 {

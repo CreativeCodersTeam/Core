@@ -1,4 +1,4 @@
-﻿namespace CreativeCoders.SysConsole.Cli.Parsing.Properties;
+﻿namespace CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
 
 public static class ConverterAction
 {
