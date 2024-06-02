@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters;
+using CreativeCoders.SysConsole.Cli.Parsing.OptionProperties.ValueConverters;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing.Properties;
+namespace CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
 
 public class CliValueConverters : ICliValueConverter
 {
@@ -20,7 +20,7 @@ public class CliValueConverters : ICliValueConverter
         _enumerableConverter = new EnumerableValueConverter();
 
         _converters = new Dictionary<Type, ICliValueConverter>
-            {{typeof(bool), new BooleanValueConverter()}};
+            { { typeof(bool), new BooleanValueConverter() } };
     }
 
     public static ICliValueConverter Default { get; } = new CliValueConverters();

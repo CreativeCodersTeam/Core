@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using CreativeCoders.SysConsole.Cli.Parsing.Properties;
-using CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters;
+using CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
+using CreativeCoders.SysConsole.Cli.Parsing.OptionProperties.ValueConverters;
 using FluentAssertions;
 using Xunit;
 
@@ -51,7 +51,7 @@ public class EnumerableValueConverterTests
 
         // Act
         var result = converter.Convert(arg, typeof(IEnumerable<int>),
-            new OptionParameterAttribute('t', "test") {Separator = ','}) as IEnumerable<int>;
+            new OptionParameterAttribute('t', "test") { Separator = ',' }) as IEnumerable<int>;
 
         // Assert
         result

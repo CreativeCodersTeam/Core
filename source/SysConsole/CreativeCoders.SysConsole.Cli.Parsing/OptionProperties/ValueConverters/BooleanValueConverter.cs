@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters;
+namespace CreativeCoders.SysConsole.Cli.Parsing.OptionProperties.ValueConverters;
 
 public class BooleanValueConverter : ICliValueConverter
 {

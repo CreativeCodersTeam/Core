@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using CreativeCoders.SysConsole.Cli.Parsing.Exceptions;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing.Properties;
+namespace CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
 
 public abstract class OptionPropertyBase
 {

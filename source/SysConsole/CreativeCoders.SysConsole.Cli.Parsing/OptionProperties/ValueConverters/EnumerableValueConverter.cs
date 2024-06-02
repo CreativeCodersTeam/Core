@@ -5,7 +5,7 @@ using System.Linq;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters;
+namespace CreativeCoders.SysConsole.Cli.Parsing.OptionProperties.ValueConverters;
 
 public class EnumerableValueConverter : ICliValueConverter
 {
@@ -26,7 +26,7 @@ public class EnumerableValueConverter : ICliValueConverter
         if (targetType.IsConstructedGenericType &&
             targetType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
         {
-            itemType = targetType.GetGenericArguments().First();
+            itemType = targetType.GetGenericArguments()[0];
         }
 
         var values = value.ToStringSafe().Split(optionAttribute.Separator);

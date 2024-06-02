@@ -6,7 +6,7 @@ using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Enums;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters;
+namespace CreativeCoders.SysConsole.Cli.Parsing.OptionProperties.ValueConverters;
 
 public class EnumValueConverter : ICliValueConverter
 {
@@ -33,7 +33,7 @@ public class EnumValueConverter : ICliValueConverter
             .Where(x => x != ConverterAction.DoNothing)
             .Select(x => Enum.ToObject(targetType, x));
 
-        var result = enumValues.Aggregate(0, (current, enumValue) => current | (int) enumValue);
+        var result = enumValues.Aggregate(0, (current, enumValue) => current | (int)enumValue);
 
         return Enum.ToObject(targetType, result);
     }
@@ -53,7 +53,7 @@ public class EnumValueConverter : ICliValueConverter
                 x.Name.Equals(value?.ToString(), StringComparison.InvariantCultureIgnoreCase))
             .ToArray();
 
-        if (enumFields.IsSingle() && allEnumFields.TryGetKeyByValue(enumFields.First(), out enumValue))
+        if (enumFields.IsSingle() && allEnumFields.TryGetKeyByValue(enumFields[0], out enumValue))
         {
             return enumValue;
         }
