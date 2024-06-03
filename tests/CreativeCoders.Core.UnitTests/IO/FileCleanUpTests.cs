@@ -39,7 +39,7 @@ public class FileCleanUpTests
     [Fact]
     [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
     [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
-    public void Dispose_FileNotExistsThrow_ThrowsException()
+    public void Dispose_FileIsReadOnlyThrow_ThrowsException()
     {
         var mockFileSystem = new MockFileSystemEx(
             new Dictionary<string, MockFileData>(),
