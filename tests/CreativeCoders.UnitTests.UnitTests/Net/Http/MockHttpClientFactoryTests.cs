@@ -1,9 +1,7 @@
 ﻿using System.Net;
-using System.Threading.Tasks;
 using CreativeCoders.UnitTests.Net.Http;
-using Xunit;
 
-namespace CreativeCoders.Net.UnitTests.UnitTests.Net.Http;
+namespace CreativeCoders.UnitTests.UnitTests.Net.Http;
 
 public class MockHttpClientFactoryTests
 {

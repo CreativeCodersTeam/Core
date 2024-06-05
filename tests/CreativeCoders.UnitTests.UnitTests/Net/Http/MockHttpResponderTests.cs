@@ -1,13 +1,9 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
+using CreativeCoders.Net;
 using CreativeCoders.UnitTests.Net.Http;
-using Xunit;
 
-namespace CreativeCoders.Net.UnitTests.UnitTests.Net.Http;
+namespace CreativeCoders.UnitTests.UnitTests.Net.Http;
 
 public class MockHttpResponderTests
 {
@@ -172,7 +168,7 @@ public class MockHttpResponderTests
     [Fact]
     public async Task Execute_ReturnJson_ReturnsCorrectJsonData()
     {
-        var expectedData = new {Text = "TestText"};
+        var expectedData = new { Text = "TestText" };
 
         var requestMessage = new HttpRequestMessage
         {
@@ -188,7 +184,7 @@ public class MockHttpResponderTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal(
             JsonSerializer.Serialize(expectedData,
-                new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase}),
+                new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }),
             await response.Content.ReadAsStringAsync());
     }
 
@@ -196,7 +192,7 @@ public class MockHttpResponderTests
     public async Task Execute_ReturnJsonWithStatusCode_ReturnsCorrectJsonDataAndStatusCode()
     {
         const HttpStatusCode expectedStatusCode = HttpStatusCode.Accepted;
-        var expectedData = new {Text = "TestText"};
+        var expectedData = new { Text = "TestText" };
 
         var requestMessage = new HttpRequestMessage
         {
@@ -212,14 +208,14 @@ public class MockHttpResponderTests
         Assert.Equal(expectedStatusCode, response.StatusCode);
         Assert.Equal(
             JsonSerializer.Serialize(expectedData,
-                new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase}),
+                new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }),
             await response.Content.ReadAsStringAsync());
     }
 
     [Fact]
     public async Task Execute_ReturnJson_ReturnsCorrectContentType()
     {
-        var expectedData = new {Text = "TestText"};
+        var expectedData = new { Text = "TestText" };
 
         var requestMessage = new HttpRequestMessage
         {

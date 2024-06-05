@@ -1,12 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Net.Http;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using CreativeCoders.Net;
 using CreativeCoders.UnitTests.Net.Http;
-using Xunit;
 
-namespace CreativeCoders.Net.UnitTests.UnitTests.Net.Http;
+namespace CreativeCoders.UnitTests.UnitTests.Net.Http;
 
 [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
 public class RecordedRequestVerifierTests
@@ -64,7 +61,7 @@ public class RecordedRequestVerifierTests
         var client = context.CreateClient();
 
         var response = await client.PostAsync("http://test.com",
-                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
+            new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
 
         Assert.Equal("TestData", await response.Content.ReadAsStringAsync());
 
@@ -85,7 +82,7 @@ public class RecordedRequestVerifierTests
         var client = context.CreateClient();
 
         var response = await client.PostAsync("http://test.com",
-                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
+            new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
 
         Assert.Equal("TestData", await response.Content.ReadAsStringAsync());
 
@@ -98,7 +95,7 @@ public class RecordedRequestVerifierTests
     [Fact]
     public async Task RequestMeets_CheckForCancellationToken_PassesWithoutException()
     {
-        var cancellationTokenSource = new CancellationTokenSource();
+        using var cancellationTokenSource = new CancellationTokenSource();
         var expectedCancellationToken = cancellationTokenSource.Token;
 
         var context = new MockHttpClientContext();
@@ -123,7 +120,7 @@ public class RecordedRequestVerifierTests
     [Fact]
     public async Task RequestMeets_CheckForCancellationToken_IsCanceled()
     {
-        var cancellationTokenSource = new CancellationTokenSource();
+        using var cancellationTokenSource = new CancellationTokenSource();
         var expectedCancellationToken = cancellationTokenSource.Token;
 
         var context = new MockHttpClientContext();
@@ -134,7 +131,7 @@ public class RecordedRequestVerifierTests
 
         var client = context.CreateClient();
 
-        cancellationTokenSource.Cancel();
+        await cancellationTokenSource.CancelAsync();
 
         var response = await client.GetAsync("http://test.com", HttpCompletionOption.ResponseHeadersRead,
             expectedCancellationToken);
@@ -159,7 +156,7 @@ public class RecordedRequestVerifierTests
         var client = context.CreateClient();
 
         _ = await client.PostAsync("http://test.com",
-                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
+            new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
 
         context.CallShouldBeMade("*").WithContentText("Test").RequestCount(1);
     }
@@ -176,7 +173,7 @@ public class RecordedRequestVerifierTests
         var client = context.CreateClient();
 
         _ = await client.PostAsync("http://test.com",
-                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
+            new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
 
         Assert.Throws<RecordedRequestVerificationFailedException>(() =>
             context.CallShouldBeMade("*").WithContentText("WrongTest"));
@@ -194,7 +191,7 @@ public class RecordedRequestVerifierTests
         var client = context.CreateClient();
 
         _ = await client.PostAsync("http://test.com",
-                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
+            new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
 
         context.CallShouldBeMade("*").RequestCount(1);
     }
@@ -211,10 +208,10 @@ public class RecordedRequestVerifierTests
         var client = context.CreateClient();
 
         _ = await client.PostAsync("http://test.com",
-                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
+            new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
 
         _ = await client.PostAsync("http://test.com",
-                new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
+            new StringContent("Test", Encoding.UTF8, ContentMediaTypes.Application.OctetStream));
 
         Assert.Throws<RecordedRequestVerificationFailedException>(() =>
             context.CallShouldBeMade("*").RequestCount(1));

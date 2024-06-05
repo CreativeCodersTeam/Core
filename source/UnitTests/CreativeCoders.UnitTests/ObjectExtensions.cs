@@ -18,7 +18,7 @@ public static class ObjectExtensions
 
             return true;
         }
-        catch (FluentAssertions.Execution.AssertionFailedException)
+        catch
         {
             return false;
         }

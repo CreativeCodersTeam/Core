@@ -25,6 +25,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\source\IO\CreativeCoders.IO\CreativeCoders.IO.csproj"/>
+        <ProjectReference Include="..\..\source\UnitTests\CreativeCoders.UnitTests\CreativeCoders.UnitTests.csproj"/>
     </ItemGroup>
 
 </Project>
