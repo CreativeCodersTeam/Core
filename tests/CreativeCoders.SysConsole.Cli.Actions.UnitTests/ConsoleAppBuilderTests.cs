@@ -15,7 +15,7 @@ public class ConsoleAppBuilderTests
     [Fact]
     public async Task RunAsync_ConsoleAppControllerRun_ReturnsCorrectReturnCode()
     {
-        var args = new[] {"test", "run"};
+        var args = new[] { "test", "run" };
 
         var consoleApp = new ConsoleAppBuilder(args)
             .UseActions<Startup>()
@@ -33,7 +33,25 @@ public class ConsoleAppBuilderTests
     [Fact]
     public async Task RunAsync_ConsoleAppControllerDo_ReturnsCorrectReturnCode()
     {
-        var args = new[] {"test", "do"};
+        var args = new[] { "test", "do" };
+
+        var consoleApp = new ConsoleAppBuilder(args)
+            .UseActions<Startup>()
+            .Build();
+
+        // Act
+        var result = await consoleApp.RunAsync();
+
+        // Assert
+        result
+            .Should()
+            .Be(ConsoleAppTestController.DoReturnCode);
+    }
+
+    [Fact]
+    public async Task RunAsync_ConsoleAppControllerDoViaAlternativeRoute_ReturnsCorrectReturnCode()
+    {
+        var args = new[] { "start", "this", "action" };
 
         var consoleApp = new ConsoleAppBuilder(args)
             .UseActions<Startup>()
@@ -51,7 +69,7 @@ public class ConsoleAppBuilderTests
     [Fact]
     public async Task RunAsync_ConsoleAppControllerAmbiguousAction_ThrowsException()
     {
-        var args = new[] {"test", "do_this"};
+        var args = new[] { "test", "do_this" };
 
         var consoleApp = new ConsoleAppBuilder(args)
             .UseActions<Startup>()
@@ -156,6 +174,6 @@ public class ConsoleAppBuilderTests
         // Assert
         result
             .Should()
-            .Be(args.Last().GetHashCode());
+            .Be(args[^1].GetHashCode());
     }
 }

@@ -15,24 +15,24 @@ public class ConsoleAppTestController
     [CliAction("run")]
     public Task<CliActionResult> RunAsync()
     {
-        return Task.FromResult(new CliActionResult {ReturnCode = RunReturnCode});
+        return Task.FromResult(new CliActionResult { ReturnCode = RunReturnCode });
     }
 
-    [CliAction("do")]
+    [CliAction("do", AlternativeRoute = ["start", "this", "action"])]
     public Task<CliActionResult> DoAsync()
     {
-        return Task.FromResult(new CliActionResult {ReturnCode = DoReturnCode});
+        return Task.FromResult(new CliActionResult { ReturnCode = DoReturnCode });
     }
 
     [CliAction("do_this")]
     public Task<CliActionResult> DoThis1Async()
     {
-        return Task.FromResult(new CliActionResult {ReturnCode = DoReturnCode});
+        return Task.FromResult(new CliActionResult { ReturnCode = DoReturnCode });
     }
 
     [CliAction("do_this")]
     public Task<CliActionResult> DoThis2Async()
     {
-        return Task.FromResult(new CliActionResult {ReturnCode = DoReturnCode});
+        return Task.FromResult(new CliActionResult { ReturnCode = DoReturnCode });
     }
 }
