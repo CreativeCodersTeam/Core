@@ -12,7 +12,7 @@ internal class CliActionRuntime : ICliActionRuntime
 
     public CliActionRuntime(ICliActionExecutor actionExecutor)
     {
-        _actionExecutor = Ensure.NotNull(actionExecutor, nameof(actionExecutor));
+        _actionExecutor = Ensure.NotNull(actionExecutor);
     }
 
     public void Init(Func<Func<CliActionContext, Task>, Func<CliActionContext, Task>> createPipeline)

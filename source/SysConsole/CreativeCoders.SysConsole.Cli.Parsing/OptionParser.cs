@@ -9,14 +9,9 @@ using CreativeCoders.SysConsole.Cli.Parsing.Properties;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing;
 
-public class OptionParser
+public class OptionParser(Type optionType)
 {
-    private readonly Type _optionType;
-
-    public OptionParser(Type optionType)
-    {
-        _optionType = Ensure.NotNull(optionType, nameof(optionType));
-    }
+    private readonly Type _optionType = Ensure.NotNull(optionType);
 
     public object Parse(string[] args)
     {
@@ -43,10 +38,7 @@ public class OptionParser
 
         var optionArguments = new ArgsToOptionArgumentsConverter(args).ReadOptionArguments();
 
-        ReadOptionProperties().ForEach(x =>
-        {
-            if (!x.Read(optionArguments, option)) { }
-        });
+        ReadOptionProperties().ForEach(x => x.Read(optionArguments, option));
 
         CheckAllArguments(optionArguments, option);
 

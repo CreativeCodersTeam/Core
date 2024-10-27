@@ -12,7 +12,7 @@ public class ConsoleAppTestController
 
     public const int DoReturnCode = 2468;
 
-    [CliAction("run")]
+    [CliAction("run", HelpText = "Run a test action")]
     public Task<CliActionResult> RunAsync()
     {
         return Task.FromResult(new CliActionResult { ReturnCode = RunReturnCode });
@@ -34,5 +34,11 @@ public class ConsoleAppTestController
     public Task<CliActionResult> DoThis2Async()
     {
         return Task.FromResult(new CliActionResult { ReturnCode = DoReturnCode });
+    }
+
+    [CliAction("testhelp")]
+    public Task<CliActionResult> TestHelpAsync(OptionsForHelp options)
+    {
+        return Task.FromResult(new CliActionResult { ReturnCode = 0 });
     }
 }

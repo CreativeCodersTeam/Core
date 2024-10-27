@@ -176,4 +176,22 @@ public class ConsoleAppBuilderTests
             .Should()
             .Be(args[^1].GetHashCode());
     }
+
+    [Fact]
+    public async Task HelpForRunAsync_ConsoleAppControllerRun_ReturnsCorrectHelpText()
+    {
+        var args = new[] { "help", "test", "testhelp" };
+
+        var consoleApp = new ConsoleAppBuilder(args)
+            .UseActions<Startup>()
+            .Build();
+
+        // Act
+        var result = await consoleApp.RunAsync();
+
+        // Assert
+        result
+            .Should()
+            .Be(0);
+    }
 }
