@@ -98,7 +98,7 @@ public class ConsoleApplicationBuilderTests
     [Fact]
     public async Task RunAsync_WithCommand_CommandIsExecuted()
     {
-        var args = new[] {"test", "arg0"};
+        var args = new[] { "test", "arg0" };
 
         var consoleApp = new ConsoleAppBuilder(args)
             .UseCli(x => x
@@ -122,7 +122,7 @@ public class ConsoleApplicationBuilderTests
     public async Task RunAsync_WithCommandNotMatchingCommand_ReturnsDefaultErrorReturnCode()
     {
         const int expectedReturnCode = -1357;
-        var args = new[] {"test1", "arg0"};
+        var args = new[] { "test1", "arg0" };
 
         var consoleApp = new ConsoleAppBuilder(args)
             .UseCli(x => x
@@ -142,7 +142,7 @@ public class ConsoleApplicationBuilderTests
     [Fact]
     public void UseCli_ProgramMainAlreadySet_ThrowsException()
     {
-        var args = new[] {"test1", "arg0"};
+        var args = new[] { "test1", "arg0" };
 
         Action act = () => new ConsoleAppBuilder(args)
             .UseProgramMain<TestErrorProgramMain>()
@@ -157,7 +157,7 @@ public class ConsoleApplicationBuilderTests
     [Fact]
     public void UseProgramMain_CliBuilderAlreadySet_ThrowsException()
     {
-        var args = new[] {"test1", "arg0"};
+        var args = new[] { "test1", "arg0" };
 
         Action act = () => new ConsoleAppBuilder(args)
             .UseCli(_ => { })
@@ -176,9 +176,9 @@ public class ConsoleApplicationBuilderTests
 
         var consoleApp = new ConsoleAppBuilder(Array.Empty<string>())
             .UseProgramMain<TestProgramMainWithConfiguration>()
-            .UseConfiguration(x => x.AddInMemoryCollection(new Dictionary<string, string>
+            .UseConfiguration(x => x.AddInMemoryCollection(new Dictionary<string, string?>
             {
-                {"ReturnCode", returnCode.ToString()}
+                { "ReturnCode", returnCode.ToString() }
             }))
             .Build();
 
@@ -194,7 +194,7 @@ public class ConsoleApplicationBuilderTests
     [Fact]
     public async Task UseCli_CallDemoGroupsCommand_CommandIsExecuted()
     {
-        var args = new[] {"demo", "test"};
+        var args = new[] { "demo", "test" };
 
         var consoleApp = new ConsoleAppBuilder(args)
             .UseCli(x =>
@@ -214,7 +214,7 @@ public class ConsoleApplicationBuilderTests
     [Fact]
     public async Task UseVerbObjects_NoObjectFound_MatchingPureVerbIsCalled()
     {
-        var args = new[] {"test", "something"};
+        var args = new[] { "test", "something" };
 
         var consoleApp = new ConsoleAppBuilder(args)
             .UseCli(x => x

@@ -3,9 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.App;
 using CreativeCoders.SysConsole.Cli.Actions.Exceptions;
+using CreativeCoders.SysConsole.Cli.Actions.Help;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware;
 using CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
+using FakeItEasy;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests;
@@ -182,7 +185,10 @@ public class ConsoleAppBuilderTests
     {
         var args = new[] { "help", "test", "testhelp" };
 
+        var helpPrinter = A.Fake<ICliActionHelpPrinter>();
+
         var consoleApp = new ConsoleAppBuilder(args)
+            .ConfigureServices(x => x.AddTransient<ICliActionHelpPrinter>(_ => helpPrinter))
             .UseActions<Startup>()
             .Build();
 
