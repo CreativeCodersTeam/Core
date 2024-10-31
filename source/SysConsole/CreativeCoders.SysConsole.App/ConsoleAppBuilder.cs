@@ -10,33 +10,30 @@ public class ConsoleAppBuilder
 {
     private readonly string[] _arguments;
 
-    private Type? _startupType;
-
-    private Action<ConfigurationBuilder>? _setupConfiguration;
-
     private Action<IServiceCollection>? _configureServices;
 
     private Func<IServiceProvider, IConsoleAppExecutor>? _createExecutor;
 
-    ///-------------------------------------------------------------------------------------------------
+    private Action<ConfigurationBuilder>? _setupConfiguration;
+
+    private Type? _startupType;
+
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     Initializes a new instance of the CreativeCoders.SysConsole.App.ConsoleAppBuilder class.
     /// </summary>
-    ///
     /// <param name="arguments">    The command line arguments. </param>
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     public ConsoleAppBuilder(string[]? arguments)
     {
-        _arguments = arguments ?? Array.Empty<string>();
+        _arguments = arguments ?? [];
     }
 
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>   Use startup class for adding services to dependency injection container. </summary>
-    ///
     /// <typeparam name="TStartup"> Type of the startup class. </typeparam>
-    ///
     /// <returns>   This ConsoleAppBuilder. </returns>
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     public ConsoleAppBuilder UseStartup<TStartup>()
         where TStartup : IStartup, new()
     {
@@ -45,13 +42,11 @@ public class ConsoleAppBuilder
         return this;
     }
 
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>   Setup configuration system. </summary>
-    ///
     /// <param name="setupConfiguration">   Action for setting up the configuration system. </param>
-    ///
     /// <returns>   This ConsoleAppBuilder. </returns>
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     public ConsoleAppBuilder UseConfiguration(
         Action<ConfigurationBuilder> setupConfiguration)
     {
@@ -60,13 +55,11 @@ public class ConsoleAppBuilder
         return this;
     }
 
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>   Configure services. </summary>
-    ///
     /// <param name="configureServices">    Action for configuring services. </param>
-    ///
     /// <returns>   This ConsoleAppBuilder. </returns>
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     public ConsoleAppBuilder ConfigureServices(Action<IServiceCollection> configureServices)
     {
         _configureServices = configureServices;
@@ -74,17 +67,14 @@ public class ConsoleAppBuilder
         return this;
     }
 
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     Specify the function for creating the executor which should be used for the console app.
     /// </summary>
-    ///
     /// <exception cref="InvalidOperationException">    Thrown when an executor is already registered. </exception>
-    ///
     /// <param name="createExecutor">   The function for creating the executor. </param>
-    ///
     /// <returns>   This ConsoleAppBuilder. </returns>
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     public ConsoleAppBuilder UseExecutor(Func<IServiceProvider, IConsoleAppExecutor> createExecutor)
     {
         if (_createExecutor != null)
@@ -97,13 +87,11 @@ public class ConsoleAppBuilder
         return this;
     }
 
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>   Builds the console app. </summary>
-    ///
     /// <exception cref="InvalidOperationException">    Thrown when no executor is registered. </exception>
-    ///
-    /// <returns>   The console app <see cref="IConsoleApp"/>. </returns>
-    ///-------------------------------------------------------------------------------------------------
+    /// <returns>   The console app <see cref="IConsoleApp" />. </returns>
+    /// -------------------------------------------------------------------------------------------------
     public IConsoleApp Build()
     {
         if (_createExecutor == null)
@@ -143,7 +131,7 @@ public class ConsoleAppBuilder
         return startup;
     }
 
-    private IServiceProvider CreateServiceProvider()
+    private ServiceProvider CreateServiceProvider()
     {
         var services = new ServiceCollection();
 

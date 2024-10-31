@@ -2,4 +2,4 @@
 
 namespace CreativeCoders.Messaging.DefaultMessageQueue;
 
-public class MessageEnqueueFailedException : Exception { }
+public class MessageEnqueueFailedException : Exception;

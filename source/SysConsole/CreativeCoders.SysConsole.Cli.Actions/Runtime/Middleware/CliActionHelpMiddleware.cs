@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Cli.Actions.Help;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware;
 
+[UsedImplicitly]
 public class CliActionHelpMiddleware : CliActionMiddlewareBase
 {
     private readonly ICliActionHelpPrinter _helpPrinter;

@@ -8,9 +8,8 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Runtime;
 
 internal class MiddlewareRegistration
 {
-    private readonly Type _middlewareType;
-
     private readonly object[]? _args;
+    private readonly Type _middlewareType;
 
     public MiddlewareRegistration(Type middlewareType, object[]? args)
     {
@@ -21,7 +20,7 @@ internal class MiddlewareRegistration
     public CliActionMiddlewareBase CreateMiddleware(Func<CliActionContext, Task> next,
         IServiceProvider serviceProvider)
     {
-        var args = new List<object>(_args ?? Array.Empty<object>()) {next};
+        var args = new List<object>(_args ?? []) { next };
 
         var middleware =
             _middlewareType.CreateInstance<CliActionMiddlewareBase>(serviceProvider, args.ToArray());

@@ -95,7 +95,7 @@ internal class CliActionExecutor : ICliActionExecutor
                 var option =
                     new OptionParser(parameters[0].ParameterType).Parse(context.Arguments.ToArray());
 
-                return new[] { option };
+                return [option];
             }
         }
     }

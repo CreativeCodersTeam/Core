@@ -12,7 +12,7 @@ public class CliCommandFactory
 
     public CliCommandFactory(IServiceProvider serviceProvider)
     {
-        _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+        _serviceProvider = Ensure.NotNull(serviceProvider);
     }
 
     public ICliCommand CreateCommand<TCommand>()
@@ -34,7 +34,7 @@ public class CliCommandFactory
         where TCommand : class, ICliCommand<TOptions>
         where TOptions : class, new()
     {
-        Ensure.NotNull(configureCommand, nameof(configureCommand));
+        Ensure.NotNull(configureCommand);
 
         try
         {

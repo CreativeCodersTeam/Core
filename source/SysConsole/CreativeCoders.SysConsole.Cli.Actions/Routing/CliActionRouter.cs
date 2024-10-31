@@ -8,7 +8,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing;
 
 internal class CliActionRouter : ICliActionRouter
 {
-    private readonly List<CliActionRoute> _actionRoutes = new List<CliActionRoute>();
+    private readonly List<CliActionRoute> _actionRoutes = [];
 
     private CliActionRoute? GetDefaultRoute(IList<string> args)
     {
@@ -36,12 +36,9 @@ internal class CliActionRouter : ICliActionRouter
             .Distinct(x => x.ActionMethod)
             .ToArray();
 
-        if (routes.Length > 1)
+        if (routes.Length > 1 && routes.Select(x => x.RouteParts.Length).Distinct().Count() == 1)
         {
-            if (routes.Select(x => x.RouteParts.Length).Distinct().Count() == 1)
-            {
-                throw new AmbiguousRouteException(args, routes);
-            }
+            throw new AmbiguousRouteException(args, routes);
         }
 
         var route = routes.MaxBy(x => x.RouteParts.Length);

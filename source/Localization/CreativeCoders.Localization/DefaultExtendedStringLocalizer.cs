@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Extensions.Localization;
 
 namespace CreativeCoders.Localization;
@@ -16,23 +15,14 @@ internal class DefaultExtendedStringLocalizer<T> : IExtendedStringLocalizer<T>
         _localizer = localizer;
     }
 
-    public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
-    {
-        var globalStrings = _globalLocalizer.GetAllStrings(includeParentCultures);
-
-        var strings = _localizer.GetAllStrings(includeParentCultures);
-
-        return MergeStrings(globalStrings, strings);
-    }
-
-    private static IEnumerable<LocalizedString> MergeStrings(IEnumerable<LocalizedString> globalStrings,
+    private static List<LocalizedString> MergeStrings(IEnumerable<LocalizedString> globalStrings,
         IEnumerable<LocalizedString> strings)
     {
         var mergedStrings = new List<LocalizedString>(globalStrings);
 
         foreach (var localizedString in strings)
         {
-            var globalLocalizedString = mergedStrings.FirstOrDefault(x => x.Name == localizedString.Name);
+            var globalLocalizedString = mergedStrings.Find(x => x.Name == localizedString.Name);
 
             if (globalLocalizedString == null)
             {
@@ -47,6 +37,15 @@ internal class DefaultExtendedStringLocalizer<T> : IExtendedStringLocalizer<T>
         }
 
         return mergedStrings;
+    }
+
+    public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
+    {
+        var globalStrings = _globalLocalizer.GetAllStrings(includeParentCultures);
+
+        var strings = _localizer.GetAllStrings(includeParentCultures);
+
+        return MergeStrings(globalStrings, strings);
     }
 
     public LocalizedString this[string name]

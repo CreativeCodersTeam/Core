@@ -8,23 +8,32 @@ namespace CreativeCoders.SysConsole.CliArguments.Building;
 
 public class DefaultCliCommandGroupBuilder : ICliCommandGroupBuilder
 {
-    private string? _name;
+    private readonly List<Func<ICliCommand>> _commandCreators;
 
     private readonly CliCommandFactory _commandFactory;
 
-    private readonly IList<Func<ICliCommand>> _commandCreators;
+    private string? _name;
 
     public DefaultCliCommandGroupBuilder(IServiceProvider serviceProvider)
     {
-        Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+        Ensure.NotNull(serviceProvider);
 
-        _commandCreators = new List<Func<ICliCommand>>();
+        _commandCreators = [];
         _commandFactory = new CliCommandFactory(serviceProvider);
+    }
+
+    public ICliCommandGroup CreateGroup()
+    {
+        return new CliCommandGroup
+        {
+            Name = Ensure.IsNotNullOrWhitespace(_name),
+            Commands = _commandCreators.Select(x => x())
+        };
     }
 
     public ICliCommandGroupBuilder SetName(string name)
     {
-        _name = Ensure.IsNotNullOrWhitespace(name, nameof(name));
+        _name = Ensure.IsNotNullOrWhitespace(name);
 
         return this;
     }
@@ -33,7 +42,7 @@ public class DefaultCliCommandGroupBuilder : ICliCommandGroupBuilder
         where TCommand : class, ICliCommand<TOptions>
         where TOptions : class, new()
     {
-        Ensure.NotNull(configureCommand, nameof(configureCommand));
+        Ensure.NotNull(configureCommand);
 
         _commandCreators.Add(() => _commandFactory.CreateCommand<TCommand, TOptions>(configureCommand));
 
@@ -46,14 +55,5 @@ public class DefaultCliCommandGroupBuilder : ICliCommandGroupBuilder
         _commandCreators.Add(() => _commandFactory.CreateCommand<TCommand>());
 
         return this;
-    }
-
-    public ICliCommandGroup CreateGroup()
-    {
-        return new CliCommandGroup
-        {
-            Name = Ensure.IsNotNullOrWhitespace(_name, nameof(_name)),
-            Commands = _commandCreators.Select(x => x())
-        };
     }
 }

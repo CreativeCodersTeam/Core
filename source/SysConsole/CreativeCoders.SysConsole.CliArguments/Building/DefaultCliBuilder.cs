@@ -9,26 +9,34 @@ namespace CreativeCoders.SysConsole.CliArguments.Building;
 
 public class DefaultCliBuilder : ICliBuilder
 {
-    private readonly IServiceProvider _serviceProvider;
-
-    private readonly IList<Func<ICliCommand>> _commandCreators;
-
-    private readonly IList<Func<ICliCommandGroup>> _commandGroupCreators;
-
-    private Func<ICliCommand>? _defaultCommandCreator;
+    private readonly List<Func<ICliCommand>> _commandCreators;
 
     private readonly CliCommandFactory _commandFactory;
+
+    private readonly List<Func<ICliCommandGroup>> _commandGroupCreators;
+    private readonly IServiceProvider _serviceProvider;
+
+    private Func<ICliCommand>? _defaultCommandCreator;
 
     private int _defaultErrorReturnCode = int.MinValue;
 
     public DefaultCliBuilder(IServiceProvider serviceProvider)
     {
-        _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+        _serviceProvider = Ensure.NotNull(serviceProvider);
 
-        _commandCreators = new List<Func<ICliCommand>>();
-        _commandGroupCreators = new List<Func<ICliCommandGroup>>();
+        _commandCreators = [];
+        _commandGroupCreators = [];
 
         _commandFactory = new CliCommandFactory(serviceProvider);
+    }
+
+    private ICliCommandGroup CreateGroup(Action<ICliCommandGroupBuilder> configureGroupBuilder)
+    {
+        var builder = new DefaultCliCommandGroupBuilder(_serviceProvider);
+
+        configureGroupBuilder(builder);
+
+        return builder.CreateGroup();
     }
 
     public ICliBuilder AddCommand<TCommand, TOptions>(Action<TCommand> configureCommand)
@@ -50,7 +58,7 @@ public class DefaultCliBuilder : ICliBuilder
 
     public ICliBuilder AddCommandGroup(ICliCommandGroup commandGroup)
     {
-        Ensure.NotNull(commandGroup, nameof(commandGroup));
+        Ensure.NotNull(commandGroup);
 
         _commandGroupCreators.Add(() => commandGroup);
 
@@ -59,27 +67,18 @@ public class DefaultCliBuilder : ICliBuilder
 
     public ICliBuilder AddCommandGroup(Action<ICliCommandGroupBuilder> configureGroupBuilder)
     {
-        Ensure.NotNull(configureGroupBuilder, nameof(configureGroupBuilder));
+        Ensure.NotNull(configureGroupBuilder);
 
         _commandGroupCreators.Add(() => CreateGroup(configureGroupBuilder));
 
         return this;
     }
 
-    private ICliCommandGroup CreateGroup(Action<ICliCommandGroupBuilder> configureGroupBuilder)
-    {
-        var builder = new DefaultCliCommandGroupBuilder(_serviceProvider);
-
-        configureGroupBuilder(builder);
-
-        return builder.CreateGroup();
-    }
-
     public ICliBuilder AddDefaultCommand<TCommand, TOptions>(Action<TCommand> configureCommand)
         where TCommand : class, ICliCommand<TOptions>
         where TOptions : class, new()
     {
-        Ensure.NotNull(configureCommand, nameof(configureCommand));
+        Ensure.NotNull(configureCommand);
 
         _defaultCommandCreator = () => _commandFactory.CreateCommand<TCommand, TOptions>(configureCommand);
 
