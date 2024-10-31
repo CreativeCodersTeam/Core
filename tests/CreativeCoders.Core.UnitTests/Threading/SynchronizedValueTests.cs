@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Threading;
@@ -83,6 +84,7 @@ public class SynchronizedValueTests
     }
 #nullable enable
     [Fact]
+    [SuppressMessage("csharpsquid", "S2925")]
     public void SetValue_ParallelReadValue_ValueAfterSetIsReturned()
     {
         const int expectedValue = 12345;
@@ -98,7 +100,7 @@ public class SynchronizedValueTests
         {
             synchronizedValue.SetValue(_ =>
             {
-                Task.Delay(1000).GetAwaiter().GetResult();
+                Thread.Sleep(1000);
 
                 return expectedValue;
             });
@@ -108,7 +110,7 @@ public class SynchronizedValueTests
 
         var getTask = new Thread(() =>
         {
-            Task.Delay(100).GetAwaiter().GetResult();
+            Thread.Sleep(100);
 
             var stopwatch = Stopwatch.StartNew();
 
