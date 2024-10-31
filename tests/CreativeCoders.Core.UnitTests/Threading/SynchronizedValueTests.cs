@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using CreativeCoders.Core.Threading;
 using FluentAssertions;
 using Xunit;
@@ -93,11 +94,12 @@ public class SynchronizedValueTests
         long readTimeMs = 0;
 
         // Act
-        var setTask = new Thread(() =>
+        var setTask = new Thread(async () =>
         {
             synchronizedValue.SetValue(_ =>
             {
-                Thread.Sleep(1000);
+                Task.Delay(1000).GetAwaiter().GetResult();
+
                 return expectedValue;
             });
         });
@@ -106,7 +108,7 @@ public class SynchronizedValueTests
 
         var getTask = new Thread(() =>
         {
-            Thread.Sleep(100);
+            Task.Delay(100).GetAwaiter().GetResult();
 
             var stopwatch = Stopwatch.StartNew();
 
