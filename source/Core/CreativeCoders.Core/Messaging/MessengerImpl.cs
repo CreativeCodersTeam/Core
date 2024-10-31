@@ -10,7 +10,47 @@ namespace CreativeCoders.Core.Messaging;
 
 internal class MessengerImpl : IMessenger
 {
-    private readonly ConcurrentDictionary<Type, IList<IMessengerRegistration>> _registrationsForMessages = new();
+    private readonly ConcurrentDictionary<Type, IList<IMessengerRegistration>> _registrationsForMessages =
+        new ConcurrentDictionary<Type, IList<IMessengerRegistration>>();
+
+    internal void RemoveRegistration(IMessengerRegistration registration)
+    {
+        _registrationsForMessages.Values.ForEach(registrations => registrations.Remove(registration));
+    }
+
+    private IList<IMessengerRegistration> GetRegistrationsForMessageType<TMessage>()
+    {
+        CleanupDeadActions();
+        var messageType = typeof(TMessage);
+        if (_registrationsForMessages.TryGetValue(messageType, out var value))
+        {
+            return value;
+        }
+
+        value = new ConcurrentList<IMessengerRegistration>();
+        _registrationsForMessages[messageType] = value;
+
+        return value;
+    }
+
+    private void CleanupDeadActions()
+    {
+        RemoveRegistrations(x => !x.IsAlive);
+    }
+
+    private void RemoveRegistrations(Predicate<IMessengerRegistration> predicate)
+    {
+        foreach (var receiver in _registrationsForMessages)
+        {
+            var registrations = receiver.Value;
+            var registrationsForRemove = registrations.Where(x => predicate(x)).ToList();
+            foreach (var registration in registrationsForRemove)
+            {
+                registration.RemovedFromMessenger();
+                registrations.Remove(registration);
+            }
+        }
+    }
 
     public IDisposable Register<TMessage>(object receiver, Action<TMessage> action)
     {
@@ -42,11 +82,6 @@ internal class MessengerImpl : IMessenger
         }
     }
 
-    internal void RemoveRegistration(IMessengerRegistration registration)
-    {
-        _registrationsForMessages.Values.ForEach(registrations => registrations.Remove(registration));
-    }
-
     public void Send<TMessage>(TMessage message)
     {
         Ensure.IsNotNull(message, nameof(message));
@@ -54,36 +89,5 @@ internal class MessengerImpl : IMessenger
         var actions = GetRegistrationsForMessageType<TMessage>();
 
         actions.ForEach(action => action.Execute(message));
-    }
-
-    private IList<IMessengerRegistration> GetRegistrationsForMessageType<TMessage>()
-    {
-        CleanupDeadActions();
-        var messageType = typeof(TMessage);
-        if (!_registrationsForMessages.ContainsKey(messageType))
-        {
-            _registrationsForMessages[messageType] = new ConcurrentList<IMessengerRegistration>();
-        }
-
-        return _registrationsForMessages[messageType];
-    }
-
-    private void CleanupDeadActions()
-    {
-        RemoveRegistrations(x => !x.IsAlive);
-    }
-
-    private void RemoveRegistrations(Predicate<IMessengerRegistration> predicate)
-    {
-        foreach (var receiver in _registrationsForMessages)
-        {
-            var registrations = receiver.Value;
-            var registrationsForRemove = registrations.Where(x => predicate(x)).ToList();
-            foreach (var registration in registrationsForRemove)
-            {
-                registration.RemovedFromMessenger();
-                registrations.Remove(registration);
-            }
-        }
     }
 }

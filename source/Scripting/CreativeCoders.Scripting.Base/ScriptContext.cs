@@ -6,9 +6,7 @@ namespace CreativeCoders.Scripting.Base;
 [PublicAPI]
 public class ScriptContext : IScriptContext
 {
-    private readonly List<IInjection> _injections = new();
-
-    public static IScriptContext Empty { get; } = new ScriptContext();
+    private readonly List<IInjection> _injections = new List<IInjection>();
 
     public void AddInjection(IInjection injection)
     {
@@ -19,4 +17,6 @@ public class ScriptContext : IScriptContext
     {
         _injections.ForEach(x => x.Inject(scriptObject));
     }
+
+    public static IScriptContext Empty { get; } = new ScriptContext();
 }

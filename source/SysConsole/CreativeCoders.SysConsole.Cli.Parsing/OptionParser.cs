@@ -57,7 +57,7 @@ public class OptionParser(Type optionType)
 
         var notMatchedArgs = optionArguments.Where(x => !x.IsProcessed).ToArray();
 
-        if (notMatchedArgs.Any())
+        if (notMatchedArgs.Length != 0)
         {
             throw new NotAllArgumentsMatchException(notMatchedArgs);
         }

@@ -4,20 +4,13 @@ using System.Linq;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing;
 
-public class ArgsToOptionArgumentsConverter
+public class ArgsToOptionArgumentsConverter(string[] args)
 {
-    private readonly string[] _args;
-
-    public ArgsToOptionArgumentsConverter(string[] args)
-    {
-        _args = args;
-    }
-
     public IEnumerable<OptionArgument> ReadOptionArguments()
     {
         var skipNext = false;
 
-        var optionArguments = _args.Select((arg, index) =>
+        var optionArguments = args.Select((arg, index) =>
             {
                 if (skipNext)
                 {
@@ -29,7 +22,7 @@ public class ArgsToOptionArgumentsConverter
 
                 if (argumentKind == OptionArgumentKind.Value)
                 {
-                    return new OptionArgument {Kind = argumentKind, Value = arg};
+                    return new OptionArgument { Kind = argumentKind, Value = arg };
                 }
 
                 return new OptionArgument
@@ -47,12 +40,12 @@ public class ArgsToOptionArgumentsConverter
 
     private string? GetParameterValue(int index, ref bool skipNext)
     {
-        if (index + 1 >= _args.Length || _args[index + 1].StartsWith("-", StringComparison.InvariantCulture))
+        if (index + 1 >= args.Length || args[index + 1].StartsWith('-'))
         {
             return null;
         }
 
-        var value = _args[index + 1];
+        var value = args[index + 1];
         skipNext = true;
 
         return value;
@@ -65,7 +58,7 @@ public class ArgsToOptionArgumentsConverter
             return OptionArgumentKind.LongName;
         }
 
-        return arg.StartsWith("-", StringComparison.Ordinal)
+        return arg.StartsWith('-')
             ? OptionArgumentKind.ShortName
             : OptionArgumentKind.Value;
     }

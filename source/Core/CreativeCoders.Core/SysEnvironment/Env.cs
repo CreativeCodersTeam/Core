@@ -11,147 +11,148 @@ namespace CreativeCoders.Core.SysEnvironment;
 [ExcludeFromCodeCoverage]
 public static class Env
 {
-    private static IEnvironment EnvironmentInstance = new EnvironmentWrapper();
+    private static IEnvironment __environmentInstance = new EnvironmentWrapper();
 
     public static IDisposable SetEnvironmentImpl(IEnvironment environment)
     {
-        Ensure.IsNotNull(environment, nameof(environment));
+        Ensure.IsNotNull(environment);
 
-        var oldEnvironment = EnvironmentInstance;
+        var oldEnvironment = __environmentInstance;
 
-        var resetEnvImpl = new DelegateDisposable(() => EnvironmentInstance = oldEnvironment, true);
+        var resetEnvImpl = new DelegateDisposable(() => __environmentInstance = oldEnvironment, true);
 
-        EnvironmentInstance = environment;
+        __environmentInstance = environment;
 
         return resetEnvImpl;
     }
 
     public static void Exit(int exitCode)
     {
-        EnvironmentInstance.Exit(exitCode);
+        __environmentInstance.Exit(exitCode);
     }
 
     public static string ExpandEnvironmentVariables(string name)
     {
-        return EnvironmentInstance.ExpandEnvironmentVariables(name);
+        return __environmentInstance.ExpandEnvironmentVariables(name);
     }
 
     public static void FailFast(string? message)
     {
-        EnvironmentInstance.FailFast(message);
+        __environmentInstance.FailFast(message);
     }
 
     public static void FailFast(string? message, Exception? exception)
     {
-        EnvironmentInstance.FailFast(message, exception);
+        __environmentInstance.FailFast(message, exception);
     }
 
     public static string[] GetCommandLineArgs()
     {
-        return EnvironmentInstance.GetCommandLineArgs();
+        return __environmentInstance.GetCommandLineArgs();
     }
 
     public static string? GetEnvironmentVariable(string variable)
     {
-        return EnvironmentInstance.GetEnvironmentVariable(variable);
+        return __environmentInstance.GetEnvironmentVariable(variable);
     }
 
     public static string? GetEnvironmentVariable(string variable, EnvironmentVariableTarget target)
     {
-        return EnvironmentInstance.GetEnvironmentVariable(variable, target);
+        return __environmentInstance.GetEnvironmentVariable(variable, target);
     }
 
     public static IDictionary<string, object?> GetEnvironmentVariables()
     {
-        return EnvironmentInstance.GetEnvironmentVariables();
+        return __environmentInstance.GetEnvironmentVariables();
     }
 
     public static IDictionary<string, object?> GetEnvironmentVariables(EnvironmentVariableTarget target)
     {
-        return EnvironmentInstance.GetEnvironmentVariables(target);
+        return __environmentInstance.GetEnvironmentVariables(target);
     }
 
     public static string GetFolderPath(Environment.SpecialFolder folder)
     {
-        return EnvironmentInstance.GetFolderPath(folder);
+        return __environmentInstance.GetFolderPath(folder);
     }
 
     public static string GetFolderPath(Environment.SpecialFolder folder,
         Environment.SpecialFolderOption option)
     {
-        return EnvironmentInstance.GetFolderPath(folder, option);
+        return __environmentInstance.GetFolderPath(folder, option);
     }
 
     public static string[] GetLogicalDrives()
     {
-        return EnvironmentInstance.GetLogicalDrives();
+        return __environmentInstance.GetLogicalDrives();
     }
 
     public static void SetEnvironmentVariable(string variable, string? value)
     {
-        EnvironmentInstance.SetEnvironmentVariable(variable, value);
+        __environmentInstance.SetEnvironmentVariable(variable, value);
     }
 
-    public static void SetEnvironmentVariable(string variable, string? value, EnvironmentVariableTarget target)
+    public static void SetEnvironmentVariable(string variable, string? value,
+        EnvironmentVariableTarget target)
     {
-        EnvironmentInstance.SetEnvironmentVariable(variable, value, target);
+        __environmentInstance.SetEnvironmentVariable(variable, value, target);
     }
 
     public static string? GetAppDirectory()
     {
-        return EnvironmentInstance.GetAppDirectory();
+        return __environmentInstance.GetAppDirectory();
     }
 
     public static string GetAppFileName()
     {
-        return EnvironmentInstance.GetAppFileName();
+        return __environmentInstance.GetAppFileName();
     }
 
-    public static string CommandLine => EnvironmentInstance.CommandLine;
+    public static string CommandLine => __environmentInstance.CommandLine;
 
     public static string CurrentDirectory
     {
-        get => EnvironmentInstance.CurrentDirectory;
-        set => EnvironmentInstance.CurrentDirectory = value;
+        get => __environmentInstance.CurrentDirectory;
+        set => __environmentInstance.CurrentDirectory = value;
     }
 
-    public static int CurrentManagedThreadId => EnvironmentInstance.CurrentManagedThreadId;
+    public static int CurrentManagedThreadId => __environmentInstance.CurrentManagedThreadId;
 
     public static int ExitCode
     {
-        get => EnvironmentInstance.ExitCode;
-        set => EnvironmentInstance.ExitCode = value;
+        get => __environmentInstance.ExitCode;
+        set => __environmentInstance.ExitCode = value;
     }
 
-    public static bool HasShutdownStarted => EnvironmentInstance.HasShutdownStarted;
+    public static bool HasShutdownStarted => __environmentInstance.HasShutdownStarted;
 
-    public static bool Is64BitOperatingSystem => EnvironmentInstance.Is64BitOperatingSystem;
+    public static bool Is64BitOperatingSystem => __environmentInstance.Is64BitOperatingSystem;
 
-    public static bool Is64BitProcess => EnvironmentInstance.Is64BitProcess;
+    public static bool Is64BitProcess => __environmentInstance.Is64BitProcess;
 
-    public static string MachineName => EnvironmentInstance.MachineName;
+    public static string MachineName => __environmentInstance.MachineName;
 
-    public static string NewLine => EnvironmentInstance.NewLine;
+    public static string NewLine => __environmentInstance.NewLine;
 
-    public static OperatingSystem OSVersion => EnvironmentInstance.OSVersion;
+    public static OperatingSystem OSVersion => __environmentInstance.OSVersion;
 
-    public static int ProcessorCount => EnvironmentInstance.ProcessorCount;
+    public static int ProcessorCount => __environmentInstance.ProcessorCount;
 
-    public static string StackTrace => EnvironmentInstance.StackTrace;
+    public static string StackTrace => __environmentInstance.StackTrace;
 
-    public static string SystemDirectory => EnvironmentInstance.SystemDirectory;
+    public static string SystemDirectory => __environmentInstance.SystemDirectory;
 
-    public static int SystemPageSize => EnvironmentInstance.SystemPageSize;
+    public static int SystemPageSize => __environmentInstance.SystemPageSize;
 
-    public static int TickCount => EnvironmentInstance.TickCount;
+    public static int TickCount => __environmentInstance.TickCount;
 
-    public static string UserDomainName => EnvironmentInstance.UserDomainName;
+    public static string UserDomainName => __environmentInstance.UserDomainName;
 
-    public static bool UserInteractive => EnvironmentInstance.UserInteractive;
+    public static bool UserInteractive => __environmentInstance.UserInteractive;
 
-    public static string UserName => EnvironmentInstance.UserName;
+    public static string UserName => __environmentInstance.UserName;
 
-    public static Version Version => EnvironmentInstance.Version;
+    public static Version Version => __environmentInstance.Version;
 
-    public static long WorkingSet => EnvironmentInstance.WorkingSet;
+    public static long WorkingSet => __environmentInstance.WorkingSet;
 }

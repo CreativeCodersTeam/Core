@@ -19,7 +19,7 @@ public class DependencyObject<T>
     {
         Element = element;
 
-        DependsOn = new List<DependencyObject<T>>();
+        DependsOn = [];
     }
 
     ///-------------------------------------------------------------------------------------------------

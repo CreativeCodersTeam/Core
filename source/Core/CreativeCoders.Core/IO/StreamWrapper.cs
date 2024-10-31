@@ -13,17 +13,14 @@ namespace CreativeCoders.Core.IO;
 [ExcludeFromCodeCoverage]
 public class StreamWrapper : Stream
 {
-    private readonly Action<bool> _disposeBeforeStreamAction;
-
-    private readonly Action<bool> _disposeAfterStreamAction;
-
     private readonly Stream _dataStream;
 
+    private readonly Action<bool> _disposeAfterStreamAction;
+    private readonly Action<bool> _disposeBeforeStreamAction;
+
     public StreamWrapper(Stream dataStream)
-        : this (dataStream, NullAction<bool>.Instance,
-            NullAction<bool>.Instance)
-    {
-    }
+        : this(dataStream, NullAction<bool>.Instance,
+            NullAction<bool>.Instance) { }
 
     public StreamWrapper(Stream dataStream, Action<bool> disposeBeforeStreamAction,
         Action<bool> disposeAfterStreamAction)
@@ -88,7 +85,7 @@ public class StreamWrapper : Stream
     }
 
     public override ValueTask<int> ReadAsync(Memory<byte> buffer,
-        CancellationToken cancellationToken = new())
+        CancellationToken cancellationToken = new CancellationToken())
     {
         return _dataStream.ReadAsync(buffer, cancellationToken);
     }
@@ -104,7 +101,7 @@ public class StreamWrapper : Stream
     }
 
     public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer,
-        CancellationToken cancellationToken = new())
+        CancellationToken cancellationToken = new CancellationToken())
     {
         return _dataStream.WriteAsync(buffer, cancellationToken);
     }

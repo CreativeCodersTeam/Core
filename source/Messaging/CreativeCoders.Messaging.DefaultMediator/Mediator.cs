@@ -6,7 +6,7 @@ namespace CreativeCoders.Messaging.DefaultMediator;
 
 public class Mediator : IMediator
 {
-    private readonly MediatorRegistrations _registrations = new();
+    private readonly MediatorRegistrations _registrations = new MediatorRegistrations();
 
     public IDisposable RegisterHandler<TMessage>(object target, Action<TMessage> action)
         => _registrations.RegisterHandler(target, action);

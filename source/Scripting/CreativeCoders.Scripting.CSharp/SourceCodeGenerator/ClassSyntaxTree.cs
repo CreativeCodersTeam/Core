@@ -20,5 +20,5 @@ public class ClassSyntaxTree
         return sb.ToString();
     }
 
-    public ClassSyntaxTreeNode RootNode { get; } = new();
+    public ClassSyntaxTreeNode RootNode { get; } = new ClassSyntaxTreeNode();
 }

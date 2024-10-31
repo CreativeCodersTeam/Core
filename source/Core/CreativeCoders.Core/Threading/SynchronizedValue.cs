@@ -42,23 +42,20 @@ public class SynchronizedValue<T>
 
     internal SynchronizedValue(ILockingMechanism lockingMechanism, T value)
     {
-        Ensure.IsNotNull(lockingMechanism, nameof(lockingMechanism));
+        Ensure.IsNotNull(lockingMechanism);
 
         _lockingMechanism = lockingMechanism;
         _value = value;
     }
 
-    private static ILockingMechanism DefaultLockingMechanism()
+    private static LockSlimLockingMechanism DefaultLockingMechanism()
     {
         return new LockSlimLockingMechanism();
     }
 
     public void SetValue(Func<T, T> setValue)
     {
-        _lockingMechanism.Write(() =>
-        {
-            _value = SetValueCore(setValue);
-        });
+        _lockingMechanism.Write(() => { _value = SetValueCore(setValue); });
     }
 
     private T SetValueCore(Func<T, T> setValue)

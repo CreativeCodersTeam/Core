@@ -7,7 +7,7 @@ namespace CreativeCoders.Core.Comparing;
 public class MultiFuncEqualityComparer<T, TKey> : MultiEqualityComparer<T>
 {
     public MultiFuncEqualityComparer(params Func<T, TKey>[] keySelectors)
-        : base(keySelectors.Select(func => new FuncEqualityComparer<T, TKey>(func) as IEqualityComparer<T>)
+        : base(keySelectors.Select(IEqualityComparer<T> (func) => new FuncEqualityComparer<T, TKey>(func))
             .ToArray()) { }
 }
 

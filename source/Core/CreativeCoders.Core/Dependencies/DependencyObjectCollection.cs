@@ -6,38 +6,35 @@ using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Dependencies;
 
-///-------------------------------------------------------------------------------------------------
+/// -------------------------------------------------------------------------------------------------
 /// <summary>   Collection of dependency objects. </summary>
-///
 /// <typeparam name="T">    Generic type parameter of the elements. </typeparam>
-///-------------------------------------------------------------------------------------------------
+/// -------------------------------------------------------------------------------------------------
 [PublicAPI]
 public class DependencyObjectCollection<T>
     where T : class
 {
     private List<DependencyObject<T>> _dependencyObjects;
 
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>
-    ///     Initializes a new instance of the <see cref="DependencyObjectCollection{T}"/> class.
+    ///     Initializes a new instance of the <see cref="DependencyObjectCollection{T}" /> class.
     /// </summary>
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     public DependencyObjectCollection()
     {
-        _dependencyObjects = new List<DependencyObject<T>>();
+        _dependencyObjects = [];
     }
 
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>
     ///     Adds an element to the collection and returns the corresponding
-    ///     <see cref="DependencyObject{T}"/>. If element is already added, returns the already
-    ///     existing <see cref="DependencyObject{T}"/>.
+    ///     <see cref="DependencyObject{T}" />. If element is already added, returns the already
+    ///     existing <see cref="DependencyObject{T}" />.
     /// </summary>
-    ///
     /// <param name="element">  The element to add. </param>
-    ///
-    /// <returns>   A <see cref="DependencyObject{T}"/> </returns>
-    ///-------------------------------------------------------------------------------------------------
+    /// <returns>   A <see cref="DependencyObject{T}" /> </returns>
+    /// -------------------------------------------------------------------------------------------------
     public DependencyObject<T> AddElement(T element)
     {
         if (element == null)
@@ -59,13 +56,14 @@ public class DependencyObjectCollection<T>
         return newDependencyObject;
     }
 
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>   Adds a dependency to the collection. </summary>
-    ///
     /// <param name="element">              The element to add. </param>
-    /// <param name="dependsOnElements">    A list of elements the <paramref name="element"/> depends
-    ///                                     on. </param>
-    ///-------------------------------------------------------------------------------------------------
+    /// <param name="dependsOnElements">
+    ///     A list of elements the <paramref name="element" /> depends
+    ///     on.
+    /// </param>
+    /// -------------------------------------------------------------------------------------------------
     public void AddDependency(T element, params T[] dependsOnElements)
     {
         var dependencyObject = AddElement(element);
@@ -80,17 +78,17 @@ public class DependencyObjectCollection<T>
         });
     }
 
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Gets dependency object corresponding to the <paramref name="element"/>. </summary>
-    ///
-    /// <param name="element">  The element for which the <see cref="DependencyObject{T}"/> is
-    ///                         returned. </param>
-    ///
+    /// -------------------------------------------------------------------------------------------------
+    /// <summary>   Gets dependency object corresponding to the <paramref name="element" />. </summary>
+    /// <param name="element">
+    ///     The element for which the <see cref="DependencyObject{T}" /> is
+    ///     returned.
+    /// </param>
     /// <returns>
-    ///     The dependency object. If <paramref name="element"/> is not in the collection, null is
+    ///     The dependency object. If <paramref name="element" /> is not in the collection, null is
     ///     returned.
     /// </returns>
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     public DependencyObject<T> GetDependencyObject(T element)
     {
         return _dependencyObjects.FirstOrDefault(x => x.Element.Equals(element));
@@ -105,13 +103,12 @@ public class DependencyObjectCollection<T>
         }
     }
 
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>   Determines if there are circular references in the collection. </summary>
-    ///
     /// <returns>
     ///     True if there are circular references, false if the collection has no circular references.
     /// </returns>
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     public bool CheckForCircularReferences()
     {
         var sortObjects = _dependencyObjects
@@ -137,7 +134,7 @@ public class DependencyObjectCollection<T>
     }
 
     [SuppressMessage("ReSharper", "LoopCanBePartlyConvertedToQuery")]
-    private void RemoveRedundancies(IList<DependencyObject<T>> dependencyObjects)
+    private void RemoveRedundancies(List<DependencyObject<T>> dependencyObjects)
     {
         foreach (var dependency in dependencyObjects.ToArray())
         {
@@ -155,7 +152,7 @@ public class DependencyObjectCollection<T>
         }
     }
 
-    private bool ObjectIsSubObject(IReadOnlyCollection<DependencyObject<T>> dependencyObjects,
+    private static bool ObjectIsSubObject(IReadOnlyCollection<DependencyObject<T>> dependencyObjects,
         DependencyObject<T> dependencyObject)
     {
         if (dependencyObjects.Contains(dependencyObject))
@@ -168,10 +165,9 @@ public class DependencyObjectCollection<T>
                 ObjectIsSubObject(childDependencyObject.DependsOn, dependencyObject));
     }
 
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>   Gets the dependency objects. </summary>
-    ///
     /// <value> The dependency objects. </value>
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     public IReadOnlyCollection<DependencyObject<T>> DependencyObjects => _dependencyObjects;
 }

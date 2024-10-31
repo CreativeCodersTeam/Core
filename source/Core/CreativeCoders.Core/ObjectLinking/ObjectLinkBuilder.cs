@@ -8,9 +8,9 @@ public class ObjectLinkBuilder
 {
     private readonly object _instance0;
 
-    private readonly object _instance1;
-
     private readonly Type _instance0Type;
+
+    private readonly object _instance1;
 
     private readonly Type _instance1Type;
 
@@ -48,7 +48,7 @@ public class ObjectLinkBuilder
         return linkItems;
     }
 
-    private static IEnumerable<PropertyLinkDefinition> MergeLinkDefinitions(
+    private static List<PropertyLinkDefinition> MergeLinkDefinitions(
         IEnumerable<PropertyLinkDefinition> instance0LinkDefinitions,
         IEnumerable<PropertyLinkDefinition> instance1LinkDefinitions)
     {
@@ -58,7 +58,7 @@ public class ObjectLinkBuilder
         return definitions;
     }
 
-    private static IEnumerable<PropertyLinkDefinition> GetLinkDefinitions(Type sourceType, Type targetType,
+    private static PropertyLinkDefinition[] GetLinkDefinitions(Type sourceType, Type targetType,
         object source, object target)
     {
         return sourceType

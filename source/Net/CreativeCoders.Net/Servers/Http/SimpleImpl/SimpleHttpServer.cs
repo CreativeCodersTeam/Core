@@ -11,22 +11,13 @@ namespace CreativeCoders.Net.Servers.Http.SimpleImpl;
 [PublicAPI]
 public sealed class SimpleHttpServer : IHttpServer, IDisposable
 {
-    private readonly HttpListener _httpListener = new();
-
-    private IHttpRequestHandler _requestHandler;
+    private readonly HttpListener _httpListener = new HttpListener();
 
     private Thread _listenerThread;
 
+    private IHttpRequestHandler _requestHandler;
+
     private volatile bool _running;
-
-    public async Task StartAsync()
-    {
-        _running = true;
-        await Task.Run(() => _httpListener.Start()).ConfigureAwait(false);
-
-        _listenerThread = new Thread(Listen);
-        _listenerThread.Start();
-    }
 
     private void Listen()
     {
@@ -53,6 +44,20 @@ public sealed class SimpleHttpServer : IHttpServer, IDisposable
         context.Response.OutputStream.Close();
     }
 
+    public void Dispose()
+    {
+        (_httpListener as IDisposable)?.Dispose();
+    }
+
+    public async Task StartAsync()
+    {
+        _running = true;
+        await Task.Run(() => _httpListener.Start()).ConfigureAwait(false);
+
+        _listenerThread = new Thread(Listen);
+        _listenerThread.Start();
+    }
+
     public async Task StopAsync()
     {
         _running = false;
@@ -71,9 +76,4 @@ public sealed class SimpleHttpServer : IHttpServer, IDisposable
     }
 
     public IList<string> Urls { get; } = new List<string>();
-
-    public void Dispose()
-    {
-        (_httpListener as IDisposable)?.Dispose();
-    }
 }

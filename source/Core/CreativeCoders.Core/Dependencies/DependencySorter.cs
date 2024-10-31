@@ -4,37 +4,35 @@ using CreativeCoders.Core.Collections;
 
 namespace CreativeCoders.Core.Dependencies;
 
-///-------------------------------------------------------------------------------------------------
+/// -------------------------------------------------------------------------------------------------
 /// <summary>   A dependency sorter. </summary>
-///
 /// <typeparam name="T">    Generic type parameter of teh elements. </typeparam>
-///-------------------------------------------------------------------------------------------------
+/// -------------------------------------------------------------------------------------------------
 public class DependencySorter<T>
     where T : class
 {
     private readonly DependencyObjectCollection<T> _dependencyObjectCollection;
 
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Initializes a new instance of the <see cref="DependencySorter{T}"/> class. </summary>
-    ///
+    /// -------------------------------------------------------------------------------------------------
+    /// <summary>   Initializes a new instance of the <see cref="DependencySorter{T}" /> class. </summary>
     /// <param name="dependencyObjectCollection">   Collection of dependency objects. </param>
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     public DependencySorter(DependencyObjectCollection<T> dependencyObjectCollection)
     {
         _dependencyObjectCollection = dependencyObjectCollection;
     }
 
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     /// <summary>   Sorts the elements. </summary>
-    ///
-    /// <exception cref="CircularReferenceException">   Thrown when a Circular Reference error
-    ///                                                 condition occurs. </exception>
-    ///
+    /// <exception cref="CircularReferenceException">
+    ///     Thrown when a Circular Reference error
+    ///     condition occurs.
+    /// </exception>
     /// <returns>
     ///     Sorted list of the elements respecting the dependencies. First element is the least
     ///     depending element.
     /// </returns>
-    ///-------------------------------------------------------------------------------------------------
+    /// -------------------------------------------------------------------------------------------------
     public IEnumerable<T> Sort()
     {
         var sortedList = new List<T>();
@@ -50,7 +48,7 @@ public class DependencySorter<T>
             if (objectsWithoutDependencies.Length == 0)
             {
                 throw new CircularReferenceException("Circular reference detected",
-                    sortObjects.Select(x => (object) x.Element).ToArray());
+                    sortObjects.Select(object (x) => x.Element).ToArray());
             }
 
             var elements = objectsWithoutDependencies.Select(x => x.Element).ToArray();

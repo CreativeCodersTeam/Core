@@ -8,14 +8,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing;
 
 internal class CliActionRouter : ICliActionRouter
 {
-    private readonly List<CliActionRoute> _actionRoutes = new();
-
-    public CliActionRoute? FindRoute(IList<string> args)
-    {
-        return FindRoute(args, x =>
-                   x.RouteParts.SequenceEqual(args.Take(x.RouteParts.Length)), x => x.RouteParts.Length)
-               ?? GetDefaultRoute(args);
-    }
+    private readonly List<CliActionRoute> _actionRoutes = new List<CliActionRoute>();
 
     private CliActionRoute? GetDefaultRoute(IList<string> args)
     {
@@ -68,6 +61,13 @@ internal class CliActionRouter : ICliActionRouter
         }
 
         return route;
+    }
+
+    public CliActionRoute? FindRoute(IList<string> args)
+    {
+        return FindRoute(args, x =>
+                   x.RouteParts.SequenceEqual(args.Take(x.RouteParts.Length)), x => x.RouteParts.Length)
+               ?? GetDefaultRoute(args);
     }
 
     public void AddRoute(CliActionRoute actionRoute)

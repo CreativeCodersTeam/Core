@@ -20,7 +20,7 @@ public class PropertyLinkItemsBuilderTests
 
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -59,7 +59,7 @@ public class PropertyLinkItemsBuilderTests
 
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -68,7 +68,7 @@ public class PropertyLinkItemsBuilderTests
                 TargetPropertyName = targetPropertyName0,
                 LinkDirection = LinkDirection.OneWayToTarget
             },
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -115,7 +115,7 @@ public class PropertyLinkItemsBuilderTests
 
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -124,7 +124,7 @@ public class PropertyLinkItemsBuilderTests
                 TargetPropertyName = targetPropertyName0,
                 LinkDirection = LinkDirection.OneWayToTarget
             },
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -167,7 +167,7 @@ public class PropertyLinkItemsBuilderTests
 
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -176,7 +176,7 @@ public class PropertyLinkItemsBuilderTests
                 TargetPropertyName = targetPropertyName,
                 LinkDirection = LinkDirection.OneWayToTarget
             },
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -211,7 +211,7 @@ public class PropertyLinkItemsBuilderTests
 
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -220,7 +220,7 @@ public class PropertyLinkItemsBuilderTests
                 TargetPropertyName = targetPropertyName,
                 LinkDirection = LinkDirection.OneWayToTarget
             },
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -255,7 +255,7 @@ public class PropertyLinkItemsBuilderTests
 
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -264,7 +264,7 @@ public class PropertyLinkItemsBuilderTests
                 TargetPropertyName = targetPropertyName,
                 LinkDirection = LinkDirection.TwoWay
             },
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -299,7 +299,7 @@ public class PropertyLinkItemsBuilderTests
 
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -308,7 +308,7 @@ public class PropertyLinkItemsBuilderTests
                 TargetPropertyName = targetPropertyName,
                 LinkDirection = LinkDirection.OneWayFromTarget
             },
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -343,7 +343,7 @@ public class PropertyLinkItemsBuilderTests
 
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -352,7 +352,7 @@ public class PropertyLinkItemsBuilderTests
                 TargetPropertyName = targetPropertyName,
                 LinkDirection = LinkDirection.OneWayFromTarget
             },
-            new()
+            new PropertyLinkDefinition
             {
                 Source = targetTestData,
                 Target = sourceTestData,
@@ -387,7 +387,7 @@ public class PropertyLinkItemsBuilderTests
 
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -396,7 +396,7 @@ public class PropertyLinkItemsBuilderTests
                 TargetPropertyName = targetPropertyName,
                 LinkDirection = LinkDirection.OneWayToTarget
             },
-            new()
+            new PropertyLinkDefinition
             {
                 Source = targetTestData,
                 Target = sourceTestData,
@@ -431,7 +431,7 @@ public class PropertyLinkItemsBuilderTests
 
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -440,7 +440,7 @@ public class PropertyLinkItemsBuilderTests
                 TargetPropertyName = targetPropertyName,
                 LinkDirection = LinkDirection.OneWayToTarget
             },
-            new()
+            new PropertyLinkDefinition
             {
                 Source = targetTestData,
                 Target = sourceTestData,
@@ -475,7 +475,7 @@ public class PropertyLinkItemsBuilderTests
 
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -485,7 +485,7 @@ public class PropertyLinkItemsBuilderTests
                 LinkDirection = LinkDirection.OneWayToTarget,
                 Converter = typeof(StringSourcePropertyConverter<int>)
             },
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -530,7 +530,7 @@ public class PropertyLinkItemsBuilderTests
 
         var linkDefinitions = new List<PropertyLinkDefinition>
         {
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,
@@ -541,7 +541,7 @@ public class PropertyLinkItemsBuilderTests
                 Converter = typeof(StringSourcePropertyConverter<int>),
                 ConverterParameter = 1
             },
-            new()
+            new PropertyLinkDefinition
             {
                 Source = sourceTestData,
                 Target = targetTestData,

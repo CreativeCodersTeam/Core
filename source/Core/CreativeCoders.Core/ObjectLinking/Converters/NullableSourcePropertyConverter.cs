@@ -3,7 +3,8 @@
 public class NullableSourcePropertyConverter<T> : IPropertyValueConverter
     where T : struct
 {
-    private readonly NullableTargetPropertyConverter<T> _nullableTargetPropertyConverter = new();
+    private readonly NullableTargetPropertyConverter<T> _nullableTargetPropertyConverter =
+        new NullableTargetPropertyConverter<T>();
 
     public object Convert(object value, object parameter)
     {

@@ -7,9 +7,8 @@ namespace CreativeCoders.Core.ObjectLinking;
 
 public class PropertyLinkItemsBuilder
 {
-    private readonly IEnumerable<PropertyLinkDefinition> _propertyLinkDefinitions;
-
     private readonly HandlerChain<(PropertyLinkInfo, PropertyLinkInfo), bool> _handlerChain;
+    private readonly IEnumerable<PropertyLinkDefinition> _propertyLinkDefinitions;
 
     public PropertyLinkItemsBuilder(IEnumerable<PropertyLinkDefinition> propertyLinkDefinitions)
     {
@@ -58,13 +57,12 @@ public class PropertyLinkItemsBuilder
 
     private static HandlerChain<(PropertyLinkInfo, PropertyLinkInfo), bool> CreateHandlerChain()
     {
-        var handlerChain = new HandlerChain<(PropertyLinkInfo, PropertyLinkInfo), bool>(new[]
-        {
+        var handlerChain = new HandlerChain<(PropertyLinkInfo, PropertyLinkInfo), bool>([
             new ChainDataHandler<(PropertyLinkInfo, PropertyLinkInfo), bool>(CheckDifferentConverters),
             new ChainDataHandler<(PropertyLinkInfo, PropertyLinkInfo), bool>(CheckOppositeLink),
             new ChainDataHandler<(PropertyLinkInfo, PropertyLinkInfo), bool>(CheckDifferentLink),
             new ChainDataHandler<(PropertyLinkInfo, PropertyLinkInfo), bool>(CheckExistingDirection)
-        });
+        ]);
 
         return handlerChain;
     }
