@@ -9,7 +9,8 @@ namespace CreativeCoders.Net.Http;
 #nullable enable
 public class HttpClientSettings : IHttpClientSettings
 {
-    private readonly ConcurrentDictionary<string, Action<HttpClientFactoryOptions>> _options = new();
+    private readonly ConcurrentDictionary<string, Action<HttpClientFactoryOptions>> _options =
+        new ConcurrentDictionary<string, Action<HttpClientFactoryOptions>>();
 
     public void Add(string name, Action<HttpClientFactoryOptions> configure)
     {

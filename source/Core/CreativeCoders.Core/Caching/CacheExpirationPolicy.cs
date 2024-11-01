@@ -6,12 +6,13 @@ namespace CreativeCoders.Core.Caching;
 [PublicAPI]
 public class CacheExpirationPolicy : ICacheExpirationPolicy
 {
+    public static readonly CacheExpirationPolicy NeverExpire =
+        new CacheExpirationPolicy(CacheExpirationMode.NeverExpire);
+
     public CacheExpirationPolicy(CacheExpirationMode expirationMode)
     {
         ExpirationMode = expirationMode;
     }
-
-    public static readonly CacheExpirationPolicy NeverExpire = new(CacheExpirationMode.NeverExpire);
 
     public static CacheExpirationPolicy AfterAbsoluteDateTime(DateTime absoluteDateTime)
     {

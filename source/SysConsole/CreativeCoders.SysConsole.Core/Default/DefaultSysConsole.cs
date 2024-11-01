@@ -8,6 +8,39 @@ namespace CreativeCoders.SysConsole.Core.Default;
 [ExcludeFromCodeCoverage]
 internal class DefaultSysConsole : ISysConsole
 {
+    private DefaultSysConsole WithErrorColors(Action<ISysConsole> actionWithErrorColors)
+    {
+        return WithColors(ErrorForegroundColor, ErrorBackgroundColor, actionWithErrorColors);
+    }
+
+    private DefaultSysConsole WithColors(ConsoleColor foregroundColor, ConsoleColor backgroundColor,
+        Action<ISysConsole> actionWithColors)
+    {
+        ForegroundColor = foregroundColor;
+        BackgroundColor = backgroundColor;
+
+        try
+        {
+            actionWithColors(this);
+        }
+        finally
+        {
+            ResetColor();
+        }
+
+        return this;
+    }
+
+    private static void ExecOnlyOnWindows(Action action)
+    {
+        if (Env.OSVersion.Platform != PlatformID.Win32NT)
+        {
+            return;
+        }
+
+        action();
+    }
+
     public ISysConsole WriteLine()
     {
         Console.WriteLine();
@@ -151,38 +184,5 @@ internal class DefaultSysConsole : ISysConsole
     {
         get => Console.WindowTop;
         set => ExecOnlyOnWindows(() => Console.WindowTop = value);
-    }
-
-    private ISysConsole WithErrorColors(Action<ISysConsole> actionWithErrorColors)
-    {
-        return WithColors(ErrorForegroundColor, ErrorBackgroundColor, actionWithErrorColors);
-    }
-
-    private ISysConsole WithColors(ConsoleColor foregroundColor, ConsoleColor backgroundColor,
-        Action<ISysConsole> actionWithColors)
-    {
-        ForegroundColor = foregroundColor;
-        BackgroundColor = backgroundColor;
-
-        try
-        {
-            actionWithColors(this);
-        }
-        finally
-        {
-            ResetColor();
-        }
-
-        return this;
-    }
-
-    private static void ExecOnlyOnWindows(Action action)
-    {
-        if (Env.OSVersion.Platform != PlatformID.Win32NT)
-        {
-            return;
-        }
-
-        action();
     }
 }

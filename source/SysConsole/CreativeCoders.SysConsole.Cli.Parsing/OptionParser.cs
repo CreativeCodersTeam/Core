@@ -9,16 +9,11 @@ using CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing;
 
-public class OptionParser
+public class OptionParser(Type optionType)
 {
-    private readonly Type _optionType;
+    private readonly Type _optionType = Ensure.NotNull(optionType);
 
-    public OptionParser(Type optionType)
-    {
-        _optionType = Ensure.NotNull(optionType);
-    }
-
-    public object Parse(string[] args, bool throwExceptionOnPropertyReadFailed = false)
+    public object Parse(string[] args)
     {
         if (_optionType == typeof(string[]) || _optionType == typeof(IEnumerable<string>))
         {
@@ -41,15 +36,9 @@ public class OptionParser
             throw new OptionCreationFailedException(_optionType, e);
         }
 
-        var optionArguments = new ArgsToOptionArgumentsConverter(args).ReadOptionArguments().ToArray();
+        var optionArguments = new ArgsToOptionArgumentsConverter(args).ReadOptionArguments();
 
-        ReadOptionProperties().ForEach(x =>
-        {
-            if (!x.Read(optionArguments, option) && throwExceptionOnPropertyReadFailed)
-            {
-                throw new OptionParserException(x, option, optionArguments);
-            }
-        });
+        ReadOptionProperties().ForEach(x => x.Read(optionArguments, option));
 
         CheckAllArguments(optionArguments, option);
 

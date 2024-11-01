@@ -12,27 +12,33 @@ public class ConsoleAppTestController
 
     public const int DoReturnCode = 2468;
 
-    [CliAction("run")]
+    [CliAction("run", HelpText = "Run a test action")]
     public Task<CliActionResult> RunAsync()
     {
-        return Task.FromResult(new CliActionResult {ReturnCode = RunReturnCode});
+        return Task.FromResult(new CliActionResult { ReturnCode = RunReturnCode });
     }
 
-    [CliAction("do")]
+    [CliAction("do", AlternativeRoute = ["start", "this", "action"])]
     public Task<CliActionResult> DoAsync()
     {
-        return Task.FromResult(new CliActionResult {ReturnCode = DoReturnCode});
+        return Task.FromResult(new CliActionResult { ReturnCode = DoReturnCode });
     }
 
     [CliAction("do_this")]
     public Task<CliActionResult> DoThis1Async()
     {
-        return Task.FromResult(new CliActionResult {ReturnCode = DoReturnCode});
+        return Task.FromResult(new CliActionResult { ReturnCode = DoReturnCode });
     }
 
     [CliAction("do_this")]
     public Task<CliActionResult> DoThis2Async()
     {
-        return Task.FromResult(new CliActionResult {ReturnCode = DoReturnCode});
+        return Task.FromResult(new CliActionResult { ReturnCode = DoReturnCode });
+    }
+
+    [CliAction("testhelp")]
+    public Task<CliActionResult> TestHelpAsync(OptionsForHelp options)
+    {
+        return Task.FromResult(new CliActionResult { ReturnCode = 0 });
     }
 }

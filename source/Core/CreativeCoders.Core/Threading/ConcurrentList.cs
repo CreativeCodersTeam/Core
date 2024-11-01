@@ -9,18 +9,17 @@ namespace CreativeCoders.Core.Threading;
 [PublicAPI]
 public class ConcurrentList<T> : IList<T>, IReadOnlyCollection<T>
 {
-    private readonly ILockingMechanism _locking;
-
     private readonly List<T> _items;
+    private readonly ILockingMechanism _locking;
 
     public ConcurrentList() : this(DefaultLockingMechanism()) { }
 
     public ConcurrentList(ILockingMechanism lockingMechanism)
     {
-        Ensure.IsNotNull(lockingMechanism, nameof(lockingMechanism));
+        Ensure.IsNotNull(lockingMechanism);
 
         _locking = lockingMechanism;
-        _items = new List<T>();
+        _items = [];
     }
 
     public ConcurrentList(IEnumerable<T> collection) : this(collection, DefaultLockingMechanism()) { }
@@ -31,10 +30,10 @@ public class ConcurrentList<T> : IList<T>, IReadOnlyCollection<T>
         Ensure.IsNotNull(collection, nameof(collection));
 
         _locking = lockingMechanism;
-        _items = new List<T>(collection);
+        _items = [..collection];
     }
 
-    private static ILockingMechanism DefaultLockingMechanism()
+    private static LockSlimLockingMechanism DefaultLockingMechanism()
     {
         return new LockSlimLockingMechanism();
     }
@@ -73,10 +72,6 @@ public class ConcurrentList<T> : IList<T>, IReadOnlyCollection<T>
         return _locking.Write(() => _items.Remove(item));
     }
 
-    public int Count => _locking.Read(() => _items.Count);
-
-    public bool IsReadOnly => false;
-
     public int IndexOf(T item)
     {
         return _locking.Read(() => _items.IndexOf(item));
@@ -91,6 +86,10 @@ public class ConcurrentList<T> : IList<T>, IReadOnlyCollection<T>
     {
         _locking.Write(() => _items.RemoveAt(index));
     }
+
+    public int Count => _locking.Read(() => _items.Count);
+
+    public bool IsReadOnly => false;
 
     public T this[int index]
     {

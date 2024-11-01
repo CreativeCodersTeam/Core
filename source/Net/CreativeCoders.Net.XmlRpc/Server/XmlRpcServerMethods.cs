@@ -10,23 +10,7 @@ namespace CreativeCoders.Net.XmlRpc.Server;
 [PublicAPI]
 public class XmlRpcServerMethods : IXmlRpcServerMethods
 {
-    private readonly List<MethodRegistration> _methods = new();
-
-    public void RegisterMethods<T>(string methodSuffix, T methodsInterface)
-        where T : class
-    {
-        Ensure.IsNotNull(methodsInterface, nameof(methodsInterface));
-
-        var methods =
-            typeof(T).GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-
-        foreach (var methodInfo in methods)
-        {
-            var methodAttribute = methodInfo.GetCustomAttribute<XmlRpcMethodAttribute>();
-
-            RegisterMethod(methodAttribute, methodInfo, methodSuffix, methodsInterface);
-        }
-    }
+    private readonly List<MethodRegistration> _methods = new List<MethodRegistration>();
 
     private void RegisterMethod<T>(XmlRpcMethodAttribute methodAttribute, MethodInfo methodInfo,
         string methodSuffix, T methodsInterface)
@@ -46,6 +30,22 @@ public class XmlRpcServerMethods : IXmlRpcServerMethods
 
         var methodRegistration = new MethodRegistration(methodName, methodInfo, methodsInterface);
         _methods.Add(methodRegistration);
+    }
+
+    public void RegisterMethods<T>(string methodSuffix, T methodsInterface)
+        where T : class
+    {
+        Ensure.IsNotNull(methodsInterface, nameof(methodsInterface));
+
+        var methods =
+            typeof(T).GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+        foreach (var methodInfo in methods)
+        {
+            var methodAttribute = methodInfo.GetCustomAttribute<XmlRpcMethodAttribute>();
+
+            RegisterMethod(methodAttribute, methodInfo, methodSuffix, methodsInterface);
+        }
     }
 
     public void RegisterMethods<T>(T methodsInterface)

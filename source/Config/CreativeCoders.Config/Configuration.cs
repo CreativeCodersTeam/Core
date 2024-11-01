@@ -10,10 +10,35 @@ namespace CreativeCoders.Config;
 
 public class Configuration : IConfiguration
 {
-    private readonly ConcurrentList<SourceRegistration> _sourceRegistrations = new();
-
     private readonly ConcurrentList<Action<IConfigurationSource, Exception, SourceExceptionHandleResult>>
-        _onSourceExceptions = new();
+        _onSourceExceptions =
+            new ConcurrentList<Action<IConfigurationSource, Exception, SourceExceptionHandleResult>>();
+
+    private readonly ConcurrentList<SourceRegistration> _sourceRegistrations =
+        new ConcurrentList<SourceRegistration>();
+
+    private T InvokeWithExceptionHandling<T>(IConfigurationSource source,
+        Func<IConfigurationSource, T> function)
+        where T : class
+    {
+        try
+        {
+            return function(source);
+        }
+        catch (Exception ex)
+        {
+            var handleResult = new SourceExceptionHandleResult();
+
+            _onSourceExceptions.ForEach(onSourceException => onSourceException(source, ex, handleResult));
+
+            if (!handleResult.IsHandled)
+            {
+                throw;
+            }
+
+            return source.GetDefaultSettingObject() as T;
+        }
+    }
 
     public IConfiguration AddSource<T>(IConfigurationSource<T> source)
         where T : class
@@ -49,29 +74,6 @@ public class Configuration : IConfiguration
             .Select(reg => InvokeWithExceptionHandling(reg.Source, source => source.GetSettingObject() as T))
             .WhereNotNull()
             .ToArray();
-    }
-
-    private T InvokeWithExceptionHandling<T>(IConfigurationSource source,
-        Func<IConfigurationSource, T> function)
-        where T : class
-    {
-        try
-        {
-            return function(source);
-        }
-        catch (Exception ex)
-        {
-            var handleResult = new SourceExceptionHandleResult();
-
-            _onSourceExceptions.ForEach(onSourceException => onSourceException(source, ex, handleResult));
-
-            if (!handleResult.IsHandled)
-            {
-                throw;
-            }
-
-            return source.GetDefaultSettingObject() as T;
-        }
     }
 
     public void OnSourceException(

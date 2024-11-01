@@ -2,5 +2,5 @@
 
 namespace CreativeCoders.Localization;
 
-///<inheritdoc cref="IStringLocalizer{T}"/>
-public interface IExtendedStringLocalizer<out T> : IStringLocalizer<T> { }
+/// <inheritdoc cref="IStringLocalizer{T}" />
+public interface IExtendedStringLocalizer<out T> : IStringLocalizer<T>;

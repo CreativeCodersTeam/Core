@@ -30,7 +30,7 @@ public static class EnumerableExtension
 
     public static void ForEach<T>(this IEnumerable<T> self, Action<T> action)
     {
-        Ensure.IsNotNull(action, nameof(action));
+        Ensure.IsNotNull(action);
 
         foreach (var item in self)
         {
@@ -38,19 +38,9 @@ public static class EnumerableExtension
         }
     }
 
-    public static async Task ForEachAsync<T>(this IEnumerable<T> self, Func<T, Task> actionAsync)
-    {
-        Ensure.IsNotNull(actionAsync, nameof(actionAsync));
-
-        foreach (var item in self)
-        {
-            await actionAsync(item).ConfigureAwait(false);
-        }
-    }
-
     public static void ForEach<T>(this IEnumerable self, Action<T> action)
     {
-        Ensure.IsNotNull(action, nameof(action));
+        Ensure.IsNotNull(action);
 
         foreach (var obj in self)
         {
@@ -63,7 +53,7 @@ public static class EnumerableExtension
 
     public static void ForEach<T>(this IEnumerable<T> source, Action<T, int> action)
     {
-        Ensure.IsNotNull(action, nameof(action));
+        Ensure.IsNotNull(action);
 
         var index = 0;
         foreach (var element in source)
@@ -72,20 +62,9 @@ public static class EnumerableExtension
         }
     }
 
-    public static async Task ForEachAsync<T>(this IEnumerable<T> source, Func<T, int, Task> actionAsync)
-    {
-        Ensure.IsNotNull(actionAsync, nameof(actionAsync));
-
-        var index = 0;
-        foreach (var element in source)
-        {
-            await actionAsync(element, index++).ConfigureAwait(false);
-        }
-    }
-
     public static void ForEach(this IEnumerable source, Action<object, int> action)
     {
-        Ensure.IsNotNull(action, nameof(action));
+        Ensure.IsNotNull(action);
 
         var index = 0;
         foreach (var element in source)
@@ -96,14 +75,35 @@ public static class EnumerableExtension
 
     public static void ForEach<T>(this Array self, Action<T> action)
     {
-        Ensure.IsNotNull(action, nameof(action));
+        Ensure.IsNotNull(action);
 
         (self as IEnumerable).ForEach(action);
     }
 
+    public static async Task ForEachAsync<T>(this IEnumerable<T> self, Func<T, Task> actionAsync)
+    {
+        Ensure.IsNotNull(actionAsync);
+
+        foreach (var item in self)
+        {
+            await actionAsync(item).ConfigureAwait(false);
+        }
+    }
+
+    public static async Task ForEachAsync<T>(this IEnumerable<T> source, Func<T, int, Task> actionAsync)
+    {
+        Ensure.IsNotNull(actionAsync);
+
+        var index = 0;
+        foreach (var element in source)
+        {
+            await actionAsync(element, index++).ConfigureAwait(false);
+        }
+    }
+
     public static IEnumerable<T> Pipe<T>(this IEnumerable<T> items, Action<T> pipeAction)
     {
-        Ensure.IsNotNull(pipeAction, nameof(pipeAction));
+        Ensure.IsNotNull(pipeAction);
 
         return PipeCore();
 
@@ -119,7 +119,7 @@ public static class EnumerableExtension
 
     public static IEnumerable<T> TakeUntil<T>(this IEnumerable<T> items, Func<T, bool> predicate)
     {
-        Ensure.IsNotNull(predicate, nameof(predicate));
+        Ensure.IsNotNull(predicate);
 
         return TakeUntilCore();
 
@@ -139,7 +139,7 @@ public static class EnumerableExtension
 
     public static IEnumerable<T> SkipUntil<T>(this IEnumerable<T> items, Func<T, bool> predicate)
     {
-        Ensure.IsNotNull(predicate, nameof(predicate));
+        Ensure.IsNotNull(predicate);
 
         return SkipUntilCore();
 
@@ -171,7 +171,7 @@ public static class EnumerableExtension
 
     public static void Remove<T>(this ICollection<T> self, IEnumerable<T> removeEntries)
     {
-        Ensure.IsNotNull(removeEntries, nameof(removeEntries));
+        Ensure.IsNotNull(removeEntries);
 
         foreach (var removeEntry in removeEntries)
         {
@@ -181,7 +181,7 @@ public static class EnumerableExtension
 
     public static void Remove<T>(this ICollection<T> self, Predicate<T> predicate)
     {
-        Ensure.IsNotNull(predicate, nameof(predicate));
+        Ensure.IsNotNull(predicate);
 
         var removeEntries = self.Where(item => predicate(item)).ToArray();
         self.Remove(removeEntries);
@@ -195,19 +195,17 @@ public static class EnumerableExtension
 
     public static bool IsSingle<T>(this IEnumerable<T> items, Func<T, bool> predicate)
     {
-        Ensure.IsNotNull(predicate, nameof(predicate));
+        Ensure.IsNotNull(predicate);
 
         var num = 0;
         // ReSharper disable once LoopCanBeConvertedToQuery
-        foreach (var item in items)
+
+        foreach (var _ in items.Where(predicate))
         {
             // ReSharper disable once InvertIf
-            if (predicate(item))
+            if (++num > 1)
             {
-                if (++num > 1)
-                {
-                    return false;
-                }
+                return false;
             }
         }
 
@@ -314,8 +312,8 @@ public static class EnumerableExtension
     [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
     public static IEnumerable<T> NotDistinct<T>(this IEnumerable<T> items, IEqualityComparer<T> comparer)
     {
-        Ensure.NotNull(items, nameof(items));
-        Ensure.NotNull(comparer, nameof(comparer));
+        Ensure.NotNull(items);
+        Ensure.NotNull(comparer);
 
         return NotDistinctCore();
 
@@ -403,7 +401,7 @@ public static class EnumerableExtension
     public static IEnumerable<TResult> Choose<T, TResult>(this IEnumerable<T> items,
         Func<T, (bool IsChoosen, TResult Value)> choose)
     {
-        Ensure.IsNotNull(choose, nameof(choose));
+        Ensure.IsNotNull(choose);
 
         return items
             .Select(choose)
@@ -418,7 +416,7 @@ public static class EnumerableExtension
             ?.MakeGenericMethod(itemType);
 
         return ofTypeMethod != null
-            ? ofTypeMethod.Invoke(null, new object?[] {source})
+            ? ofTypeMethod.Invoke(null, [source])
             : throw new MissingMethodException(nameof(Enumerable), nameof(Enumerable.OfType));
     }
     // ReSharper disable once UnusedNullableDirective

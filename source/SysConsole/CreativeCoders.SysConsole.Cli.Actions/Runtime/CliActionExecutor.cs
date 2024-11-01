@@ -15,17 +15,7 @@ internal class CliActionExecutor : ICliActionExecutor
 
     public CliActionExecutor(IServiceProvider serviceProvider)
     {
-        _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
-    }
-
-    public async Task ExecuteAsync(CliActionContext context)
-    {
-        if (context.ActionRoute?.ControllerType == null || context.ActionRoute?.ActionMethod == null)
-        {
-            throw new NoActionException();
-        }
-
-        await ExecuteActionRouteAsync(context).ConfigureAwait(false);
+        _serviceProvider = Ensure.NotNull(serviceProvider);
     }
 
     private async Task ExecuteActionRouteAsync(CliActionContext context)
@@ -52,7 +42,7 @@ internal class CliActionExecutor : ICliActionExecutor
 
         if (resultType == typeof(Task<CliActionResult>))
         {
-            var actionResult = await ((Task<CliActionResult>) result).ConfigureAwait(false);
+            var actionResult = await ((Task<CliActionResult>)result).ConfigureAwait(false);
 
             context.ReturnCode = actionResult.ReturnCode;
 
@@ -61,7 +51,7 @@ internal class CliActionExecutor : ICliActionExecutor
 
         if (resultType == typeof(Task<int>))
         {
-            var returnCode = await ((Task<int>) result).ConfigureAwait(false);
+            var returnCode = await ((Task<int>)result).ConfigureAwait(false);
 
             context.ReturnCode = returnCode;
 
@@ -77,7 +67,7 @@ internal class CliActionExecutor : ICliActionExecutor
 
         if (resultType == typeof(int))
         {
-            context.ReturnCode = (int) result;
+            context.ReturnCode = (int)result;
 
             return;
         }
@@ -87,7 +77,7 @@ internal class CliActionExecutor : ICliActionExecutor
             throw new ActionReturnTypeNotSupportedException(resultType);
         }
 
-        context.ReturnCode = ((CliActionResult) result).ReturnCode;
+        context.ReturnCode = ((CliActionResult)result).ReturnCode;
     }
 
     private static object[] CreateActionArguments(CliActionContext context)
@@ -97,16 +87,26 @@ internal class CliActionExecutor : ICliActionExecutor
         switch (parameters.Length)
         {
             case 0:
-                return Array.Empty<object>();
+                return [];
             case > 1:
                 throw new TargetParameterCountException("Action argument count must be 0 or 1");
             default:
             {
                 var option =
-                    new OptionParser(parameters.First().ParameterType).Parse(context.Arguments.ToArray());
+                    new OptionParser(parameters[0].ParameterType).Parse(context.Arguments.ToArray());
 
-                return new[] {option};
+                return [option];
             }
         }
+    }
+
+    public async Task ExecuteAsync(CliActionContext context)
+    {
+        if (context.ActionRoute?.ControllerType == null || context.ActionRoute?.ActionMethod == null)
+        {
+            throw new NoActionException();
+        }
+
+        await ExecuteActionRouteAsync(context).ConfigureAwait(false);
     }
 }

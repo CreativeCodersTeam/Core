@@ -4,9 +4,10 @@ namespace CreativeCoders.Core.Caching.Default;
 
 internal class CacheRegions<TKey, TValue>
 {
-    private readonly ConcurrentDictionary<string, CacheRegion<TKey, TValue>> _regions = new();
+    private readonly CacheRegion<TKey, TValue> _defaultRegion = new CacheRegion<TKey, TValue>();
 
-    private readonly CacheRegion<TKey, TValue> _defaultRegion = new();
+    private readonly ConcurrentDictionary<string, CacheRegion<TKey, TValue>> _regions =
+        new ConcurrentDictionary<string, CacheRegion<TKey, TValue>>();
 
     private CacheRegion<TKey, TValue> GetRegion(string regionName)
     {

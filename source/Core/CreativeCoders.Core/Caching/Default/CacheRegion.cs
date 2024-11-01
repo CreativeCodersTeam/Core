@@ -4,7 +4,8 @@ namespace CreativeCoders.Core.Caching.Default;
 
 internal class CacheRegion<TKey, TValue>
 {
-    private readonly Dictionary<TKey, CacheEntry<TKey, TValue>> _data = new();
+    private readonly Dictionary<TKey, CacheEntry<TKey, TValue>> _data =
+        new Dictionary<TKey, CacheEntry<TKey, TValue>>();
 
     public bool TryGetValue(TKey key, out CacheEntry<TKey, TValue> value)
     {

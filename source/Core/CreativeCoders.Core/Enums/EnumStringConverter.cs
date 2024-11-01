@@ -10,47 +10,16 @@ namespace CreativeCoders.Core.Enums;
 
 public class EnumStringConverter : IEnumToStringConverter
 {
-    private static readonly ICache<Type, IDictionary<Enum, string>> TextToEnumMappingCache =
+    private static readonly ICache<Type, IDictionary<Enum, string>> __textToEnumMappingCache =
         CacheManager.CreateCache<Type, IDictionary<Enum, string>>();
 
-    private static readonly ICache<FieldInfo, IEnumStringAttribute> EnumToTextCache =
+    private static readonly DictionaryCache<FieldInfo, IEnumStringAttribute> __enumToTextCache =
         new DictionaryCache<FieldInfo, IEnumStringAttribute>();
-
-    public string Convert(Enum enumValue)
-    {
-        if (enumValue == null)
-        {
-            return string.Empty;
-        }
-
-        var fieldInfo = EnumUtils.GetFieldInfoForEnum(enumValue);
-
-        return GetTextForField(fieldInfo, enumValue);
-    }
-
-    public T Convert<T>(string text)
-        where T : Enum
-    {
-        var mappingDict = TextToEnumMappingCache.GetOrAdd(typeof(T), () => EnumUtils.GetEnumFieldInfos<T>()
-            .ToDictionary(entry => entry.Key, entry => GetTextForField(entry.Value, entry.Key)));
-
-        if (!mappingDict.TryGetKeyByValue(text, out var returnValue))
-        {
-            return default;
-        }
-
-        if (returnValue is T enumValue)
-        {
-            return enumValue;
-        }
-
-        return default;
-    }
 
     private static string GetTextForField(FieldInfo fieldInfo, Enum enumValue)
     {
         var attr =
-            EnumToTextCache.GetOrAdd(fieldInfo, () => GetEnumStringAttribute(fieldInfo))
+            __enumToTextCache.GetOrAdd(fieldInfo, () => GetEnumStringAttribute(fieldInfo))
             ?? GetEnumStringAttribute(enumValue.GetType());
 
         return attr != null ? attr.Text : fieldInfo.Name;
@@ -71,7 +40,38 @@ public class EnumStringConverter : IEnumToStringConverter
 
     public static void ClearCaches()
     {
-        EnumToTextCache.Clear();
-        TextToEnumMappingCache.Clear();
+        __enumToTextCache.Clear();
+        __textToEnumMappingCache.Clear();
+    }
+
+    public string Convert(Enum enumValue)
+    {
+        if (enumValue == null)
+        {
+            return string.Empty;
+        }
+
+        var fieldInfo = EnumUtils.GetFieldInfoForEnum(enumValue);
+
+        return GetTextForField(fieldInfo, enumValue);
+    }
+
+    public T Convert<T>(string text)
+        where T : Enum
+    {
+        var mappingDict = __textToEnumMappingCache.GetOrAdd(typeof(T), () => EnumUtils.GetEnumFieldInfos<T>()
+            .ToDictionary(entry => entry.Key, entry => GetTextForField(entry.Value, entry.Key)));
+
+        if (!mappingDict.TryGetKeyByValue(text, out var returnValue))
+        {
+            return default;
+        }
+
+        if (returnValue is T enumValue)
+        {
+            return enumValue;
+        }
+
+        return default;
     }
 }

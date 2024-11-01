@@ -7,11 +7,13 @@ namespace CreativeCoders.Daemon;
 internal class DefaultDaemonHostBuilder<TDaemonService> : IDaemonHostBuilder
     where TDaemonService : class, IDaemonService
 {
-    private readonly List<Action<IServiceCollection>> _configureServicesActions = new();
+    private readonly List<Action<IHostBuilder>> _configureHostBuilderActions =
+        new List<Action<IHostBuilder>>();
 
-    private readonly List<Action<IHostBuilder>> _configureHostBuilderActions = new();
+    private readonly List<Action<IServiceCollection>> _configureServicesActions =
+        new List<Action<IServiceCollection>>();
 
-    private readonly DaemonHostSetupInfo _daemonHostSetupInfo = new();
+    private readonly DaemonHostSetupInfo _daemonHostSetupInfo = new DaemonHostSetupInfo();
 
     public IDaemonHostBuilder WithArgs(string[] args)
     {

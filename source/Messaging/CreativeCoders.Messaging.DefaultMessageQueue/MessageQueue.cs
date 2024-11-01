@@ -10,12 +10,10 @@ public sealed class MessageQueue<T> : IMessageQueue<T>
 {
     private readonly BufferBlock<T> _bufferBlock;
 
-    private readonly CancellationTokenSource _cancellationTokenSource;
+    private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
     public MessageQueue()
     {
-        _cancellationTokenSource = new CancellationTokenSource();
-
         _bufferBlock = new BufferBlock<T>(
             new DataflowBlockOptions
             {
@@ -25,8 +23,6 @@ public sealed class MessageQueue<T> : IMessageQueue<T>
 
     private MessageQueue(int maxQueueLength)
     {
-        _cancellationTokenSource = new CancellationTokenSource();
-
         _bufferBlock = new BufferBlock<T>(
             new DataflowBlockOptions
             {
@@ -95,8 +91,6 @@ public sealed class MessageQueue<T> : IMessageQueue<T>
         return _bufferBlock.AsObserver();
     }
 
-    public bool CompleteOnDispose { get; set; }
-
     public async ValueTask DisposeAsync()
     {
         if (CompleteOnDispose)
@@ -106,7 +100,8 @@ public sealed class MessageQueue<T> : IMessageQueue<T>
         }
         else
         {
-            _cancellationTokenSource.Cancel();
+            await _cancellationTokenSource.CancelAsync().ConfigureAwait(false);
+            _cancellationTokenSource.Dispose();
         }
     }
 
@@ -120,6 +115,9 @@ public sealed class MessageQueue<T> : IMessageQueue<T>
         else
         {
             _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
     }
+
+    public bool CompleteOnDispose { get; set; }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.App;
@@ -24,8 +23,6 @@ public class ConsoleException : Exception
     public ConsoleException(string? message) : base(message) { }
 
     public ConsoleException(string? message, Exception? innerException) : base(message, innerException) { }
-
-    protected ConsoleException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
     public int ReturnCode { get; }
 }

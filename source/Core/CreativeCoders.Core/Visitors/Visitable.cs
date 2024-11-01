@@ -10,16 +10,24 @@ public abstract class Visitable<TVisitor, TVisitableObject> : IVisitable,
     where TVisitor : class, IVisitor<TVisitor, TVisitableObject>
     where TVisitableObject : Visitable<TVisitor, TVisitableObject>
 {
-    private readonly IDictionary<Type, Action<object>> _visitors = new Dictionary<Type, Action<object>>();
+    private readonly Dictionary<Type, Action<object>> _visitors = new Dictionary<Type, Action<object>>();
 
-    public void Accept(TVisitor visitor)
+    protected void AddVisitorType<T>(Action<T> action) where T : class
     {
-        if (this is not TVisitableObject self)
-        {
-            return;
-        }
+        AddVisitorType(typeof(T), param => DoAccept(param, action));
+    }
 
-        visitor.Visit(self);
+    private void AddVisitorType(Type visitorType, Action<object> acceptAction)
+    {
+        _visitors[visitorType] = acceptAction;
+    }
+
+    private static void DoAccept<T>(object param, Action<T> action) where T : class
+    {
+        if (param is T visitor)
+        {
+            action(visitor);
+        }
     }
 
     public void Accept(object visitor)
@@ -46,21 +54,13 @@ public abstract class Visitable<TVisitor, TVisitableObject> : IVisitable,
         }
     }
 
-    protected void AddVisitorType<T>(Action<T> action) where T : class
+    public void Accept(TVisitor visitor)
     {
-        AddVisitorType(typeof(T), param => DoAccept(param, action));
-    }
-
-    private void AddVisitorType(Type visitorType, Action<object> acceptAction)
-    {
-        _visitors[visitorType] = acceptAction;
-    }
-
-    private static void DoAccept<T>(object param, Action<T> action) where T : class
-    {
-        if (param is T visitor)
+        if (this is not TVisitableObject self)
         {
-            action(visitor);
+            return;
         }
+
+        visitor.Visit(self);
     }
 }

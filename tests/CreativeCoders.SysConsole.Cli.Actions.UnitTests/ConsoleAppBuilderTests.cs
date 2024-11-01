@@ -3,9 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.App;
 using CreativeCoders.SysConsole.Cli.Actions.Exceptions;
+using CreativeCoders.SysConsole.Cli.Actions.Help;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware;
 using CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
+using FakeItEasy;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests;
@@ -15,7 +18,7 @@ public class ConsoleAppBuilderTests
     [Fact]
     public async Task RunAsync_ConsoleAppControllerRun_ReturnsCorrectReturnCode()
     {
-        var args = new[] {"test", "run"};
+        var args = new[] { "test", "run" };
 
         var consoleApp = new ConsoleAppBuilder(args)
             .UseActions<Startup>()
@@ -33,7 +36,25 @@ public class ConsoleAppBuilderTests
     [Fact]
     public async Task RunAsync_ConsoleAppControllerDo_ReturnsCorrectReturnCode()
     {
-        var args = new[] {"test", "do"};
+        var args = new[] { "test", "do" };
+
+        var consoleApp = new ConsoleAppBuilder(args)
+            .UseActions<Startup>()
+            .Build();
+
+        // Act
+        var result = await consoleApp.RunAsync();
+
+        // Assert
+        result
+            .Should()
+            .Be(ConsoleAppTestController.DoReturnCode);
+    }
+
+    [Fact]
+    public async Task RunAsync_ConsoleAppControllerDoViaAlternativeRoute_ReturnsCorrectReturnCode()
+    {
+        var args = new[] { "start", "this", "action" };
 
         var consoleApp = new ConsoleAppBuilder(args)
             .UseActions<Startup>()
@@ -51,7 +72,7 @@ public class ConsoleAppBuilderTests
     [Fact]
     public async Task RunAsync_ConsoleAppControllerAmbiguousAction_ThrowsException()
     {
-        var args = new[] {"test", "do_this"};
+        var args = new[] { "test", "do_this" };
 
         var consoleApp = new ConsoleAppBuilder(args)
             .UseActions<Startup>()
@@ -156,6 +177,27 @@ public class ConsoleAppBuilderTests
         // Assert
         result
             .Should()
-            .Be(args.Last().GetHashCode());
+            .Be(args[^1].GetHashCode());
+    }
+
+    [Fact]
+    public async Task HelpForRunAsync_ConsoleAppControllerRun_ReturnsCorrectHelpText()
+    {
+        var args = new[] { "help", "test", "testhelp" };
+
+        var helpPrinter = A.Fake<ICliActionHelpPrinter>();
+
+        var consoleApp = new ConsoleAppBuilder(args)
+            .ConfigureServices(x => x.AddTransient<ICliActionHelpPrinter>(_ => helpPrinter))
+            .UseActions<Startup>()
+            .Build();
+
+        // Act
+        var result = await consoleApp.RunAsync();
+
+        // Assert
+        result
+            .Should()
+            .Be(0);
     }
 }

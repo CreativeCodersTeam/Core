@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Components;
 
 namespace CreativeCoders.AspNetCore.Blazor.Components.Base;
 
-///-------------------------------------------------------------------------------------------------
+/// -------------------------------------------------------------------------------------------------
 /// <summary>   Base class for a blazor control. </summary>
-///
-/// <seealso cref="ComponentBase"/>
-///-------------------------------------------------------------------------------------------------
+/// <seealso cref="ComponentBase" />
+/// -------------------------------------------------------------------------------------------------
 [PublicAPI]
 public class ControlBase : ComponentBase
 {
@@ -37,9 +36,9 @@ public class ControlBase : ComponentBase
                 : null);
     }
 
-    public ClassesAttributeBuilder Classes { get; } = new();
+    public ClassesAttributeBuilder Classes { get; } = new ClassesAttributeBuilder();
 
-    public StyleAttributeBuilder Styles { get; } = new();
+    public StyleAttributeBuilder Styles { get; } = new StyleAttributeBuilder();
 
     [Parameter] public string Id { get; set; }
 

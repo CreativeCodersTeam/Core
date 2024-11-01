@@ -7,7 +7,7 @@ namespace CreativeCoders.Scripting.CSharp.SourceCodeGenerator;
 
 public class ClassSyntaxTreeNode : IVisitableSubItems
 {
-    private readonly List<ClassSyntaxTreeNode> _subNodes = new();
+    private readonly List<ClassSyntaxTreeNode> _subNodes = new List<ClassSyntaxTreeNode>();
 
     private IVisitable _asVisitable;
 
@@ -23,12 +23,12 @@ public class ClassSyntaxTreeNode : IVisitableSubItems
         return new VisitableAction<SyntaxSourceCodeEmitVisitor>(null);
     }
 
-    public IVisitable AsVisitable => _asVisitable ??= GetAsVisitable();
-
-    public IEnumerable<ClassSyntaxTreeNode> SubNodes => _subNodes;
-
     public IEnumerable<IVisitable> GetVisitableSubItems()
     {
         return _subNodes.Select(subNode => subNode.AsVisitable);
     }
+
+    public IVisitable AsVisitable => _asVisitable ??= GetAsVisitable();
+
+    public IEnumerable<ClassSyntaxTreeNode> SubNodes => _subNodes;
 }

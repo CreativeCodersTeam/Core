@@ -34,15 +34,17 @@ public class AcquireWriterLockTests
     }
 
     [Fact]
-    public async Task AcquireWriterLockTestLockFailed()
+    public void AcquireWriterLockTestLockFailed()
     {
         var slimLock = new ReaderWriterLockSlim();
 
         slimLock.EnterReadLock();
 
-        await Task.Run(() =>
-                // ReSharper disable once AccessToDisposedClosure
-                Assert.Throws<AcquireLockFailedException>(() => new AcquireWriterLock(slimLock, 1)))
-            .ConfigureAwait(true);
+        var thread = new Thread(() =>
+            Assert.Throws<AcquireLockFailedException>(() => new AcquireWriterLock(slimLock, 1)));
+
+        thread.Start();
+
+        thread.Join();
     }
 }

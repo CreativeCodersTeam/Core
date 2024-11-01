@@ -34,13 +34,17 @@ public class AcquireReaderLockTests
     }
 
     [Fact]
-    public async Task AcquireReaderLockTestLockFailed()
+    public void AcquireReaderLockTestLockFailed()
     {
         var slimLock = new ReaderWriterLockSlim();
 
         slimLock.EnterWriteLock();
 
-        await Task.Run(() =>
+        var thread = new Thread(() =>
             Assert.Throws<AcquireLockFailedException>(() => new AcquireReaderLock(slimLock, 1)));
+
+        thread.Start();
+
+        thread.Join();
     }
 }

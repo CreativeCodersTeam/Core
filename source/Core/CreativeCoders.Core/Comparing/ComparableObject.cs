@@ -8,30 +8,20 @@ namespace CreativeCoders.Core.Comparing;
 public class ComparableObject<T> : IEquatable<T>, IComparable<T>
     where T : ComparableObject<T>
 {
-    private static IEqualityComparer<T> EqualityComparer = EqualityComparer<T>.Default;
+    private static IEqualityComparer<T> __equalityComparer = EqualityComparer<T>.Default;
 
-    private static IComparer<T> Comparer =
+    private static IComparer<T> __comparer =
         new FuncComparer<T, string?>(x => x?.ToString(), SortOrder.Ascending);
 
-    private static Func<T, int> GetHashCodeFunc = RuntimeHelpers.GetHashCode;
+    private static Func<T, int> __getHashCodeFunc = RuntimeHelpers.GetHashCode;
 
     protected static void InitComparableObject<TProperty>(Func<T, TProperty> getCompareProperty)
     {
-        EqualityComparer = new FuncEqualityComparer<T, TProperty>(getCompareProperty);
+        __equalityComparer = new FuncEqualityComparer<T, TProperty>(getCompareProperty);
 
-        Comparer = new FuncComparer<T, TProperty>(getCompareProperty, SortOrder.Ascending);
+        __comparer = new FuncComparer<T, TProperty>(getCompareProperty, SortOrder.Ascending);
 
-        GetHashCodeFunc = x => EqualityComparer.GetHashCode(x);
-    }
-
-    public bool Equals(T? other)
-    {
-        return EqualityComparer.Equals((T) this, other);
-    }
-
-    public int CompareTo(T? other)
-    {
-        return Comparer.Compare((T) this, other);
+        __getHashCodeFunc = x => __equalityComparer.GetHashCode(x);
     }
 
     public override bool Equals(object? obj) => Equals(obj as T);
@@ -39,7 +29,17 @@ public class ComparableObject<T> : IEquatable<T>, IComparable<T>
     public override int GetHashCode()
     {
         // ReSharper disable once NonReadonlyMemberInGetHashCode
-        return GetHashCodeFunc((T) this);
+        return __getHashCodeFunc((T)this);
+    }
+
+    public int CompareTo(T? other)
+    {
+        return __comparer.Compare((T)this, other);
+    }
+
+    public bool Equals(T? other)
+    {
+        return __equalityComparer.Equals((T)this, other);
     }
 }
 
@@ -47,30 +47,20 @@ public class ComparableObject<TObject, TInterface> : IEquatable<TInterface>, ICo
     where TObject : ComparableObject<TObject, TInterface>, TInterface
     where TInterface : class
 {
-    private static IEqualityComparer<TInterface> EqualityComparer = EqualityComparer<TInterface>.Default;
+    private static IEqualityComparer<TInterface> __equalityComparer = EqualityComparer<TInterface>.Default;
 
-    private static IComparer<TInterface> Comparer =
+    private static IComparer<TInterface> __comparer =
         new FuncComparer<TInterface, string?>(x => x?.ToString(), SortOrder.Ascending);
 
-    private static Func<TInterface, int> GetHashCodeFunc = RuntimeHelpers.GetHashCode;
+    private static Func<TInterface, int> __getHashCodeFunc = RuntimeHelpers.GetHashCode;
 
     protected static void InitComparableObject<TProperty>(Func<TInterface, TProperty> getCompareProperty)
     {
-        EqualityComparer = new FuncEqualityComparer<TInterface, TProperty>(getCompareProperty);
+        __equalityComparer = new FuncEqualityComparer<TInterface, TProperty>(getCompareProperty);
 
-        Comparer = new FuncComparer<TInterface, TProperty>(getCompareProperty, SortOrder.Ascending);
+        __comparer = new FuncComparer<TInterface, TProperty>(getCompareProperty, SortOrder.Ascending);
 
-        GetHashCodeFunc = x => EqualityComparer.GetHashCode(x);
-    }
-
-    public bool Equals(TInterface? other)
-    {
-        return EqualityComparer.Equals((TInterface) (object) this, other);
-    }
-
-    public int CompareTo(TInterface? other)
-    {
-        return Comparer.Compare((TInterface) (object) this, other);
+        __getHashCodeFunc = x => __equalityComparer.GetHashCode(x);
     }
 
     public override bool Equals(object? obj) => Equals(obj as TInterface);
@@ -78,6 +68,16 @@ public class ComparableObject<TObject, TInterface> : IEquatable<TInterface>, ICo
     public override int GetHashCode()
     {
         // ReSharper disable once NonReadonlyMemberInGetHashCode
-        return GetHashCodeFunc((TInterface) (object) this);
+        return __getHashCodeFunc((TInterface)(object)this);
+    }
+
+    public int CompareTo(TInterface? other)
+    {
+        return __comparer.Compare((TInterface)(object)this, other);
+    }
+
+    public bool Equals(TInterface? other)
+    {
+        return __equalityComparer.Equals((TInterface)(object)this, other);
     }
 }

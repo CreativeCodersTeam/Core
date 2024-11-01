@@ -13,9 +13,4 @@ public abstract class CliArgumentsException : Exception
 
     protected CliArgumentsException(string? message, Exception? innerException) : base(message,
         innerException) { }
-
-    [UsedImplicitly]
-    [ExcludeFromCodeCoverage]
-    protected CliArgumentsException(SerializationInfo info, StreamingContext context) :
-        base(info, context) { }
 }

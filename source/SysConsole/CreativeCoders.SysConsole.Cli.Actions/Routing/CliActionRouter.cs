@@ -8,14 +8,7 @@ namespace CreativeCoders.SysConsole.Cli.Actions.Routing;
 
 internal class CliActionRouter : ICliActionRouter
 {
-    private readonly List<CliActionRoute> _actionRoutes = new();
-
-    public CliActionRoute? FindRoute(IList<string> args)
-    {
-        return FindRoute(args, x =>
-                   x.RouteParts.SequenceEqual(args.Take(x.RouteParts.Length)), x => x.RouteParts.Length)
-               ?? GetDefaultRoute(args);
-    }
+    private readonly List<CliActionRoute> _actionRoutes = [];
 
     private CliActionRoute? GetDefaultRoute(IList<string> args)
     {
@@ -43,12 +36,9 @@ internal class CliActionRouter : ICliActionRouter
             .Distinct(x => x.ActionMethod)
             .ToArray();
 
-        if (routes.Length > 1)
+        if (routes.Length > 1 && routes.Select(x => x.RouteParts.Length).Distinct().Count() == 1)
         {
-            if (routes.Select(x => x.RouteParts.Length).Distinct().Count() == 1)
-            {
-                throw new AmbiguousRouteException(args, routes);
-            }
+            throw new AmbiguousRouteException(args, routes);
         }
 
         var route = routes.MaxBy(x => x.RouteParts.Length);
@@ -68,6 +58,13 @@ internal class CliActionRouter : ICliActionRouter
         }
 
         return route;
+    }
+
+    public CliActionRoute? FindRoute(IList<string> args)
+    {
+        return FindRoute(args, x =>
+                   x.RouteParts.SequenceEqual(args.Take(x.RouteParts.Length)), x => x.RouteParts.Length)
+               ?? GetDefaultRoute(args);
     }
 
     public void AddRoute(CliActionRoute actionRoute)

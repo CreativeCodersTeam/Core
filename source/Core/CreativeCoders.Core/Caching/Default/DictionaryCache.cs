@@ -5,7 +5,7 @@ namespace CreativeCoders.Core.Caching.Default;
 
 public class DictionaryCache<TKey, TValue> : CacheBase<TKey, TValue>
 {
-    private readonly CacheRegions<TKey, TValue> _regions = new();
+    private readonly CacheRegions<TKey, TValue> _regions = new CacheRegions<TKey, TValue>();
 
     public override TValue GetOrAdd(TKey key, Func<TValue> getValue, ICacheExpirationPolicy expirationPolicy,
         string regionName = null)
@@ -58,13 +58,14 @@ public class DictionaryCache<TKey, TValue> : CacheBase<TKey, TValue>
     public override void AddOrUpdate(TKey key, TValue value, string regionName = null)
     {
         _regions.Set(key,
-            new CacheEntry<TKey, TValue>(key, CacheExpirationPolicy.NeverExpire) {Value = value}, regionName);
+            new CacheEntry<TKey, TValue>(key, CacheExpirationPolicy.NeverExpire) { Value = value },
+            regionName);
     }
 
     public override void AddOrUpdate(TKey key, TValue value, ICacheExpirationPolicy expirationPolicy,
         string regionName = null)
     {
-        _regions.Set(key, new CacheEntry<TKey, TValue>(key, expirationPolicy) {Value = value}, regionName);
+        _regions.Set(key, new CacheEntry<TKey, TValue>(key, expirationPolicy) { Value = value }, regionName);
     }
 
     public override Task AddOrUpdateAsync(TKey key, TValue value, string regionName = null)

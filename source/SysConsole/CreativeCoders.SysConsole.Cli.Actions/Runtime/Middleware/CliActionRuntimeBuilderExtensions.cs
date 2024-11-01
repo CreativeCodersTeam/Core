@@ -14,10 +14,13 @@ public static class CliActionRuntimeBuilderExtensions
     public static ICliActionRuntimeBuilder UseExceptionHandling(this ICliActionRuntimeBuilder runtimeBuilder,
         int errorReturnCode = ExceptionHandlerMiddleware.DefaultErrorReturnCode)
     {
-        return runtimeBuilder.UseMiddleware<ExceptionHandlerMiddleware>((Action<CliActionContext>) Nop,
+        return runtimeBuilder.UseMiddleware<ExceptionHandlerMiddleware>((Action<CliActionContext>)Nop,
             errorReturnCode);
 
-        static void Nop(CliActionContext _) { }
+        static void Nop(CliActionContext _)
+        {
+            // Empty method needed for middleware registration
+        }
     }
 
     public static ICliActionRuntimeBuilder UseExceptionHandling(this ICliActionRuntimeBuilder runtimeBuilder,
@@ -26,5 +29,10 @@ public static class CliActionRuntimeBuilderExtensions
     {
         return runtimeBuilder.UseMiddleware<ExceptionHandlerMiddleware>(exceptionHandler,
             errorReturnCode);
+    }
+
+    public static ICliActionRuntimeBuilder UseHelp(this ICliActionRuntimeBuilder runtimeBuilder)
+    {
+        return runtimeBuilder.UseMiddleware<CliActionHelpMiddleware>();
     }
 }

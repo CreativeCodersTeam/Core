@@ -11,7 +11,7 @@ public static class MethodExtensions
 {
     public static void ExecuteMethod(this object instance, string methodName, params object[] arguments)
     {
-        Ensure.IsNotNull(instance, nameof(instance));
+        Ensure.IsNotNull(instance);
 
         var method = arguments == null || arguments.Length == 0
             ? instance.GetType().GetMethod(methodName, Type.EmptyTypes)
@@ -28,7 +28,7 @@ public static class MethodExtensions
     public static TResult ExecuteMethod<TResult>(this object instance, string methodName,
         params object[] arguments)
     {
-        Ensure.IsNotNull(instance, nameof(instance));
+        Ensure.IsNotNull(instance);
 
         var method = arguments == null || arguments.Length == 0
             ? instance.GetType().GetMethod(methodName, Type.EmptyTypes)
@@ -39,13 +39,13 @@ public static class MethodExtensions
             throw new MissingMethodException();
         }
 
-        return (TResult) method.Invoke(instance, arguments);
+        return (TResult)method.Invoke(instance, arguments);
     }
 
     public static TResult ExecuteGenericMethod<TResult>(this object instance, string methodName,
         IEnumerable<GenericArgument> genericArguments, params object[] methodParams)
     {
-        Ensure.IsNotNull(instance, nameof(instance));
+        Ensure.IsNotNull(instance);
 
         var genericMethod = instance.GetType().GetMethods().FirstOrDefault(method =>
             method.Name == methodName && GenericParamsAreEqual(method.GetGenericArguments(),
@@ -71,7 +71,7 @@ public static class MethodExtensions
     public static TResult ExecuteGenericMethod<TResult>(this object instance, string methodName,
         Type[] genericTypeArguments, params object[] methodParams)
     {
-        Ensure.IsNotNull(instance, nameof(instance));
+        Ensure.IsNotNull(instance);
 
         var noneGenericMethod = CreateGenericMethod(instance, methodName, genericTypeArguments,
             methodParams.Select(p => p.GetType()).ToArray());
@@ -149,7 +149,7 @@ public static class MethodExtensions
             "Dynamic invocation of methods with params argument ist currently not supported");
     }
 
-    private static bool ParametersMatch(MethodBase method, IReadOnlyList<Type> methodParamTypes,
+    private static bool ParametersMatch(MethodInfo method, IReadOnlyList<Type> methodParamTypes,
         IReadOnlyList<Type> genericTypeArguments)
     {
         var parameterInfos = method.GetParameters();

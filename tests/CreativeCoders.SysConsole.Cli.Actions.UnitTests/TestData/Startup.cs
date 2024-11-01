@@ -13,6 +13,8 @@ public class Startup : ICliStartup
     {
         runtimeBuilder.AddController<ConsoleAppTestController>();
 
+        runtimeBuilder.UseHelp();
+
         runtimeBuilder.UseRouting();
     }
 }

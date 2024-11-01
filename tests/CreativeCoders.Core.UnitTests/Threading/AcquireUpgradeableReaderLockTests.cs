@@ -37,21 +37,23 @@ public class AcquireUpgradeableReaderLockTests
     }
 
     [Fact]
-    public async Task Ctor_EnterUpgradeableWhenLockIsAlreadyInWrite_ThrowsException()
+    public void Ctor_EnterUpgradeableWhenLockIsAlreadyInWrite_ThrowsException()
     {
         var slimLock = new ReaderWriterLockSlim();
 
         slimLock.EnterWriteLock();
 
-        await Task.Run(() =>
-        {
+        var thread = new Thread(() =>
             Assert.Throws<AcquireLockFailedException>(() =>
-                new AcquireUpgradeableReaderLock(slimLock, 1));
-        });
+                new AcquireUpgradeableReaderLock(slimLock, 1)));
+
+        thread.Start();
+
+        thread.Join();
     }
 
     [Fact]
-    public async Task Ctor_EnterUpgradeableWhenLockIsAlreadyInRead_LockIsInUpgradeableMode()
+    public void Ctor_EnterUpgradeableWhenLockIsAlreadyInRead_LockIsInUpgradeableMode()
     {
         var executed = false;
 
@@ -59,7 +61,7 @@ public class AcquireUpgradeableReaderLockTests
 
         slimLock.EnterReadLock();
 
-        await Task.Run(() =>
+        var thread = new Thread(() =>
         {
             using (new AcquireUpgradeableReaderLock(slimLock))
             {
@@ -68,11 +70,15 @@ public class AcquireUpgradeableReaderLockTests
             }
         });
 
+        thread.Start();
+
+        thread.Join();
+
         Assert.True(executed);
     }
 
     [Fact]
-    public async Task Ctor_EnterUpgradeableWhenLockIsAlreadyInReadAndUpgrade_ThrowsException()
+    public void Ctor_EnterUpgradeableWhenLockIsAlreadyInReadAndUpgrade_ThrowsException()
     {
         var executed = false;
 
@@ -80,7 +86,7 @@ public class AcquireUpgradeableReaderLockTests
 
         slimLock.EnterReadLock();
 
-        await Task.Run(() =>
+        var thread = new Thread(() =>
         {
             using (var upgradeableLock = new AcquireUpgradeableReaderLock(slimLock))
             {
@@ -91,6 +97,10 @@ public class AcquireUpgradeableReaderLockTests
                 });
             }
         });
+
+        thread.Start();
+
+        thread.Join();
 
         Assert.True(executed);
     }

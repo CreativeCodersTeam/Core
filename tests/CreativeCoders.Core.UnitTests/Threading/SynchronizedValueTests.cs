@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
+using System.Threading.Tasks;
 using CreativeCoders.Core.Threading;
 using FluentAssertions;
 using Xunit;
@@ -82,6 +84,7 @@ public class SynchronizedValueTests
     }
 #nullable enable
     [Fact]
+    [SuppressMessage("csharpsquid", "S2925")]
     public void SetValue_ParallelReadValue_ValueAfterSetIsReturned()
     {
         const int expectedValue = 12345;
@@ -93,11 +96,12 @@ public class SynchronizedValueTests
         long readTimeMs = 0;
 
         // Act
-        var setTask = new Thread(() =>
+        var setTask = new Thread(async () =>
         {
             synchronizedValue.SetValue(_ =>
             {
                 Thread.Sleep(1000);
+
                 return expectedValue;
             });
         });

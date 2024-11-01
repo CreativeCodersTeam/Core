@@ -7,7 +7,7 @@ namespace CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
 
 public class CliValueConverters : ICliValueConverter
 {
-    private readonly IDictionary<Type, ICliValueConverter> _converters;
+    private readonly Dictionary<Type, ICliValueConverter> _converters;
 
     private readonly ICliValueConverter _enumConverter;
 
@@ -23,7 +23,12 @@ public class CliValueConverters : ICliValueConverter
             { { typeof(bool), new BooleanValueConverter() } };
     }
 
-    public static ICliValueConverter Default { get; } = new CliValueConverters();
+    private object? InternalConvert(object? value, Type targetType, OptionBaseAttribute optionAttribute)
+    {
+        return _converters.TryGetValue(targetType, out var converter)
+            ? converter.Convert(value, targetType, optionAttribute)
+            : System.Convert.ChangeType(value, targetType);
+    }
 
     public object? Convert(object? value, Type targetType, OptionBaseAttribute optionAttribute)
     {
@@ -37,10 +42,5 @@ public class CliValueConverters : ICliValueConverter
             : InternalConvert(value, targetType, optionAttribute);
     }
 
-    private object? InternalConvert(object? value, Type targetType, OptionBaseAttribute optionAttribute)
-    {
-        return _converters.TryGetValue(targetType, out var converter)
-            ? converter.Convert(value, targetType, optionAttribute)
-            : System.Convert.ChangeType(value, targetType);
-    }
+    public static ICliValueConverter Default { get; } = new CliValueConverters();
 }

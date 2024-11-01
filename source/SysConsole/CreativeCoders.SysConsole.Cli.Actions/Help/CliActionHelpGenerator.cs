@@ -20,8 +20,36 @@ public class CliActionHelpGenerator : ICliActionHelpGenerator
     public CliActionHelpGenerator(IOptionsHelpGenerator optionsHelpGenerator,
         ICliActionRouter actionRouter)
     {
-        _actionRouter = Ensure.NotNull(actionRouter, nameof(actionRouter));
-        _optionsHelpGenerator = Ensure.NotNull(optionsHelpGenerator, nameof(optionsHelpGenerator));
+        _actionRouter = Ensure.NotNull(actionRouter);
+        _optionsHelpGenerator = Ensure.NotNull(optionsHelpGenerator);
+    }
+
+    private static string GetSyntax(IEnumerable<string> actionRouteParts, OptionsHelp optionsHelp)
+    {
+        var appName = FileSys.Path.GetFileNameWithoutExtension(Env.GetAppFileName());
+
+        var action = string.Join(" ", actionRouteParts);
+
+        var arguments = string.Join(" ", optionsHelp.ValueHelpEntries.Select(x => $"[{x.ArgumentName}]"));
+
+        var syntaxParts = new List<string> { appName };
+
+        if (!string.IsNullOrEmpty(action))
+        {
+            syntaxParts.Add(action);
+        }
+
+        if (!string.IsNullOrEmpty(arguments))
+        {
+            syntaxParts.Add(arguments);
+        }
+
+        if (optionsHelp.ParameterHelpEntries.Any())
+        {
+            syntaxParts.Add("[OPTIONS]");
+        }
+
+        return string.Join(" ", syntaxParts);
     }
 
     public CliActionHelp CreateHelp(IEnumerable<string> actionRouteParts)
@@ -56,33 +84,5 @@ public class CliActionHelpGenerator : ICliActionHelpGenerator
             HelpText = actionAttribute.HelpText ?? route.ActionMethod.Name,
             Syntax = GetSyntax(actionParts, optionsHelp)
         };
-    }
-
-    private static string GetSyntax(IEnumerable<string> actionRouteParts, OptionsHelp optionsHelp)
-    {
-        var appName = FileSys.Path.GetFileNameWithoutExtension(Env.GetAppFileName());
-
-        var action = string.Join(" ", actionRouteParts);
-
-        var arguments = string.Join(" ", optionsHelp.ValueHelpEntries.Select(x => $"[{x.ArgumentName}]"));
-
-        var syntaxParts = new List<string> {appName};
-
-        if (!string.IsNullOrEmpty(action))
-        {
-            syntaxParts.Add(action);
-        }
-
-        if (!string.IsNullOrEmpty(arguments))
-        {
-            syntaxParts.Add(arguments);
-        }
-
-        if (optionsHelp.ParameterHelpEntries.Any())
-        {
-            syntaxParts.Add("[OPTIONS]");
-        }
-
-        return string.Join(" ", syntaxParts);
     }
 }

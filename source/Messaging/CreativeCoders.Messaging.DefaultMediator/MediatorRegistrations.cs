@@ -10,7 +10,8 @@ namespace CreativeCoders.Messaging.DefaultMediator;
 
 internal class MediatorRegistrations
 {
-    private readonly ConcurrentDictionary<Type, IList<IMediatorRegistration>> _registrations = new();
+    private readonly ConcurrentDictionary<Type, IList<IMediatorRegistration>> _registrations =
+        new ConcurrentDictionary<Type, IList<IMediatorRegistration>>();
 
     public IDisposable RegisterHandler<TMessage>(object target, Action<TMessage> action)
     {
