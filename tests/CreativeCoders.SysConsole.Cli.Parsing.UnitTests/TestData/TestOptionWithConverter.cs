@@ -1,5 +1,5 @@
 ﻿using System;
-using CreativeCoders.SysConsole.Cli.Parsing.Properties;
+using CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData;

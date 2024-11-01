@@ -1,5 +1,5 @@
-﻿using CreativeCoders.SysConsole.Cli.Parsing.Properties;
-using CreativeCoders.SysConsole.Cli.Parsing.Properties.ValueConverters;
+﻿using CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
+using CreativeCoders.SysConsole.Cli.Parsing.OptionProperties.ValueConverters;
 using FluentAssertions;
 using Xunit;
 

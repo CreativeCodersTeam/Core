@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing.Properties;
+namespace CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
 
 public class OptionParameterProperty : OptionPropertyBase
 {
@@ -21,7 +21,8 @@ public class OptionParameterProperty : OptionPropertyBase
             .FirstOrDefault(x =>
                 (x.Kind == OptionArgumentKind.ShortName
                  && x.OptionName == _optionParameterAttribute.ShortName.ToString()) ||
-                (x.Kind == OptionArgumentKind.LongName && x.OptionName == _optionParameterAttribute.LongName));
+                (x.Kind == OptionArgumentKind.LongName &&
+                 x.OptionName == _optionParameterAttribute.LongName));
 
         return SetPropertyValue(optionArgument, optionObject);
     }

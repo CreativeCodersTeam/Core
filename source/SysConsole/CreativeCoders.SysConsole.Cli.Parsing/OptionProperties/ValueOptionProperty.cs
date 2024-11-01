@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace CreativeCoders.SysConsole.Cli.Parsing.Properties;
+namespace CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
 
 public class ValueOptionProperty : OptionPropertyBase
 {
