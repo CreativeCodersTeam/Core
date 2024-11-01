@@ -5,7 +5,7 @@ using System.Reflection;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.SysConsole.Cli.Parsing.Exceptions;
-using CreativeCoders.SysConsole.Cli.Parsing.Properties;
+using CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing;
 
