@@ -28,6 +28,8 @@
         <ProjectReference Include="..\..\source\Config\CreativeCoders.Config.Sources\CreativeCoders.Config.Sources.csproj"/>
         <ProjectReference Include="..\..\source\Config\CreativeCoders.Config\CreativeCoders.Config.csproj"/>
         <ProjectReference Include="..\..\source\Core\CreativeCoders.Core\CreativeCoders.Core.csproj"/>
+        <ProjectReference Include="..\..\source\Options\CreativeCoders.Options.Core\CreativeCoders.Options.Core.csproj"/>
+        <ProjectReference Include="..\..\source\Options\CreativeCoders.Options.Storage.FileSystem\CreativeCoders.Options.Storage.FileSystem.csproj"/>
         <ProjectReference Include="..\..\source\UnitTests\CreativeCoders.UnitTests\CreativeCoders.UnitTests.csproj"/>
     </ItemGroup>
 
