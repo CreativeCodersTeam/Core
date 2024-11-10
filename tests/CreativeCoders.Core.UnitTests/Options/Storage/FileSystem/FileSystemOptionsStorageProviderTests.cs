@@ -92,4 +92,52 @@ public class FileSystemOptionsStorageProviderTests
                 _file.WriteAllText(@"C:\TestDirectory\testFile.options", serializedOptions))
             .MustHaveHappenedOnceExactly();
     }
+
+    [Fact]
+    public async Task ReadAsync_WithFileNameAndOptions_CallsSerializerAndReadsContentFromCorrectFile()
+    {
+        // Arrange
+        const string serializedOptions = "SerializedOptions";
+
+        var options = new TestOptions { Name = "Test" };
+
+        A.CallTo(() => _file.ReadAllTextAsync(@"C:\TestDirectory\testFile.options", CancellationToken.None))
+            .Returns(serializedOptions);
+
+        _storageProvider.DirectoryPath = @"C:\TestDirectory";
+
+        // Act
+        await _storageProvider.ReadAsync("testFile", options);
+
+        // Assert
+        A.CallTo(() => _file.ReadAllTextAsync(@"C:\TestDirectory\testFile.options", CancellationToken.None))
+            .MustHaveHappenedOnceExactly();
+
+        A.CallTo(() => _optionsSerializer.Deserialize(serializedOptions, options))
+            .MustHaveHappenedOnceExactly();
+    }
+
+    [Fact]
+    public void Read_WithFileNameAndOptions_CallsSerializerAndReadsContentFromCorrectFile()
+    {
+        // Arrange
+        const string serializedOptions = "SerializedOptions";
+
+        var options = new TestOptions { Name = "Test" };
+
+        A.CallTo(() => _file.ReadAllText(@"C:\TestDirectory\testFile.options"))
+            .Returns(serializedOptions);
+
+        _storageProvider.DirectoryPath = @"C:\TestDirectory";
+
+        // Act
+        _storageProvider.Read("testFile", options);
+
+        // Assert
+        A.CallTo(() => _file.ReadAllText(@"C:\TestDirectory\testFile.options"))
+            .MustHaveHappenedOnceExactly();
+
+        A.CallTo(() => _optionsSerializer.Deserialize(serializedOptions, options))
+            .MustHaveHappenedOnceExactly();
+    }
 }
