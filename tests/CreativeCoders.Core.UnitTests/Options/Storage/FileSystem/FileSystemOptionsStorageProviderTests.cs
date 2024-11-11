@@ -17,11 +17,7 @@ public class FileSystemOptionsStorageProviderTests
 {
     private readonly IFile _file;
 
-    private readonly IFileSystemEx _fileSystem;
-
     private readonly IOptionsStorageDataSerializer _optionsSerializer;
-
-    private readonly IPath _path;
 
     private readonly FileSystemOptionsStorageProvider<TestOptions> _storageProvider;
 
@@ -30,16 +26,16 @@ public class FileSystemOptionsStorageProviderTests
         _optionsSerializer = A.Fake<IOptionsStorageDataSerializer>();
         _storageProvider = new FileSystemOptionsStorageProvider<TestOptions>(_optionsSerializer);
 
-        _fileSystem = A.Fake<IFileSystemEx>();
-        FileSys.InstallFileSystemSupport(_fileSystem);
+        var fileSystem = A.Fake<IFileSystemEx>();
+        FileSys.InstallFileSystemSupport(fileSystem);
 
         _file = A.Fake<IFile>();
-        A.CallTo(() => _fileSystem.File).Returns(_file);
+        A.CallTo(() => fileSystem.File).Returns(_file);
 
-        _path = A.Fake<IPath>();
-        A.CallTo(() => _fileSystem.Path).Returns(_path);
+        var path = A.Fake<IPath>();
+        A.CallTo(() => fileSystem.Path).Returns(path);
 
-        A.CallTo(() => _path.Combine(A<string>._, A<string>._))
+        A.CallTo(() => path.Combine(A<string>._, A<string>._))
             .ReturnsLazily(call => Path.Combine(call.GetArgument<string>(0) ?? string.Empty,
                 call.GetArgument<string>(1) ?? string.Empty));
     }
