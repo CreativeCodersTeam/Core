@@ -19,6 +19,8 @@ public class FileSystemOptionsStorageProviderTests
 
     private readonly IOptionsStorageDataSerializer _optionsSerializer;
 
+    private readonly IPath _path;
+
     private readonly FileSystemOptionsStorageProvider<TestOptions> _storageProvider;
 
     public FileSystemOptionsStorageProviderTests()
@@ -32,10 +34,10 @@ public class FileSystemOptionsStorageProviderTests
         _file = A.Fake<IFile>();
         A.CallTo(() => fileSystem.File).Returns(_file);
 
-        var path = A.Fake<IPath>();
-        A.CallTo(() => fileSystem.Path).Returns(path);
+        _path = A.Fake<IPath>();
+        A.CallTo(() => fileSystem.Path).Returns(_path);
 
-        A.CallTo(() => path.Combine(A<string>._, A<string>._))
+        A.CallTo(() => _path.Combine(A<string>._, A<string>._))
             .ReturnsLazily(call => Path.Combine(call.GetArgument<string>(0) ?? string.Empty,
                 call.GetArgument<string>(1) ?? string.Empty));
     }
@@ -135,6 +137,88 @@ public class FileSystemOptionsStorageProviderTests
 
         // Assert
         A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", "testFile.options")))
+            .MustHaveHappenedOnceExactly();
+
+        A.CallTo(() => _optionsSerializer.Deserialize(serializedOptions, options))
+            .MustHaveHappenedOnceExactly();
+    }
+
+    [Fact]
+    public void Read_WithConvertNameToFileName_CallsSerializerAndReadsContentFromCorrectFile()
+    {
+        // Arrange
+        const string serializedOptions = "SerializedOptions";
+
+        var options = new TestOptions { Name = "Test" };
+
+        A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", "testFile1234.data")))
+            .Returns(serializedOptions);
+
+        _storageProvider.DirectoryPath = "TestDirectory";
+        _storageProvider.ConvertNameToFileName = name => $"{name}1234.data";
+
+        // Act
+        _storageProvider.Read("testFile", options);
+
+        // Assert
+        A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", "testFile1234.data"))
+        ).MustHaveHappenedOnceExactly();
+
+        A.CallTo(() => _optionsSerializer.Deserialize(serializedOptions, options))
+            .MustHaveHappenedOnceExactly();
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    public void Read_DefaultFileNameSetAndNoName_CallsSerializerAndReadsContentFromCorrectFile(string? name)
+    {
+        // Arrange
+        const string serializedOptions = "SerializedOptions";
+
+        var options = new TestOptions { Name = "Test" };
+
+        A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", "default.options")))
+            .Returns(serializedOptions);
+
+        _storageProvider.DirectoryPath = "TestDirectory";
+        _storageProvider.DefaultFileName = "default";
+
+        // Act
+        _storageProvider.Read(name, options);
+
+        // Assert
+        A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", "default.options")))
+            .MustHaveHappenedOnceExactly();
+
+        A.CallTo(() => _optionsSerializer.Deserialize(serializedOptions, options))
+            .MustHaveHappenedOnceExactly();
+    }
+
+    [Theory]
+    [InlineData("file1234", new[] { 'f', 'i', 'l' }, "_", "___e1234")]
+    public void Read_InvalidFileNameCharsInFileName_CallsSerializerAndReadsContentFromCorrectFile(
+        string name, char[] invalidChars, string replacement, string expected)
+    {
+        // Arrange
+        const string serializedOptions = "SerializedOptions";
+
+        var options = new TestOptions { Name = "Test" };
+
+        _storageProvider.DirectoryPath = "TestDirectory";
+        _storageProvider.InvalidCharReplacement = replacement;
+
+        A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", $"{expected}.options")))
+            .Returns(serializedOptions);
+
+        A.CallTo(() => _path.GetInvalidFileNameChars())
+            .Returns(invalidChars);
+
+        // Act
+        _storageProvider.Read(name, options);
+
+        // Assert
+        A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", $"{expected}.options")))
             .MustHaveHappenedOnceExactly();
 
         A.CallTo(() => _optionsSerializer.Deserialize(serializedOptions, options))
