@@ -1,5 +1,5 @@
 #nullable enable
-namespace CreativeCoders.Core.UnitTests.Options.Storage.FileSystem;
+namespace CreativeCoders.Core.UnitTests.Options;
 
 public class TestOptions
 {

@@ -7,6 +7,14 @@ namespace CreativeCoders.Options.Core;
 
 public static class OptionsServiceCollectionExtensions
 {
+    public static void AddNamedOptions<T>(this IServiceCollection services)
+        where T : class
+    {
+        Ensure.NotNull(services);
+
+        services.ConfigureOptions<NamedConfigurationOptions<T>>();
+    }
+
     public static void AddNamedOptions<T, TStorageProvider>(this IServiceCollection services,
         Action<TStorageProvider>? configureSource = null)
         where T : class
