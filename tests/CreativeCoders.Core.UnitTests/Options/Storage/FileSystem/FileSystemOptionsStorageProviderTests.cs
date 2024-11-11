@@ -54,7 +54,7 @@ public class FileSystemOptionsStorageProviderTests
 
         A.CallTo(() => _optionsSerializer.Serialize(options)).Returns(serializedOptions);
 
-        _storageProvider.DirectoryPath = @"C:\TestDirectory";
+        _storageProvider.DirectoryPath = "TestDirectory";
 
         // Act
         await _storageProvider.WriteAsync("testFile", options);
@@ -64,7 +64,7 @@ public class FileSystemOptionsStorageProviderTests
             .MustHaveHappenedOnceExactly();
 
         A.CallTo(() =>
-                _file.WriteAllTextAsync(@"C:\TestDirectory\testFile.options", serializedOptions,
+                _file.WriteAllTextAsync(Path.Combine("TestDirectory", "testFile.options"), serializedOptions,
                     CancellationToken.None))
             .MustHaveHappenedOnceExactly();
     }
@@ -79,7 +79,7 @@ public class FileSystemOptionsStorageProviderTests
 
         A.CallTo(() => _optionsSerializer.Serialize(options)).Returns(serializedOptions);
 
-        _storageProvider.DirectoryPath = @"C:\TestDirectory";
+        _storageProvider.DirectoryPath = "TestDirectory";
 
         // Act
         _storageProvider.Write("testFile", options);
@@ -89,7 +89,7 @@ public class FileSystemOptionsStorageProviderTests
             .MustHaveHappenedOnceExactly();
 
         A.CallTo(() =>
-                _file.WriteAllText(@"C:\TestDirectory\testFile.options", serializedOptions))
+                _file.WriteAllText(Path.Combine("TestDirectory", "testFile.options"), serializedOptions))
             .MustHaveHappenedOnceExactly();
     }
 
@@ -101,16 +101,20 @@ public class FileSystemOptionsStorageProviderTests
 
         var options = new TestOptions { Name = "Test" };
 
-        A.CallTo(() => _file.ReadAllTextAsync(@"C:\TestDirectory\testFile.options", CancellationToken.None))
+        A.CallTo(() =>
+                _file.ReadAllTextAsync(Path.Combine("TestDirectory", "testFile.options"),
+                    CancellationToken.None))
             .Returns(serializedOptions);
 
-        _storageProvider.DirectoryPath = @"C:\TestDirectory";
+        _storageProvider.DirectoryPath = "TestDirectory";
 
         // Act
         await _storageProvider.ReadAsync("testFile", options);
 
         // Assert
-        A.CallTo(() => _file.ReadAllTextAsync(@"C:\TestDirectory\testFile.options", CancellationToken.None))
+        A.CallTo(() =>
+                _file.ReadAllTextAsync(Path.Combine("TestDirectory", "testFile.options"),
+                    CancellationToken.None))
             .MustHaveHappenedOnceExactly();
 
         A.CallTo(() => _optionsSerializer.Deserialize(serializedOptions, options))
@@ -125,16 +129,16 @@ public class FileSystemOptionsStorageProviderTests
 
         var options = new TestOptions { Name = "Test" };
 
-        A.CallTo(() => _file.ReadAllText(@"C:\TestDirectory\testFile.options"))
+        A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", "testFile.options")))
             .Returns(serializedOptions);
 
-        _storageProvider.DirectoryPath = @"C:\TestDirectory";
+        _storageProvider.DirectoryPath = "TestDirectory";
 
         // Act
         _storageProvider.Read("testFile", options);
 
         // Assert
-        A.CallTo(() => _file.ReadAllText(@"C:\TestDirectory\testFile.options"))
+        A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", "testFile.options")))
             .MustHaveHappenedOnceExactly();
 
         A.CallTo(() => _optionsSerializer.Deserialize(serializedOptions, options))
