@@ -6,6 +6,7 @@ using CreativeCoders.Core.IO;
 using CreativeCoders.Options.Core;
 using CreativeCoders.Options.Storage.FileSystem;
 using FakeItEasy;
+using Microsoft.Extensions.Options;
 using Xunit;
 
 #nullable enable
@@ -17,6 +18,8 @@ public class FileSystemOptionsStorageProviderTests
 {
     private readonly IFile _file;
 
+    private readonly IOptionsMonitorCache<TestOptions> _optionsCache;
+
     private readonly IOptionsStorageDataSerializer _optionsSerializer;
 
     private readonly IPath _path;
@@ -25,8 +28,10 @@ public class FileSystemOptionsStorageProviderTests
 
     public FileSystemOptionsStorageProviderTests()
     {
+        _optionsCache = A.Fake<IOptionsMonitorCache<TestOptions>>();
         _optionsSerializer = A.Fake<IOptionsStorageDataSerializer>();
-        _storageProvider = new FileSystemOptionsStorageProvider<TestOptions>(_optionsSerializer);
+        _storageProvider =
+            new FileSystemOptionsStorageProvider<TestOptions>(_optionsCache, _optionsSerializer);
 
         var fileSystem = A.Fake<IFileSystemEx>();
         FileSys.InstallFileSystemSupport(fileSystem);
@@ -46,6 +51,7 @@ public class FileSystemOptionsStorageProviderTests
     public async Task WriteAsync_WithFileNameAndOptions_CallsSerializerAndWritesContentToCorrectFile()
     {
         // Arrange
+        const string optionName = "testFile";
         const string serializedOptions = "SerializedOptions";
 
         var options = new TestOptions { Name = "Test" };
@@ -55,15 +61,19 @@ public class FileSystemOptionsStorageProviderTests
         _storageProvider.DirectoryPath = "TestDirectory";
 
         // Act
-        await _storageProvider.WriteAsync("testFile", options);
+        await _storageProvider.WriteAsync(optionName, options);
 
         // Assert
         A.CallTo(() => _optionsSerializer.Serialize(options))
             .MustHaveHappenedOnceExactly();
 
         A.CallTo(() =>
-                _file.WriteAllTextAsync(Path.Combine("TestDirectory", "testFile.options"), serializedOptions,
+                _file.WriteAllTextAsync(Path.Combine("TestDirectory", $"{optionName}.options"),
+                    serializedOptions,
                     CancellationToken.None))
+            .MustHaveHappenedOnceExactly();
+
+        A.CallTo(() => _optionsCache.TryRemove(optionName))
             .MustHaveHappenedOnceExactly();
     }
 
@@ -71,6 +81,7 @@ public class FileSystemOptionsStorageProviderTests
     public void Write_WithFileNameAndOptions_CallsSerializerAndWritesContentToCorrectFile()
     {
         // Arrange
+        const string optionName = "testFile";
         const string serializedOptions = "SerializedOptions";
 
         var options = new TestOptions { Name = "Test" };
@@ -80,14 +91,17 @@ public class FileSystemOptionsStorageProviderTests
         _storageProvider.DirectoryPath = "TestDirectory";
 
         // Act
-        _storageProvider.Write("testFile", options);
+        _storageProvider.Write(optionName, options);
 
         // Assert
         A.CallTo(() => _optionsSerializer.Serialize(options))
             .MustHaveHappenedOnceExactly();
 
         A.CallTo(() =>
-                _file.WriteAllText(Path.Combine("TestDirectory", "testFile.options"), serializedOptions))
+                _file.WriteAllText(Path.Combine("TestDirectory", $"{optionName}.options"), serializedOptions))
+            .MustHaveHappenedOnceExactly();
+
+        A.CallTo(() => _optionsCache.TryRemove(optionName))
             .MustHaveHappenedOnceExactly();
     }
 

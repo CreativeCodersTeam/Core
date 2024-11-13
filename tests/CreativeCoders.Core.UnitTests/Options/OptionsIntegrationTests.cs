@@ -1,4 +1,6 @@
-﻿using CreativeCoders.Options.Core;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using CreativeCoders.Options.Core;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,21 +9,22 @@ using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Options;
 
+[SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
 public class OptionsIntegrationTests
 {
     private readonly ServiceCollection _services;
 
     public OptionsIntegrationTests()
     {
-        _services = new ServiceCollection();
+        _services = [];
         _services.AddNamedOptions<TestOptions>();
     }
 
     [Fact]
-    public void GetRequiredService_WithNamedOptions_ReturnsOptions()
+    public void GetOptionsSnapshot_WithNamedOptions_ReturnsOptions()
     {
         // Arrange
-        const string optionsName = "testname";
+        const string optionsName = "test_name";
         const string expectedName = "Test";
 
         var storageProvider = A.Fake<IOptionsStorageProvider<TestOptions>>();
@@ -45,10 +48,9 @@ public class OptionsIntegrationTests
     }
 
     [Fact]
-    public void GetRequiredService_WithoutNamedOptions_ReturnsDefaultOptions()
+    public void GetOptions_WithoutNamedOptions_ReturnsDefaultOptions()
     {
         // Arrange
-        //const string optionsName = "testname";
         const string expectedName = "Test";
 
         var storageProvider = A.Fake<IOptionsStorageProvider<TestOptions>>();
@@ -60,13 +62,13 @@ public class OptionsIntegrationTests
 
         var serviceProvider = _services.BuildServiceProvider();
 
-        var optionsSnapshots = serviceProvider.GetRequiredService<IOptions<TestOptions>>();
+        var options = serviceProvider.GetRequiredService<IOptions<TestOptions>>();
 
         // Act
-        var options = optionsSnapshots.Value;
+        var testOptions = options.Value;
 
         // Assert
-        options.Name
+        testOptions.Name
             .Should()
             .Be(expectedName);
     }

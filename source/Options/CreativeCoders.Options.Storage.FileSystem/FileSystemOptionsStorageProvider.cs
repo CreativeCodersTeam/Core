@@ -3,13 +3,15 @@ using CreativeCoders.Core.IO;
 using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.Options.Core;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
 namespace CreativeCoders.Options.Storage.FileSystem;
 
 [PublicAPI]
-public class FileSystemOptionsStorageProvider<T>(IOptionsStorageDataSerializer optionsSerializer)
-    : IOptionsStorageProvider<T>
-    where T : class
+public class FileSystemOptionsStorageProvider<T>(
+    IOptionsMonitorCache<T> optionsCache,
+    IOptionsStorageDataSerializer optionsSerializer)
+    : OptionsStorageProviderBase<T>(optionsCache) where T : class
 {
     private readonly IOptionsStorageDataSerializer _optionsSerializer = Ensure.NotNull(optionsSerializer);
 
@@ -24,7 +26,7 @@ public class FileSystemOptionsStorageProvider<T>(IOptionsStorageDataSerializer o
         return fileName;
     }
 
-    public async Task WriteAsync(string? name, T options)
+    protected override async Task InternalWriteAsync(string? name, T options)
     {
         var fileName = GetFileName(name);
 
@@ -32,14 +34,14 @@ public class FileSystemOptionsStorageProvider<T>(IOptionsStorageDataSerializer o
             .ConfigureAwait(false);
     }
 
-    public void Write(string? name, T options)
+    protected override void InternalWrite(string? name, T options)
     {
         var fileName = GetFileName(name);
 
         FileSys.File.WriteAllText(fileName, _optionsSerializer.Serialize(options));
     }
 
-    public async Task ReadAsync(string? name, T options)
+    public override async Task ReadAsync(string? name, T options)
     {
         var fileName = GetFileName(name);
 
@@ -47,7 +49,7 @@ public class FileSystemOptionsStorageProvider<T>(IOptionsStorageDataSerializer o
             options);
     }
 
-    public void Read(string? name, T options)
+    public override void Read(string? name, T options)
     {
         var fileName = GetFileName(name);
 
