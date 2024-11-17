@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -15,7 +14,7 @@ namespace CreativeCoders.Core.Text;
 [ExcludeFromCodeCoverage]
 public static class JsonExtensions
 {
-    public static string ToJson<T>(this T data, JsonSerializerOptions jsonSerializerOptions = null)
+    public static string ToJson<T>(this T data, JsonSerializerOptions? jsonSerializerOptions = null)
     {
         return JsonSerializer.Serialize(data, jsonSerializerOptions);
     }
@@ -104,37 +103,21 @@ public static class JsonExtensions
     {
         if (propertyNamingPolicy == JsonNamingPolicy.CamelCase)
         {
-            return CamelCaseToPascalCase(propertyName);
+            return propertyName.CamelCaseToPascalCase();
         }
 
-        if (propertyNamingPolicy == JsonNamingPolicy.KebabCaseUpper)
+        if (propertyNamingPolicy == JsonNamingPolicy.KebabCaseUpper ||
+            propertyNamingPolicy == JsonNamingPolicy.KebabCaseLower)
         {
-            return KebabCaseToPascalCase(propertyName);
+            return propertyName.KebabCaseToPascalCase();
+        }
+
+        if (propertyNamingPolicy == JsonNamingPolicy.SnakeCaseUpper ||
+            propertyNamingPolicy == JsonNamingPolicy.SnakeCaseLower)
+        {
+            return propertyName.SnakeCaseToPascalCase();
         }
 
         return propertyName;
-    }
-
-    private static string CamelCaseToPascalCase(string text)
-    {
-        if (string.IsNullOrEmpty(text))
-        {
-            return string.Empty;
-        }
-
-        return char.ToUpperInvariant(text[0]) + text[1..];
-    }
-
-    private static string KebabCaseToPascalCase(string text)
-    {
-        if (string.IsNullOrEmpty(text))
-        {
-            return text;
-        }
-
-        var parts = text.Split('-');
-
-        return parts.Aggregate(string.Empty,
-            (current, part) => current + (char.ToUpperInvariant(part[0]) + part[1..].ToLowerInvariant()));
     }
 }

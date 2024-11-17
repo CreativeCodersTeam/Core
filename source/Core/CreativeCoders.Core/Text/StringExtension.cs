@@ -152,4 +152,42 @@ public static class StringExtension
     {
         return text.Filter(c => !filteredChars.Contains(c));
     }
+
+    public static string CamelCaseToPascalCase(this string? text)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            return string.Empty;
+        }
+
+        return char.ToUpperInvariant(text[0]) + text[1..];
+    }
+
+    public static string KebabCaseToPascalCase(this string? text)
+    {
+        return SeparatedToPascalCase(text, '-');
+    }
+
+    public static string SnakeCaseToPascalCase(this string? text)
+    {
+        return SeparatedToPascalCase(text, '_');
+    }
+
+    private static string SeparatedToPascalCase(this string? text, char separator)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            return string.Empty;
+        }
+
+        var parts = text.Split(separator);
+
+        if (parts.Length == 1)
+        {
+            return text.CamelCaseToPascalCase();
+        }
+
+        return parts.Aggregate(string.Empty,
+            (current, part) => current + char.ToUpperInvariant(part[0]) + part[1..].ToLowerInvariant());
+    }
 }

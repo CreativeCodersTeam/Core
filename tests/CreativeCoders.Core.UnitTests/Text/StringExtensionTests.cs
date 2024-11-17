@@ -137,12 +137,15 @@ public class StringExtensionTests
     }
 
     [Theory]
-    [InlineData("Hello World", new[] {'o', 'W'}, "Hell rld")]
-    [InlineData(@"some\:_file?*.txt", new[] {'\\', ':', '?', '*'}, "some_file.txt")]
-    public void Filter_(string input, char[] filteredChars, string expected)
+    [InlineData("Hello World", new[] { 'o', 'W' }, "Hell rld")]
+    [InlineData(@"some\:_file?*.txt", new[] { '\\', ':', '?', '*' }, "some_file.txt")]
+    public void Filter_CharsToFilterInText_TextDoesntContainFilteredChars(string input, char[] filteredChars,
+        string expected)
     {
+        // Act
         var filteredText = input.Filter(filteredChars);
 
+        // Arrange
         Assert.Equal(expected, filteredText);
     }
 
@@ -235,5 +238,37 @@ public class StringExtensionTests
         sb.ToString()
             .Should()
             .Be($"Test{Env.NewLine}");
+    }
+
+    [Theory]
+    [InlineData("camelCaseString", "CamelCaseString")]
+    [InlineData("camelCaseStringWithNumber1", "CamelCaseStringWithNumber1")]
+    [InlineData("PascalCaseStringWithNumber123", "PascalCaseStringWithNumber123")]
+    public void CamelCaseToPascalCase_CamelOrPascalCaseString_ReturnsPascalCaseString(
+        string camelOrPascalCaseString, string expectedPascalCaseString)
+    {
+        // Act
+        var pascalCaseString = camelOrPascalCaseString.CamelCaseToPascalCase();
+
+        // Assert
+        pascalCaseString
+            .Should()
+            .Be(expectedPascalCaseString);
+    }
+
+    [Theory]
+    [InlineData("kebab-case-string", "KebabCaseString")]
+    [InlineData("kebab-case-string-with-number-1", "KebabCaseStringWithNumber1")]
+    [InlineData("PascalCaseStringWithNumber123", "PascalCaseStringWithNumber123")]
+    public void KebabCaseToPascalCase_KebabOrPascalCaseString_ReturnsPascalCaseString(
+        string kebabOrPascalCaseString, string expectedPascalCaseString)
+    {
+        // Act
+        var pascalCaseString = kebabOrPascalCaseString.KebabCaseToPascalCase();
+
+        // Assert
+        pascalCaseString
+            .Should()
+            .Be(expectedPascalCaseString);
     }
 }
