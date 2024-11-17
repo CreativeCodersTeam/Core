@@ -40,7 +40,9 @@ public static class JsonExtensions
     {
         Ensure.IsNotNull(json);
 
-        using var jsonDocument = JsonDocument.Parse(json);
+        using var jsonDocument = JsonDocument.Parse(json,
+            new JsonDocumentOptions
+                { AllowTrailingCommas = jsonSerializerOptions?.AllowTrailingCommas ?? false });
 
         PopulateObjectFromJsonDocument(obj, jsonDocument, jsonSerializerOptions);
     }
@@ -50,7 +52,8 @@ public static class JsonExtensions
     {
         Ensure.IsNotNull(utf8Json);
 
-        using var jsonDocument = JsonDocument.Parse(utf8Json);
+        using var jsonDocument = JsonDocument.Parse(utf8Json, new JsonDocumentOptions
+            { AllowTrailingCommas = jsonSerializerOptions?.AllowTrailingCommas ?? false });
 
         PopulateObjectFromJsonDocument(obj, jsonDocument, jsonSerializerOptions);
     }
@@ -60,7 +63,9 @@ public static class JsonExtensions
     {
         Ensure.IsNotNull(utf8Json);
 
-        using var jsonDocument = await JsonDocument.ParseAsync(utf8Json).ConfigureAwait(false);
+        using var jsonDocument = await JsonDocument.ParseAsync(utf8Json, new JsonDocumentOptions
+                { AllowTrailingCommas = jsonSerializerOptions?.AllowTrailingCommas ?? false })
+            .ConfigureAwait(false);
 
         PopulateObjectFromJsonDocument(obj, jsonDocument, jsonSerializerOptions);
     }
@@ -74,8 +79,9 @@ public static class JsonExtensions
             var propertyName =
                 ConvertPropertyName(jsonSerializerOptions?.PropertyNamingPolicy, property.Name);
 
-            var propertyInfo =
-                typeof(T).GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+
+            var propertyInfo = GetPropertyInfo<T>(propertyName,
+                jsonSerializerOptions?.PropertyNameCaseInsensitive ?? false);
 
             if (propertyInfo != null && propertyInfo.CanWrite)
             {
@@ -97,6 +103,14 @@ public static class JsonExtensions
                 propertyInfo.SetValue(obj, propertyValue);
             }
         }
+    }
+
+    private static PropertyInfo? GetPropertyInfo<T>(string propertyName, bool caseInsensitive)
+    {
+        return caseInsensitive
+            ? typeof(T).GetProperty(propertyName,
+                BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase)
+            : typeof(T).GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
     }
 
     private static string ConvertPropertyName(JsonNamingPolicy? propertyNamingPolicy, string propertyName)

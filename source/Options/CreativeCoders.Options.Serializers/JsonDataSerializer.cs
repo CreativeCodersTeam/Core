@@ -8,13 +8,21 @@ namespace CreativeCoders.Options.Serializers;
 
 public class JsonDataSerializer : IOptionsStorageDataSerializer
 {
-    private static readonly JsonSerializerOptions __jsonSerializerOptions = new JsonSerializerOptions
+    private static JsonSerializerOptions __jsonSerializerOptions = new JsonSerializerOptions
     {
-        PropertyNameCaseInsensitive = true,
         WriteIndented = true,
         AllowTrailingCommas = true,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
     };
+
+    public JsonDataSerializer() { }
+
+    public JsonDataSerializer(JsonSerializerOptions jsonSerializerOptions)
+    {
+        Ensure.NotNull(jsonSerializerOptions);
+
+        __jsonSerializerOptions = jsonSerializerOptions;
+    }
 
     public string Serialize<T>(T options) where T : class
     {
