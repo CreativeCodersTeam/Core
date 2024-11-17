@@ -217,6 +217,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Options.Core
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Options.Storage.FileSystem", "source\Options\CreativeCoders.Options.Storage.FileSystem\CreativeCoders.Options.Storage.FileSystem.csproj", "{83F2F98D-4C23-404F-9D06-B744C87E6EF1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Options.Serializers", "source\Options\CreativeCoders.Options.Serializers\CreativeCoders.Options.Serializers.csproj", "{3140873A-7C79-408F-B7F2-C51980EFF0C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -513,6 +515,10 @@ Global
 		{83F2F98D-4C23-404F-9D06-B744C87E6EF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83F2F98D-4C23-404F-9D06-B744C87E6EF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83F2F98D-4C23-404F-9D06-B744C87E6EF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3140873A-7C79-408F-B7F2-C51980EFF0C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3140873A-7C79-408F-B7F2-C51980EFF0C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3140873A-7C79-408F-B7F2-C51980EFF0C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3140873A-7C79-408F-B7F2-C51980EFF0C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -610,6 +616,7 @@ Global
 		{23126211-23BF-4399-A227-6C609FB7505E} = {2A7105AA-05B6-469A-93F5-719723A4D90D}
 		{70C54624-CAE5-4ED6-A087-88CD1470E2B7} = {23126211-23BF-4399-A227-6C609FB7505E}
 		{83F2F98D-4C23-404F-9D06-B744C87E6EF1} = {23126211-23BF-4399-A227-6C609FB7505E}
+		{3140873A-7C79-408F-B7F2-C51980EFF0C4} = {23126211-23BF-4399-A227-6C609FB7505E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}
