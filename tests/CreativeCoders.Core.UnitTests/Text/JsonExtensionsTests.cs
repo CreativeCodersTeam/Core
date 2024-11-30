@@ -65,4 +65,76 @@ public class JsonExtensionsTests
             .Should()
             .Be(expectedIntValue);
     }
+
+    [Fact]
+    public void PopulateJson_JsonDataWithRandomCaseProperties_PropertiesAreSet()
+    {
+        // Arrange
+        const string expectedStrValue = "Test";
+        const int expectedIntValue = 1357;
+
+        var jsonData = $"{{\"sTrVaLuE\":\"{expectedStrValue}\",\"iNtVaLuE\":{expectedIntValue}}}";
+        var testObject = new TestClass();
+
+        // Act
+        jsonData.PopulateJson(testObject,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        // Assert
+        testObject.StrValue
+            .Should()
+            .Be(expectedStrValue);
+
+        testObject.IntValue
+            .Should()
+            .Be(expectedIntValue);
+    }
+
+    [Fact]
+    public void PopulateJson_JsonDataWithKebabCaseProperties_PropertiesAreSet()
+    {
+        // Arrange
+        const string expectedStrValue = "Test";
+        const int expectedIntValue = 1357;
+
+        var jsonData = $"{{\"str-value\":\"{expectedStrValue}\",\"int-value\":{expectedIntValue}}}";
+        var testObject = new TestClass();
+
+        // Act
+        jsonData.PopulateJson(testObject,
+            new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.KebabCaseLower });
+
+        // Assert
+        testObject.StrValue
+            .Should()
+            .Be(expectedStrValue);
+
+        testObject.IntValue
+            .Should()
+            .Be(expectedIntValue);
+    }
+
+    [Fact]
+    public void PopulateJson_JsonDataWithSnakeCaseProperties_PropertiesAreSet()
+    {
+        // Arrange
+        const string expectedStrValue = "Test";
+        const int expectedIntValue = 1357;
+
+        var jsonData = $"{{\"str_value\":\"{expectedStrValue}\",\"int_value\":{expectedIntValue}}}";
+        var testObject = new TestClass();
+
+        // Act
+        jsonData.PopulateJson(testObject,
+            new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower });
+
+        // Assert
+        testObject.StrValue
+            .Should()
+            .Be(expectedStrValue);
+
+        testObject.IntValue
+            .Should()
+            .Be(expectedIntValue);
+    }
 }

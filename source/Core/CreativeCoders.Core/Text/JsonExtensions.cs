@@ -11,25 +11,28 @@ namespace CreativeCoders.Core.Text;
 #nullable enable
 
 [PublicAPI]
-[ExcludeFromCodeCoverage]
 public static class JsonExtensions
 {
+    [ExcludeFromCodeCoverage]
     public static string ToJson<T>(this T data, JsonSerializerOptions? jsonSerializerOptions = null)
     {
         return JsonSerializer.Serialize(data, jsonSerializerOptions);
     }
 
+    [ExcludeFromCodeCoverage]
     public static void ToJson<T>(this T data, Stream utf8Json,
         JsonSerializerOptions? jsonSerializerOptions = null)
     {
         JsonSerializer.Serialize(utf8Json, data, jsonSerializerOptions);
     }
 
+    [ExcludeFromCodeCoverage]
     public static T? ReadAsJson<T>(this Stream utf8Json, JsonSerializerOptions? jsonSerializerOptions = null)
     {
         return JsonSerializer.Deserialize<T>(utf8Json, jsonSerializerOptions);
     }
 
+    [ExcludeFromCodeCoverage]
     public static T? ReadAsJson<T>(this string json, JsonSerializerOptions? jsonSerializerOptions = null)
     {
         return JsonSerializer.Deserialize<T>(json, jsonSerializerOptions);
@@ -78,7 +81,6 @@ public static class JsonExtensions
         {
             var propertyName =
                 ConvertPropertyName(jsonSerializerOptions?.PropertyNamingPolicy, property.Name);
-
 
             var propertyInfo = GetPropertyInfo<T>(propertyName,
                 jsonSerializerOptions?.PropertyNameCaseInsensitive ?? false);
