@@ -10,10 +10,10 @@ namespace CreativeCoders.Options.Storage.FileSystem;
 [PublicAPI]
 public class FileSystemOptionsStorageProvider<T>(
     IOptionsMonitorCache<T> optionsCache,
-    IOptionsStorageDataSerializer optionsSerializer)
+    IOptionsStorageDataSerializer<T> optionsSerializer)
     : OptionsStorageProviderBase<T>(optionsCache) where T : class
 {
-    private readonly IOptionsStorageDataSerializer _optionsSerializer = Ensure.NotNull(optionsSerializer);
+    private readonly IOptionsStorageDataSerializer<T> _optionsSerializer = Ensure.NotNull(optionsSerializer);
 
     private string GetFileName(string? name)
     {

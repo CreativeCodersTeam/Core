@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.IO.Abstractions;
 using CreativeCoders.Core.IO;
 using CreativeCoders.Options.Core;
@@ -12,11 +13,15 @@ using Xunit;
 namespace CreativeCoders.Core.UnitTests.Options.Storage.FileSystem;
 
 [Collection("FileSys")]
+[SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
 public class FileSystemOptionsStorageProviderIntegrationTests
 {
-    private readonly IOptionsStorageDataSerializer _dataSerializer;
+    private readonly IOptionsStorageDataSerializer<TestOptions> _dataSerializer;
+
     private readonly IFile _file;
+
     private readonly IPath _path;
+
     private readonly ServiceCollection _services;
 
     public FileSystemOptionsStorageProviderIntegrationTests()
@@ -36,7 +41,7 @@ public class FileSystemOptionsStorageProviderIntegrationTests
             .ReturnsLazily(call => Path.Combine(call.GetArgument<string>(0) ?? string.Empty,
                 call.GetArgument<string>(1) ?? string.Empty));
 
-        _dataSerializer = A.Fake<IOptionsStorageDataSerializer>();
+        _dataSerializer = A.Fake<IOptionsStorageDataSerializer<TestOptions>>();
 
         _services.AddSingleton(_dataSerializer);
 

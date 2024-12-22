@@ -1,32 +1,55 @@
-﻿using CreativeCoders.Options.Core;
+﻿using System.Reflection;
+using CreativeCoders.Options.Core;
 using JetBrains.Annotations;
+using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
 
 namespace CreativeCoders.Options.Serializers;
 
 [UsedImplicitly]
-public class YamlDataSerializer : IOptionsStorageDataSerializer
+public class YamlDataSerializer<T> : IOptionsStorageDataSerializer<T>
+    where T : class
 {
-    private readonly IDeserializer _yamlDeserializer = new DeserializerBuilder().Build();
+    private static readonly ISerializer __yamlSerializer = new SerializerBuilder().Build();
 
-    private readonly ISerializer _yamlSerializer = new SerializerBuilder().Build();
-
-    public string Serialize<T>(T options) where T : class
+    private static void DeserializeInternal(string data, T options)
     {
-        return _yamlSerializer.Serialize(options);
+        using var reader = new StringReader(data);
+        var yamlStream = new YamlStream();
+        yamlStream.Load(reader);
+
+        var rootNode = (YamlMappingNode)yamlStream.Documents[0].RootNode;
+
+        foreach (var entry in rootNode.Children)
+        {
+            var propertyName = ((YamlScalarNode)entry.Key).Value;
+
+            if (string.IsNullOrWhiteSpace(propertyName))
+            {
+                continue;
+            }
+
+            var propertyValue = ((YamlScalarNode)entry.Value).Value;
+
+            var property = typeof(T).GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance)
+                           ?? typeof(T).GetProperty(propertyName,
+                               BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+
+            if (property != null && property.CanWrite)
+            {
+                var convertedValue = Convert.ChangeType(propertyValue, property.PropertyType);
+                property.SetValue(options, convertedValue);
+            }
+        }
     }
 
-    public void Deserialize<T>(string data, T options) where T : class
+    public string Serialize(T options)
     {
-        var deserializedOptions = _yamlDeserializer.Deserialize<T>(data);
+        return __yamlSerializer.Serialize(options);
+    }
 
-        var properties = typeof(T).GetProperties();
-
-        foreach (var property in properties)
-        {
-            var value = property.GetValue(deserializedOptions);
-
-            property.SetValue(options, value);
-        }
+    public void Deserialize(string data, T options)
+    {
+        DeserializeInternal(data, options);
     }
 }

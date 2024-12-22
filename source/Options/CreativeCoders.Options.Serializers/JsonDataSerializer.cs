@@ -3,10 +3,13 @@ using System.Text.Json.Serialization;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Text;
 using CreativeCoders.Options.Core;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.Options.Serializers;
 
-public class JsonDataSerializer : IOptionsStorageDataSerializer
+[PublicAPI]
+public class JsonDataSerializer<T> : IOptionsStorageDataSerializer<T>
+    where T : class
 {
     private static JsonSerializerOptions __jsonSerializerOptions = new JsonSerializerOptions
     {
@@ -15,22 +18,23 @@ public class JsonDataSerializer : IOptionsStorageDataSerializer
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
     };
 
+    private readonly JsonSerializerOptions? _jsonSerializerOptions;
+
     public JsonDataSerializer() { }
 
     public JsonDataSerializer(JsonSerializerOptions jsonSerializerOptions)
     {
         Ensure.NotNull(jsonSerializerOptions);
 
-        __jsonSerializerOptions = jsonSerializerOptions;
+        _jsonSerializerOptions = jsonSerializerOptions;
     }
 
-    public string Serialize<T>(T options) where T : class
+    public string Serialize(T options)
     {
-        return JsonSerializer.Serialize(options, __jsonSerializerOptions);
+        return JsonSerializer.Serialize(options, _jsonSerializerOptions ?? __jsonSerializerOptions);
     }
 
-    public void Deserialize<T>(string data, T options)
-        where T : class
+    public void Deserialize(string data, T options)
     {
         Ensure.NotNull(data);
 
@@ -39,6 +43,6 @@ public class JsonDataSerializer : IOptionsStorageDataSerializer
             return;
         }
 
-        data.PopulateJson(options, __jsonSerializerOptions);
+        data.PopulateJson(options, _jsonSerializerOptions ?? __jsonSerializerOptions);
     }
 }

@@ -1,10 +1,12 @@
 ﻿namespace CreativeCoders.Options.Core;
 
-public interface IOptionsStorageDataSerializer
+/// <summary>
+///     Defines methods for serializing and deserializing options to and from a storage format.
+/// </summary>
+public interface IOptionsStorageDataSerializer<in T>
+    where T : class
 {
-    string Serialize<T>(T options)
-        where T : class;
+    string Serialize(T options);
 
-    void Deserialize<T>(string data, T options)
-        where T : class;
+    void Deserialize(string data, T options);
 }

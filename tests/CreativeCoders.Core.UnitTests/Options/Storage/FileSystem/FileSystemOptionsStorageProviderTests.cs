@@ -20,7 +20,7 @@ public class FileSystemOptionsStorageProviderTests
 
     private readonly IOptionsMonitorCache<TestOptions> _optionsCache;
 
-    private readonly IOptionsStorageDataSerializer _optionsSerializer;
+    private readonly IOptionsStorageDataSerializer<TestOptions> _optionsSerializer;
 
     private readonly IPath _path;
 
@@ -29,7 +29,7 @@ public class FileSystemOptionsStorageProviderTests
     public FileSystemOptionsStorageProviderTests()
     {
         _optionsCache = A.Fake<IOptionsMonitorCache<TestOptions>>();
-        _optionsSerializer = A.Fake<IOptionsStorageDataSerializer>();
+        _optionsSerializer = A.Fake<IOptionsStorageDataSerializer<TestOptions>>();
         _storageProvider =
             new FileSystemOptionsStorageProvider<TestOptions>(_optionsCache, _optionsSerializer);
 
