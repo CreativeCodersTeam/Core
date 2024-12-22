@@ -45,9 +45,8 @@ public class FileSystemOptionsStorageProviderIntegrationTests
 
         _services.AddSingleton(_dataSerializer);
 
-        _services
-            .AddSingleton<IOptionsStorageProvider<TestOptions>,
-                FileSystemOptionsStorageProvider<TestOptions>>();
+        _services.AddFileSystemOptionsStorage<TestOptions>("TestDirectory");
+
         _services.AddNamedOptions<TestOptions>();
     }
 
@@ -60,10 +59,10 @@ public class FileSystemOptionsStorageProviderIntegrationTests
         const string expectedName1 = "Test";
         const string expectedName2 = "Test2";
 
-        A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", "testFile.options")))
+        A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", "test_name.options")))
             .Returns(serializedOptions);
 
-        A.CallTo(() => _dataSerializer.Deserialize(A<string>.Ignored, A<TestOptions>.Ignored))
+        A.CallTo(() => _dataSerializer.Deserialize(serializedOptions, A<TestOptions>.Ignored))
             .Invokes(call => call.GetArgument<TestOptions>(1)!.Name = expectedName1)
             .Once()
             .Then
