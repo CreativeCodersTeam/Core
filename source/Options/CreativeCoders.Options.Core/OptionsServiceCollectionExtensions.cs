@@ -22,6 +22,8 @@ public static class OptionsServiceCollectionExtensions
     {
         Ensure.NotNull(services);
 
+        services.AddNamedOptions<T>();
+
         services.TryAddSingleton<IOptionsStorageProvider<T>>(sp =>
         {
             var source = typeof(TStorageProvider).CreateInstance<TStorageProvider>(sp);
@@ -32,7 +34,5 @@ public static class OptionsServiceCollectionExtensions
 
             return source;
         });
-
-        services.ConfigureOptions<NamedConfigurationOptions<T>>();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreativeCoders.Core;
 using CreativeCoders.Options.Core;
 using JetBrains.Annotations;
 using YamlDotNet.RepresentationModel;
@@ -50,6 +51,13 @@ public class YamlDataSerializer<T> : IOptionsStorageDataSerializer<T>
 
     public void Deserialize(string data, T options)
     {
+        Ensure.NotNull(data);
+
+        if (string.IsNullOrWhiteSpace(data))
+        {
+            return;
+        }
+
         DeserializeInternal(data, options);
     }
 }
