@@ -320,10 +320,10 @@ public class DictionaryCacheTests
     }
 
     [Fact]
-    public async Task
+    public void
         GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
     {
-        await TestCaching
+        TestCaching
             .GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
                 CreateCache<int, string>());
     }

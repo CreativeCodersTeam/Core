@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Caching;
 using FakeItEasy;
+using FluentAssertions;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Caching;
 
 [SuppressMessage("ReSharper", "MethodHasAsyncOverload")]
+[SuppressMessage("csharpsquid", "S6966")]
 internal static class TestCaching
 {
     public static void TryGet_KeyNotExists_ReturnFalse(ICache<int, string> cache)
@@ -685,24 +688,25 @@ internal static class TestCaching
         Assert.Equal(2, getValueCalledCount);
     }
 
-    public static async Task
+    public static void
         GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
             ICache<int, string> cache)
     {
+        // Arrange
         const string testValue = "Test1";
 
         var getValueCalled = false;
         var getValueCalled1 = false;
         var getValueCalled2 = false;
+
+        // Act
         var value = cache.GetOrAdd(1, () =>
         {
             getValueCalled = true;
             return testValue;
         }, CacheExpirationPolicy.AfterAbsoluteDateTime(DateTime.Now.AddMilliseconds(200)));
 
-        Assert.Equal(testValue, value);
-
-        await Task.Delay(50);
+        Thread.Sleep(50);
 
         var secondValue = cache.GetOrAdd(1, () =>
         {
@@ -710,7 +714,7 @@ internal static class TestCaching
             return testValue;
         }, CacheExpirationPolicy.AfterAbsoluteDateTime(DateTime.Now.AddMilliseconds(200)));
 
-        await Task.Delay(200);
+        Thread.Sleep(200);
 
         var thirdValue = cache.GetOrAdd(1, () =>
         {
@@ -718,11 +722,30 @@ internal static class TestCaching
             return testValue;
         }, CacheExpirationPolicy.AfterAbsoluteDateTime(DateTime.Now.AddMilliseconds(200)));
 
-        Assert.Equal(testValue, secondValue);
-        Assert.Equal(testValue, thirdValue);
-        Assert.True(getValueCalled);
-        Assert.False(getValueCalled1);
-        Assert.True(getValueCalled2);
+        // Assert
+        value
+            .Should()
+            .Be(testValue);
+
+        secondValue
+            .Should()
+            .Be(testValue);
+
+        thirdValue
+            .Should()
+            .Be(testValue);
+
+        getValueCalled
+            .Should()
+            .BeTrue();
+
+        getValueCalled1
+            .Should()
+            .BeFalse();
+
+        getValueCalled2
+            .Should()
+            .BeTrue();
     }
 
     public static async Task
