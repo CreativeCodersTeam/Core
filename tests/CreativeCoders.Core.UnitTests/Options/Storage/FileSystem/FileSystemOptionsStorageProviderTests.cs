@@ -6,6 +6,7 @@ using CreativeCoders.Core.IO;
 using CreativeCoders.Options.Core;
 using CreativeCoders.Options.Storage.FileSystem;
 using FakeItEasy;
+using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Xunit;
 
@@ -113,6 +114,9 @@ public class FileSystemOptionsStorageProviderTests
 
         var options = new TestOptions { Name = "Test" };
 
+        A.CallTo(() => _file.Exists(Path.Combine("TestDirectory", "testFile.options")))
+            .Returns(true);
+
         A.CallTo(() =>
                 _file.ReadAllTextAsync(Path.Combine("TestDirectory", "testFile.options"),
                     CancellationToken.None))
@@ -134,12 +138,56 @@ public class FileSystemOptionsStorageProviderTests
     }
 
     [Fact]
+    public async Task ReadAsync_WithNotExistingFile_DoesNotCallSerializerAndDoesNotReadContent()
+    {
+        // Arrange
+        var options = new TestOptions
+        {
+            Name = "Test_NoFile",
+            IntValue = 246,
+            IsEnabled = true
+        };
+
+        A.CallTo(() => _file.Exists(Path.Combine("TestDirectory", "testFile.options")))
+            .Returns(false);
+
+        _storageProvider.DirectoryPath = "TestDirectory";
+
+        // Act
+        await _storageProvider.ReadAsync("testFile", options);
+
+        // Assert
+        A.CallTo(() =>
+                _file.ReadAllTextAsync(Path.Combine("TestDirectory", "testFile.options"),
+                    CancellationToken.None))
+            .MustNotHaveHappened();
+
+        A.CallTo(() => _optionsSerializer.Deserialize(A<string>._, options))
+            .MustNotHaveHappened();
+
+        options.Name
+            .Should()
+            .Be("Test_NoFile");
+
+        options.IntValue
+            .Should()
+            .Be(246);
+
+        options.IsEnabled
+            .Should()
+            .BeTrue();
+    }
+
+    [Fact]
     public void Read_WithFileNameAndOptions_CallsSerializerAndReadsContentFromCorrectFile()
     {
         // Arrange
         const string serializedOptions = "SerializedOptions";
 
         var options = new TestOptions { Name = "Test" };
+
+        A.CallTo(() => _file.Exists(Path.Combine("TestDirectory", "testFile.options")))
+            .Returns(true);
 
         A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", "testFile.options")))
             .Returns(serializedOptions);
@@ -164,6 +212,9 @@ public class FileSystemOptionsStorageProviderTests
         const string serializedOptions = "SerializedOptions";
 
         var options = new TestOptions { Name = "Test" };
+
+        A.CallTo(() => _file.Exists(Path.Combine("TestDirectory", "testFile1234.data")))
+            .Returns(true);
 
         A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", "testFile1234.data")))
             .Returns(serializedOptions);
@@ -191,6 +242,9 @@ public class FileSystemOptionsStorageProviderTests
         const string serializedOptions = "SerializedOptions";
 
         var options = new TestOptions { Name = "Test" };
+
+        A.CallTo(() => _file.Exists(Path.Combine("TestDirectory", "default.options")))
+            .Returns(true);
 
         A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", "default.options")))
             .Returns(serializedOptions);
@@ -221,6 +275,9 @@ public class FileSystemOptionsStorageProviderTests
 
         _storageProvider.DirectoryPath = "TestDirectory";
         _storageProvider.InvalidCharReplacement = replacement;
+
+        A.CallTo(() => _file.Exists(Path.Combine("TestDirectory", $"{expected}.options")))
+            .Returns(true);
 
         A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", $"{expected}.options")))
             .Returns(serializedOptions);

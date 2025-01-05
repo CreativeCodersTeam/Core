@@ -59,6 +59,9 @@ public class FileSystemOptionsStorageProviderIntegrationTests
         const string expectedName1 = "Test";
         const string expectedName2 = "Test2";
 
+        A.CallTo(() => _file.Exists(Path.Combine("TestDirectory", "test_name.options")))
+            .Returns(true);
+
         A.CallTo(() => _file.ReadAllText(Path.Combine("TestDirectory", "test_name.options")))
             .Returns(serializedOptions);
 
