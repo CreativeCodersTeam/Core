@@ -211,6 +211,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.NukeBuild.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTestApp", "samples\ConsoleTestApp\ConsoleTestApp.csproj", "{037EDB81-3473-4EF6-82A9-BCE5FAE1DE00}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Options", "Options", "{23126211-23BF-4399-A227-6C609FB7505E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Options.Core", "source\Options\CreativeCoders.Options.Core\CreativeCoders.Options.Core.csproj", "{70C54624-CAE5-4ED6-A087-88CD1470E2B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Options.Storage.FileSystem", "source\Options\CreativeCoders.Options.Storage.FileSystem\CreativeCoders.Options.Storage.FileSystem.csproj", "{83F2F98D-4C23-404F-9D06-B744C87E6EF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Options.Serializers", "source\Options\CreativeCoders.Options.Serializers\CreativeCoders.Options.Serializers.csproj", "{3140873A-7C79-408F-B7F2-C51980EFF0C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -499,6 +507,18 @@ Global
 		{037EDB81-3473-4EF6-82A9-BCE5FAE1DE00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{037EDB81-3473-4EF6-82A9-BCE5FAE1DE00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{037EDB81-3473-4EF6-82A9-BCE5FAE1DE00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70C54624-CAE5-4ED6-A087-88CD1470E2B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70C54624-CAE5-4ED6-A087-88CD1470E2B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70C54624-CAE5-4ED6-A087-88CD1470E2B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70C54624-CAE5-4ED6-A087-88CD1470E2B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83F2F98D-4C23-404F-9D06-B744C87E6EF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83F2F98D-4C23-404F-9D06-B744C87E6EF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83F2F98D-4C23-404F-9D06-B744C87E6EF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83F2F98D-4C23-404F-9D06-B744C87E6EF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3140873A-7C79-408F-B7F2-C51980EFF0C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3140873A-7C79-408F-B7F2-C51980EFF0C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3140873A-7C79-408F-B7F2-C51980EFF0C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3140873A-7C79-408F-B7F2-C51980EFF0C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -593,6 +613,10 @@ Global
 		{9A2200C2-46F7-447A-8B9C-40A81D03D0B6} = {5A3FFD14-2258-4007-AC77-BAFB3B3EB26F}
 		{FC343B26-4AB3-47E7-B9EE-9EFFF0E02C7D} = {5A3FFD14-2258-4007-AC77-BAFB3B3EB26F}
 		{037EDB81-3473-4EF6-82A9-BCE5FAE1DE00} = {72E179CA-7AE6-412A-856D-7BD13838E8E3}
+		{23126211-23BF-4399-A227-6C609FB7505E} = {2A7105AA-05B6-469A-93F5-719723A4D90D}
+		{70C54624-CAE5-4ED6-A087-88CD1470E2B7} = {23126211-23BF-4399-A227-6C609FB7505E}
+		{83F2F98D-4C23-404F-9D06-B744C87E6EF1} = {23126211-23BF-4399-A227-6C609FB7505E}
+		{3140873A-7C79-408F-B7F2-C51980EFF0C4} = {23126211-23BF-4399-A227-6C609FB7505E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}

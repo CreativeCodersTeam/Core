@@ -484,7 +484,7 @@ internal static class TestCaching
         Assert.Equal(0, getValueCalled);
     }
 
-    public static async Task TryGet_AfterExpiration_ReturnsFalse(ICache<int, string> cache)
+    public static void TryGet_AfterExpiration_ReturnsFalse(ICache<int, string> cache)
     {
         var expirationPolicy = A.Fake<ICacheExpirationPolicy>();
         A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.AbsoluteDateTime);
@@ -493,7 +493,7 @@ internal static class TestCaching
 
         cache.AddOrUpdate(1, "TestValue", expirationPolicy);
 
-        await Task.Delay(100);
+        Thread.Sleep(100);
 
         Assert.False(cache.TryGet(1, out _));
     }
@@ -507,12 +507,12 @@ internal static class TestCaching
 
         await cache.AddOrUpdateAsync(1, "TestValue", expirationPolicy);
 
-        await Task.Delay(100);
+        Thread.Sleep(100);
 
         Assert.False(cache.TryGet(1, out _));
     }
 
-    public static async Task TryGet_AfterExpirationTimeSpan_ReturnsFalse(ICache<int, string> cache)
+    public static void TryGet_AfterExpirationTimeSpan_ReturnsFalse(ICache<int, string> cache)
     {
         var expirationPolicy = A.Fake<ICacheExpirationPolicy>();
         A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.SlidingTimeSpan);
@@ -521,7 +521,7 @@ internal static class TestCaching
 
         cache.AddOrUpdate(1, "TestValue", expirationPolicy);
 
-        await Task.Delay(100);
+        Thread.Sleep(100);
 
         Assert.False(cache.TryGet(1, out _));
     }
@@ -535,7 +535,7 @@ internal static class TestCaching
 
         await cache.AddOrUpdateAsync(1, "TestValue", expirationPolicy);
 
-        await Task.Delay(100);
+        Thread.Sleep(100);
 
         Assert.False(cache.TryGet(1, out _));
     }
@@ -661,7 +661,7 @@ internal static class TestCaching
         Assert.Equal(1, getValueCalledCount);
     }
 
-    public static async Task
+    public static void
         GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
             ICache<int, string> cache)
     {
@@ -676,7 +676,7 @@ internal static class TestCaching
 
         Assert.Equal(testValue, value);
 
-        await Task.Delay(100);
+        Thread.Sleep(100);
 
         var secondValue = cache.GetOrAdd(1, () =>
         {
@@ -748,7 +748,7 @@ internal static class TestCaching
             .BeTrue();
     }
 
-    public static async Task
+    public static void
         GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes(
             ICache<int, string> cache)
     {
@@ -761,25 +761,25 @@ internal static class TestCaching
         {
             getValueCalled = true;
             return testValue;
-        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(1500)));
+        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(150)));
 
         Assert.Equal(testValue, value);
 
-        await Task.Delay(1000);
+        Thread.Sleep(100);
 
         var secondValue = cache.GetOrAdd(1, () =>
         {
             getValueCalled1 = true;
             return testValue;
-        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(1500)));
+        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(150)));
 
-        await Task.Delay(2000);
+        Thread.Sleep(200);
 
         var thirdValue = cache.GetOrAdd(1, () =>
         {
             getValueCalled2 = true;
             return testValue;
-        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(1500)));
+        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(150)));
 
         Assert.Equal(testValue, secondValue);
         Assert.Equal(testValue, thirdValue);
@@ -788,7 +788,7 @@ internal static class TestCaching
         Assert.True(getValueCalled2);
     }
 
-    public static async Task
+    public static void
         GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
             ICache<int, string> cache)
     {
@@ -801,25 +801,25 @@ internal static class TestCaching
         {
             getValueCalled = true;
             return testValue;
-        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(2000)));
+        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(200)));
 
         Assert.Equal(testValue, value);
 
-        await Task.Delay(1500);
+        Thread.Sleep(150);
 
         var secondValue = cache.GetOrAdd(1, () =>
         {
             getValueCalled1 = true;
             return testValue;
-        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(2000)));
+        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(200)));
 
-        await Task.Delay(1500);
+        Thread.Sleep(150);
 
         var thirdValue = cache.GetOrAdd(1, () =>
         {
             getValueCalled2 = true;
             return testValue;
-        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(1500)));
+        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(150)));
 
         Assert.Equal(testValue, secondValue);
         Assert.Equal(testValue, thirdValue);
@@ -869,7 +869,7 @@ internal static class TestCaching
 
         Assert.Equal(testValue, value);
 
-        await Task.Delay(100);
+        Thread.Sleep(100);
 
         var secondValue = await cache.GetOrAddAsync(1, () =>
         {
@@ -899,7 +899,7 @@ internal static class TestCaching
 
         Assert.Equal(testValue, value);
 
-        await Task.Delay(50);
+        Thread.Sleep(50);
 
         var secondValue = await cache.GetOrAddAsync(1, () =>
             {
@@ -908,7 +908,7 @@ internal static class TestCaching
             }, CacheExpirationPolicy.AfterAbsoluteDateTime(DateTime.Now.AddMilliseconds(400)))
             ;
 
-        await Task.Delay(400);
+        Thread.Sleep(400);
 
         var thirdValue = await cache.GetOrAddAsync(1, () =>
             {

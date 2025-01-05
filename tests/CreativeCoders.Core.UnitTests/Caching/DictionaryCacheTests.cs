@@ -250,9 +250,9 @@ public class DictionaryCacheTests
     }
 
     [Fact]
-    public async Task TryGet_AfterExpiration_ReturnsFalse()
+    public void TryGet_AfterExpiration_ReturnsFalse()
     {
-        await TestCaching.TryGet_AfterExpiration_ReturnsFalse(CreateCache<int, string>());
+        TestCaching.TryGet_AfterExpiration_ReturnsFalse(CreateCache<int, string>());
     }
 
     [Fact]
@@ -262,9 +262,9 @@ public class DictionaryCacheTests
     }
 
     [Fact]
-    public async Task TryGet_AfterExpirationTimeSpan_ReturnsFalse()
+    public void TryGet_AfterExpirationTimeSpan_ReturnsFalse()
     {
-        await TestCaching.TryGet_AfterExpirationTimeSpan_ReturnsFalse(CreateCache<int, string>());
+        TestCaching.TryGet_AfterExpirationTimeSpan_ReturnsFalse(CreateCache<int, string>());
     }
 
     [Fact]
@@ -311,10 +311,10 @@ public class DictionaryCacheTests
     }
 
     [Fact]
-    public async Task
+    public void
         GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime()
     {
-        await TestCaching
+        TestCaching
             .GetOrAdd_TwoTimesCalledWithDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTime(
                 CreateCache<int, string>());
     }
@@ -329,19 +329,19 @@ public class DictionaryCacheTests
     }
 
     [Fact]
-    public async Task
+    public void
         GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes()
     {
-        await TestCaching
+        TestCaching
             .GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes(
                 CreateCache<int, string>());
     }
 
     [Fact]
-    public async Task
+    public void
         GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
     {
-        await TestCaching
+        TestCaching
             .GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
                 CreateCache<int, string>());
     }

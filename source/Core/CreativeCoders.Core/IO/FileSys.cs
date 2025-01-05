@@ -10,14 +10,22 @@ namespace CreativeCoders.Core.IO;
 [PublicAPI]
 public static class FileSys
 {
-    private static IFileSystemEx Instance { get; set; } = new FileSystemEx();
-
     public static void InstallFileSystemSupport(IFileSystemEx fileSystem)
     {
-        Ensure.IsNotNull(fileSystem, nameof(fileSystem));
+        Ensure.IsNotNull(fileSystem);
 
         Instance = fileSystem;
     }
+
+    public static FileSystemWatcherBase CreateFileSystemWatcher() => Instance.CreateFileSystemWatcher();
+
+    public static FileSystemWatcherBase CreateFileSystemWatcher(string path) =>
+        Instance.CreateFileSystemWatcher(path);
+
+    public static FileSystemWatcherBase CreateFileSystemWatcher(string path, string filter) =>
+        Instance.CreateFileSystemWatcher(path, filter);
+
+    private static IFileSystemEx Instance { get; set; } = new FileSystemEx();
 
     public static IFile File => Instance.File;
 
@@ -30,12 +38,4 @@ public static class FileSys
     public static IDirectoryInfoFactory DirectoryInfo => Instance.DirectoryInfo;
 
     public static IDriveInfoFactory DriveInfo => Instance.DriveInfo;
-
-    public static FileSystemWatcherBase CreateFileSystemWatcher() => Instance.CreateFileSystemWatcher();
-
-    public static FileSystemWatcherBase CreateFileSystemWatcher(string path) =>
-        Instance.CreateFileSystemWatcher(path);
-
-    public static FileSystemWatcherBase CreateFileSystemWatcher(string path, string filter) =>
-        Instance.CreateFileSystemWatcher(path, filter);
 }

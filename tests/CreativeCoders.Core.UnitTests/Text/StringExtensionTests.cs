@@ -1,12 +1,16 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Security;
 using System.Text;
 using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.Core.Text;
 using FluentAssertions;
+using JetBrains.Annotations;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Text;
+
+#nullable enable
 
 public class StringExtensionTests
 {
@@ -29,7 +33,7 @@ public class StringExtensionTests
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void IsNullOrEmptyTestTrue(string value)
+    public void IsNullOrEmptyTestTrue(string? value)
     {
         Assert.True(value.IsNullOrEmpty());
     }
@@ -37,7 +41,7 @@ public class StringExtensionTests
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void IsNotNullOrEmptyTestFalse(string value)
+    public void IsNotNullOrEmptyTestFalse(string? value)
     {
         Assert.False(value.IsNotNullOrEmpty());
     }
@@ -63,7 +67,7 @@ public class StringExtensionTests
     [InlineData("")]
     [InlineData(" ")]
     [InlineData("\n")]
-    public void IsNullOrWhiteSpaceTestTrue(string value)
+    public void IsNullOrWhiteSpaceTestTrue(string? value)
     {
         Assert.True(value.IsNullOrWhiteSpace());
     }
@@ -73,7 +77,7 @@ public class StringExtensionTests
     [InlineData("")]
     [InlineData(" ")]
     [InlineData("\n")]
-    public void IsNotNullOrWhiteSpaceTestFalse(string value)
+    public void IsNotNullOrWhiteSpaceTestFalse(string? value)
     {
         Assert.False(value.IsNotNullOrWhiteSpace());
     }
@@ -137,12 +141,15 @@ public class StringExtensionTests
     }
 
     [Theory]
-    [InlineData("Hello World", new[] {'o', 'W'}, "Hell rld")]
-    [InlineData(@"some\:_file?*.txt", new[] {'\\', ':', '?', '*'}, "some_file.txt")]
-    public void Filter_(string input, char[] filteredChars, string expected)
+    [InlineData("Hello World", new[] { 'o', 'W' }, "Hell rld")]
+    [InlineData(@"some\:_file?*.txt", new[] { '\\', ':', '?', '*' }, "some_file.txt")]
+    public void Filter_CharsToFilterInText_TextDoesntContainFilteredChars(string input, char[] filteredChars,
+        string expected)
     {
+        // Act
         var filteredText = input.Filter(filteredChars);
 
+        // Arrange
         Assert.Equal(expected, filteredText);
     }
 
@@ -165,9 +172,10 @@ public class StringExtensionTests
     }
 
     [Fact]
+    [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
     public void ToNormalString_NullSecureString_ThrowsException()
     {
-        SecureString secureString = null;
+        SecureString? secureString = null;
 
         // ReSharper disable once ExpressionIsAlwaysNull
         Action act = () => secureString!.ToNormalString();
@@ -235,5 +243,99 @@ public class StringExtensionTests
         sb.ToString()
             .Should()
             .Be($"Test{Env.NewLine}");
+    }
+
+    [Theory]
+    [InlineData("camelCaseString", "CamelCaseString")]
+    [InlineData("camelCaseStringWithNumber1", "CamelCaseStringWithNumber1")]
+    [InlineData("PascalCaseStringWithNumber123", "PascalCaseStringWithNumber123")]
+    public void CamelCaseToPascalCase_CamelOrPascalCaseString_ReturnsPascalCaseString(
+        string camelOrPascalCaseString, string expectedPascalCaseString)
+    {
+        // Act
+        var pascalCaseString = camelOrPascalCaseString.CamelCaseToPascalCase();
+
+        // Assert
+        pascalCaseString
+            .Should()
+            .Be(expectedPascalCaseString);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    public void CamelCaseToPascalCase_EmptyOrNullString_ReturnsEmptyString(string? text)
+    {
+        // Act
+        var pascalCaseString = text.CamelCaseToPascalCase();
+
+        // Assert
+        pascalCaseString
+            .Should()
+            .Be(string.Empty);
+    }
+
+    [Theory]
+    [InlineData("kebab-case-string", "KebabCaseString")]
+    [InlineData("KEBAB-CASE-STRING", "KebabCaseString")]
+    [InlineData("kebab-case-string-with-number-1", "KebabCaseStringWithNumber1")]
+    [InlineData("KEBAB-CASE-STRING-WITH-NUMBER-1", "KebabCaseStringWithNumber1")]
+    [InlineData("PascalCaseStringWithNumber123", "PascalCaseStringWithNumber123")]
+    public void KebabCaseToPascalCase_KebabOrPascalCaseString_ReturnsPascalCaseString(
+        string kebabOrPascalCaseString, string expectedPascalCaseString)
+    {
+        // Act
+        var pascalCaseString = kebabOrPascalCaseString.KebabCaseToPascalCase();
+
+        // Assert
+        pascalCaseString
+            .Should()
+            .Be(expectedPascalCaseString);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    public void KebabCaseToPascalCase_EmptyOrNullString_ReturnsEmptyString(string? text)
+    {
+        // Act
+        var pascalCaseString = text.KebabCaseToPascalCase();
+
+        // Assert
+        pascalCaseString
+            .Should()
+            .Be(string.Empty);
+    }
+
+    [Theory]
+    [InlineData("snake_case_string", "SnakeCaseString")]
+    [InlineData("SNAKE_CASE_STRING", "SnakeCaseString")]
+    [InlineData("snake_case_string_with_number_1", "SnakeCaseStringWithNumber1")]
+    [InlineData("SNAKE_CASE_STRING_WITH_NUMBER_1", "SnakeCaseStringWithNumber1")]
+    [InlineData("PascalCaseStringWithNumber123", "PascalCaseStringWithNumber123")]
+    public void SnakeCaseToPascalCase_KebabOrPascalCaseString_ReturnsPascalCaseString(
+        string snakeOrPascalCaseString, string expectedPascalCaseString)
+    {
+        // Act
+        var pascalCaseString = snakeOrPascalCaseString.SnakeCaseToPascalCase();
+
+        // Assert
+        pascalCaseString
+            .Should()
+            .Be(expectedPascalCaseString);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    public void SnakeCaseToPascalCase_EmptyOrNullString_ReturnsEmptyString(string? text)
+    {
+        // Act
+        var pascalCaseString = text.SnakeCaseToPascalCase();
+
+        // Assert
+        pascalCaseString
+            .Should()
+            .Be(string.Empty);
     }
 }
