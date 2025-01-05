@@ -45,6 +45,11 @@ public class FileSystemOptionsStorageProvider<T>(
     {
         var fileName = GetFileName(name);
 
+        if (!FileSys.File.Exists(fileName))
+        {
+            return;
+        }
+
         _optionsSerializer.Deserialize(await FileSys.File.ReadAllTextAsync(fileName).ConfigureAwait(false),
             options);
     }
@@ -52,6 +57,11 @@ public class FileSystemOptionsStorageProvider<T>(
     public override void Read(string? name, T options)
     {
         var fileName = GetFileName(name);
+
+        if (!FileSys.File.Exists(fileName))
+        {
+            return;
+        }
 
         _optionsSerializer.Deserialize(FileSys.File.ReadAllText(fileName), options);
     }

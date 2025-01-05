@@ -1,4 +1,5 @@
-﻿using CreativeCoders.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+using CreativeCoders.Core;
 using Microsoft.Extensions.Options;
 
 namespace CreativeCoders.Options.Core;
@@ -12,6 +13,7 @@ public class NamedConfigurationOptions<T> : IConfigureNamedOptions<T> where T : 
         _optionsReader = Ensure.NotNull(optionsReader);
     }
 
+    [ExcludeFromCodeCoverage]
     public void Configure(T options)
     {
         _optionsReader.Read(string.Empty, options);

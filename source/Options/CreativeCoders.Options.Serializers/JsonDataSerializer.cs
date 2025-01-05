@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Serialization;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Text;
 using CreativeCoders.Options.Core;
@@ -8,16 +7,9 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Options.Serializers;
 
 [PublicAPI]
-public class JsonDataSerializer<T> : IOptionsStorageDataSerializer<T>
+public class JsonDataSerializer<T> : JsonDataSerializerBase, IOptionsStorageDataSerializer<T>
     where T : class
 {
-    private static JsonSerializerOptions __jsonSerializerOptions = new JsonSerializerOptions
-    {
-        WriteIndented = true,
-        AllowTrailingCommas = true,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-    };
-
     private readonly JsonSerializerOptions? _jsonSerializerOptions;
 
     public JsonDataSerializer() { }
@@ -31,7 +23,7 @@ public class JsonDataSerializer<T> : IOptionsStorageDataSerializer<T>
 
     public string Serialize(T options)
     {
-        return JsonSerializer.Serialize(options, _jsonSerializerOptions ?? __jsonSerializerOptions);
+        return JsonSerializer.Serialize(options, _jsonSerializerOptions ?? DefaultJsonSerializerOptions);
     }
 
     public void Deserialize(string data, T options)
@@ -43,6 +35,6 @@ public class JsonDataSerializer<T> : IOptionsStorageDataSerializer<T>
             return;
         }
 
-        data.PopulateJson(options, _jsonSerializerOptions ?? __jsonSerializerOptions);
+        data.PopulateJson(options, _jsonSerializerOptions ?? DefaultJsonSerializerOptions);
     }
 }

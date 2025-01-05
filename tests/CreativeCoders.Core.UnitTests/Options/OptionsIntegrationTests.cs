@@ -17,7 +17,7 @@ public class OptionsIntegrationTests
     public OptionsIntegrationTests()
     {
         _services = [];
-        _services.AddNamedOptions<TestOptions>();
+        _services.AddNamedConfigurationOptions<TestOptions>();
     }
 
     [Fact]

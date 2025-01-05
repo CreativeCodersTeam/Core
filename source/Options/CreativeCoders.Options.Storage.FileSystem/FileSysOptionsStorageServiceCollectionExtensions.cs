@@ -14,16 +14,7 @@ public static class FileSysOptionsStorageServiceCollectionExtensions
         Ensure.NotNull(services);
         Ensure.IsNotNullOrEmpty(directoryPath);
 
-        services.TryAddSingleton<IOptionsStorageProvider<T>>(sp =>
-        {
-            var source = typeof(FileSystemOptionsStorageProvider<T>)
-                .CreateInstance<FileSystemOptionsStorageProvider<T>>(sp);
-
-            Ensure.NotNull(source);
-
-            source.DirectoryPath = directoryPath;
-
-            return source;
-        });
+        services.AddNamedConfigurationOptions<T, FileSystemOptionsStorageProvider<T>>(
+            x => x.DirectoryPath = directoryPath);
     }
 }

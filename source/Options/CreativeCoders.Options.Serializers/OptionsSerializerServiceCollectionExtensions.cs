@@ -1,10 +1,14 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using CreativeCoders.Options.Core;
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CreativeCoders.Options.Serializers;
 
+[ExcludeFromCodeCoverage]
+[PublicAPI]
 public static class OptionsSerializerServiceCollectionExtensions
 {
     public static void AddOptionsJsonSerializer<T>(this IServiceCollection services,

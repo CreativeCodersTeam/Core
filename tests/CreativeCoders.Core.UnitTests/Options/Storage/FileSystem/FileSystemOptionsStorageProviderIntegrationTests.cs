@@ -47,7 +47,7 @@ public class FileSystemOptionsStorageProviderIntegrationTests
 
         _services.AddFileSystemOptionsStorage<TestOptions>("TestDirectory");
 
-        _services.AddNamedOptions<TestOptions>();
+        _services.AddNamedConfigurationOptions<TestOptions>();
     }
 
     [Fact]

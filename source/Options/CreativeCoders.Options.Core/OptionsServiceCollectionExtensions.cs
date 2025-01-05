@@ -7,22 +7,27 @@ namespace CreativeCoders.Options.Core;
 
 public static class OptionsServiceCollectionExtensions
 {
-    public static void AddNamedOptions<T>(this IServiceCollection services)
+    public static void AddNamedConfigurationOptions<T>(this IServiceCollection services)
         where T : class
     {
         Ensure.NotNull(services);
 
+        if (services.Any(x => x.ImplementationType == typeof(NamedConfigurationOptions<T>)))
+        {
+            return;
+        }
+
         services.ConfigureOptions<NamedConfigurationOptions<T>>();
     }
 
-    public static void AddNamedOptions<T, TStorageProvider>(this IServiceCollection services,
+    public static void AddNamedConfigurationOptions<T, TStorageProvider>(this IServiceCollection services,
         Action<TStorageProvider>? configureSource = null)
         where T : class
         where TStorageProvider : class, IOptionsStorageProvider<T>
     {
         Ensure.NotNull(services);
 
-        services.AddNamedOptions<T>();
+        services.AddNamedConfigurationOptions<T>();
 
         services.TryAddSingleton<IOptionsStorageProvider<T>>(sp =>
         {
