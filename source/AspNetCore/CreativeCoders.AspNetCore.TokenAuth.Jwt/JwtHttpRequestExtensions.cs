@@ -8,7 +8,7 @@ public static class JwtHttpRequestExtensions
     {
         var token =
             request.Headers.Authorization.FirstOrDefault(x =>
-                x.StartsWith("Bearer ", StringComparison.Ordinal));
+                x?.StartsWith("Bearer ", StringComparison.Ordinal) == true);
 
         if (!string.IsNullOrEmpty(token) && token.StartsWith("Bearer ", StringComparison.Ordinal))
         {
