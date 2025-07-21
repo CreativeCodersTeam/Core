@@ -14,6 +14,7 @@ namespace CreativeCoders.Core.UnitTests.IO;
 public class FileCleanUpTests
 {
     [Fact]
+    [Obsolete("Obsolete cause underlying method from System.IO.Abstractions is marked as obsolete")]
     public void Dispose_FileNotExistsNoThrow_NotThrowsException()
     {
         var mockFileSystem = new MockFileSystemEx(

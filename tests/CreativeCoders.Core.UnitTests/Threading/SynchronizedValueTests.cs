@@ -96,7 +96,7 @@ public class SynchronizedValueTests
         long readTimeMs = 0;
 
         // Act
-        var setTask = new Thread(async () =>
+        var setTask = new Thread(() =>
         {
             synchronizedValue.SetValue(_ =>
             {

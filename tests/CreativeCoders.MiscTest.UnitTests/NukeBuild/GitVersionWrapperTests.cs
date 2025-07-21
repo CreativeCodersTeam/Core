@@ -87,7 +87,7 @@ public class GitVersionWrapperTests
         // Assert
         actualVersion
             .Should()
-            .Be(defaultVersion);
+            .Be(defaultVersion + $".{defaultBuildRevision}");
     }
 
     [Theory]
