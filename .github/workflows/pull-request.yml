@@ -42,6 +42,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Publish: coverage_report'
         uses: actions/upload-artifact@v4
+        if: runner.os == 'Linux'
         with:
           name: coverage_report
           path: .tests/coverage_report
@@ -65,6 +66,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Publish: coverage_report'
         uses: actions/upload-artifact@v4
+        if: runner.os == 'Linux'
         with:
           name: coverage_report
           path: .tests/coverage_report
