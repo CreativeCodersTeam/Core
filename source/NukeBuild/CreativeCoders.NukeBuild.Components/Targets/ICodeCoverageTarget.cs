@@ -2,6 +2,7 @@
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
 using JetBrains.Annotations;
 using Nuke.Common;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.ReportGenerator;
 
 namespace CreativeCoders.NukeBuild.Components.Targets;

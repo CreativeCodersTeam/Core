@@ -28,8 +28,10 @@ public interface ICleanTarget : INukeBuild, ICleanSettings
     [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
     sealed DotNetCleanSettings ConfigureDefaultCleanSettings(DotNetCleanSettings cleanSettings)
     {
+        var solutionParameter = this.As<ISolutionParameter>();
+
         return cleanSettings
-            .When(this.TryAs<ISolutionParameter>(out var solutionParameter),
+            .When(_ => solutionParameter != null,
                 x => x.SetProject(solutionParameter!.Solution));
     }
 }

@@ -22,8 +22,10 @@ public interface IBuildTarget : ISolutionParameter
 
     sealed DotNetBuildSettings ConfigureDefaultCompileSettings(DotNetBuildSettings buildSettings)
     {
+        var solutionParameter = this.As<ISolutionParameter>();
+
         return buildSettings
-            .When(this.TryAs<ISolutionParameter>(out var solutionParameter), x => x
+            .When(_ => solutionParameter != null, x => x
                 // ReSharper disable once NullableWarningSuppressionIsUsed
                 .SetProjectFile(solutionParameter!.Solution))
             .WhenNotNull(this as IConfigurationParameter, (x, configuration) => x

@@ -14,7 +14,41 @@ public class NukeBuildExtensionsTests
     public void GetGitVersion_Always_ReturnsVersionFromGitVersionParameter()
     {
         // Arrange
-        var expectedGitVersion = new GitVersion();
+        var expectedGitVersion = new GitVersion(
+            BranchName: "main",
+            Sha: "dummySha",
+            ShortSha: "dummy",
+            Major: 1,
+            Minor: 0,
+            Patch: 0,
+            PreReleaseTag: string.Empty,
+            PreReleaseTagWithDash: string.Empty,
+            PreReleaseLabel: string.Empty,
+            PreReleaseLabelWithDash: string.Empty,
+            PreReleaseNumber: null,
+            WeightedPreReleaseNumber: null,
+            BuildMetaData: string.Empty,
+            BuildMetaDataPadded: string.Empty,
+            FullBuildMetaData: string.Empty,
+            MajorMinorPatch: "1.0.0",
+            SemVer: "1.0.0",
+            LegacySemVer: "1.0.0",
+            LegacySemVerPadded: "1.0.0",
+            AssemblySemVer: "1.0.0.0",
+            AssemblySemFileVer: "1.0.0.0",
+            FullSemVer: "1.0.0",
+            InformationalVersion: "1.0.0+dummySha",
+            EscapedBranchName: "main",
+            CommitDate: DateTimeOffset.Now.ToString(),
+            CommitsSinceVersionSource: "0",
+            CommitsSinceVersionSourcePadded: "0000",
+            UncommittedChanges: 0,
+            VersionSourceSha: "dummySourceSha",
+            NuGetVersionV2: "1.0.0",
+            NuGetVersion: "1.0.0",
+            NuGetPreReleaseTagV2: string.Empty,
+            NuGetPreReleaseTag: string.Empty
+        );
         var fakeBuild = new MockBuildWithGitVersionParameter(expectedGitVersion);
 
         // Act
