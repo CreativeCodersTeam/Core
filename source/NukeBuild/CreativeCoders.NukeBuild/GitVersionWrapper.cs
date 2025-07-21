@@ -5,21 +5,9 @@ using Nuke.Common.Tools.GitVersion;
 
 namespace CreativeCoders.NukeBuild;
 
-public class GitVersionWrapper : IVersionInfo
+public class GitVersionWrapper(GitVersion? gitVersion, string defaultVersion, int defaultBuildRevision)
+    : IVersionInfo
 {
-    private readonly GitVersion? _gitVersion;
-
-    private readonly string _defaultVersion;
-
-    private readonly int _defaultBuildRevision;
-
-    public GitVersionWrapper(GitVersion? gitVersion, string defaultVersion, int defaultBuildRevision)
-    {
-        _gitVersion = gitVersion;
-        _defaultVersion = defaultVersion;
-        _defaultBuildRevision = defaultBuildRevision;
-    }
-
     private static string SafeCallGitVersion(Func<string?> callGitVersion, string defaultGitVersion)
     {
         try
@@ -34,21 +22,21 @@ public class GitVersionWrapper : IVersionInfo
 
     public string GetAssemblySemVer()
         => SafeCallGitVersion(
-            () => _gitVersion?.AssemblySemVer,
-            $"{_defaultVersion}.{_defaultBuildRevision}");
+            () => gitVersion?.AssemblySemVer,
+            $"{defaultVersion}.{defaultBuildRevision}");
 
     public string GetAssemblySemFileVer()
         => SafeCallGitVersion(
-            () => _gitVersion?.AssemblySemFileVer,
-            $"{_defaultVersion}.{_defaultBuildRevision}");
+            () => gitVersion?.AssemblySemFileVer,
+            $"{defaultVersion}.{defaultBuildRevision}");
 
     public string InformationalVersion
         => SafeCallGitVersion(
-            () => _gitVersion?.InformationalVersion,
-            $"{_defaultVersion}.{_defaultBuildRevision}-unknown");
+            () => gitVersion?.InformationalVersion,
+            $"{defaultVersion}.{defaultBuildRevision}-unknown");
 
     public string NuGetVersionV2
         => SafeCallGitVersion(
-            () => _gitVersion?.NuGetVersionV2,
-            $"{_defaultVersion}-unknown");
+            () => gitVersion?.NuGetVersionV2,
+            $"{defaultVersion}-unknown");
 }
