@@ -9,7 +9,7 @@
 <Button ElementType="@(ButtonElementType.Div)" Clicked="@(_ => IncrementCount())" class="btn-primary">Click me</Button>
 
 <EditForm Model="this">
-    <InputText class="form-text" @bind-value="TestText" ValueExpression="() => TestText"></InputText>
+    @* <InputText class="form-text" @bind-value="TestText" ValueExpression="() => TestText"></InputText> *@
 
     @*<InputText @bind-Value="TestText" @bind-Value:event=""></InputText>*@
 

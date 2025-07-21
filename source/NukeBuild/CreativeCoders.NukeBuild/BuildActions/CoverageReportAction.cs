@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.Core.SysEnvironment;
 using JetBrains.Annotations;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.ReportGenerator;
 
 namespace CreativeCoders.NukeBuild.BuildActions;

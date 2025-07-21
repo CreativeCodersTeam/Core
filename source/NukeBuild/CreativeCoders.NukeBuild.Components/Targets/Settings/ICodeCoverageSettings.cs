@@ -1,6 +1,7 @@
 ﻿using CreativeCoders.Core;
 using CreativeCoders.Core.IO;
 using CreativeCoders.Core.SysEnvironment;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.IO;
 
 namespace CreativeCoders.NukeBuild.Components.Targets.Settings;
@@ -16,5 +17,5 @@ public interface ICodeCoverageSettings : ITestSettings
 
     string Framework => $"net{Env.Version.Major}.0";
 
-    IEnumerable<string> Reports => new string[] { TestBaseDirectory / "coverage" / "**" / "*.xml" };
+    IEnumerable<string> Reports => [TestBaseDirectory / "coverage" / "**" / "*.xml"];
 }

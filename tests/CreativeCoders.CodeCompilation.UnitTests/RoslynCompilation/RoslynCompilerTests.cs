@@ -26,7 +26,7 @@ public class RoslynCompilerTests
 
         var compilerResult = compiler.Compile(compilationPackage, compilationOutput);
 
-        Assert.Empty(compilerResult.Messages.Where(x => x.MessageType == CompilationMessageType.Error));
+        Assert.DoesNotContain(compilerResult.Messages, x => x.MessageType == CompilationMessageType.Error);
 
         var assembly = Assembly.Load(outputStream.ToArray());
 

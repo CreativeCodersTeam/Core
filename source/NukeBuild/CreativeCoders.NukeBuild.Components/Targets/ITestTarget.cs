@@ -42,7 +42,7 @@ public interface ITestTarget : ITestSettings
             .SetNoBuild(SucceededTargets.Contains(this.As<IBuildTarget>()?.Build))
             .WhenNotNull(this as IConfigurationParameter, (x, configurationParameter) => x
                 .SetConfiguration(configurationParameter.Configuration))
-            .When(GenerateCodeCoverage, x => x
+            .When(_ => GenerateCodeCoverage, x => x
                 .SetDataCollector("XPlat Code Coverage")
                 .SetResultsDirectory(CoverageDirectory));
     }

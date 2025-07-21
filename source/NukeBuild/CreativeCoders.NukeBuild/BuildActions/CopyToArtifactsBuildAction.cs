@@ -33,7 +33,7 @@ public class CopyToArtifactsBuildAction : BuildActionBase<CopyToArtifactsBuildAc
         }
 
         var targetFile = Path.Combine(BuildInfo.ArtifactsDirectory, fileName);
-        FileSystemTasks.CopyFile(fullFileName, targetFile, FileExistsPolicy.Overwrite);
+        fullFileName.Copy(targetFile, ExistsPolicy.FileOverwrite);
     }
 
     public void SetFileMask(string fileMask)

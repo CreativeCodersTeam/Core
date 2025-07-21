@@ -68,7 +68,7 @@ public interface IPublishTarget : IPublishSettings
             .SetProject(publishingItem.ProjectPath)
             .SetOutput(publishingItem.OutputPath)
             .SetSelfContained(publishingItem.SelfContained)
-            .When(!string.IsNullOrWhiteSpace(publishingItem.Runtime), x => x
+            .When(_ => !string.IsNullOrWhiteSpace(publishingItem.Runtime), x => x
                 .SetRuntime(publishingItem.Runtime));
     }
 }

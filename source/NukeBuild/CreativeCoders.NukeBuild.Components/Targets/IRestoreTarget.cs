@@ -23,8 +23,10 @@ public interface IRestoreTarget : INukeBuild
 
     sealed DotNetRestoreSettings ConfigureDefaultRestoreSettings(DotNetRestoreSettings buildSettings)
     {
+        var solutionParameter = this.As<ISolutionParameter>();
+
         return buildSettings
-            .When(this.TryAs<ISolutionParameter>(out var solutionParameter), x => x
+            .When(_ => solutionParameter != null, x => x
                 // ReSharper disable once NullableWarningSuppressionIsUsed
                 .SetProjectFile(solutionParameter!.Solution));
     }

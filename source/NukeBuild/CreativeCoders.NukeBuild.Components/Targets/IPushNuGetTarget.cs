@@ -34,9 +34,9 @@ public interface IPushNuGetTarget : IPackTarget, IPushNuGetSettings
     {
         return nuGetPushSettings
             .SetTargetPath(packagePath)
-            .When(!string.IsNullOrWhiteSpace(NuGetFeedUrl), x => x
+            .When(_ => !string.IsNullOrWhiteSpace(NuGetFeedUrl), x => x
                 .SetSource(NuGetFeedUrl))
-            .When(!string.IsNullOrWhiteSpace(NuGetApiKey), x => x
+            .When(_ => !string.IsNullOrWhiteSpace(NuGetApiKey), x => x
                 .SetApiKey(NuGetApiKey));
     }
 }
