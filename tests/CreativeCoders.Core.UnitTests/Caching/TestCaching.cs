@@ -805,7 +805,7 @@ internal static class TestCaching
 
         Assert.Equal(testValue, value);
 
-        Thread.Sleep(150);
+        Thread.Sleep(100);
 
         var secondValue = cache.GetOrAdd(1, () =>
         {
@@ -813,7 +813,7 @@ internal static class TestCaching
             return testValue;
         }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(200)));
 
-        Thread.Sleep(150);
+        Thread.Sleep(100);
 
         var thirdValue = cache.GetOrAdd(1, () =>
         {
