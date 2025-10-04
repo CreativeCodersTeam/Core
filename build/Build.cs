@@ -24,6 +24,7 @@ using Nuke.Common.ProjectModel;
     InvokedTargets = [NukeTargets.DeployNuGet],
     EnableGitHubToken = true,
     PublishArtifacts = true,
+    PublishCondition = "runner.os == 'Linux'",
     FetchDepth = 0
 )]
 [GitHubActions("pull-request",
@@ -41,6 +42,7 @@ using Nuke.Common.ProjectModel;
     InvokedTargets = [NukeTargets.DeployNuGet],
     EnableGitHubToken = true,
     PublishArtifacts = true,
+    PublishCondition = "runner.os == 'Linux'",
     FetchDepth = 0
 )]
 [GitHubActions(ReleaseWorkflow, GitHubActionsImage.UbuntuLatest,
