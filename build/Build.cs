@@ -18,14 +18,16 @@ using Nuke.Common.ProjectModel;
 #pragma warning disable S3903 // move class to namespace
 [PublicAPI]
 [UnsetVisualStudioEnvironmentVariables]
-[GitHubActions("integration", GitHubActionsImage.UbuntuLatest,
+[GitHubActions("integration",
+    GitHubActionsImage.UbuntuLatest, GitHubActionsImage.WindowsLatest, GitHubActionsImage.MacOsLatest,
     OnPushBranches = ["feature/**"],
     InvokedTargets = [NukeTargets.DeployNuGet],
     EnableGitHubToken = true,
     PublishArtifacts = true,
     FetchDepth = 0
 )]
-[GitHubActions("pull-request", GitHubActionsImage.UbuntuLatest, GitHubActionsImage.WindowsLatest,
+[GitHubActions("pull-request",
+    GitHubActionsImage.UbuntuLatest, GitHubActionsImage.WindowsLatest, GitHubActionsImage.MacOsLatest,
     OnPullRequestBranches = ["main"],
     InvokedTargets = [NukeTargets.Rebuild, NukeTargets.CodeCoverage, NukeTargets.Pack],
     EnableGitHubToken = true,
@@ -33,7 +35,8 @@ using Nuke.Common.ProjectModel;
     PublishCondition = "runner.os == 'Linux'",
     FetchDepth = 0
 )]
-[GitHubActions("main", GitHubActionsImage.UbuntuLatest,
+[GitHubActions("main",
+    GitHubActionsImage.UbuntuLatest, GitHubActionsImage.WindowsLatest, GitHubActionsImage.MacOsLatest,
     OnPushBranches = ["main"],
     InvokedTargets = [NukeTargets.DeployNuGet],
     EnableGitHubToken = true,
