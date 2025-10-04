@@ -14,6 +14,7 @@ using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Serilog;
 
 #pragma warning disable S1144 // remove unused private members
 #pragma warning disable S3903 // move class to namespace
@@ -103,4 +104,13 @@ class Build : NukeBuild,
             : Array.Empty<Project>();
 
     public static int Main() => Execute<Build>(x => ((ICodeCoverageTarget)x).CodeCoverage);
+
+    protected override void OnBuildInitialized()
+    {
+        base.OnBuildInitialized();
+
+        Log.Information("Build initialized");
+        Log.Information("Skip Nuget Push: {SkipPush}", (this as IPushNuGetSettings).SkipPush);
+
+    }
 }
