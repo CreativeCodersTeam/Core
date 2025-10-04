@@ -4,6 +4,7 @@ using System.Linq;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.NukeBuild.BuildActions;
+using CreativeCoders.NukeBuild.Components;
 using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
@@ -76,7 +77,8 @@ class Build : NukeBuild,
 
     public IEnumerable<Project> TestProjects => GetTestProjects();
 
-    bool IPushNuGetSettings.SkipPush => GitHubActions?.IsPullRequest == true;
+    bool IPushNuGetSettings.SkipPush => GitHubActions?.IsPullRequest == true ||
+                                        !(GitHubActions.IsLocalBuild() || GitHubActions?.GetRunnerOs() == GitHubActionsRunnerOs.Linux);
 
     string IPushNuGetSettings.NuGetFeedUrl =>
         GitHubActions?.Workflow == ReleaseWorkflow

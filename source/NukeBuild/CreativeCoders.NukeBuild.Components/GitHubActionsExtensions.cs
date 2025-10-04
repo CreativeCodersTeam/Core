@@ -9,7 +9,19 @@ public static class GitHubActionsExtensions
 {
     public static bool IsRunnerOs(this GitHubActions gitHubActions, string runnerOs)
     {
-        return Env.GetEnvironmentVariable("RUNNER_OS")?
+        return gitHubActions.GetRunnerOs()?
             .Equals(runnerOs, StringComparison.OrdinalIgnoreCase) == true;
+    }
+
+    public static string? GetRunnerOs(this GitHubActions gitHubActions)
+    {
+        return Env.GetEnvironmentVariable("RUNNER_OS") ?? string.Empty;
+    }
+
+    public static bool IsLocalBuild(this GitHubActions? gitHubActions)
+    {
+        return gitHubActions == null ||
+               Env.GetEnvironmentVariable("GITHUB_ACTIONS")?
+                   .Equals("true", StringComparison.OrdinalIgnoreCase) == true;
     }
 }
