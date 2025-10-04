@@ -6,7 +6,7 @@ using CreativeCoders.Net.XmlRpc;
 using CreativeCoders.Net.XmlRpc.Definition;
 using CreativeCoders.Net.XmlRpc.Proxy;
 using CreativeCoders.Net.XmlRpc.Server;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 

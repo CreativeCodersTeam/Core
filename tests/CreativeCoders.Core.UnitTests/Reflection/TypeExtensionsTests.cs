@@ -2,7 +2,7 @@
 using CreativeCoders.Core.Reflection;
 using CreativeCoders.Core.UnitTests.Reflection.TestData;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 

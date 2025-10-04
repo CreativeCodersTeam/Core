@@ -4,7 +4,7 @@ using System.Text;
 using CreativeCoders.Core.Executing;
 using CreativeCoders.Core.Reflection;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;

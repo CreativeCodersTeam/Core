@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.CliArguments.Commands;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.SysConsole.CliArguments.UnitTests.Commands;

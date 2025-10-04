@@ -1,5 +1,5 @@
 ﻿using CreativeCoders.Core;
-using FluentAssertions;
+using AwesomeAssertions;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.UnitTests;
@@ -18,7 +18,7 @@ public static class ObjectExtensions
 
             return true;
         }
-        catch (FluentAssertions.Execution.AssertionFailedException)
+        catch (AwesomeAssertions.Execution.AssertionFailedException)
         {
             return false;
         }

@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Text;
 using CreativeCoders.IO.Ports;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 
 namespace CreativeCoders.IO.UnitTests.Ports;
 

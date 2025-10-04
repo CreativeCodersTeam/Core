@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.NukeBuild.Components;
-using FluentAssertions;
+using AwesomeAssertions;
 using JetBrains.Annotations;
 using Nuke.Common.IO;
 using Nuke.Common.Tools.GitVersion;

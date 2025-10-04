@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.Core.IO;
 using CreativeCoders.Data.NoSql.LiteDb.Tests.TestData;
-using FluentAssertions;
+using AwesomeAssertions;
 using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;

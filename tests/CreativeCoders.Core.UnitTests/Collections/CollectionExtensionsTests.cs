@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using CreativeCoders.Core.Collections;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 #nullable enable

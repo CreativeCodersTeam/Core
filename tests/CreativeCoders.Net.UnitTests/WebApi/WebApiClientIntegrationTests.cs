@@ -10,7 +10,7 @@ using CreativeCoders.Net.UnitTests.WebApi.TestData;
 using CreativeCoders.Net.WebApi;
 using CreativeCoders.UnitTests.Net.Http;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Xunit;

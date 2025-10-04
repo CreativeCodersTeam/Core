@@ -6,7 +6,7 @@ using CreativeCoders.Core.IO;
 using CreativeCoders.Options.Core;
 using CreativeCoders.Options.Storage.FileSystem;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.Options;
 using Xunit;
 

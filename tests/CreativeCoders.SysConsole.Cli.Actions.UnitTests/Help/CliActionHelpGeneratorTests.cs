@@ -5,7 +5,7 @@ using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
 using CreativeCoders.SysConsole.Cli.Parsing.Help;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Help;
@@ -52,7 +52,4 @@ public class CliActionHelpGeneratorTests
         A.CallTo(() => optionsHelpGenerator.CreateHelp(typeof(OptionsForHelp)))
             .MustHaveHappenedOnceExactly();
     }
-
-    [Fact]
-    public void Test() { }
 }

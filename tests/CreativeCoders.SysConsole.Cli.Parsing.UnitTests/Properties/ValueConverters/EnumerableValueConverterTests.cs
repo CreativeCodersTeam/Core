@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
 using CreativeCoders.SysConsole.Cli.Parsing.OptionProperties.ValueConverters;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.Properties.ValueConverters;

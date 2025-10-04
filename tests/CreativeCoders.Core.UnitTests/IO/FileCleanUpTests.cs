@@ -5,7 +5,7 @@ using System.IO;
 using System.IO.Abstractions.TestingHelpers;
 using CreativeCoders.Core.IO;
 using CreativeCoders.UnitTests;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.IO;

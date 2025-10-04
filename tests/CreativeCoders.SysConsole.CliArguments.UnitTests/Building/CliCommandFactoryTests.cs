@@ -3,7 +3,7 @@ using CreativeCoders.SysConsole.CliArguments.Building;
 using CreativeCoders.SysConsole.CliArguments.Commands;
 using CreativeCoders.SysConsole.CliArguments.Exceptions;
 using CreativeCoders.SysConsole.CliArguments.UnitTests.Commands;
-using FluentAssertions;
+using AwesomeAssertions;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -46,6 +46,6 @@ public class CommandWithErrorCtor : DelegateCliCommand<TestOptionForCommand>
 {
     public CommandWithErrorCtor()
     {
-        throw new ArgumentException();
+        throw new ArgumentException("Test exception");
     }
 }

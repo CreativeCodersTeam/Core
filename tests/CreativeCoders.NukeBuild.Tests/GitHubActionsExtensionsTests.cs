@@ -1,7 +1,7 @@
 ﻿using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.NukeBuild.Components;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Nuke.Common.CI.GitHubActions;
 
 namespace CreativeCoders.NukeBuild.Tests;

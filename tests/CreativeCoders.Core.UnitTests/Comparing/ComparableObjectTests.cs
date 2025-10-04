@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using CreativeCoders.Core.UnitTests.Comparing.TestData;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Comparing;

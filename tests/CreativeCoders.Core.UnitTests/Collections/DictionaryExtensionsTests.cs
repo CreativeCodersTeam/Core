@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using CreativeCoders.Core.Collections;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Collections;
