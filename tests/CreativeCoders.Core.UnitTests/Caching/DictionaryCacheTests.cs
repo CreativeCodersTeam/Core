@@ -338,10 +338,10 @@ public class DictionaryCacheTests
     }
 
     [Fact]
-    public void
+    public async Task
         GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
     {
-        TestCaching
+        await TestCaching
             .GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
                 CreateCache<int, string>());
     }

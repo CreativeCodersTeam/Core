@@ -788,7 +788,7 @@ internal static class TestCaching
         Assert.True(getValueCalled2);
     }
 
-    public static void
+    public static async Task
         GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
             ICache<int, string> cache)
     {
@@ -805,7 +805,8 @@ internal static class TestCaching
 
         Assert.Equal(testValue, value);
 
-        Thread.Sleep(100);
+        await Task.Delay(100);
+        //Thread.Sleep(100);
 
         var secondValue = cache.GetOrAdd(1, () =>
         {
@@ -813,7 +814,7 @@ internal static class TestCaching
             return testValue;
         }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(200)));
 
-        Thread.Sleep(100);
+        await Task.Delay(100);
 
         var thirdValue = cache.GetOrAdd(1, () =>
         {
