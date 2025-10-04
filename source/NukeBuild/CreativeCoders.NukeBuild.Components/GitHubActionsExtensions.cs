@@ -9,11 +9,11 @@ public static class GitHubActionsExtensions
 {
     public static bool IsRunnerOs(this GitHubActions gitHubActions, string runnerOs)
     {
-        return gitHubActions.GetRunnerOs()?
-            .Equals(runnerOs, StringComparison.OrdinalIgnoreCase) == true;
+        return gitHubActions.GetRunnerOs()
+            .Equals(runnerOs, StringComparison.OrdinalIgnoreCase);
     }
 
-    public static string? GetRunnerOs(this GitHubActions gitHubActions)
+    public static string GetRunnerOs(this GitHubActions gitHubActions)
     {
         return Env.GetEnvironmentVariable("RUNNER_OS") ?? string.Empty;
     }
@@ -22,6 +22,6 @@ public static class GitHubActionsExtensions
     {
         return gitHubActions == null ||
                Env.GetEnvironmentVariable("GITHUB_ACTIONS")?
-                   .Equals("true", StringComparison.OrdinalIgnoreCase) == true;
+                   .Equals("true", StringComparison.OrdinalIgnoreCase) == false;
     }
 }
