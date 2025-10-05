@@ -23,17 +23,6 @@ internal class CacheEntry<TKey, TValue> : ICacheEntry<TKey, TValue>
                 return false;
             case CacheExpirationMode.AbsoluteDateTime:
                 return DateTime.UtcNow > ExpirationPolicy.AbsoluteDateTime;
-            case CacheExpirationMode.SlidingTimeSpan:
-                // Console.WriteLine("DateTime.UtcNow: " + DateTime.UtcNow);
-                // Console.WriteLine("LastEntryCheck: " + _lastEntryCheck);
-
-                var isExpired = DateTime.UtcNow > _lastEntryCheck.Add(ExpirationPolicy.SlidingTimeSpan);
-                if (!isExpired)
-                {
-                    _lastEntryCheck = DateTime.UtcNow;
-                }
-
-                return isExpired;
             default:
                 throw new ArgumentOutOfRangeException();
         }
