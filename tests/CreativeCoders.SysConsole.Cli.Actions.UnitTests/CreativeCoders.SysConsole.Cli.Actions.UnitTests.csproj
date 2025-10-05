@@ -25,7 +25,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="XunitXml.TestLogger" Version="4.1.0"/>
+        <PackageReference Include="XunitXml.TestLogger" Version="7.0.1" />
     </ItemGroup>
 
     <ItemGroup>
