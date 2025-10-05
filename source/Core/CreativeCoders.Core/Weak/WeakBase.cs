@@ -14,11 +14,12 @@ public class WeakBase<T> : IDisposable
 
     private object _owner;
 
+    [SuppressMessage("csharpsquid", "S4487", Justification = "Needed to hold a strong reference to the data")]
     private T _data;
 
     public WeakBase(object owner, T data, KeepOwnerAliveMode keepOwnerAliveMode)
     {
-        Ensure.IsNotNull(data, nameof(data));
+        Ensure.IsNotNull(data);
 
         KeepOwnerAlive = GetKeepAlive(keepOwnerAliveMode, owner);
 
@@ -62,7 +63,7 @@ public class WeakBase<T> : IDisposable
         var target = _ownerReference.Target;
 
         return target == null
-            ? default
+            ? null
             : _dataReference?.GetTarget();
     }
 

@@ -21,12 +21,9 @@ public abstract class OptionPropertyBase
     {
         if (optionArgument == null && _optionAttribute.DefaultValue == null)
         {
-            if (_optionAttribute.IsRequired)
-            {
-                throw new RequiredArgumentMissingException(_propertyInfo, _optionAttribute);
-            }
-
-            return false;
+            return _optionAttribute.IsRequired
+                ? throw new RequiredArgumentMissingException(_propertyInfo, _optionAttribute)
+                : false;
         }
 
         var value = optionArgument == null

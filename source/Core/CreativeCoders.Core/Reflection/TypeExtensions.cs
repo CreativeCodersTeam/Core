@@ -13,8 +13,8 @@ public static class TypeExtensions
     public static object? CreateGenericInstance(this Type type, Type typeArgument,
         params object[] constructorParameters)
     {
-        Ensure.That(type.IsGenericType, nameof(type));
-        Ensure.IsNotNull(typeArgument, nameof(typeArgument));
+        Ensure.That(type.IsGenericType);
+        Ensure.IsNotNull(typeArgument);
 
         var newType = type.MakeGenericType(typeArgument);
         var instance = Activator.CreateInstance(newType, constructorParameters);
@@ -68,7 +68,7 @@ public static class TypeExtensions
 
         if (!allArgsMatched)
         {
-            return default;
+            return null;
         }
 
         return Activator.CreateInstance(type, arguments) as T;

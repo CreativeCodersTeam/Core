@@ -8,8 +8,8 @@ public class OptionsHelp
     public OptionsHelp(IEnumerable<HelpEntry> valueHelpEntries,
         IEnumerable<HelpEntry> parameterHelpEntries)
     {
-        ValueHelpEntries = valueHelpEntries.ToImmutableArray();
-        ParameterHelpEntries = parameterHelpEntries.ToImmutableArray();
+        ValueHelpEntries = [..valueHelpEntries];
+        ParameterHelpEntries = [..parameterHelpEntries];
     }
 
     public IImmutableList<HelpEntry> ValueHelpEntries { get; }

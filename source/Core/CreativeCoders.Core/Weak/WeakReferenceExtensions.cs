@@ -9,7 +9,7 @@ public static class WeakReferenceExtensions
     {
         return weakReference.TryGetTarget(out var target)
             ? target
-            : default;
+            : null;
     }
 
     public static bool GetIsAlive<T>(this WeakReference<T> weakReference)

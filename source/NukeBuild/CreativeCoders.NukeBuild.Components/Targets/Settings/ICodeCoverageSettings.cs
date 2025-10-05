@@ -1,7 +1,6 @@
 ﻿using CreativeCoders.Core;
 using CreativeCoders.Core.IO;
 using CreativeCoders.Core.SysEnvironment;
-using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.IO;
 
 namespace CreativeCoders.NukeBuild.Components.Targets.Settings;

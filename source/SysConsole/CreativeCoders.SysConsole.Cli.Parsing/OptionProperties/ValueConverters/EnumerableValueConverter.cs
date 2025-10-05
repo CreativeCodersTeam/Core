@@ -11,12 +11,7 @@ public class EnumerableValueConverter : ICliValueConverter
 {
     public object? Convert(object? value, Type targetType, OptionBaseAttribute optionAttribute)
     {
-        if (value == null)
-        {
-            return ConverterAction.DoNothing;
-        }
-
-        if (!targetType.IsAssignableTo(typeof(IEnumerable)))
+        if (value == null || !targetType.IsAssignableTo(typeof(IEnumerable)))
         {
             return ConverterAction.DoNothing;
         }

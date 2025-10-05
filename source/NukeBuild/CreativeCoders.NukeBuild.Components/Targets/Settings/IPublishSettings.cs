@@ -10,5 +10,5 @@ public interface IPublishSettings : INukeBuild
         ? artifactsSettings.ArtifactsDirectory / "dist"
         : TemporaryDirectory / "dist";
 
-    IEnumerable<PublishingItem> PublishingItems => Array.Empty<PublishingItem>();
+    IEnumerable<PublishingItem> PublishingItems => [];
 }

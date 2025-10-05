@@ -36,7 +36,7 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
 
     public ExtendedObservableCollection()
         : this(SynchronizationContext.Current, SynchronizationMethod.Send,
-            () => new LockSlimLockingMechanism(), Array.Empty<T>()) { }
+            () => new LockSlimLockingMechanism(), []) { }
 
     public ExtendedObservableCollection(IEnumerable<T> items)
         : this(SynchronizationContext.Current, SynchronizationMethod.Send,
@@ -44,7 +44,7 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
 
     public ExtendedObservableCollection(SynchronizationContext? synchronizationContext,
         SynchronizationMethod synchronizationMethod, Func<ILockingMechanism> lockingMechanism)
-        : this(synchronizationContext, synchronizationMethod, lockingMechanism, Array.Empty<T>()) { }
+        : this(synchronizationContext, synchronizationMethod, lockingMechanism, []) { }
 
     public ExtendedObservableCollection(SynchronizationContext? synchronizationContext,
         SynchronizationMethod synchronizationMethod, Func<ILockingMechanism> lockingMechanism,
