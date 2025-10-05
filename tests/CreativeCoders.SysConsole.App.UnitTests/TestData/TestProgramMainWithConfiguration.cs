@@ -6,14 +6,9 @@ using Microsoft.Extensions.Configuration;
 namespace CreativeCoders.SysConsole.App.UnitTests.TestData;
 
 [PublicAPI]
-public class TestProgramMainWithConfiguration : IMain
+public class TestProgramMainWithConfiguration(IConfiguration configuration) : IMain
 {
-    private readonly int _returnCode;
-
-    public TestProgramMainWithConfiguration(IConfiguration configuration)
-    {
-        _returnCode = int.Parse(configuration["ReturnCode"]);
-    }
+    private readonly int _returnCode = int.Parse(configuration["ReturnCode"] ?? "-123456");
 
     public Task<int> ExecuteAsync(string[] args)
     {

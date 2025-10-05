@@ -15,7 +15,7 @@ public sealed class LiteDbTestContext<T, TKey> : IDisposable
     {
         var services = new ServiceCollection();
 
-        _dbFile = new FileCleanUp(FileSys.Path.GetTempFileName());
+        _dbFile = new FileCleanUp(FileSys.Path.Combine(FileSys.Path.GetTempPath(), FileSys.Path.GetRandomFileName()));
 
         if (indexBuilder == null)
         {
