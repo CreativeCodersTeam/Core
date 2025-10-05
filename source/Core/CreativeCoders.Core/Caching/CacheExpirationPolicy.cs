@@ -18,7 +18,7 @@ public class CacheExpirationPolicy : ICacheExpirationPolicy
     {
         return new CacheExpirationPolicy(CacheExpirationMode.AbsoluteDateTime)
         {
-            AbsoluteDateTime = absoluteDateTime
+            AbsoluteDateTime = absoluteDateTime.ToUniversalTime()
         };
     }
 

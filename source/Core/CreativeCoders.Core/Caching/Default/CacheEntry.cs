@@ -12,7 +12,7 @@ internal class CacheEntry<TKey, TValue> : ICacheEntry<TKey, TValue>
     {
         Key = key;
         ExpirationPolicy = expirationPolicy;
-        _lastEntryCheck = DateTime.Now;
+        _lastEntryCheck = DateTime.UtcNow;
     }
 
     public bool CheckIsExpired()
@@ -22,12 +22,12 @@ internal class CacheEntry<TKey, TValue> : ICacheEntry<TKey, TValue>
             case CacheExpirationMode.NeverExpire:
                 return false;
             case CacheExpirationMode.AbsoluteDateTime:
-                return DateTime.Now > ExpirationPolicy.AbsoluteDateTime;
+                return DateTime.UtcNow > ExpirationPolicy.AbsoluteDateTime;
             case CacheExpirationMode.SlidingTimeSpan:
-                var isExpired = DateTime.Now > _lastEntryCheck.Add(ExpirationPolicy.SlidingTimeSpan);
+                var isExpired = DateTime.UtcNow > _lastEntryCheck.Add(ExpirationPolicy.SlidingTimeSpan);
                 if (!isExpired)
                 {
-                    _lastEntryCheck = DateTime.Now;
+                    _lastEntryCheck = DateTime.UtcNow;
                 }
 
                 return isExpired;
