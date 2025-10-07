@@ -396,8 +396,8 @@ public sealed class JwtTokenAuthIntegrationTests
         A.CallTo(() => refreshTokenStore.IsTokenValidAsync(A<string>.Ignored))
             .Returns(false);
 
-        await using var context = new TestServerContext<TestStartup>(
-            services => services.AddSingleton(refreshTokenStore));
+        await using var context =
+            new TestServerContext<TestStartup>(services => services.AddSingleton(refreshTokenStore));
 
         var refreshTokenRequest = new RefreshTokenRequest
         {
@@ -426,8 +426,8 @@ public sealed class JwtTokenAuthIntegrationTests
         A.CallTo(() => refreshTokenStore.IsTokenValidAsync(A<string>.Ignored))
             .Returns(true);
 
-        await using var context = new TestServerContext<TestStartup>(
-            services => services.AddSingleton(refreshTokenStore));
+        await using var context =
+            new TestServerContext<TestStartup>(services => services.AddSingleton(refreshTokenStore));
 
         A.CallTo(() => context.TokenCreator.ReadTokenFromStringAsync(refreshToken))
             .Returns(new AuthToken());
@@ -527,7 +527,7 @@ public sealed class JwtTokenAuthIntegrationTests
         await using var context =
             new TestServerContext<TestStartup>(
                 x => x.AddScoped<ITokenCreator, JwtTokenCreator>(),
-                null, x =>
+                x => x.ExpirationTimeSpan = TimeSpan.FromHours(4), x =>
                 {
                     x.AuthTokenName = authTokenName;
                     x.Issuer = "my Issuer";
