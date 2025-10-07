@@ -7,7 +7,7 @@ using CreativeCoders.SysConsole.Cli.Actions.Help;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime.Middleware;
 using CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 

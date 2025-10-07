@@ -52,7 +52,7 @@ public sealed class ObservableCollectionSynchronizer<TSourceElement, TReplicaEle
                 break;
             case NotifyCollectionChangedAction.Remove:
                 RemoveElements(e.OldStartingIndex,
-                    e.OldItems?.Cast<TSourceElement>() ?? Array.Empty<TSourceElement>());
+                    e.OldItems?.Cast<TSourceElement>() ?? []);
                 break;
             case NotifyCollectionChangedAction.Replace:
                 ReplaceElement(e);

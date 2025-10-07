@@ -1,6 +1,6 @@
 ﻿using CreativeCoders.NukeBuild;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Nuke.Common.Tools.GitVersion;
 using Xunit;
 

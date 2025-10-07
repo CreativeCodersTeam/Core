@@ -10,7 +10,7 @@ using CreativeCoders.Core.Text;
 using CreativeCoders.Net.JsonRpc;
 using CreativeCoders.UnitTests.Net.Http;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.Net.UnitTests.JsonRpc;

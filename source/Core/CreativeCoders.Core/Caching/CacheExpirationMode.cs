@@ -3,6 +3,5 @@
 public enum CacheExpirationMode
 {
     NeverExpire,
-    SlidingTimeSpan,
     AbsoluteDateTime
 }

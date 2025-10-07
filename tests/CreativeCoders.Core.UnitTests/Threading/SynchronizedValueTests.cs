@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Threading;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Threading;

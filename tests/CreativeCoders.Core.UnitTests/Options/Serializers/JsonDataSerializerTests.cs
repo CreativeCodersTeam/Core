@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using CreativeCoders.Options.Serializers;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 #nullable enable

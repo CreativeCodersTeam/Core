@@ -5,7 +5,7 @@ using System.IO;
 using System.IO.Abstractions.TestingHelpers;
 using CreativeCoders.Core.IO;
 using CreativeCoders.UnitTests;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.IO;
@@ -14,7 +14,6 @@ namespace CreativeCoders.Core.UnitTests.IO;
 public class FileCleanUpTests
 {
     [Fact]
-    [Obsolete("Obsolete cause underlying method from System.IO.Abstractions is marked as obsolete")]
     public void Dispose_FileNotExistsNoThrow_NotThrowsException()
     {
         var mockFileSystem = new MockFileSystemEx(
@@ -23,7 +22,7 @@ public class FileCleanUpTests
 
         mockFileSystem.Install();
 
-        var fileName = FileSys.Path.GetTempFileName();
+        var fileName = FileSys.Path.Combine(FileSys.Path.GetTempPath(), FileSys.Path.GetRandomFileName());
 
         // Arrange
         var fcu = new FileCleanUp(fileName);
@@ -48,7 +47,7 @@ public class FileCleanUpTests
 
         mockFileSystem.Install();
 
-        var fileName = FileSys.Path.GetTempFileName();
+        var fileName = FileSys.Path.Combine(FileSys.Path.GetTempPath(), FileSys.Path.GetRandomFileName());
 
         FileSys.Directory.CreateDirectory(FileSys.Path.GetDirectoryName(fileName)!);
 
@@ -72,7 +71,7 @@ public class FileCleanUpTests
     [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
     public void Dispose_FileExistsNoThrow_NotThrowsExceptionAndFileIsDeleted()
     {
-        var fileName = FileSys.Path.GetTempFileName();
+        var fileName = FileSys.Path.Combine(FileSys.Path.GetTempPath(), FileSys.Path.GetRandomFileName());
 
         FileSys.Directory.CreateDirectory(FileSys.Path.GetDirectoryName(fileName)!);
 

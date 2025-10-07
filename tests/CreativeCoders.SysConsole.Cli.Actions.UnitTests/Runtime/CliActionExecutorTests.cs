@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Cli.Actions.Exceptions;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.Runtime;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 

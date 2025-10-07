@@ -26,6 +26,13 @@ public sealed class TestServerContext<TStartup> : IAsyncDisposable
 
         var webHostBuilder = SetupWebHostBuilder(services =>
         {
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.ClearProviders();
+                loggingBuilder.AddDebug();
+                loggingBuilder.SetMinimumLevel(LogLevel.Information);
+            });
+
             configureServices?.Invoke(services);
 
             services.TryAddScoped(_ => UserClaimsProvider);

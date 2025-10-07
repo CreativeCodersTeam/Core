@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CreativeCoders.SysConsole.CliArguments.Building;
 using CreativeCoders.SysConsole.CliArguments.Commands;
 using CreativeCoders.SysConsole.CliArguments.UnitTests.TestData;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 

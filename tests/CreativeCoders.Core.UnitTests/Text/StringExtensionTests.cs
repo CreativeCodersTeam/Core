@@ -4,7 +4,7 @@ using System.Security;
 using System.Text;
 using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.Core.Text;
-using FluentAssertions;
+using AwesomeAssertions;
 using JetBrains.Annotations;
 using Xunit;
 
@@ -237,7 +237,7 @@ public class StringExtensionTests
         sb.AppendLine("Test");
 
         // Act
-        sb.AppendLineIf(false, "1234");
+        sb.AppendIf(false, "1234");
 
         // Assert
         sb.ToString()

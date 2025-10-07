@@ -153,8 +153,7 @@ public class CSharpScriptIntegrationTests
             Assert.Throws<ScriptCompilationFailedException>(() => runtimeSpace.Build(scriptPackage));
 
         Assert.Same(scriptPackage, exception.ScriptPackage);
-        Assert.NotEmpty(
-            exception.CompilationResultMessages.Where(x => x.MessageType == CompilationMessageType.Error));
+        Assert.Contains(exception.CompilationResultMessages, x => x.MessageType == CompilationMessageType.Error);
     }
 
     private static IScript CreateScript(string sourceCode,

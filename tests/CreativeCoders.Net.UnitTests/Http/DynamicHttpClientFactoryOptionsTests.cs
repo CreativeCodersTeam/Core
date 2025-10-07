@@ -1,6 +1,6 @@
 ﻿using CreativeCoders.Net.Http;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.Http;
 using Xunit;
 

@@ -13,7 +13,7 @@ public interface ICleanSettings
     {
         get
         {
-            var dirs = new List<AbsolutePath>() as IList<AbsolutePath>;
+            IList<AbsolutePath> dirs = new List<AbsolutePath>();
 
             if (this.TryAs<ISourceDirectoryParameter>(out var sourceDirectoryParameter))
             {

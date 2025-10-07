@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Core.Abstractions;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.SysConsole.App.UnitTests;

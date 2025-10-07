@@ -1,6 +1,6 @@
 ﻿using CreativeCoders.DependencyInjection.UnitTests.TestData;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 

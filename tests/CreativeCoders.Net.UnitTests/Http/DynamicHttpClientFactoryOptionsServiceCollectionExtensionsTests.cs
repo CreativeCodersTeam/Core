@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using CreativeCoders.Net.Http;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 

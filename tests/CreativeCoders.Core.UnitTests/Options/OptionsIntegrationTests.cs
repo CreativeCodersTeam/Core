@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.Options.Core;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Xunit;

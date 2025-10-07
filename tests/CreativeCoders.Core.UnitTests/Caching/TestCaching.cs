@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CreativeCoders.Core.Caching;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Caching;
@@ -488,7 +488,7 @@ internal static class TestCaching
     {
         var expirationPolicy = A.Fake<ICacheExpirationPolicy>();
         A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.AbsoluteDateTime);
-        var expirationDateTime = DateTime.Now;
+        var expirationDateTime = DateTime.UtcNow;
         A.CallTo(() => expirationPolicy.AbsoluteDateTime).Returns(expirationDateTime);
 
         cache.AddOrUpdate(1, "TestValue", expirationPolicy);
@@ -502,36 +502,8 @@ internal static class TestCaching
     {
         var expirationPolicy = A.Fake<ICacheExpirationPolicy>();
         A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.AbsoluteDateTime);
-        var expirationDateTime = DateTime.Now;
+        var expirationDateTime = DateTime.UtcNow;
         A.CallTo(() => expirationPolicy.AbsoluteDateTime).Returns(expirationDateTime);
-
-        await cache.AddOrUpdateAsync(1, "TestValue", expirationPolicy);
-
-        Thread.Sleep(100);
-
-        Assert.False(cache.TryGet(1, out _));
-    }
-
-    public static void TryGet_AfterExpirationTimeSpan_ReturnsFalse(ICache<int, string> cache)
-    {
-        var expirationPolicy = A.Fake<ICacheExpirationPolicy>();
-        A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.SlidingTimeSpan);
-
-        A.CallTo(() => expirationPolicy.SlidingTimeSpan).Returns(TimeSpan.FromMilliseconds(50));
-
-        cache.AddOrUpdate(1, "TestValue", expirationPolicy);
-
-        Thread.Sleep(100);
-
-        Assert.False(cache.TryGet(1, out _));
-    }
-
-    public static async Task TryGetAsync_AfterExpirationTimeSpan_ReturnsFalse(ICache<int, string> cache)
-    {
-        var expirationPolicy = A.Fake<ICacheExpirationPolicy>();
-        A.CallTo(() => expirationPolicy.ExpirationMode).Returns(CacheExpirationMode.SlidingTimeSpan);
-
-        A.CallTo(() => expirationPolicy.SlidingTimeSpan).Returns(TimeSpan.FromMilliseconds(50));
 
         await cache.AddOrUpdateAsync(1, "TestValue", expirationPolicy);
 
@@ -746,86 +718,6 @@ internal static class TestCaching
         getValueCalled2
             .Should()
             .BeTrue();
-    }
-
-    public static void
-        GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes(
-            ICache<int, string> cache)
-    {
-        const string testValue = "Test1";
-
-        var getValueCalled = false;
-        var getValueCalled1 = false;
-        var getValueCalled2 = false;
-        var value = cache.GetOrAdd(1, () =>
-        {
-            getValueCalled = true;
-            return testValue;
-        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(150)));
-
-        Assert.Equal(testValue, value);
-
-        Thread.Sleep(100);
-
-        var secondValue = cache.GetOrAdd(1, () =>
-        {
-            getValueCalled1 = true;
-            return testValue;
-        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(150)));
-
-        Thread.Sleep(200);
-
-        var thirdValue = cache.GetOrAdd(1, () =>
-        {
-            getValueCalled2 = true;
-            return testValue;
-        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(150)));
-
-        Assert.Equal(testValue, secondValue);
-        Assert.Equal(testValue, thirdValue);
-        Assert.True(getValueCalled);
-        Assert.False(getValueCalled1);
-        Assert.True(getValueCalled2);
-    }
-
-    public static void
-        GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
-            ICache<int, string> cache)
-    {
-        const string testValue = "Test1";
-
-        var getValueCalled = false;
-        var getValueCalled1 = false;
-        var getValueCalled2 = false;
-        var value = cache.GetOrAdd(1, () =>
-        {
-            getValueCalled = true;
-            return testValue;
-        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(200)));
-
-        Assert.Equal(testValue, value);
-
-        Thread.Sleep(150);
-
-        var secondValue = cache.GetOrAdd(1, () =>
-        {
-            getValueCalled1 = true;
-            return testValue;
-        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(200)));
-
-        Thread.Sleep(150);
-
-        var thirdValue = cache.GetOrAdd(1, () =>
-        {
-            getValueCalled2 = true;
-            return testValue;
-        }, CacheExpirationPolicy.AfterSlidingTimeSpan(TimeSpan.FromMilliseconds(150)));
-
-        Assert.Equal(testValue, secondValue);
-        Assert.Equal(testValue, thirdValue);
-        Assert.True(getValueCalled);
-        Assert.False(getValueCalled1);
-        Assert.False(getValueCalled2);
     }
 
     public static async Task

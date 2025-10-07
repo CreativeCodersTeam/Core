@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -11,8 +12,14 @@ public static class DaemonHostBuilderExtensions
     /// </summary>
     /// <param name="daemonHostBuilder"></param>
     /// <returns>The same instance of <see cref="IDaemonHostBuilder"/></returns>
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
     public static IDaemonHostBuilder UseWindowsService(this IDaemonHostBuilder daemonHostBuilder)
     {
+        if (!OperatingSystem.IsWindows())
+        {
+            throw new PlatformNotSupportedException();
+        }
+
         return daemonHostBuilder
             .WithInstaller<WindowsServiceInstaller>()
             .ConfigureHostBuilder(x => x.UseWindowsService())

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing;

@@ -1,6 +1,6 @@
 ﻿using CreativeCoders.SysConsole.Cli.Parsing.Help;
 using CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests.Help;

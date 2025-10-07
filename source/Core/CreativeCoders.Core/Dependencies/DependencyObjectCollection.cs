@@ -14,7 +14,7 @@ namespace CreativeCoders.Core.Dependencies;
 public class DependencyObjectCollection<T>
     where T : class
 {
-    private List<DependencyObject<T>> _dependencyObjects;
+    private readonly List<DependencyObject<T>> _dependencyObjects;
 
     /// -------------------------------------------------------------------------------------------------
     /// <summary>
@@ -134,7 +134,7 @@ public class DependencyObjectCollection<T>
     }
 
     [SuppressMessage("ReSharper", "LoopCanBePartlyConvertedToQuery")]
-    private void RemoveRedundancies(List<DependencyObject<T>> dependencyObjects)
+    private static void RemoveRedundancies(List<DependencyObject<T>> dependencyObjects)
     {
         foreach (var dependency in dependencyObjects.ToArray())
         {

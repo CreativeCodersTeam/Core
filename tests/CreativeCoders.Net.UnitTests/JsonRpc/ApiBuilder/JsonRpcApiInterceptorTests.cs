@@ -5,7 +5,7 @@ using CreativeCoders.Net.JsonRpc;
 using CreativeCoders.Net.JsonRpc.ApiBuilder;
 using CreativeCoders.Net.UnitTests.JsonRpc.TestData;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.Net.UnitTests.JsonRpc.ApiBuilder;

@@ -1,5 +1,4 @@
 ﻿using CreativeCoders.Core;
-using CreativeCoders.Core.SysEnvironment;
 using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
 using JetBrains.Annotations;

@@ -1,6 +1,6 @@
 ﻿using System;
 using CreativeCoders.Options.Serializers;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Options.Serializers;

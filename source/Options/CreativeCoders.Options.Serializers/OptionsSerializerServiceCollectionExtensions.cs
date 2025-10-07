@@ -17,7 +17,7 @@ public static class OptionsSerializerServiceCollectionExtensions
     {
         if (jsonSerializerOptions != null)
         {
-            services.TryAddSingleton<IOptionsStorageDataSerializer<T>>(serviceProvider =>
+            services.TryAddSingleton<IOptionsStorageDataSerializer<T>>(_ =>
                 new JsonDataSerializer<T>(jsonSerializerOptions));
         }
         else

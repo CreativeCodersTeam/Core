@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using CreativeCoders.SysConsole.Cli.Parsing.Exceptions;
 using CreativeCoders.SysConsole.Cli.Parsing.UnitTests.TestData;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing.UnitTests;

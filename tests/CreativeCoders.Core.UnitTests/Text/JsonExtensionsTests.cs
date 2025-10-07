@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 using CreativeCoders.Core.Text;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Text;

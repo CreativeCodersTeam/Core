@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using CreativeCoders.SysConsole.Cli.Actions.Definition;
 using CreativeCoders.SysConsole.Cli.Actions.Routing;
 using CreativeCoders.SysConsole.Cli.Actions.UnitTests.TestData;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.SysConsole.Cli.Actions.UnitTests.Routing;

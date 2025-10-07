@@ -1,5 +1,5 @@
 ﻿using CreativeCoders.Core.Enums;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Enums;

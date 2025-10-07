@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using FluentAssertions;
+using System.Diagnostics.CodeAnalysis;
+using AwesomeAssertions;
 using Xunit;
 
 #nullable enable
 
 namespace CreativeCoders.Core.UnitTests.EnsureArguments;
 
+[SuppressMessage("csharp", "S3236", Justification = "Test")]
 public class ArgumentNotNullTests
 {
     [Theory]

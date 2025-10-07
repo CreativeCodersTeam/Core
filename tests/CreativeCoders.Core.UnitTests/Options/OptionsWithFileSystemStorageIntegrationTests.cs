@@ -4,7 +4,7 @@ using CreativeCoders.Options.Core;
 using CreativeCoders.Options.Serializers;
 using CreativeCoders.Options.Storage.FileSystem;
 using CreativeCoders.UnitTests;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Xunit;

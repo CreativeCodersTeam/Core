@@ -1,6 +1,6 @@
 ﻿using CreativeCoders.SysConsole.Core.Abstractions;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.SysConsole.UnitTests;
@@ -40,7 +40,7 @@ public class SysConsoleExtensionsTests
     [InlineData(false, "2", true)]
     [InlineData(false, "a", true)]
     public void SelectItem_NotExistingItemIsSelected_ReturnsDefault(
-        object expectedItem, string selectionIndex, params object[] items)
+        object? expectedItem, string selectionIndex, params object[] items)
     {
         var console = A.Fake<ISysConsole>();
 

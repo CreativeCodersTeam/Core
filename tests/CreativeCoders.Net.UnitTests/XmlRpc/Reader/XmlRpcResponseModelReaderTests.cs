@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using CreativeCoders.Net.XmlRpc.Model.Values;
 using CreativeCoders.Net.XmlRpc.Reader;
@@ -15,7 +16,7 @@ public class XmlRpcResponseModelReaderTests
         "<?xml version=\"1.0\" encoding=\"utf-8\"?><methodResponse><params><param><value><string>TestResult Value</string></value></param></params></methodResponse>";
 
     [Fact]
-    public async void Read_ValidResponse_ReturnsCorrectModel()
+    public async Task Read_ValidResponse_ReturnsCorrectModel()
     {
         var stringValue = new StringValue("Test1234");
         var readers = A.Fake<IValueReaders>();

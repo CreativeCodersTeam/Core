@@ -262,18 +262,6 @@ public class DictionaryCacheTests
     }
 
     [Fact]
-    public void TryGet_AfterExpirationTimeSpan_ReturnsFalse()
-    {
-        TestCaching.TryGet_AfterExpirationTimeSpan_ReturnsFalse(CreateCache<int, string>());
-    }
-
-    [Fact]
-    public async Task TryGetAsync_AfterExpirationTimeSpan_ReturnsFalse()
-    {
-        await TestCaching.TryGetAsync_AfterExpirationTimeSpan_ReturnsFalse(CreateCache<int, string>());
-    }
-
-    [Fact]
     public void GetOrAdd_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
     {
         TestCaching.GetOrAdd_TwoTimesCalled_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
@@ -325,24 +313,6 @@ public class DictionaryCacheTests
     {
         TestCaching
             .GetOrAdd_TwoTimesCalledWithNoDateTimeExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
-                CreateCache<int, string>());
-    }
-
-    [Fact]
-    public void
-        GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes()
-    {
-        TestCaching
-            .GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledTwoTimes(
-                CreateCache<int, string>());
-    }
-
-    [Fact]
-    public void
-        GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime()
-    {
-        TestCaching
-            .GetOrAdd_TwoTimesCalledWithNoTimeSpanExpire_ResultAlwaysTheSameAndGetValueFuncCalledOneTime(
                 CreateCache<int, string>());
     }
 

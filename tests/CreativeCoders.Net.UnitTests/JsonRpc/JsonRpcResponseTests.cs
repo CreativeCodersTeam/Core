@@ -1,5 +1,5 @@
 ﻿using CreativeCoders.Net.JsonRpc;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.Net.UnitTests.JsonRpc;

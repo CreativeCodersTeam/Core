@@ -4,6 +4,7 @@ using System.Linq;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.NukeBuild.BuildActions;
+using CreativeCoders.NukeBuild.Components;
 using CreativeCoders.NukeBuild.Components.Parameters;
 using CreativeCoders.NukeBuild.Components.Targets;
 using CreativeCoders.NukeBuild.Components.Targets.Settings;
@@ -13,19 +14,23 @@ using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Serilog;
 
 #pragma warning disable S1144 // remove unused private members
 #pragma warning disable S3903 // move class to namespace
 [PublicAPI]
 [UnsetVisualStudioEnvironmentVariables]
-[GitHubActions("integration", GitHubActionsImage.UbuntuLatest,
+[GitHubActions("integration",
+    GitHubActionsImage.UbuntuLatest, GitHubActionsImage.WindowsLatest, GitHubActionsImage.MacOsLatest,
     OnPushBranches = ["feature/**"],
     InvokedTargets = [NukeTargets.DeployNuGet],
     EnableGitHubToken = true,
     PublishArtifacts = true,
+    PublishCondition = "runner.os == 'Linux'",
     FetchDepth = 0
 )]
-[GitHubActions("pull-request", GitHubActionsImage.UbuntuLatest, GitHubActionsImage.WindowsLatest,
+[GitHubActions("pull-request",
+    GitHubActionsImage.UbuntuLatest, GitHubActionsImage.WindowsLatest, GitHubActionsImage.MacOsLatest,
     OnPullRequestBranches = ["main"],
     InvokedTargets = [NukeTargets.Rebuild, NukeTargets.CodeCoverage, NukeTargets.Pack],
     EnableGitHubToken = true,
@@ -33,11 +38,13 @@ using Nuke.Common.ProjectModel;
     PublishCondition = "runner.os == 'Linux'",
     FetchDepth = 0
 )]
-[GitHubActions("main", GitHubActionsImage.UbuntuLatest,
+[GitHubActions("main",
+    GitHubActionsImage.UbuntuLatest, GitHubActionsImage.WindowsLatest, GitHubActionsImage.MacOsLatest,
     OnPushBranches = ["main"],
     InvokedTargets = [NukeTargets.DeployNuGet],
     EnableGitHubToken = true,
     PublishArtifacts = true,
+    PublishCondition = "runner.os == 'Linux'",
     FetchDepth = 0
 )]
 [GitHubActions(ReleaseWorkflow, GitHubActionsImage.UbuntuLatest,
@@ -71,7 +78,8 @@ class Build : NukeBuild,
 
     public IEnumerable<Project> TestProjects => GetTestProjects();
 
-    bool IPushNuGetSettings.SkipPush => GitHubActions?.IsPullRequest == true;
+    bool IPushNuGetSettings.SkipPush => GitHubActions?.IsPullRequest == true ||
+                                        !(GitHubActions.IsLocalBuild() || GitHubActions?.GetRunnerOs() == GitHubActionsRunnerOs.Linux);
 
     string IPushNuGetSettings.NuGetFeedUrl =>
         GitHubActions?.Workflow == ReleaseWorkflow
@@ -93,7 +101,16 @@ class Build : NukeBuild,
         this.TryAs<ISolutionParameter>(out var solutionParameter)
             ? solutionParameter.Solution.GetAllProjects("*")
                 .Where(x => ((string)x.Path)?.StartsWith(RootDirectory / "tests") ?? false).ToArray()
-            : Array.Empty<Project>();
+            : [];
 
     public static int Main() => Execute<Build>(x => ((ICodeCoverageTarget)x).CodeCoverage);
+
+    protected override void OnBuildInitialized()
+    {
+        base.OnBuildInitialized();
+
+        Log.Information("Build initialized");
+        Log.Information("Skip Nuget Push: {SkipPush}", (this as IPushNuGetSettings).SkipPush);
+
+    }
 }

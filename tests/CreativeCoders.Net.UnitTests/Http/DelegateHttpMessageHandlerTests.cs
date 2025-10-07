@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using CreativeCoders.Net.Http;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Win32.SafeHandles;
 using Xunit;
 

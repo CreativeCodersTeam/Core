@@ -22,12 +22,8 @@ public static class ServiceCollectionExtensions
     [ExcludeFromCodeCoverage]
     private static IServiceRegistration CreateServiceRegistration(Type serviceRegistrationType)
     {
-        if (Activator.CreateInstance(serviceRegistrationType) is not IServiceRegistration serviceRegistration)
-        {
-            throw new InvalidOperationException();
-        }
-
-        return serviceRegistration;
+        return Activator.CreateInstance(serviceRegistrationType) as IServiceRegistration
+               ?? throw new InvalidOperationException();
     }
 
     public static void AddObjectFactory(this IServiceCollection services)

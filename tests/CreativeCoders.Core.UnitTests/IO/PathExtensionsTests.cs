@@ -1,7 +1,7 @@
 ﻿using System.IO.Abstractions;
 using CreativeCoders.Core.IO;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.IO;

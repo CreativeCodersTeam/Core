@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Abstractions.TestingHelpers;
 using CreativeCoders.UnitTests;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 #nullable enable
