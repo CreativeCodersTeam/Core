@@ -8,7 +8,7 @@ internal class DefaultObjectFactory<T> : IObjectFactory<T>
 
     public DefaultObjectFactory(IObjectFactory objectFactory)
     {
-        _objectFactory = Ensure.NotNull(objectFactory, nameof(objectFactory));
+        _objectFactory = Ensure.NotNull(objectFactory);
     }
 
     public T GetInstance()
@@ -28,7 +28,7 @@ internal class DefaultObjectFactory : IObjectFactory
 
     public DefaultObjectFactory(IServiceProvider serviceProvider)
     {
-        _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+        _serviceProvider = Ensure.NotNull(serviceProvider);
     }
 
     public T GetInstance<T>()

@@ -235,6 +235,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "junie", "junie", "{6CAB0BC8
 		.junie\guidelines.md = .junie\guidelines.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessUtilsSampleApp", "samples\ProcessUtilsSampleApp\ProcessUtilsSampleApp.csproj", "{58E94E6E-9A9A-4E3F-ACB5-89E47CE67C39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -539,6 +541,10 @@ Global
 		{A26B77F8-EA82-4E04-ABE4-2CFB660CA323}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A26B77F8-EA82-4E04-ABE4-2CFB660CA323}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A26B77F8-EA82-4E04-ABE4-2CFB660CA323}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58E94E6E-9A9A-4E3F-ACB5-89E47CE67C39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58E94E6E-9A9A-4E3F-ACB5-89E47CE67C39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58E94E6E-9A9A-4E3F-ACB5-89E47CE67C39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58E94E6E-9A9A-4E3F-ACB5-89E47CE67C39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -641,6 +647,7 @@ Global
 		{A26B77F8-EA82-4E04-ABE4-2CFB660CA323} = {DD74AD8A-E88F-479A-82CE-32F818BE438D}
 		{7EA4E4D9-BC5F-401A-A143-99816D46ABC2} = {FCD8D558-7F1F-4D2E-B2EA-DE412BCEE1F7}
 		{6CAB0BC8-210F-4AFF-902F-91F3BFF64CC8} = {FCD8D558-7F1F-4D2E-B2EA-DE412BCEE1F7}
+		{58E94E6E-9A9A-4E3F-ACB5-89E47CE67C39} = {72E179CA-7AE6-412A-856D-7BD13838E8E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}
