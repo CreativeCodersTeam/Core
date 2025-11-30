@@ -95,6 +95,9 @@ applyTo: '**/*.cs'
 - Demonstrate how to mock dependencies for effective testing.
 - Show how to test authentication and authorization logic.
 - Explain test-driven development principles as applied to API development.
+- Use awesomeassertions for asserting expected results.
+- Use xUnit for unit testing.
+- Use FakeItEasy for mocking dependencies.
 
 ## Performance Optimization
 
