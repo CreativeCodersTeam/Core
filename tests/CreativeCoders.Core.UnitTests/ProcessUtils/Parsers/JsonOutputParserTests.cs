@@ -1,6 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using AwesomeAssertions;
 using CreativeCoders.ProcessUtils.Execution.Parsers;
+using JetBrains.Annotations;
 using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.ProcessUtils.Parsers;
@@ -8,8 +10,11 @@ namespace CreativeCoders.Core.UnitTests.ProcessUtils.Parsers;
 /// <summary>
 ///     Tests for <see cref="JsonOutputParser{T}"/> verifying JSON deserialization behavior and edge cases.
 /// </summary>
+[SuppressMessage("ReSharper", "ConvertToLocalFunction")]
+[SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
 public class JsonOutputParserTests
 {
+    [UsedImplicitly]
     private sealed record Person(string Name, int Age);
 
     /// <summary>
@@ -18,10 +23,13 @@ public class JsonOutputParserTests
     [Fact]
     public void ParseOutput_WithNull_ReturnsDefault()
     {
+        // Arrange
         var parser = new JsonOutputParser<Person>();
 
+        // Act
         var result = parser.ParseOutput(null);
 
+        // Assert
         result
             .Should()
             .BeNull();
@@ -33,10 +41,13 @@ public class JsonOutputParserTests
     [Fact]
     public void ParseOutput_WithWhitespace_ReturnsDefault()
     {
+        // Arrange
         var parser = new JsonOutputParser<Person>();
 
+        // Act
         var result = parser.ParseOutput("   \t\n");
 
+        // Assert
         result
             .Should()
             .BeNull();
@@ -48,11 +59,14 @@ public class JsonOutputParserTests
     [Fact]
     public void ParseOutput_WithValidJson_ReturnsDeserializedObject()
     {
+        // Arrange
         var parser = new JsonOutputParser<Person>();
         const string json = "{\"Name\":\"Alice\",\"Age\":30}";
 
+        // Act
         var result = parser.ParseOutput(json);
 
+        // Assert
         result
             .Should()
             .NotBeNull();
@@ -72,11 +86,14 @@ public class JsonOutputParserTests
     [Fact]
     public void ParseOutput_WithInvalidJson_ThrowsJsonException()
     {
+        // Arrange
         var parser = new JsonOutputParser<Person>();
         const string invalidJson = "{\"Name\":\"Alice\",\"Age\": }"; // malformed
 
+        // Act
         var act = () => parser.ParseOutput(invalidJson);
 
-        Assert.Throws<JsonException>(() => act());
+        // Assert
+        Assert.Throws<JsonException>(act);
     }
 }

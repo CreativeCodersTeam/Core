@@ -18,10 +18,13 @@ public class SplitLinesOutputParserTests
     [Fact]
     public void ParseOutput_WithNull_ReturnsEmptyArray()
     {
+        // Arrange
         var parser = new SplitLinesOutputParser();
 
+        // Act
         var result = parser.ParseOutput(null);
 
+        // Assert
         result
             .Should()
             .NotBeNull();
@@ -38,10 +41,13 @@ public class SplitLinesOutputParserTests
     [Fact]
     public void ParseOutput_WithEmpty_ReturnsEmptyArray()
     {
+        // Arrange
         var parser = new SplitLinesOutputParser();
 
+        // Act
         var result = parser.ParseOutput(string.Empty);
 
+        // Assert
         result
             .Should()
             .NotBeNull();
@@ -58,11 +64,14 @@ public class SplitLinesOutputParserTests
     [Fact]
     public void ParseOutput_WithSingleLine_ReturnsSingleElement()
     {
+        // Arrange
         var parser = new SplitLinesOutputParser();
         const string line = "hello";
 
+        // Act
         var result = parser.ParseOutput(line);
 
+        // Assert
         result
             .Should()
             .NotBeNull();
@@ -83,16 +92,20 @@ public class SplitLinesOutputParserTests
     [Fact]
     public void ParseOutput_WithMultipleLines_RemovesEmptyEntriesAndSplits()
     {
+        // Arrange
         var parser = new SplitLinesOutputParser()
         {
             SplitOptions = StringSplitOptions.RemoveEmptyEntries
         };
 
         var nl = Environment.NewLine;
-        var input = string.Join(nl, "line1", string.Empty, "line2", "line3", string.Empty);
+        string[] lines = ["line1", string.Empty, "line2", "line3", string.Empty];
+        var input = string.Join(nl, lines);
 
+        // Act
         var result = parser.ParseOutput(input);
 
+        // Assert
         result
             .Should()
             .NotBeNull();
@@ -110,13 +123,16 @@ public class SplitLinesOutputParserTests
     [Fact]
     public void ParseOutput_WithMultipleLines_DontRemovesEmptyEntriesAndSplits()
     {
+        // Arrange
         var parser = new SplitLinesOutputParser();
 
         var nl = Environment.NewLine;
         var input = string.Join(nl, "line1", string.Empty, "line2", "line3", string.Empty);
 
+        // Act
         var result = parser.ParseOutput(input);
 
+        // Assert
         result
             .Should()
             .NotBeNull();
@@ -134,6 +150,7 @@ public class SplitLinesOutputParserTests
     [Fact]
     public void ParseOutput_WithMultipleLines_SplitAndTrimLinesAndRemovesEmptyEntries()
     {
+        // Arrange
         var parser = new SplitLinesOutputParser()
         {
             SplitOptions = StringSplitOptions.RemoveEmptyEntries,
@@ -143,8 +160,10 @@ public class SplitLinesOutputParserTests
         var nl = Environment.NewLine;
         var input = string.Join(nl, "  line1", string.Empty, "line2  ", "  \tline3  ", string.Empty);
 
+        // Act
         var result = parser.ParseOutput(input);
 
+        // Assert
         result
             .Should()
             .NotBeNull();

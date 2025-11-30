@@ -15,10 +15,13 @@ public class PassThroughProcessOutputParserTests
     [Fact]
     public void ParseOutput_WithNull_ReturnsNull()
     {
+        // Arrange
         var parser = new PassThroughProcessOutputParser();
 
+        // Act
         var result = parser.ParseOutput(null);
 
+        // Assert
         result
             .Should()
             .BeNull();
@@ -30,10 +33,13 @@ public class PassThroughProcessOutputParserTests
     [Fact]
     public void ParseOutput_WithEmptyString_ReturnsEmptyString()
     {
+        // Arrange
         var parser = new PassThroughProcessOutputParser();
 
+        // Act
         var result = parser.ParseOutput(string.Empty);
 
+        // Assert
         result
             .Should()
             .Be("");
@@ -45,11 +51,14 @@ public class PassThroughProcessOutputParserTests
     [Fact]
     public void ParseOutput_WithText_ReturnsSameText()
     {
+        // Arrange
         var parser = new PassThroughProcessOutputParser();
         const string input = "some output";
 
+        // Act
         var result = parser.ParseOutput(input);
 
+        // Assert
         result
             .Should()
             .Be(input);
