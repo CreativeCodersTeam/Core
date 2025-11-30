@@ -98,6 +98,7 @@ applyTo: '**/*.cs'
 - Use awesomeassertions for asserting expected results.
 - Use xUnit for unit testing.
 - Use FakeItEasy for mocking dependencies.
+- Separate a test method into the blocks Arrange, Act and Assert. Mark this blocks with comments.
 
 ## Performance Optimization
 
