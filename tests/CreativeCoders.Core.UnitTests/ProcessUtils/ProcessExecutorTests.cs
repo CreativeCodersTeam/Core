@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using CreativeCoders.ProcessUtils;
@@ -9,13 +10,14 @@ using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.ProcessUtils;
 
+[SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
 public class ProcessExecutorTests
 {
     [Fact]
     public void Execute_StartsProcess_WithConfiguredStartInfo_AndWaitsForExit()
     {
         // Arrange
-        var fileName = "my-tool";
+        const string fileName = "my-tool";
         var args = new[] {"arg1", "arg2"};
 
         var info = new ProcessExecutorInfo(fileName, args);

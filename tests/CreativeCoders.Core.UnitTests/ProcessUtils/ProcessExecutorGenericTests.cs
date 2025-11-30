@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AwesomeAssertions;
@@ -17,7 +16,7 @@ public class ProcessExecutorGenericTests
     public void Execute_ReadsOutput_AndParsesResult()
     {
         // Arrange
-        var fileName = "echo";
+        const string fileName = "echo";
         var args = new[] {"hello"};
 
         // Parser
@@ -30,7 +29,7 @@ public class ProcessExecutorGenericTests
         // Fake process with output
         var fakeProcess = A.Fake<IProcess>();
 
-        var outputStream = new MemoryStream(Encoding.UTF8.GetBytes("42\n"));
+        var outputStream = new MemoryStream("42\n"u8.ToArray());
         var reader = new StreamReader(outputStream);
         A.CallTo(() => fakeProcess.StandardOutput).Returns(reader);
 
@@ -68,7 +67,7 @@ public class ProcessExecutorGenericTests
 
         var fakeProcess = A.Fake<IProcess>();
 
-        var outputStream = new MemoryStream(Encoding.UTF8.GetBytes("hello world"));
+        var outputStream = new MemoryStream("hello world"u8.ToArray());
         var reader = new StreamReader(outputStream);
         A.CallTo(() => fakeProcess.StandardOutput).Returns(reader);
 
@@ -88,6 +87,7 @@ public class ProcessExecutorGenericTests
         result
             .Should()
             .Be("hello world");
+
         A.CallTo(() => parser.ParseOutput("hello world")).MustHaveHappenedOnceExactly();
         A.CallTo(() => fakeProcess.WaitForExitAsync(A<CancellationToken>._)).MustHaveHappenedOnceExactly();
         A.CallTo(() => fakeProcess.Dispose()).MustHaveHappenedOnceExactly();

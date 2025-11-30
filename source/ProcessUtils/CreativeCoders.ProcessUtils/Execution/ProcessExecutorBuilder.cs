@@ -76,11 +76,14 @@ public class ProcessExecutorBuilder<T>(IProcessFactory processFactory)
         return this;
     }
 
-    public IProcessExecutorBuilder<T> ReturnOutputAsText()
+    private void ReturnOutputAsText()
     {
-        _outputParser = (IProcessOutputParser<T>)new PassThroughProcessOutputParser();
+        if (typeof(T) != typeof(string))
+        {
+            throw new InvalidOperationException("OutputParser must be set to return output as text.");
+        }
 
-        return this;
+        _outputParser = (IProcessOutputParser<T>)new PassThroughProcessOutputParser();
     }
 
     public IProcessExecutor<T> Build()
@@ -88,6 +91,11 @@ public class ProcessExecutorBuilder<T>(IProcessFactory processFactory)
         if (string.IsNullOrWhiteSpace(FileName))
         {
             throw new InvalidOperationException("FileName must be set before building the executor.");
+        }
+
+        if (_outputParser == null && typeof(T) == typeof(string))
+        {
+            ReturnOutputAsText();
         }
 
         if (_outputParser == null)
