@@ -12,7 +12,7 @@ using CreativeCoders.ProcessUtils.Execution.Parsers;
 using FakeItEasy;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.ProcessUtils;
+namespace CreativeCoders.Core.UnitTests.ProcessUtils.Execution;
 
 /// <summary>
 /// Tests for <see cref="ProcessExecutorBuilder"/> and <see cref="ProcessExecutorBuilder{T}"/>.
@@ -42,7 +42,7 @@ public class ProcessExecutorBuilderTests
     {
         // Arrange
         const string fileName = "tool";
-        var args = new[] {"x", "y"};
+        var args = new[] { "x", "y" };
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -116,7 +116,7 @@ public class ProcessExecutorBuilderTests
     {
         // Arrange
         const string fileName = "echo";
-        var args = new[] {"val"};
+        var args = new[] { "val" };
 
         // Provide output "21" and configure parser to multiply by 2 -> 42
         var fakeProcess = A.Fake<IProcess>();
@@ -152,7 +152,7 @@ public class ProcessExecutorBuilderTests
     {
         // Arrange
         const string fileName = "echo";
-        var args = new[] {"val"};
+        var args = new[] { "val" };
 
         // Provide output "21" and configure parser to multiply by 2 -> 42
         var fakeProcess = A.Fake<IProcess>();
@@ -188,7 +188,7 @@ public class ProcessExecutorBuilderTests
     {
         // Arrange
         const string fileName = "echo";
-        var args = new[] {"hello"};
+        var args = new[] { "hello" };
 
         var fakeProcess = A.Fake<IProcess>();
         var outputStream = new MemoryStream("hello world"u8.ToArray());
@@ -223,7 +223,8 @@ public class ProcessExecutorBuilderTests
     [InlineData("42")]
     [InlineData("Test, 12345")]
     [InlineData("  42  QWERTZ \n Line 1234")]
-    public void Build_WhenTIsStringAndNoOutputParser_DoesNotThrowAndReturnsStringExecutor(string processOutput)
+    public void Build_WhenTIsStringAndNoOutputParser_DoesNotThrowAndReturnsStringExecutor(
+        string processOutput)
     {
         // Arrange
         var fakeProcessFactory = A.Fake<IProcessFactory>();

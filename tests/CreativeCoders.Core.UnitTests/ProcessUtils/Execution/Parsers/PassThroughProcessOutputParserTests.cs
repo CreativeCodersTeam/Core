@@ -2,7 +2,7 @@ using AwesomeAssertions;
 using CreativeCoders.ProcessUtils.Execution.Parsers;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.ProcessUtils.Parsers;
+namespace CreativeCoders.Core.UnitTests.ProcessUtils.Execution.Parsers;
 
 /// <summary>
 ///     Tests for <see cref="PassThroughProcessOutputParser"/> ensuring the parser returns the input unchanged.

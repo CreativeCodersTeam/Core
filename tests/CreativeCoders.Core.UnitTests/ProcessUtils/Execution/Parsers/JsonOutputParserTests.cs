@@ -5,7 +5,7 @@ using CreativeCoders.ProcessUtils.Execution.Parsers;
 using JetBrains.Annotations;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.ProcessUtils.Parsers;
+namespace CreativeCoders.Core.UnitTests.ProcessUtils.Execution.Parsers;
 
 /// <summary>
 ///     Tests for <see cref="JsonOutputParser{T}"/> verifying JSON deserialization behavior and edge cases.

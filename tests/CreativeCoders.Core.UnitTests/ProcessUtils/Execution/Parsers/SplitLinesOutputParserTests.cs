@@ -4,7 +4,7 @@ using AwesomeAssertions;
 using CreativeCoders.ProcessUtils.Execution.Parsers;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.ProcessUtils.Parsers;
+namespace CreativeCoders.Core.UnitTests.ProcessUtils.Execution.Parsers;
 
 /// <summary>
 ///     Tests for <see cref="SplitLinesOutputParser"/> to ensure line splitting and empty handling behave correctly.

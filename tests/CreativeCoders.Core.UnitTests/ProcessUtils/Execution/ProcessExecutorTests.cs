@@ -2,13 +2,13 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
+using AwesomeAssertions;
 using CreativeCoders.ProcessUtils;
 using CreativeCoders.ProcessUtils.Execution;
 using FakeItEasy;
-using AwesomeAssertions;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.ProcessUtils;
+namespace CreativeCoders.Core.UnitTests.ProcessUtils.Execution;
 
 [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
 public class ProcessExecutorTests

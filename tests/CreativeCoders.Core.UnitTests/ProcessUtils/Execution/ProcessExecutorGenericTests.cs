@@ -8,7 +8,7 @@ using CreativeCoders.ProcessUtils.Execution;
 using FakeItEasy;
 using Xunit;
 
-namespace CreativeCoders.Core.UnitTests.ProcessUtils;
+namespace CreativeCoders.Core.UnitTests.ProcessUtils.Execution;
 
 public class ProcessExecutorGenericTests
 {
