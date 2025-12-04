@@ -36,7 +36,7 @@ internal static class Program
 
         var lines = executor.Execute();
 
-        lines.ForEach(x => Console.WriteLine(x));
+        lines?.Order().ForEach(x => Console.WriteLine(x));
 
         Console.ReadLine();
     }

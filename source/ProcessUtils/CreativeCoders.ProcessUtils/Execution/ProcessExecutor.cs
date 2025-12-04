@@ -7,16 +7,44 @@ public class ProcessExecutor(ProcessExecutorInfo processExecutorInfo, IProcessFa
 {
     public void Execute()
     {
-        using var process = StartProcess();
-
-        process.WaitForExit();
+        using var _ = ExecuteEx();
     }
 
     public async Task ExecuteAsync()
     {
-        using var process = StartProcess();
+        using var _ = await ExecuteExAsync().ConfigureAwait(false);
+    }
+
+    public IProcess ExecuteEx()
+    {
+        var process = StartProcess();
+
+        process.WaitForExit();
+
+        return process;
+    }
+
+    public async Task<IProcess> ExecuteExAsync()
+    {
+        var process = StartProcess();
 
         await process.WaitForExitAsync().ConfigureAwait(false);
+
+        return process;
+    }
+
+    public int ExecuteAndReturnExitCode()
+    {
+        using var process = ExecuteEx();
+
+        return process.ExitCode;
+    }
+
+    public async Task<int> ExecuteAndReturnExitCodeAsync()
+    {
+        using var process = await ExecuteExAsync().ConfigureAwait(false);
+
+        return process.ExitCode;
     }
 }
 
@@ -27,23 +55,37 @@ public class ProcessExecutor<T>(ProcessExecutorInfo<T> processExecutorInfo, IPro
 
     public T? Execute()
     {
-        using var process = StartProcess();
+        using var result = ExecuteEx();
+
+        return result.Value;
+    }
+
+    public async Task<T?> ExecuteAsync()
+    {
+        using var result = await ExecuteExAsync().ConfigureAwait(false);
+
+        return result.Value;
+    }
+
+    public ProcessExecutionResult<T?> ExecuteEx()
+    {
+        var process = StartProcess();
 
         var output = process.StandardOutput.ReadToEnd();
 
         process.WaitForExit();
 
-        return _outputParser.ParseOutput(output);
+        return new ProcessExecutionResult<T?>(process, _outputParser.ParseOutput(output));
     }
 
-    public async Task<T?> ExecuteAsync()
+    public async Task<ProcessExecutionResult<T?>> ExecuteExAsync()
     {
-        using var process = StartProcess();
+        var process = StartProcess();
 
         var output = await process.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
 
         await process.WaitForExitAsync().ConfigureAwait(false);
 
-        return _outputParser.ParseOutput(output);
+        return new ProcessExecutionResult<T?>(process, _outputParser.ParseOutput(output));
     }
 }

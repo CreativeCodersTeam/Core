@@ -17,7 +17,7 @@ public class ProcessExecutorGenericTests
     {
         // Arrange
         const string fileName = "echo";
-        var args = new[] {"hello"};
+        var args = new[] { "hello" };
 
         // Parser
         var parser = A.Fake<IProcessOutputParser<int>>();
@@ -53,11 +53,58 @@ public class ProcessExecutorGenericTests
     }
 
     [Fact]
+    public void ExecuteEx_ReadsOutput_AndParsesResult()
+    {
+        // Arrange
+        const string fileName = "echo";
+        var args = new[] { "hello" };
+
+        // Parser
+        var parser = A.Fake<IProcessOutputParser<int>>();
+        A.CallTo(() => parser.ParseOutput("42\n"))
+            .Returns(42);
+
+        var info = new ProcessExecutorInfo<int>(fileName, args, parser);
+
+        // Fake process with output
+        var fakeProcess = A.Fake<IProcess>();
+
+        var outputStream = new MemoryStream("42\n"u8.ToArray());
+        var reader = new StreamReader(outputStream);
+        A.CallTo(() => fakeProcess.StandardOutput).Returns(reader);
+
+        var processFactory = A.Fake<IProcessFactory>();
+        A.CallTo(() => processFactory.StartProcess(A<ProcessStartInfo>._))
+            .Returns(fakeProcess);
+
+        var executor = new ProcessExecutor<int>(info, processFactory);
+
+        // Act
+        var result = executor.ExecuteEx();
+
+        // Assert
+        result.Value
+            .Should()
+            .Be(42);
+
+        result.Process
+            .Should()
+            .BeSameAs(fakeProcess);
+
+        A.CallTo(() => fakeProcess.WaitForExit()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => parser.ParseOutput("42\n")).MustHaveHappenedOnceExactly();
+        A.CallTo(() => fakeProcess.Dispose()).MustNotHaveHappened();
+
+        result.Dispose();
+        A.CallTo(() => fakeProcess.Dispose()).MustHaveHappenedOnceExactly();
+    }
+
+    [Fact]
     public async Task ExecuteAsync_ReadsOutputAsync_AndParsesResult()
     {
         // Arrange
         var fileName = "echo";
-        var args = new[] {"hello"};
+        var args = new[] { "hello" };
 
         var parser = A.Fake<IProcessOutputParser<string>>();
         A.CallTo(() => parser.ParseOutput("hello world"))
@@ -90,6 +137,53 @@ public class ProcessExecutorGenericTests
 
         A.CallTo(() => parser.ParseOutput("hello world")).MustHaveHappenedOnceExactly();
         A.CallTo(() => fakeProcess.WaitForExitAsync(A<CancellationToken>._)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => fakeProcess.Dispose()).MustHaveHappenedOnceExactly();
+    }
+
+    [Fact]
+    public async Task ExecuteExAsync_ReadsOutput_AndParsesResult()
+    {
+        // Arrange
+        const string fileName = "echo";
+        var args = new[] { "hello" };
+
+        // Parser
+        var parser = A.Fake<IProcessOutputParser<int>>();
+        A.CallTo(() => parser.ParseOutput("42\n"))
+            .Returns(42);
+
+        var info = new ProcessExecutorInfo<int>(fileName, args, parser);
+
+        // Fake process with output
+        var fakeProcess = A.Fake<IProcess>();
+
+        var outputStream = new MemoryStream("42\n"u8.ToArray());
+        var reader = new StreamReader(outputStream);
+        A.CallTo(() => fakeProcess.StandardOutput).Returns(reader);
+
+        var processFactory = A.Fake<IProcessFactory>();
+        A.CallTo(() => processFactory.StartProcess(A<ProcessStartInfo>._))
+            .Returns(fakeProcess);
+
+        var executor = new ProcessExecutor<int>(info, processFactory);
+
+        // Act
+        var result = await executor.ExecuteExAsync();
+
+        // Assert
+        result.Value
+            .Should()
+            .Be(42);
+
+        result.Process
+            .Should()
+            .BeSameAs(fakeProcess);
+
+        A.CallTo(() => fakeProcess.WaitForExitAsync()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => parser.ParseOutput("42\n")).MustHaveHappenedOnceExactly();
+        A.CallTo(() => fakeProcess.Dispose()).MustNotHaveHappened();
+
+        result.Dispose();
         A.CallTo(() => fakeProcess.Dispose()).MustHaveHappenedOnceExactly();
     }
 }

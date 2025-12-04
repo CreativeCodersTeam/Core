@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.Core;
 
 namespace CreativeCoders.ProcessUtils;
 
+[ExcludeFromCodeCoverage]
 public sealed class DefaultProcess(Process process) : IProcess
 {
     private readonly Process _process = Ensure.NotNull(process);
