@@ -20,7 +20,7 @@ public class ProcessExecutorTests
         const string fileName = "my-tool";
         var args = new[] { "arg1", "arg2" };
 
-        var info = new ProcessExecutorInfo(fileName, args);
+        var info = new ProcessExecutorInfo(fileName, args, false);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -80,7 +80,7 @@ public class ProcessExecutorTests
         const string fileName = "my-tool";
         var args = new[] { "arg1", "arg2" };
 
-        var info = new ProcessExecutorInfo(fileName, args);
+        var info = new ProcessExecutorInfo(fileName, args, false);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -144,7 +144,7 @@ public class ProcessExecutorTests
         var fileName = "my-tool-async";
         var args = new[] { "a", "b" };
 
-        var info = new ProcessExecutorInfo(fileName, args);
+        var info = new ProcessExecutorInfo(fileName, args, false);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -208,7 +208,7 @@ public class ProcessExecutorTests
         var fileName = "my-tool-async";
         var args = new[] { "a", "b" };
 
-        var info = new ProcessExecutorInfo(fileName, args);
+        var info = new ProcessExecutorInfo(fileName, args, false);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -277,7 +277,7 @@ public class ProcessExecutorTests
         var args = new[] { "arg1", "arg2" };
         const int expectedExitCode = 1235;
 
-        var info = new ProcessExecutorInfo(fileName, args);
+        var info = new ProcessExecutorInfo(fileName, args, false);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -310,7 +310,7 @@ public class ProcessExecutorTests
         var args = new[] { "a", "b" };
         const int expectedExitCode = 1235;
 
-        var info = new ProcessExecutorInfo(fileName, args);
+        var info = new ProcessExecutorInfo(fileName, args, false);
 
         var fakeProcess = A.Fake<IProcess>();
 

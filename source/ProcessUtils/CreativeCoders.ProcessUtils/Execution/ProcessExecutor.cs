@@ -60,11 +60,21 @@ public class ProcessExecutor<T>(ProcessExecutorInfo<T> processExecutorInfo, IPro
         return result.Value;
     }
 
+    public T? Execute(string[] args)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<T?> ExecuteAsync()
     {
         using var result = await ExecuteExAsync().ConfigureAwait(false);
 
         return result.Value;
+    }
+
+    public Task<T?> ExecuteAsync(string[] args)
+    {
+        throw new NotImplementedException();
     }
 
     public ProcessExecutionResult<T?> ExecuteEx()
@@ -78,6 +88,11 @@ public class ProcessExecutor<T>(ProcessExecutorInfo<T> processExecutorInfo, IPro
         return new ProcessExecutionResult<T?>(process, _outputParser.ParseOutput(output));
     }
 
+    public ProcessExecutionResult<T?> ExecuteEx(string[] args)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<ProcessExecutionResult<T?>> ExecuteExAsync()
     {
         var process = StartProcess();
@@ -87,5 +102,10 @@ public class ProcessExecutor<T>(ProcessExecutorInfo<T> processExecutorInfo, IPro
         await process.WaitForExitAsync().ConfigureAwait(false);
 
         return new ProcessExecutionResult<T?>(process, _outputParser.ParseOutput(output));
+    }
+
+    public Task<ProcessExecutionResult<T?>> ExecuteExAsync(string[] args)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,16 +1,22 @@
 ﻿namespace CreativeCoders.ProcessUtils.Execution;
 
-public class ProcessExecutorInfo<T>(string fileName, string[] arguments, IProcessOutputParser<T> outputParser)
-    : ProcessExecutorInfo(fileName, arguments)
+public class ProcessExecutorInfo<T>(
+    string fileName,
+    string[] arguments,
+    bool usePlaceholderVars,
+    IProcessOutputParser<T> outputParser)
+    : ProcessExecutorInfo(fileName, arguments, usePlaceholderVars)
 {
     public IProcessOutputParser<T> OutputParser { get; set; } = outputParser;
 }
 
-public class ProcessExecutorInfo(string fileName, string[] arguments)
+public class ProcessExecutorInfo(string fileName, string[] arguments, bool usePlaceholderVars)
 {
     public string FileName { get; } = fileName;
 
     public string[] Arguments { get; } = arguments;
+
+    public bool UsePlaceholderVars { get; set; } = usePlaceholderVars;
 
     public bool RedirectStandardOutput { get; set; } = true;
 

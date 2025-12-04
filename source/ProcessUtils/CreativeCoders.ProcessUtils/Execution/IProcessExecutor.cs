@@ -7,11 +7,19 @@ public interface IProcessExecutor<T>
 {
     T? Execute();
 
+    T? Execute(string[] args);
+
     Task<T?> ExecuteAsync();
+
+    Task<T?> ExecuteAsync(string[] args);
 
     ProcessExecutionResult<T?> ExecuteEx();
 
+    ProcessExecutionResult<T?> ExecuteEx(string[] args);
+
     Task<ProcessExecutionResult<T?>> ExecuteExAsync();
+
+    Task<ProcessExecutionResult<T?>> ExecuteExAsync(string[] args);
 }
 
 [PublicAPI]

@@ -24,7 +24,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("42\n"))
             .Returns(42);
 
-        var info = new ProcessExecutorInfo<int>(fileName, args, parser);
+        var info = new ProcessExecutorInfo<int>(fileName, args, false, parser);
 
         // Fake process with output
         var fakeProcess = A.Fake<IProcess>();
@@ -64,7 +64,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("42\n"))
             .Returns(42);
 
-        var info = new ProcessExecutorInfo<int>(fileName, args, parser);
+        var info = new ProcessExecutorInfo<int>(fileName, args, false, parser);
 
         // Fake process with output
         var fakeProcess = A.Fake<IProcess>();
@@ -110,7 +110,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("hello world"))
             .Returns("hello world");
 
-        var info = new ProcessExecutorInfo<string>(fileName, args, parser);
+        var info = new ProcessExecutorInfo<string>(fileName, args, false, parser);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -152,7 +152,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("42\n"))
             .Returns(42);
 
-        var info = new ProcessExecutorInfo<int>(fileName, args, parser);
+        var info = new ProcessExecutorInfo<int>(fileName, args, false, parser);
 
         // Fake process with output
         var fakeProcess = A.Fake<IProcess>();
