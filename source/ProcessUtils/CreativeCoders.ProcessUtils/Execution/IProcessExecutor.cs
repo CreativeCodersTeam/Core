@@ -48,6 +48,7 @@ public interface IProcessExecutor
     IProcess ExecuteEx();
 
     IProcess ExecuteEx(string[] args);
+
     IProcess ExecuteEx(IDictionary<string, object?> placeholderVars);
 
     Task<IProcess> ExecuteExAsync();
