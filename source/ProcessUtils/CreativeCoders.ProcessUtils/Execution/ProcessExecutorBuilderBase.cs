@@ -5,4 +5,6 @@ public abstract class ProcessExecutorBuilderBase
     protected string? FileName { get; set; }
 
     protected string[]? Arguments { get; set; }
+
+    protected bool UsePlaceholderVars { get; set; }
 }

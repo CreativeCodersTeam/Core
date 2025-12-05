@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -189,5 +190,27 @@ public static class StringExtension
 
         return parts.Aggregate(string.Empty,
             (current, part) => current + char.ToUpperInvariant(part[0]) + part[1..].ToLowerInvariant());
+    }
+
+    public static KeyAndValue? SplitIntoKeyValue(this string? text, string separator)
+    {
+        Ensure.NotNull(separator);
+
+        if (string.IsNullOrEmpty(text))
+        {
+            return null;
+        }
+
+        var separatorIndex = text.IndexOf(separator, StringComparison.Ordinal);
+
+        if (separatorIndex == -1)
+        {
+            return null;
+        }
+
+        var key = text[..separatorIndex];
+        var value = text[(separatorIndex + 1)..];
+
+        return new KeyAndValue(key, value);
     }
 }

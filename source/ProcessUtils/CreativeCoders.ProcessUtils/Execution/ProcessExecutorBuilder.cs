@@ -31,7 +31,8 @@ public class ProcessExecutorBuilder(IProcessFactory processFactory)
 
         var executorInfo = new ProcessExecutorInfo(
             FileName,
-            Arguments ?? []);
+            Arguments ?? [],
+            UsePlaceholderVars);
 
         return new ProcessExecutor(executorInfo, _processFactory);
     }
@@ -65,7 +66,8 @@ public class ProcessExecutorBuilder<T>(IProcessFactory processFactory)
         return this;
     }
 
-    public IProcessExecutorBuilder<T> SetOutputParser<TParser>(Action<TParser>? configure = null) where TParser : IProcessOutputParser<T>, new()
+    public IProcessExecutorBuilder<T> SetOutputParser<TParser>(Action<TParser>? configure = null)
+        where TParser : IProcessOutputParser<T>, new()
     {
         var parser = new TParser();
 
@@ -106,7 +108,9 @@ public class ProcessExecutorBuilder<T>(IProcessFactory processFactory)
         var executorInfo = new ProcessExecutorInfo<T>(
             FileName,
             Arguments ?? [],
-            _outputParser ?? throw new InvalidOperationException("OutputParser must be set before building the executor."));
+            UsePlaceholderVars,
+            _outputParser ??
+            throw new InvalidOperationException("OutputParser must be set before building the executor."));
 
         return new ProcessExecutor<T>(executorInfo, _processFactory);
     }
