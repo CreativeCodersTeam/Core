@@ -50,6 +50,8 @@ public class ProcessExecutor(ProcessExecutorInfo processExecutorInfo, IProcessFa
 
         process.WaitForExit();
 
+        CheckThrowOnError(process, true);
+
         return process;
     }
 
@@ -67,6 +69,8 @@ public class ProcessExecutor(ProcessExecutorInfo processExecutorInfo, IProcessFa
         var process = StartProcess(args, placeholderVars);
 
         await process.WaitForExitAsync().ConfigureAwait(false);
+
+        await CheckThrowOnErrorAsync(process, true).ConfigureAwait(false);
 
         return process;
     }
@@ -168,6 +172,8 @@ public class ProcessExecutor<T>(ProcessExecutorInfo<T> processExecutorInfo, IPro
 
         process.WaitForExit();
 
+        CheckThrowOnError(process, true);
+
         return new ProcessExecutionResult<T?>(process, _outputParser.ParseOutput(output));
     }
 
@@ -188,6 +194,8 @@ public class ProcessExecutor<T>(ProcessExecutorInfo<T> processExecutorInfo, IPro
         var output = await process.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
 
         await process.WaitForExitAsync().ConfigureAwait(false);
+
+        await CheckThrowOnErrorAsync(process, true).ConfigureAwait(false);
 
         return new ProcessExecutionResult<T?>(process, _outputParser.ParseOutput(output));
     }

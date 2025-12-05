@@ -257,6 +257,199 @@ public class ProcessExecutorBuilderTests
             .Be(processOutput);
     }
 
+    [Fact]
+    public void BuildAndUseExecutor_ShouldThrowOnErrorSet_ThrowsExitCodeNotZero()
+    {
+        // Arrange
+        var fakeProcessFactory = A.Fake<IProcessFactory>();
+        var fakeProcess = A.Fake<IProcess>();
+
+        A.CallTo(() => fakeProcess.ExitCode).Returns(1);
+        A.CallTo(() => fakeProcessFactory.StartProcess(A<ProcessStartInfo>._))
+            .Returns(fakeProcess);
+
+        var outputStream = new MemoryStream(Encoding.UTF8.GetBytes("Process failed"));
+        var reader = new StreamReader(outputStream);
+        A.CallTo(() => fakeProcess.StandardError).Returns(reader);
+
+        var executor = new ProcessExecutorBuilder(fakeProcessFactory)
+            .SetFileName("dummy")
+            .ShouldThrowOnError()
+            .Build();
+
+        // Act
+        var act = () => executor.Execute();
+
+        // Assert
+        act
+            .Should().Throw<ProcessExecutionFailedException>()
+            .Which
+            .Should().Match<ProcessExecutionFailedException>(x =>
+                x.ExitCode == 1 && x.ErrorOutput == "Process failed");
+    }
+
+    [Fact]
+    public async Task BuildAndUseExecutorAsync_ShouldThrowOnErrorSet_ThrowsExitCodeNotZero()
+    {
+        // Arrange
+        var fakeProcessFactory = A.Fake<IProcessFactory>();
+        var fakeProcess = A.Fake<IProcess>();
+
+        A.CallTo(() => fakeProcess.ExitCode).Returns(1);
+        A.CallTo(() => fakeProcessFactory.StartProcess(A<ProcessStartInfo>._))
+            .Returns(fakeProcess);
+
+        var outputStream = new MemoryStream(Encoding.UTF8.GetBytes("Process failed"));
+        var reader = new StreamReader(outputStream);
+        A.CallTo(() => fakeProcess.StandardError).Returns(reader);
+
+        var executor = new ProcessExecutorBuilder(fakeProcessFactory)
+            .SetFileName("dummy")
+            .ShouldThrowOnError()
+            .Build();
+
+        // Act
+        var act = async () => await executor.ExecuteAsync();
+
+        // Assert
+        (await act
+                .Should().ThrowAsync<ProcessExecutionFailedException>())
+            .Which
+            .Should().Match<ProcessExecutionFailedException>(x =>
+                x.ExitCode == 1 && x.ErrorOutput == "Process failed");
+    }
+
+    [Fact]
+    public async Task BuildAndUseExecutorGenericAsync_ShouldThrowOnErrorSet_ThrowsExitCodeNotZero()
+    {
+        // Arrange
+        var fakeProcessFactory = A.Fake<IProcessFactory>();
+        var fakeProcess = A.Fake<IProcess>();
+
+        A.CallTo(() => fakeProcess.ExitCode).Returns(1);
+        A.CallTo(() => fakeProcessFactory.StartProcess(A<ProcessStartInfo>._))
+            .Returns(fakeProcess);
+
+        var outputErrorStream = new MemoryStream(Encoding.UTF8.GetBytes("Process failed"));
+        var errorReader = new StreamReader(outputErrorStream);
+        A.CallTo(() => fakeProcess.StandardError).Returns(errorReader);
+
+        var outputStream = new MemoryStream(Encoding.UTF8.GetBytes("Process failed"));
+        var reader = new StreamReader(outputStream);
+        A.CallTo(() => fakeProcess.StandardOutput).Returns(reader);
+
+        var executor = new ProcessExecutorBuilder<string>(fakeProcessFactory)
+            .SetFileName("dummy")
+            .ShouldThrowOnError()
+            .Build();
+
+        // Act
+        var act = async () => await executor.ExecuteAsync();
+
+        // Assert
+        (await act
+                .Should().ThrowAsync<ProcessExecutionFailedException>())
+            .Which
+            .Should().Match<ProcessExecutionFailedException>(x =>
+                x.ExitCode == 1 && x.ErrorOutput == "Process failed");
+    }
+
+    [Fact]
+    public void BuildAndUseExecutor_SetupStartInfo_StartInfoIsConfigured()
+    {
+        // Arrange
+        var fakeProcessFactory = A.Fake<IProcessFactory>();
+        var fakeProcess = A.Fake<IProcess>();
+
+        ProcessStartInfo startInfo = null;
+        A.CallTo(() => fakeProcess.ExitCode).Returns(1);
+        A.CallTo(() => fakeProcessFactory.StartProcess(A<ProcessStartInfo>._))
+            .Invokes((ProcessStartInfo si) => startInfo = si)
+            .Returns(fakeProcess);
+
+        var outputStream = new MemoryStream(Encoding.UTF8.GetBytes("Process failed"));
+        var reader = new StreamReader(outputStream);
+        A.CallTo(() => fakeProcess.StandardError).Returns(reader);
+
+        var executor = new ProcessExecutorBuilder(fakeProcessFactory)
+            .SetFileName("dummy")
+            .SetupStartInfo(x =>
+            {
+                x.CreateNoWindow = false;
+                x.RedirectStandardError = false;
+                x.UseShellExecute = true;
+            })
+            .Build();
+
+        // Act
+        executor.Execute();
+
+        // Assert
+        startInfo
+            .Should()
+            .NotBeNull();
+
+        startInfo.CreateNoWindow
+            .Should()
+            .BeFalse();
+
+        startInfo.RedirectStandardError
+            .Should()
+            .BeFalse();
+
+        startInfo.UseShellExecute
+            .Should()
+            .BeTrue();
+    }
+
+    [Fact]
+    public void BuildAndUseGenericExecutor_SetupStartInfo_StartInfoIsConfigured()
+    {
+        // Arrange
+        var fakeProcessFactory = A.Fake<IProcessFactory>();
+        var fakeProcess = A.Fake<IProcess>();
+
+        ProcessStartInfo startInfo = null;
+        A.CallTo(() => fakeProcess.ExitCode).Returns(1);
+        A.CallTo(() => fakeProcessFactory.StartProcess(A<ProcessStartInfo>._))
+            .Invokes((ProcessStartInfo si) => startInfo = si)
+            .Returns(fakeProcess);
+
+        var outputStream = new MemoryStream(Encoding.UTF8.GetBytes("Process running"));
+        var reader = new StreamReader(outputStream);
+        A.CallTo(() => fakeProcess.StandardOutput).Returns(reader);
+
+        var executor = new ProcessExecutorBuilder<string>(fakeProcessFactory)
+            .SetFileName("dummy")
+            .SetupStartInfo(x =>
+            {
+                x.CreateNoWindow = false;
+                x.RedirectStandardError = false;
+                x.UseShellExecute = true;
+            })
+            .Build();
+
+        // Act
+        executor.Execute();
+
+        // Assert
+        startInfo
+            .Should()
+            .NotBeNull();
+
+        startInfo.CreateNoWindow
+            .Should()
+            .BeFalse();
+
+        startInfo.RedirectStandardError
+            .Should()
+            .BeFalse();
+
+        startInfo.UseShellExecute
+            .Should()
+            .BeTrue();
+    }
+
     /// <summary>
     /// Simple test parser for integers; parses text to int and multiplies by <see cref="Multiplier"/>.
     /// </summary>

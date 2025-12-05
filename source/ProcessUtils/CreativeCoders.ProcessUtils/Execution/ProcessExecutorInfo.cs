@@ -1,20 +1,25 @@
-﻿namespace CreativeCoders.ProcessUtils.Execution;
+﻿using System.Diagnostics;
+
+namespace CreativeCoders.ProcessUtils.Execution;
 
 public class ProcessExecutorInfo<T>(
     string fileName,
     string[] arguments,
-    bool usePlaceholderVars,
     IProcessOutputParser<T> outputParser)
-    : ProcessExecutorInfo(fileName, arguments, usePlaceholderVars)
+    : ProcessExecutorInfo(fileName, arguments)
 {
     public IProcessOutputParser<T> OutputParser { get; set; } = outputParser;
 }
 
-public class ProcessExecutorInfo(string fileName, string[] arguments, bool usePlaceholderVars)
+public class ProcessExecutorInfo(string fileName, string[] arguments)
 {
     public string FileName { get; } = fileName;
 
     public string[] Arguments { get; } = arguments;
+
+    public Action<ProcessStartInfo>? ConfigureStartInfo { get; set; }
+
+    public bool ThrowOnError { get; set; }
 
     public bool RedirectStandardOutput { get; set; } = true;
 

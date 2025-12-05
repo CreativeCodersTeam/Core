@@ -23,7 +23,7 @@ public class ProcessExecutorTests
         const string fileName = "my-tool";
         var args = new[] { "arg1", "arg2" };
 
-        var info = new ProcessExecutorInfo(fileName, args, false);
+        var info = new ProcessExecutorInfo(fileName, args);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -84,7 +84,7 @@ public class ProcessExecutorTests
         var defaultArgs = new[] { "x", "y" };
         var providedArgs = new[] { "argA", "argB", "argC" };
 
-        var info = new ProcessExecutorInfo(fileName, defaultArgs, false);
+        var info = new ProcessExecutorInfo(fileName, defaultArgs);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -123,7 +123,7 @@ public class ProcessExecutorTests
         const string fileName = "my-tool";
         var argsWithPlaceholders = new[] { "run", "--value", "{{val}}" };
 
-        var info = new ProcessExecutorInfo(fileName, argsWithPlaceholders, false);
+        var info = new ProcessExecutorInfo(fileName, argsWithPlaceholders);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -162,7 +162,7 @@ public class ProcessExecutorTests
         const string fileName = "my-tool";
         var args = new[] { "arg1", "arg2" };
 
-        var info = new ProcessExecutorInfo(fileName, args, false);
+        var info = new ProcessExecutorInfo(fileName, args);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -227,7 +227,7 @@ public class ProcessExecutorTests
         var defaultArgs = new[] { "d1" };
         var providedArgs = new[] { "n1", "n2" };
 
-        var info = new ProcessExecutorInfo(fileName, defaultArgs, false);
+        var info = new ProcessExecutorInfo(fileName, defaultArgs);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -266,7 +266,7 @@ public class ProcessExecutorTests
         const string fileName = "tool-ex";
         var argsWithPlaceholders = new[] { "run", "{{name}}" };
 
-        var info = new ProcessExecutorInfo(fileName, argsWithPlaceholders, false);
+        var info = new ProcessExecutorInfo(fileName, argsWithPlaceholders);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -295,7 +295,7 @@ public class ProcessExecutorTests
         var fileName = "my-tool-async";
         var args = new[] { "a", "b" };
 
-        var info = new ProcessExecutorInfo(fileName, args, false);
+        var info = new ProcessExecutorInfo(fileName, args);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -359,7 +359,7 @@ public class ProcessExecutorTests
         var fileName = "my-tool-async";
         var args = new[] { "a", "b" };
 
-        var info = new ProcessExecutorInfo(fileName, args, false);
+        var info = new ProcessExecutorInfo(fileName, args);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -428,7 +428,7 @@ public class ProcessExecutorTests
         var defaultArgs = new[] { "d" };
         var providedArgs = new[] { "x", "y" };
 
-        var info = new ProcessExecutorInfo(fileName, defaultArgs, false);
+        var info = new ProcessExecutorInfo(fileName, defaultArgs);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -462,7 +462,7 @@ public class ProcessExecutorTests
         var fileName = "my-tool-async";
         var argsWithPlaceholders = new[] { "go", "--n", "{{num}}" };
 
-        var info = new ProcessExecutorInfo(fileName, argsWithPlaceholders, false);
+        var info = new ProcessExecutorInfo(fileName, argsWithPlaceholders);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -496,7 +496,7 @@ public class ProcessExecutorTests
         var defaultArgs = new[] { "d" };
         var providedArgs = new[] { "x", "y" };
 
-        var info = new ProcessExecutorInfo(fileName, defaultArgs, false);
+        var info = new ProcessExecutorInfo(fileName, defaultArgs);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -533,7 +533,7 @@ public class ProcessExecutorTests
         var fileName = "my-tool-async";
         var argsWithPlaceholders = new[] { "go", "{{word}}" };
 
-        var info = new ProcessExecutorInfo(fileName, argsWithPlaceholders, false);
+        var info = new ProcessExecutorInfo(fileName, argsWithPlaceholders);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -571,7 +571,7 @@ public class ProcessExecutorTests
         var args = new[] { "arg1", "arg2" };
         const int expectedExitCode = 1235;
 
-        var info = new ProcessExecutorInfo(fileName, args, false);
+        var info = new ProcessExecutorInfo(fileName, args);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -604,7 +604,7 @@ public class ProcessExecutorTests
         var args = new[] { "a", "b" };
         const int expectedExitCode = 1235;
 
-        var info = new ProcessExecutorInfo(fileName, args, false);
+        var info = new ProcessExecutorInfo(fileName, args);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -642,7 +642,7 @@ public class ProcessExecutorTests
         var providedArgs = new[] { "a1", "a2" };
         const int expectedExitCode = 55;
 
-        var info = new ProcessExecutorInfo(fileName, defaultArgs, false);
+        var info = new ProcessExecutorInfo(fileName, defaultArgs);
 
         var fakeProcess = A.Fake<IProcess>();
         A.CallTo(() => fakeProcess.ExitCode).Returns(expectedExitCode);
@@ -673,7 +673,7 @@ public class ProcessExecutorTests
         var argsWithPlaceholders = new[] { "do", "{{n}}" };
         const int expectedExitCode = 77;
 
-        var info = new ProcessExecutorInfo(fileName, argsWithPlaceholders, false);
+        var info = new ProcessExecutorInfo(fileName, argsWithPlaceholders);
 
         var fakeProcess = A.Fake<IProcess>();
         A.CallTo(() => fakeProcess.ExitCode).Returns(expectedExitCode);
@@ -705,7 +705,7 @@ public class ProcessExecutorTests
         var providedArgs = new[] { "a1", "a2" };
         const int expectedExitCode = 101;
 
-        var info = new ProcessExecutorInfo(fileName, defaultArgs, false);
+        var info = new ProcessExecutorInfo(fileName, defaultArgs);
 
         var fakeProcess = A.Fake<IProcess>();
         A.CallTo(() => fakeProcess.ExitCode).Returns(expectedExitCode);
@@ -740,7 +740,7 @@ public class ProcessExecutorTests
         var argsWithPlaceholders = new[] { "do", "{{n}}" };
         const int expectedExitCode = 202;
 
-        var info = new ProcessExecutorInfo(fileName, argsWithPlaceholders, false);
+        var info = new ProcessExecutorInfo(fileName, argsWithPlaceholders);
 
         var fakeProcess = A.Fake<IProcess>();
         A.CallTo(() => fakeProcess.ExitCode).Returns(expectedExitCode);

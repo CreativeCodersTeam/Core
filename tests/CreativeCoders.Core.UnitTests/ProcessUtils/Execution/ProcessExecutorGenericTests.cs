@@ -29,7 +29,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("42\n"))
             .Returns(42);
 
-        var info = new ProcessExecutorInfo<int>(fileName, args, false, parser);
+        var info = new ProcessExecutorInfo<int>(fileName, args, parser);
 
         // Fake process with output
         var fakeProcess = A.Fake<IProcess>();
@@ -69,7 +69,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("42\n"))
             .Returns(42);
 
-        var info = new ProcessExecutorInfo<int>(fileName, args, false, parser);
+        var info = new ProcessExecutorInfo<int>(fileName, args, parser);
 
         // Fake process with output
         var fakeProcess = A.Fake<IProcess>();
@@ -115,7 +115,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("hello world"))
             .Returns("hello world");
 
-        var info = new ProcessExecutorInfo<string>(fileName, args, false, parser);
+        var info = new ProcessExecutorInfo<string>(fileName, args, parser);
 
         var fakeProcess = A.Fake<IProcess>();
 
@@ -157,7 +157,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("42\n"))
             .Returns(42);
 
-        var info = new ProcessExecutorInfo<int>(fileName, args, false, parser);
+        var info = new ProcessExecutorInfo<int>(fileName, args, parser);
 
         // Fake process with output
         var fakeProcess = A.Fake<IProcess>();
@@ -204,7 +204,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("13"))
             .Returns(13);
 
-        var info = new ProcessExecutorInfo<int>(fileName, defaultArgs, false, parser);
+        var info = new ProcessExecutorInfo<int>(fileName, defaultArgs, parser);
 
         var fakeProcess = A.Fake<IProcess>();
         var outputStream = new MemoryStream("13"u8.ToArray());
@@ -248,7 +248,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("11"))
             .Returns(11);
 
-        var info = new ProcessExecutorInfo<int>(fileName, argsWithPlaceholders, false, parser);
+        var info = new ProcessExecutorInfo<int>(fileName, argsWithPlaceholders, parser);
 
         var fakeProcess = A.Fake<IProcess>();
         var outputStream = new MemoryStream("11"u8.ToArray());
@@ -293,7 +293,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("ok"))
             .Returns("ok");
 
-        var info = new ProcessExecutorInfo<string>(fileName, defaultArgs, false, parser);
+        var info = new ProcessExecutorInfo<string>(fileName, defaultArgs, parser);
 
         var fakeProcess = A.Fake<IProcess>();
         var outputStream = new MemoryStream("ok"u8.ToArray());
@@ -344,7 +344,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("done"))
             .Returns("done");
 
-        var info = new ProcessExecutorInfo<string>(fileName, argsWithPlaceholders, false, parser);
+        var info = new ProcessExecutorInfo<string>(fileName, argsWithPlaceholders, parser);
 
         var fakeProcess = A.Fake<IProcess>();
         var outputStream = new MemoryStream("done"u8.ToArray());
@@ -395,7 +395,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("res"))
             .Returns("res");
 
-        var info = new ProcessExecutorInfo<string>(fileName, defaultArgs, false, parser);
+        var info = new ProcessExecutorInfo<string>(fileName, defaultArgs, parser);
 
         var fakeProcess = A.Fake<IProcess>();
         var outputStream = new MemoryStream("res"u8.ToArray());
@@ -441,7 +441,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("ok"))
             .Returns("ok");
 
-        var info = new ProcessExecutorInfo<string>(fileName, argsWithPlaceholders, false, parser);
+        var info = new ProcessExecutorInfo<string>(fileName, argsWithPlaceholders, parser);
 
         var fakeProcess = A.Fake<IProcess>();
         var outputStream = new MemoryStream("ok"u8.ToArray());
@@ -489,7 +489,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("value"))
             .Returns("value");
 
-        var info = new ProcessExecutorInfo<string>(fileName, defaultArgs, false, parser);
+        var info = new ProcessExecutorInfo<string>(fileName, defaultArgs, parser);
 
         var fakeProcess = A.Fake<IProcess>();
         var outputStream = new MemoryStream("value"u8.ToArray());
@@ -540,7 +540,7 @@ public class ProcessExecutorGenericTests
         A.CallTo(() => parser.ParseOutput("rdy"))
             .Returns("rdy");
 
-        var info = new ProcessExecutorInfo<string>(fileName, argsWithPlaceholders, false, parser);
+        var info = new ProcessExecutorInfo<string>(fileName, argsWithPlaceholders, parser);
 
         var fakeProcess = A.Fake<IProcess>();
         var outputStream = new MemoryStream("rdy"u8.ToArray());
