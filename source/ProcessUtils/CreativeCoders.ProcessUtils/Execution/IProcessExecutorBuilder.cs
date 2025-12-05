@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Diagnostics;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.ProcessUtils.Execution;
 
@@ -14,6 +15,10 @@ public interface IProcessExecutorBuilder<T>
     IProcessExecutorBuilder<T> SetOutputParser<TParser>(Action<TParser>? configure = null)
         where TParser : IProcessOutputParser<T>, new();
 
+    IProcessExecutorBuilder<T> SetupStartInfo(Action<ProcessStartInfo> configure);
+
+    IProcessExecutorBuilder<T> ShouldThrowOnError(bool throwOnError = true);
+
     IProcessExecutor<T> Build();
 }
 
@@ -23,6 +28,10 @@ public interface IProcessExecutorBuilder
     IProcessExecutorBuilder SetFileName(string fileName);
 
     IProcessExecutorBuilder SetArguments(string[] arguments);
+
+    IProcessExecutorBuilder SetupStartInfo(Action<ProcessStartInfo> configure);
+
+    IProcessExecutorBuilder ShouldThrowOnError(bool throwOnError = true);
 
     IProcessExecutor Build();
 }

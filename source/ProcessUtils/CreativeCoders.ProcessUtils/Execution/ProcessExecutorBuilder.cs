@@ -1,4 +1,5 @@
-﻿using CreativeCoders.Core;
+﻿using System.Diagnostics;
+using CreativeCoders.Core;
 using CreativeCoders.ProcessUtils.Execution.Parsers;
 
 namespace CreativeCoders.ProcessUtils.Execution;
@@ -22,6 +23,20 @@ public class ProcessExecutorBuilder(IProcessFactory processFactory)
         return this;
     }
 
+    public IProcessExecutorBuilder SetupStartInfo(Action<ProcessStartInfo> configure)
+    {
+        ConfigureStartInfo = configure;
+
+        return this;
+    }
+
+    public IProcessExecutorBuilder ShouldThrowOnError(bool throwOnError = true)
+    {
+        ThrowOnError = throwOnError;
+
+        return this;
+    }
+
     public IProcessExecutor Build()
     {
         if (string.IsNullOrWhiteSpace(FileName))
@@ -31,8 +46,11 @@ public class ProcessExecutorBuilder(IProcessFactory processFactory)
 
         var executorInfo = new ProcessExecutorInfo(
             FileName,
-            Arguments ?? [],
-            UsePlaceholderVars);
+            Arguments ?? [])
+        {
+            ConfigureStartInfo = ConfigureStartInfo,
+            ThrowOnError = ThrowOnError
+        };
 
         return new ProcessExecutor(executorInfo, _processFactory);
     }
@@ -78,6 +96,20 @@ public class ProcessExecutorBuilder<T>(IProcessFactory processFactory)
         return this;
     }
 
+    public IProcessExecutorBuilder<T> SetupStartInfo(Action<ProcessStartInfo> configure)
+    {
+        ConfigureStartInfo = configure;
+
+        return this;
+    }
+
+    public IProcessExecutorBuilder<T> ShouldThrowOnError(bool throwOnError = true)
+    {
+        ThrowOnError = throwOnError;
+
+        return this;
+    }
+
     private void ReturnOutputAsText()
     {
         if (typeof(T) != typeof(string))
@@ -108,9 +140,12 @@ public class ProcessExecutorBuilder<T>(IProcessFactory processFactory)
         var executorInfo = new ProcessExecutorInfo<T>(
             FileName,
             Arguments ?? [],
-            UsePlaceholderVars,
             _outputParser ??
-            throw new InvalidOperationException("OutputParser must be set before building the executor."));
+            throw new InvalidOperationException("OutputParser must be set before building the executor."))
+        {
+            ConfigureStartInfo = ConfigureStartInfo,
+            ThrowOnError = ThrowOnError
+        };
 
         return new ProcessExecutor<T>(executorInfo, _processFactory);
     }

@@ -1,4 +1,6 @@
-﻿namespace CreativeCoders.ProcessUtils.Execution;
+﻿using System.Diagnostics;
+
+namespace CreativeCoders.ProcessUtils.Execution;
 
 public abstract class ProcessExecutorBuilderBase
 {
@@ -6,5 +8,7 @@ public abstract class ProcessExecutorBuilderBase
 
     protected string[]? Arguments { get; set; }
 
-    protected bool UsePlaceholderVars { get; set; }
+    protected bool ThrowOnError { get; set; }
+
+    protected Action<ProcessStartInfo>? ConfigureStartInfo { get; set; }
 }

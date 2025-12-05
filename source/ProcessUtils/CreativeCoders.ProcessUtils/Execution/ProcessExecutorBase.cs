@@ -26,6 +26,8 @@ public abstract class ProcessExecutorBase(
             CreateNoWindow = true
         };
 
+        _processExecutorInfo.ConfigureStartInfo?.Invoke(startupInfo);
+
         return startupInfo;
     }
 
@@ -52,5 +54,36 @@ public abstract class ProcessExecutorBase(
         var process = _processFactory.StartProcess(startupInfo);
 
         return process ?? throw new InvalidOperationException("Failed to start process.");
+    }
+
+    protected void CheckThrowOnError(IProcess process, bool disposeProcessOnThrow)
+    {
+        if (!_processExecutorInfo.ThrowOnError || process.ExitCode == 0)
+        {
+            return;
+        }
+
+        if (disposeProcessOnThrow)
+        {
+            process.Dispose();
+        }
+
+        throw new ProcessExecutionFailedException(process.ExitCode, process.StandardError.ReadToEnd());
+    }
+
+    protected async Task CheckThrowOnErrorAsync(IProcess process, bool disposeProcessOnThrow)
+    {
+        if (!_processExecutorInfo.ThrowOnError || process.ExitCode == 0)
+        {
+            return;
+        }
+
+        if (disposeProcessOnThrow)
+        {
+            process.Dispose();
+        }
+
+        throw new ProcessExecutionFailedException(process.ExitCode,
+            await process.StandardError.ReadToEndAsync().ConfigureAwait(false));
     }
 }
