@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
@@ -66,7 +69,7 @@ public static class ObjectExtensions
             throw new MissingMemberException(instance.GetType().Name, propertyName);
         }
 
-        return (T?) propInfo.GetValue(instance);
+        return (T?)propInfo.GetValue(instance);
     }
 
     public static void SetPropertyValue<T>(this object instance, string propertyName, T? value)
@@ -80,4 +83,19 @@ public static class ObjectExtensions
 
         propInfo.SetValue(instance, value);
     }
+
+    public static Dictionary<string, object?> ToDictionary(this object obj)
+    {
+        Ensure.NotNull(obj);
+
+        return obj
+            .GetType()
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Select(propertyInfo => ReadProperty(obj, propertyInfo))
+            .ToDictionary(x => x.PropertyName, x => x.PropertyValue);
+    }
+
+    private static (string PropertyName, object? PropertyValue) ReadProperty(object obj,
+        PropertyInfo propertyInfo)
+        => (propertyInfo.Name, propertyInfo.GetValue(obj));
 }

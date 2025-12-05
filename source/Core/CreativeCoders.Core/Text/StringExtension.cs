@@ -194,6 +194,8 @@ public static class StringExtension
 
     public static KeyAndValue? SplitIntoKeyValue(this string? text, string separator)
     {
+        Ensure.NotNull(separator);
+
         if (string.IsNullOrEmpty(text))
         {
             return null;

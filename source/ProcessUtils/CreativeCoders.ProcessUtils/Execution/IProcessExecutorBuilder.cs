@@ -7,7 +7,7 @@ public interface IProcessExecutorBuilder<T>
 {
     IProcessExecutorBuilder<T> SetFileName(string fileName);
 
-    IProcessExecutorBuilder<T> SetArguments(string[] arguments, bool usePlaceholderVars = false);
+    IProcessExecutorBuilder<T> SetArguments(string[] arguments);
 
     IProcessExecutorBuilder<T> SetOutputParser(IProcessOutputParser<T> parser);
 
@@ -22,7 +22,7 @@ public interface IProcessExecutorBuilder
 {
     IProcessExecutorBuilder SetFileName(string fileName);
 
-    IProcessExecutorBuilder SetArguments(string[] arguments, bool usePlaceholderVars = false);
+    IProcessExecutorBuilder SetArguments(string[] arguments);
 
     IProcessExecutor Build();
 }

@@ -8,6 +8,8 @@ using Xunit;
 
 namespace CreativeCoders.Core.UnitTests.Placeholders;
 
+#nullable enable
+
 /// <summary>
 /// Tests for <see cref="PlaceholderReplacer"/> to verify placeholder replacement for single strings
 /// and sequences, as well as guard clauses and edge cases.
@@ -19,7 +21,7 @@ public class PlaceholderReplacerTests
     public void Replace_String_ReplacesAllOccurrencesOfAllPlaceholders()
     {
         // Arrange
-        var placeholders = new Dictionary<string, string>
+        var placeholders = new Dictionary<string, object?>
         {
             ["Name"] = "Alice",
             ["City"] = "Berlin"
@@ -38,10 +40,60 @@ public class PlaceholderReplacerTests
     }
 
     [Fact]
+    public void Replace_String_ReplacesAllOccurrencesOfAllPlaceholdersWithDifferentTypes()
+    {
+        // Arrange
+        var placeholders = new Dictionary<string, object?>
+        {
+            ["Name"] = "Alice",
+            ["City"] = "Berlin",
+            ["Age"] = 25,
+            ["BigCity"] = true
+        };
+
+        var replacer = new PlaceholderReplacer("${", "}", placeholders);
+        const string input =
+            "Hello ${Name}, welcome to ${City}. ${Name} likes ${City}. You are ${Age} years old. ${City} is a big city = ${BigCity}.";
+
+        // Act
+        var result = replacer.Replace(input);
+
+        // Assert
+        result
+            .Should()
+            .Be(
+                "Hello Alice, welcome to Berlin. Alice likes Berlin. You are 25 years old. Berlin is a big city = True.");
+    }
+
+    [Theory]
+    [InlineData("NullName", null, true, "null")]
+    [InlineData("EmptyName", null, false, "")]
+    public void Replace_String_WithNullVar_AllowNullValuesLeadsToCorrectResult(string placeholderName,
+        object? placeholderValue, bool allowNullValues, string expectedResult)
+    {
+        // Arrange
+        var placeholders = new Dictionary<string, object?>
+        {
+            [placeholderName] = placeholderValue
+        };
+
+        var replacer = new PlaceholderReplacer("${", "}", placeholders);
+        var inputText = "${" + placeholderName + "}";
+
+        // Act
+        var result = replacer.Replace(inputText, allowNullValues);
+
+        // Assert
+        result
+            .Should()
+            .Be(expectedResult);
+    }
+
+    [Fact]
     public void Replace_String_WithNoMatchingPlaceholders_ReturnsOriginalString()
     {
         // Arrange
-        var placeholders = new Dictionary<string, string>
+        var placeholders = new Dictionary<string, object?>
         {
             ["User"] = "Bob"
         };
@@ -61,7 +113,7 @@ public class PlaceholderReplacerTests
     public void Replace_String_WithEmptyPlaceholderDictionary_ReturnsSameReference()
     {
         // Arrange
-        var replacer = new PlaceholderReplacer("${", "}", new Dictionary<string, string>());
+        var replacer = new PlaceholderReplacer("${", "}", new Dictionary<string, object?>());
         var input = "Keep me as is";
 
         // Act
@@ -77,7 +129,7 @@ public class PlaceholderReplacerTests
     public void Replace_Lines_ReplacesAcrossAllLines()
     {
         // Arrange
-        var placeholders = new Dictionary<string, string>
+        var placeholders = new Dictionary<string, object?>
         {
             ["Env"] = "Prod",
             ["Ver"] = "1.2.3"
@@ -108,7 +160,7 @@ public class PlaceholderReplacerTests
     {
         // Arrange
         var lines = new[] { "a", "b" };
-        var replacer = new PlaceholderReplacer("${", "}", new Dictionary<string, string>());
+        var replacer = new PlaceholderReplacer("${", "}", new Dictionary<string, object?>());
 
         // Act
         var result = replacer.Replace(lines);
@@ -135,7 +187,7 @@ public class PlaceholderReplacerTests
     public void Constructor_WithInvalidPrefixOrSuffix_Throws()
     {
         // Arrange
-        var placeholders = new Dictionary<string, string>();
+        var placeholders = new Dictionary<string, object?>();
 
         // Act
         var actPrefixNull = () => new PlaceholderReplacer(null!, "}", placeholders);
@@ -160,7 +212,7 @@ public class PlaceholderReplacerTests
     public void Replace_WithOverlappingPlaceholderNames_ReplacesExactTokensOnly()
     {
         // Arrange
-        var placeholders = new Dictionary<string, string>
+        var placeholders = new Dictionary<string, object?>
         {
             ["A"] = "x",
             ["AB"] = "y"

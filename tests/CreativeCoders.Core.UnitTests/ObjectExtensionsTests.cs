@@ -1,17 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using CreativeCoders.UnitTests;
+using AwesomeAssertions;
 using FakeItEasy;
 using Xunit;
 
+#nullable enable
+
 namespace CreativeCoders.Core.UnitTests;
 
+[SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
 public class ObjectExtensionsTests
 {
     [Fact]
     public void ToStringSafe_InstanceIsNull_ReturnsEmptyString()
     {
-        var result = ((object) null).ToStringSafe();
+        var result = ((object)null!).ToStringSafe();
 
         Assert.Equal(string.Empty, result);
     }
@@ -21,7 +26,7 @@ public class ObjectExtensionsTests
     {
         const string text = "This is a test";
 
-        var result = ((object) null).ToStringSafe(text);
+        var result = ((object)null!).ToStringSafe(text);
 
         Assert.Equal(text, result);
     }
@@ -123,7 +128,7 @@ public class ObjectExtensionsTests
         await instance.TryDisposeAsync();
 
         A.CallTo(() => instance.DisposeAsync()).MustHaveHappenedOnceExactly();
-        A.CallTo(() => disposable.Dispose()).MustNotHaveHappened();
+        A.CallTo(() => disposable!.Dispose()).MustNotHaveHappened();
     }
 
     [Fact]
@@ -131,7 +136,7 @@ public class ObjectExtensionsTests
     {
         const string expectedData = "TestText";
 
-        var instance = new UnitTestDemoObject {Text = expectedData};
+        var instance = new UnitTestDemoObject { Text = expectedData };
 
         Assert.Equal(expectedData, instance.GetPropertyValue<string>(nameof(instance.Text)));
     }
@@ -162,5 +167,34 @@ public class ObjectExtensionsTests
         var instance = new object();
 
         Assert.Throws<MissingMemberException>(() => instance.SetPropertyValue("Text", string.Empty));
+    }
+
+    [Fact]
+    public void ToDictionary_ObjectWithProperties_ReturnsDictionaryWithPropertiesAsKeyValuePairs()
+    {
+        // Arrange
+        var obj = new UnitTestDemoObject
+        {
+            Text = "Test",
+            IntValue = 1234,
+            BoolValue = true
+        };
+
+        // Act
+        var dictionary = obj.ToDictionary();
+
+        // Assert
+        dictionary
+            .Should()
+            .HaveCount(3);
+
+        dictionary
+            .Should()
+            .BeEquivalentTo(new Dictionary<string, object>
+            {
+                { "Text", "Test" },
+                { "IntValue", 1234 },
+                { "BoolValue", true }
+            });
     }
 }

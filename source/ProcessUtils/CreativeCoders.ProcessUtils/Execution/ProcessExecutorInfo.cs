@@ -16,8 +16,6 @@ public class ProcessExecutorInfo(string fileName, string[] arguments, bool usePl
 
     public string[] Arguments { get; } = arguments;
 
-    public bool UsePlaceholderVars { get; set; } = usePlaceholderVars;
-
     public bool RedirectStandardOutput { get; set; } = true;
 
     public bool RedirectStandardError { get; set; } = true;

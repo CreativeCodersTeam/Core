@@ -12,12 +12,13 @@ public abstract class ProcessExecutorBase(
 
     private readonly IProcessFactory _processFactory = Ensure.NotNull(processFactory);
 
-    private ProcessStartInfo CreateProcessStartInfo(string[]? args = null)
+    private ProcessStartInfo CreateProcessStartInfo(string[]? args,
+        IDictionary<string, object?>? placeholderVars)
     {
         var startupInfo = new ProcessStartInfo
         {
             FileName = _processExecutorInfo.FileName,
-            Arguments = string.Join(" ", BuildArguments(args)),
+            Arguments = string.Join(" ", BuildArguments(args, placeholderVars)),
             RedirectStandardOutput = _processExecutorInfo.RedirectStandardOutput,
             RedirectStandardError = _processExecutorInfo.RedirectStandardError,
             RedirectStandardInput = _processExecutorInfo.RedirectStandardInput,
@@ -28,30 +29,25 @@ public abstract class ProcessExecutorBase(
         return startupInfo;
     }
 
-    private string[] BuildArguments(string[]? args = null)
+    private string[] BuildArguments(string[]? args, IDictionary<string, object?>? placeholderVars)
     {
-        return _processExecutorInfo.UsePlaceholderVars
-            ? ReplacePlaceholders(_processExecutorInfo.Arguments, args)
+        return placeholderVars != null
+            ? ReplacePlaceholders(_processExecutorInfo.Arguments, placeholderVars)
             : args ?? _processExecutorInfo.Arguments;
     }
 
-    private static string[] ReplacePlaceholders(string[] arguments, string[]? args)
+    private static string[] ReplacePlaceholders(string[] arguments,
+        IDictionary<string, object?> placeholderVars)
     {
-        if (args == null)
-        {
-            return arguments;
-        }
-
-        var replaceVars = args.ToDictionary(":", false);
-
         return arguments
-            .ReplacePlaceholders("{{", "}}", replaceVars)
+            .ReplacePlaceholders("{{", "}}", placeholderVars)
             .ToArray();
     }
 
-    protected IProcess StartProcess()
+    protected IProcess StartProcess(string[]? args = null,
+        IDictionary<string, object?>? placeholderVars = null)
     {
-        var startupInfo = CreateProcessStartInfo();
+        var startupInfo = CreateProcessStartInfo(args, placeholderVars);
 
         var process = _processFactory.StartProcess(startupInfo);
 

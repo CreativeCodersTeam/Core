@@ -15,10 +15,9 @@ public class ProcessExecutorBuilder(IProcessFactory processFactory)
         return this;
     }
 
-    public IProcessExecutorBuilder SetArguments(string[] arguments, bool usePlaceholderVars = false)
+    public IProcessExecutorBuilder SetArguments(string[] arguments)
     {
         Arguments = arguments;
-        UsePlaceholderVars = usePlaceholderVars;
 
         return this;
     }
@@ -53,10 +52,9 @@ public class ProcessExecutorBuilder<T>(IProcessFactory processFactory)
         return this;
     }
 
-    public IProcessExecutorBuilder<T> SetArguments(string[] arguments, bool usePlaceholderVars = false)
+    public IProcessExecutorBuilder<T> SetArguments(string[] arguments)
     {
         Arguments = arguments;
-        UsePlaceholderVars = usePlaceholderVars;
 
         return this;
     }
