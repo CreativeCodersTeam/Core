@@ -63,12 +63,15 @@ public abstract class ProcessExecutorBase(
             return;
         }
 
+        var exitCode = process.ExitCode;
+        var standardErrorOutput = process.StandardError.ReadToEnd();
+
         if (disposeProcessOnThrow)
         {
             process.Dispose();
         }
 
-        throw new ProcessExecutionFailedException(process.ExitCode, process.StandardError.ReadToEnd());
+        throw new ProcessExecutionFailedException(exitCode, standardErrorOutput);
     }
 
     protected async Task CheckThrowOnErrorAsync(IProcess process, bool disposeProcessOnThrow)
@@ -78,12 +81,14 @@ public abstract class ProcessExecutorBase(
             return;
         }
 
+        var exitCode = process.ExitCode;
+        var standardErrorOutput = await process.StandardError.ReadToEndAsync().ConfigureAwait(false);
+
         if (disposeProcessOnThrow)
         {
             process.Dispose();
         }
 
-        throw new ProcessExecutionFailedException(process.ExitCode,
-            await process.StandardError.ReadToEndAsync().ConfigureAwait(false));
+        throw new ProcessExecutionFailedException(exitCode, standardErrorOutput);
     }
 }
