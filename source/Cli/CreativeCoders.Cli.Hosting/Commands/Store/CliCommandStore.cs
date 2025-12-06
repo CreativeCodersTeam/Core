@@ -65,12 +65,9 @@ public class CliCommandStore
             .OfType<CliCommandGroupNode>()
             .FirstOrDefault(x => x.Name == cmds[0]);
 
-        if (childNode != null)
-        {
-            return GetGroupNode(childNode.GetSubCommandGroups(), cmds.Skip(1).ToArray());
-        }
-
-        return null;
+        return childNode != null
+            ? GetGroupNode(childNode.GetSubCommandGroups(), cmds.Skip(1).ToArray())
+            : null;
     }
 
     public IEnumerable<CliTreeNode> TreeRootNodes => _treeRootNodes;
