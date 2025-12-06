@@ -1,6 +1,7 @@
 using System.Reflection;
 using CreativeCoders.Cli.Core;
 using CreativeCoders.Cli.Hosting.Commands;
+using CreativeCoders.Cli.Hosting.Commands.Store;
 using CreativeCoders.Core;
 using Microsoft.Extensions.DependencyInjection;
 

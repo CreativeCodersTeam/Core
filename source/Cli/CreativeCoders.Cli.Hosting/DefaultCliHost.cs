@@ -1,4 +1,5 @@
 using CreativeCoders.Cli.Hosting.Commands;
+using CreativeCoders.Cli.Hosting.Commands.Store;
 
 namespace CreativeCoders.Cli.Hosting;
 
