@@ -53,15 +53,3 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return new DefaultCliHost(commandStore);
     }
 }
-
-public class CliCommandStore
-{
-    private readonly IEnumerable<CliCommandInfo> _commands;
-
-    public CliCommandStore(IEnumerable<CliCommandInfo> commands)
-    {
-        _commands = commands;
-    }
-
-    public IEnumerable<CliCommandInfo> Commands => _commands;
-}

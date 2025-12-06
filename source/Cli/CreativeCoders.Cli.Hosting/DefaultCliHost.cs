@@ -1,3 +1,5 @@
+using CreativeCoders.Cli.Hosting.Commands;
+
 namespace CreativeCoders.Cli.Hosting;
 
 public class DefaultCliHost : ICliHost
