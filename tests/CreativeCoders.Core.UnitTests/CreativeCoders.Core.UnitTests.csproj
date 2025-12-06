@@ -7,7 +7,7 @@
     <ItemGroup>
         <PackageReference Include="FakeItEasy" Version="8.3.0"/>
         <PackageReference Include="AwesomeAssertions" Version="9.3.0"/>
-        <PackageReference Include="JetBrains.Annotations" Version="2025.2.2"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2025.2.4"/>
         <PackageReference Include="System.IO.Abstractions" Version="22.0.16"/>
         <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="22.0.16"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1"/>

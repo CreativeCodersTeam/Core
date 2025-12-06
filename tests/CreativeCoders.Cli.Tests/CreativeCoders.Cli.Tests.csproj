@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Library</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -10,7 +10,6 @@
         <PackageReference Include="FakeItEasy" Version="8.3.0"/>
         <PackageReference Include="AwesomeAssertions" Version="9.3.0"/>
         <PackageReference Include="JetBrains.Annotations" Version="2025.2.4"/>
-        <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="10.0.0"/>
         <PackageReference Include="System.IO.Abstractions" Version="22.0.16"/>
         <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="22.0.16"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1"/>
@@ -27,14 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.TokenAuth.Jwt\CreativeCoders.AspNetCore.TokenAuth.Jwt.csproj"/>
-        <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.TokenAuthApi.Jwt\CreativeCoders.AspNetCore.TokenAuthApi.Jwt.csproj"/>
-        <ProjectReference Include="..\..\source\AspNetCore\CreativeCoders.AspNetCore.TokenAuthApi\CreativeCoders.AspNetCore.TokenAuthApi.csproj"/>
-        <ProjectReference Include="..\..\source\UnitTests\CreativeCoders.UnitTests\CreativeCoders.UnitTests.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="TokenAuthApi\Api\"/>
+        <ProjectReference Include="..\..\source\Cli\CreativeCoders.Cli.Hosting\CreativeCoders.Cli.Hosting.csproj"/>
     </ItemGroup>
 
 </Project>
