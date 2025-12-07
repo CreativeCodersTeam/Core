@@ -2,13 +2,14 @@ using CreativeCoders.Cli.Core;
 
 namespace CliHostSampleApp;
 
-public class DemoCliCommand : ICliCommand<ICliCommandContext>
+[CliCommand(["demo"])]
+public class DemoCliCommand : ICliCommand
 {
     public DemoCliCommand() { }
 
-    public async Task<CommandResult> ExecuteAsync(ICliCommandContext context)
+    public async Task<CommandResult> ExecuteAsync()
     {
-        Console.WriteLine("Hello World!");
+        Console.WriteLine("Hello World from cli command !");
 
         return new CommandResult();
     }
