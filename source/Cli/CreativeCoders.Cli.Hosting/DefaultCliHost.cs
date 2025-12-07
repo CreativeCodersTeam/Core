@@ -1,6 +1,7 @@
 using System.Reflection;
 using CreativeCoders.Cli.Core;
 using CreativeCoders.Cli.Hosting.Commands.Store;
+using CreativeCoders.Cli.Hosting.Exceptions;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Reflection;
 using CreativeCoders.SysConsole.Cli.Parsing;
@@ -20,13 +21,15 @@ public class DefaultCliHost(ICliCommandStore commandStore, IServiceProvider serv
 
         if (findCommandNodeResult?.Node?.CommandInfo == null)
         {
-            return (null, args);
+            throw new CliCommandNotFoundException("No command found for given args", args);
         }
 
         var command =
             findCommandNodeResult.Node?.CommandInfo.CommandType.CreateInstance<object>(_serviceProvider);
 
-        return (command, findCommandNodeResult.RemainingArgs);
+        return command == null
+            ? throw new CliCommandConstructionFailedException("Command creation failed", args)
+            : (command, findCommandNodeResult.RemainingArgs);
     }
 
     private static async Task<CliResult> ExecuteAsync(object command, string[] optionsArgs)
