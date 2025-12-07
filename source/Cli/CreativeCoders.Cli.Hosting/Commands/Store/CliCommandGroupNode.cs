@@ -2,7 +2,8 @@ using CreativeCoders.Core;
 
 namespace CreativeCoders.Cli.Hosting.Commands.Store;
 
-public class CliCommandGroupNode(string groupName) : CliTreeNode(groupName)
+public class CliCommandGroupNode(string groupName, CliCommandGroupNode? parent)
+    : CliTreeNode(groupName, parent)
 {
     public IEnumerable<CliCommandNode> GetCommands() => ChildNodes.OfType<CliCommandNode>();
 

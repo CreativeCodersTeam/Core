@@ -4,9 +4,9 @@ public interface ICliCommandStore
 {
     void AddCommands(IEnumerable<CliCommandInfo> commands);
 
-    CliCommandInfo? FindCommandForArgs(string[] args);
+    FindCommandNodeResult<CliCommandGroupNode>? FindCommandGroupNode(string[] args);
 
-    CliCommandGroupNode? FindGroupNodeForArgs(string[] args);
+    FindCommandNodeResult<CliCommandNode>? FindCommandNode(string[] args);
 
     IEnumerable<CliTreeNode> TreeRootNodes { get; }
 

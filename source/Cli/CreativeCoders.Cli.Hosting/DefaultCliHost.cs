@@ -20,10 +20,11 @@ public class DefaultCliHost : ICliHost
 
     public async Task<CliResult> RunAsync(string[] args)
     {
-        var commandInfo = _commandStore.FindCommandForArgs(args);
-        if (commandInfo != null)
+        var commandInfo = _commandStore.FindCommandNode(args);
+        if (commandInfo?.Node?.CommandInfo != null)
         {
-            var command = commandInfo.CommandType.CreateInstance<ICliCommand>(_serviceProvider);
+            var command =
+                commandInfo.Node?.CommandInfo.CommandType.CreateInstance<ICliCommand>(_serviceProvider);
 
             if (command != null)
             {
