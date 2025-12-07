@@ -15,7 +15,7 @@ public class DefaultCliHost(ICliCommandStore commandStore, IServiceProvider serv
 
     private readonly ICliCommandStore _commandStore = Ensure.NotNull(commandStore);
 
-    private (object? Command, string[] Args) CreateCliCommand(string[] args)
+    private (object Command, string[] Args) CreateCliCommand(string[] args)
     {
         var findCommandNodeResult = _commandStore.FindCommandNode(args);
 
@@ -24,12 +24,19 @@ public class DefaultCliHost(ICliCommandStore commandStore, IServiceProvider serv
             throw new CliCommandNotFoundException("No command found for given args", args);
         }
 
-        var command =
-            findCommandNodeResult.Node?.CommandInfo.CommandType.CreateInstance<object>(_serviceProvider);
+        try
+        {
+            var command =
+                findCommandNodeResult.Node?.CommandInfo.CommandType.CreateInstance<object>(_serviceProvider);
 
-        return command == null
-            ? throw new CliCommandConstructionFailedException("Command creation failed", args)
-            : (command, findCommandNodeResult.RemainingArgs);
+            return command == null
+                ? throw new CliCommandConstructionFailedException("Command creation failed", args)
+                : (command, findCommandNodeResult.RemainingArgs);
+        }
+        catch (Exception e)
+        {
+            throw new CliCommandConstructionFailedException("Command creation failed", args, e);
+        }
     }
 
     private static async Task<CliResult> ExecuteAsync(object command, string[] optionsArgs)
@@ -71,13 +78,19 @@ public class DefaultCliHost(ICliCommandStore commandStore, IServiceProvider serv
 
     public async Task<CliResult> RunAsync(string[] args)
     {
-        var (command, optionsArgs) = CreateCliCommand(args);
-
-        if (command == null)
+        try
         {
-            throw new InvalidOperationException("No command found");
-        }
+            var (command, optionsArgs) = CreateCliCommand(args);
 
-        return await ExecuteAsync(command, optionsArgs).ConfigureAwait(false);
+            return await ExecuteAsync(command, optionsArgs).ConfigureAwait(false);
+        }
+        catch (CliCommandConstructionFailedException e)
+        {
+            return new CliResult(e.ExitCode);
+        }
+        catch (CliCommandNotFoundException e)
+        {
+            return new CliResult(e.ExitCode);
+        }
     }
 }
