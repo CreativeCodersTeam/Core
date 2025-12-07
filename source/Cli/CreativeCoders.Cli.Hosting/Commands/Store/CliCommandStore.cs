@@ -3,22 +3,65 @@ using CreativeCoders.Core.Collections;
 
 namespace CreativeCoders.Cli.Hosting.Commands.Store;
 
-public class CliCommandStore
+public class CliCommandStore : ICliCommandStore
 {
-    private readonly IEnumerable<CliCommandInfo> _commands;
+    private readonly List<CliCommandInfo> _commands = [];
 
     private readonly List<CliTreeNode> _treeRootNodes = [];
 
-    public CliCommandStore(IEnumerable<CliCommandInfo> commands)
+    public void AddCommands(IEnumerable<CliCommandInfo> commands)
     {
-        _commands = Ensure.NotNull(commands);
+        _commands.AddRange(Ensure.NotNull(commands));
 
-        BuildTree();
+        commands.ForEach(AddCommand);
     }
 
-    private void BuildTree()
+    public CliCommandInfo? FindCommandForArgs(string[] args)
     {
-        _commands.ForEach(AddCommand);
+        return FindCommandForArgs(_treeRootNodes, args);
+    }
+
+    public CliCommandGroupNode? FindGroupNodeForArgs(string[] args)
+    {
+        return FindGroupNodeForArgs(null, _treeRootNodes, args);
+    }
+
+    public CliCommandGroupNode? FindGroupNodeForArgs(CliCommandGroupNode? lastGroupNode,
+        IEnumerable<CliTreeNode> nodes, string[] args)
+    {
+        if (args.Length == 0)
+        {
+            return null;
+        }
+
+        var node = nodes.FirstOrDefault(x => x.Name == args[0]);
+
+        return node switch
+        {
+            null => lastGroupNode,
+            CliCommandNode commandNode => commandNode.Parent,
+            CliCommandGroupNode groupNode => FindGroupNodeForArgs(groupNode, groupNode.ChildNodes,
+                args.Skip(1).ToArray()),
+            _ => null
+        };
+    }
+
+    private CliCommandInfo? FindCommandForArgs(IEnumerable<CliTreeNode> nodes, string[] args)
+    {
+        if (args.Length == 0)
+        {
+            return null;
+        }
+
+        var node = nodes.FirstOrDefault(x => x.Name == args[0]);
+
+        return node switch
+        {
+            null => null,
+            CliCommandNode commandNode => commandNode.CommandInfo,
+            CliCommandGroupNode groupNode => FindCommandForArgs(groupNode.ChildNodes, args.Skip(1).ToArray()),
+            _ => null
+        };
     }
 
     private void AddCommand(CliCommandInfo command)
@@ -47,7 +90,9 @@ public class CliCommandStore
                     throw new InvalidOperationException("Command group node could not be created");
                 }
 
-                groupNode?.ChildNodes.Add(new CliCommandNode(command, commands[^1]));
+                _treeRootNodes.Add(groupNode);
+
+                groupNode.ChildNodes.Add(new CliCommandNode(command, commands[^1]));
 
                 break;
             }
@@ -59,15 +104,30 @@ public class CliCommandStore
         return GetGroupNode(_treeRootNodes, commands);
     }
 
-    private CliCommandGroupNode? GetGroupNode(IEnumerable<CliTreeNode> nodes, string[] cmds)
+    private static CliCommandGroupNode? GetGroupNode(List<CliTreeNode> nodes, string[] cmds)
     {
         var childNode = nodes
             .OfType<CliCommandGroupNode>()
             .FirstOrDefault(x => x.Name == cmds[0]);
 
-        return childNode != null
-            ? GetGroupNode(childNode.GetSubCommandGroups(), cmds.Skip(1).ToArray())
-            : null;
+        // Last group node is found
+        if (cmds.Length == 1 && childNode != null)
+        {
+            return childNode;
+        }
+
+        if (childNode != null)
+        {
+            return GetGroupNode(childNode.ChildNodes, cmds.Skip(1).ToArray());
+        }
+
+        var groupNode = new CliCommandGroupNode(cmds[0]);
+
+        nodes.Add(groupNode);
+
+        return cmds.Length == 1
+            ? groupNode
+            : GetGroupNode(groupNode.ChildNodes, cmds.Skip(1).ToArray());
     }
 
     public IEnumerable<CliTreeNode> TreeRootNodes => _treeRootNodes;

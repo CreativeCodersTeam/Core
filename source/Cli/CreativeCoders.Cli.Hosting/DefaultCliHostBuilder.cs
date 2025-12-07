@@ -11,11 +11,20 @@ public class DefaultCliHostBuilder : ICliHostBuilder
 {
     private readonly IAssemblyCommandScanner _commandScanner;
 
-    private Assembly[] _scanAsemblies;
+    private readonly List<Assembly> _scanAssemblies = [];
+
+    private readonly List<Action<IServiceCollection>> _configureServicesActions = [];
 
     public DefaultCliHostBuilder(IAssemblyCommandScanner commandScanner)
     {
-        _commandScanner = commandScanner;
+        _commandScanner = Ensure.NotNull(commandScanner);
+
+        var entryAssembly = Assembly.GetEntryAssembly();
+
+        if (entryAssembly != null)
+        {
+            ScanAssemblies(entryAssembly);
+        }
     }
 
     public ICliHostBuilder UseContext<TContext>(Action<TContext>? configure = null)
@@ -35,22 +44,36 @@ public class DefaultCliHostBuilder : ICliHostBuilder
     {
         Ensure.NotNull(configureServices);
 
-        throw new NotImplementedException();
-    }
-
-    public ICliHostBuilder ScanAssemblies(params Assembly[] assemblies)
-    {
-        _scanAsemblies = assemblies;
+        _configureServicesActions.Add(configureServices);
 
         return this;
     }
 
+    public ICliHostBuilder ScanAssemblies(params Assembly[] assemblies)
+    {
+        _scanAssemblies.AddRange(assemblies);
+
+        return this;
+    }
+
+    private IServiceProvider BuildServiceProvider()
+    {
+        var services = new ServiceCollection();
+
+        services.AddCliHosting();
+
+        _configureServicesActions.ForEach(x => x(services));
+
+        return services.BuildServiceProvider();
+    }
+
     public ICliHost Build()
     {
-        var commands = _commandScanner.Scan(_scanAsemblies);
+        var sp = BuildServiceProvider();
 
-        var commandStore = new CliCommandStore(commands);
+        var commandStore = sp.GetRequiredService<ICliCommandStore>();
+        commandStore.AddCommands(_commandScanner.Scan(_scanAssemblies));
 
-        return new DefaultCliHost(commandStore);
+        return sp.GetRequiredService<ICliHost>();
     }
 }

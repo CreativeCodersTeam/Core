@@ -12,7 +12,7 @@ public class CliCommandAttribute : Attribute
 
     public string Description { get; set; } = string.Empty;
 
-    public string[][] AlternativeCommands { get; set; }
+    public string[][] AlternativeCommands { get; set; } = [];
 
     public bool IsDefaultCommand { get; set; }
 }

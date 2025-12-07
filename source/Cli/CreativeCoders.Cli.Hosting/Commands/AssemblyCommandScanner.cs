@@ -6,7 +6,7 @@ namespace CreativeCoders.Cli.Hosting.Commands;
 
 public class AssemblyCommandScanner : IAssemblyCommandScanner
 {
-    public IEnumerable<CliCommandInfo> Scan(Assembly[] assemblies)
+    public IEnumerable<CliCommandInfo> Scan(IEnumerable<Assembly> assemblies)
     {
         return assemblies
             .SelectMany(x => x.GetTypesSafe())
