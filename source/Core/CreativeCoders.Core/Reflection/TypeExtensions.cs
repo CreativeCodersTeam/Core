@@ -73,4 +73,16 @@ public static class TypeExtensions
 
         return Activator.CreateInstance(type, arguments) as T;
     }
+
+    public static bool ImplementsGenericInterface(this Type type, Type genericInterfaceDefinition) =>
+        type.GetInterfaces().Any(i =>
+            i.IsGenericType && i.GetGenericTypeDefinition() == genericInterfaceDefinition);
+
+    public static Type[] GetGenericInterfaceArguments(this Type type, Type genericInterfaceDefinition)
+    {
+        return type.GetInterfaces()
+            .FirstOrDefault(i =>
+                i.IsGenericType && i.GetGenericTypeDefinition() == genericInterfaceDefinition)?
+            .GetGenericArguments() ?? [];
+    }
 }

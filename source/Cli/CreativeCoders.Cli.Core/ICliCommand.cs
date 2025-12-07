@@ -1,6 +1,6 @@
 namespace CreativeCoders.Cli.Core;
 
-public interface ICliCommand<TOptions>
+public interface ICliCommand<in TOptions>
     where TOptions : class
 {
     Task<CommandResult> ExecuteAsync(TOptions options);

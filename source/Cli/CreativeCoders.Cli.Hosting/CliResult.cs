@@ -1,6 +1,6 @@
 namespace CreativeCoders.Cli.Hosting;
 
-public class CliResult
+public class CliResult(int exitCode)
 {
-    public int ExitCode { get; set; }
+    public int ExitCode { get; set; } = exitCode;
 }

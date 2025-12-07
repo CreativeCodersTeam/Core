@@ -7,6 +7,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj"/>
+        <ProjectReference Include="..\..\SysConsole\CreativeCoders.SysConsole.Cli.Parsing\CreativeCoders.SysConsole.Cli.Parsing.csproj"/>
         <ProjectReference Include="..\CreativeCoders.Cli.Core\CreativeCoders.Cli.Core.csproj"/>
     </ItemGroup>
 

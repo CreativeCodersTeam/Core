@@ -1,45 +1,80 @@
+using System.Reflection;
 using CreativeCoders.Cli.Core;
-using CreativeCoders.Cli.Hosting.Commands;
 using CreativeCoders.Cli.Hosting.Commands.Store;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Reflection;
+using CreativeCoders.SysConsole.Cli.Parsing;
 
 namespace CreativeCoders.Cli.Hosting;
 
-public class DefaultCliHost : ICliHost
+public class DefaultCliHost(ICliCommandStore commandStore, IServiceProvider serviceProvider)
+    : ICliHost
 {
-    private readonly IServiceProvider _serviceProvider;
+    private readonly IServiceProvider _serviceProvider = Ensure.NotNull(serviceProvider);
 
-    private readonly ICliCommandStore _commandStore;
+    private readonly ICliCommandStore _commandStore = Ensure.NotNull(commandStore);
 
-    public DefaultCliHost(ICliCommandStore commandStore, IServiceProvider serviceProvider)
+    private (object? Command, string[] Args) CreateCliCommand(string[] args)
     {
-        _serviceProvider = Ensure.NotNull(serviceProvider);
-        _commandStore = Ensure.NotNull(commandStore);
+        var findCommandNodeResult = _commandStore.FindCommandNode(args);
+
+        if (findCommandNodeResult?.Node?.CommandInfo == null)
+        {
+            return (null, args);
+        }
+
+        var command =
+            findCommandNodeResult.Node?.CommandInfo.CommandType.CreateInstance<object>(_serviceProvider);
+
+        return (command, findCommandNodeResult.RemainingArgs);
+    }
+
+    private static async Task<CliResult> ExecuteAsync(object command, string[] optionsArgs)
+    {
+        if (command.GetType().IsAssignableTo(typeof(ICliCommand)))
+        {
+            var commandResult = await ((ICliCommand)command).ExecuteAsync().ConfigureAwait(false);
+
+            return new CliResult(commandResult.ExitCode);
+        }
+
+        if (!command.GetType().ImplementsGenericInterface(typeof(ICliCommand<>)))
+        {
+            return new CliResult(int.MinValue);
+        }
+
+        var optionsTypes = command.GetType().GetGenericInterfaceArguments(typeof(ICliCommand<>));
+
+        if (optionsTypes.Length != 1)
+        {
+            throw new InvalidOperationException("Invalid command type");
+        }
+
+        var optionsParser = new OptionParser(optionsTypes[0]);
+
+        var options = optionsParser.Parse(optionsArgs);
+
+        var commandWithOptionsResult = command.GetType().InvokeMember(nameof(ICliCommand<>.ExecuteAsync),
+            BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.Public, null, command,
+            [options]);
+
+        if (commandWithOptionsResult is Task<CommandResult> taskResult)
+        {
+            return new CliResult((await taskResult.ConfigureAwait(false)).ExitCode);
+        }
+
+        return new CliResult(int.MaxValue);
     }
 
     public async Task<CliResult> RunAsync(string[] args)
     {
-        var commandInfo = _commandStore.FindCommandNode(args);
-        if (commandInfo?.Node?.CommandInfo != null)
+        var (command, optionsArgs) = CreateCliCommand(args);
+
+        if (command == null)
         {
-            var command =
-                commandInfo.Node?.CommandInfo.CommandType.CreateInstance<ICliCommand>(_serviceProvider);
-
-            if (command != null)
-            {
-                var result = await command.ExecuteAsync().ConfigureAwait(false);
-
-                return new CliResult
-                {
-                    ExitCode = result.ExitCode
-                };
-            }
+            throw new InvalidOperationException("No command found");
         }
 
-        return new CliResult
-        {
-            ExitCode = int.MinValue
-        };
+        return await ExecuteAsync(command, optionsArgs).ConfigureAwait(false);
     }
 }
