@@ -4,17 +4,24 @@ using CreativeCoders.Cli.Hosting.Commands;
 using CreativeCoders.Cli.Hosting.Commands.Store;
 using CreativeCoders.Cli.Hosting.Exceptions;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Reflection;
 using CreativeCoders.SysConsole.Cli.Parsing;
+using Spectre.Console;
 
 namespace CreativeCoders.Cli.Hosting;
 
-public class DefaultCliHost(ICliCommandStore commandStore, IServiceProvider serviceProvider)
+public class DefaultCliHost(
+    IAnsiConsole ansiConsole,
+    ICliCommandStore commandStore,
+    IServiceProvider serviceProvider)
     : ICliHost
 {
     private readonly IServiceProvider _serviceProvider = Ensure.NotNull(serviceProvider);
 
     private readonly ICliCommandStore _commandStore = Ensure.NotNull(commandStore);
+
+    private readonly IAnsiConsole _ansiConsole = Ensure.NotNull(ansiConsole);
 
     private (object Command, string[] Args, CliCommandInfo CommandInfo) CreateCliCommand(string[] args)
     {
@@ -78,11 +85,33 @@ public class DefaultCliHost(ICliCommandStore commandStore, IServiceProvider serv
         }
         catch (CliCommandConstructionFailedException e)
         {
+            _ansiConsole.Markup(
+                $"[red]Error creating command: {e.InnerException?.Message ?? "Unknown error"}[/] ");
+
             return new CliResult(e.ExitCode);
         }
         catch (CliCommandNotFoundException e)
         {
+            PrintNearesMatch(args);
+
             return new CliResult(e.ExitCode);
         }
+    }
+
+    private void PrintNearesMatch(string[] args)
+    {
+        _ansiConsole.Markup($"[red]No command found for given args: {string.Join(" ", args)}[/]");
+        _ansiConsole.WriteLine();
+        _ansiConsole.WriteLine("Possible matches:");
+
+        var findCommandGroupNodeResult = _commandStore.FindCommandGroupNode(args);
+
+        if (findCommandGroupNodeResult == null)
+        {
+            _ansiConsole.WriteLine("No matches found");
+            return;
+        }
+
+        findCommandGroupNodeResult.Node?.GetCommands().ForEach(x => _ansiConsole.WriteLine($"  {x.Name}"));
     }
 }
