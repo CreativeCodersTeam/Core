@@ -9,16 +9,12 @@ namespace CreativeCoders.Cli.Hosting;
 
 public class DefaultCliHostBuilder : ICliHostBuilder
 {
-    private readonly IAssemblyCommandScanner _commandScanner;
-
     private readonly List<Assembly> _scanAssemblies = [];
 
     private readonly List<Action<IServiceCollection>> _configureServicesActions = [];
 
-    public DefaultCliHostBuilder(IAssemblyCommandScanner commandScanner)
+    public DefaultCliHostBuilder()
     {
-        _commandScanner = Ensure.NotNull(commandScanner);
-
         var entryAssembly = Assembly.GetEntryAssembly();
 
         if (entryAssembly != null)
@@ -71,8 +67,10 @@ public class DefaultCliHostBuilder : ICliHostBuilder
     {
         var sp = BuildServiceProvider();
 
+        var commandScanner = sp.GetRequiredService<IAssemblyCommandScanner>();
+
         var commandStore = sp.GetRequiredService<ICliCommandStore>();
-        commandStore.AddCommands(_commandScanner.Scan(_scanAssemblies));
+        commandStore.AddCommands(commandScanner.Scan(_scanAssemblies));
 
         return sp.GetRequiredService<ICliHost>();
     }

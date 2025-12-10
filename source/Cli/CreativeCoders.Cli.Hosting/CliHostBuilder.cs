@@ -6,6 +6,6 @@ public static class CliHostBuilder
 {
     public static ICliHostBuilder Create()
     {
-        return new DefaultCliHostBuilder(new AssemblyCommandScanner());
+        return new DefaultCliHostBuilder();
     }
 }

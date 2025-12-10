@@ -7,4 +7,6 @@ public class CliCommandInfo
     public required CliCommandAttribute CommandAttribute { get; init; }
 
     public required Type CommandType { get; init; }
+
+    public Type? OptionsType { get; init; }
 }

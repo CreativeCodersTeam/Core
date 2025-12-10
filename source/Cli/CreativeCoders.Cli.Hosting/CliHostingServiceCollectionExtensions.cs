@@ -9,6 +9,7 @@ public static class CliHostingServiceCollectionExtensions
 {
     public static IServiceCollection AddCliHosting(this IServiceCollection services)
     {
+        services.TryAddSingleton<ICommandInfoCreator, CommandInfoCreator>();
         services.TryAddSingleton<IAssemblyCommandScanner, AssemblyCommandScanner>();
         services.TryAddSingleton<ICliCommandStore, CliCommandStore>();
         services.TryAddSingleton<ICliHost, DefaultCliHost>();
