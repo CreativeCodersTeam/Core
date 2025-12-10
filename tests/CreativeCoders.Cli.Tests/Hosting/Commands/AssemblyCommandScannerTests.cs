@@ -1,12 +1,15 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using AwesomeAssertions;
 using CreativeCoders.Cli.Core;
 using CreativeCoders.Cli.Hosting.Commands;
 using JetBrains.Annotations;
 using Xunit;
+using FakeItEasy;
 
 namespace CreativeCoders.Cli.Tests.Hosting.Commands;
 
+[SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
 public class AssemblyCommandScannerTests
 {
     [Fact]
@@ -14,7 +17,26 @@ public class AssemblyCommandScannerTests
     {
         // Arrange
         var assemblies = new[] { typeof(DummyCommandOne).Assembly };
-        var scanner = new AssemblyCommandScanner(new CommandInfoCreator());
+
+        var commandInfoCreator = A.Fake<ICommandInfoCreator>();
+
+        A.CallTo(() => commandInfoCreator.Create(typeof(DummyCommandOne)))
+            .Returns(new CliCommandInfo
+            {
+                CommandType = typeof(DummyCommandOne),
+                CommandAttribute = typeof(DummyCommandOne)
+                    .GetCustomAttribute<CliCommandAttribute>()!
+            });
+
+        A.CallTo(() => commandInfoCreator.Create(typeof(DummyCommandTwo)))
+            .Returns(new CliCommandInfo
+            {
+                CommandType = typeof(DummyCommandTwo),
+                CommandAttribute = typeof(DummyCommandTwo)
+                    .GetCustomAttribute<CliCommandAttribute>()!
+            });
+
+        var scanner = new AssemblyCommandScanner(commandInfoCreator);
 
         // Act
         var result = scanner.Scan(assemblies).ToArray();
@@ -56,7 +78,9 @@ public class AssemblyCommandScannerTests
     {
         // Arrange
         var assemblies = new[] { typeof(NonCommandType).Assembly };
-        var scanner = new AssemblyCommandScanner(new CommandInfoCreator());
+
+        var commandInfoCreator = A.Fake<ICommandInfoCreator>();
+        var scanner = new AssemblyCommandScanner(commandInfoCreator);
 
         // Act
         var result = scanner.Scan(assemblies).ToArray();
@@ -73,7 +97,9 @@ public class AssemblyCommandScannerTests
     {
         // Arrange
         var assemblies = Array.Empty<Assembly>();
-        var scanner = new AssemblyCommandScanner(new CommandInfoCreator());
+
+        var commandInfoCreator = A.Fake<ICommandInfoCreator>();
+        var scanner = new AssemblyCommandScanner(commandInfoCreator);
 
         // Act
         var result = scanner.Scan(assemblies).ToArray();
