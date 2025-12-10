@@ -14,7 +14,7 @@ public class AssemblyCommandScannerTests
     {
         // Arrange
         var assemblies = new[] { typeof(DummyCommandOne).Assembly };
-        var scanner = new AssemblyCommandScanner();
+        var scanner = new AssemblyCommandScanner(new CommandInfoCreator());
 
         // Act
         var result = scanner.Scan(assemblies).ToArray();
@@ -56,7 +56,7 @@ public class AssemblyCommandScannerTests
     {
         // Arrange
         var assemblies = new[] { typeof(NonCommandType).Assembly };
-        var scanner = new AssemblyCommandScanner();
+        var scanner = new AssemblyCommandScanner(new CommandInfoCreator());
 
         // Act
         var result = scanner.Scan(assemblies).ToArray();
@@ -73,7 +73,7 @@ public class AssemblyCommandScannerTests
     {
         // Arrange
         var assemblies = Array.Empty<Assembly>();
-        var scanner = new AssemblyCommandScanner();
+        var scanner = new AssemblyCommandScanner(new CommandInfoCreator());
 
         // Act
         var result = scanner.Scan(assemblies).ToArray();
