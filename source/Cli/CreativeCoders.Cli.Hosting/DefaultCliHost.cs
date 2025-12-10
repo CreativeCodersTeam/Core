@@ -1,5 +1,6 @@
 using System.Reflection;
 using CreativeCoders.Cli.Core;
+using CreativeCoders.Cli.Hosting.Commands;
 using CreativeCoders.Cli.Hosting.Commands.Store;
 using CreativeCoders.Cli.Hosting.Exceptions;
 using CreativeCoders.Core;
@@ -15,7 +16,7 @@ public class DefaultCliHost(ICliCommandStore commandStore, IServiceProvider serv
 
     private readonly ICliCommandStore _commandStore = Ensure.NotNull(commandStore);
 
-    private (object Command, string[] Args) CreateCliCommand(string[] args)
+    private (object Command, string[] Args, CliCommandInfo CommandInfo) CreateCliCommand(string[] args)
     {
         var findCommandNodeResult = _commandStore.FindCommandNode(args);
 
@@ -26,12 +27,14 @@ public class DefaultCliHost(ICliCommandStore commandStore, IServiceProvider serv
 
         try
         {
+            var commandInfo = findCommandNodeResult.Node?.CommandInfo ??
+                              throw new InvalidOperationException("CommandInfo must not be null");
             var command =
-                findCommandNodeResult.Node?.CommandInfo.CommandType.CreateInstance<object>(_serviceProvider);
+                commandInfo.CommandType.CreateInstance<object>(_serviceProvider);
 
             return command == null
                 ? throw new CliCommandConstructionFailedException("Command creation failed", args)
-                : (command, findCommandNodeResult.RemainingArgs);
+                : (command, findCommandNodeResult.RemainingArgs, commandInfo);
         }
         catch (Exception e)
         {
@@ -39,28 +42,17 @@ public class DefaultCliHost(ICliCommandStore commandStore, IServiceProvider serv
         }
     }
 
-    private static async Task<CliResult> ExecuteAsync(object command, string[] optionsArgs)
+    private static async Task<CliResult> ExecuteAsync(CliCommandInfo commandInfo, object command,
+        string[] optionsArgs)
     {
-        if (command.GetType().IsAssignableTo(typeof(ICliCommand)))
+        if (commandInfo.OptionsType == null)
         {
             var commandResult = await ((ICliCommand)command).ExecuteAsync().ConfigureAwait(false);
 
             return new CliResult(commandResult.ExitCode);
         }
 
-        if (!command.GetType().ImplementsGenericInterface(typeof(ICliCommand<>)))
-        {
-            return new CliResult(int.MinValue);
-        }
-
-        var optionsTypes = command.GetType().GetGenericInterfaceArguments(typeof(ICliCommand<>));
-
-        if (optionsTypes.Length != 1)
-        {
-            throw new InvalidOperationException("Invalid command type");
-        }
-
-        var optionsParser = new OptionParser(optionsTypes[0]);
+        var optionsParser = new OptionParser(commandInfo.OptionsType);
 
         var options = optionsParser.Parse(optionsArgs);
 
@@ -80,9 +72,9 @@ public class DefaultCliHost(ICliCommandStore commandStore, IServiceProvider serv
     {
         try
         {
-            var (command, optionsArgs) = CreateCliCommand(args);
+            var (command, optionsArgs, commandInfo) = CreateCliCommand(args);
 
-            return await ExecuteAsync(command, optionsArgs).ConfigureAwait(false);
+            return await ExecuteAsync(commandInfo, command, optionsArgs).ConfigureAwait(false);
         }
         catch (CliCommandConstructionFailedException e)
         {
