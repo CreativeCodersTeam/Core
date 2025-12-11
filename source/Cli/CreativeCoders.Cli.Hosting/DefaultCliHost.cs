@@ -3,6 +3,7 @@ using CreativeCoders.Cli.Core;
 using CreativeCoders.Cli.Hosting.Commands;
 using CreativeCoders.Cli.Hosting.Commands.Store;
 using CreativeCoders.Cli.Hosting.Exceptions;
+using CreativeCoders.Cli.Hosting.Help;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Reflection;
@@ -14,7 +15,8 @@ namespace CreativeCoders.Cli.Hosting;
 public class DefaultCliHost(
     IAnsiConsole ansiConsole,
     ICliCommandStore commandStore,
-    IServiceProvider serviceProvider)
+    IServiceProvider serviceProvider,
+    ICliCommandHelpHandler commandHelpHandler)
     : ICliHost
 {
     private readonly IServiceProvider _serviceProvider = Ensure.NotNull(serviceProvider);
@@ -22,6 +24,8 @@ public class DefaultCliHost(
     private readonly ICliCommandStore _commandStore = Ensure.NotNull(commandStore);
 
     private readonly IAnsiConsole _ansiConsole = Ensure.NotNull(ansiConsole);
+
+    private readonly ICliCommandHelpHandler _commandHelpHandler = Ensure.NotNull(commandHelpHandler);
 
     private (object Command, string[] Args, CliCommandInfo CommandInfo) CreateCliCommand(string[] args)
     {
@@ -79,6 +83,13 @@ public class DefaultCliHost(
     {
         try
         {
+            if (_commandHelpHandler.ShouldPrintHelp(args))
+            {
+                _commandHelpHandler.PrintHelp(args);
+
+                return new CliResult(CliExitCodes.Success);
+            }
+
             var (command, optionsArgs, commandInfo) = CreateCliCommand(args);
 
             return await ExecuteAsync(commandInfo, command, optionsArgs).ConfigureAwait(false);
@@ -92,15 +103,15 @@ public class DefaultCliHost(
         }
         catch (CliCommandNotFoundException e)
         {
-            PrintNearesMatch(args);
+            PrintNearestMatch(args);
 
             return new CliResult(e.ExitCode);
         }
     }
 
-    private void PrintNearesMatch(string[] args)
+    private void PrintNearestMatch(string[] args)
     {
-        _ansiConsole.Markup($"[red]No command found for given args: {string.Join(" ", args)}[/]");
+        _ansiConsole.Markup($"[red]No command found for given arguments: {string.Join(" ", args)}[/]");
         _ansiConsole.WriteLine();
         _ansiConsole.WriteLine("Possible matches:");
 

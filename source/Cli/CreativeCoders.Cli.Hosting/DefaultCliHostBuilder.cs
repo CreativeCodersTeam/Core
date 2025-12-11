@@ -2,8 +2,10 @@ using System.Reflection;
 using CreativeCoders.Cli.Core;
 using CreativeCoders.Cli.Hosting.Commands;
 using CreativeCoders.Cli.Hosting.Commands.Store;
+using CreativeCoders.Cli.Hosting.Help;
 using CreativeCoders.Core;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CreativeCoders.Cli.Hosting;
 
@@ -12,6 +14,10 @@ public class DefaultCliHostBuilder : ICliHostBuilder
     private readonly List<Assembly> _scanAssemblies = [];
 
     private readonly List<Action<IServiceCollection>> _configureServicesActions = [];
+
+    private bool _helpEnabled;
+
+    private HelpCommandKind _helpCommandKind;
 
     public DefaultCliHostBuilder()
     {
@@ -52,11 +58,32 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return this;
     }
 
+    public ICliHostBuilder EnableHelp(HelpCommandKind commandKind)
+    {
+        _helpEnabled = true;
+        _helpCommandKind = commandKind;
+
+        return this;
+    }
+
     private IServiceProvider BuildServiceProvider()
     {
         var services = new ServiceCollection();
 
         services.AddCliHosting();
+
+        if (_helpEnabled)
+        {
+            services.TryAddSingleton<HelpHandlerSettings>(_ => new HelpHandlerSettings
+            {
+                CommandKind = _helpCommandKind
+            });
+            services.TryAddSingleton<ICliCommandHelpHandler, CliCommandHelpHandler>();
+        }
+        else
+        {
+            services.TryAddSingleton<ICliCommandHelpHandler, DisabledCommandHelpHandler>();
+        }
 
         _configureServicesActions.ForEach(x => x(services));
 
