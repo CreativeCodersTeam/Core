@@ -119,7 +119,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
 
         commandStore.AddCommands(assemblyScanResult.CommandInfos, assemblyScanResult.GroupAttributes);
 
-        var validator = sp.GetRequiredService<ICommandStructureValidator>();
+        var validator = sp.GetRequiredService<ICliCommandStructureValidator>();
         validator.Validate(commandStore);
 
         return sp.GetRequiredService<ICliHost>();

@@ -25,7 +25,7 @@ public class DemoCliCommand : ICliCommand
 }
 
 [CliCommand(["demo", "do", "something"], Name = "Demo2 command",
-    //AlternativeCommands = ["demo2"],
+    //AlternativeCommands = ["demo", "do", "list"],
     Description = "Simple Demo command with options, that prints some text from options.")]
 public class DemoCliCommandWithOptions : ICliCommand<DemoOptions>
 {

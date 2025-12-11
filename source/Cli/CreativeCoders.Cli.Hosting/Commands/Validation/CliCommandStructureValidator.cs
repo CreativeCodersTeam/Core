@@ -3,7 +3,7 @@ using CreativeCoders.Cli.Hosting.Exceptions;
 
 namespace CreativeCoders.Cli.Hosting.Commands.Validation;
 
-public class CommandStructureValidator : ICommandStructureValidator
+public class CliCommandStructureValidator : ICliCommandStructureValidator
 {
     public void Validate(ICliCommandStore commandStore)
     {
@@ -11,7 +11,8 @@ public class CommandStructureValidator : ICommandStructureValidator
         var uniqueGroupAttributesCount = commandStore
             .GroupAttributes
             .Select(x => x.Commands)
-            .Distinct()
+            .Distinct(EqualityComparer<string[]>.Create((o1, o2) => o1.SequenceEqual(o2),
+                x => string.Join(".", x).GetHashCode()))
             .ToArray()
             .Length;
 
@@ -38,7 +39,10 @@ public class CommandStructureValidator : ICommandStructureValidator
             .ToArray();
 
         var uniqueCommandsCount = allCommands
-            .Distinct().ToArray().Length;
+            .Distinct(EqualityComparer<string[]>.Create((o1, o2) => o1.SequenceEqual(o2),
+                x => string.Join(".", x).GetHashCode()))
+            .ToArray()
+            .Length;
 
         if (uniqueCommandsCount != allCommands.Length)
         {

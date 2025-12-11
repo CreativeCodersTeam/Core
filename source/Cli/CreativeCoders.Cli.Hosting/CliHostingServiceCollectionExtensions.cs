@@ -12,7 +12,7 @@ public static class CliHostingServiceCollectionExtensions
 {
     public static void AddCliHosting(this IServiceCollection services)
     {
-        services.TryAddSingleton<ICommandStructureValidator, CommandStructureValidator>();
+        services.TryAddSingleton<ICliCommandStructureValidator, CliCommandStructureValidator>();
         services.TryAddSingleton<ICommandInfoCreator, CommandInfoCreator>();
         services.TryAddSingleton<IAssemblyCommandScanner, AssemblyCommandScanner>();
         services.TryAddSingleton<ICliCommandStore, CliCommandStore>();
