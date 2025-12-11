@@ -208,6 +208,158 @@ public class CliCommandStoreTests
     }
 
     [Fact]
+    public void AddCommands_WithMultipleRootCommands_BuildsSeparateRootNodes()
+    {
+        // Arrange
+        var firstCommand = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["run"]),
+            CommandType = typeof(DummyCommand)
+        };
+
+        var secondCommand = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["stop"]),
+            CommandType = typeof(DummyCommand2)
+        };
+
+        var store = new CliCommandStore();
+
+        // Act
+        store.AddCommands([firstCommand, secondCommand]);
+
+        // Assert
+        var rootNodes = store.TreeRootNodes.ToArray();
+
+        rootNodes
+            .Should().HaveCount(2);
+
+        rootNodes.Select(x => x.Name)
+            .Should().BeEquivalentTo("run", "stop");
+
+        store.FindCommandNode(["run"])?.Node?.CommandInfo
+            .Should().BeSameAs(firstCommand);
+
+        store.FindCommandNode(["stop"])?.Node?.CommandInfo
+            .Should().BeSameAs(secondCommand);
+    }
+
+    [Fact]
+    public void AddCommands_WithNestedGroups_BuildsFullTreeHierarchy()
+    {
+        // Arrange
+        var deepCommand = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["run", "group", "do", "now"]),
+            CommandType = typeof(DummyCommand)
+        };
+
+        var siblingCommand = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["run", "group", "list"]),
+            CommandType = typeof(DummyCommand2)
+        };
+
+        var store = new CliCommandStore();
+
+        // Act
+        store.AddCommands([deepCommand, siblingCommand]);
+
+        // Assert
+        var rootNode = store.TreeRootNodes.Single()
+            .Should().BeOfType<CliCommandGroupNode>().Which;
+
+        rootNode.Name
+            .Should().Be("run");
+
+        var groupNode = rootNode.ChildNodes.Single()
+            .Should().BeOfType<CliCommandGroupNode>().Which;
+
+        groupNode.Name
+            .Should().Be("group");
+
+        groupNode.ChildNodes
+            .Should().HaveCount(2);
+
+        var doGroupNode = groupNode.ChildNodes
+            .OfType<CliCommandGroupNode>()
+            .Single();
+
+        doGroupNode.Name
+            .Should().Be("do");
+
+        var nowCommandNode = doGroupNode.ChildNodes.Single()
+            .Should().BeOfType<CliCommandNode>().Which;
+
+        nowCommandNode.Name
+            .Should().Be("now");
+
+        nowCommandNode.CommandInfo
+            .Should().BeSameAs(deepCommand);
+
+        var listCommandNode = groupNode.ChildNodes
+            .OfType<CliCommandNode>()
+            .Single();
+
+        listCommandNode.Name
+            .Should().Be("list");
+
+        listCommandNode.CommandInfo
+            .Should().BeSameAs(siblingCommand);
+    }
+
+    [Fact]
+    public void AddCommands_WithAlternativeCommands_AndNestedGroups_BuildsAliasesOnTree()
+    {
+        // Arrange
+        var attribute = new CliCommandAttribute(["run", "group", "do"])
+        {
+            AlternativeCommands = ["execute", "group", "do"]
+        };
+
+        var cmdInfo = new CliCommandInfo
+        {
+            CommandAttribute = attribute,
+            CommandType = typeof(DummyCommand)
+        };
+
+        var store = new CliCommandStore();
+
+        // Act
+        store.AddCommands([cmdInfo]);
+
+        // Assert
+        store.TreeRootNodes.Select(x => x.Name)
+            .Should().BeEquivalentTo("run", "execute");
+
+        var runRoot = store.TreeRootNodes.First(x => x.Name == "run")
+            .Should().BeOfType<CliCommandGroupNode>().Which;
+
+        var executeRoot = store.TreeRootNodes.First(x => x.Name == "execute")
+            .Should().BeOfType<CliCommandGroupNode>().Which;
+
+        var runGroupNode = runRoot.ChildNodes.Single();
+        runGroupNode.Name
+            .Should().Be("group");
+
+        var executeGroupNode = executeRoot.ChildNodes.Single();
+        executeGroupNode.Name
+            .Should().Be("group");
+
+        runGroupNode.ChildNodes.Single().Name
+            .Should().Be("do");
+
+        executeGroupNode.ChildNodes.Single().Name
+            .Should().Be("do");
+
+        store.FindCommandNode(["run", "group", "do"])?.Node?.CommandInfo
+            .Should().BeSameAs(cmdInfo);
+
+        store.FindCommandNode(["execute", "group", "do"])?.Node?.CommandInfo
+            .Should().BeSameAs(cmdInfo);
+    }
+
+    [Fact]
     public void FindCommandNode_WithSingleCommand_ReturnsCommandInfo()
     {
         // Arrange
