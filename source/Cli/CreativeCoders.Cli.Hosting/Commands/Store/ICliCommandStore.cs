@@ -15,4 +15,6 @@ public interface ICliCommandStore
     IEnumerable<CliTreeNode> TreeRootNodes { get; }
 
     IEnumerable<CliCommandInfo> Commands { get; }
+
+    IEnumerable<CliCommandGroupAttribute> GroupAttributes { get; }
 }

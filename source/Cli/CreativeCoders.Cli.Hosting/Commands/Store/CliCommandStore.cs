@@ -157,4 +157,6 @@ public class CliCommandStore : ICliCommandStore
     public IEnumerable<CliTreeNode> TreeRootNodes => _treeRootNodes;
 
     public IEnumerable<CliCommandInfo> Commands => _commands;
+
+    public IEnumerable<CliCommandGroupAttribute> GroupAttributes => _groupAttributes ?? [];
 }
