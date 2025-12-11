@@ -2,6 +2,7 @@ using System.Reflection;
 using CreativeCoders.Cli.Core;
 using CreativeCoders.Cli.Hosting.Commands;
 using CreativeCoders.Cli.Hosting.Commands.Store;
+using CreativeCoders.Cli.Hosting.Commands.Validation;
 using CreativeCoders.Cli.Hosting.Help;
 using CreativeCoders.Core;
 using Microsoft.Extensions.DependencyInjection;
@@ -117,6 +118,9 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         var assemblyScanResult = commandScanner.ScanForCommands(_scanAssemblies.ToArray());
 
         commandStore.AddCommands(assemblyScanResult.CommandInfos, assemblyScanResult.GroupAttributes);
+
+        var validator = sp.GetRequiredService<ICommandStructureValidator>();
+        validator.Validate(commandStore);
 
         return sp.GetRequiredService<ICliHost>();
     }

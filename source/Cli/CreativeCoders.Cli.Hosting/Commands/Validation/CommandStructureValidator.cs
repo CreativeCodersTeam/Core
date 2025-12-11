@@ -7,7 +7,7 @@ public class CommandStructureValidator : ICommandStructureValidator
 {
     public void Validate(ICliCommandStore commandStore)
     {
-        // Ensure, that all Group attributes commands are unique
+        // Ensure that all Group attributes commands are unique
         var uniqueGroupAttributesCount = commandStore
             .GroupAttributes
             .Select(x => x.Commands)
