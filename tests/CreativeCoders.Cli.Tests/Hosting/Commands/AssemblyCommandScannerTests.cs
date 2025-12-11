@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Reflection.Emit;
 using AwesomeAssertions;
 using CreativeCoders.Cli.Core;
 using CreativeCoders.Cli.Hosting.Commands;
@@ -102,12 +103,44 @@ public class AssemblyCommandScannerTests
         var scanner = new AssemblyCommandScanner(commandInfoCreator);
 
         // Act
-        var result = scanner.ScanForCommands(assemblies).CommandInfos.ToArray();
+        var scanResult = scanner.ScanForCommands(assemblies);
 
         // Assert
-        result
+        scanResult.CommandInfos
             .Should()
             .BeEmpty();
+
+        scanResult.GroupAttributes
+            .Should()
+            .BeEmpty();
+    }
+
+    [Fact]
+    public void Scan_WithCliCommandGroupAttribute_ReturnsGroupAttribute()
+    {
+        // Arrange
+        var assemblyWithGroup = CreateAssemblyWithGroupAttribute();
+
+        var commandInfoCreator = A.Fake<ICommandInfoCreator>();
+        var scanner = new AssemblyCommandScanner(commandInfoCreator);
+
+        // Act
+        var scanResult = scanner.ScanForCommands([assemblyWithGroup]).GroupAttributes.ToArray();
+
+        // Assert
+        scanResult
+            .Should()
+            .HaveCount(1);
+
+        var groupAttribute = scanResult.Single();
+
+        groupAttribute.Commands
+            .Should()
+            .BeEquivalentTo("group", "one");
+
+        groupAttribute.Description
+            .Should()
+            .Be("Test group");
     }
 
     [CliCommand(["one"])]
@@ -118,4 +151,23 @@ public class AssemblyCommandScannerTests
 
     [UsedImplicitly]
     private sealed class NonCommandType { }
+
+    private static Assembly CreateAssemblyWithGroupAttribute()
+    {
+        var assemblyName = new AssemblyName("CliCommandGroupAttributeTestAssembly");
+
+        var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+        assemblyBuilder.DefineDynamicModule("MainModule");
+
+        var groupAttributeConstructor = typeof(CliCommandGroupAttribute)
+            .GetConstructor(new[] { typeof(string[]), typeof(string) })!;
+
+        var attributeBuilder = new CustomAttributeBuilder(
+            groupAttributeConstructor,
+            new object[] { new[] { "group", "one" }, "Test group" });
+
+        assemblyBuilder.SetCustomAttribute(attributeBuilder);
+
+        return assemblyBuilder;
+    }
 }
