@@ -566,6 +566,108 @@ public class CliCommandStoreTests
     }
 
     [Fact]
+    public void AddCommands_WithGroupAttributes_AssignsAttributesToGroupNodes()
+    {
+        // Arrange
+        var commandInfo = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["tools", "admin", "reset"]),
+            CommandType = typeof(DummyCommand)
+        };
+
+        var firstGroupAttribute = new CliCommandGroupAttribute(["tools"], "Tools root group");
+        var secondGroupAttribute = new CliCommandGroupAttribute(["tools", "admin"], "Admin commands");
+
+        var groupAttributes = new[]
+        {
+            firstGroupAttribute,
+            secondGroupAttribute
+        };
+
+        var store = new CliCommandStore();
+
+        // Act
+        store.AddCommands([commandInfo], groupAttributes);
+
+        // Assert
+        var toolsGroupNode = store.TreeRootNodes
+            .Should()
+            .ContainSingle(node => node.Name == "tools")
+            .Which
+            .Should()
+            .BeOfType<CliCommandGroupNode>()
+            .Which;
+
+        toolsGroupNode.GroupAttribute
+            .Should()
+            .BeSameAs(firstGroupAttribute);
+
+        var adminGroupNode = toolsGroupNode.ChildNodes
+            .Should()
+            .ContainSingle(node => node.Name == "admin")
+            .Which
+            .Should()
+            .BeOfType<CliCommandGroupNode>()
+            .Which;
+
+        adminGroupNode.GroupAttribute
+            .Should()
+            .BeSameAs(secondGroupAttribute);
+
+        adminGroupNode.ChildNodes
+            .OfType<CliCommandNode>()
+            .Should()
+            .ContainSingle(node => node.Name == "reset");
+    }
+
+    [Fact]
+    public void AddCommands_WithGroupAttributes_WithoutMatchingPath_DoesNotAssignAttributes()
+    {
+        // Arrange
+        var commandInfo = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["tools", "admin", "reset"]),
+            CommandType = typeof(DummyCommand)
+        };
+
+        var groupAttributes = new[]
+        {
+            new CliCommandGroupAttribute(["other"], "Other group"),
+            new CliCommandGroupAttribute(["tools", "other"], "Nested other group")
+        };
+
+        var store = new CliCommandStore();
+
+        // Act
+        store.AddCommands([commandInfo], groupAttributes);
+
+        // Assert
+        var toolsGroupNode = store.TreeRootNodes
+            .Should()
+            .ContainSingle(node => node.Name == "tools")
+            .Which
+            .Should()
+            .BeOfType<CliCommandGroupNode>()
+            .Which;
+
+        toolsGroupNode.GroupAttribute
+            .Should()
+            .BeNull();
+
+        var adminGroupNode = toolsGroupNode.ChildNodes
+            .Should()
+            .ContainSingle(node => node.Name == "admin")
+            .Which
+            .Should()
+            .BeOfType<CliCommandGroupNode>()
+            .Which;
+
+        adminGroupNode.GroupAttribute
+            .Should()
+            .BeNull();
+    }
+
+    [Fact]
     public void AddCommands_WithEmptyCommandPath_Throws()
     {
         // Arrange
