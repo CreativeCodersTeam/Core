@@ -618,6 +618,10 @@ public class CliCommandStoreTests
             .OfType<CliCommandNode>()
             .Should()
             .ContainSingle(node => node.Name == "reset");
+
+        store.GroupAttributes
+            .Should()
+            .BeEquivalentTo(groupAttributes);
     }
 
     [Fact]
