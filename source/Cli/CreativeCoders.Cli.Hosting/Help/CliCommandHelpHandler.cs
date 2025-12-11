@@ -63,7 +63,7 @@ public class CliCommandHelpHandler(
         }
     }
 
-    private void PrintHelpFor(IList<CliTreeNode> nodeChildNodes)
+    public void PrintHelpFor(IList<CliTreeNode> nodeChildNodes)
     {
         if (nodeChildNodes.Count == 0)
         {

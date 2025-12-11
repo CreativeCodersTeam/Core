@@ -98,11 +98,6 @@ public class CliCommandStore : ICliCommandStore
             {
                 var groupNode = GetGroupNode(commands.Take(commands.Length - 1).ToArray());
 
-                if (groupNode == null)
-                {
-                    throw new InvalidOperationException("Command group node could not be created");
-                }
-
                 if (groupNode.Parent == null)
                 {
                     _treeRootNodes.Add(groupNode);
@@ -115,12 +110,12 @@ public class CliCommandStore : ICliCommandStore
         }
     }
 
-    private CliCommandGroupNode? GetGroupNode(string[] commands)
+    private CliCommandGroupNode GetGroupNode(string[] commands)
     {
         return GetGroupNode(null, _treeRootNodes, commands);
     }
 
-    private static CliCommandGroupNode? GetGroupNode(CliCommandGroupNode? parent, List<CliTreeNode> nodes,
+    private static CliCommandGroupNode GetGroupNode(CliCommandGroupNode? parent, List<CliTreeNode> nodes,
         string[] cmds)
     {
         var childNode = nodes

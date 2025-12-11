@@ -113,16 +113,17 @@ public class DefaultCliHost(
     {
         _ansiConsole.Markup($"[red]No command found for given arguments: {string.Join(" ", args)}[/]");
         _ansiConsole.WriteLine();
-        _ansiConsole.WriteLine("Possible matches:");
+        _ansiConsole.WriteLine("Suggestions:");
 
         var findCommandGroupNodeResult = _commandStore.FindCommandGroupNode(args);
 
-        if (findCommandGroupNodeResult == null)
+        if (findCommandGroupNodeResult?.Node == null)
         {
             _ansiConsole.WriteLine("No matches found");
+
             return;
         }
 
-        findCommandGroupNodeResult.Node?.GetCommands().ForEach(x => _ansiConsole.WriteLine($"  {x.Name}"));
+        _commandHelpHandler.PrintHelpFor(findCommandGroupNodeResult.Node.ChildNodes);
     }
 }
