@@ -9,7 +9,7 @@ public class AssemblyCommandScanner(ICommandInfoCreator commandInfoCreator) : IA
 {
     private readonly ICommandInfoCreator _commandInfoCreator = Ensure.NotNull(commandInfoCreator);
 
-    public IEnumerable<CliCommandInfo> Scan(IEnumerable<Assembly> assemblies)
+    public IEnumerable<CliCommandInfo> ScanForCommands(IEnumerable<Assembly> assemblies)
     {
         return assemblies
             .SelectMany(x => x.GetTypesSafe())

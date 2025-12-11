@@ -197,13 +197,15 @@ public class CliCommandHelpHandler(
             Border = TableBorder.None
         };
         table
+            .AddColumn("Indent", x => x.Width = 1)
             .AddColumn("Key")
+            .AddColumn("Spacer", x => x.Width = 1)
             .AddColumn("Value");
 
         foreach (var entry in entries)
         {
             var name = string.Format(keyFormat, entry.Key ?? string.Empty);
-            table.AddRow($"  {name}", $"  {entry.Value ?? string.Empty}");
+            table.AddRow("", name, "", entry.Value ?? string.Empty);
         }
 
         return table;

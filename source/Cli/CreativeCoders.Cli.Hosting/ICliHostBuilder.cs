@@ -18,5 +18,7 @@ public interface ICliHostBuilder
 
     ICliHostBuilder EnableHelp(HelpCommandKind commandKind);
 
+    ICliHostBuilder SkipScanEntryAssembly(bool skipScanEntryAssembly = true);
+
     ICliHost Build();
 }

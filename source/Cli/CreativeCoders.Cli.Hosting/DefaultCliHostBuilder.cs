@@ -19,15 +19,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
 
     private HelpCommandKind _helpCommandKind;
 
-    public DefaultCliHostBuilder()
-    {
-        var entryAssembly = Assembly.GetEntryAssembly();
-
-        if (entryAssembly != null)
-        {
-            ScanAssemblies(entryAssembly);
-        }
-    }
+    private bool _skipScanEntryAssembly;
 
     public ICliHostBuilder UseContext<TContext>(Action<TContext>? configure = null)
         where TContext : class, ICliCommandContext
@@ -66,6 +58,13 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return this;
     }
 
+    public ICliHostBuilder SkipScanEntryAssembly(bool skipScanEntryAssembly = true)
+    {
+        _skipScanEntryAssembly = skipScanEntryAssembly;
+
+        return this;
+    }
+
     private IServiceProvider BuildServiceProvider()
     {
         var services = new ServiceCollection();
@@ -90,14 +89,31 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return services.BuildServiceProvider();
     }
 
+    private void ScanEntryAssemblyIfNecessary()
+    {
+        if (_skipScanEntryAssembly)
+        {
+            return;
+        }
+
+        var entryAssembly = Assembly.GetEntryAssembly();
+
+        if (entryAssembly != null)
+        {
+            ScanAssemblies(entryAssembly);
+        }
+    }
+
     public ICliHost Build()
     {
+        ScanEntryAssemblyIfNecessary();
+
         var sp = BuildServiceProvider();
 
         var commandScanner = sp.GetRequiredService<IAssemblyCommandScanner>();
 
         var commandStore = sp.GetRequiredService<ICliCommandStore>();
-        commandStore.AddCommands(commandScanner.Scan(_scanAssemblies));
+        commandStore.AddCommands(commandScanner.ScanForCommands(_scanAssemblies));
 
         return sp.GetRequiredService<ICliHost>();
     }
