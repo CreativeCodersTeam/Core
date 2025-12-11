@@ -86,14 +86,16 @@ public class CliCommandHelpHandler(
 
         var commands = nodeChildNodes.OfType<CliCommandNode>().ToArray();
 
-        if (commands.Length != 0)
+        if (commands.Length == 0)
         {
-            _ansiConsole.WriteLine();
-            _ansiConsole.WriteLine("Commands:");
-
-            _ansiConsole.Write(CreateTableFor(commands.Select(x =>
-                new KeyValuePair<string?, string?>(x.Name, x.CommandInfo.CommandAttribute.Description))));
+            return;
         }
+
+        _ansiConsole.WriteLine();
+        _ansiConsole.WriteLine("Commands:");
+
+        _ansiConsole.Write(CreateTableFor(commands.Select(x =>
+            new KeyValuePair<string?, string?>(x.Name, x.CommandInfo.CommandAttribute.Description))));
     }
 
     private void PrintHelpFor(CliCommandInfo commandInfo)
