@@ -77,7 +77,11 @@ public class CliCommandHelpHandler(
             _ansiConsole.WriteLine();
             _ansiConsole.WriteLine("Groups:");
 
-            groups.ForEach(x => _ansiConsole.WriteLine($"  {x.Name}"));
+            _ansiConsole.Write(CreateTableFor(
+                groups
+                    .Select(x =>
+                        new KeyValuePair<string?, string?>(x.Name,
+                            x.GroupAttribute?.Description ?? string.Empty))));
         }
 
         var commands = nodeChildNodes.OfType<CliCommandNode>().ToArray();

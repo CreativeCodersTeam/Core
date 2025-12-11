@@ -15,10 +15,7 @@ public class CliCommandStore : ICliCommandStore
     public void AddCommands(IEnumerable<CliCommandInfo> commands,
         IEnumerable<CliCommandGroupAttribute>? groupAttributes = null)
     {
-        if (groupAttributes != null)
-        {
-            _groupAttributes = Ensure.NotNull(groupAttributes);
-        }
+        _groupAttributes = groupAttributes;
 
         _commands.AddRange(Ensure.NotNull(commands));
 
