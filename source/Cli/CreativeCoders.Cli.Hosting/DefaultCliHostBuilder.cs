@@ -113,7 +113,10 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         var commandScanner = sp.GetRequiredService<IAssemblyCommandScanner>();
 
         var commandStore = sp.GetRequiredService<ICliCommandStore>();
-        commandStore.AddCommands(commandScanner.ScanForCommands(_scanAssemblies));
+
+        var assemblyScanResult = commandScanner.ScanForCommands(_scanAssemblies.ToArray());
+
+        commandStore.AddCommands(assemblyScanResult.CommandInfos, assemblyScanResult.GroupAttributes);
 
         return sp.GetRequiredService<ICliHost>();
     }

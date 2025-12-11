@@ -1,3 +1,4 @@
+using CreativeCoders.Cli.Core;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Collections;
 
@@ -9,8 +10,16 @@ public class CliCommandStore : ICliCommandStore
 
     private readonly List<CliTreeNode> _treeRootNodes = [];
 
-    public void AddCommands(IEnumerable<CliCommandInfo> commands)
+    private IEnumerable<CliCommandGroupAttribute>? _groupAttributes;
+
+    public void AddCommands(IEnumerable<CliCommandInfo> commands,
+        IEnumerable<CliCommandGroupAttribute>? groupAttributes = null)
     {
+        if (groupAttributes != null)
+        {
+            _groupAttributes = Ensure.NotNull(groupAttributes);
+        }
+
         _commands.AddRange(Ensure.NotNull(commands));
 
         commands.ForEach(AddCommand);
@@ -115,7 +124,7 @@ public class CliCommandStore : ICliCommandStore
         return GetGroupNode(null, _treeRootNodes, commands);
     }
 
-    private static CliCommandGroupNode GetGroupNode(CliCommandGroupNode? parent, List<CliTreeNode> nodes,
+    private CliCommandGroupNode GetGroupNode(CliCommandGroupNode? parent, List<CliTreeNode> nodes,
         string[] cmds)
     {
         var childNode = nodes
@@ -134,6 +143,9 @@ public class CliCommandStore : ICliCommandStore
         }
 
         var groupNode = new CliCommandGroupNode(cmds[0], parent);
+
+        groupNode.GroupAttribute = _groupAttributes?
+            .FirstOrDefault(x => x.Commands.SequenceEqual(groupNode.GetNamePath()));
 
         nodes.Add(groupNode);
 

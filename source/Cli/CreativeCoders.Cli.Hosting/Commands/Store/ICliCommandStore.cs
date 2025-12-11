@@ -1,8 +1,12 @@
+using CreativeCoders.Cli.Core;
+
 namespace CreativeCoders.Cli.Hosting.Commands.Store;
 
 public interface ICliCommandStore
 {
-    void AddCommands(IEnumerable<CliCommandInfo> commands);
+    void AddCommands(IEnumerable<CliCommandInfo> commands,
+        IEnumerable<CliCommandGroupAttribute>? groupAttributes =
+            null);
 
     FindCommandNodeResult<CliCommandGroupNode>? FindCommandGroupNode(string[] args);
 

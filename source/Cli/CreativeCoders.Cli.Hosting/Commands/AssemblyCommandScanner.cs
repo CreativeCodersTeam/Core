@@ -9,13 +9,30 @@ public class AssemblyCommandScanner(ICommandInfoCreator commandInfoCreator) : IA
 {
     private readonly ICommandInfoCreator _commandInfoCreator = Ensure.NotNull(commandInfoCreator);
 
-    public IEnumerable<CliCommandInfo> ScanForCommands(IEnumerable<Assembly> assemblies)
+    public AssemblyScanResult ScanForCommands(Assembly[] assemblies)
     {
-        return assemblies
+        var commandInfos = assemblies
             .SelectMany(x => x.GetTypesSafe())
             .Where(x => x.GetCustomAttributes(typeof(CliCommandAttribute), false).Length != 0)
             .Select(x => _commandInfoCreator.Create(x))
             .Where(x => x != null)
-            .OfType<CliCommandInfo>();
+            .OfType<CliCommandInfo>()
+            .ToArray();
+
+        var groupAttributes = assemblies
+            .SelectMany(x => x.GetCustomAttributes<CliCommandGroupAttribute>());
+
+        return new AssemblyScanResult
+        {
+            CommandInfos = commandInfos,
+            GroupAttributes = groupAttributes
+        };
     }
+}
+
+public class AssemblyScanResult
+{
+    public required IEnumerable<CliCommandInfo> CommandInfos { get; init; }
+
+    public required IEnumerable<CliCommandGroupAttribute> GroupAttributes { get; init; }
 }

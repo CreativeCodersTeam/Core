@@ -15,11 +15,3 @@ public class CliCommandAttribute(string[] commands) : Attribute
 
     public bool IsDefaultCommand { get; set; }
 }
-
-[AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class)]
-public class CliCommandGroupAttribute(string[] commands, string description) : Attribute
-{
-    public string[] Commands { get; } = commands;
-
-    public string Description { get; } = description;
-}

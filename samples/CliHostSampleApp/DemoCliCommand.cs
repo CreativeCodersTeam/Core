@@ -1,6 +1,11 @@
+using System.Diagnostics;
+using System.Reflection;
 using CreativeCoders.Cli.Core;
 using CreativeCoders.SysConsole.Cli.Parsing;
 using JetBrains.Annotations;
+
+[assembly: CliCommandGroup(["demo"], "Demo commands root group")]
+[assembly: CliCommandGroup(["demo", "do"], "Demo do commands")]
 
 namespace CliHostSampleApp;
 

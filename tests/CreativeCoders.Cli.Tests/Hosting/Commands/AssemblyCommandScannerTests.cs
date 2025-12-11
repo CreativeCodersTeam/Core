@@ -39,7 +39,7 @@ public class AssemblyCommandScannerTests
         var scanner = new AssemblyCommandScanner(commandInfoCreator);
 
         // Act
-        var result = scanner.ScanForCommands(assemblies).ToArray();
+        var result = scanner.ScanForCommands(assemblies).CommandInfos.ToArray();
 
         // Assert
         result
@@ -83,7 +83,7 @@ public class AssemblyCommandScannerTests
         var scanner = new AssemblyCommandScanner(commandInfoCreator);
 
         // Act
-        var result = scanner.ScanForCommands(assemblies).ToArray();
+        var result = scanner.ScanForCommands(assemblies).CommandInfos.ToArray();
 
         // Assert
         result
@@ -102,7 +102,7 @@ public class AssemblyCommandScannerTests
         var scanner = new AssemblyCommandScanner(commandInfoCreator);
 
         // Act
-        var result = scanner.ScanForCommands(assemblies).ToArray();
+        var result = scanner.ScanForCommands(assemblies).CommandInfos.ToArray();
 
         // Assert
         result

@@ -5,7 +5,6 @@ using CreativeCoders.Cli.Hosting.Commands.Store;
 using CreativeCoders.Cli.Hosting.Exceptions;
 using CreativeCoders.Cli.Hosting.Help;
 using CreativeCoders.Core;
-using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Reflection;
 using CreativeCoders.SysConsole.Cli.Parsing;
 using Spectre.Console;

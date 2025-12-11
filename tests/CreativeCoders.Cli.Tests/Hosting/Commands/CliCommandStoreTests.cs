@@ -188,7 +188,10 @@ public class CliCommandStoreTests
 
         // Assert
         store.Commands
-            .Should().Contain(cmdInfo);
+            .Should()
+            .HaveCount(1)
+            .And
+            .Contain(cmdInfo);
 
         var rootNodes = store.TreeRootNodes.ToArray();
 
