@@ -79,8 +79,10 @@ public class CliCommandStore : ICliCommandStore
     {
         AddCommand(command, command.CommandAttribute.Commands);
 
-        command.CommandAttribute.AlternativeCommands
-            .ForEach(altCommand => AddCommand(command, altCommand));
+        if (command.CommandAttribute.AlternativeCommands.Length != 0)
+        {
+            AddCommand(command, command.CommandAttribute.AlternativeCommands);
+        }
     }
 
     private void AddCommand(CliCommandInfo command, string[] commands)
@@ -101,7 +103,10 @@ public class CliCommandStore : ICliCommandStore
                     throw new InvalidOperationException("Command group node could not be created");
                 }
 
-                _treeRootNodes.Add(groupNode);
+                if (groupNode.Parent == null)
+                {
+                    _treeRootNodes.Add(groupNode);
+                }
 
                 groupNode.ChildNodes.Add(new CliCommandNode(command, commands[^1], groupNode));
 

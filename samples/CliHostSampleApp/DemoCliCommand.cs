@@ -4,7 +4,9 @@ using JetBrains.Annotations;
 
 namespace CliHostSampleApp;
 
-[CliCommand(["demo"])]
+[CliCommand(["demo", "do", "list"]
+    //,AlternativeCommands = ["demo1"])]
+)]
 public class DemoCliCommand : ICliCommand
 {
     public DemoCliCommand() { }
@@ -17,7 +19,8 @@ public class DemoCliCommand : ICliCommand
     }
 }
 
-[CliCommand(["demo2"], Name = "Demo2 command",
+[CliCommand(["demo", "do", "something"], Name = "Demo2 command",
+    //AlternativeCommands = ["demo2"],
     Description = "Simple Demo command with options, that prints some text from options.")]
 public class DemoCliCommandWithOptions : ICliCommand<DemoOptions>
 {

@@ -377,7 +377,7 @@ public class CliCommandStoreTests
     {
         // Arrange
         var attribute = new CliCommandAttribute(["run"])
-            { AlternativeCommands = [["start"]] };
+            { AlternativeCommands = ["start"] };
 
         var cmdInfo = new CliCommandInfo
         {
