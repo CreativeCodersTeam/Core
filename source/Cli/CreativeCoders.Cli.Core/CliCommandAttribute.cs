@@ -1,14 +1,13 @@
+using CreativeCoders.Core;
+
 namespace CreativeCoders.Cli.Core;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class CliCommandAttribute : Attribute
+public class CliCommandAttribute(string[] commands) : Attribute
 {
-    public string[] Commands { get; }
+    public string Name { get; set; } = string.Empty;
 
-    public CliCommandAttribute(string[] commands)
-    {
-        Commands = commands;
-    }
+    public string[] Commands { get; } = Ensure.NotNull(commands);
 
     public string Description { get; set; } = string.Empty;
 

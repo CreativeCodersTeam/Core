@@ -1,4 +1,5 @@
 ﻿using CreativeCoders.Cli.Hosting;
+using CreativeCoders.Cli.Hosting.Help;
 
 namespace CliHostSampleApp;
 
@@ -12,6 +13,7 @@ public static class Program
     private static ICliHost CreateCliHost()
     {
         return CliHostBuilder.Create()
+            .EnableHelp(HelpCommandKind.Command)
             .Build();
     }
 }

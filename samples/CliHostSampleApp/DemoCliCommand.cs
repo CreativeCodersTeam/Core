@@ -17,7 +17,8 @@ public class DemoCliCommand : ICliCommand
     }
 }
 
-[CliCommand(["demo2"])]
+[CliCommand(["demo2"], Name = "Demo2 command",
+    Description = "Simple Demo command with options, that prints some text from options.")]
 public class DemoCliCommandWithOptions : ICliCommand<DemoOptions>
 {
     public DemoCliCommandWithOptions() { }
@@ -34,6 +35,9 @@ public class DemoCliCommandWithOptions : ICliCommand<DemoOptions>
 [UsedImplicitly]
 public class DemoOptions
 {
+    [OptionValue(0, HelpText = "Name of the demo")]
+    public string? Name { get; set; }
+
     [OptionParameter('t', "text", HelpText = "Some text", DefaultValue = "Default Text")]
-    public string Text { get; set; }
+    public string? Text { get; set; }
 }

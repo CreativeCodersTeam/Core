@@ -416,7 +416,7 @@ public class CliCommandStoreTests
         // Arrange
         var cmdInfo = new CliCommandInfo
         {
-            CommandAttribute = new CliCommandAttribute(Array.Empty<string>()),
+            CommandAttribute = new CliCommandAttribute([]),
             CommandType = typeof(DummyCommand)
         };
 
