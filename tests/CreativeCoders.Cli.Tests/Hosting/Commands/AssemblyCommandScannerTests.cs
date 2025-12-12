@@ -1,12 +1,17 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Reflection.Emit;
+using System.Threading.Tasks;
 using AwesomeAssertions;
 using CreativeCoders.Cli.Core;
 using CreativeCoders.Cli.Hosting.Commands;
 using JetBrains.Annotations;
 using Xunit;
+using FakeItEasy;
 
 namespace CreativeCoders.Cli.Tests.Hosting.Commands;
 
+[SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
 public class AssemblyCommandScannerTests
 {
     [Fact]
@@ -14,10 +19,31 @@ public class AssemblyCommandScannerTests
     {
         // Arrange
         var assemblies = new[] { typeof(DummyCommandOne).Assembly };
-        var scanner = new AssemblyCommandScanner();
+
+        var commandInfoCreator = A.Fake<ICommandInfoCreator>();
+
+        A.CallTo(() => commandInfoCreator.Create(typeof(DummyCommandOne)))
+            .Returns(new CliCommandInfo
+            {
+                CommandType = typeof(DummyCommandOne),
+                CommandAttribute = typeof(DummyCommandOne)
+                    .GetCustomAttribute<CliCommandAttribute>()!
+            });
+
+        A.CallTo(() => commandInfoCreator.Create(typeof(DummyCommandTwo)))
+            .Returns(new CliCommandInfo
+            {
+                CommandType = typeof(DummyCommandTwo),
+                CommandAttribute = typeof(DummyCommandTwo)
+                    .GetCustomAttribute<CliCommandAttribute>()!
+            });
+
+        var scanner = new AssemblyCommandScanner(commandInfoCreator);
 
         // Act
-        var result = scanner.Scan(assemblies).ToArray();
+        var result = scanner.ScanForCommands(assemblies,
+                x => new Type[] { typeof(DummyCommandOne), typeof(DummyCommandTwo) }.Contains(x)).CommandInfos
+            .ToArray();
 
         // Assert
         result
@@ -56,10 +82,12 @@ public class AssemblyCommandScannerTests
     {
         // Arrange
         var assemblies = new[] { typeof(NonCommandType).Assembly };
-        var scanner = new AssemblyCommandScanner();
+
+        var commandInfoCreator = A.Fake<ICommandInfoCreator>();
+        var scanner = new AssemblyCommandScanner(commandInfoCreator);
 
         // Act
-        var result = scanner.Scan(assemblies).ToArray();
+        var result = scanner.ScanForCommands(assemblies).CommandInfos.ToArray();
 
         // Assert
         result
@@ -73,23 +101,88 @@ public class AssemblyCommandScannerTests
     {
         // Arrange
         var assemblies = Array.Empty<Assembly>();
-        var scanner = new AssemblyCommandScanner();
+
+        var commandInfoCreator = A.Fake<ICommandInfoCreator>();
+        var scanner = new AssemblyCommandScanner(commandInfoCreator);
 
         // Act
-        var result = scanner.Scan(assemblies).ToArray();
+        var scanResult = scanner.ScanForCommands(assemblies);
 
         // Assert
-        result
+        scanResult.CommandInfos
+            .Should()
+            .BeEmpty();
+
+        scanResult.GroupAttributes
             .Should()
             .BeEmpty();
     }
 
+    [Fact]
+    public void Scan_WithCliCommandGroupAttribute_ReturnsGroupAttribute()
+    {
+        // Arrange
+        var assemblyWithGroup = CreateAssemblyWithGroupAttribute();
+
+        var commandInfoCreator = A.Fake<ICommandInfoCreator>();
+        var scanner = new AssemblyCommandScanner(commandInfoCreator);
+
+        // Act
+        var scanResult = scanner.ScanForCommands([assemblyWithGroup]).GroupAttributes.ToArray();
+
+        // Assert
+        scanResult
+            .Should()
+            .HaveCount(1);
+
+        var groupAttribute = scanResult.Single();
+
+        groupAttribute.Commands
+            .Should()
+            .BeEquivalentTo("group", "one");
+
+        groupAttribute.Description
+            .Should()
+            .Be("Test group");
+    }
+
     [CliCommand(["one"])]
-    private sealed class DummyCommandOne { }
+    private sealed class DummyCommandOne : ICliCommand
+    {
+        public Task<CommandResult> ExecuteAsync()
+        {
+            return Task.FromResult(new CommandResult());
+        }
+    }
 
     [CliCommand(["two", "2"])]
-    private sealed class DummyCommandTwo { }
+    private sealed class DummyCommandTwo : ICliCommand
+    {
+        public Task<CommandResult> ExecuteAsync()
+        {
+            return Task.FromResult(new CommandResult());
+        }
+    }
 
     [UsedImplicitly]
     private sealed class NonCommandType { }
+
+    private static Assembly CreateAssemblyWithGroupAttribute()
+    {
+        var assemblyName = new AssemblyName("CliCommandGroupAttributeTestAssembly");
+
+        var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+        assemblyBuilder.DefineDynamicModule("MainModule");
+
+        var groupAttributeConstructor = typeof(CliCommandGroupAttribute)
+            .GetConstructor(new[] { typeof(string[]), typeof(string) })!;
+
+        var attributeBuilder = new CustomAttributeBuilder(
+            groupAttributeConstructor,
+            new object[] { new[] { "group", "one" }, "Test group" });
+
+        assemblyBuilder.SetCustomAttribute(attributeBuilder);
+
+        return assemblyBuilder;
+    }
 }

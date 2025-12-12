@@ -1,6 +1,9 @@
+using JetBrains.Annotations;
+
 namespace CreativeCoders.Cli.Hosting;
 
-public class CliResult
+[PublicAPI]
+public class CliResult(int exitCode)
 {
-    public int ExitCode { get; set; }
+    public int ExitCode { get; set; } = exitCode;
 }

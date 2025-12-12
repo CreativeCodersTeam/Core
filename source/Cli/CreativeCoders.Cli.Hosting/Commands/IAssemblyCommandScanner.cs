@@ -4,5 +4,5 @@ namespace CreativeCoders.Cli.Hosting.Commands;
 
 public interface IAssemblyCommandScanner
 {
-    IEnumerable<CliCommandInfo> Scan(Assembly[] assemblies);
+    AssemblyScanResult ScanForCommands(Assembly[] assemblies, Func<Type, bool>? predicate = null);
 }

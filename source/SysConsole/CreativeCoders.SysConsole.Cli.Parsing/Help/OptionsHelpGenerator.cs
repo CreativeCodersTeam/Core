@@ -10,7 +10,7 @@ public class OptionsHelpGenerator : IOptionsHelpGenerator
 {
     public OptionsHelp CreateHelp(Type optionsType)
     {
-        Ensure.NotNull(optionsType, nameof(optionsType));
+        Ensure.NotNull(optionsType);
 
         return new OptionsHelp(
             CreateValueHelpEntries(optionsType),

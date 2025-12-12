@@ -1,5 +1,11 @@
+using JetBrains.Annotations;
+
 namespace CreativeCoders.Cli.Core;
 
-public interface ICliCommandContext { }
+[PublicAPI]
+public interface ICliCommandContext
+{
+    public string[] AllArgs { get; set; }
 
-public class CliCommandContext : ICliCommandContext { }
+    public string[] OptionsArgs { get; set; }
+}

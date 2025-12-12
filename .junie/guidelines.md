@@ -6,14 +6,17 @@ applyTo: '**/*.cs'
 # C# Development
 
 ## C# Instructions
+
 - Always use the latest version C#, currently C# 14 features.
 - Write clear and concise comments for each function.
 
 ## General Instructions
+
 - Make only high confidence suggestions when reviewing code changes.
 - Write code with good maintainability practices, including comments on why certain design decisions were made.
 - Handle edge cases and write clear exception handling.
 - For libraries or external dependencies, mention their usage and purpose in comments.
+- Used language for comments, documentation and code should always be English.
 
 ## Naming Conventions
 
@@ -25,11 +28,13 @@ applyTo: '**/*.cs'
 
 - Apply code-formatting style defined in `.editorconfig`.
 - Prefer file-scoped namespace declarations and single-line using directives.
-- Insert a newline before the opening curly brace of any code block (e.g., after `if`, `for`, `while`, `foreach`, `using`, `try`, etc.).
+- Insert a newline before the opening curly brace of any code block (e.g., after `if`, `for`, `while`, `foreach`,
+  `using`, `try`, etc.).
 - Ensure that the final return statement of a method is on its own line.
 - Use pattern matching and switch expressions wherever possible.
 - Use `nameof` instead of string literals when referring to member names.
-- Ensure that XML doc comments are created for any public APIs. When applicable, include `<example>` and `<code>` documentation in the comments.
+- Ensure that XML doc comments are created for any public APIs. When applicable, include `<example>` and `<code>`
+  documentation in the comments.
 
 ## Project Setup and Structure
 
@@ -89,7 +94,6 @@ applyTo: '**/*.cs'
 
 - Always include test cases for critical paths of the application.
 - Guide users through creating unit tests.
-- Do not emit "Act", "Arrange" or "Assert" comments.
 - Copy existing style in nearby files for test method names and capitalization.
 - Explain integration testing approaches for API endpoints.
 - Demonstrate how to mock dependencies for effective testing.
@@ -98,7 +102,7 @@ applyTo: '**/*.cs'
 - Use awesomeassertions for asserting expected results.
 - Use xUnit for unit testing.
 - Use FakeItEasy for mocking dependencies.
-- Always separate a test method into the blocks Arrange, Act and Assert. Mark this blocks with comments.
+- Always separate a test method into the blocks Arrange, Act, and Assert. Mark this blocks with comments.
 
 ## Performance Optimization
 
@@ -110,7 +114,8 @@ applyTo: '**/*.cs'
 
 ## Deployment and DevOps
 
-- Guide users through containerizing their API using .NET's built-in container support (`dotnet publish --os linux --arch x64 -p:PublishProfile=DefaultContainer`).
+- Guide users through containerizing their API using .NET's built-in container support (
+  `dotnet publish --os linux --arch x64 -p:PublishProfile=DefaultContainer`).
 - Explain the differences between manual Dockerfile creation and .NET's container publishing features.
 - Explain CI/CD pipelines for NET applications.
 - Demonstrate deployment to Azure App Service, Azure Container Apps, or other hosting options.
