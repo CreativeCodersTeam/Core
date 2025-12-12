@@ -60,7 +60,11 @@ public class CliCommandHelpHandler(
         if (findCommandGroupNodeResult?.Node != null)
         {
             PrintHelpFor(findCommandGroupNodeResult.Node.ChildNodes);
+
+            return;
         }
+
+        PrintHelpFor(_commandStore.TreeRootNodes.ToList());
     }
 
     public void PrintHelpFor(IList<CliTreeNode> nodeChildNodes)

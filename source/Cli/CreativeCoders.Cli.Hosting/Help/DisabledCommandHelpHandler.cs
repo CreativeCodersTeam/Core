@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.Cli.Hosting.Commands.Store;
 
 namespace CreativeCoders.Cli.Hosting.Help;
 
+[ExcludeFromCodeCoverage]
 public class DisabledCommandHelpHandler : ICliCommandHelpHandler
 {
     public bool ShouldPrintHelp(string[] args) => false;

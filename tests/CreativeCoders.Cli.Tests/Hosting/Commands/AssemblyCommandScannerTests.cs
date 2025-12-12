@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Threading.Tasks;
 using AwesomeAssertions;
 using CreativeCoders.Cli.Core;
 using CreativeCoders.Cli.Hosting.Commands;
@@ -40,7 +41,9 @@ public class AssemblyCommandScannerTests
         var scanner = new AssemblyCommandScanner(commandInfoCreator);
 
         // Act
-        var result = scanner.ScanForCommands(assemblies).CommandInfos.ToArray();
+        var result = scanner.ScanForCommands(assemblies,
+                x => new Type[] { typeof(DummyCommandOne), typeof(DummyCommandTwo) }.Contains(x)).CommandInfos
+            .ToArray();
 
         // Assert
         result
@@ -144,10 +147,22 @@ public class AssemblyCommandScannerTests
     }
 
     [CliCommand(["one"])]
-    private sealed class DummyCommandOne { }
+    private sealed class DummyCommandOne : ICliCommand
+    {
+        public Task<CommandResult> ExecuteAsync()
+        {
+            return Task.FromResult(new CommandResult());
+        }
+    }
 
     [CliCommand(["two", "2"])]
-    private sealed class DummyCommandTwo { }
+    private sealed class DummyCommandTwo : ICliCommand
+    {
+        public Task<CommandResult> ExecuteAsync()
+        {
+            return Task.FromResult(new CommandResult());
+        }
+    }
 
     [UsedImplicitly]
     private sealed class NonCommandType { }

@@ -9,13 +9,13 @@ public class AssemblyCommandScanner(ICommandInfoCreator commandInfoCreator) : IA
 {
     private readonly ICommandInfoCreator _commandInfoCreator = Ensure.NotNull(commandInfoCreator);
 
-    public AssemblyScanResult ScanForCommands(Assembly[] assemblies)
+    public AssemblyScanResult ScanForCommands(Assembly[] assemblies, Func<Type, bool>? predicate = null)
     {
         var commandInfos = assemblies
             .SelectMany(x => x.GetTypesSafe())
             .Where(x => x.GetCustomAttributes(typeof(CliCommandAttribute), false).Length != 0)
             .Select(x => _commandInfoCreator.Create(x))
-            .Where(x => x != null)
+            .Where(x => x != null && (predicate == null || predicate(x.CommandType)))
             .OfType<CliCommandInfo>()
             .ToArray();
 

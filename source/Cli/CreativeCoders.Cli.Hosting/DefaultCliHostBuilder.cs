@@ -70,8 +70,6 @@ public class DefaultCliHostBuilder : ICliHostBuilder
     {
         var services = new ServiceCollection();
 
-        services.AddCliHosting();
-
         if (_helpEnabled)
         {
             services.TryAddSingleton<HelpHandlerSettings>(_ => new HelpHandlerSettings
@@ -86,6 +84,8 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         }
 
         _configureServicesActions.ForEach(x => x(services));
+
+        services.AddCliHosting();
 
         return services.BuildServiceProvider();
     }
