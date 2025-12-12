@@ -23,8 +23,8 @@ public static class LocalizationServiceCollectionExtensions
     public static void SetupLocalization(this IServiceCollection services, string resourcesPath,
         Action<ExtendedLocalizationOptions> setupOptions)
     {
-        Ensure.IsNotNullOrWhitespace(resourcesPath, nameof(resourcesPath));
-        Ensure.IsNotNull(setupOptions, nameof(setupOptions));
+        Ensure.IsNotNullOrWhitespace(resourcesPath);
+        Ensure.IsNotNull(setupOptions);
 
         services.Configure<ExtendedLocalizationOptions>(options =>
         {
