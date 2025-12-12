@@ -22,17 +22,28 @@ public class DefaultCliHostBuilder : ICliHostBuilder
 
     private bool _skipScanEntryAssembly;
 
-    public ICliHostBuilder UseContext<TContext>(Action<TContext>? configure = null)
+    private bool _contextConfigured;
+
+    public ICliHostBuilder UseContext<TContext>(Action<IServiceProvider, TContext>? configure = null)
         where TContext : class, ICliCommandContext
     {
-        return ConfigureServices(x => x.AddSingleton(sp =>
+        if (_contextConfigured)
         {
-            var context = sp.CreateInstance<TContext>();
+            throw new InvalidOperationException("Context already configured");
+        }
 
-            configure?.Invoke(context);
+        _contextConfigured = true;
 
-            return context;
-        }));
+        return ConfigureServices(x => x
+            .AddSingleton(sp =>
+            {
+                var context = sp.CreateInstance<TContext>();
+
+                configure?.Invoke(sp, context);
+
+                return context;
+            })
+            .AddSingleton<ICliCommandContext, TContext>());
     }
 
     public ICliHostBuilder ConfigureServices(Action<IServiceCollection> configureServices)
@@ -108,6 +119,11 @@ public class DefaultCliHostBuilder : ICliHostBuilder
     public ICliHost Build()
     {
         ScanEntryAssemblyIfNecessary();
+
+        if (!_contextConfigured)
+        {
+            UseContext<CliCommandContext>();
+        }
 
         var sp = BuildServiceProvider();
 

@@ -89,6 +89,9 @@ public class DefaultCliHostTests
         var serviceProvider = A.Fake<IServiceProvider>();
         var helpHandler = A.Fake<ICliCommandHelpHandler>();
 
+        A.CallTo(() => serviceProvider.GetService(typeof(ICliCommandContext)))
+            .Returns(new CliCommandContext());
+
         A.CallTo(() => helpHandler.ShouldPrintHelp(args))
             .Returns(false);
 
@@ -115,6 +118,108 @@ public class DefaultCliHostTests
         result.ExitCode
             .Should()
             .Be(5);
+    }
+
+    [Fact]
+    public async Task RunAsync_OnlyArgsForCommand_CommandContextHasCorrectArgs()
+    {
+        // Arrange
+        var args = new[] { "run" };
+
+        var ansiConsole = A.Fake<IAnsiConsole>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var serviceProvider = A.Fake<IServiceProvider>();
+        var helpHandler = A.Fake<ICliCommandHelpHandler>();
+        var commandContext = new CliCommandContext();
+
+        A.CallTo(() => serviceProvider.GetService(typeof(ICliCommandContext)))
+            .Returns(commandContext);
+
+        A.CallTo(() => helpHandler.ShouldPrintHelp(args))
+            .Returns(false);
+
+        var commandInfo = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["run"]),
+            CommandType = typeof(DummyCommandWithResult)
+        };
+
+        var commandNode = new CliCommandNode(commandInfo, "run", null);
+
+        A.CallTo(() => commandStore.FindCommandNode(args))
+            .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
+
+        A.CallTo(() => serviceProvider.GetService(typeof(int)))
+            .Returns(5);
+
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+
+        // Act
+        var result = await host.RunAsync(args);
+
+        // Assert
+        result.ExitCode
+            .Should()
+            .Be(5);
+
+        commandContext.AllArgs
+            .Should()
+            .BeEquivalentTo(args);
+
+        commandContext.OptionsArgs
+            .Should()
+            .BeEmpty();
+    }
+
+    [Fact]
+    public async Task RunAsync_ArgsForCommandAndOptions_CommandContextHasCorrectArgs()
+    {
+        // Arrange
+        var args = new[] { "run", "some", "more" };
+
+        var ansiConsole = A.Fake<IAnsiConsole>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var serviceProvider = A.Fake<IServiceProvider>();
+        var helpHandler = A.Fake<ICliCommandHelpHandler>();
+        var commandContext = new CliCommandContext();
+
+        A.CallTo(() => serviceProvider.GetService(typeof(ICliCommandContext)))
+            .Returns(commandContext);
+
+        A.CallTo(() => helpHandler.ShouldPrintHelp(args))
+            .Returns(false);
+
+        var commandInfo = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["run"]),
+            CommandType = typeof(DummyCommandWithResult)
+        };
+
+        var commandNode = new CliCommandNode(commandInfo, "run", null);
+
+        A.CallTo(() => commandStore.FindCommandNode(args))
+            .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, ["some", "more"]));
+
+        A.CallTo(() => serviceProvider.GetService(typeof(int)))
+            .Returns(5);
+
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+
+        // Act
+        var result = await host.RunAsync(args);
+
+        // Assert
+        result.ExitCode
+            .Should()
+            .Be(5);
+
+        commandContext.AllArgs
+            .Should()
+            .BeEquivalentTo(args);
+
+        commandContext.OptionsArgs
+            .Should()
+            .BeEquivalentTo("some", "more");
     }
 
     [Fact]

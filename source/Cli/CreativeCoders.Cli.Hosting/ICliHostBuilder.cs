@@ -9,7 +9,7 @@ namespace CreativeCoders.Cli.Hosting;
 [PublicAPI]
 public interface ICliHostBuilder
 {
-    ICliHostBuilder UseContext<TContext>(Action<TContext>? configure = null)
+    ICliHostBuilder UseContext<TContext>(Action<IServiceProvider, TContext>? configure = null)
         where TContext : class, ICliCommandContext;
 
     ICliHostBuilder ConfigureServices(Action<IServiceCollection> configureServices);

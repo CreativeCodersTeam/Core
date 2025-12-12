@@ -148,7 +148,9 @@ public class DefaultCliHostBuilderTests
         var validator = A.Fake<ICliCommandStructureValidator>();
         var cliHost = A.Fake<ICliHost>();
 
-        A.CallTo(() => commandScanner.ScanForCommands(A<Assembly[]>.That.IsSameSequenceAs(assemblies)))
+        A.CallTo(() =>
+                commandScanner.ScanForCommands(
+                    A<Assembly[]>.That.IsSameSequenceAs(assemblies.AsEnumerable())))
             .Returns(new AssemblyScanResult
             {
                 CommandInfos = [],
@@ -161,7 +163,9 @@ public class DefaultCliHostBuilderTests
         builder.ScanAssemblies(assemblies).Build();
 
         // Assert
-        A.CallTo(() => commandScanner.ScanForCommands(A<Assembly[]>.That.IsSameSequenceAs(assemblies)))
+        A.CallTo(() =>
+                commandScanner.ScanForCommands(
+                    A<Assembly[]>.That.IsSameSequenceAs(assemblies.AsEnumerable())))
             .MustHaveHappenedOnceExactly();
     }
 
@@ -234,7 +238,7 @@ public class DefaultCliHostBuilderTests
 
         builder.SkipScanEntryAssembly();
 
-        builder.UseContext<DummyContext>(context => context.Value = 42);
+        builder.UseContext<DummyContext>((_, context) => context.Value = 42);
 
         var commandScanner = A.Fake<IAssemblyCommandScanner>();
         var commandStore = A.Fake<ICliCommandStore>();
@@ -287,9 +291,11 @@ public class DefaultCliHostBuilderTests
     private static IServiceProvider GetBuiltServiceProvider(DefaultCliHostBuilder builder)
     {
         var method = typeof(DefaultCliHostBuilder)
-            .GetMethod("BuildServiceProvider", BindingFlags.Instance | BindingFlags.NonPublic)!;
+                         .GetMethod(
+                             "BuildServiceProvider", BindingFlags.Instance | BindingFlags.NonPublic)
+                     ?? throw new InvalidOperationException();
 
-        return (IServiceProvider)method.Invoke(builder, Array.Empty<object>())!;
+        return (IServiceProvider?)method.Invoke(builder, []) ?? throw new InvalidOperationException();
     }
 
     private static AssemblyScanResult CreateScanResult()
@@ -309,7 +315,7 @@ public class DefaultCliHostBuilderTests
     }
 
     [UsedImplicitly]
-    private sealed class DummyContext : ICliCommandContext
+    private sealed class DummyContext : CliCommandContext
     {
         public int Value { get; set; }
     }

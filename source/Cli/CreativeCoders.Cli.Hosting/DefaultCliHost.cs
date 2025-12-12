@@ -7,6 +7,7 @@ using CreativeCoders.Cli.Hosting.Help;
 using CreativeCoders.Core;
 using CreativeCoders.Core.Reflection;
 using CreativeCoders.SysConsole.Cli.Parsing;
+using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console;
 
 namespace CreativeCoders.Cli.Hosting;
@@ -90,6 +91,10 @@ public class DefaultCliHost(
             }
 
             var (command, optionsArgs, commandInfo) = CreateCliCommand(args);
+
+            var commandContext = _serviceProvider.GetRequiredService<ICliCommandContext>();
+            commandContext.AllArgs = args;
+            commandContext.OptionsArgs = optionsArgs;
 
             return await ExecuteAsync(commandInfo, command, optionsArgs).ConfigureAwait(false);
         }

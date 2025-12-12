@@ -10,8 +10,8 @@ using JetBrains.Annotations;
 namespace CliHostSampleApp;
 
 [CliCommand(["demo", "do", "list"]
-    //,AlternativeCommands = ["demo1"])]
-)]
+    , AlternativeCommands = ["demo1"])]
+//)]
 public class DemoCliCommand : ICliCommand
 {
     public DemoCliCommand() { }
