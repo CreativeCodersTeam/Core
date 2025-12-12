@@ -33,6 +33,8 @@ public class CliHostingIntegrationTests
         output.ToString()
             .Should()
             .Contain("int: integration commands");
+
+        await output.DisposeAsync();
     }
 
     [Fact]
@@ -52,6 +54,8 @@ public class CliHostingIntegrationTests
         output.ToString()
             .Should()
             .Contain("simple executed");
+
+        await output.DisposeAsync();
     }
 
     [Fact]
@@ -73,6 +77,8 @@ public class CliHostingIntegrationTests
             .Contain("hello")
             .And
             .Contain("Repeat: 2");
+
+        await output.DisposeAsync();
     }
 
     [Fact]
@@ -98,6 +104,8 @@ public class CliHostingIntegrationTests
             .Contain("Suggestions:")
             .And
             .Contain("echo");
+
+        await output.DisposeAsync();
     }
 
     [Fact]
@@ -117,6 +125,8 @@ public class CliHostingIntegrationTests
         output.ToString()
             .Should()
             .Contain("Error creating command");
+
+        await output.DisposeAsync();
     }
 
     private static ICliHost CreateHostWithOutput(out StringWriter output)

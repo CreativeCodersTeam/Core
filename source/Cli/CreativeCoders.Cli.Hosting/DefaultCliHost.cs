@@ -76,7 +76,7 @@ public class DefaultCliHost(
             return new CliResult((await taskResult.ConfigureAwait(false)).ExitCode);
         }
 
-        return new CliResult(int.MaxValue);
+        return new CliResult(CliExitCodes.CommandResultUnknown);
     }
 
     public async Task<CliResult> RunAsync(string[] args)

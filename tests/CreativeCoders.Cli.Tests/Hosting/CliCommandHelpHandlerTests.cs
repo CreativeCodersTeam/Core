@@ -20,7 +20,7 @@ public class CliCommandHelpHandlerTests
     public void ShouldPrintHelp_CommandKindCommand_RespectsHelpCommand()
     {
         // Arrange
-        var handler = CreateHandler(HelpCommandKind.Command, out _, out _);
+        var handler = CreateHandler(HelpCommandKind.Command, out var stringWriter, out _);
 
         // Act
         var resultHelp = handler.ShouldPrintHelp(["help"]);
@@ -34,13 +34,15 @@ public class CliCommandHelpHandlerTests
         resultOther
             .Should()
             .BeFalse();
+
+        stringWriter.Dispose();
     }
 
     [Fact]
     public void ShouldPrintHelp_CommandKindArgument_RespectsHelpArgument()
     {
         // Arrange
-        var handler = CreateHandler(HelpCommandKind.Argument, out _, out _);
+        var handler = CreateHandler(HelpCommandKind.Argument, out var stringWriter, out _);
 
         // Act
         var resultHelp = handler.ShouldPrintHelp(["run", "--help"]);
@@ -54,6 +56,8 @@ public class CliCommandHelpHandlerTests
         resultOther
             .Should()
             .BeFalse();
+
+        stringWriter.Dispose();
     }
 
     [Fact]
@@ -117,6 +121,8 @@ public class CliCommandHelpHandlerTests
 
         A.CallTo(() => optionsHelpGenerator.CreateHelp(typeof(DummyOptions)))
             .MustHaveHappenedOnceExactly();
+
+        writer.Dispose();
     }
 
     [Fact]
@@ -159,6 +165,8 @@ public class CliCommandHelpHandlerTests
             .Contain("Groups:")
             .And
             .Contain("group");
+
+        writer.Dispose();
     }
 
     private static CliCommandHelpHandler CreateHandler(
