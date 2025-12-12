@@ -1,5 +1,8 @@
+using JetBrains.Annotations;
+
 namespace CreativeCoders.Cli.Hosting.Exceptions;
 
+[PublicAPI]
 public class CliCommandConstructionFailedException(
     string message,
     string[] args,

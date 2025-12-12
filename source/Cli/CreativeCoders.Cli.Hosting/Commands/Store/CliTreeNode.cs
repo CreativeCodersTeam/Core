@@ -17,7 +17,7 @@ public class CliTreeNode(string name, CliCommandGroupNode? parent)
         yield return Name;
     }
 
-    public List<CliTreeNode> ChildNodes { get; } = new List<CliTreeNode>();
+    public List<CliTreeNode> ChildNodes { get; } = [];
 
     public CliCommandGroupNode? Parent { get; } = parent;
 

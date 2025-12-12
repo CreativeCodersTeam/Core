@@ -27,7 +27,7 @@ public class CliCommandStore : ICliCommandStore
         return FindCommandGroupNode(null, _treeRootNodes, args);
     }
 
-    private FindCommandNodeResult<CliCommandGroupNode>? FindCommandGroupNode(
+    private static FindCommandNodeResult<CliCommandGroupNode>? FindCommandGroupNode(
         CliCommandGroupNode? lastGroupNode,
         IEnumerable<CliTreeNode> nodes, string[] args)
     {

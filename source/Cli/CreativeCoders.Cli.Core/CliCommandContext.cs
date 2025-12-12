@@ -3,4 +3,4 @@ using JetBrains.Annotations;
 namespace CreativeCoders.Cli.Core;
 
 [PublicAPI]
-public interface ICliCommandContext;
+public class CliCommandContext : ICliCommandContext;
