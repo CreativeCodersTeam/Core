@@ -16,6 +16,7 @@ applyTo: '**/*.cs'
 - Write code with good maintainability practices, including comments on why certain design decisions were made.
 - Handle edge cases and write clear exception handling.
 - For libraries or external dependencies, mention their usage and purpose in comments.
+- Used language for comments, documentation and code should always be English.
 
 ## Naming Conventions
 
@@ -101,7 +102,7 @@ applyTo: '**/*.cs'
 - Use awesomeassertions for asserting expected results.
 - Use xUnit for unit testing.
 - Use FakeItEasy for mocking dependencies.
-- Always separate a test method into the blocks Arrange, Act and Assert. Mark this blocks with comments.
+- Always separate a test method into the blocks Arrange, Act, and Assert. Mark this blocks with comments.
 
 ## Performance Optimization
 
