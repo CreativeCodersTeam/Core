@@ -156,8 +156,7 @@ public class DefaultCliHostTests
     [UsedImplicitly]
     private sealed class DummyCommand : ICliCommand
     {
-        [UsedImplicitly]
-        public CommandResult? Result { get; set; }
+        [UsedImplicitly] public CommandResult? Result { get; set; }
 
         public Task<CommandResult> ExecuteAsync()
         {
@@ -165,19 +164,12 @@ public class DefaultCliHostTests
         }
     }
 
-    private sealed class DummyCommandWithResult : ICliCommand
+    [method: UsedImplicitly]
+    private sealed class DummyCommandWithResult(int exitCode) : ICliCommand
     {
-        private readonly int _exitCode;
-
-        [UsedImplicitly]
-        public DummyCommandWithResult(int exitCode)
-        {
-            _exitCode = exitCode;
-        }
-
         public Task<CommandResult> ExecuteAsync()
         {
-            return Task.FromResult(new CommandResult { ExitCode = _exitCode });
+            return Task.FromResult(new CommandResult { ExitCode = exitCode });
         }
     }
 
