@@ -4,7 +4,7 @@ using CreativeCoders.Core;
 namespace CreativeCoders.Cli.Hosting.Exceptions;
 
 public class CliCommandOptionsInvalidException(OptionsValidationResult validationResult)
-    : CliExitException("Options for command invalid", CliExitCodes.CommandOptionsInvalid)
+    : CliExitException("Command options are invalid", CliExitCodes.CommandOptionsInvalid)
 {
     public OptionsValidationResult ValidationResult { get; } = Ensure.NotNull(validationResult);
 }
