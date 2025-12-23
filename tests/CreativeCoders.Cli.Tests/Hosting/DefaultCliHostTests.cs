@@ -25,6 +25,8 @@ public class DefaultCliHostTests
         var serviceProvider = A.Fake<IServiceProvider>();
         var helpHandler = A.Fake<ICliCommandHelpHandler>();
 
+        SetupServiceProvider(serviceProvider, null);
+
         A.CallTo(() => helpHandler.ShouldPrintHelp(args))
             .Returns(true);
 
@@ -52,6 +54,8 @@ public class DefaultCliHostTests
         var commandStore = A.Fake<ICliCommandStore>();
         var serviceProvider = A.Fake<IServiceProvider>();
         var helpHandler = A.Fake<ICliCommandHelpHandler>();
+
+        SetupServiceProvider(serviceProvider, null);
 
         A.CallTo(() => helpHandler.ShouldPrintHelp(args))
             .Returns(false);
@@ -89,8 +93,7 @@ public class DefaultCliHostTests
         var serviceProvider = A.Fake<IServiceProvider>();
         var helpHandler = A.Fake<ICliCommandHelpHandler>();
 
-        A.CallTo(() => serviceProvider.GetService(typeof(ICliCommandContext)))
-            .Returns(new CliCommandContext());
+        SetupServiceProvider(serviceProvider, new CliCommandContext());
 
         A.CallTo(() => helpHandler.ShouldPrintHelp(args))
             .Returns(false);
@@ -121,6 +124,47 @@ public class DefaultCliHostTests
     }
 
     [Fact]
+    public async Task RunMainAsync_WhenCommandWithoutOptions_ExecutesAndReturnsIntResult()
+    {
+        // Arrange
+        var args = new[] { "run" };
+
+        var ansiConsole = A.Fake<IAnsiConsole>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var serviceProvider = A.Fake<IServiceProvider>();
+        var helpHandler = A.Fake<ICliCommandHelpHandler>();
+
+        SetupServiceProvider(serviceProvider, new CliCommandContext());
+
+        A.CallTo(() => helpHandler.ShouldPrintHelp(args))
+            .Returns(false);
+
+        var commandInfo = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["run"]),
+            CommandType = typeof(DummyCommandWithResult)
+        };
+
+        var commandNode = new CliCommandNode(commandInfo, "run", null);
+
+        A.CallTo(() => commandStore.FindCommandNode(args))
+            .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
+
+        A.CallTo(() => serviceProvider.GetService(typeof(int)))
+            .Returns(5);
+
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+
+        // Act
+        var result = await host.RunMainAsync(args);
+
+        // Assert
+        result
+            .Should()
+            .Be(5);
+    }
+
+    [Fact]
     public async Task RunAsync_OnlyArgsForCommand_CommandContextHasCorrectArgs()
     {
         // Arrange
@@ -132,8 +176,7 @@ public class DefaultCliHostTests
         var helpHandler = A.Fake<ICliCommandHelpHandler>();
         var commandContext = new CliCommandContext();
 
-        A.CallTo(() => serviceProvider.GetService(typeof(ICliCommandContext)))
-            .Returns(commandContext);
+        SetupServiceProvider(serviceProvider, commandContext);
 
         A.CallTo(() => helpHandler.ShouldPrintHelp(args))
             .Returns(false);
@@ -183,8 +226,7 @@ public class DefaultCliHostTests
         var helpHandler = A.Fake<ICliCommandHelpHandler>();
         var commandContext = new CliCommandContext();
 
-        A.CallTo(() => serviceProvider.GetService(typeof(ICliCommandContext)))
-            .Returns(commandContext);
+        SetupServiceProvider(serviceProvider, commandContext);
 
         A.CallTo(() => helpHandler.ShouldPrintHelp(args))
             .Returns(false);
@@ -233,6 +275,8 @@ public class DefaultCliHostTests
         var serviceProvider = A.Fake<IServiceProvider>();
         var helpHandler = A.Fake<ICliCommandHelpHandler>();
 
+        SetupServiceProvider(serviceProvider, null);
+
         A.CallTo(() => helpHandler.ShouldPrintHelp(args))
             .Returns(false);
 
@@ -257,6 +301,185 @@ public class DefaultCliHostTests
             .Should()
             .Be(CliExitCodes.CommandCreationFailed);
     }
+
+    [Fact]
+    public async Task RunAsync_WithOptionsValidation_ExecutesAndReturnsResult()
+    {
+        // Arrange
+        var args = new[] { "run" };
+
+        var ansiConsole = A.Fake<IAnsiConsole>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var serviceProvider = A.Fake<IServiceProvider>();
+        var helpHandler = A.Fake<ICliCommandHelpHandler>();
+
+        SetupServiceProvider(serviceProvider, new CliCommandContext(),
+            new CliHostSettings { UseValidation = true });
+
+        A.CallTo(() => helpHandler.ShouldPrintHelp(args))
+            .Returns(false);
+
+        var commandInfo = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["run"]),
+            CommandType = typeof(DummyCommandWithOptions),
+            OptionsType = typeof(DummyOptions)
+        };
+
+        var commandNode = new CliCommandNode(commandInfo, "run", null);
+
+        A.CallTo(() => commandStore.FindCommandNode(args))
+            .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
+
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+
+        // Act
+        var result = await host.RunAsync(args);
+
+        // Assert
+        result.ExitCode
+            .Should()
+            .Be(1357);
+    }
+
+    [Fact]
+    public async Task RunAsync_WithOptionsValidationActivatedButWithoutValidation_ExecutesAndReturnsResult()
+    {
+        // Arrange
+        var args = new[] { "run" };
+
+        var ansiConsole = A.Fake<IAnsiConsole>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var serviceProvider = A.Fake<IServiceProvider>();
+        var helpHandler = A.Fake<ICliCommandHelpHandler>();
+
+        SetupServiceProvider(serviceProvider, new CliCommandContext(),
+            new CliHostSettings { UseValidation = true });
+
+        A.CallTo(() => helpHandler.ShouldPrintHelp(args))
+            .Returns(false);
+
+        var commandInfo = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["run"]),
+            CommandType = typeof(DummyCommandWithoutOptionsValidation),
+            OptionsType = typeof(DummyOptionsWithoutValidation)
+        };
+
+        var commandNode = new CliCommandNode(commandInfo, "run", null);
+
+        A.CallTo(() => commandStore.FindCommandNode(args))
+            .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
+
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+
+        // Act
+        var result = await host.RunAsync(args);
+
+        // Assert
+        result.ExitCode
+            .Should()
+            .Be(2468);
+    }
+
+    [Fact]
+    public async Task RunAsync_WithOptionsValidationIsInvalid_ExecutesAndReturnsInvalidOptionsExitCode()
+    {
+        // Arrange
+        var args = new[] { "run" };
+
+        var ansiConsole = A.Fake<IAnsiConsole>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var serviceProvider = A.Fake<IServiceProvider>();
+        var helpHandler = A.Fake<ICliCommandHelpHandler>();
+
+        SetupServiceProvider(serviceProvider, new CliCommandContext(),
+            new CliHostSettings { UseValidation = true });
+
+        A.CallTo(() => helpHandler.ShouldPrintHelp(args))
+            .Returns(false);
+
+        var commandInfo = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["run"]),
+            CommandType = typeof(DummyCommandWithInvalidOptions),
+            OptionsType = typeof(InvalidDummyOptions)
+        };
+
+        var commandNode = new CliCommandNode(commandInfo, "run", null);
+
+        A.CallTo(() => commandStore.FindCommandNode(args))
+            .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
+
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+
+        // Act
+        var result = await host.RunAsync(args);
+
+        // Assert
+        result.ExitCode
+            .Should()
+            .Be(CliExitCodes.CommandOptionsInvalid);
+    }
+
+    private static void SetupServiceProvider(IServiceProvider serviceProvider,
+        ICliCommandContext? commandContext,
+        CliHostSettings? settings = null)
+    {
+        if (commandContext != null)
+        {
+            A.CallTo(() => serviceProvider.GetService(typeof(ICliCommandContext)))
+                .Returns(commandContext);
+        }
+
+        A.CallTo(() => serviceProvider.GetService(typeof(CliHostSettings)))
+            .Returns(settings);
+    }
+
+    private sealed class DummyCommandWithOptions : ICliCommand<DummyOptions>
+    {
+        public Task<CommandResult> ExecuteAsync(DummyOptions options)
+        {
+            return Task.FromResult(new CommandResult { ExitCode = 1357 });
+        }
+    }
+
+    [UsedImplicitly]
+    private class DummyOptions : IOptionsValidation
+    {
+        public Task<OptionsValidationResult> ValidateAsync()
+        {
+            return Task.FromResult(new OptionsValidationResult(true));
+        }
+    }
+
+    private sealed class DummyCommandWithInvalidOptions : ICliCommand<InvalidDummyOptions>
+    {
+        public Task<CommandResult> ExecuteAsync(InvalidDummyOptions options)
+        {
+            return Task.FromResult(new CommandResult { ExitCode = 1357 });
+        }
+    }
+
+    [UsedImplicitly]
+    private class InvalidDummyOptions : IOptionsValidation
+    {
+        public Task<OptionsValidationResult> ValidateAsync()
+        {
+            return Task.FromResult(new OptionsValidationResult(false));
+        }
+    }
+
+    private sealed class DummyCommandWithoutOptionsValidation : ICliCommand<DummyOptionsWithoutValidation>
+    {
+        public Task<CommandResult> ExecuteAsync(DummyOptionsWithoutValidation options)
+        {
+            return Task.FromResult(new CommandResult { ExitCode = 2468 });
+        }
+    }
+
+    [UsedImplicitly]
+    private class DummyOptionsWithoutValidation { }
 
     [UsedImplicitly]
     private sealed class DummyCommand : ICliCommand

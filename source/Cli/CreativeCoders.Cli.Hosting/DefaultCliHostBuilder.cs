@@ -24,6 +24,8 @@ public class DefaultCliHostBuilder : ICliHostBuilder
 
     private bool _contextConfigured;
 
+    private bool _useValidation;
+
     public ICliHostBuilder UseContext<TContext>(Action<IServiceProvider, TContext>? configure = null)
         where TContext : class, ICliCommandContext
     {
@@ -70,6 +72,13 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return this;
     }
 
+    public ICliHostBuilder UseValidation(bool useValidation = true)
+    {
+        _useValidation = useValidation;
+
+        return this;
+    }
+
     public ICliHostBuilder SkipScanEntryAssembly(bool skipScanEntryAssembly = true)
     {
         _skipScanEntryAssembly = skipScanEntryAssembly;
@@ -92,6 +101,16 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         else
         {
             services.TryAddSingleton<ICliCommandHelpHandler, DisabledCommandHelpHandler>();
+        }
+
+        if (_useValidation)
+        {
+            var settings = new CliHostSettings
+            {
+                UseValidation = true
+            };
+
+            services.TryAddSingleton(settings);
         }
 
         _configureServicesActions.ForEach(x => x(services));
