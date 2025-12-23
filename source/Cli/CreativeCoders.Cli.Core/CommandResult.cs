@@ -7,7 +7,7 @@ public class CommandResult
 {
     public CommandResult() { }
 
-    public CommandResult(int exitCode) : this()
+    public CommandResult(int exitCode)
     {
         ExitCode = exitCode;
     }
