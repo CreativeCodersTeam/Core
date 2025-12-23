@@ -343,7 +343,7 @@ public class DefaultCliHostTests
     }
 
     [Fact]
-    public async Task RunAsync_WithOptionsValidationActivatedButWithoutVsalidation_ExecutesAndReturnsResult()
+    public async Task RunAsync_WithOptionsValidationActivatedButWithoutValidation_ExecutesAndReturnsResult()
     {
         // Arrange
         var args = new[] { "run" };
