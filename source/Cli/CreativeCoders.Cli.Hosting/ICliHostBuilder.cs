@@ -18,6 +18,13 @@ public interface ICliHostBuilder
 
     ICliHostBuilder EnableHelp(HelpCommandKind commandKind);
 
+    /// <summary>
+    /// Enables or disables command options validation.
+    /// </summary>
+    /// <param name="useValidation">A boolean value indicating whether validation should be enabled. Default is true.</param>
+    /// <returns>The same <see cref="ICliHostBuilder"/> instance.</returns>
+    ICliHostBuilder UseValidation(bool useValidation = true);
+
     ICliHostBuilder SkipScanEntryAssembly(bool skipScanEntryAssembly = true);
 
     ICliHost Build();

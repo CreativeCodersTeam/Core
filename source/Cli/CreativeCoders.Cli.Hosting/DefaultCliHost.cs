@@ -5,6 +5,7 @@ using CreativeCoders.Cli.Hosting.Commands.Store;
 using CreativeCoders.Cli.Hosting.Exceptions;
 using CreativeCoders.Cli.Hosting.Help;
 using CreativeCoders.Core;
+using CreativeCoders.Core.Collections;
 using CreativeCoders.Core.Reflection;
 using CreativeCoders.SysConsole.Cli.Parsing;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,9 @@ public class DefaultCliHost(
 
     private readonly ICliCommandHelpHandler _commandHelpHandler = Ensure.NotNull(commandHelpHandler);
 
+    private readonly CliHostSettings _settings =
+        serviceProvider.GetService<CliHostSettings>() ?? new CliHostSettings();
+
     private (object Command, string[] Args, CliCommandInfo CommandInfo) CreateCliCommand(string[] args)
     {
         var findCommandNodeResult = _commandStore.FindCommandNode(args);
@@ -43,7 +47,7 @@ public class DefaultCliHost(
             var command =
                 commandInfo.CommandType.CreateInstance<object>(_serviceProvider);
 
-            return command == null
+            return command is null
                 ? throw new CliCommandConstructionFailedException("Command creation failed", args)
                 : (command, findCommandNodeResult.RemainingArgs, commandInfo);
         }
@@ -53,10 +57,10 @@ public class DefaultCliHost(
         }
     }
 
-    private static async Task<CliResult> ExecuteAsync(CliCommandInfo commandInfo, object command,
+    private async Task<CliResult> ExecuteAsync(CliCommandInfo commandInfo, object command,
         string[] optionsArgs)
     {
-        if (commandInfo.OptionsType == null)
+        if (commandInfo.OptionsType is null)
         {
             var commandResult = await ((ICliCommand)command).ExecuteAsync().ConfigureAwait(false);
 
@@ -66,6 +70,7 @@ public class DefaultCliHost(
         var optionsParser = new OptionParser(commandInfo.OptionsType);
 
         var options = optionsParser.Parse(optionsArgs);
+        await ValidateCommandOptionsAsync(options).ConfigureAwait(false);
 
         var commandWithOptionsResult = command.GetType().InvokeMember(nameof(ICliCommand<>.ExecuteAsync),
             BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.Public, null, command,
@@ -77,6 +82,26 @@ public class DefaultCliHost(
         }
 
         return new CliResult(CliExitCodes.CommandResultUnknown);
+    }
+
+    private async Task ValidateCommandOptionsAsync(object options)
+    {
+        if (!_settings.UseValidation)
+        {
+            return;
+        }
+
+        if (options is not IOptionsValidation validator)
+        {
+            return;
+        }
+
+        var validationResult = await validator.ValidateAsync().ConfigureAwait(false);
+
+        if (!validationResult.IsValid)
+        {
+            throw new CliCommandOptionsInvalidException(validationResult);
+        }
     }
 
     public async Task<CliResult> RunAsync(string[] args)
@@ -111,6 +136,22 @@ public class DefaultCliHost(
 
             return new CliResult(e.ExitCode);
         }
+        catch (CliCommandOptionsInvalidException e)
+        {
+            _ansiConsole.MarkupLine("[red]Error validating command options[/]");
+
+            e.ValidationResult.Messages.ForEach(message => _ansiConsole.MarkupLine($"- {message}"));
+
+            return new CliResult(e.ExitCode);
+        }
+    }
+
+    /// <inheritdoc />
+    public async Task<int> RunMainAsync(string[] args)
+    {
+        var result = await RunAsync(args).ConfigureAwait(false);
+
+        return result.ExitCode;
     }
 
     private void PrintNearestMatch(string[] args)
@@ -121,7 +162,7 @@ public class DefaultCliHost(
 
         var findCommandGroupNodeResult = _commandStore.FindCommandGroupNode(args);
 
-        if (findCommandGroupNodeResult?.Node == null)
+        if (findCommandGroupNodeResult?.Node is null)
         {
             _ansiConsole.WriteLine("No matches found");
 
@@ -130,4 +171,9 @@ public class DefaultCliHost(
 
         _commandHelpHandler.PrintHelpFor(findCommandGroupNodeResult.Node.ChildNodes);
     }
+}
+
+public class CliHostSettings
+{
+    public bool UseValidation { get; init; }
 }

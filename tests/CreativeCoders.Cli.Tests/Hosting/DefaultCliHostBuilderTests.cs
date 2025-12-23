@@ -267,6 +267,70 @@ public class DefaultCliHostBuilderTests
             .Be(42);
     }
 
+    [Fact]
+    public void UseValidation_AddsSettingsToServices()
+    {
+        // Arrange
+        var builder = CreateBuilder();
+
+        builder.SkipScanEntryAssembly();
+
+        builder.UseValidation();
+
+        var commandScanner = A.Fake<IAssemblyCommandScanner>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var validator = A.Fake<ICliCommandStructureValidator>();
+        var cliHost = A.Fake<ICliHost>();
+
+        A.CallTo(() => commandScanner.ScanForCommands(A<Assembly[]>.Ignored))
+            .Returns(CreateScanResult());
+
+        SubstituteServices(builder, commandScanner, commandStore, validator, cliHost);
+
+        var services = GetBuiltServiceProvider(builder);
+
+        // Act
+        builder.Build();
+
+        // Assert
+        var settings = services.GetRequiredService<CliHostSettings>();
+
+        settings.UseValidation
+            .Should().Be(true);
+    }
+
+    [Fact]
+    public void DontUseValidation_SettingsNotAddedToServicesOrSettingsUseValidationIsFalse()
+    {
+        // Arrange
+        var builder = CreateBuilder();
+
+        builder.SkipScanEntryAssembly();
+
+        builder.UseValidation(false);
+
+        var commandScanner = A.Fake<IAssemblyCommandScanner>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var validator = A.Fake<ICliCommandStructureValidator>();
+        var cliHost = A.Fake<ICliHost>();
+
+        A.CallTo(() => commandScanner.ScanForCommands(A<Assembly[]>.Ignored))
+            .Returns(CreateScanResult());
+
+        SubstituteServices(builder, commandScanner, commandStore, validator, cliHost);
+
+        var services = GetBuiltServiceProvider(builder);
+
+        // Act
+        builder.Build();
+
+        // Assert
+        var settings = services.GetService<CliHostSettings>();
+
+        settings?.UseValidation
+            .Should().NotBe(true);
+    }
+
     private static DefaultCliHostBuilder CreateBuilder()
     {
         return new DefaultCliHostBuilder();
