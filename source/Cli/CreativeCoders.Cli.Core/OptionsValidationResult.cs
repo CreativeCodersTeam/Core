@@ -16,4 +16,9 @@ public class OptionsValidationResult(bool isValid, IEnumerable<string>? messages
     /// Gets the validation messages.
     /// </summary>
     public IEnumerable<string> Messages { get; } = messages ?? [];
+
+    public static OptionsValidationResult Valid() => new OptionsValidationResult(true);
+
+    public static OptionsValidationResult Invalid(IEnumerable<string>? messages)
+        => new OptionsValidationResult(false, messages);
 }
