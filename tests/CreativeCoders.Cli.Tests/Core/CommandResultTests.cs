@@ -12,7 +12,7 @@ public class CommandResultTests
     [InlineData(-1)]
     [InlineData(int.MaxValue)]
     [InlineData(int.MinValue)]
-    public void ImplicitOperatorTest(int exitCode)
+    public void ImplicitOperator_FromInt_CreatesCommandResultWithExitCode(int exitCode)
     {
         // Act
         var result = (CommandResult)exitCode;
@@ -20,5 +20,16 @@ public class CommandResultTests
         // Assert
         result.ExitCode
             .Should().Be(exitCode);
+    }
+
+    [Fact]
+    public void Success_ReturnsResultWithExitCodeZero()
+    {
+        // Act
+        var result = CommandResult.Success;
+
+        // Assert
+        result.ExitCode
+            .Should().Be(0);
     }
 }
