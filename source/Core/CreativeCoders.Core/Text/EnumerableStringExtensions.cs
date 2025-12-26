@@ -10,6 +10,7 @@ namespace CreativeCoders.Core.Text;
 
 public static class EnumerableStringExtensions
 {
+    [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
     public static Dictionary<string, string> ToDictionary(this IEnumerable<string> items, string separator,
         bool ignoreInvalidEntries = true)
     {
@@ -27,7 +28,7 @@ public static class EnumerableStringExtensions
 
                 return x != null;
             })
-            .ToDictionary(x => x.Key, x => x.Value);
+            .ToDictionary(x => x!.Key, x => x!.Value);
     }
 
     [ExcludeFromCodeCoverage]
