@@ -1,7 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace CreativeCoders.ProcessUtils.Execution.Parsers;
 
 public class SplitLinesOutputParser : IProcessOutputParser<string[]>
 {
+    [SuppressMessage("ReSharper", "ReturnTypeCanBeNotNullable")]
     public string[]? ParseOutput(string? output)
     {
         if (string.IsNullOrEmpty(output))
@@ -18,7 +21,7 @@ public class SplitLinesOutputParser : IProcessOutputParser<string[]>
 
     public string[] Separators { get; set; } = [Environment.NewLine];
 
-    public bool TrimLines { get; set; } = false;
+    public bool TrimLines { get; set; }
 
     public StringSplitOptions SplitOptions { get; set; } = StringSplitOptions.None;
 }

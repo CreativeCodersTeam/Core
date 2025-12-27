@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.ProcessUtils.Execution;
 
@@ -8,9 +9,10 @@ public class ProcessExecutorInfo<T>(
     IProcessOutputParser<T> outputParser)
     : ProcessExecutorInfo(fileName, arguments)
 {
-    public IProcessOutputParser<T> OutputParser { get; set; } = outputParser;
+    public IProcessOutputParser<T> OutputParser { get; } = outputParser;
 }
 
+[PublicAPI]
 public class ProcessExecutorInfo(string fileName, string[] arguments)
 {
     public string FileName { get; } = fileName;

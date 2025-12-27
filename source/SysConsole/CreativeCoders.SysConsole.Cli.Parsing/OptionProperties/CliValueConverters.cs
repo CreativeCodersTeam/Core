@@ -9,16 +9,12 @@ public class CliValueConverters : ICliValueConverter
 {
     private readonly Dictionary<Type, ICliValueConverter> _converters;
 
-    private readonly ICliValueConverter _enumConverter;
+    private readonly EnumValueConverter _enumConverter = new EnumValueConverter();
 
-    private readonly ICliValueConverter _enumerableConverter;
+    private readonly EnumerableValueConverter _enumerableConverter = new EnumerableValueConverter();
 
     private CliValueConverters()
     {
-        _enumConverter = new EnumValueConverter();
-
-        _enumerableConverter = new EnumerableValueConverter();
-
         _converters = new Dictionary<Type, ICliValueConverter>
             { { typeof(bool), new BooleanValueConverter() } };
     }
@@ -63,14 +59,14 @@ public class CliValueConverters : ICliValueConverter
 
         if (value == null)
         {
-            if (nullableType == typeof(bool))
+            if (nullableType != typeof(bool))
             {
-                var boolValue = Activator.CreateInstance(targetType, (object?)true);
-
-                return boolValue;
+                return Activator.CreateInstance(targetType);
             }
 
-            return Activator.CreateInstance(targetType);
+            var boolValue = Activator.CreateInstance(targetType, (object?)true);
+
+            return boolValue;
         }
 
         var valueConverted = InternalConvert(value, nullableType, optionAttribute);

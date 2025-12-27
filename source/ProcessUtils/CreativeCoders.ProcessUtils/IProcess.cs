@@ -20,7 +20,7 @@ public interface IProcess : IDisposable
 
     void WaitForExit(TimeSpan timeout);
 
-    Task WaitForExitAsync(CancellationToken cancellationToken = default(CancellationToken));
+    Task WaitForExitAsync(CancellationToken cancellationToken = default);
 
     void WaitForInputIdle();
 

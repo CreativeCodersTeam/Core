@@ -35,10 +35,7 @@ public abstract class OptionPropertyBase
                             : CliValueConverters.Default)
                         ?? CliValueConverters.Default;
 
-        if (optionArgument != null)
-        {
-            optionArgument.IsProcessed = true;
-        }
+        optionArgument?.IsProcessed = true;
 
         var propertyValue = converter.Convert(value, _propertyInfo.PropertyType, _optionAttribute);
 
