@@ -9,16 +9,12 @@ public class CliValueConverters : ICliValueConverter
 {
     private readonly Dictionary<Type, ICliValueConverter> _converters;
 
-    private readonly ICliValueConverter _enumConverter;
+    private readonly EnumValueConverter _enumConverter = new EnumValueConverter();
 
-    private readonly ICliValueConverter _enumerableConverter;
+    private readonly EnumerableValueConverter _enumerableConverter = new EnumerableValueConverter();
 
     private CliValueConverters()
     {
-        _enumConverter = new EnumValueConverter();
-
-        _enumerableConverter = new EnumerableValueConverter();
-
         _converters = new Dictionary<Type, ICliValueConverter>
             { { typeof(bool), new BooleanValueConverter() } };
     }
@@ -37,9 +33,47 @@ public class CliValueConverters : ICliValueConverter
             return _enumerableConverter.Convert(value, targetType, optionAttribute);
         }
 
+        if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(Nullable<>))
+        {
+            return ConvertNullable(value, targetType, optionAttribute);
+        }
+
+        if (value == null && targetType.IsValueType)
+        {
+            if (targetType == typeof(bool))
+            {
+                return true;
+            }
+
+            return Activator.CreateInstance(targetType);
+        }
+
         return targetType.IsEnum
             ? _enumConverter.Convert(value, targetType, optionAttribute)
             : InternalConvert(value, targetType, optionAttribute);
+    }
+
+    private object? ConvertNullable(object? value, Type targetType, OptionBaseAttribute optionAttribute)
+    {
+        var nullableType = targetType.GetGenericArguments()[0];
+
+        if (value == null)
+        {
+            if (nullableType != typeof(bool))
+            {
+                return Activator.CreateInstance(targetType);
+            }
+
+            var boolValue = Activator.CreateInstance(targetType, (object?)true);
+
+            return boolValue;
+        }
+
+        var valueConverted = InternalConvert(value, nullableType, optionAttribute);
+
+        return valueConverted == null
+            ? Activator.CreateInstance(targetType)
+            : Activator.CreateInstance(targetType, valueConverted);
     }
 
     public static ICliValueConverter Default { get; } = new CliValueConverters();

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using CreativeCoders.Cli.Core;
 using CreativeCoders.Cli.Hosting.Commands;
@@ -86,6 +87,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return this;
     }
 
+    [SuppressMessage("Performance", "CA1859:Use concrete types when possible for improved performance")]
     private IServiceProvider BuildServiceProvider()
     {
         var services = new ServiceCollection();

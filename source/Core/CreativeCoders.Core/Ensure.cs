@@ -17,6 +17,8 @@ namespace CreativeCoders.Core;
 [PublicAPI]
 public static class Ensure
 {
+    private const string UnkownParamName = "[unknown]";
+
     ///-------------------------------------------------------------------------------------------------
     /// <summary>   Ensures that <paramref name="value"/> is not null. </summary>
     ///
@@ -32,21 +34,16 @@ public static class Ensure
     [ContractAnnotation("value: null => halt; value: notnull => notnull")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [return: System.Diagnostics.CodeAnalysis.NotNull]
-    public static T NotNull<T>([System.Diagnostics.CodeAnalysis.NotNull][NoEnumeration] T? value,
-        [CallerArgumentExpression("value")] string paramName = "[unknown]")
+    public static T NotNull<T>([System.Diagnostics.CodeAnalysis.NotNull] [NoEnumeration] T? value,
+        [CallerArgumentExpression("value")] string paramName = UnkownParamName)
     {
-        if (value is null)
-        {
-            throw new ArgumentNullException(paramName);
-        }
-
-        return value;
+        return value ?? throw new ArgumentNullException(paramName);
     }
 
     [ContractAnnotation("value: null => halt")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void IsNotNull([System.Diagnostics.CodeAnalysis.NotNull][NoEnumeration] object? value,
-        [CallerArgumentExpression("value")] string paramName = "[unknown]")
+    public static void IsNotNull([System.Diagnostics.CodeAnalysis.NotNull] [NoEnumeration] object? value,
+        [CallerArgumentExpression("value")] string paramName = UnkownParamName)
     {
         if (value is null)
         {
@@ -64,7 +61,7 @@ public static class Ensure
     ///-------------------------------------------------------------------------------------------------
     [ContractAnnotation("halt <= value: null")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void IsNotNull<T>([System.Diagnostics.CodeAnalysis.NotNull][NoEnumeration] object? value,
+    public static void IsNotNull<T>([System.Diagnostics.CodeAnalysis.NotNull] [NoEnumeration] object? value,
         Func<T> createException) where T : Exception
     {
         if (value == null)
@@ -87,14 +84,11 @@ public static class Ensure
     [ContractAnnotation("halt <= value: null; value: notnull => notnull")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string IsNotNullOrEmpty([System.Diagnostics.CodeAnalysis.NotNull] string? value,
-        [CallerArgumentExpression("value")] string paramName = "[unknown]")
+        [CallerArgumentExpression("value")] string paramName = UnkownParamName)
     {
-        if (string.IsNullOrEmpty(value))
-        {
-            throw new ArgumentException("Must not be null or empty", paramName);
-        }
-
-        return value;
+        return string.IsNullOrEmpty(value)
+            ? throw new ArgumentException("Must not be null or empty", paramName)
+            : value;
     }
 
     ///-------------------------------------------------------------------------------------------------
@@ -110,7 +104,7 @@ public static class Ensure
     [ContractAnnotation("halt <= value: null")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void IsNotNullOrEmpty<T>(IEnumerable<T?>? value,
-        [CallerArgumentExpression("value")] string paramName = "[unknown]")
+        [CallerArgumentExpression("value")] string paramName = UnkownParamName)
     {
         if (value == null || !value.Any())
         {
@@ -132,14 +126,11 @@ public static class Ensure
     [ContractAnnotation("halt <= value: null; value: notnull => notnull")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string IsNotNullOrWhitespace(string? value,
-        [CallerArgumentExpression("value")] string paramName = "[unknown]")
+        [CallerArgumentExpression("value")] string paramName = UnkownParamName)
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            throw new ArgumentException("Must not be null or whitespace", paramName);
-        }
-
-        return value;
+        return string.IsNullOrWhiteSpace(value)
+            ? throw new ArgumentException("Must not be null or whitespace", paramName)
+            : value;
     }
 
     /// -------------------------------------------------------------------------------------------------
@@ -152,7 +143,7 @@ public static class Ensure
     /// <param name="paramName">    Name of the <paramref name="fileName"/> parameter. </param>
     /// -------------------------------------------------------------------------------------------------
     public static void FileExists(string? fileName,
-        [CallerArgumentExpression("fileName")] string paramName = "[unknown]")
+        [CallerArgumentExpression("fileName")] string paramName = UnkownParamName)
     {
         if (!FileSys.File.Exists(fileName))
         {
@@ -173,11 +164,13 @@ public static class Ensure
     /// <param name="paramName">    Name of the <paramref name="directoryName"/> parameter. </param>
     ///-------------------------------------------------------------------------------------------------
     public static void DirectoryExists(string? directoryName,
-        [CallerArgumentExpression("directoryName")] string paramName = "[unknown]")
+        [CallerArgumentExpression("directoryName")]
+        string paramName = UnkownParamName)
     {
         if (!FileSys.Directory.Exists(directoryName))
         {
-            throw new DirectoryNotFoundException($"Directory parameter '{paramName}' not found: '{directoryName}'");
+            throw new DirectoryNotFoundException(
+                $"Directory parameter '{paramName}' not found: '{directoryName}'");
         }
     }
 
@@ -191,7 +184,7 @@ public static class Ensure
     ///-------------------------------------------------------------------------------------------------
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void GuidIsNotEmpty(Guid guid,
-        [CallerArgumentExpression("guid")] string paramName = "[unknown]")
+        [CallerArgumentExpression("guid")] string paramName = UnkownParamName)
     {
         if (guid.Equals(Guid.Empty))
         {
@@ -199,17 +192,17 @@ public static class Ensure
         }
     }
 
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Ensures that <paramref name="condition"/> is true. </summary>
-    ///
+    /// -------------------------------------------------------------------------------------------------
+    ///  <summary>   Ensures that <paramref name="condition"/> is true. </summary>
     /// <param name="condition">    The condition that gets checked. </param>
-    /// <param name="paramName">    Name of the parameter that gets checked. </param>
     /// <param name="message">      The message for the exception. </param>
-    ///-------------------------------------------------------------------------------------------------
+    /// <param name="paramName">    Name of the parameter that gets checked. </param>
+    /// -------------------------------------------------------------------------------------------------
     [ContractAnnotation("halt <= condition: false")]
     public static void That(bool condition,
-        [CallerArgumentExpression("condition")] string paramName = "[unknown]",
-        string message = "Assertion failed")
+        string message = "Assertion failed",
+        [CallerArgumentExpression("condition")]
+        string paramName = UnkownParamName)
     {
         if (!condition)
         {
@@ -217,20 +210,20 @@ public static class Ensure
         }
     }
 
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Ensures that a index meets a condition. </summary>
+    /// -------------------------------------------------------------------------------------------------
+    ///  <summary>   Ensures that a index meets a condition. </summary>
     ///
-    /// <exception cref="ArgumentOutOfRangeException">  Thrown when <paramref name="condition"/> is
-    ///                                                 false, cause index not meets requirements. </exception>
-    ///
+    ///  <exception cref="ArgumentOutOfRangeException">  Thrown when <paramref name="condition"/> is
+    ///                                                  false, cause index not meets requirements. </exception>
     /// <param name="condition">    The condition that gets checked. </param>
-    /// <param name="paramName">    Name of the parameter that gets checked. </param>
     /// <param name="message">      The message for the exception. </param>
-    ///-------------------------------------------------------------------------------------------------
+    /// <param name="paramName">    Name of the parameter that gets checked. </param>
+    /// -------------------------------------------------------------------------------------------------
     [ContractAnnotation("halt <= condition: false")]
     public static void ThatRange(bool condition,
-        [CallerArgumentExpression("condition")] string paramName = "[unknown]",
-        string message = "Assertion failed")
+        string message = "Assertion failed",
+        [CallerArgumentExpression("condition")]
+        string paramName = UnkownParamName)
     {
         if (!condition)
         {
@@ -253,7 +246,7 @@ public static class Ensure
     ///-------------------------------------------------------------------------------------------------
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void IndexIsInRange(int index, int startIndex, int endIndex,
-        [CallerArgumentExpression("index")] string paramName = "[unknown]")
+        [CallerArgumentExpression("index")] string paramName = UnkownParamName)
     {
         if (index < startIndex || index > endIndex)
         {
@@ -276,7 +269,7 @@ public static class Ensure
     ///-------------------------------------------------------------------------------------------------
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void IndexIsInRange(int index, int collectionLength,
-        [CallerArgumentExpression("index")] string paramName = "[unknown]")
+        [CallerArgumentExpression("index")] string paramName = UnkownParamName)
     {
         if (index < 0 || index >= collectionLength)
         {
@@ -296,7 +289,7 @@ public static class Ensure
     ///-------------------------------------------------------------------------------------------------
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Argument<T?> Argument<T>(T? value,
-        [CallerArgumentExpression("value")] string paramName = "[unknown]")
+        [CallerArgumentExpression("value")] string paramName = UnkownParamName)
     {
         return new Argument<T?>(value, paramName);
     }

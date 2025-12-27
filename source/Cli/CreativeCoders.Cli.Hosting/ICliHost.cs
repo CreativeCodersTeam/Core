@@ -1,9 +1,12 @@
+using JetBrains.Annotations;
+
 namespace CreativeCoders.Cli.Hosting;
 
 /// <summary>
 /// Represents a Command Line Interface (CLI) host that provides functionality to execute
 /// commands and handle related tasks.
 /// </summary>
+[PublicAPI]
 public interface ICliHost
 {
     /// <summary>
