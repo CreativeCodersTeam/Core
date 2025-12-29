@@ -57,7 +57,7 @@ public static class AnsiConsoleExtensions
 
         foreach (var tableColumnDef in columns)
         {
-            table.AddColumn(tableColumnDef.Title ?? string.Empty, x =>
+            table.AddColumn(tableColumnDef.GetTitle(), x =>
             {
                 x.Width = tableColumnDef.Width;
                 tableColumnDef.ConfigureColumn(x);
