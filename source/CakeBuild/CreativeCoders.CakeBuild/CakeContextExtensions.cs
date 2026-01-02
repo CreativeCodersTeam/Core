@@ -20,7 +20,7 @@ public static class CakeContextExtensions
         {
             return context.GitVersion();
         }
-        catch (Exception)
+        catch (Exception e)
         {
             return StaticGitVersion.Create(major ?? "0", minor ?? "0", patch ?? "0", build ?? "1", "");
         }
