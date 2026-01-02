@@ -22,7 +22,7 @@ public static class CakeContextExtensions
         }
         catch (Exception)
         {
-            return StaticGitVersion.Create(major ?? "0", minor ?? "0", patch ?? "0", build ?? "0", "");
+            return StaticGitVersion.Create(major ?? "0", minor ?? "0", patch ?? "0", build ?? "1", "");
         }
     }
 }

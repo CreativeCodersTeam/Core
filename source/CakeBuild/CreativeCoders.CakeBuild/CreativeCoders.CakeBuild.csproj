@@ -10,4 +10,8 @@
         <PackageReference Include="Cake.Frosting" Version="6.0.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj"/>
+    </ItemGroup>
+
 </Project>

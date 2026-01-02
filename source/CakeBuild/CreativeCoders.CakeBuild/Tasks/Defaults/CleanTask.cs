@@ -3,5 +3,5 @@ using CreativeCoders.CakeBuild.Tasks.Templates;
 
 namespace CreativeCoders.CakeBuild.Tasks.Defaults;
 
-[TaskName("Build")]
+[TaskName("Clean")]
 public class CleanTask : CleanTask<BuildContext> { }
