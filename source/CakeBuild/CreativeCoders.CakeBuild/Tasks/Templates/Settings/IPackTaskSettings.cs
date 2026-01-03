@@ -1,6 +1,4 @@
 namespace CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
-public interface IPackTaskSettings
-{
-    
-}
+[CakeTaskSettings]
+public interface IPackTaskSettings { }

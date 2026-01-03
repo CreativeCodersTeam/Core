@@ -1,5 +1,7 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Cake.Frosting;
+using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -53,20 +55,28 @@ public static class CakeHostExtensions
     public static CakeHost UseBuildSetup<TBuildSetup>(this CakeHost host)
         where TBuildSetup : class
     {
-        host.ConfigureServices(services => services.AddSingleton<TBuildSetup>());
-
-        foreach (var propertyInfo in typeof(TBuildSetup).GetProperties(BindingFlags.Public |
-                                                                       BindingFlags.Instance))
+        host.ConfigureServices(services =>
         {
-            host.ConfigureServices(services => services.AddSingleton(propertyInfo.PropertyType, sp =>
-            {
-                var buildSetup = sp.GetRequiredService<TBuildSetup>();
-
-                return propertyInfo.GetValue(buildSetup) ?? throw new InvalidOperationException(
-                    $"Property '{propertyInfo.Name}' of BuildSetup '{typeof(TBuildSetup).FullName}' is null.");
-            }));
-        }
+            services.AddSingleton<TBuildSetup>();
+            services.AddSettingsInterfacesFor(typeof(TBuildSetup), typeof(TBuildSetup));
+        });
 
         return host;
+    }
+
+    private static void AddSettingsInterfacesFor(this IServiceCollection services, Type type,
+        Type buildSetupType)
+    {
+        var interfaceTypes = type.GetInterfaces();
+
+        foreach (var interfaceType in interfaceTypes)
+        {
+            if (interfaceType.GetCustomAttribute<CakeTaskSettingsAttribute>() is not null)
+            {
+                services.AddSingleton(interfaceType, sp => sp.GetRequiredService(buildSetupType));
+            }
+
+            services.AddSettingsInterfacesFor(interfaceType, buildSetupType);
+        }
     }
 }

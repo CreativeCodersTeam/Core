@@ -3,6 +3,7 @@ using Cake.Core.IO;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
+[CakeTaskSettings]
 public interface IBuildPaths : ICakeBuildSettings
 {
     DirectoryPath RootDir => FindGitRootPath(Context.Environment.WorkingDirectory) ??

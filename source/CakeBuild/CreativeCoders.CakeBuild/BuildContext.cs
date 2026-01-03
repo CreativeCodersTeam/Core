@@ -1,4 +1,8 @@
-﻿using Cake.Common.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Cake.Common.Diagnostics;
 using Cake.Common.Tools.GitVersion;
 using Cake.Core;
 using Cake.Core.IO;
