@@ -1,29 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Cake.Common.Diagnostics;
+﻿using Cake.Common.Diagnostics;
 using Cake.Common.Tools.GitVersion;
 using Cake.Core;
 using Cake.Core.IO;
 using Cake.Frosting;
 using CreativeCoders.Core.IO;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.CakeBuild;
 
+[PublicAPI]
 public class BuildContext : FrostingContext
 {
     private readonly List<IFrostingTask> _executedTasks = [];
-
-    public FilePath SolutionFile { get; set; }
-
-    public GitVersion Version { get; set; }
-
-    public DirectoryPath RootDir { get; set; }
-
-    public string BuildConfiguration { get; set; } = "Release";
-
-    public IEnumerable<IFrostingTask> ExecutedTasks => _executedTasks;
 
     public BuildContext(ICakeContext context)
         : base(context)
@@ -37,6 +25,24 @@ public class BuildContext : FrostingContext
             : new FilePath(solutionsFilePath);
 
         Version = context.GetGitVersionSafe();
+    }
+
+    private DirectoryPath? FindGitRootPath(DirectoryPath? startPath)
+    {
+        while (true)
+        {
+            if (startPath == null)
+            {
+                return null;
+            }
+
+            if (FileSystem.Exist(startPath.Combine(".git")))
+            {
+                return startPath;
+            }
+
+            startPath = startPath.GetParent();
+        }
     }
 
     private FilePath FindRootSolution(ICakeContext context)
@@ -66,6 +72,18 @@ public class BuildContext : FrostingContext
         return solution;
     }
 
+    public FilePath SolutionFile { get; set; }
+
+    public GitVersion Version { get; set; }
+
+    public DirectoryPath RootDir { get; set; }
+
+    public DirectoryPath ArtifactsDir => RootDir.Combine(".artifacts");
+
+    public string BuildConfiguration { get; set; } = "Release";
+
+    public IList<IFrostingTask> ExecutedTasks => _executedTasks;
+
     public void AddExecutedTask(IFrostingTask task)
     {
         _executedTasks.Add(task);
@@ -74,23 +92,5 @@ public class BuildContext : FrostingContext
     public bool HasExecutedTask(Type taskType)
     {
         return _executedTasks.Any(x => x.GetType().IsAssignableTo(taskType));
-    }
-
-    private DirectoryPath? FindGitRootPath(DirectoryPath? startPath)
-    {
-        while (true)
-        {
-            if (startPath == null)
-            {
-                return null;
-            }
-
-            if (FileSystem.Exist(startPath.Combine(".git")))
-            {
-                return startPath;
-            }
-
-            startPath = startPath.GetParent();
-        }
     }
 }

@@ -10,6 +10,7 @@ internal static class Program
     {
         return new CakeHost()
             .UseContext<BuildContext>()
+            .UseBuildSetup<BuildSetup>()
             .AddTask<CleanTask>()
             .AddTask<RestoreTask>()
             .AddTask<BuildTask>()

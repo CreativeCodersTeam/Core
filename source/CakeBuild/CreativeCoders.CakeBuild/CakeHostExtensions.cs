@@ -1,10 +1,12 @@
 ﻿using System.Reflection;
 using Cake.Frosting;
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CreativeCoders.CakeBuild;
 
+[PublicAPI]
 public static class CakeHostExtensions
 {
     public static CakeHost AddTask<TTask>(this CakeHost host)
