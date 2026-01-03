@@ -1,4 +1,6 @@
-﻿using Cake.Common.Diagnostics;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Cake.Common.Diagnostics;
 using Cake.Common.Tools.DotNet;
 using Cake.Core.IO;
 
