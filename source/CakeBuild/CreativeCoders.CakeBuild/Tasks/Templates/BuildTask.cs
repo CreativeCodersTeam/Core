@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Cake.Common.Diagnostics;
 using Cake.Common.Tools.DotNet;
 using Cake.Common.Tools.DotNet.Build;
 using Cake.Common.Tools.DotNet.MSBuild;
@@ -28,6 +29,11 @@ public class BuildTask<T>() : FrostingTaskBase<T>
         };
 
         ApplyDotNetBuildSettings(context, dotNetBuildSettings);
+
+        if (dotNetBuildSettings.NoRestore)
+        {
+            context.Information("Skip restore");
+        }
 
         return dotNetBuildSettings;
     }
