@@ -10,10 +10,10 @@ public class CleanTask<T> : FrostingTaskBase<T> where T : BuildContext
 {
     public override async Task RunAsync(T context)
     {
-        context.DotNetClean(context.SolutionFile.FullPath);
-
         DeleteDirectories(context, context.RootDir.FullPath + "/**/bin");
         DeleteDirectories(context, context.RootDir.FullPath + "/**/obj");
+
+        context.DotNetClean(context.SolutionFile.FullPath);
     }
 
     private static void DeleteDirectories(T context, string globPattern)
