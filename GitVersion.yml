@@ -1,5 +1,7 @@
 assembly-versioning-scheme: MajorMinorPatch
 assembly-file-versioning-scheme: MajorMinorPatchTag
+tag-prefix: '^v?'
+semantic-version-format: Loose
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
@@ -36,26 +38,21 @@ branches:
     track-merge-target: false
     regex: ^releases?[/-]
     source-branches:
-      - develop
       - main
-      - support
       - release
     tracks-release-branches: false
     is-release-branch: true
     pre-release-weight: 30000
   pull-request:
     mode: ContinuousDeployment
-    label: PullRequest
+    label: PR
     increment: Inherit
     track-merge-target: false
     regex: ^(pull|pull\-requests|pr)[/-]
     source-branches:
-      - develop
       - main
       - release
       - feature
-      - support
-      - hotfix
     tracks-release-branches: false
     is-release-branch: false
     pre-release-weight: 30000
