@@ -1,4 +1,8 @@
-﻿using Cake.Common.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Cake.Common.Diagnostics;
 using Cake.Common.Tools.GitVersion;
 using Cake.Core;
 using Cake.Core.IO;
@@ -65,6 +69,11 @@ public class BuildContext : FrostingContext
     public void AddExecutedTask(IFrostingTask task)
     {
         _executedTasks.Add(task);
+    }
+
+    public bool HasExecutedTask(Type taskType)
+    {
+        return _executedTasks.Any(x => x.GetType().IsAssignableTo(taskType));
     }
 
     private DirectoryPath? FindGitRootPath(DirectoryPath? startPath)

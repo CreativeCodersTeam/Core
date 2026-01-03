@@ -17,7 +17,7 @@ public class BuildTask<T>() : FrostingTaskBase<T>
         var dotNetBuildSettings = new DotNetBuildSettings
         {
             Configuration = context.BuildConfiguration,
-            NoRestore = true,
+            NoRestore = context.HasExecutedTask(typeof(RestoreTask<T>)),
             MSBuildSettings = new DotNetMSBuildSettings
             {
                 InformationalVersion = context.Version.InformationalVersion,
