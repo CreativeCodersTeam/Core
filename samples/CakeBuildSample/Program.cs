@@ -1,4 +1,5 @@
 ﻿using Cake.Common.Build;
+using Cake.Common.Diagnostics;
 using Cake.Core;
 using Cake.Frosting;
 using CreativeCoders.CakeBuild;
@@ -34,6 +35,7 @@ public class SomeTaskSetup : IFrostingTaskSetup
 {
     void IFrostingTaskSetup.Setup(ICakeContext context, ITaskSetupContext info)
     {
+        context.Information("");
         context.GitHubActions().Commands.StartGroup(info.Task.Name);
     }
 }
