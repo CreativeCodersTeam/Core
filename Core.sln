@@ -583,7 +583,6 @@ Global
 		{EB88412B-8523-4DA4-8FF9-CACECA0969E6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{58C01CB8-B65A-44FE-9BE0-22929CD474A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{58C01CB8-B65A-44FE-9BE0-22929CD474A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58C01CB8-B65A-44FE-9BE0-22929CD474A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
