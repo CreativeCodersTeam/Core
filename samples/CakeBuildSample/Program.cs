@@ -1,4 +1,6 @@
-﻿using Cake.Frosting;
+﻿using Cake.Common.Build;
+using Cake.Core;
+using Cake.Frosting;
 using CreativeCoders.CakeBuild;
 using CreativeCoders.CakeBuild.Tasks.Defaults;
 
@@ -14,6 +16,24 @@ internal static class Program
             .AddTask<CleanTask>()
             .AddTask<RestoreTask>()
             .AddTask<BuildTask>()
+            .UseTaskSetup<SomeTaskSetup>()
+            .UseTaskTeardown<SomeTaskTeardown>()
             .Run(args);
+    }
+}
+
+public class SomeTaskTeardown : IFrostingTaskTeardown
+{
+    void IFrostingTaskTeardown.Teardown(ICakeContext context, ITaskTeardownContext info)
+    {
+        context.GitHubActions().Commands.EndGroup();
+    }
+}
+
+public class SomeTaskSetup : IFrostingTaskSetup
+{
+    void IFrostingTaskSetup.Setup(ICakeContext context, ITaskSetupContext info)
+    {
+        context.GitHubActions().Commands.StartGroup(info.Task.Name);
     }
 }
