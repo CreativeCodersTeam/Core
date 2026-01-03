@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
 using Cake.Frosting;
+using CreativeCoders.CakeBuild.BuildServer;
+using CreativeCoders.CakeBuild.Tasks.Defaults;
 using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,7 +54,35 @@ public static class CakeHostExtensions
         });
     }
 
-    public static CakeHost UseBuildSetup<TBuildSetup>(this CakeHost host)
+    public static CakeHost AddDefaultTasks(this CakeHost host)
+    {
+        return host.AddTasks(
+            typeof(CleanTask),
+            typeof(RestoreTask),
+            typeof(BuildTask),
+            typeof(TestTask),
+            typeof(CodeCoverageTask),
+            typeof(PackTask),
+            typeof(NuGetPublishTask));
+    }
+
+    public static CakeHost AddBuildServerIntegration(this CakeHost host)
+    {
+        return host
+            .UseTaskSetup<StartGroupTaskSetup>()
+            .UseTaskTeardown<EndGroupTaskTeardown>();
+    }
+
+    public static CakeHost SetupHost<TBuildContext, TBuildSetup>(this CakeHost host)
+        where TBuildSetup : class
+        where TBuildContext : BuildContext
+    {
+        return host
+            .UseContext<TBuildContext>()
+            .UseBuildSetup<TBuildSetup>();
+    }
+
+    private static CakeHost UseBuildSetup<TBuildSetup>(this CakeHost host)
         where TBuildSetup : class
     {
         host.ConfigureServices(services =>
