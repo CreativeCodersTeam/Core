@@ -13,12 +13,7 @@ branches:
     track-merge-target: false
     regex: ^features?[/-]
     source-branches:
-      - develop
       - main
-      - release
-      - feature
-      - support
-      - hotfix
     tracks-release-branches: false
     is-release-branch: false
     pre-release-weight: 30000
@@ -34,16 +29,6 @@ branches:
     tracks-release-branches: false
     is-release-branch: false
     pre-release-weight: 55000
-  develop:
-    mode: ContinuousDeployment
-    label: alpha
-    increment: Minor
-    track-merge-target: true
-    regex: ^dev(elop)?(ment)?$
-    source-branches: [ ]
-    tracks-release-branches: true
-    is-release-branch: false
-    pre-release-weight: 0
   release:
     mode: ContinuousDeployment
     label: beta
@@ -74,30 +59,6 @@ branches:
     tracks-release-branches: false
     is-release-branch: false
     pre-release-weight: 30000
-  hotfix:
-    mode: ContinuousDeployment
-    label: beta
-    increment: Patch
-    track-merge-target: false
-    regex: ^hotfix(es)?[/-]
-    source-branches:
-      - develop
-      - main
-      - support
-    tracks-release-branches: false
-    is-release-branch: false
-    pre-release-weight: 30000
-  support:
-    mode: ContinuousDeployment
-    label: ''
-    increment: Patch
-    track-merge-target: false
-    regex: ^support[/-]
-    source-branches:
-      - main
-    tracks-release-branches: false
-    is-release-branch: false
-    pre-release-weight: 55000
 ignore:
   sha: [ ]
 merge-message-formats: { }
