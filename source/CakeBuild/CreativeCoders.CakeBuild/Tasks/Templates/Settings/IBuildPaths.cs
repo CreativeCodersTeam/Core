@@ -23,7 +23,7 @@ public interface IBuildPaths : ICakeBuildSettings
                 return null;
             }
 
-            if (this.Context.FileSystem.Exist(startPath.Combine(".git")))
+            if (Context.FileSystem.Exist(startPath.Combine(".git")))
             {
                 return startPath;
             }
