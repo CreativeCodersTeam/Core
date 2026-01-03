@@ -25,6 +25,9 @@ jobs:
   ubuntu-latest:
     name: ubuntu-latest
     runs-on: ubuntu-latest
+    env:
+      TERM: xterm
+      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
     steps:
       - uses: actions/checkout@v5
         with:
