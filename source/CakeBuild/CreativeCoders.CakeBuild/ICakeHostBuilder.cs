@@ -1,0 +1,25 @@
+using Cake.Frosting;
+
+namespace CreativeCoders.CakeBuild;
+
+public interface ICakeHostBuilder
+{
+    ICakeHostBuilder AddBuildServerIntegration();
+
+    ICakeHostBuilder AddDefaultTasks();
+
+    ICakeHostBuilder AddTask<TTask>()
+        where TTask : class, IFrostingTask;
+
+    ICakeHostBuilder AddTasks(params Type[] taskTypes);
+
+    ICakeHostBuilder ConfigureHost(Action<CakeHost> configure);
+
+    ICakeHostBuilder UseBuildContext<TBuildContext>()
+        where TBuildContext : BuildContext;
+
+    ICakeHostBuilder UseBuildSetup<TBuildSetup>()
+        where TBuildSetup : class;
+
+    CakeHost Build();
+}

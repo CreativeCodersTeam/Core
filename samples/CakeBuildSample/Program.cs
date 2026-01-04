@@ -1,5 +1,4 @@
-﻿using Cake.Frosting;
-using CreativeCoders.CakeBuild;
+﻿using CreativeCoders.CakeBuild;
 
 namespace CakeBuildSample;
 
@@ -7,10 +6,11 @@ internal static class Program
 {
     static int Main(string[] args)
     {
-        return new CakeHost()
-            .SetupHost<BuildContext, BuildSetup>()
+        return CakeHostBuilder.Create()
+            .UseBuildSetup<BuildSetup>()
             .AddDefaultTasks()
             .AddBuildServerIntegration()
+            .Build()
             .Run(args);
     }
 }

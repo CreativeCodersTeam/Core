@@ -16,6 +16,8 @@ public static class CakeHostExtensions
     public static CakeHost AddTask<TTask>(this CakeHost host)
         where TTask : class, IFrostingTask
     {
+        ArgumentNullException.ThrowIfNull(host);
+
         return host.ConfigureServices(x => x.AddSingleton<IFrostingTask, TTask>());
     }
 
@@ -82,7 +84,7 @@ public static class CakeHostExtensions
             .UseBuildSetup<TBuildSetup>();
     }
 
-    private static CakeHost UseBuildSetup<TBuildSetup>(this CakeHost host)
+    public static CakeHost UseBuildSetup<TBuildSetup>(this CakeHost host)
         where TBuildSetup : class
     {
         host.ConfigureServices(services =>
