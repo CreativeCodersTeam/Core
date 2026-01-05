@@ -2,9 +2,11 @@
 using Cake.Common.Tools.DotNet;
 using Cake.Common.Tools.DotNet.Test;
 using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
+[PublicAPI]
 public class TestTask<T> : FrostingTaskBase<T> where T : BuildContext
 {
     protected override Task RunAsyncCore(T context)

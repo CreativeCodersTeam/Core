@@ -10,6 +10,12 @@ public interface ITestTaskSettings : IBuildContextAccessor
     {
         get
         {
+            if (Context.SolutionFile.GetExtension()?.ToLower() != ".sln")
+            {
+                // Currently no support for new xml based slnx solution file format
+                return [];
+            }
+
             var solution = Context.ParseSolution(Context.SolutionFile);
 
             var testProjects = solution.Projects
