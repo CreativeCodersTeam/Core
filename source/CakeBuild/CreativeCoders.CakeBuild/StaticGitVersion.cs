@@ -34,7 +34,7 @@ public static class StaticGitVersion
             NuGetPreReleaseTagV2 = preReleaseTag,
             CommitDate = DateTimeOffset.Now.ToString(),
             PreReleaseTagWithDash = $"-{preReleaseTag}",
-            PreReleaseLabelWithDash = $"-{preReleaseTag}",
+            PreReleaseLabelWithDash = $"-{preReleaseTag}"
         };
     }
 }

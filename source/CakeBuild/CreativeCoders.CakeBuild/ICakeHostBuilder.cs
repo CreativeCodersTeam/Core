@@ -1,7 +1,9 @@
 using Cake.Frosting;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.CakeBuild;
 
+[PublicAPI]
 public interface ICakeHostBuilder
 {
     ICakeHostBuilder AddBuildServerIntegration();

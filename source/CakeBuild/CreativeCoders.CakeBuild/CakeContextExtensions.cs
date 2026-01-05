@@ -1,9 +1,11 @@
 ﻿using Cake.Common.Tools.GitVersion;
 using Cake.Core;
 using Cake.Frosting;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.CakeBuild;
 
+[PublicAPI]
 public static class CakeContextExtensions
 {
     public static bool TaskHasRun<TTask>(this BuildContext context)
@@ -18,9 +20,11 @@ public static class CakeContextExtensions
     {
         try
         {
-            return context.GitVersion();
+            return gitVersionSettings == null
+                ? context.GitVersion()
+                : context.GitVersion(gitVersionSettings);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return StaticGitVersion.Create(major ?? "0", minor ?? "0", patch ?? "0", build ?? "1", "");
         }

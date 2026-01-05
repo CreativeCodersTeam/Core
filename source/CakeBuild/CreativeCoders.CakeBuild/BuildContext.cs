@@ -4,7 +4,6 @@ using Cake.Common.Tools.GitVersion;
 using Cake.Core;
 using Cake.Core.IO;
 using Cake.Frosting;
-using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 using CreativeCoders.Core.IO;
 using JetBrains.Annotations;
 
@@ -64,14 +63,14 @@ public class BuildContext : FrostingContext, IBuildContext, IBuildContextAccesso
 
         var solution = solutions.FirstOrDefault();
 
-        if (solution == null)
+        if (solution != null)
         {
-            context.Error("No solution file found.");
-
-            throw new InvalidOperationException("No solution file found");
+            return solution;
         }
 
-        return solution;
+        context.Error("No solution file found.");
+
+        throw new InvalidOperationException("No solution file found");
     }
 
     public FilePath SolutionFile { get; }

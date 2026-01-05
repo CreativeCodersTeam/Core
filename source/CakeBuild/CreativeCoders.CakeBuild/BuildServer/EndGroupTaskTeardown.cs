@@ -11,10 +11,12 @@ public class EndGroupTaskTeardown : IFrostingTaskTeardown
 {
     void IFrostingTaskTeardown.Teardown(ICakeContext context, ITaskTeardownContext info)
     {
-        if (context.GitHubActions().IsRunningOnGitHubActions)
+        if (!context.GitHubActions().IsRunningOnGitHubActions)
         {
-            context.Information("");
-            context.GitHubActions().Commands.EndGroup();
+            return;
         }
+
+        context.Information("");
+        context.GitHubActions().Commands.EndGroup();
     }
 }

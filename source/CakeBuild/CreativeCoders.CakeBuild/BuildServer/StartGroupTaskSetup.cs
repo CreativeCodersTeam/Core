@@ -11,10 +11,12 @@ public class StartGroupTaskSetup : IFrostingTaskSetup
 {
     void IFrostingTaskSetup.Setup(ICakeContext context, ITaskSetupContext info)
     {
-        if (context.GitHubActions().IsRunningOnGitHubActions)
+        if (!context.GitHubActions().IsRunningOnGitHubActions)
         {
-            context.Information("");
-            context.GitHubActions().Commands.StartGroup(info.Task.Name);
+            return;
         }
+
+        context.Information("");
+        context.GitHubActions().Commands.StartGroup(info.Task.Name);
     }
 }

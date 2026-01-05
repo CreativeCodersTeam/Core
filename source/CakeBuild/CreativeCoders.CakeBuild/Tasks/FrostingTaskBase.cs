@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Cake.Common.Build;
 using Cake.Common.Diagnostics;
 using Cake.Frosting;
 using JetBrains.Annotations;
