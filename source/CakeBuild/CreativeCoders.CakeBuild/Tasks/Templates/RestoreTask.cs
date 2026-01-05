@@ -5,7 +5,7 @@ namespace CreativeCoders.CakeBuild.Tasks.Templates;
 public class RestoreTask<T> : FrostingTaskBase<T>
     where T : BuildContext
 {
-    public override Task RunAsync(T context)
+    protected override Task RunAsyncCore(T context)
     {
         context.DotNetRestore(context.RootDir.FullPath);
 

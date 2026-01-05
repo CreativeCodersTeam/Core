@@ -38,7 +38,7 @@ public class BuildTask<T> : FrostingTaskBase<T>
         return dotNetBuildSettings;
     }
 
-    public override Task RunAsync(T context)
+    protected override Task RunAsyncCore(T context)
     {
         var dotnetSettings = CreateDotNetBuildSettings(context);
 

@@ -7,7 +7,7 @@ namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
 public class CleanTask<T> : FrostingTaskBase<T> where T : BuildContext
 {
-    public override Task RunAsync(T context)
+    protected override Task RunAsyncCore(T context)
     {
         var settings = context.GetSettings<ICleanTaskSettings>();
 
