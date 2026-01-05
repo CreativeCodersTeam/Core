@@ -1,4 +1,5 @@
 using Cake.Common.Build;
+using Cake.Common.Diagnostics;
 using Cake.Core;
 using Cake.Frosting;
 using JetBrains.Annotations;
@@ -12,6 +13,7 @@ public class EndGroupTaskTeardown : IFrostingTaskTeardown
     {
         if (context.GitHubActions().IsRunningOnGitHubActions)
         {
+            context.Information("");
             context.GitHubActions().Commands.EndGroup();
         }
     }

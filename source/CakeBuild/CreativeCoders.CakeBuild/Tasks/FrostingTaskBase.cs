@@ -2,9 +2,11 @@
 using Cake.Common.Build;
 using Cake.Common.Diagnostics;
 using Cake.Frosting;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.CakeBuild.Tasks;
 
+[PublicAPI]
 public abstract class FrostingTaskBase<T> : AsyncFrostingTask<T>
     where T : BuildContext
 {
@@ -24,11 +26,12 @@ public abstract class FrostingTaskBase<T> : AsyncFrostingTask<T>
 
         if (context.GitHubActions().IsRunningOnGitHubActions)
         {
+            context.Information("");
             context.GitHubActions().Commands.EndGroup();
         }
     }
 
-    private string ReadTaskName()
+    protected string ReadTaskName()
     {
         var taskNameAttr = GetType().GetCustomAttribute<TaskNameAttribute>();
 
