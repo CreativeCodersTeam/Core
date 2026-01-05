@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using Cake.Common.Build;
 using Cake.Common.Diagnostics;
 using Cake.Common.Tools.GitVersion;
 using Cake.Core;
 using Cake.Core.IO;
 using Cake.Frosting;
+using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 using CreativeCoders.Core.IO;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.CakeBuild;
 
 [PublicAPI]
-public class BuildContext : FrostingContext
+public class BuildContext : FrostingContext, IBuildContext, IBuildContextAccessor
 {
     private readonly List<IFrostingTask> _executedTasks = [];
 
@@ -76,15 +74,19 @@ public class BuildContext : FrostingContext
         return solution;
     }
 
-    public FilePath SolutionFile { get; set; }
+    public FilePath SolutionFile { get; }
 
-    public GitVersion Version { get; set; }
+    public DirectoryPath RootDir { get; }
 
-    public DirectoryPath RootDir { get; set; }
+    public virtual DirectoryPath ArtifactsDir => RootDir.Combine(".artifacts");
 
-    public DirectoryPath ArtifactsDir => RootDir.Combine(".artifacts");
+    public virtual DirectoryPath TestOutputBasePath => RootDir.Combine(".tests");
 
-    public string BuildConfiguration { get; set; } = "Release";
+    public virtual DirectoryPath CodeCoverageResultsDir => TestOutputBasePath.Combine("coverage-results");
+
+    public virtual string BuildConfiguration => this.BuildSystem().IsLocalBuild ? "Debug" : "Release";
+
+    public GitVersion Version { get; }
 
     public IList<IFrostingTask> ExecutedTasks => _executedTasks;
 
@@ -97,4 +99,28 @@ public class BuildContext : FrostingContext
     {
         return _executedTasks.Any(x => x.GetType().IsAssignableTo(taskType));
     }
+
+    public T GetSettings<T>() where T : class
+    {
+        return this as T
+               ?? FindSettingsProperty<T>()
+               ?? throw new InvalidOperationException($"No settings of type '{typeof(T).Name}' found");
+    }
+
+    private T? FindSettingsProperty<T>()
+        where T : class
+    {
+        var matchingProperties = GetType()
+            .GetProperties()
+            .Where(x => x.PropertyType == typeof(T) ||
+                        x.PropertyType.GetInterfaces().Any(intfType =>
+                            intfType == typeof(T)));
+
+        return matchingProperties
+            .Select(x => x.GetValue(this))
+            .OfType<T>()
+            .FirstOrDefault();
+    }
+
+    public IBuildContext Context => this;
 }

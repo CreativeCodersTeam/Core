@@ -1,26 +1,26 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Cake.Common.Diagnostics;
+﻿using Cake.Common.Diagnostics;
 using Cake.Common.Tools.DotNet;
 using Cake.Core.IO;
+using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
 public class CleanTask<T> : FrostingTaskBase<T> where T : BuildContext
 {
-    public override async Task RunAsync(T context)
+    public override Task RunAsync(T context)
     {
-        DeleteDirectories(context, context.RootDir.FullPath + "/**/bin");
-        DeleteDirectories(context, context.RootDir.FullPath + "/**/obj");
+        var settings = context.GetSettings<ICleanTaskSettings>();
+
+        DeleteDirectories(context, settings.DirectoriesToClean);
 
         context.DotNetClean(context.SolutionFile.FullPath);
+
+        return Task.CompletedTask;
     }
 
-    private static void DeleteDirectories(T context, string globPattern)
+    private static void DeleteDirectories(T context, IEnumerable<DirectoryPath> dirsForDelete)
     {
-        var dirs = context.Globber.Match(globPattern).OfType<DirectoryPath>();
-
-        foreach (var dir in dirs)
+        foreach (var dir in dirsForDelete.Where(dir => context.FileSystem.GetDirectory(dir).Exists))
         {
             context.Information("Deleting directory '{0}'", dir);
 

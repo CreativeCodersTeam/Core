@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Cake.Common.Diagnostics;
+﻿using Cake.Common.Diagnostics;
 using Cake.Common.Tools.DotNet;
 using Cake.Common.Tools.DotNet.Build;
 using Cake.Common.Tools.DotNet.MSBuild;
@@ -20,6 +19,7 @@ public class BuildTask<T>() : FrostingTaskBase<T>
         {
             Configuration = context.BuildConfiguration,
             NoRestore = context.HasExecutedTask(typeof(RestoreTask<T>)),
+            NoIncremental = true,
             MSBuildSettings = new DotNetMSBuildSettings
             {
                 InformationalVersion = context.Version.InformationalVersion,
@@ -49,9 +49,4 @@ public class BuildTask<T>() : FrostingTaskBase<T>
 
         return Task.CompletedTask;
     }
-}
-
-public class BuildTaskSettings
-{
-    public string? Configuration { get; set; }
 }

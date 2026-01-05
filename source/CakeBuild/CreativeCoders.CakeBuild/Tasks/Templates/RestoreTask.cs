@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Cake.Common.Tools.DotNet;
+﻿using Cake.Common.Tools.DotNet;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 

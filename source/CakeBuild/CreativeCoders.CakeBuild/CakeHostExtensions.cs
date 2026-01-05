@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using Cake.Frosting;
 using CreativeCoders.CakeBuild.BuildServer;
 using CreativeCoders.CakeBuild.Tasks.Defaults;

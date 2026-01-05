@@ -47,6 +47,8 @@ public static class ObjectExtensions
         return false;
     }
 
+    public static T CastAs<T>(this object instance) => (T)Ensure.NotNull(instance);
+
     public static async ValueTask TryDisposeAsync(this object instance)
     {
         switch (instance)

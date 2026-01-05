@@ -1,5 +1,3 @@
-using System;
-
 namespace CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
 [AttributeUsage(AttributeTargets.Interface)]
