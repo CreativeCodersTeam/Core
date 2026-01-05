@@ -1,5 +1,4 @@
 ﻿using CreativeCoders.CakeBuild;
-using CreativeCoders.CakeBuild.Tasks.Defaults;
 
 namespace CakeBuildSample;
 

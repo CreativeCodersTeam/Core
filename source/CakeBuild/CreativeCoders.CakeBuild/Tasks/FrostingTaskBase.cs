@@ -14,21 +14,9 @@ public abstract class FrostingTaskBase<T> : AsyncFrostingTask<T>
     {
         var taskName = ReadTaskName();
 
-        // if (context.GitHubActions().IsRunningOnGitHubActions)
-        // {
-        //     context.Information("");
-        //     context.GitHubActions().Commands.StartGroup(taskName);
-        // }
-
         context.Information($"Running task '{taskName}' ...");
 
         await RunAsyncCore(context).ConfigureAwait(false);
-
-        // if (context.GitHubActions().IsRunningOnGitHubActions)
-        // {
-        //     context.Information("");
-        //     context.GitHubActions().Commands.EndGroup();
-        // }
     }
 
     protected string ReadTaskName()

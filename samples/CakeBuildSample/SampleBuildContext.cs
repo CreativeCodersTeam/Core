@@ -12,6 +12,6 @@ public class SampleBuildContext : BuildContext, IDefaultTaskSettings
 {
     public SampleBuildContext(ICakeContext context) : base(context) { }
 
-    IList<DirectoryPath> ICleanTaskSettings.DirectoriesToClean =>
-        this.CastAs<ICleanTaskSettings>().DefaultDirectoriesToClean.AddRange(RootDir.Combine(".tests"));
+    public IList<DirectoryPath> DirectoriesToClean => this.CastAs<ICleanTaskSettings>()
+        .GetDefaultDirectoriesToClean().AddRange(RootDir.Combine(".tests"));
 }

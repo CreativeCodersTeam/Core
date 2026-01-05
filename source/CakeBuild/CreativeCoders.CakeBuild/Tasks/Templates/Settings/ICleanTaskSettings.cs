@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Cake.Core.IO;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates.Settings;
@@ -7,35 +5,32 @@ namespace CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 [CakeTaskSettings]
 public interface ICleanTaskSettings : IBuildContextAccessor
 {
-    IList<DirectoryPath> DirectoriesToClean => DefaultDirectoriesToClean;
+    IList<DirectoryPath> DirectoriesToClean => GetDefaultDirectoriesToClean();
 
-    IList<DirectoryPath> DefaultDirectoriesToClean
+    IList<DirectoryPath> GetDefaultDirectoriesToClean()
     {
-        get
+        var dirs = new List<DirectoryPath>();
+
+        string[] defaultSourceDirs = ["source", "src", "samples", "tests"];
+
+        foreach (var defaultSourceDir in defaultSourceDirs)
         {
-            var dirs = new List<DirectoryPath>();
+            var sourceDir = Context.RootDir.Combine(defaultSourceDir);
 
-            string[] defaultSourceDirs = ["source", "src", "samples", "tests"];
-
-            foreach (var defaultSourceDir in defaultSourceDirs)
+            if (Context.FileSystem.Exist(sourceDir))
             {
-                var sourceDir = Context.RootDir.Combine(defaultSourceDir);
+                var binDirs = Context.Globber.Match(sourceDir.FullPath + "/**/bin")
+                    .OfType<DirectoryPath>();
 
-                if (Context.FileSystem.Exist(sourceDir))
-                {
-                    var binDirs = Context.Globber.Match(sourceDir.FullPath + "/**/bin")
-                        .OfType<DirectoryPath>();
+                dirs.AddRange(binDirs);
 
-                    dirs.AddRange(binDirs);
+                var objDirs = Context.Globber.Match(sourceDir.FullPath + "/**/obj")
+                    .OfType<DirectoryPath>();
 
-                    var objDirs = Context.Globber.Match(sourceDir.FullPath + "/**/obj")
-                        .OfType<DirectoryPath>();
-
-                    dirs.AddRange(objDirs);
-                }
+                dirs.AddRange(objDirs);
             }
-
-            return dirs;
         }
+
+        return dirs;
     }
 }
