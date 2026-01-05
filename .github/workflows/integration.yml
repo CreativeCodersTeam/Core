@@ -42,7 +42,7 @@ jobs:
       - name: 'Run: DeployNuGet'
         run: |
           cd ./samples/CakeBuildSample
-          dotnet run -- -t build
+          dotnet run -- -t test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   #      - name: 'Publish: coverage_report'
