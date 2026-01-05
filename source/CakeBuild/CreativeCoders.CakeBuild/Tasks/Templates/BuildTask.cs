@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
 [PublicAPI]
-public class BuildTask<T>() : FrostingTaskBase<T>
+public class BuildTask<T> : FrostingTaskBase<T>
     where T : BuildContext
 {
     protected virtual void ApplyDotNetBuildSettings(T context, DotNetBuildSettings dotNetBuildSettings) { }
