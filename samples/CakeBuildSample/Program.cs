@@ -10,7 +10,6 @@ internal static class Program
         return CakeHostBuilder.Create()
             .UseBuildContext<SampleBuildContext>()
             .AddDefaultTasks()
-            .AddBuildServerIntegration()
             .Build()
             .Run(args);
     }
