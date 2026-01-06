@@ -45,6 +45,11 @@ public class BuildTask<T> : FrostingTaskBase<T>
         context.Log.Information("Building solution {0} with configuration {1}",
             context.SolutionFile.FullPath, dotnetSettings.Configuration);
 
+        context.Information("Build with informational version: " +
+                            dotnetSettings.MSBuildSettings.InformationalVersion);
+        context.Information("Build with assembly version: " + dotnetSettings.MSBuildSettings.AssemblyVersion);
+        context.Information("Build with file version: " + dotnetSettings.MSBuildSettings.FileVersion);
+
         context.DotNetBuild(context.SolutionFile.FullPath, dotnetSettings);
 
         return Task.CompletedTask;
