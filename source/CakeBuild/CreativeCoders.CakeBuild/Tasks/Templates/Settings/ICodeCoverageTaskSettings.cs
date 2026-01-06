@@ -1,9 +1,15 @@
-using CreativeCoders.Core.SysEnvironment;
+using Cake.Common.Tools.ReportGenerator;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
 [CakeTaskSettings]
-public interface ICodeCoverageTaskSettings
+public interface ICodeCoverageTaskSettings : IBuildContextAccessor
 {
-    string Framework => $"net{Env.Version.Major}.0";
+    IEnumerable<ReportGeneratorReportType> ReportTypes =>
+    [
+        ReportGeneratorReportType.Html,
+        ReportGeneratorReportType.MarkdownSummaryGithub
+    ];
+
+    string ReportGlobPattern => Context.CodeCoverageDir.FullPath + "/**/*.xml";
 }

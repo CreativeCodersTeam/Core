@@ -1,6 +1,7 @@
 ﻿using Cake.Common.Diagnostics;
 using Cake.Common.Tools.ReportGenerator;
 using Cake.Core.IO;
+using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
@@ -9,16 +10,14 @@ public class CodeCoverageTask<T> : FrostingTaskBase<T>
 {
     protected override Task RunAsyncCore(T context)
     {
+        var codeCoverageSettings = context.GetSettings<ICodeCoverageTaskSettings>();
+
         var reportGeneratorSettings = new ReportGeneratorSettings
         {
-            SetupProcessSettings = x =>
-            {
-                context.Information(
-                    $"ReportGenerator Process Args: {string.Join("", x.Arguments.Select(arg => arg.RenderSafe()))}");
-            }
+            ReportTypes = codeCoverageSettings.ReportTypes.ToList()
         };
 
-        context.ReportGenerator(new GlobPattern(context.CodeCoverageDir.FullPath + "/**/*.xml"),
+        context.ReportGenerator(new GlobPattern(codeCoverageSettings.ReportGlobPattern),
             context.CodeCoverageReportDir, reportGeneratorSettings);
 
         return Task.CompletedTask;
