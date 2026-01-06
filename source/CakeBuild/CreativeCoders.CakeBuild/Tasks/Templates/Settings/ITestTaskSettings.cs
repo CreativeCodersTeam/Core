@@ -12,7 +12,7 @@ public interface ITestTaskSettings : IBuildContextAccessor
         {
             if (Context.SolutionFile.GetExtension()?.ToLower() != ".sln")
             {
-                // Currently no support for new xml based slnx solution file format
+                // Currently no support for new XML based slnx solution file format
                 return [];
             }
 
@@ -28,6 +28,8 @@ public interface ITestTaskSettings : IBuildContextAccessor
                 .Where(x => x.GetExtension()?.ToLower() == ".csproj");
         }
     }
+
+    bool GenerateCoverageReport => true;
 
     DirectoryPath TestSourceDir => Context.RootDir.Combine("tests");
 }

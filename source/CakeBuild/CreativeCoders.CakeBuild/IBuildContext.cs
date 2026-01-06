@@ -15,7 +15,11 @@ public interface IBuildContext : ICakeContext
 
     DirectoryPath TestOutputBasePath { get; }
 
-    DirectoryPath CodeCoverageResultsDir { get; }
+    DirectoryPath TestResultsDir { get; }
+
+    DirectoryPath CodeCoverageDir { get; }
+
+    DirectoryPath CodeCoverageReportDir { get; }
 
     string BuildConfiguration { get; }
 

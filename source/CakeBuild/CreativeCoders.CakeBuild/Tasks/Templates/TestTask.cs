@@ -1,6 +1,7 @@
 ﻿using Cake.Common.Diagnostics;
 using Cake.Common.Tools.DotNet;
 using Cake.Common.Tools.DotNet.Test;
+using Cake.Core.IO;
 using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 using JetBrains.Annotations;
 
@@ -21,7 +22,8 @@ public class TestTask<T> : FrostingTaskBase<T> where T : BuildContext
         {
             context.Information($"Test project found: {testProject.GetFilename()}");
 
-            context.DotNetTest(testProject.FullPath, CreateDotNetBuildSettings(context));
+            context.DotNetTest(testProject.FullPath,
+                CreateDotNetBuildSettings(context, testProject, testSettings));
         }
 
         return Task.CompletedTask;
@@ -29,12 +31,19 @@ public class TestTask<T> : FrostingTaskBase<T> where T : BuildContext
 
     protected virtual void ApplyDotNetTestSettings(T context, DotNetTestSettings dotNetBuildSettings) { }
 
-    private DotNetTestSettings CreateDotNetBuildSettings(T context)
+    private DotNetTestSettings CreateDotNetBuildSettings(T context, FilePath testProject,
+        ITestTaskSettings testSettings)
     {
+        var testResultFile =
+            context.TestResultsDir.CombineWithFilePath($"{testProject.GetFilenameWithoutExtension()}.trx");
+
         var dotNetTestSettings = new DotNetTestSettings
         {
             Configuration = context.BuildConfiguration,
-            NoBuild = context.HasExecutedTask(typeof(BuildTask<T>))
+            NoBuild = context.HasExecutedTask(typeof(BuildTask<T>)),
+            Loggers = [$"trx;LogFileName={testResultFile}"],
+            Collectors = testSettings.GenerateCoverageReport ? ["XPlat Code Coverage"] : [],
+            ResultsDirectory = context.CodeCoverageDir
         };
 
         ApplyDotNetTestSettings(context, dotNetTestSettings);

@@ -81,7 +81,11 @@ public class BuildContext : FrostingContext, IBuildContext, IBuildContextAccesso
 
     public virtual DirectoryPath TestOutputBasePath => RootDir.Combine(".tests");
 
-    public virtual DirectoryPath CodeCoverageResultsDir => TestOutputBasePath.Combine("coverage-results");
+    public virtual DirectoryPath TestResultsDir => TestOutputBasePath.Combine("results");
+
+    public virtual DirectoryPath CodeCoverageDir => TestOutputBasePath.Combine("coverage");
+
+    public virtual DirectoryPath CodeCoverageReportDir => TestOutputBasePath.Combine("coverage-report");
 
     public virtual string BuildConfiguration => this.BuildSystem().IsLocalBuild ? "Debug" : "Release";
 
