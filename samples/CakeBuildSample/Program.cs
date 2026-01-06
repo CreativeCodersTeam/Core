@@ -1,4 +1,5 @@
 ﻿using Cake.Core.IO;
+using Cake.DotNetTool.Module;
 using Cake.Frosting;
 using CreativeCoders.CakeBuild;
 using CreativeCoders.Core.IO;
@@ -22,8 +23,9 @@ internal static class Program
 
                 x.SetToolPath(tempToolsPath);
 
-                x.InstallTool(new Uri("nuget:?package=GitVersion.Tool&version=6.5.1"));
-                x.InstallTool(new Uri("nuget:?package=dotnet-reportgenerator-globaltool&version=5.5.1"));
+                x.UsePackageInstaller<DotNetToolPackageInstaller>();
+                x.InstallTool(new Uri("dotnet:?package=GitVersion.Tool&version=6.5.1"));
+                x.InstallTool(new Uri("dotnet:?package=dotnet-reportgenerator-globaltool&version=5.5.1"));
             })
             .Build()
             .Run(args);
