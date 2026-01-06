@@ -10,6 +10,7 @@
     <ItemGroup>
         <PackageReference Include="Cake.Frosting" Version="6.0.0"/>
         <PackageDownload Include="ReportGenerator" Version="[5.5.1]"/>
+        <PackageDownload Include="GitVersion.Tool" Version="[6.5.1]"/>
     </ItemGroup>
 
     <ItemGroup>
