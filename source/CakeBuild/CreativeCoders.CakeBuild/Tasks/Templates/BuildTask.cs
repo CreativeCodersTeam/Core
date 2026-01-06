@@ -24,7 +24,8 @@ public class BuildTask<T> : FrostingTaskBase<T>
             {
                 InformationalVersion = context.Version.InformationalVersion,
                 AssemblyVersion = context.Version.AssemblySemVer,
-                FileVersion = context.Version.AssemblySemFileVer
+                FileVersion = context.Version.AssemblySemFileVer,
+                PackageVersion = context.Version.SemVer
             }
         };
 
@@ -49,6 +50,7 @@ public class BuildTask<T> : FrostingTaskBase<T>
                             dotnetSettings.MSBuildSettings.InformationalVersion);
         context.Information("Build with assembly version: " + dotnetSettings.MSBuildSettings.AssemblyVersion);
         context.Information("Build with file version: " + dotnetSettings.MSBuildSettings.FileVersion);
+        context.Information("Build with package version: " + dotnetSettings.MSBuildSettings.PackageVersion);
 
         context.DotNetBuild(context.SolutionFile.FullPath, dotnetSettings);
 

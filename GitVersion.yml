@@ -9,15 +9,18 @@ no-bump-message: '\+semver:\s?(none|skip)'
 mode: ContinuousDeployment
 branches:
   feature:
-    mode: ContinuousDeployment
+    mode: ManualDeployment
     label: feature.{BranchName}
     increment: Minor
     track-merge-target: false
-    regex: ^features?[/-]
+    regex: ^features?[\/-](?<BranchName>.+)
+    prevent-increment:
+      when-current-commit-tagged: false
     source-branches:
       - main
     tracks-release-branches: false
     is-release-branch: false
+    is-main-branch: false
     pre-release-weight: 30000
   main:
     mode: ContinuousDeployment
