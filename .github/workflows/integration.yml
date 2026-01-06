@@ -51,24 +51,26 @@ jobs:
   #        with:
   #          name: coverage_report
   #          path: .tests/coverage_report
-#  windows-latest:
-#    name: windows-latest
-#    runs-on: windows-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#        with:
-#          fetch-depth: 0
-#      - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-#        uses: actions/cache@v4
-#        with:
-#          path: |
-#            .nuke/temp
-#            ~/.nuget/packages
-#          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
-#      - name: 'Run: DeployNuGet'
-#        run: ./build.cmd DeployNuGet
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  windows-latest:
+    name: windows-latest
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      #      - name: 'Cache: .nuke/temp, ~/.nuget/packages'
+      #        uses: actions/cache@v4
+      #        with:
+      #          path: |
+      #            .nuke/temp
+      #            ~/.nuget/packages
+      #          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
+      - name: 'Run: DeployNuGet'
+        run: |
+          cd ./samples/CakeBuildSample
+          dotnet run -- -t codecoverage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #      - name: 'Publish: coverage_report'
 #        uses: actions/upload-artifact@v4
 #        if: runner.os == 'Linux'
