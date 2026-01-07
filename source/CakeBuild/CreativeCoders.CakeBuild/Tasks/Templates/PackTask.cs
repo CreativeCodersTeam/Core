@@ -36,10 +36,11 @@ public class PackTask<T> : FrostingTaskBase<T>
             }
         };
 
-        dotNetPackSettings.MSBuildSettings.WithProperty("PackageProjectUrl", packSettings.PackageProjectUrl);
-        dotNetPackSettings.MSBuildSettings.WithProperty("PackageLicenseExpression",
-            packSettings.PackageLicenseExpression);
-        dotNetPackSettings.MSBuildSettings.WithProperty("PackageLicenseUrl", packSettings.PackageLicenseUrl);
+        dotNetPackSettings.MSBuildSettings
+            .WithPackageProjectUrl(packSettings.PackageProjectUrl)
+            .WithPackageLicenseUrl(packSettings.PackageLicenseUrl)
+            .WithPackageLicenseExpression(packSettings.PackageLicenseExpression)
+            .WithCopyright(packSettings.Copyright);
 
         return dotNetPackSettings;
     }
