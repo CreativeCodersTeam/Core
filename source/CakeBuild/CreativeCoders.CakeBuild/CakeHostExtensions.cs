@@ -64,7 +64,7 @@ public static class CakeHostExtensions
             typeof(TestTask),
             typeof(CodeCoverageTask),
             typeof(PackTask),
-            typeof(NuGetPublishTask));
+            typeof(NuGetPushTask));
     }
 
     public static CakeHost AddBuildServerIntegration(this CakeHost host)

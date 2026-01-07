@@ -5,4 +5,4 @@ namespace CreativeCoders.CakeBuild.Tasks.Defaults;
 
 [TaskName("NuGetPublish")]
 [IsDependentOn(typeof(PackTask))]
-public class NuGetPublishTask : NuGetPublishTask<BuildContext> { }
+public class NuGetPushTask : NuGetPushTask<BuildContext> { }
