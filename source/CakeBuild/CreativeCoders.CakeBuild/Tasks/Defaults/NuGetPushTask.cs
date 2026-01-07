@@ -3,6 +3,6 @@ using CreativeCoders.CakeBuild.Tasks.Templates;
 
 namespace CreativeCoders.CakeBuild.Tasks.Defaults;
 
-[TaskName("NuGetPublish")]
+[TaskName("NuGetPush")]
 [IsDependentOn(typeof(PackTask))]
 public class NuGetPushTask : NuGetPushTask<BuildContext> { }
