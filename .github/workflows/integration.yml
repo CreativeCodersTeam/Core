@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report-windows
-          path: .tests/coverage_report
+          path: .tests/coverage-report
   macos-latest:
     name: macos-latest
     runs-on: macos-latest
@@ -76,4 +76,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report-macos
-          path: .tests/coverage_report
+          path: .tests/coverage-report

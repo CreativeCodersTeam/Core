@@ -11,7 +11,7 @@ public interface ICleanTaskSettings : IBuildContextAccessor
     {
         var dirs = new List<DirectoryPath>();
 
-        string[] defaultSourceDirs = ["source", "src", "tests"];
+        string[] defaultSourceDirs = ["source", "src", "samples", "tests"];
 
         foreach (var defaultSourceDir in defaultSourceDirs)
         {
