@@ -1,4 +1,5 @@
-﻿using Cake.Common.Tools.GitVersion;
+﻿using Cake.Common.Diagnostics;
+using Cake.Common.Tools.GitVersion;
 using Cake.Core;
 using Cake.Frosting;
 using JetBrains.Annotations;
@@ -24,8 +25,10 @@ public static class CakeContextExtensions
                 ? context.GitVersion()
                 : context.GitVersion(gitVersionSettings);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            context.Warning("GitVersion failed. Using fallback version. Reason: {0}", e.Message);
+
             return StaticGitVersion.Create(major ?? "0", minor ?? "0", patch ?? "0", build ?? "1", "");
         }
     }
