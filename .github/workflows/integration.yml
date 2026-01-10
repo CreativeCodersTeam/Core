@@ -25,7 +25,7 @@ jobs:
       - name: 'Run: DeployNuGet'
         env:
           NUGET_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: sh ./build.sh -t nugetpush
+        run: bash ./build.sh -t nugetpush
       - name: 'Publish: coverage-report'
         uses: actions/upload-artifact@v4
         with:
