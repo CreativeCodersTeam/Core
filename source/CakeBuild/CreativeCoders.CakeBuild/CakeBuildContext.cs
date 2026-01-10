@@ -10,11 +10,11 @@ using JetBrains.Annotations;
 namespace CreativeCoders.CakeBuild;
 
 [PublicAPI]
-public class BuildContext : FrostingContext, IBuildContext, IBuildContextAccessor
+public class CakeBuildContext : FrostingContext, ICakeBuildContext, IBuildContextAccessor
 {
     private readonly List<IFrostingTask> _executedTasks = [];
 
-    public BuildContext(ICakeContext context)
+    public CakeBuildContext(ICakeContext context)
         : base(context)
     {
         RootDir = FindGitRootPath(context.Environment.WorkingDirectory) ??
@@ -133,5 +133,5 @@ public class BuildContext : FrostingContext, IBuildContext, IBuildContextAccesso
             .FirstOrDefault();
     }
 
-    public IBuildContext Context => this;
+    public ICakeBuildContext Context => this;
 }

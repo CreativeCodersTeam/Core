@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 namespace CakeBuildSample;
 
 [UsedImplicitly]
-public class SampleBuildContext(ICakeContext context) : BuildContext(context), IDefaultTaskSettings
+public class SampleBuildContext(ICakeContext context) : CakeBuildContext(context), IDefaultTaskSettings
 {
     public IList<DirectoryPath> DirectoriesToClean => this.CastAs<ICleanTaskSettings>()
         .GetDefaultDirectoriesToClean().AddRange(RootDir.Combine(".tests"));

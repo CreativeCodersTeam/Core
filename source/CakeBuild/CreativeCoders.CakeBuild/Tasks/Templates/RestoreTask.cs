@@ -3,7 +3,7 @@
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
 public class RestoreTask<T> : FrostingTaskBase<T>
-    where T : BuildContext
+    where T : CakeBuildContext
 {
     protected override Task RunAsyncCore(T context)
     {

@@ -5,4 +5,4 @@ namespace CreativeCoders.CakeBuild.Tasks.Defaults;
 
 [TaskName("Restore")]
 [IsDependentOn(typeof(CleanTask))]
-public class RestoreTask : RestoreTask<BuildContext>;
+public class RestoreTask : RestoreTask<CakeBuildContext>;

@@ -76,7 +76,7 @@ public static class CakeHostExtensions
 
     public static CakeHost SetupHost<TBuildContext, TBuildSetup>(this CakeHost host)
         where TBuildSetup : class
-        where TBuildContext : BuildContext
+        where TBuildContext : CakeBuildContext
     {
         return host
             .UseContext<TBuildContext>()

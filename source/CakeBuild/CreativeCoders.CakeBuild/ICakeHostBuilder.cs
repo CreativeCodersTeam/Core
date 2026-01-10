@@ -18,7 +18,7 @@ public interface ICakeHostBuilder
     ICakeHostBuilder ConfigureHost(Action<CakeHost> configure);
 
     ICakeHostBuilder UseBuildContext<TBuildContext>()
-        where TBuildContext : BuildContext;
+        where TBuildContext : CakeBuildContext;
 
     ICakeHostBuilder InstallTools(params ToolInstallation[] tools);
 

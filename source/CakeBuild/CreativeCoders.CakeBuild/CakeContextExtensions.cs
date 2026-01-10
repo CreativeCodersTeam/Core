@@ -9,7 +9,7 @@ namespace CreativeCoders.CakeBuild;
 [PublicAPI]
 public static class CakeContextExtensions
 {
-    public static bool TaskHasRun<TTask>(this BuildContext context)
+    public static bool TaskHasRun<TTask>(this CakeBuildContext context)
         where TTask : IFrostingTask
     {
         return context.ExecutedTasks.Any(x => x.GetType() == typeof(TTask));

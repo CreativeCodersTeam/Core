@@ -5,7 +5,7 @@ using Cake.Frosting;
 
 namespace CreativeCoders.CakeBuild;
 
-public interface IBuildContext : ICakeContext
+public interface ICakeBuildContext : ICakeContext
 {
     FilePath SolutionFile { get; }
 

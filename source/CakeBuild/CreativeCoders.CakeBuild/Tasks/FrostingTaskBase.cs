@@ -7,7 +7,7 @@ namespace CreativeCoders.CakeBuild.Tasks;
 
 [PublicAPI]
 public abstract class FrostingTaskBase<T> : AsyncFrostingTask<T>
-    where T : BuildContext
+    where T : CakeBuildContext
 {
     public sealed override async Task RunAsync(T context)
     {

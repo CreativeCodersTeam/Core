@@ -6,7 +6,7 @@ using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
 public class CodeCoverageTask<T> : FrostingTaskBase<T>
-    where T : BuildContext
+    where T : CakeBuildContext
 {
     protected override Task RunAsyncCore(T context)
     {

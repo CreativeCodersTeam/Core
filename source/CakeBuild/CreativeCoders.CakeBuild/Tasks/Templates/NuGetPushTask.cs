@@ -5,7 +5,7 @@ using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
-public class NuGetPushTask<T> : FrostingTaskBase<T> where T : BuildContext
+public class NuGetPushTask<T> : FrostingTaskBase<T> where T : CakeBuildContext
 {
     protected override Task RunAsyncCore(T context)
     {

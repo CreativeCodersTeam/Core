@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
 [PublicAPI]
-public class TestTask<T> : FrostingTaskBase<T> where T : BuildContext
+public class TestTask<T> : FrostingTaskBase<T> where T : CakeBuildContext
 {
     protected override Task RunAsyncCore(T context)
     {

@@ -20,7 +20,7 @@ public class CakeHostBuilder : ICakeHostBuilder
     }
 
     public ICakeHostBuilder UseBuildContext<TBuildContext>()
-        where TBuildContext : BuildContext
+        where TBuildContext : CakeBuildContext
     {
         _buildContextIsSet = true;
 
@@ -85,7 +85,7 @@ public class CakeHostBuilder : ICakeHostBuilder
     {
         if (!_buildContextIsSet)
         {
-            _cakeHost.UseContext<BuildContext>();
+            _cakeHost.UseContext<CakeBuildContext>();
         }
 
         _cakeHost.UseSetup<DefaultHostSetup>();
@@ -99,7 +99,7 @@ public class DefaultHostSetup : IFrostingSetup
 {
     public void Setup(ICakeContext context, ISetupContext info)
     {
-        if (context is not BuildContext buildContext)
+        if (context is not CakeBuildContext buildContext)
         {
             return;
         }
