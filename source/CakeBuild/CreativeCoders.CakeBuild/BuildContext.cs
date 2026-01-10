@@ -93,6 +93,8 @@ public class BuildContext : FrostingContext, IBuildContext, IBuildContextAccesso
 
     public IList<IFrostingTask> ExecutedTasks => _executedTasks;
 
+    public bool PrintSetupSummary => true;
+
     public void AddExecutedTask(IFrostingTask task)
     {
         _executedTasks.Add(task);
@@ -103,11 +105,19 @@ public class BuildContext : FrostingContext, IBuildContext, IBuildContextAccesso
         return _executedTasks.Any(x => x.GetType().IsAssignableTo(taskType));
     }
 
-    public T GetSettings<T>() where T : class
+    public T GetRequiredSettings<T>()
+        where T : class
+    {
+        return GetSettings<T>()
+               ?? throw new InvalidOperationException($"No settings of type '{typeof(T).Name}' found");
+    }
+
+    public T? GetSettings<T>()
+        where T : class
     {
         return this as T
                ?? FindSettingsProperty<T>()
-               ?? throw new InvalidOperationException($"No settings of type '{typeof(T).Name}' found");
+               ?? null;
     }
 
     private T? FindSettingsProperty<T>()

@@ -10,7 +10,7 @@ public class CodeCoverageTask<T> : FrostingTaskBase<T>
 {
     protected override Task RunAsyncCore(T context)
     {
-        var codeCoverageSettings = context.GetSettings<ICodeCoverageTaskSettings>();
+        var codeCoverageSettings = context.GetRequiredSettings<ICodeCoverageTaskSettings>();
 
         var reportGeneratorSettings = new ReportGeneratorSettings
         {

@@ -1,11 +1,11 @@
 namespace CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
 [CakeTaskSettings]
-public interface INuGetPushTaskSettings
+public interface INuGetPushTaskSettings : IBuildContextAccessor
 {
-    string NuGetFeedUrl => string.Empty;
+    string NuGetFeedUrl => "nuget.org";
 
-    string NuGetApiKey => string.Empty;
+    string NuGetApiKey => Context.Environment.GetEnvironmentVariable("NUGET_TOKEN");
 
     bool SkipPush => false;
 }

@@ -25,12 +25,14 @@ public interface IBuildContext : ICakeContext
 
     GitVersion Version { get; }
 
+    bool PrintSetupSummary { get; }
+
     IList<IFrostingTask> ExecutedTasks { get; }
 
     void AddExecutedTask(IFrostingTask task);
 
     bool HasExecutedTask(Type taskType);
 
-    T GetSettings<T>()
+    T GetRequiredSettings<T>()
         where T : class;
 }

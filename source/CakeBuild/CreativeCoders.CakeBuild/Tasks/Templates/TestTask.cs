@@ -12,7 +12,7 @@ public class TestTask<T> : FrostingTaskBase<T> where T : BuildContext
 {
     protected override Task RunAsyncCore(T context)
     {
-        var testSettings = context.GetSettings<ITestTaskSettings>();
+        var testSettings = context.GetRequiredSettings<ITestTaskSettings>();
 
         var testProjects = testSettings.TestProjects.OrderBy(x => x.FullPath).ToArray();
 

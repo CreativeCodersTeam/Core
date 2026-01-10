@@ -9,7 +9,7 @@ public class CleanTask<T> : FrostingTaskBase<T> where T : BuildContext
 {
     protected override Task RunAsyncCore(T context)
     {
-        var settings = context.GetSettings<ICleanTaskSettings>();
+        var settings = context.GetRequiredSettings<ICleanTaskSettings>();
 
         DeleteDirectories(context, settings.DirectoriesToClean);
 

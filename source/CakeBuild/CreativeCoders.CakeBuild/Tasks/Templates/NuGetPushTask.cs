@@ -9,7 +9,7 @@ public class NuGetPushTask<T> : FrostingTaskBase<T> where T : BuildContext
 {
     protected override Task RunAsyncCore(T context)
     {
-        var pushSettings = context.GetSettings<INuGetPushTaskSettings>();
+        var pushSettings = context.GetRequiredSettings<INuGetPushTaskSettings>();
 
         if (pushSettings.SkipPush)
         {
@@ -17,7 +17,7 @@ public class NuGetPushTask<T> : FrostingTaskBase<T> where T : BuildContext
             return Task.CompletedTask;
         }
 
-        var packSettings = context.GetSettings<IPackTaskSettings>();
+        var packSettings = context.GetRequiredSettings<IPackTaskSettings>();
 
         var filePath = packSettings.OutputDirectory.GetFilePath("*.nupkg");
 

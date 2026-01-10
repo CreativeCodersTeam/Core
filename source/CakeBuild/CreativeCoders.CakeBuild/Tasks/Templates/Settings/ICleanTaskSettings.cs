@@ -31,6 +31,8 @@ public interface ICleanTaskSettings : IBuildContextAccessor
             }
         }
 
+        dirs.AddRange([Context.ArtifactsDir, Context.TestOutputBasePath]);
+
         return dirs;
     }
 }

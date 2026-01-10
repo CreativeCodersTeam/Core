@@ -40,11 +40,12 @@ jobs:
       #            ~/.nuget/packages
       #          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
       - name: 'Run: DeployNuGet'
-        run: |
-          cd ./samples/CakeBuildSample
-          dotnet run -- -t codecoverage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NUGET_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd ./samples/CakeBuildSample
+          dotnet run -- -t nugetpush
   #      - name: 'Publish: coverage_report'
   #        uses: actions/upload-artifact@v4
   #        if: runner.os == 'Linux'
@@ -68,7 +69,7 @@ jobs:
       - name: 'Run: DeployNuGet'
         run: |
           cd ./samples/CakeBuildSample
-          dotnet run -- -t codecoverage
+          dotnet run -- -t nugetpush
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #      - name: 'Publish: coverage_report'

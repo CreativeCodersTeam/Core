@@ -10,7 +10,7 @@ public class PackTask<T> : FrostingTaskBase<T>
 {
     protected override Task RunAsyncCore(T context)
     {
-        var packSettings = context.GetSettings<IPackTaskSettings>();
+        var packSettings = context.GetRequiredSettings<IPackTaskSettings>();
 
         context.DotNetPack(context.SolutionFile.FullPath, CreateDotNetPackSettings(context, packSettings));
 

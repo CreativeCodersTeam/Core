@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 namespace CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
 [PublicAPI]
-public static class PackageLicenseExpression
+public static class PackageLicenseExpressions
 {
     public const string LGPL30Only = "LGPL-3.0-only";
 
