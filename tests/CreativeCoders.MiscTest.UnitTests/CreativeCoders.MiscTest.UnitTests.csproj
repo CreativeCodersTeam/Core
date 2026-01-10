@@ -10,8 +10,8 @@
         <PackageReference Include="FakeItEasy" Version="8.3.0"/>
         <PackageReference Include="AwesomeAssertions" Version="9.3.0"/>
         <PackageReference Include="Nuke.Common" Version="9.0.4"/>
-        <PackageReference Include="System.IO.Abstractions" Version="22.1.0" />
-        <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="22.1.0" />
+        <PackageReference Include="System.IO.Abstractions" Version="22.1.0"/>
+        <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="22.1.0"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1"/>
         <PackageReference Include="xunit" Version="2.9.3"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
@@ -22,11 +22,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="XunitXml.TestLogger" Version="7.1.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\source\NukeBuild\CreativeCoders.NukeBuild\CreativeCoders.NukeBuild.csproj"/>
+        <PackageReference Include="XunitXml.TestLogger" Version="7.1.0"/>
     </ItemGroup>
 
 </Project>
