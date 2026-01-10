@@ -3,6 +3,7 @@ using Cake.Core;
 using Cake.Frosting;
 using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 using CreativeCoders.Core;
+using CreativeCoders.Core.IO;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.CakeBuild;
@@ -28,10 +29,16 @@ public class CakeHostBuilder : ICakeHostBuilder
         return this;
     }
 
-    public ICakeHostBuilder UseBuildSetup<TBuildSetup>()
-        where TBuildSetup : class
+    public ICakeHostBuilder InstallTools(params ToolInstallation[] tools)
     {
-        _cakeHost.UseBuildSetup<TBuildSetup>();
+        var tempToolsPath = FileSys.Path.Combine(FileSys.Path.GetTempPath(), ".cake-tools");
+
+        _cakeHost.SetToolPath(tempToolsPath);
+
+        foreach (var tool in tools)
+        {
+            _cakeHost.InstallTool(new Uri($"{tool.ToolKind}:?package={tool.Name}&version={tool.Version}"));
+        }
 
         return this;
     }

@@ -20,8 +20,7 @@ public interface ICakeHostBuilder
     ICakeHostBuilder UseBuildContext<TBuildContext>()
         where TBuildContext : BuildContext;
 
-    ICakeHostBuilder UseBuildSetup<TBuildSetup>()
-        where TBuildSetup : class;
+    ICakeHostBuilder InstallTools(params ToolInstallation[] tools);
 
     CakeHost Build();
 }
