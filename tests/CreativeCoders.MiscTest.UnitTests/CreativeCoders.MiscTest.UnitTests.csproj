@@ -9,7 +9,6 @@
     <ItemGroup>
         <PackageReference Include="FakeItEasy" Version="8.3.0"/>
         <PackageReference Include="AwesomeAssertions" Version="9.3.0"/>
-        <PackageReference Include="Nuke.Common" Version="9.0.4"/>
         <PackageReference Include="System.IO.Abstractions" Version="22.1.0"/>
         <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="22.1.0"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1"/>

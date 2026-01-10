@@ -15,6 +15,8 @@ public sealed class TestServerContext<TStartup> : IAsyncDisposable
 {
     private readonly TestServer _testServer;
 
+    private readonly IHost _host;
+
     public TestServerContext(Action<IServiceCollection>? configureServices = null,
         Action<JwtTokenAuthApiOptions>? configureJwtApiOptions = null,
         Action<TokenAuthApiOptions>? configureTokenApiOptions = null,
@@ -52,7 +54,11 @@ public sealed class TestServerContext<TStartup> : IAsyncDisposable
             });
         });
 
-        _testServer = new TestServer(webHostBuilder);
+        _host = webHostBuilder.Build();
+
+        _host.StartAsync().Wait();
+
+        _testServer = _host.GetTestServer();
 
         HttpClient = _testServer.CreateClient();
     }
@@ -67,15 +73,22 @@ public sealed class TestServerContext<TStartup> : IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        await _testServer.Host.StopAsync();
+        await _host.StopAsync();
+        _host.Dispose();
 
         _testServer.Dispose();
     }
 
-    private static IWebHostBuilder SetupWebHostBuilder(Action<IServiceCollection>? configureServices)
+    private static IHostBuilder SetupWebHostBuilder(Action<IServiceCollection>? configureServices)
     {
-        return new WebHostBuilder()
-            .ConfigureServices(services => configureServices?.Invoke(services))
-            .UseStartup<TStartup>();
+        return new HostBuilder()
+            .ConfigureWebHost(webHostBuilder =>
+            {
+                webHostBuilder
+                    .ConfigureServices(services => configureServices?.Invoke(services))
+                    .UseTestServer() // If using TestServer
+                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseStartup<TStartup>();
+            });
     }
 }
