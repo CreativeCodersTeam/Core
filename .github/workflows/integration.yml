@@ -22,7 +22,7 @@ jobs:
           path: |
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
-      - name: 'Run: DeployNuGet'
+      - name: 'Build with target: NuGetPush'
         env:
           NUGET_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bash ./build.sh -t nugetpush
@@ -47,7 +47,7 @@ jobs:
           path: |
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
-      - name: 'Run: DeployNuGet'
+      - name: 'Build with target: Pack'
         run: ./build.ps1 -t pack
       - name: 'Publish: coverage_report'
         uses: actions/upload-artifact@v4
@@ -70,7 +70,7 @@ jobs:
           path: |
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
-      - name: 'Run: DeployNuGet'
+      - name: 'Build with target: Pack'
         run: sh ./build.sh -t pack
       - name: 'Publish: coverage_report'
         uses: actions/upload-artifact@v4
