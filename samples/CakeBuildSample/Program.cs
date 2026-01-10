@@ -24,7 +24,7 @@ internal static class Program
                 x.SetToolPath(tempToolsPath);
 
                 x.UsePackageInstaller<DotNetToolPackageInstaller>();
-                x.InstallTool(new Uri("nuget:?package=GitVersion.Tool&version=6.5.1"));
+                x.InstallTool(new Uri("nuget:?package=GitVersion.CommandLine&version=6.5.1"));
                 x.InstallTool(new Uri("dotnet:?package=dotnet-reportgenerator-globaltool&version=5.5.1"));
             })
             .Build()
