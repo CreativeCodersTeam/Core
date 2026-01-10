@@ -2,9 +2,11 @@ using Cake.Common.Tools.GitVersion;
 using Cake.Core;
 using Cake.Core.IO;
 using Cake.Frosting;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.CakeBuild;
 
+[PublicAPI]
 public interface ICakeBuildContext : ICakeContext
 {
     FilePath SolutionFile { get; }

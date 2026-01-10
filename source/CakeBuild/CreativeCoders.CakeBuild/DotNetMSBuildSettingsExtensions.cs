@@ -1,7 +1,9 @@
 using Cake.Common.Tools.DotNet.MSBuild;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.CakeBuild;
 
+[PublicAPI]
 public static class DotNetMSBuildSettingsExtensions
 {
     public static DotNetMSBuildSettings WithPackageProjectUrl(this DotNetMSBuildSettings settings,

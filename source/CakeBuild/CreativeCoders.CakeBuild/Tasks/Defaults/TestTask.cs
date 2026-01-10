@@ -5,4 +5,4 @@ namespace CreativeCoders.CakeBuild.Tasks.Defaults;
 
 [TaskName("Test")]
 [IsDependentOn(typeof(BuildTask))]
-public class TestTask : TestTask<CakeBuildContext> { }
+public class TestTask : TestTask<CakeBuildContext>;

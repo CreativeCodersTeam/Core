@@ -5,4 +5,4 @@ namespace CreativeCoders.CakeBuild.Tasks.Defaults;
 
 [TaskName("CodeCoverage")]
 [IsDependentOn(typeof(TestTask))]
-public class CodeCoverageTask : CodeCoverageTask<CakeBuildContext> { }
+public class CodeCoverageTask : CodeCoverageTask<CakeBuildContext>;

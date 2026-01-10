@@ -13,22 +13,22 @@ public interface ICleanTaskSettings : IBuildContextAccessor
 
         string[] defaultSourceDirs = ["source", "src", "samples", "tests"];
 
-        foreach (var defaultSourceDir in defaultSourceDirs)
+        var sourceDirs = defaultSourceDirs
+            .Select(x => Context.RootDir.Combine(x))
+            .Where(Context.FileSystem.Exist)
+            .Select(x => x.FullPath);
+
+        foreach (var sourceDir in sourceDirs)
         {
-            var sourceDir = Context.RootDir.Combine(defaultSourceDir);
+            var binDirs = Context.Globber.Match(sourceDir + "/**/bin")
+                .OfType<DirectoryPath>();
 
-            if (Context.FileSystem.Exist(sourceDir))
-            {
-                var binDirs = Context.Globber.Match(sourceDir.FullPath + "/**/bin")
-                    .OfType<DirectoryPath>();
+            dirs.AddRange(binDirs);
 
-                dirs.AddRange(binDirs);
+            var objDirs = Context.Globber.Match(sourceDir + "/**/obj")
+                .OfType<DirectoryPath>();
 
-                var objDirs = Context.Globber.Match(sourceDir.FullPath + "/**/obj")
-                    .OfType<DirectoryPath>();
-
-                dirs.AddRange(objDirs);
-            }
+            dirs.AddRange(objDirs);
         }
 
         dirs.AddRange([Context.ArtifactsDir, Context.TestOutputBasePath]);

@@ -32,7 +32,7 @@ public class PackTask<T> : FrostingTaskBase<T>
                 InformationalVersion = context.Version.InformationalVersion,
                 AssemblyVersion = context.Version.AssemblySemVer,
                 FileVersion = context.Version.AssemblySemFileVer,
-                PackageVersion = context.Version.SemVer,
+                PackageVersion = context.Version.SemVer
             }
         };
 

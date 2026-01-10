@@ -1,5 +1,4 @@
-﻿using Cake.Common.Diagnostics;
-using Cake.Common.Tools.ReportGenerator;
+﻿using Cake.Common.Tools.ReportGenerator;
 using Cake.Core.IO;
 using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 

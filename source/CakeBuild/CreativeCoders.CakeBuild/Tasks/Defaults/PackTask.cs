@@ -5,4 +5,4 @@ namespace CreativeCoders.CakeBuild.Tasks.Defaults;
 
 [TaskName("Pack")]
 [IsDependentOn(typeof(CodeCoverageTask))]
-public class PackTask : PackTask<CakeBuildContext> { }
+public class PackTask : PackTask<CakeBuildContext>;
