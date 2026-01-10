@@ -24,8 +24,6 @@ public class BuildContext : FrostingContext, IBuildContext, IBuildContextAccesso
         SolutionFile = string.IsNullOrWhiteSpace(solutionsFilePath)
             ? FindRootSolution(context)
             : new FilePath(solutionsFilePath);
-
-        Version = context.GetGitVersionSafe();
     }
 
     private DirectoryPath? FindGitRootPath(DirectoryPath? startPath)
@@ -89,7 +87,7 @@ public class BuildContext : FrostingContext, IBuildContext, IBuildContextAccesso
 
     public virtual string BuildConfiguration => this.BuildSystem().IsLocalBuild ? "Debug" : "Release";
 
-    public GitVersion Version { get; }
+    public GitVersion Version => this.GetGitVersionSafe();
 
     public IList<IFrostingTask> ExecutedTasks => _executedTasks;
 
