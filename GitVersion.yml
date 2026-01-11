@@ -9,7 +9,7 @@ no-bump-message: '\+semver:\s?(none|skip)'
 mode: ContinuousDeployment
 branches:
   feature:
-    mode: ManualDeployment
+    mode: ContinuousDelivery
     label: feature.{BranchName}
     increment: Minor
     track-merge-target: false
@@ -28,24 +28,14 @@ branches:
     increment: Patch
     track-merge-target: false
     regex: ^master$|^main$
+    prevent-increment:
+      when-current-commit-tagged: false
     source-branches:
       - develop
       - release
     tracks-release-branches: false
     is-release-branch: false
     pre-release-weight: 55000
-  release:
-    mode: ContinuousDeployment
-    label: beta
-    increment: None
-    track-merge-target: false
-    regex: ^releases?[/-]
-    source-branches:
-      - main
-      - release
-    tracks-release-branches: false
-    is-release-branch: true
-    pre-release-weight: 30000
   pull-request:
     mode: ContinuousDeployment
     label: PR
@@ -54,7 +44,6 @@ branches:
     regex: ^(pull|pull\-requests|pr)[/-]
     source-branches:
       - main
-      - release
       - feature
     tracks-release-branches: false
     is-release-branch: false
