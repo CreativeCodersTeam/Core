@@ -75,8 +75,6 @@ public sealed class TestServerContext<TStartup> : IAsyncDisposable
     {
         await _host.StopAsync();
         _host.Dispose();
-
-        _testServer.Dispose();
     }
 
     private static IHostBuilder SetupWebHostBuilder(Action<IServiceCollection>? configureServices)
