@@ -41,7 +41,7 @@ branches:
     label: PR.{BranchName}
     increment: Inherit
     track-merge-target: false
-    regex: ^(pull|pull\-requests|pr)[/-]
+    regex: ^(pull|pull\-requests|pr)[/-](?<BranchName>.+)
     prevent-increment:
       when-current-commit-tagged: false
     source-branches:
