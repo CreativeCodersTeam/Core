@@ -6,10 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="System.Threading.Tasks.Dataflow" Version="10.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\CreativeCoders.Messaging.Core\CreativeCoders.Messaging.Core.csproj"/>
     </ItemGroup>
 
