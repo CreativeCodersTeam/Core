@@ -37,11 +37,13 @@ branches:
     is-release-branch: false
     pre-release-weight: 55000
   pull-request:
-    mode: ContinuousDeployment
-    label: PR
+    mode: ContinuousDelivery
+    label: PR.{BranchName}
     increment: Inherit
     track-merge-target: false
     regex: ^(pull|pull\-requests|pr)[/-]
+    prevent-increment:
+      when-current-commit-tagged: false
     source-branches:
       - main
       - feature
