@@ -38,10 +38,10 @@ branches:
     pre-release-weight: 55000
   pull-request:
     mode: ContinuousDelivery
-    label: PR.{BranchName}
+    label: PR-{PullRequestName}
     increment: Inherit
     track-merge-target: false
-    regex: ^(pull|pull\-requests|pr)[/-](?<BranchName>.+)
+    regex: ^(pull|pull\-requests|pr)[/-](?<PullRequestName>.+)
     prevent-increment:
       when-current-commit-tagged: false
     source-branches:
