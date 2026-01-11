@@ -115,5 +115,14 @@ public class DefaultHostSetup : IFrostingSetup
         {
             context.Information($"Skip Push: {pushSettings.SkipPush}");
         }
+
+        var version = buildContext.Version;
+
+        context.Information("Version Info");
+
+        context.Information($"Informational Version: {version.InformationalVersion}");
+        context.Information($"Assembly Version: {version.AssemblySemVer}");
+        context.Information($"File Version: {version.AssemblySemFileVer}");
+        context.Information($"Package Version: {version.SemVer}");
     }
 }
