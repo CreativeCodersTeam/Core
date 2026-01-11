@@ -23,7 +23,7 @@ jobs:
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
       - name: 'Build with target: NuGetPush'
-        run: ./build.cmd -t nugetpush
+        run: ./build.cmd -t pack
         env:
           NUGET_TOKEN: ${{ secrets.NUGET_ORG_TOKEN }}
       - name: 'Publish: coverage_report'
