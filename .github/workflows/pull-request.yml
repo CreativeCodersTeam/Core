@@ -69,7 +69,7 @@ jobs:
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
       - name: 'Build with target: Pack'
-        run: ./build.cmd pack
+        run: ./build.cmd -t pack
       - name: 'Publish: coverage_report'
         uses: actions/upload-artifact@v4
         with:
