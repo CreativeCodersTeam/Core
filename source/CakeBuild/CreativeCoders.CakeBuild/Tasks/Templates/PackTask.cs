@@ -26,7 +26,6 @@ public class PackTask<T> : FrostingTaskBase<T>
             NoBuild = context.HasExecutedTask(typeof(BuildTask<T>)),
             IncludeSymbols = true,
             SymbolPackageFormat = "snupkg",
-
             MSBuildSettings = new DotNetMSBuildSettings
             {
                 InformationalVersion = context.Version.InformationalVersion,
