@@ -29,7 +29,7 @@ branches:
     track-merge-target: false
     regex: ^master$|^main$
     prevent-increment:
-      when-current-commit-tagged: false
+      when-current-commit-tagged: true
     source-branches:
       - develop
       - release
