@@ -109,6 +109,15 @@ public class DefaultHostSetup : IFrostingSetup
             return;
         }
 
+        context.Information("Build Setup Summary");
+        context.Information("===================");
+        context.Information("Tasks for execution:");
+
+        foreach (var task in info.TasksToExecute)
+        {
+            context.Information($"- {task.Name}");
+        }
+
         var pushSettings = buildContext.GetSettings<INuGetPushTaskSettings>();
 
         if (pushSettings != null)
@@ -119,6 +128,7 @@ public class DefaultHostSetup : IFrostingSetup
         var version = buildContext.Version;
 
         context.Information("Version Info");
+        context.Information("============");
 
         context.Information($"Informational Version: {version.InformationalVersion}");
         context.Information($"Assembly Version: {version.AssemblySemVer}");
