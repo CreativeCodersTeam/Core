@@ -8,13 +8,11 @@ using JetBrains.Annotations;
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
 [PublicAPI]
-public class TestTask<T> : FrostingTaskBase<T> where T : CakeBuildContext
+public class TestTask<T> : FrostingTaskBase<T, ITestTaskSettings> where T : CakeBuildContext
 {
-    protected override Task RunAsyncCore(T context)
+    protected override Task RunAsyncCore(T context, ITestTaskSettings taskSettings)
     {
-        var testSettings = context.GetRequiredSettings<ITestTaskSettings>();
-
-        var testProjects = testSettings.TestProjects.OrderBy(x => x.FullPath).ToArray();
+        var testProjects = taskSettings.TestProjects.OrderBy(x => x.FullPath).ToArray();
 
         context.Information($"Found {testProjects.Length} test project(s)");
 
@@ -23,7 +21,7 @@ public class TestTask<T> : FrostingTaskBase<T> where T : CakeBuildContext
             context.Information($"Test project found: {testProject.GetFilename()}");
 
             context.DotNetTest(testProject.FullPath,
-                CreateDotNetBuildSettings(context, testProject, testSettings));
+                CreateDotNetBuildSettings(context, testProject, taskSettings));
         }
 
         return Task.CompletedTask;

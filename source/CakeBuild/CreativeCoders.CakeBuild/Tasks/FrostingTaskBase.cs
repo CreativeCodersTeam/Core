@@ -34,3 +34,17 @@ public abstract class FrostingTaskBase<T> : AsyncFrostingTask<T>
         context.AddExecutedTask(this);
     }
 }
+
+public abstract class FrostingTaskBase<TBuildContext, TSettings> : FrostingTaskBase<TBuildContext>
+    where TBuildContext : CakeBuildContext
+    where TSettings : class
+{
+    protected sealed override Task RunAsyncCore(TBuildContext context)
+    {
+        var taskSettings = context.GetRequiredSettings<TSettings>();
+
+        return RunAsyncCore(context, taskSettings);
+    }
+
+    protected abstract Task RunAsyncCore(TBuildContext context, TSettings taskSettings);
+}

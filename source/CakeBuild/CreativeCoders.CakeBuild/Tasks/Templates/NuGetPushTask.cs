@@ -5,13 +5,12 @@ using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
-public class NuGetPushTask<T> : FrostingTaskBase<T> where T : CakeBuildContext
+public class NuGetPushTask<T> : FrostingTaskBase<T, INuGetPushTaskSettings>
+    where T : CakeBuildContext
 {
-    protected override Task RunAsyncCore(T context)
+    protected override Task RunAsyncCore(T context, INuGetPushTaskSettings taskSettings)
     {
-        var pushSettings = context.GetRequiredSettings<INuGetPushTaskSettings>();
-
-        if (pushSettings.SkipPush)
+        if (taskSettings.SkipPush)
         {
             context.Information("Skip NuGet push");
             return Task.CompletedTask;
@@ -21,7 +20,7 @@ public class NuGetPushTask<T> : FrostingTaskBase<T> where T : CakeBuildContext
 
         var filePath = packSettings.OutputDirectory.GetFilePath("*.nupkg");
 
-        context.DotNetNuGetPush(filePath, CreateNuGetPushSettings(pushSettings));
+        context.DotNetNuGetPush(filePath, CreateNuGetPushSettings(taskSettings));
 
         return Task.CompletedTask;
     }

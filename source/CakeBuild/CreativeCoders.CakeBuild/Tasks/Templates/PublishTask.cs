@@ -4,16 +4,14 @@ using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
-public class PublishTask<TBuildContext> : FrostingTaskBase<TBuildContext>
+public class PublishTask<TBuildContext> : FrostingTaskBase<TBuildContext, IPublishTaskSettings>
     where TBuildContext : CakeBuildContext
 {
-    protected override Task RunAsyncCore(TBuildContext context)
+    protected override Task RunAsyncCore(TBuildContext context, IPublishTaskSettings taskSettings)
     {
-        var publishSettings = context.GetRequiredSettings<IPublishTaskSettings>();
-
-        if (publishSettings.PublishingItems.Any())
+        if (taskSettings.PublishingItems.Any())
         {
-            foreach (var publishingItem in publishSettings.PublishingItems)
+            foreach (var publishingItem in taskSettings.PublishingItems)
             {
                 context.DotNetPublish(publishingItem.ProjectPath.FullPath,
                     CreateDotNetPublishSettings(publishingItem, context));
@@ -22,7 +20,7 @@ public class PublishTask<TBuildContext> : FrostingTaskBase<TBuildContext>
         else
         {
             context.DotNetPublish(context.SolutionFile.FullPath,
-                CreateDotNetPublishSettings(publishSettings, context));
+                CreateDotNetPublishSettings(taskSettings, context));
         }
 
         return Task.CompletedTask;

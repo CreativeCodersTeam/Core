@@ -5,13 +5,11 @@ using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
-public class CleanTask<T> : FrostingTaskBase<T> where T : CakeBuildContext
+public class CleanTask<T> : FrostingTaskBase<T, ICleanTaskSettings> where T : CakeBuildContext
 {
-    protected override Task RunAsyncCore(T context)
+    protected override Task RunAsyncCore(T context, ICleanTaskSettings taskSettings)
     {
-        var settings = context.GetRequiredSettings<ICleanTaskSettings>();
-
-        DeleteDirectories(context, settings.DirectoriesToClean);
+        DeleteDirectories(context, taskSettings.DirectoriesToClean);
 
         context.DotNetClean(context.SolutionFile.FullPath);
 
