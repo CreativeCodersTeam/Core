@@ -23,7 +23,7 @@ public class ZipArchiveReaderTests
                 await entryStream.WriteAsync("Content 1"u8.ToArray());
             }
 
-            var entry2 = archive.CreateEntry("dir/file2.txt");
+            var entry2 = archive.CreateEntry(Path.Combine("dir", "file2.txt"));
             await using (var entryStream = await entry2.OpenAsync())
             {
                 await entryStream.WriteAsync("Content 2"u8.ToArray());
@@ -51,7 +51,7 @@ public class ZipArchiveReaderTests
             .Should().HaveCount(2);
 
         entries.Select(x => x.FullName)
-            .Should().BeEquivalentTo("file1.txt", "dir/file2.txt");
+            .Should().BeEquivalentTo("file1.txt", Path.Combine("dir", "file2.txt"));
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public class ZipArchiveReaderTests
             .Should().HaveCount(2);
 
         entries.Select(x => x.FullName)
-            .Should().BeEquivalentTo("file1.txt", "dir/file2.txt");
+            .Should().BeEquivalentTo("file1.txt", Path.Combine("dir", "file2.txt"));
     }
 
     [Fact]
