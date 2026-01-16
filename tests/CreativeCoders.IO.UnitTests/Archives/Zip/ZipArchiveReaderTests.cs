@@ -121,7 +121,7 @@ public class ZipArchiveReaderTests
         // Arrange
         using var archiveStream = await CreateTestZipArchiveAsync();
         await using var reader = ZipArchiveReader.Create(archiveStream);
-        var entry = new ArchiveEntry("dir/file2.txt");
+        var entry = new ArchiveEntry(Path.Combine("dir", "file2.txt"));
         var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(tempDir);
 
