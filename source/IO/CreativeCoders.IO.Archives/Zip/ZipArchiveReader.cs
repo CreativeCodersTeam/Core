@@ -1,25 +1,28 @@
-﻿using System.IO.Compression;
+﻿using System.IO.Abstractions;
+using System.IO.Compression;
 using CreativeCoders.Core;
 
 namespace CreativeCoders.IO.Archives.Zip;
 
-public sealed class ZipArchiveReader(ZipArchive zipArchive) : IZipArchiveReader
+public sealed class ZipArchiveReader(ZipArchive zipArchive, IFileSystem fileSystem) : IZipArchiveReader
 {
+    private readonly IFileSystem _fileSystem = Ensure.NotNull(fileSystem);
+
     private readonly ZipArchive _zipArchive = Ensure.NotNull(zipArchive);
 
-    public static ZipArchiveReader Create(Stream inputStream)
+    public static ZipArchiveReader Create(Stream inputStream, IFileSystem? fileSystem = null)
     {
         var zipArchive = new ZipArchive(inputStream, ZipArchiveMode.Read, false);
 
-        return new ZipArchiveReader(zipArchive);
+        return new ZipArchiveReader(zipArchive, fileSystem ?? new FileSystem());
     }
 
-    public static async Task<ZipArchiveReader> CreateAsync(Stream inputStream)
+    public static async Task<ZipArchiveReader> CreateAsync(Stream inputStream, IFileSystem? fileSystem = null)
     {
         var zipArchive = await ZipArchive.CreateAsync(inputStream, ZipArchiveMode.Read, false, null)
             .ConfigureAwait(false);
 
-        return new ZipArchiveReader(zipArchive);
+        return new ZipArchiveReader(zipArchive, fileSystem ?? new FileSystem());
     }
 
     public IAsyncEnumerable<ArchiveEntry> GetEntriesAsync()
@@ -52,13 +55,13 @@ public sealed class ZipArchiveReader(ZipArchive zipArchive) : IZipArchiveReader
             : ExtractFileCoreAsync(zipEntry, outputFilePath, overwriteExisting);
     }
 
-    private static Task ExtractFileCoreAsync(ZipArchiveEntry zipEntry, string outputFilePath,
+    private Task ExtractFileCoreAsync(ZipArchiveEntry zipEntry, string outputFilePath,
         bool overwriteExisting)
     {
-        var outputDirectory = Path.GetDirectoryName(outputFilePath);
+        var outputDirectory = _fileSystem.Path.GetDirectoryName(outputFilePath);
         if (outputDirectory != null)
         {
-            Directory.CreateDirectory(outputDirectory);
+            _fileSystem.Directory.CreateDirectory(outputDirectory);
         }
 
         return zipEntry.ExtractToFileAsync(outputFilePath, overwriteExisting);
@@ -67,7 +70,7 @@ public sealed class ZipArchiveReader(ZipArchive zipArchive) : IZipArchiveReader
     public async Task<string> ExtractFileWithPathAsync(ArchiveEntry entry, string outputBaseDirectory,
         bool overwriteExisting = true)
     {
-        var outputFileName = Path.Combine(outputBaseDirectory, entry.FullName);
+        var outputFileName = _fileSystem.Path.Combine(outputBaseDirectory, entry.FullName);
 
         await ExtractFileAsync(entry, outputFileName, overwriteExisting).ConfigureAwait(false);
 
