@@ -25,7 +25,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\source\IO\CreativeCoders.IO.Ports\CreativeCoders.IO.Ports.csproj"/>
-        <ProjectReference Include="..\..\source\IO\CreativeCoders.IO\CreativeCoders.IO.csproj"/>
     </ItemGroup>
 
 </Project>
