@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
 using CreativeCoders.Core;
 
@@ -37,6 +38,7 @@ public sealed class ZipArchiveWriter(
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public void Dispose()
     {
         _archive.Dispose();

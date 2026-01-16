@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Formats.Tar;
 using CreativeCoders.Core;
 
@@ -72,6 +73,7 @@ public sealed class TarArchiveWriter(Stream outputStream, bool leaveOpen = false
             : fileNameInArchive;
     }
 
+    [ExcludeFromCodeCoverage]
     public void Dispose()
     {
         _tarWriter.Dispose();
