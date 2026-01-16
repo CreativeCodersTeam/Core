@@ -13,14 +13,11 @@ public sealed class ReactiveSerialPort : IObservable<byte[]>, IDisposable
 
     [ExcludeFromCodeCoverage]
     public ReactiveSerialPort(string portName)
-        : this(new ExtendedSerialPort(Ensure.NotNull(portName, nameof(portName))))
-    {
-
-    }
+        : this(new ExtendedSerialPort(Ensure.NotNull(portName))) { }
 
     public ReactiveSerialPort(ISerialPort serialPort)
     {
-        _serialPort = Ensure.NotNull(serialPort, nameof(serialPort));
+        _serialPort = Ensure.NotNull(serialPort);
 
         _dataObservable = _serialPort.ToDataObservable();
     }

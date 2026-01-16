@@ -7,14 +7,9 @@ namespace CreativeCoders.IO.Ports;
 
 [ExcludeFromCodeCoverage]
 [PublicAPI]
-public sealed class SerialPortWrapper : ISerialPort
+public sealed class SerialPortWrapper(SerialPort serialPort) : ISerialPort
 {
-    private readonly SerialPort _serialPort;
-
-    public SerialPortWrapper(SerialPort serialPort)
-    {
-        _serialPort = Ensure.NotNull(serialPort);
-    }
+    private readonly SerialPort _serialPort = Ensure.NotNull(serialPort);
 
     public void Dispose()
     {
