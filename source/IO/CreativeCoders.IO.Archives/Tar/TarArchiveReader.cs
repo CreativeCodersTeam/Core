@@ -1,10 +1,13 @@
 ﻿using System.Formats.Tar;
+using System.IO.Abstractions;
 using CreativeCoders.Core;
 
 namespace CreativeCoders.IO.Archives.Tar;
 
-public sealed class TarArchiveReader(Stream inputStream) : ITarArchiveReader
+public sealed class TarArchiveReader(Stream inputStream, IFileSystem fileSystem) : ITarArchiveReader
 {
+    private readonly IFileSystem _fileSystem = Ensure.NotNull(fileSystem);
+
     private TarReader _tarReader = new TarReader(Ensure.NotNull(inputStream), true);
 
     private bool _needsReset;
@@ -108,9 +111,27 @@ public sealed class TarArchiveReader(Stream inputStream) : ITarArchiveReader
         return null;
     }
 
-    public Task<Stream> OpenEntryStreamAsync(ArchiveEntry entry)
+    public async Task<Stream> OpenEntryStreamAsync(ArchiveEntry entry, bool copyData = false)
     {
-        throw new NotImplementedException();
+        var tarEntry = await GetTarEntryAsync(entry).ConfigureAwait(false);
+
+        if (tarEntry == null)
+        {
+            throw new FileNotFoundException($"Entry '{entry.FullName}' not found in the archive.");
+        }
+
+        var entryDataStream = tarEntry.DataStream ??
+                              throw new FileNotFoundException($"Entry '{entry.FullName}' has no stream.");
+
+        if (!copyData)
+        {
+            return entryDataStream;
+        }
+
+        var memoryStream = new MemoryStream();
+        await entryDataStream.CopyToAsync(memoryStream).ConfigureAwait(false);
+
+        return memoryStream;
     }
 
     public async Task ExtractFileAsync(ArchiveEntry entry, string outputFilePath,
@@ -126,12 +147,12 @@ public sealed class TarArchiveReader(Stream inputStream) : ITarArchiveReader
         await ExtractFileCoreAsync(tarEntry, outputFilePath, overwriteExisting).ConfigureAwait(false);
     }
 
-    private static Task ExtractFileCoreAsync(TarEntry tarEntry, string outputFilePath, bool overwriteExisting)
+    private Task ExtractFileCoreAsync(TarEntry tarEntry, string outputFilePath, bool overwriteExisting)
     {
         var outputDirectory = Path.GetDirectoryName(outputFilePath);
         if (outputDirectory != null)
         {
-            Directory.CreateDirectory(outputDirectory);
+            _fileSystem.Directory.CreateDirectory(outputDirectory);
         }
 
         return tarEntry.ExtractToFileAsync(outputFilePath, overwriteExisting);
@@ -140,7 +161,7 @@ public sealed class TarArchiveReader(Stream inputStream) : ITarArchiveReader
     public async Task<string> ExtractFileWithPathAsync(ArchiveEntry entry, string outputBaseDirectory,
         bool overwriteExisting = true)
     {
-        var outputFileName = Path.Combine(outputBaseDirectory, entry.FullName);
+        var outputFileName = _fileSystem.Path.Combine(outputBaseDirectory, entry.FullName);
 
         await ExtractFileAsync(entry, outputFileName, overwriteExisting).ConfigureAwait(false);
 
@@ -155,7 +176,7 @@ public sealed class TarArchiveReader(Stream inputStream) : ITarArchiveReader
 
         while (tarEntry is not null)
         {
-            var outputFileName = Path.Combine(outputBaseDirectory, tarEntry.Name);
+            var outputFileName = _fileSystem.Path.Combine(outputBaseDirectory, tarEntry.Name);
 
             await ExtractFileCoreAsync(tarEntry, outputFileName, overwriteExisting).ConfigureAwait(false);
 

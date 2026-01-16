@@ -110,9 +110,27 @@ public sealed class TarGzArchiveReader : ITarArchiveReader
         return null;
     }
 
-    public Task<Stream> OpenEntryStreamAsync(ArchiveEntry entry)
+    public async Task<Stream> OpenEntryStreamAsync(ArchiveEntry entry, bool copyData = false)
     {
-        throw new NotImplementedException();
+        var tarEntry = await GetTarEntryAsync(entry).ConfigureAwait(false);
+
+        if (tarEntry == null)
+        {
+            throw new FileNotFoundException($"Entry '{entry.FullName}' not found in the archive.");
+        }
+
+        var entryDataStream = tarEntry.DataStream ??
+                              throw new FileNotFoundException($"Entry '{entry.FullName}' has no stream.");
+
+        if (!copyData)
+        {
+            return entryDataStream;
+        }
+
+        var memoryStream = new MemoryStream();
+        await entryDataStream.CopyToAsync(memoryStream).ConfigureAwait(false);
+
+        return memoryStream;
     }
 
     public async Task ExtractFileAsync(ArchiveEntry entry, string outputFilePath,

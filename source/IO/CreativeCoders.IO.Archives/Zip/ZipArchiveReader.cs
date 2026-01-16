@@ -34,7 +34,7 @@ public sealed class ZipArchiveReader(ZipArchive zipArchive) : IZipArchiveReader
                 new ArchiveEntry(x.FullName));
     }
 
-    public Task<Stream> OpenEntryStreamAsync(ArchiveEntry entry)
+    public Task<Stream> OpenEntryStreamAsync(ArchiveEntry entry, bool copyData = false)
     {
         var zipEntry = _zipArchive.GetEntry(entry.FullName);
 

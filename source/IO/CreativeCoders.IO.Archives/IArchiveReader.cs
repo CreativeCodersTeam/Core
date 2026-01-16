@@ -6,7 +6,7 @@ public interface IArchiveReader : IDisposable, IAsyncDisposable
 
     IEnumerable<ArchiveEntry> GetEntries();
 
-    Task<Stream> OpenEntryStreamAsync(ArchiveEntry entry);
+    Task<Stream> OpenEntryStreamAsync(ArchiveEntry entry, bool copyData = false);
 
     Task ExtractFileAsync(ArchiveEntry entry, string outputFilePath, bool overwriteExisting = true);
 
