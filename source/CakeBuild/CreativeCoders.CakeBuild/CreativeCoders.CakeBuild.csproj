@@ -12,7 +12,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj"/>
-        <ProjectReference Include="..\..\IO\CreativeCoders.IO\CreativeCoders.IO.csproj"/>
+        <ProjectReference Include="..\..\IO\CreativeCoders.IO.Archives\CreativeCoders.IO.Archives.csproj"/>
     </ItemGroup>
 
 </Project>

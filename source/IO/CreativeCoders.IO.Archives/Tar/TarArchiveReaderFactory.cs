@@ -1,3 +1,5 @@
+using CreativeCoders.Core.IO;
+
 namespace CreativeCoders.IO.Archives.Tar;
 
 public class TarArchiveReaderFactory : ITarArchiveReaderFactory
@@ -12,7 +14,7 @@ public class TarArchiveReaderFactory : ITarArchiveReaderFactory
     public ITarArchiveReader CreateReader(string archiveFileName, bool? useGZipCompression = null)
     {
         return CreateReader(
-            File.OpenRead(archiveFileName), useGZipCompression ??
-                                            TarFileHelper.IsGZipFile(archiveFileName));
+            FileSys.File.OpenRead(archiveFileName), useGZipCompression ??
+                                                    TarFileHelper.IsGZipFile(archiveFileName));
     }
 }

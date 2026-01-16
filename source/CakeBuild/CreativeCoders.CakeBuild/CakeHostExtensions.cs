@@ -3,6 +3,7 @@ using Cake.Frosting;
 using CreativeCoders.CakeBuild.BuildServer;
 using CreativeCoders.CakeBuild.Tasks.Defaults;
 using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
+using CreativeCoders.IO.Archives;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;

@@ -10,8 +10,8 @@ public static class IOServiceCollectionExtensions
 {
     public static IServiceCollection AddFileSystem(this IServiceCollection services)
     {
-        services.TryAddSingleton<IFileSystem, FileSystemEx>();
         services.TryAddSingleton<IFileSystemEx, FileSystemEx>();
+        services.TryAddSingleton<IFileSystem>(sp => sp.GetRequiredService<IFileSystemEx>());
 
         return services;
     }

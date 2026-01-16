@@ -1,9 +1,11 @@
 using Cake.Common.Tools.DotNet;
 using Cake.Common.Tools.DotNet.Publish;
 using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
+using JetBrains.Annotations;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
+[PublicAPI]
 public class PublishTask<TBuildContext> : FrostingTaskBase<TBuildContext, IPublishTaskSettings>
     where TBuildContext : CakeBuildContext
 {
@@ -53,4 +55,6 @@ public class PublishTask<TBuildContext> : FrostingTaskBase<TBuildContext, IPubli
 
         return dotNetPublishSettings;
     }
+
+    protected override bool SkipIfNoSettings => true;
 }

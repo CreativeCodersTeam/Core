@@ -1,39 +1,51 @@
 using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
-using CreativeCoders.Core.Collections;
+using CreativeCoders.Core;
 using CreativeCoders.IO.Archives;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
 public class
-    CreateDistPackagesTask<TBuildContext> : FrostingTaskBase<TBuildContext, ICreateDistPackagesTaskSettings>
+    CreateDistPackagesTask<TBuildContext>(IArchiveWriterFactory archiveWriterFactory)
+    : FrostingTaskBase<TBuildContext, ICreateDistPackagesTaskSettings>
     where TBuildContext : CakeBuildContext
 {
-    protected override Task RunAsyncCore(TBuildContext context, ICreateDistPackagesTaskSettings taskSettings)
+    private readonly IArchiveWriterFactory _archiveWriterFactory = Ensure.NotNull(archiveWriterFactory);
+
+    protected override async Task RunAsyncCore(TBuildContext context,
+        ICreateDistPackagesTaskSettings taskSettings)
     {
         foreach (var distPackage in taskSettings.DistPackages)
         {
             switch (distPackage.Format)
             {
                 case DistPackageFormat.TarGz:
-                    new TarArchiveCreator()
-                        .SetArchiveFileName(taskSettings.DistOutputPath
-                            .CombineWithFilePath($"{distPackage.Name}.tar.gz").FullPath)
-                        .AddFromDirectory(distPackage.DistFolder.FullPath, "*.*", true)
-                        .Create(true);
+                    await CreateArchive(() => _archiveWriterFactory.CreateTarGzWriter(
+                            taskSettings.DistOutputPath.CombineWithFilePath($"{distPackage.Name}.tar.gz")
+                                .FullPath), distPackage)
+                        .ConfigureAwait(false);
                     break;
                 case DistPackageFormat.Zip:
-                    new ZipArchiveCreator()
-                        .SetArchiveFileName(taskSettings.DistOutputPath
-                            .CombineWithFilePath($"{distPackage.Name}.zip").FullPath)
-                        .AddFromDirectory(distPackage.DistFolder.FullPath, "*.*", true)
-                        .Create();
+                    await CreateArchive(() => _archiveWriterFactory.CreateZipWriter(
+                            taskSettings.DistOutputPath.CombineWithFilePath($"{distPackage.Name}.zip")
+                                .FullPath), distPackage)
+                        .ConfigureAwait(false);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(distPackage),
-                        "Package format not supported");
+                    throw new InvalidOperationException("Package format not supported");
             }
         }
-
-        return Task.CompletedTask;
     }
+
+    private static async Task CreateArchive(Func<IArchiveWriter> archiveWriterFactory,
+        DistPackage distPackage)
+    {
+        var archiveWriter = archiveWriterFactory();
+        await using var writer = archiveWriter.ConfigureAwait(false);
+
+        await archiveWriter
+            .AddFromDirectoryAsync(distPackage.DistFolder.FullPath, distPackage.DistFolder.FullPath)
+            .ConfigureAwait(false);
+    }
+
+    protected override bool SkipIfNoSettings => true;
 }
