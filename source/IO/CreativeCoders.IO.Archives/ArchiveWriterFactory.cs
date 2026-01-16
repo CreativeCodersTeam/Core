@@ -1,10 +1,12 @@
-﻿using System.IO.Compression;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO.Compression;
 using CreativeCoders.Core;
 using CreativeCoders.IO.Archives.Tar;
 using CreativeCoders.IO.Archives.Zip;
 
 namespace CreativeCoders.IO.Archives;
 
+[ExcludeFromCodeCoverage]
 public class ArchiveWriterFactory(
     IZipArchiveWriterFactory zipArchiveWriterFactory,
     ITarArchiveWriterFactory tarArchiveWriterFactory) : IArchiveWriterFactory
