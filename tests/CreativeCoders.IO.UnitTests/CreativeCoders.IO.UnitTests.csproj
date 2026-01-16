@@ -25,13 +25,14 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\source\IO\CreativeCoders.IO.Ports\CreativeCoders.IO.Ports.csproj"/>
+        <ProjectReference Include="..\..\source\IO\CreativeCoders.IO.Archives\CreativeCoders.IO.Archives.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Archives\TestFiles\TestSource01.html" />
-      <Content Include="Archives\TestFiles\TestSource01.html" />
-      <None Remove="Archives\TestFiles\TestText01.txt" />
-      <Content Include="Archives\TestFiles\TestText01.txt" />
+        <None Remove="Archives\TestFiles\TestSource01.html"/>
+        <Content Include="Archives\TestFiles\TestSource01.html"/>
+        <None Remove="Archives\TestFiles\TestText01.txt"/>
+        <Content Include="Archives\TestFiles\TestText01.txt"/>
     </ItemGroup>
 
 </Project>

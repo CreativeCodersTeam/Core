@@ -2,16 +2,8 @@
 
 namespace CreativeCoders.Core.IO;
 
-public sealed class FileCleanUp : IDisposable
+public sealed class FileCleanUp(string fileName, bool throwException = false) : IDisposable
 {
-    private readonly bool _throwException;
-
-    public FileCleanUp(string fileName, bool throwException = false)
-    {
-        FileName = fileName;
-        _throwException = throwException;
-    }
-
     public void Dispose()
     {
         try
@@ -20,13 +12,12 @@ public sealed class FileCleanUp : IDisposable
         }
         catch (Exception)
         {
-            if (_throwException)
+            if (throwException)
             {
                 throw;
             }
         }
-
     }
 
-    public string FileName { get; }
+    public string FileName { get; } = Ensure.IsNotNullOrWhitespace(fileName);
 }
