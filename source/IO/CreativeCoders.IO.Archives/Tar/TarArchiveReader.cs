@@ -123,6 +123,11 @@ public sealed class TarArchiveReader(Stream inputStream, IFileSystem fileSystem)
         var entryDataStream = tarEntry.DataStream ??
                               throw new FileNotFoundException($"Entry '{entry.FullName}' has no stream.");
 
+        if (entryDataStream.CanSeek)
+        {
+            entryDataStream.Position = 0;
+        }
+
         if (!copyData)
         {
             return entryDataStream;
@@ -130,6 +135,7 @@ public sealed class TarArchiveReader(Stream inputStream, IFileSystem fileSystem)
 
         var memoryStream = new MemoryStream();
         await entryDataStream.CopyToAsync(memoryStream).ConfigureAwait(false);
+        memoryStream.Position = 0;
 
         return memoryStream;
     }
@@ -147,15 +153,27 @@ public sealed class TarArchiveReader(Stream inputStream, IFileSystem fileSystem)
         await ExtractFileCoreAsync(tarEntry, outputFilePath, overwriteExisting).ConfigureAwait(false);
     }
 
-    private Task ExtractFileCoreAsync(TarEntry tarEntry, string outputFilePath, bool overwriteExisting)
+    private async Task ExtractFileCoreAsync(TarEntry tarEntry, string outputFilePath, bool overwriteExisting)
     {
-        var outputDirectory = Path.GetDirectoryName(outputFilePath);
+        var outputDirectory = _fileSystem.Path.GetDirectoryName(outputFilePath);
         if (outputDirectory != null)
         {
             _fileSystem.Directory.CreateDirectory(outputDirectory);
         }
 
-        return tarEntry.ExtractToFileAsync(outputFilePath, overwriteExisting);
+        var entryDataStream = tarEntry.DataStream ??
+                              throw new FileNotFoundException($"Entry '{tarEntry.Name}' has no stream.");
+
+        var fileMode = overwriteExisting ? FileMode.Create : FileMode.CreateNew;
+
+        await using var fileStream = _fileSystem.FileStream.New(outputFilePath, fileMode, FileAccess.Write);
+
+        if (entryDataStream.CanSeek)
+        {
+            entryDataStream.Position = 0;
+        }
+
+        await entryDataStream.CopyToAsync(fileStream).ConfigureAwait(false);
     }
 
     public async Task<string> ExtractFileWithPathAsync(ArchiveEntry entry, string outputBaseDirectory,
