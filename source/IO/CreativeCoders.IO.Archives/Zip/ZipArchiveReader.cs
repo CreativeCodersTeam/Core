@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO.Abstractions;
 using System.IO.Compression;
 using CreativeCoders.Core;
 
@@ -82,6 +83,7 @@ public sealed class ZipArchiveReader(ZipArchive zipArchive, IFileSystem fileSyst
         return _zipArchive.ExtractToDirectoryAsync(outputBaseDirectory, overwriteExisting);
     }
 
+    [ExcludeFromCodeCoverage]
     public void Dispose()
     {
         _zipArchive.Dispose();

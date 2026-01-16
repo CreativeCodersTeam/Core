@@ -1,4 +1,5 @@
-﻿using System.Formats.Tar;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Formats.Tar;
 using System.IO.Abstractions;
 using CreativeCoders.Core;
 
@@ -202,6 +203,7 @@ public sealed class TarArchiveReader(Stream inputStream, IFileSystem fileSystem)
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public void Dispose()
     {
         _tarReader.Dispose();
