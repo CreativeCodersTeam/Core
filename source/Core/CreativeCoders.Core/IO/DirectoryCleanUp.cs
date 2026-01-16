@@ -9,7 +9,10 @@ public sealed class DirectoryCleanUp(string directoryName, bool recursive = true
     {
         try
         {
-            FileSys.Directory.Delete(DirectoryName, recursive);
+            if (FileSys.Directory.Exists(DirectoryName))
+            {
+                FileSys.Directory.Delete(DirectoryName, recursive);
+            }
         }
         catch (Exception)
         {

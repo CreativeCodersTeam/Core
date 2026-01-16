@@ -8,7 +8,10 @@ public sealed class FileCleanUp(string fileName, bool throwException = false) : 
     {
         try
         {
-            FileSys.File.Delete(FileName);
+            if (FileSys.File.Exists(FileName))
+            {
+                FileSys.File.Delete(FileName);
+            }
         }
         catch (Exception)
         {
