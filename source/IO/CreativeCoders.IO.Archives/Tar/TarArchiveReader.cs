@@ -1,10 +1,11 @@
 ﻿using System.Formats.Tar;
+using CreativeCoders.Core;
 
 namespace CreativeCoders.IO.Archives.Tar;
 
 public sealed class TarArchiveReader(Stream inputStream) : ITarArchiveReader
 {
-    private TarReader _tarReader = new TarReader(inputStream, true);
+    private TarReader _tarReader = new TarReader(Ensure.NotNull(inputStream), true);
 
     private bool _needsReset;
 
@@ -112,7 +113,8 @@ public sealed class TarArchiveReader(Stream inputStream) : ITarArchiveReader
         throw new NotImplementedException();
     }
 
-    public async Task ExtractFileAsync(ArchiveEntry entry, string outputFilePath, bool overwriteExisting = true)
+    public async Task ExtractFileAsync(ArchiveEntry entry, string outputFilePath,
+        bool overwriteExisting = true)
     {
         var tarEntry = await GetTarEntryAsync(entry).ConfigureAwait(false);
 

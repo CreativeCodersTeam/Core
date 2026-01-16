@@ -1,10 +1,11 @@
 using System.Formats.Tar;
+using CreativeCoders.Core;
 
 namespace CreativeCoders.IO.Archives.Tar;
 
 public sealed class TarArchiveWriter(Stream outputStream) : ITarArchiveWriter
 {
-    private readonly TarWriter _tarWriter = new TarWriter(outputStream, TarEntryFormat.Pax);
+    private readonly TarWriter _tarWriter = new TarWriter(Ensure.NotNull(outputStream), TarEntryFormat.Pax);
 
     public Task AddFileAsync(string fileName, string fileNameInArchive)
     {

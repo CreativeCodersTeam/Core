@@ -1,10 +1,11 @@
 ﻿using System.IO.Compression;
+using CreativeCoders.Core;
 
 namespace CreativeCoders.IO.Archives.Zip;
 
 public sealed class ZipArchiveReader(ZipArchive zipArchive) : IZipArchiveReader
 {
-    private readonly ZipArchive _zipArchive = zipArchive ?? throw new ArgumentNullException(nameof(zipArchive));
+    private readonly ZipArchive _zipArchive = Ensure.NotNull(zipArchive);
 
     public static ZipArchiveReader Create(Stream inputStream)
     {
@@ -51,7 +52,8 @@ public sealed class ZipArchiveReader(ZipArchive zipArchive) : IZipArchiveReader
             : ExtractFileCoreAsync(zipEntry, outputFilePath, overwriteExisting);
     }
 
-    private static Task ExtractFileCoreAsync(ZipArchiveEntry zipEntry, string outputFilePath, bool overwriteExisting)
+    private static Task ExtractFileCoreAsync(ZipArchiveEntry zipEntry, string outputFilePath,
+        bool overwriteExisting)
     {
         var outputDirectory = Path.GetDirectoryName(outputFilePath);
         if (outputDirectory != null)

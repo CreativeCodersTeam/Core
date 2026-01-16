@@ -1,5 +1,6 @@
 ﻿using System.Formats.Tar;
 using System.IO.Compression;
+using CreativeCoders.Core;
 
 namespace CreativeCoders.IO.Archives.Tar;
 
@@ -15,8 +16,8 @@ public sealed class TarGzArchiveReader : ITarArchiveReader
 
     public TarGzArchiveReader(Stream inputStream)
     {
-        _gzInputStream = new GZipStream(inputStream, CompressionMode.Decompress, true);
-        _sourceStream = inputStream;
+        _sourceStream = Ensure.NotNull(inputStream);
+        _gzInputStream = new GZipStream(_sourceStream, CompressionMode.Decompress, true);
         _tarReader = new TarReader(_gzInputStream, true);
     }
 
@@ -114,7 +115,8 @@ public sealed class TarGzArchiveReader : ITarArchiveReader
         throw new NotImplementedException();
     }
 
-    public async Task ExtractFileAsync(ArchiveEntry entry, string outputFilePath, bool overwriteExisting = true)
+    public async Task ExtractFileAsync(ArchiveEntry entry, string outputFilePath,
+        bool overwriteExisting = true)
     {
         var tarEntry = await GetTarEntryAsync(entry).ConfigureAwait(false);
 

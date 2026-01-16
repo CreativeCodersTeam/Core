@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using CreativeCoders.Core;
 
 namespace CreativeCoders.IO.Archives.Zip;
 
@@ -6,7 +7,8 @@ public sealed class ZipArchiveWriter(
     Stream outputStream,
     CompressionLevel defaultCompressionLevel) : IZipArchiveWriter
 {
-    private readonly ZipArchive _archive = new ZipArchive(outputStream, ZipArchiveMode.Create);
+    private readonly ZipArchive
+        _archive = new ZipArchive(Ensure.NotNull(outputStream), ZipArchiveMode.Create);
 
     public Task AddFileAsync(string fileName, string fileNameInArchive, CompressionLevel compressionLevel)
     {
@@ -15,13 +17,15 @@ public sealed class ZipArchiveWriter(
 
     public async Task AddFileAsync(Stream stream, string fileNameInArchive, CompressionLevel compressionLevel)
     {
-        await using var fileStream = await _archive.CreateEntry(fileNameInArchive, compressionLevel).OpenAsync()
+        await using var fileStream = await _archive.CreateEntry(fileNameInArchive, compressionLevel)
+            .OpenAsync()
             .ConfigureAwait(false);
 
         await stream.CopyToAsync(fileStream).ConfigureAwait(false);
     }
 
-    public async Task AddFromDirectoryAsync(string path, string basePathToRemove, CompressionLevel compressionLevel)
+    public async Task AddFromDirectoryAsync(string path, string basePathToRemove,
+        CompressionLevel compressionLevel)
     {
         var files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
 
