@@ -1,5 +1,6 @@
 using Cake.Common.Build;
 using Cake.Common.Diagnostics;
+using CreativeCoders.CakeBuild.GitHub;
 using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 using CreativeCoders.Core;
 using Octokit;
@@ -7,37 +8,39 @@ using Octokit;
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
 public class
-    CreateGitHubReleaseTask<TBuildContext>(IGitHubClient gitHubClient)
+    CreateGitHubReleaseTask<TBuildContext>(IGitHubClientFactory gitHubClientFactory)
     : FrostingTaskBase<TBuildContext, ICreateGitHubReleaseTaskSettings>
     where TBuildContext : CakeBuildContext
 {
-    private readonly IGitHubClient _gitHubClient = Ensure.NotNull(gitHubClient);
+    private readonly IGitHubClientFactory _gitHubClientFactory = Ensure.NotNull(gitHubClientFactory);
 
     protected override async Task RunAsyncCore(TBuildContext context,
         ICreateGitHubReleaseTaskSettings taskSettings)
     {
-        await CreateReleaseAsync(context, taskSettings).ConfigureAwait(false);
+        var gitHubClient = _gitHubClientFactory.Create(taskSettings.GitHubToken);
+
+        await CreateReleaseAsync(gitHubClient, context, taskSettings).ConfigureAwait(false);
     }
 
-    private async Task CreateReleaseAsync(TBuildContext context,
+    private async Task CreateReleaseAsync(IGitHubClient gitHubClient, TBuildContext context,
         ICreateGitHubReleaseTaskSettings taskSettings)
     {
-        var release = await CreateReleaseDraftAsync(context,
+        var release = await CreateReleaseDraftAsync(gitHubClient, context,
                 taskSettings.ReleaseVersion,
                 taskSettings.ReleaseName,
                 taskSettings.ReleaseBody,
                 taskSettings.IsPreRelease)
             .ConfigureAwait(false);
 
-        await UploadReleaseAssets(release, taskSettings.ReleaseAssets).ConfigureAwait(false);
+        await UploadReleaseAssets(gitHubClient, release, taskSettings.ReleaseAssets).ConfigureAwait(false);
 
-        await _gitHubClient.Repository.Release
+        await gitHubClient.Repository.Release
             .Edit(context.GitHubActions().Environment.Workflow.RepositoryOwner, GetRepositoryName(context),
                 release.Id,
                 new ReleaseUpdate { Draft = false }).ConfigureAwait(false);
     }
 
-    private async Task UploadReleaseAssets(Release release,
+    private async Task UploadReleaseAssets(IGitHubClient gitHubClient, Release release,
         IEnumerable<GitHubReleaseAsset> githubReleaseAssets)
     {
         foreach (var releaseAsset in githubReleaseAssets)
@@ -53,12 +56,13 @@ public class
                 RawData = dataStream
             };
 
-            _ = await _gitHubClient.Repository.Release.UploadAsset(release, releaseAssetUpload)
+            _ = await gitHubClient.Repository.Release.UploadAsset(release, releaseAssetUpload)
                 .ConfigureAwait(false);
         }
     }
 
-    private async Task<Release> CreateReleaseDraftAsync(TBuildContext context, string releaseVersion,
+    private async Task<Release> CreateReleaseDraftAsync(IGitHubClient gitHubClient, TBuildContext context,
+        string releaseVersion,
         string name, string body,
         bool isPreRelease)
     {
@@ -72,7 +76,7 @@ public class
         context.Debug("Name: {Name}", name);
         context.Debug("Body: {Body}", body);
 
-        return await _gitHubClient.Repository.Release
+        return await gitHubClient.Repository.Release
             .Create(repositoryOwner, repositoryName,
                 new NewRelease(releaseVersion)
                 {
