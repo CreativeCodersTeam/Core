@@ -19,7 +19,7 @@ public interface IArchiveWriterFactory
         CompressionLevel compressionLevel = CompressionLevel.Optimal);
 
     IZipArchiveWriter CreateZipWriter(Stream outputStream,
-        CompressionLevel compressionLevel = CompressionLevel.Optimal);
+        CompressionLevel compressionLevel = CompressionLevel.Optimal, bool leaveOpen = false);
 
     IZipArchiveWriter CreateZipWriter(string archiveFileName,
         CompressionLevel compressionLevel = CompressionLevel.Optimal, bool overwriteExisting = true);

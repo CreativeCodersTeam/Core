@@ -9,11 +9,11 @@ public class TarArchiveWriterFactory(IFileSystem fileSystem) : ITarArchiveWriter
     private readonly IFileSystem _fileSystem = Ensure.NotNull(fileSystem);
 
     public ITarArchiveWriter CreateWriter(Stream outputStream, bool useGZipCompression = true,
-        CompressionLevel compressionLevel = CompressionLevel.Optimal)
+        CompressionLevel compressionLevel = CompressionLevel.Optimal, bool leaveOpen = false)
     {
         return new TarArchiveWriter(useGZipCompression
-            ? new GZipStream(outputStream, compressionLevel)
-            : outputStream);
+            ? new GZipStream(outputStream, compressionLevel, leaveOpen)
+            : outputStream, leaveOpen);
     }
 
     public ITarArchiveWriter CreateWriter(string archiveFileName, bool? useGZipCompression = null,

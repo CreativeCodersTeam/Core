@@ -33,8 +33,4 @@
         <None Remove="Archives\TestFiles\TestText01.txt"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Archives\Zip\" />
-    </ItemGroup>
-
 </Project>

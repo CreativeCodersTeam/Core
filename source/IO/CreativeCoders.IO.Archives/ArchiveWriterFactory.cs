@@ -42,9 +42,9 @@ public class ArchiveWriterFactory(
     }
 
     public IZipArchiveWriter CreateZipWriter(Stream outputStream,
-        CompressionLevel compressionLevel = CompressionLevel.Optimal)
+        CompressionLevel compressionLevel = CompressionLevel.Optimal, bool leaveOpen = false)
     {
-        return _zipArchiveWriterFactory.CreateWriter(outputStream, compressionLevel);
+        return _zipArchiveWriterFactory.CreateWriter(outputStream, compressionLevel, leaveOpen);
     }
 
     public IZipArchiveWriter CreateZipWriter(string archiveFileName,

@@ -5,10 +5,11 @@ namespace CreativeCoders.IO.Archives.Zip;
 
 public sealed class ZipArchiveWriter(
     Stream outputStream,
-    CompressionLevel defaultCompressionLevel) : IZipArchiveWriter
+    CompressionLevel defaultCompressionLevel,
+    bool leaveOpen = false) : IZipArchiveWriter
 {
     private readonly ZipArchive
-        _archive = new ZipArchive(Ensure.NotNull(outputStream), ZipArchiveMode.Create);
+        _archive = new ZipArchive(Ensure.NotNull(outputStream), ZipArchiveMode.Create, leaveOpen);
 
     public Task AddFileAsync(string fileName, string fileNameInArchive, CompressionLevel compressionLevel)
     {
