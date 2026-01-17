@@ -13,6 +13,7 @@ public class CreateGitHubReleaseTaskTests
         : CakeBuildContext(context), ICreateGitHubReleaseTaskSettings
     {
         public string ReleaseName => "Release 1.0.0";
+
         public string ReleaseVersion => "1.0.0";
     }
 
@@ -41,16 +42,7 @@ public class CreateGitHubReleaseTaskTests
         var task = new CreateGitHubReleaseTask<TestGitHubReleaseBuildContext>(gitHubClientFactory);
 
         // Act
-        // Wir rufen den Task auf. Da wir viele Mocks haben, könnte es sein,
-        // dass es ohne Exception durchläuft oder fehlschlägt.
-        try
-        {
-            await task.RunAsync(context);
-        }
-        catch (Exception)
-        {
-            // ignored
-        }
+        await task.RunAsync(context);
 
         // Assert
         A.CallTo(() => gitHubClientFactory.Create(A<string>._)).MustHaveHappened();

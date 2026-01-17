@@ -43,7 +43,7 @@ public class
         await using var writer = archiveWriter.ConfigureAwait(false);
 
         await archiveWriter
-            .AddFromDirectoryAsync(distPackage.DistFolder.FullPath, distPackage.DistFolder.FullPath)
+            .AddFromDirectoryAsync(distPackage.SourceFolder.FullPath, distPackage.SourceFolder.FullPath)
             .ConfigureAwait(false);
     }
 

@@ -58,6 +58,6 @@ public static class CakeTestHelper
             .Returns(gitDir);
 
         A.CallTo(() => context.Arguments.HasArgument("solution")).Returns(true);
-        A.CallTo(() => context.Arguments.GetArguments("solution")).Returns(new[] { solutionFile });
+        A.CallTo(() => context.Arguments.GetArguments("solution")).Returns([solutionFile]);
     }
 }

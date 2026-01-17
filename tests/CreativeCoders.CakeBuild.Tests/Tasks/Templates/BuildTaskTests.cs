@@ -18,9 +18,6 @@ public class BuildTaskTests
         var context = new CakeBuildContext(cakeContext);
         var task = new BuildTask<CakeBuildContext>();
 
-        A.CallTo(() => cakeContext.ProcessRunner.Start("dotnet-build", A<ProcessSettings>._))
-            .Invokes(call => Console.WriteLine(call.Arguments));
-
         // Act
         var act = () => task.RunAsync(context);
 
@@ -31,8 +28,9 @@ public class BuildTaskTests
 
         A.CallTo(() => cakeContext.ProcessRunner.Start("dotnet-build",
                 A<ProcessSettings>.That.Matches(x =>
-                    x.Arguments.Select(x => x.Render()).FirstOrDefault() == "build" &&
-                    x.Arguments.Select(x => x.Render()).Skip(1).FirstOrDefault() == "\"/repo/test.sln\"")))
+                    x.Arguments.Select(arg => arg.Render()).FirstOrDefault() == "build" &&
+                    x.Arguments.Select(arg => arg.Render()).Skip(1).FirstOrDefault() ==
+                    "\"/repo/test.sln\"")))
             .MustHaveHappenedOnceExactly();
     }
 }
