@@ -17,6 +17,11 @@ public class
     protected override async Task RunAsyncCore(TBuildContext context,
         ICreateGitHubReleaseTaskSettings taskSettings)
     {
+        if (string.IsNullOrWhiteSpace(taskSettings.GitHubToken))
+        {
+            context.Error("GitHub token is missing or empty. Please ensure the GitHub token is provided (for example via the appropriate environment variable) before running this task.");
+            throw new InvalidOperationException("GitHub token is missing or empty. Cannot create GitHub client.");
+        }
         var gitHubClient = _gitHubClientFactory.Create(taskSettings.GitHubToken);
 
         await CreateReleaseAsync(gitHubClient, context, taskSettings).ConfigureAwait(false);
