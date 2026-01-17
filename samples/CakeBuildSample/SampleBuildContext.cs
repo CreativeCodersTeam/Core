@@ -39,7 +39,7 @@ public class SampleBuildContext(ICakeContext context)
     public IEnumerable<PublishingItem> PublishingItems =>
     [
         new PublishingItem(
-            RootDir.Combine("samples").Combine("CliHostSampleApp")
+            RootDir.Combine("samples").Combine(CliHostSampleAppProjectName)
                 .CombineWithFilePath("CliHostSampleApp.csproj"),
             PublishOutputDir.Combine(CliHostSampleAppProjectName))
     ];
