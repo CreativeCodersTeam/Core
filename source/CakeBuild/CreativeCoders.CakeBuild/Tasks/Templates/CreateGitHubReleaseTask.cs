@@ -47,7 +47,7 @@ public class
         {
             var dataStream = releaseAsset.GetAssetStream();
 
-            await using var dataStreamDisposable = dataStream.ConfigureAwait(false);
+            await using var _ = dataStream.ConfigureAwait(false);
 
             var releaseAssetUpload = new ReleaseAssetUpload
             {
@@ -56,7 +56,7 @@ public class
                 RawData = dataStream
             };
 
-            _ = await gitHubClient.Repository.Release.UploadAsset(release, releaseAssetUpload)
+            await gitHubClient.Repository.Release.UploadAsset(release, releaseAssetUpload)
                 .ConfigureAwait(false);
         }
     }
