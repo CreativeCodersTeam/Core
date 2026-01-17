@@ -129,6 +129,7 @@ public sealed class TarGzArchiveReader : ITarArchiveReader
 
         var memoryStream = new MemoryStream();
         await entryDataStream.CopyToAsync(memoryStream).ConfigureAwait(false);
+        memoryStream.Position = 0;
 
         return memoryStream;
     }

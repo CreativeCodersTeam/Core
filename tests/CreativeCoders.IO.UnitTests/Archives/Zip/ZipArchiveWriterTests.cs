@@ -164,8 +164,8 @@ public class ZipArchiveWriterTests
         // Act
         await using (var writer = new ZipArchiveWriter(outputStream, CompressionLevel.Optimal, true))
         {
-            await writer.AddFileAsync(new MemoryStream(Encoding.UTF8.GetBytes("Finalized content")),
-                fileNameInArchive);
+            using var inputStream = new MemoryStream(Encoding.UTF8.GetBytes("Finalized content"));
+            await writer.AddFileAsync(inputStream, fileNameInArchive);
         }
 
         // Assert

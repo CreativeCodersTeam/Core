@@ -58,6 +58,7 @@ public sealed class ZipArchiveReader(ZipArchive zipArchive, IFileSystem fileSyst
 
         await zipEntryStream.CopyToAsync(memoryStream).ConfigureAwait(false);
 
+        memoryStream.Position = 0;
         return memoryStream;
     }
 

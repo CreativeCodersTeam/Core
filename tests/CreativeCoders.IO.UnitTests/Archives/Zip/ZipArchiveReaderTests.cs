@@ -93,6 +93,29 @@ public class ZipArchiveReaderTests
     }
 
     [Fact]
+    [SuppressMessage("ReSharper", "MethodHasAsyncOverload")]
+    [SuppressMessage("csharpsquid", "S6966")]
+    public async Task OpenEntryStreamAsync_CopyDataTrueAndExistingEntry_ReturnsCorrectStream()
+    {
+        // Arrange
+        using var archiveStream = await CreateTestZipArchiveAsync();
+        await using var reader = ZipArchiveReader.Create(archiveStream);
+        var entry = new ArchiveEntry("file1.txt");
+
+        // Act
+        await using var entryStream = await reader.OpenEntryStreamAsync(entry, true);
+        using var streamReader = new StreamReader(entryStream);
+        var content = await streamReader.ReadToEndAsync();
+
+        // Assert
+        entryStream
+            .Should().BeOfType<MemoryStream>();
+
+        content
+            .Should().Be("Content 1");
+    }
+
+    [Fact]
     public async Task ExtractFileAsync_ExistingEntry_ExtractsFileToFileSystem()
     {
         // Arrange
