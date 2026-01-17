@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Cake.Frosting;
 using CreativeCoders.CakeBuild.BuildServer;
+using CreativeCoders.CakeBuild.GitHub;
 using CreativeCoders.CakeBuild.Tasks.Defaults;
 using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 using CreativeCoders.IO.Archives;
@@ -59,13 +60,21 @@ public static class CakeHostExtensions
     public static CakeHost AddDefaultTasks(this CakeHost host)
     {
         return host.AddTasks(
-            typeof(CleanTask),
-            typeof(RestoreTask),
-            typeof(BuildTask),
-            typeof(TestTask),
-            typeof(CodeCoverageTask),
-            typeof(PackTask),
-            typeof(NuGetPushTask));
+                typeof(CleanTask),
+                typeof(RestoreTask),
+                typeof(BuildTask),
+                typeof(TestTask),
+                typeof(CodeCoverageTask),
+                typeof(PackTask),
+                typeof(NuGetPushTask),
+                typeof(PublishTask),
+                typeof(CreateDistPackagesTask),
+                typeof(CreateGitHubReleaseTask))
+            .ConfigureServices(x =>
+            {
+                x.AddArchives();
+                x.TryAddSingleton<IGitHubClientFactory, GitHubClientFactory>();
+            });
     }
 
     public static CakeHost AddBuildServerIntegration(this CakeHost host)
@@ -73,15 +82,6 @@ public static class CakeHostExtensions
         return host
             .UseTaskSetup<StartGroupTaskSetup>()
             .UseTaskTeardown<EndGroupTaskTeardown>();
-    }
-
-    public static CakeHost SetupHost<TBuildContext, TBuildSetup>(this CakeHost host)
-        where TBuildSetup : class
-        where TBuildContext : CakeBuildContext
-    {
-        return host
-            .UseContext<TBuildContext>()
-            .UseBuildSetup<TBuildSetup>();
     }
 
     public static CakeHost UseBuildSetup<TBuildSetup>(this CakeHost host)

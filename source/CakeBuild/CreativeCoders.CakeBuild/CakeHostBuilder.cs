@@ -1,6 +1,8 @@
+using Cake.Core;
 using Cake.Frosting;
 using CreativeCoders.Core;
 using CreativeCoders.Core.IO;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CreativeCoders.CakeBuild;
 

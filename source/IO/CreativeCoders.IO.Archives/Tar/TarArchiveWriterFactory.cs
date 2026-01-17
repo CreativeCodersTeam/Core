@@ -19,6 +19,13 @@ public class TarArchiveWriterFactory(IFileSystem fileSystem) : ITarArchiveWriter
     public ITarArchiveWriter CreateWriter(string archiveFileName, bool? useGZipCompression = null,
         CompressionLevel compressionLevel = CompressionLevel.Optimal)
     {
+        var dirName = _fileSystem.Path.GetDirectoryName(archiveFileName);
+
+        if (!string.IsNullOrWhiteSpace(dirName))
+        {
+            _fileSystem.Directory.CreateDirectory(dirName);
+        }
+
         return CreateWriter(
             _fileSystem.File.Create(archiveFileName), useGZipCompression ??
                                                       TarFileHelper.IsGZipFile(archiveFileName),

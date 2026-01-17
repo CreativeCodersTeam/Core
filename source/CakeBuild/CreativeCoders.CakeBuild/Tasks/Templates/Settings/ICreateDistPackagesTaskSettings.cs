@@ -2,9 +2,9 @@ using Cake.Core.IO;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
-public interface ICreateDistPackagesTaskSettings
+public interface ICreateDistPackagesTaskSettings : IBuildContextAccessor
 {
-    IEnumerable<DistPackage> DistPackages { get; }
+    IEnumerable<DistPackage> DistPackages => [];
 
-    DirectoryPath DistOutputPath { get; }
+    DirectoryPath DistOutputPath => Context.ArtifactsDir.Combine("dist");
 }
