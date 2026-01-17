@@ -12,6 +12,6 @@ public class TarEntryInfo
 
     public UnixFileMode FileMode { get; set; }
 
-    public IReadOnlyDictionary<string, string> ExtendedAttributes { get; set; } =
+    public IReadOnlyDictionary<string, string> ExtendedAttributes { get; init; } =
         new Dictionary<string, string>();
 }
