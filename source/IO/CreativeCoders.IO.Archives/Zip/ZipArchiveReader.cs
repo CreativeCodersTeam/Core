@@ -38,13 +38,27 @@ public sealed class ZipArchiveReader(ZipArchive zipArchive, IFileSystem fileSyst
                 new ArchiveEntry(x.FullName));
     }
 
-    public Task<Stream> OpenEntryStreamAsync(ArchiveEntry entry, bool copyData = false)
+    public async Task<Stream> OpenEntryStreamAsync(ArchiveEntry entry, bool copyData = false)
     {
         var zipEntry = _zipArchive.GetEntry(entry.FullName);
 
-        return zipEntry == null
-            ? throw new FileNotFoundException($"Entry '{entry.FullName}' not found in the zip archive.")
-            : zipEntry.OpenAsync();
+        if (zipEntry == null)
+        {
+            throw new FileNotFoundException($"Entry '{entry.FullName}' not found in the zip archive.");
+        }
+
+        if (!copyData)
+        {
+            return await zipEntry.OpenAsync().ConfigureAwait(false);
+        }
+
+        var memoryStream = new MemoryStream();
+        var zipEntryStream = await zipEntry.OpenAsync().ConfigureAwait(false);
+        await using var zipEntryStreamDisposable = zipEntryStream.ConfigureAwait(false);
+
+        await zipEntryStream.CopyToAsync(memoryStream).ConfigureAwait(false);
+
+        return memoryStream;
     }
 
     public Task ExtractFileAsync(ArchiveEntry entry, string outputFilePath, bool overwriteExisting = true)
