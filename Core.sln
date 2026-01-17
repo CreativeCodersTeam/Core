@@ -260,6 +260,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.IO.Archives"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.IO.Ports", "source\IO\CreativeCoders.IO.Ports\CreativeCoders.IO.Ports.csproj", "{C34426F1-E40C-498D-8FDE-D4ECEB3E49D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.CakeBuild.Tests", "tests\CreativeCoders.CakeBuild.Tests\CreativeCoders.CakeBuild.Tests.csproj", "{A081DDB3-A9DB-498F-824B-C605ACFDB43A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -582,6 +584,10 @@ Global
 		{C34426F1-E40C-498D-8FDE-D4ECEB3E49D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C34426F1-E40C-498D-8FDE-D4ECEB3E49D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C34426F1-E40C-498D-8FDE-D4ECEB3E49D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A081DDB3-A9DB-498F-824B-C605ACFDB43A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A081DDB3-A9DB-498F-824B-C605ACFDB43A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A081DDB3-A9DB-498F-824B-C605ACFDB43A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A081DDB3-A9DB-498F-824B-C605ACFDB43A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -691,6 +697,7 @@ Global
 		{4A397E49-CB4F-4348-9798-A7F2B5F276DA} = {DB7A40EE-F469-4B87-A629-250BBB9ECC92}
 		{EC120660-306E-4E48-8FBB-43D9F3962CEE} = {F31389F0-613B-48B1-AA99-6BFC3D8D7D1A}
 		{C34426F1-E40C-498D-8FDE-D4ECEB3E49D4} = {F31389F0-613B-48B1-AA99-6BFC3D8D7D1A}
+		{A081DDB3-A9DB-498F-824B-C605ACFDB43A} = {5A3FFD14-2258-4007-AC77-BAFB3B3EB26F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}
