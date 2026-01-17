@@ -25,7 +25,9 @@ public class ZipArchiveWriterFactory(IFileSystem fileSystem) : IZipArchiveWriter
         }
 
         return CreateWriter(
-            overwriteExisting ? File.Create(archiveFileName) : File.OpenWrite(archiveFileName),
+            overwriteExisting
+                ? _fileSystem.File.Create(archiveFileName)
+                : _fileSystem.File.OpenWrite(archiveFileName),
             compressionLevel);
     }
 }
