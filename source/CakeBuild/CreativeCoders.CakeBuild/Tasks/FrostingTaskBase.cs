@@ -34,3 +34,31 @@ public abstract class FrostingTaskBase<T> : AsyncFrostingTask<T>
         context.AddExecutedTask(this);
     }
 }
+
+[PublicAPI]
+public abstract class FrostingTaskBase<TBuildContext, TSettings> : FrostingTaskBase<TBuildContext>
+    where TBuildContext : CakeBuildContext
+    where TSettings : class
+{
+    protected sealed override Task RunAsyncCore(TBuildContext context)
+    {
+        var taskSettings = context.GetSettings<TSettings>();
+
+        if (taskSettings != null)
+        {
+            return RunAsyncCore(context, taskSettings);
+        }
+
+        if (!SkipIfNoSettings)
+        {
+            throw new InvalidOperationException($"No settings found for task '{ReadTaskName()}'");
+        }
+
+        context.Information($"Skip task '{ReadTaskName()}' because no settings found");
+        return Task.CompletedTask;
+    }
+
+    protected abstract Task RunAsyncCore(TBuildContext context, TSettings taskSettings);
+
+    protected virtual bool SkipIfNoSettings => false;
+}

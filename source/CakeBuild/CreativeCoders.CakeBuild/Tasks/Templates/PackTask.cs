@@ -5,14 +5,12 @@ using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
-public class PackTask<T> : FrostingTaskBase<T>
+public class PackTask<T> : FrostingTaskBase<T, IPackTaskSettings>
     where T : CakeBuildContext
 {
-    protected override Task RunAsyncCore(T context)
+    protected override Task RunAsyncCore(T context, IPackTaskSettings taskSettings)
     {
-        var packSettings = context.GetRequiredSettings<IPackTaskSettings>();
-
-        context.DotNetPack(context.SolutionFile.FullPath, CreateDotNetPackSettings(context, packSettings));
+        context.DotNetPack(context.SolutionFile.FullPath, CreateDotNetPackSettings(context, taskSettings));
 
         return Task.CompletedTask;
     }
@@ -26,7 +24,6 @@ public class PackTask<T> : FrostingTaskBase<T>
             NoBuild = context.HasExecutedTask(typeof(BuildTask<T>)),
             IncludeSymbols = true,
             SymbolPackageFormat = "snupkg",
-
             MSBuildSettings = new DotNetMSBuildSettings
             {
                 InformationalVersion = context.Version.InformationalVersion,

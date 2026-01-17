@@ -11,7 +11,8 @@ using JetBrains.Annotations;
 namespace CakeBuildSample;
 
 [UsedImplicitly]
-public class SampleBuildContext(ICakeContext context) : CakeBuildContext(context), IDefaultTaskSettings
+public class SampleBuildContext(ICakeContext context)
+    : CakeBuildContext(context), IDefaultTaskSettings, ICreateDistPackagesTaskSettings
 {
     public IList<DirectoryPath> DirectoriesToClean => this.CastAs<ICleanTaskSettings>()
         .GetDefaultDirectoriesToClean().AddRange(RootDir.Combine(".tests"));
@@ -30,4 +31,30 @@ public class SampleBuildContext(ICakeContext context) : CakeBuildContext(context
     public bool SkipPush => this.BuildSystem().IsPullRequest ||
                             this.BuildSystem().IsLocalBuild ||
                             this.GitHubActions().Environment.Runner.OS != "Linux";
+
+    public DirectoryPath PublishOutputDir => ArtifactsDir.Combine("publish");
+
+    private const string CliHostSampleAppProjectName = "CliHostSampleApp";
+
+    public IEnumerable<PublishingItem> PublishingItems =>
+    [
+        new PublishingItem(
+            RootDir.Combine("samples").Combine(CliHostSampleAppProjectName)
+                .CombineWithFilePath("CliHostSampleApp.csproj"),
+            PublishOutputDir.Combine(CliHostSampleAppProjectName))
+    ];
+
+    public IEnumerable<DistPackage> DistPackages =>
+    [
+        new DistPackage("clihostsample", PublishOutputDir.Combine(CliHostSampleAppProjectName))
+        {
+            Format = DistPackageFormat.TarGz
+        },
+        new DistPackage("clihostsample", PublishOutputDir.Combine(CliHostSampleAppProjectName))
+        {
+            Format = DistPackageFormat.Zip
+        }
+    ];
+
+    public DirectoryPath DistOutputPath => ArtifactsDir.Combine("dist");
 }

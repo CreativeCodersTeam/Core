@@ -7,4 +7,5 @@ public interface IDefaultTaskSettings :
     ITestTaskSettings,
     ICodeCoverageTaskSettings,
     IPackTaskSettings,
-    INuGetPushTaskSettings;
+    INuGetPushTaskSettings,
+    IPublishTaskSettings;

@@ -4,19 +4,17 @@ using CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 
 namespace CreativeCoders.CakeBuild.Tasks.Templates;
 
-public class CodeCoverageTask<T> : FrostingTaskBase<T>
+public class CodeCoverageTask<T> : FrostingTaskBase<T, ICodeCoverageTaskSettings>
     where T : CakeBuildContext
 {
-    protected override Task RunAsyncCore(T context)
+    protected override Task RunAsyncCore(T context, ICodeCoverageTaskSettings taskSettings)
     {
-        var codeCoverageSettings = context.GetRequiredSettings<ICodeCoverageTaskSettings>();
-
         var reportGeneratorSettings = new ReportGeneratorSettings
         {
-            ReportTypes = codeCoverageSettings.ReportTypes.ToList()
+            ReportTypes = taskSettings.ReportTypes.ToList()
         };
 
-        context.ReportGenerator(new GlobPattern(codeCoverageSettings.ReportGlobPattern),
+        context.ReportGenerator(new GlobPattern(taskSettings.ReportGlobPattern),
             context.CodeCoverageReportDir, reportGeneratorSettings);
 
         return Task.CompletedTask;
