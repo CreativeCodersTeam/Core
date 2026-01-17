@@ -2,6 +2,7 @@
 using System.Formats.Tar;
 using System.IO.Abstractions;
 using CreativeCoders.Core;
+using CreativeCoders.Core.IO;
 
 namespace CreativeCoders.IO.Archives.Tar;
 
@@ -180,6 +181,8 @@ public sealed class TarArchiveReader(Stream inputStream, IFileSystem fileSystem)
     public async Task<string> ExtractFileWithPathAsync(ArchiveEntry entry, string outputBaseDirectory,
         bool overwriteExisting = true)
     {
+        _fileSystem.Path.EnsureSafe(entry.FullName, outputBaseDirectory);
+
         var outputFileName = _fileSystem.Path.Combine(outputBaseDirectory, entry.FullName);
 
         await ExtractFileAsync(entry, outputFileName, overwriteExisting).ConfigureAwait(false);
@@ -195,6 +198,8 @@ public sealed class TarArchiveReader(Stream inputStream, IFileSystem fileSystem)
 
         while (tarEntry is not null)
         {
+            _fileSystem.Path.EnsureSafe(tarEntry.Name, outputBaseDirectory);
+
             var outputFileName = _fileSystem.Path.Combine(outputBaseDirectory, tarEntry.Name);
 
             await ExtractFileCoreAsync(tarEntry, outputFileName, overwriteExisting).ConfigureAwait(false);

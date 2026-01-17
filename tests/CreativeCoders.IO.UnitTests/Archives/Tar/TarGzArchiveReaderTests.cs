@@ -1,5 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Formats.Tar;
+using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
 using System.IO.Compression;
 using AwesomeAssertions;
 using CreativeCoders.Core.IO;
@@ -47,7 +49,7 @@ public class TarGzArchiveReaderTests
     {
         // Arrange
         using var archiveStream = await CreateTestTarGzArchiveAsync();
-        await using var reader = new TarGzArchiveReader(archiveStream);
+        await using var reader = new TarGzArchiveReader(archiveStream, new MockFileSystem());
 
         // Act
         var entries = await reader.GetEntriesAsync().ToListAsync();
@@ -65,7 +67,7 @@ public class TarGzArchiveReaderTests
     {
         // Arrange
         using var archiveStream = await CreateTestTarGzArchiveAsync();
-        await using var reader = new TarGzArchiveReader(archiveStream);
+        await using var reader = new TarGzArchiveReader(archiveStream, new MockFileSystem());
 
         // Act
         var entries = reader.GetEntries().ToList();
@@ -83,7 +85,7 @@ public class TarGzArchiveReaderTests
     {
         // Arrange
         using var archiveStream = await CreateTestTarGzArchiveAsync();
-        await using var reader = new TarGzArchiveReader(archiveStream);
+        await using var reader = new TarGzArchiveReader(archiveStream, new MockFileSystem());
         var entry = new ArchiveEntry("file1.txt");
 
         // Act
@@ -101,7 +103,7 @@ public class TarGzArchiveReaderTests
     {
         // Arrange
         using var archiveStream = await CreateTestTarGzArchiveAsync();
-        await using var reader = new TarGzArchiveReader(archiveStream);
+        await using var reader = new TarGzArchiveReader(archiveStream, new MockFileSystem());
         var entry = new ArchiveEntry("dir/file2.txt");
 
         // Act
@@ -122,7 +124,7 @@ public class TarGzArchiveReaderTests
     {
         // Arrange
         using var archiveStream = await CreateTestTarGzArchiveAsync();
-        await using var reader = new TarGzArchiveReader(archiveStream);
+        await using var reader = new TarGzArchiveReader(archiveStream, new MockFileSystem());
         var entry = new ArchiveEntry("file1.txt");
         var tempFile = Path.GetTempFileName();
         using var fileCleanup = new FileCleanUp(tempFile);
@@ -142,8 +144,9 @@ public class TarGzArchiveReaderTests
     public async Task ExtractFileWithPathAsync_ExistingEntry_ExtractsFileWithRelativePath()
     {
         // Arrange
+        var fakeFileSystem = new FileSystem();
         using var archiveStream = await CreateTestTarGzArchiveAsync();
-        await using var reader = new TarGzArchiveReader(archiveStream);
+        await using var reader = new TarGzArchiveReader(archiveStream, fakeFileSystem);
         var entry = new ArchiveEntry("dir/file2.txt");
         var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(tempDir);
@@ -153,13 +156,13 @@ public class TarGzArchiveReaderTests
         var resultPath = await reader.ExtractFileWithPathAsync(entry, tempDir);
 
         // Assert
-        File.Exists(resultPath)
+        fakeFileSystem.File.Exists(resultPath)
             .Should().BeTrue();
 
         resultPath
-            .Should().Be(Path.Combine(tempDir, "dir/file2.txt"));
+            .Should().Be(fakeFileSystem.Path.Combine(tempDir, "dir/file2.txt"));
 
-        (await File.ReadAllTextAsync(resultPath))
+        (await fakeFileSystem.File.ReadAllTextAsync(resultPath))
             .Should().Be("Content 2");
     }
 
@@ -167,8 +170,9 @@ public class TarGzArchiveReaderTests
     public async Task ExtractAllAsync_ArchiveWithEntries_ExtractsAllFiles()
     {
         // Arrange
+        var fakeFileSystem = new FileSystem();
         using var archiveStream = await CreateTestTarGzArchiveAsync();
-        await using var reader = new TarGzArchiveReader(archiveStream);
+        await using var reader = new TarGzArchiveReader(archiveStream, fakeFileSystem);
         var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(tempDir);
         using var dirCleanup = new DirectoryCleanUp(tempDir);
@@ -177,15 +181,15 @@ public class TarGzArchiveReaderTests
         await reader.ExtractAllAsync(tempDir);
 
         // Assert
-        File.Exists(Path.Combine(tempDir, "file1.txt"))
+        fakeFileSystem.File.Exists(fakeFileSystem.Path.Combine(tempDir, "file1.txt"))
             .Should().BeTrue();
-        File.Exists(Path.Combine(tempDir, "dir/file2.txt"))
+        fakeFileSystem.File.Exists(fakeFileSystem.Path.Combine(tempDir, "dir/file2.txt"))
             .Should().BeTrue();
 
-        (await File.ReadAllTextAsync(Path.Combine(tempDir, "file1.txt")))
+        (await fakeFileSystem.File.ReadAllTextAsync(fakeFileSystem.Path.Combine(tempDir, "file1.txt")))
             .Should().Be("Content 1");
 
-        (await File.ReadAllTextAsync(Path.Combine(tempDir, "dir/file2.txt")))
+        (await fakeFileSystem.File.ReadAllTextAsync(fakeFileSystem.Path.Combine(tempDir, "dir/file2.txt")))
             .Should().Be("Content 2");
     }
 
@@ -195,7 +199,7 @@ public class TarGzArchiveReaderTests
     {
         // Arrange
         using var archiveStream = await CreateTestTarGzArchiveAsync();
-        await using var reader = new TarGzArchiveReader(archiveStream);
+        await using var reader = new TarGzArchiveReader(archiveStream, new MockFileSystem());
         var entry = new ArchiveEntry("non_existing.txt");
 
         // Act

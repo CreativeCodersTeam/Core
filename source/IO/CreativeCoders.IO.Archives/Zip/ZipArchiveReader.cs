@@ -2,6 +2,7 @@
 using System.IO.Abstractions;
 using System.IO.Compression;
 using CreativeCoders.Core;
+using CreativeCoders.Core.IO;
 
 namespace CreativeCoders.IO.Archives.Zip;
 
@@ -86,6 +87,8 @@ public sealed class ZipArchiveReader(ZipArchive zipArchive, IFileSystem fileSyst
     public async Task<string> ExtractFileWithPathAsync(ArchiveEntry entry, string outputBaseDirectory,
         bool overwriteExisting = true)
     {
+        _fileSystem.Path.EnsureSafe(outputBaseDirectory, entry.FullName);
+
         var outputFileName = _fileSystem.Path.Combine(outputBaseDirectory, entry.FullName);
 
         await ExtractFileAsync(entry, outputFileName, overwriteExisting).ConfigureAwait(false);

@@ -61,7 +61,8 @@ public class
         }
     }
 
-    private async Task<Release> CreateReleaseDraftAsync(IGitHubClient gitHubClient, TBuildContext context,
+    private static async Task<Release> CreateReleaseDraftAsync(IGitHubClient gitHubClient,
+        TBuildContext context,
         string releaseVersion,
         string name, string body,
         bool isPreRelease)

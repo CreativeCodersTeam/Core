@@ -1,11 +1,15 @@
 ﻿using System.Formats.Tar;
+using System.IO.Abstractions;
 using System.IO.Compression;
 using CreativeCoders.Core;
+using CreativeCoders.Core.IO;
 
 namespace CreativeCoders.IO.Archives.Tar;
 
 public sealed class TarGzArchiveReader : ITarArchiveReader
 {
+    private readonly IFileSystem _fileSystem;
+
     private TarReader _tarReader;
 
     private bool _needsReset;
@@ -14,8 +18,9 @@ public sealed class TarGzArchiveReader : ITarArchiveReader
 
     private readonly Stream _sourceStream;
 
-    public TarGzArchiveReader(Stream inputStream)
+    public TarGzArchiveReader(Stream inputStream, IFileSystem fileSystem)
     {
+        _fileSystem = Ensure.NotNull(fileSystem);
         _sourceStream = Ensure.NotNull(inputStream);
         _gzInputStream = new GZipStream(_sourceStream, CompressionMode.Decompress, true);
         _tarReader = new TarReader(_gzInputStream, true);
@@ -147,12 +152,12 @@ public sealed class TarGzArchiveReader : ITarArchiveReader
         await ExtractFileCoreAsync(tarEntry, outputFilePath, overwriteExisting).ConfigureAwait(false);
     }
 
-    private static Task ExtractFileCoreAsync(TarEntry tarEntry, string outputFilePath, bool overwriteExisting)
+    private Task ExtractFileCoreAsync(TarEntry tarEntry, string outputFilePath, bool overwriteExisting)
     {
-        var outputDirectory = Path.GetDirectoryName(outputFilePath);
+        var outputDirectory = _fileSystem.Path.GetDirectoryName(outputFilePath);
         if (outputDirectory != null)
         {
-            Directory.CreateDirectory(outputDirectory);
+            _fileSystem.Directory.CreateDirectory(outputDirectory);
         }
 
         return tarEntry.ExtractToFileAsync(outputFilePath, overwriteExisting);
@@ -161,7 +166,9 @@ public sealed class TarGzArchiveReader : ITarArchiveReader
     public async Task<string> ExtractFileWithPathAsync(ArchiveEntry entry, string outputBaseDirectory,
         bool overwriteExisting = true)
     {
-        var outputFileName = Path.Combine(outputBaseDirectory, entry.FullName);
+        _fileSystem.Path.EnsureSafe(entry.FullName, outputBaseDirectory);
+
+        var outputFileName = _fileSystem.Path.Combine(outputBaseDirectory, entry.FullName);
 
         await ExtractFileAsync(entry, outputFileName, overwriteExisting).ConfigureAwait(false);
 
@@ -176,7 +183,9 @@ public sealed class TarGzArchiveReader : ITarArchiveReader
 
         while (tarEntry is not null)
         {
-            var outputFileName = Path.Combine(outputBaseDirectory, tarEntry.Name);
+            _fileSystem.Path.EnsureSafe(tarEntry.Name, outputBaseDirectory);
+
+            var outputFileName = _fileSystem.Path.Combine(outputBaseDirectory, tarEntry.Name);
 
             await ExtractFileCoreAsync(tarEntry, outputFileName, overwriteExisting).ConfigureAwait(false);
 

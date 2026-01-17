@@ -10,7 +10,7 @@ public class TarArchiveReaderFactory(IFileSystem fileSystem) : ITarArchiveReader
     public ITarArchiveReader CreateReader(Stream inputStream, bool useGZipCompression = true)
     {
         return useGZipCompression
-            ? new TarGzArchiveReader(inputStream)
+            ? new TarGzArchiveReader(inputStream, _fileSystem)
             : new TarArchiveReader(inputStream, _fileSystem);
     }
 
