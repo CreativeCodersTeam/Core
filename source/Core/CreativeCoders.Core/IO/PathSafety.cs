@@ -3,6 +3,8 @@ using System.IO;
 using System.IO.Abstractions;
 using CreativeCoders.Core.IO;
 
+#nullable enable
+
 namespace CreativeCoders.Core.IO;
 
 /// <summary>
