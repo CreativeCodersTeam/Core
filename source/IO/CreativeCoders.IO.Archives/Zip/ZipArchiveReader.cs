@@ -87,7 +87,7 @@ public sealed class ZipArchiveReader(ZipArchive zipArchive, IFileSystem fileSyst
     public async Task<string> ExtractFileWithPathAsync(ArchiveEntry entry, string outputBaseDirectory,
         bool overwriteExisting = true)
     {
-        _fileSystem.Path.EnsureSafe(outputBaseDirectory, entry.FullName);
+        _fileSystem.Path.EnsureSafe(entry.FullName, outputBaseDirectory);
 
         var outputFileName = _fileSystem.Path.Combine(outputBaseDirectory, entry.FullName);
 
