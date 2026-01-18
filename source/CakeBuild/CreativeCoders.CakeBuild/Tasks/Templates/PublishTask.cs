@@ -16,7 +16,7 @@ public class PublishTask<TBuildContext> : FrostingTaskBase<TBuildContext, IPubli
             foreach (var publishingItem in taskSettings.PublishingItems)
             {
                 context.DotNetPublish(publishingItem.ProjectPath.FullPath,
-                    CreateDotNetPublishSettings(publishingItem, context));
+                    CreateDotNetPublishSettings(taskSettings, publishingItem, context));
             }
         }
         else
@@ -28,7 +28,7 @@ public class PublishTask<TBuildContext> : FrostingTaskBase<TBuildContext, IPubli
         return Task.CompletedTask;
     }
 
-    private DotNetPublishSettings CreateDotNetPublishSettings(IPublishTaskSettings publishSettings,
+    private static DotNetPublishSettings CreateDotNetPublishSettings(IPublishTaskSettings publishSettings,
         TBuildContext context)
     {
         var dotNetPublishSettings = new DotNetPublishSettings
@@ -41,15 +41,16 @@ public class PublishTask<TBuildContext> : FrostingTaskBase<TBuildContext, IPubli
         return dotNetPublishSettings;
     }
 
-    protected virtual DotNetPublishSettings CreateDotNetPublishSettings(PublishingItem publishingItem,
-        TBuildContext context)
+    protected virtual DotNetPublishSettings CreateDotNetPublishSettings(IPublishTaskSettings publishSettings,
+        PublishingItem publishingItem, TBuildContext context)
     {
         var dotNetPublishSettings = new DotNetPublishSettings
         {
             Runtime = publishingItem.Runtime,
-            OutputDirectory = publishingItem.OutputDir,
+            OutputDirectory = publishingItem.OutputDir.IsRelative
+                ? publishSettings.PublishOutputDir.Combine(publishingItem.OutputDir)
+                : publishingItem.OutputDir,
             SelfContained = publishingItem.SelfContained,
-            NoBuild = context.HasExecutedTask(typeof(BuildTask<TBuildContext>)),
             Configuration = context.BuildConfiguration
         };
 

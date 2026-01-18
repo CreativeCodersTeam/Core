@@ -18,7 +18,7 @@ public class NuGetPushTask<T> : FrostingTaskBase<T, INuGetPushTaskSettings>
 
         var packSettings = context.GetRequiredSettings<IPackTaskSettings>();
 
-        var filePath = packSettings.OutputDirectory.GetFilePath("*.nupkg");
+        var filePath = packSettings.PackOutputDirectory.GetFilePath("*.nupkg");
 
         context.DotNetNuGetPush(filePath, CreateNuGetPushSettings(taskSettings));
 

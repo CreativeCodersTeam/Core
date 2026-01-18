@@ -19,7 +19,7 @@ public class PackTask<T> : FrostingTaskBase<T, IPackTaskSettings>
     {
         var dotNetPackSettings = new DotNetPackSettings
         {
-            OutputDirectory = packSettings.OutputDirectory,
+            OutputDirectory = packSettings.PackOutputDirectory,
             Configuration = context.BuildConfiguration,
             NoBuild = context.HasExecutedTask(typeof(BuildTask<T>)),
             IncludeSymbols = true,
