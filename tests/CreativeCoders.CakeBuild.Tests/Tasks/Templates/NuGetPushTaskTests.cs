@@ -14,7 +14,7 @@ public class NuGetPushTaskTests
     {
         public bool SkipPush { get; set; }
 
-        public DirectoryPath OutputDirectory => new("/repo/dist");
+        public DirectoryPath PackOutputDirectory => new("/repo/dist");
     }
 
     [Fact]

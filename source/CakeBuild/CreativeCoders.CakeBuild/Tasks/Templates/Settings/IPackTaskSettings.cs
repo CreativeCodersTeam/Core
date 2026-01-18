@@ -5,7 +5,7 @@ namespace CreativeCoders.CakeBuild.Tasks.Templates.Settings;
 [CakeTaskSettings]
 public interface IPackTaskSettings : IBuildContextAccessor
 {
-    DirectoryPath OutputDirectory => Context.ArtifactsDir.Combine("nuget");
+    DirectoryPath PackOutputDirectory => Context.ArtifactsDir.Combine("nuget");
 
     string Copyright => string.Empty;
 
