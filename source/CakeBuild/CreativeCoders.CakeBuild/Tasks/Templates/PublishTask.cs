@@ -51,7 +51,6 @@ public class PublishTask<TBuildContext> : FrostingTaskBase<TBuildContext, IPubli
                 ? publishSettings.PublishOutputDir.Combine(publishingItem.OutputDir)
                 : publishingItem.OutputDir,
             SelfContained = publishingItem.SelfContained,
-            NoBuild = context.HasExecutedTask(typeof(BuildTask<TBuildContext>)),
             Configuration = context.BuildConfiguration
         };
 
