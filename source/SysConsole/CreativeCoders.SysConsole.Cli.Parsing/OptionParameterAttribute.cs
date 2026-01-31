@@ -1,4 +1,5 @@
 ﻿using System;
+using CreativeCoders.Core;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing;
@@ -9,14 +10,14 @@ public sealed class OptionParameterAttribute : OptionBaseAttribute
 {
     public OptionParameterAttribute(string shortName, string longName)
     {
-        ShortName = shortName;
-        LongName = longName;
+        ShortName = Ensure.IsNotNullOrWhitespace(shortName);
+        LongName = Ensure.IsNotNullOrWhitespace(longName);
     }
 
     public OptionParameterAttribute(char shortName, string longName)
     {
         ShortName = shortName.ToString();
-        LongName = longName;
+        LongName = Ensure.IsNotNullOrWhitespace(longName);
     }
 
     public OptionParameterAttribute(char shortName)
@@ -26,7 +27,7 @@ public sealed class OptionParameterAttribute : OptionBaseAttribute
 
     public OptionParameterAttribute(string longName)
     {
-        LongName = longName;
+        LongName = Ensure.IsNotNullOrWhitespace(longName);
     }
 
     public string? ShortName { get; }

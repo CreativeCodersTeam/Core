@@ -8,5 +8,5 @@ public class TestOptionForParser
 
     [OptionParameter('t', "text")] public string? TextValue { get; [UsedImplicitly] set; }
 
-    [OptionParameter("te", "text")] public string? TextValueMultiCharShortName { get; [UsedImplicitly] set; }
+    [OptionParameter("te", "text2")] public string? TextValueMultiCharShortName { get; [UsedImplicitly] set; }
 }
