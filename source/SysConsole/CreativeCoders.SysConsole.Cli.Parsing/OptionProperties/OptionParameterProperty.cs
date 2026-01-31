@@ -1,26 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CreativeCoders.Core;
 
 namespace CreativeCoders.SysConsole.Cli.Parsing.OptionProperties;
 
-public class OptionParameterProperty : OptionPropertyBase
+public class OptionParameterProperty(
+    PropertyInfo propertyInfo,
+    OptionParameterAttribute optionParameterAttribute)
+    : OptionPropertyBase(propertyInfo, optionParameterAttribute)
 {
-    private readonly OptionParameterAttribute _optionParameterAttribute;
-
-    public OptionParameterProperty(PropertyInfo propertyInfo,
-        OptionParameterAttribute optionParameterAttribute)
-        : base(propertyInfo, optionParameterAttribute)
-    {
-        _optionParameterAttribute = optionParameterAttribute;
-    }
+    private readonly OptionParameterAttribute _optionParameterAttribute =
+        Ensure.NotNull(optionParameterAttribute);
 
     public override bool Read(IEnumerable<OptionArgument> optionArguments, object optionObject)
     {
         var optionArgument = optionArguments
             .FirstOrDefault(x =>
                 (x.Kind == OptionArgumentKind.ShortName
-                 && x.OptionName == _optionParameterAttribute.ShortName.ToString()) ||
+                 && x.OptionName == _optionParameterAttribute.ShortName) ||
                 (x.Kind == OptionArgumentKind.LongName &&
                  x.OptionName == _optionParameterAttribute.LongName));
 

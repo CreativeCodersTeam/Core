@@ -24,7 +24,7 @@ public class OptionParserTests
             .Should()
             .NotBeNull();
 
-        option!.HelloWorld
+        option.HelloWorld
             .Should()
             .Be("hello");
 
@@ -48,13 +48,61 @@ public class OptionParserTests
             .Should()
             .NotBeNull();
 
-        option!.HelloWorld
+        option.HelloWorld
             .Should()
             .Be("hello");
 
         option.TextValue
             .Should()
             .Be("TestText");
+    }
+
+    [Fact]
+    public void Parse_ValueAndParameterWithMultiCharShortName_PropertiesAreSetCorrect()
+    {
+        var args = new[] { "hello", "-te", "TestText" };
+
+        var parser = new OptionParser(typeof(TestOptionForParser));
+
+        // Act
+        var option = parser.Parse(args) as TestOptionForParser;
+
+        // Assert
+        option
+            .Should()
+            .NotBeNull();
+
+        option.HelloWorld
+            .Should()
+            .Be("hello");
+
+        option.TextValueMultiCharShortName
+            .Should()
+            .Be("TestText");
+    }
+
+    [Fact]
+    public void Parse_ValueAndParameterWithMultiCharShortNameAndSingleChar_PropertiesAreSetCorrect()
+    {
+        var args = new[] { "hello", "-te", "TestText", "-t", "ShotText" };
+
+        var parser = new OptionParser(typeof(TestOptionForParser));
+
+        // Act
+        var option = parser.Parse(args) as TestOptionForParser;
+
+        // Assert
+        option
+            .Should().NotBeNull();
+
+        option.HelloWorld
+            .Should().Be("hello");
+
+        option.TextValue
+            .Should().Be("ShotText");
+
+        option.TextValueMultiCharShortName
+            .Should().Be("TestText");
     }
 
     [Fact]
@@ -76,7 +124,7 @@ public class OptionParserTests
             .Should()
             .NotBeNull();
 
-        option!.IntValue
+        option.IntValue
             .Should()
             .Be(expectedValue0);
 
@@ -103,7 +151,7 @@ public class OptionParserTests
             .Should()
             .NotBeNull();
 
-        option!.IntValue
+        option.IntValue
             .Should()
             .Be(expectedValue0);
 
@@ -158,7 +206,7 @@ public class OptionParserTests
             .Should()
             .NotBeNull();
 
-        option!.Verbose
+        option.Verbose
             .Should()
             .BeTrue();
 
@@ -182,7 +230,7 @@ public class OptionParserTests
             .Should()
             .NotBeNull();
 
-        option!.Verbose
+        option.Verbose
             .Should()
             .BeTrue();
 
@@ -232,7 +280,7 @@ public class OptionParserTests
             .Should()
             .NotBeNull();
 
-        options!.FirstValue
+        options.FirstValue
             .Should()
             .Be(null);
 
@@ -307,7 +355,7 @@ public class OptionParserTests
             .Should()
             .NotBeNull();
 
-        option!.EnumValue
+        option.EnumValue
             .Should()
             .Be(enumValue);
     }
@@ -331,7 +379,7 @@ public class OptionParserTests
             .Should()
             .NotBeNull();
 
-        option!.Text
+        option.Text
             .Should()
             .Be(propertyValue);
     }
@@ -355,7 +403,7 @@ public class OptionParserTests
             .Should()
             .NotBeNull();
 
-        option!.IntValues
+        option.IntValues
             .Should()
             .ContainInOrder(intValues);
     }
@@ -379,7 +427,7 @@ public class OptionParserTests
             .Should()
             .NotBeNull();
 
-        option!.EnumValue
+        option.EnumValue
             .Should()
             .Be(enumWithFlags);
     }
@@ -406,7 +454,7 @@ public class OptionParserTests
             .Should()
             .HaveCount(1)
             .And
-            .BeEquivalentTo(new[] { new OptionArgument { Kind = OptionArgumentKind.Value, Value = "test" } });
+            .BeEquivalentTo([new OptionArgument { Kind = OptionArgumentKind.Value, Value = "test" }]);
     }
 
     [Theory]
