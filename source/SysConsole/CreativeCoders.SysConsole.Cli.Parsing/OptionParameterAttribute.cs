@@ -7,15 +7,21 @@ namespace CreativeCoders.SysConsole.Cli.Parsing;
 [AttributeUsage(AttributeTargets.Property)]
 public sealed class OptionParameterAttribute : OptionBaseAttribute
 {
-    public OptionParameterAttribute(char shortName, string longName)
+    public OptionParameterAttribute(string shortName, string longName)
     {
         ShortName = shortName;
         LongName = longName;
     }
 
+    public OptionParameterAttribute(char shortName, string longName)
+    {
+        ShortName = shortName.ToString();
+        LongName = longName;
+    }
+
     public OptionParameterAttribute(char shortName)
     {
-        ShortName = shortName;
+        ShortName = shortName.ToString();
     }
 
     public OptionParameterAttribute(string longName)
@@ -23,7 +29,7 @@ public sealed class OptionParameterAttribute : OptionBaseAttribute
         LongName = longName;
     }
 
-    public char? ShortName { get; }
+    public string? ShortName { get; }
 
     public string? LongName { get; }
 }
