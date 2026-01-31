@@ -104,7 +104,7 @@ public class CliCommandStore : ICliCommandStore
             {
                 var groupNode = GetGroupNode(commands.Take(commands.Length - 1).ToArray());
 
-                if (groupNode.Parent == null)
+                if (groupNode.Parent == null && !_treeRootNodes.Contains(groupNode))
                 {
                     _treeRootNodes.Add(groupNode);
                 }

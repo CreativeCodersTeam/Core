@@ -566,6 +566,51 @@ public class CliCommandStoreTests
     }
 
     [Fact]
+    public void AddCommands_WithGroupAttribute_NoDuplicatedGroups()
+    {
+        // Arrange
+        var commandInfo = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["tools", "admin"]),
+            CommandType = typeof(DummyCommand)
+        };
+
+        var firstGroupAttribute = new CliCommandGroupAttribute(["tools"], "Tools root group");
+
+        var groupAttributes = new[]
+        {
+            firstGroupAttribute
+        };
+
+        var store = new CliCommandStore();
+
+        // Act
+        store.AddCommands([commandInfo], groupAttributes);
+
+        // Assert
+        var toolsGroupNode = store.TreeRootNodes
+            .Should()
+            .ContainSingle(node => node.Name == "tools")
+            .Which
+            .Should()
+            .BeOfType<CliCommandGroupNode>()
+            .Which;
+
+        toolsGroupNode.GroupAttribute
+            .Should()
+            .BeSameAs(firstGroupAttribute);
+
+        toolsGroupNode.ChildNodes
+            .OfType<CliCommandNode>()
+            .Should()
+            .ContainSingle(node => node.Name == "admin");
+
+        store.GroupAttributes
+            .Should()
+            .BeEquivalentTo(groupAttributes);
+    }
+
+    [Fact]
     public void AddCommands_WithGroupAttributes_AssignsAttributesToGroupNodes()
     {
         // Arrange

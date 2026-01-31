@@ -1,13 +1,10 @@
 using CreativeCoders.Cli.Core;
 using JetBrains.Annotations;
 
-[assembly: CliCommandGroup(["demo"], "Demo commands root group")]
-[assembly: CliCommandGroup(["demo", "do"], "Demo do commands")]
-
 namespace CliHostSampleApp;
 
 [UsedImplicitly]
-[CliCommand(["demo", "do", "list"]
+[CliCommand([DemoCommandGroup.Name, "do"]
     , AlternativeCommands = ["demo1"])]
 public class DemoCliCommand : ICliCommand
 {

@@ -13,7 +13,7 @@ public static class Program
     private static ICliHost CreateCliHost()
     {
         return CliHostBuilder.Create()
-            .EnableHelp(HelpCommandKind.Command)
+            .EnableHelp(HelpCommandKind.CommandOrArgument)
             .Build();
     }
 }

@@ -144,6 +144,15 @@ public class DefaultCliHost(
 
             return new CliResult(e.ExitCode);
         }
+        catch (CliCommandAbortException e)
+        {
+            if (e.PrintMessage)
+            {
+                _ansiConsole.MarkupLine(e.IsError ? $"[red]{e.Message}[/]" : $"[yellow]{e.Message}[/]");
+            }
+
+            return new CliResult(e.ExitCode);
+        }
     }
 
     /// <inheritdoc />
