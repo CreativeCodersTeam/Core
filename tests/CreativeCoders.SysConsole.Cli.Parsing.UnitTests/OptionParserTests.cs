@@ -82,6 +82,30 @@ public class OptionParserTests
     }
 
     [Fact]
+    public void Parse_ValueAndParameterWithMultiCharShortNameAndSingleChar_PropertiesAreSetCorrect()
+    {
+        var args = new[] { "hello", "-te", "TestText", "-t", "ShotText" };
+
+        var parser = new OptionParser(typeof(TestOptionForParser));
+
+        // Act
+        var option = parser.Parse(args) as TestOptionForParser;
+
+        // Assert
+        option
+            .Should().NotBeNull();
+
+        option.HelloWorld
+            .Should().Be("hello");
+
+        option.TextValue
+            .Should().Be("ShotText");
+
+        option.TextValueMultiCharShortName
+            .Should().Be("TestText");
+    }
+
+    [Fact]
     public void Parse_IntValueAndParameterWithLongName_PropertiesAreSetCorrect()
     {
         const int expectedValue0 = 1234;
