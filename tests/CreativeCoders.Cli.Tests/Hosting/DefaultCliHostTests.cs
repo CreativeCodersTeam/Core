@@ -8,6 +8,7 @@ using CreativeCoders.Cli.Hosting.Help;
 using FakeItEasy;
 using JetBrains.Annotations;
 using Spectre.Console;
+using Spectre.Console.Rendering;
 using Xunit;
 
 namespace CreativeCoders.Cli.Tests.Hosting;
@@ -121,6 +122,75 @@ public class DefaultCliHostTests
         result.ExitCode
             .Should()
             .Be(5);
+    }
+
+    [Theory]
+    [InlineData(typeof(DummyCommandWithErrorAbortException), DummyCommandWithErrorAbortException.ExitCode,
+        true, DummyCommandWithErrorAbortException.Message, 0)]
+    [InlineData(typeof(DummyCommandWithNoneErrorAbortException),
+        DummyCommandWithNoneErrorAbortException.ExitCode,
+        true, DummyCommandWithNoneErrorAbortException.Message, 1)]
+    [InlineData(typeof(DummyCommandWithoutPrintErrorAbortException),
+        DummyCommandWithoutPrintErrorAbortException.ExitCode,
+        false, DummyCommandWithoutPrintErrorAbortException.Message, 1)]
+    public async Task RunAsync_WhenCommandWithAbortException_ExecutesAndReturnsExceptionResult(
+        Type commandType, int exitCode, bool shouldPrintMessage, string message, int expectedColor)
+    {
+        // Arrange
+        Color[] colors = [Color.Red, Color.Yellow];
+        var args = new[] { "run" };
+
+        var ansiConsole = A.Fake<IAnsiConsole>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var serviceProvider = A.Fake<IServiceProvider>();
+        var helpHandler = A.Fake<ICliCommandHelpHandler>();
+
+        SetupServiceProvider(serviceProvider, new CliCommandContext());
+
+        A.CallTo(() => helpHandler.ShouldPrintHelp(args))
+            .Returns(false);
+
+        var commandInfo = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["run"]),
+            CommandType = commandType
+        };
+
+        var commandNode = new CliCommandNode(commandInfo, "run", null);
+
+        A.CallTo(() => commandStore.FindCommandNode(args))
+            .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
+
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+
+        // Act
+        var result = await host.RunAsync(args);
+
+        // Assert
+        result.ExitCode
+            .Should()
+            .Be(exitCode);
+
+        if (shouldPrintMessage)
+        {
+            A.CallTo(() => ansiConsole.Write(A<IRenderable>.That.Matches(r =>
+                    CheckConsoleOutput(r, message, colors[expectedColor]))))
+                .MustHaveHappenedOnceExactly();
+        }
+        else
+        {
+            A.CallTo(() => ansiConsole.Write(A<IRenderable>.Ignored))
+                .MustNotHaveHappened();
+        }
+    }
+
+    private static bool CheckConsoleOutput(IRenderable renderable, string message, Color color)
+    {
+        var text = string.Join("", renderable.GetSegments(AnsiConsole.Console).Select(s => s.Text));
+        var style = renderable.GetSegments(AnsiConsole.Console).First().Style;
+
+        return text.Trim() == message &&
+               style.Foreground == color;
     }
 
     [Fact]
@@ -512,6 +582,48 @@ public class DefaultCliHostTests
         public Task<CommandResult> ExecuteAsync()
         {
             return Task.FromResult(new CommandResult());
+        }
+    }
+
+    private sealed class DummyCommandWithErrorAbortException : ICliCommand
+    {
+        public const int ExitCode = 12349876;
+
+        public const string Message = "Command aborted with error";
+
+        public Task<CommandResult> ExecuteAsync()
+        {
+            throw new CliCommandAbortException(Message, ExitCode);
+        }
+    }
+
+    private sealed class DummyCommandWithNoneErrorAbortException : ICliCommand
+    {
+        public const int ExitCode = 12349876;
+
+        public const string Message = "Command aborted with warning";
+
+        public Task<CommandResult> ExecuteAsync()
+        {
+            throw new CliCommandAbortException(Message, ExitCode)
+            {
+                IsError = false
+            };
+        }
+    }
+
+    private sealed class DummyCommandWithoutPrintErrorAbortException : ICliCommand
+    {
+        public const int ExitCode = 12349876;
+
+        public const string Message = "Command aborted with printing";
+
+        public Task<CommandResult> ExecuteAsync()
+        {
+            throw new CliCommandAbortException(Message, ExitCode)
+            {
+                PrintMessage = false
+            };
         }
     }
 }
