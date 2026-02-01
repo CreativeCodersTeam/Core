@@ -238,6 +238,130 @@ public class DefaultCliHostTests
     }
 
     [Fact]
+    public async Task RunAsync_PreProcessorThrowsException_ExceptionIsCatchedAndExitCodeSet()
+    {
+        // Arrange
+        var args = new[] { "run" };
+
+        var ansiConsole = A.Fake<IAnsiConsole>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var serviceProvider = A.Fake<IServiceProvider>();
+        var helpHandler = A.Fake<ICliCommandHelpHandler>();
+
+        var preProcessor = A.Fake<ICliPreProcessor>();
+        var secondPreProcessor = A.Fake<ICliPreProcessor>();
+
+        SetupServiceProvider(serviceProvider, new CliCommandContext());
+
+        A.CallTo(() => helpHandler.ShouldPrintHelp(args))
+            .Returns(false);
+
+        A.CallTo(() => preProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.Always);
+
+        A.CallTo(() => secondPreProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.Always);
+
+        A.CallTo(() => preProcessor.ExecuteAsync(args))
+            .Throws(new Exception("Test exception"));
+
+        var commandInfo = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["run"]),
+            CommandType = typeof(DummyCommandWithResult)
+        };
+
+        var commandNode = new CliCommandNode(commandInfo, "run", null);
+
+        A.CallTo(() => commandStore.FindCommandNode(args))
+            .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
+
+        A.CallTo(() => serviceProvider.GetService(typeof(int)))
+            .Returns(17);
+
+        var host = new DefaultCliHost(
+            ansiConsole,
+            commandStore,
+            serviceProvider,
+            helpHandler,
+            [preProcessor, secondPreProcessor],
+            []);
+
+        // Act
+        var result = await host.RunAsync(args);
+
+        // Assert
+        A.CallTo(() => secondPreProcessor.ExecuteAsync(args))
+            .MustNotHaveHappened();
+
+        result.ExitCode
+            .Should()
+            .Be(CliExitCodes.PreProcessorFailed);
+    }
+
+    [Fact]
+    public async Task RunAsync_PostProcessorThrowsException_ExceptionIsCatchedAndExitCodeSet()
+    {
+        // Arrange
+        var args = new[] { "run" };
+
+        var ansiConsole = A.Fake<IAnsiConsole>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var serviceProvider = A.Fake<IServiceProvider>();
+        var helpHandler = A.Fake<ICliCommandHelpHandler>();
+
+        var postProcessor = A.Fake<ICliPostProcessor>();
+        var secondPostProcessor = A.Fake<ICliPostProcessor>();
+
+        SetupServiceProvider(serviceProvider, new CliCommandContext());
+
+        A.CallTo(() => helpHandler.ShouldPrintHelp(args))
+            .Returns(false);
+
+        A.CallTo(() => postProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.Always);
+
+        A.CallTo(() => secondPostProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.Always);
+
+        A.CallTo(() => postProcessor.ExecuteAsync(A<CliResult>.Ignored))
+            .Throws(new Exception("Test exception"));
+
+        var commandInfo = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["run"]),
+            CommandType = typeof(DummyCommandWithResult)
+        };
+
+        var commandNode = new CliCommandNode(commandInfo, "run", null);
+
+        A.CallTo(() => commandStore.FindCommandNode(args))
+            .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
+
+        A.CallTo(() => serviceProvider.GetService(typeof(int)))
+            .Returns(17);
+
+        var host = new DefaultCliHost(
+            ansiConsole,
+            commandStore,
+            serviceProvider,
+            helpHandler,
+            [],
+            [postProcessor, secondPostProcessor]);
+
+        // Act
+        var result = await host.RunAsync(args);
+
+        // Assert
+        A.CallTo(() => secondPostProcessor.ExecuteAsync(A<CliResult>.Ignored))
+            .MustNotHaveHappened();
+
+        result.ExitCode
+            .Should()
+            .Be(CliExitCodes.PostProcessorFailed);
+    }
+
+    [Fact]
     public async Task RunAsync_WhenCommandWithoutOptions_ExecutesAndReturnsResult()
     {
         // Arrange
