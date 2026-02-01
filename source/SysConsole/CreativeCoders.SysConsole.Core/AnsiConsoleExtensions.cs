@@ -84,7 +84,7 @@ public static class AnsiConsoleExtensions
         ansiConsole.Write(table);
     }
 
-    public static IAnsiConsole WriteLines(this IAnsiConsole ansiConsole, IEnumerable<string> lines)
+    public static IAnsiConsole WriteLines(this IAnsiConsole ansiConsole, params IEnumerable<string> lines)
     {
         foreach (var line in lines)
         {
@@ -94,7 +94,7 @@ public static class AnsiConsoleExtensions
         return ansiConsole;
     }
 
-    public static IAnsiConsole MarkupLines(this IAnsiConsole ansiConsole, IEnumerable<string> lines)
+    public static IAnsiConsole MarkupLines(this IAnsiConsole ansiConsole, params IEnumerable<string> lines)
     {
         foreach (var line in lines)
         {

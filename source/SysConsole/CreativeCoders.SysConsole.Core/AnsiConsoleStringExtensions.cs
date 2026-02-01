@@ -1,8 +1,11 @@
-using System.Text;
+using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 using Spectre.Console;
 
 namespace CreativeCoders.SysConsole.Core;
 
+[ExcludeFromCodeCoverage]
+[PublicAPI]
 public static class AnsiConsoleStringExtensions
 {
     public static string ToErrorMarkup(this string text)
