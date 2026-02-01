@@ -46,6 +46,76 @@ public class DefaultCliHostTests
     }
 
     [Fact]
+    public async Task RunAsync_WhenHelpIsRequested_ExecutesHelpPreAndPostProcessors()
+    {
+        // Arrange
+        var args = new[] { "help" };
+
+        var ansiConsole = A.Fake<IAnsiConsole>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var serviceProvider = A.Fake<IServiceProvider>();
+        var helpHandler = A.Fake<ICliCommandHelpHandler>();
+
+        var preHelpProcessor = A.Fake<ICliPreProcessor>();
+        var preAlwaysProcessor = A.Fake<ICliPreProcessor>();
+        var preCommandProcessor = A.Fake<ICliPreProcessor>();
+        var postHelpProcessor = A.Fake<ICliPostProcessor>();
+        var postAlwaysProcessor = A.Fake<ICliPostProcessor>();
+        var postCommandProcessor = A.Fake<ICliPostProcessor>();
+
+        SetupServiceProvider(serviceProvider, null);
+
+        A.CallTo(() => helpHandler.ShouldPrintHelp(args))
+            .Returns(true);
+
+        A.CallTo(() => preHelpProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.OnlyOnHelp);
+        A.CallTo(() => preAlwaysProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.Always);
+        A.CallTo(() => preCommandProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.OnlyOnCommand);
+
+        A.CallTo(() => postHelpProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.OnlyOnHelp);
+        A.CallTo(() => postAlwaysProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.Always);
+        A.CallTo(() => postCommandProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.OnlyOnCommand);
+
+        var host = new DefaultCliHost(
+            ansiConsole,
+            commandStore,
+            serviceProvider,
+            helpHandler,
+            [preHelpProcessor, preAlwaysProcessor, preCommandProcessor],
+            [postHelpProcessor, postAlwaysProcessor, postCommandProcessor]);
+
+        // Act
+        var result = await host.RunAsync(args);
+
+        // Assert
+        A.CallTo(() => preHelpProcessor.ExecuteAsync(args))
+            .MustHaveHappenedOnceExactly();
+        A.CallTo(() => preAlwaysProcessor.ExecuteAsync(args))
+            .MustHaveHappenedOnceExactly();
+        A.CallTo(() => preCommandProcessor.ExecuteAsync(args))
+            .MustNotHaveHappened();
+
+        A.CallTo(() => postHelpProcessor.ExecuteAsync(A<CliResult>.That.Matches(r =>
+                r.ExitCode == CliExitCodes.Success)))
+            .MustHaveHappenedOnceExactly();
+        A.CallTo(() => postAlwaysProcessor.ExecuteAsync(A<CliResult>.That.Matches(r =>
+                r.ExitCode == CliExitCodes.Success)))
+            .MustHaveHappenedOnceExactly();
+        A.CallTo(() => postCommandProcessor.ExecuteAsync(A<CliResult>.Ignored))
+            .MustNotHaveHappened();
+
+        result.ExitCode
+            .Should()
+            .Be(CliExitCodes.Success);
+    }
+
+    [Fact]
     public async Task RunAsync_WhenCommandNotFound_PrintsSuggestionsAndReturnsNotFound()
     {
         // Arrange
@@ -81,6 +151,90 @@ public class DefaultCliHostTests
 
         A.CallTo(() => helpHandler.PrintHelpFor(A<IList<CliTreeNode>>.Ignored))
             .MustHaveHappenedOnceExactly();
+    }
+
+    [Fact]
+    public async Task RunAsync_WhenCommandIsExecuted_ExecutesCommandPreAndPostProcessors()
+    {
+        // Arrange
+        var args = new[] { "run" };
+
+        var ansiConsole = A.Fake<IAnsiConsole>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var serviceProvider = A.Fake<IServiceProvider>();
+        var helpHandler = A.Fake<ICliCommandHelpHandler>();
+
+        var preHelpProcessor = A.Fake<ICliPreProcessor>();
+        var preAlwaysProcessor = A.Fake<ICliPreProcessor>();
+        var preCommandProcessor = A.Fake<ICliPreProcessor>();
+        var postHelpProcessor = A.Fake<ICliPostProcessor>();
+        var postAlwaysProcessor = A.Fake<ICliPostProcessor>();
+        var postCommandProcessor = A.Fake<ICliPostProcessor>();
+
+        SetupServiceProvider(serviceProvider, new CliCommandContext());
+
+        A.CallTo(() => helpHandler.ShouldPrintHelp(args))
+            .Returns(false);
+
+        A.CallTo(() => preHelpProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.OnlyOnHelp);
+        A.CallTo(() => preAlwaysProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.Always);
+        A.CallTo(() => preCommandProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.OnlyOnCommand);
+
+        A.CallTo(() => postHelpProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.OnlyOnHelp);
+        A.CallTo(() => postAlwaysProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.Always);
+        A.CallTo(() => postCommandProcessor.ExecutionCondition)
+            .Returns(CliProcessorExecutionCondition.OnlyOnCommand);
+
+        var commandInfo = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["run"]),
+            CommandType = typeof(DummyCommandWithResult)
+        };
+
+        var commandNode = new CliCommandNode(commandInfo, "run", null);
+
+        A.CallTo(() => commandStore.FindCommandNode(args))
+            .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
+
+        A.CallTo(() => serviceProvider.GetService(typeof(int)))
+            .Returns(17);
+
+        var host = new DefaultCliHost(
+            ansiConsole,
+            commandStore,
+            serviceProvider,
+            helpHandler,
+            [preHelpProcessor, preAlwaysProcessor, preCommandProcessor],
+            [postHelpProcessor, postAlwaysProcessor, postCommandProcessor]);
+
+        // Act
+        var result = await host.RunAsync(args);
+
+        // Assert
+        A.CallTo(() => preCommandProcessor.ExecuteAsync(args))
+            .MustHaveHappenedOnceExactly();
+        A.CallTo(() => preAlwaysProcessor.ExecuteAsync(args))
+            .MustHaveHappenedOnceExactly();
+        A.CallTo(() => preHelpProcessor.ExecuteAsync(args))
+            .MustNotHaveHappened();
+
+        A.CallTo(() => postCommandProcessor.ExecuteAsync(A<CliResult>.That.Matches(r =>
+                r.ExitCode == 17)))
+            .MustHaveHappenedOnceExactly();
+        A.CallTo(() => postAlwaysProcessor.ExecuteAsync(A<CliResult>.That.Matches(r =>
+                r.ExitCode == 17)))
+            .MustHaveHappenedOnceExactly();
+        A.CallTo(() => postHelpProcessor.ExecuteAsync(A<CliResult>.Ignored))
+            .MustNotHaveHappened();
+
+        result.ExitCode
+            .Should()
+            .Be(17);
     }
 
     [Fact]
