@@ -74,8 +74,25 @@ public interface ICliHostBuilder
     /// <returns>The same <see cref="ICliHostBuilder"/> instance.</returns>
     ICliHostBuilder SkipScanEntryAssembly(bool skipScanEntryAssembly = true);
 
+    /// <summary>
+    /// Registers a pre-processor for the CLI application.
+    /// </summary>
+    /// <typeparam name="T">The type of the pre-processor to be registered. Must implement <see cref="ICliPreProcessor"/>.</typeparam>
+    /// <param name="configure">
+    /// An optional action to configure the instance of <typeparamref name="T"/>. The action receives
+    /// the instance as a parameter.
+    /// </param>
+    /// <returns>The same <see cref="ICliHostBuilder"/> instance.</returns>
     ICliHostBuilder RegisterPreProcessor<T>(Action<T>? configure = null) where T : class, ICliPreProcessor;
 
+    /// <summary>
+    /// Registers a post-processor to be executed after the CLI command is processed.
+    /// </summary>
+    /// <typeparam name="T">The type of the post-processor that implements <see cref="ICliPostProcessor"/>.</typeparam>
+    /// <param name="configure">
+    /// An optional action to configure the post-processor instance. The action receives a single parameter of type <typeparamref name="T"/>.
+    /// </param>
+    /// <returns>The same <see cref="ICliHostBuilder"/> instance.</returns>
     ICliHostBuilder RegisterPostProcessor<T>(Action<T>? configure = null) where T : class, ICliPostProcessor;
 
     /// <summary>
