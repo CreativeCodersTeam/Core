@@ -135,7 +135,7 @@ public class DefaultCliHost(
         }
         catch (CliCommandConstructionFailedException e)
         {
-            if (e.InnerException is CliCommandAbortException abortException)
+            if (e.InnerException?.GetBaseException() is CliCommandAbortException abortException)
             {
                 return HandleCommandAbortException(abortException);
             }
