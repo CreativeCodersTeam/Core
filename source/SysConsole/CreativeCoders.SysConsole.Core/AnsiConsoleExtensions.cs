@@ -23,7 +23,6 @@ public static class AnsiConsoleExtensions
         return new AnsiConsolePrint(ansiConsole);
     }
 
-    [PublicAPI]
     public static IAnsiConsole Write<T>(this IAnsiConsole ansiConsole, T value, Color foregroundColor,
         Color? backgroundColor = null)
     {
@@ -34,7 +33,6 @@ public static class AnsiConsoleExtensions
         return ansiConsole;
     }
 
-    [PublicAPI]
     public static IAnsiConsole WriteLine<T>(this IAnsiConsole ansiConsole, T value, Color foregroundColor,
         Color? backgroundColor = null)
     {
@@ -45,7 +43,6 @@ public static class AnsiConsoleExtensions
         return ansiConsole;
     }
 
-    [PublicAPI]
     public static void PrintTable<T>(this IAnsiConsole ansiConsole, IEnumerable<T> items,
         TableColumnDef<T>[] columns, Action<Table>? configureTable = null)
     {
