@@ -31,7 +31,7 @@ public class DefaultCliHostTests
         A.CallTo(() => helpHandler.ShouldPrintHelp(args))
             .Returns(true);
 
-        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler, [], []);
 
         // Act
         var result = await host.RunAsync(args);
@@ -69,7 +69,7 @@ public class DefaultCliHostTests
         A.CallTo(() => commandStore.FindCommandGroupNode(args))
             .Returns(new FindCommandNodeResult<CliCommandGroupNode>(groupNode, []));
 
-        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler, [], []);
 
         // Act
         var result = await host.RunAsync(args);
@@ -113,7 +113,7 @@ public class DefaultCliHostTests
         A.CallTo(() => serviceProvider.GetService(typeof(int)))
             .Returns(5);
 
-        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler, [], []);
 
         // Act
         var result = await host.RunAsync(args);
@@ -161,7 +161,7 @@ public class DefaultCliHostTests
         A.CallTo(() => commandStore.FindCommandNode(args))
             .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
 
-        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler, [], []);
 
         // Act
         var result = await host.RunAsync(args);
@@ -223,7 +223,7 @@ public class DefaultCliHostTests
         A.CallTo(() => serviceProvider.GetService(typeof(int)))
             .Returns(5);
 
-        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler, [], []);
 
         // Act
         var result = await host.RunMainAsync(args);
@@ -265,7 +265,7 @@ public class DefaultCliHostTests
         A.CallTo(() => serviceProvider.GetService(typeof(int)))
             .Returns(5);
 
-        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler, [], []);
 
         // Act
         var result = await host.RunAsync(args);
@@ -315,7 +315,7 @@ public class DefaultCliHostTests
         A.CallTo(() => serviceProvider.GetService(typeof(int)))
             .Returns(5);
 
-        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler, [], []);
 
         // Act
         var result = await host.RunAsync(args);
@@ -361,7 +361,7 @@ public class DefaultCliHostTests
         A.CallTo(() => commandStore.FindCommandNode(args))
             .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
 
-        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler, [], []);
 
         // Act
         var result = await host.RunAsync(args);
@@ -401,7 +401,7 @@ public class DefaultCliHostTests
         A.CallTo(() => commandStore.FindCommandNode(args))
             .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
 
-        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler, [], []);
 
         // Act
         var result = await host.RunAsync(args);
@@ -441,7 +441,7 @@ public class DefaultCliHostTests
         A.CallTo(() => commandStore.FindCommandNode(args))
             .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
 
-        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler, [], []);
 
         // Act
         var result = await host.RunAsync(args);
@@ -481,7 +481,7 @@ public class DefaultCliHostTests
         A.CallTo(() => commandStore.FindCommandNode(args))
             .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
 
-        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler);
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler, [], []);
 
         // Act
         var result = await host.RunAsync(args);

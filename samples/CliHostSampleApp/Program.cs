@@ -14,6 +14,7 @@ public static class Program
     {
         return CliHostBuilder.Create()
             .EnableHelp(HelpCommandKind.CommandOrArgument)
+            .PrintHeaderMarkup(["[red]This is a sample cli host[/]"])
             .Build();
     }
 }

@@ -17,7 +17,9 @@ public class DefaultCliHost(
     IAnsiConsole ansiConsole,
     ICliCommandStore commandStore,
     IServiceProvider serviceProvider,
-    ICliCommandHelpHandler commandHelpHandler)
+    ICliCommandHelpHandler commandHelpHandler,
+    IEnumerable<ICliPreProcessor> preProcessors,
+    IEnumerable<ICliPostProcessor> postProcessors)
     : ICliHost
 {
     private readonly IServiceProvider _serviceProvider = Ensure.NotNull(serviceProvider);
@@ -110,10 +112,14 @@ public class DefaultCliHost(
         {
             if (_commandHelpHandler.ShouldPrintHelp(args))
             {
+                await ExecuteHelpPostProcessorsAsync(args).ConfigureAwait(false);
+
                 _commandHelpHandler.PrintHelp(args);
 
                 return new CliResult(CliExitCodes.Success);
             }
+
+            await ExecuteCommandPostProcessorsAsync(args).ConfigureAwait(false);
 
             var (command, optionsArgs, commandInfo) = CreateCliCommand(args);
 
@@ -121,7 +127,9 @@ public class DefaultCliHost(
             commandContext.AllArgs = args;
             commandContext.OptionsArgs = optionsArgs;
 
-            return await ExecuteAsync(commandInfo, command, optionsArgs).ConfigureAwait(false);
+            var cliResult = await ExecuteAsync(commandInfo, command, optionsArgs).ConfigureAwait(false);
+
+            return await ExecutePostProcessorsAsync(cliResult).ConfigureAwait(false);
         }
         catch (CliCommandConstructionFailedException e)
         {
@@ -153,6 +161,38 @@ public class DefaultCliHost(
 
             return new CliResult(e.ExitCode);
         }
+    }
+
+    private async Task ExecuteHelpPostProcessorsAsync(string[] args)
+    {
+        PreProcessorExecutionCondition[] conditions =
+            [PreProcessorExecutionCondition.OnlyOnHelp, PreProcessorExecutionCondition.Always];
+
+        foreach (var preProcessor in preProcessors.Where(x => conditions.Contains(x.ExecutionCondition)))
+        {
+            await preProcessor.ExecuteAsync(args).ConfigureAwait(false);
+        }
+    }
+
+    private async Task ExecuteCommandPostProcessorsAsync(string[] args)
+    {
+        PreProcessorExecutionCondition[] conditions =
+            [PreProcessorExecutionCondition.OnlyOnCommand, PreProcessorExecutionCondition.Always];
+
+        foreach (var preProcessor in preProcessors.Where(x => conditions.Contains(x.ExecutionCondition)))
+        {
+            await preProcessor.ExecuteAsync(args).ConfigureAwait(false);
+        }
+    }
+
+    private async Task<CliResult> ExecutePostProcessorsAsync(CliResult cliResult)
+    {
+        foreach (var postProcessor in postProcessors)
+        {
+            await postProcessor.ExecuteAsync(cliResult).ConfigureAwait(false);
+        }
+
+        return cliResult;
     }
 
     /// <inheritdoc />

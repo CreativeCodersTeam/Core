@@ -74,6 +74,10 @@ public interface ICliHostBuilder
     /// <returns>The same <see cref="ICliHostBuilder"/> instance.</returns>
     ICliHostBuilder SkipScanEntryAssembly(bool skipScanEntryAssembly = true);
 
+    ICliHostBuilder RegisterPreProcessor<T>(Action<T>? configure = null) where T : class, ICliPreProcessor;
+
+    ICliHostBuilder RegisterPostProcessor<T>(Action<T>? configure = null) where T : class, ICliPostProcessor;
+
     /// <summary>
     /// Builds and creates an instance of <see cref="ICliHost"/> configured through the current builder.
     /// </summary>

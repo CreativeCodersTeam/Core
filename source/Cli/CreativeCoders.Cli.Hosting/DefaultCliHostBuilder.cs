@@ -87,6 +87,42 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return this;
     }
 
+    public ICliHostBuilder RegisterPreProcessor<T>(Action<T>? configure = null)
+        where T : class, ICliPreProcessor
+    {
+        if (configure != null)
+        {
+            return ConfigureServices(x => x.AddSingleton<ICliPreProcessor>(sp =>
+            {
+                var preProcessor = sp.GetServiceOrCreateInstance<T>();
+
+                configure(preProcessor);
+
+                return preProcessor;
+            }));
+        }
+
+        return ConfigureServices(x => x.AddSingleton<ICliPreProcessor, T>());
+    }
+
+    public ICliHostBuilder RegisterPostProcessor<T>(Action<T>? configure = null)
+        where T : class, ICliPostProcessor
+    {
+        if (configure != null)
+        {
+            return ConfigureServices(x => x.AddSingleton<ICliPostProcessor>(sp =>
+            {
+                var postProcessor = sp.GetServiceOrCreateInstance<T>();
+
+                configure(postProcessor);
+
+                return postProcessor;
+            }));
+        }
+
+        return ConfigureServices(x => x.AddSingleton<ICliPostProcessor, T>());
+    }
+
     [SuppressMessage("Performance", "CA1859:Use concrete types when possible for improved performance")]
     private IServiceProvider BuildServiceProvider()
     {
