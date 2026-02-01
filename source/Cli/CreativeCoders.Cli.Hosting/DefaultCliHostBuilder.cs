@@ -19,7 +19,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
 
     private bool _helpEnabled;
 
-    private HelpCommandKind _helpCommandKind;
+    private HelpCommandKind[] _helpCommandKinds = [];
 
     private bool _skipScanEntryAssembly;
 
@@ -65,10 +65,10 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return this;
     }
 
-    public ICliHostBuilder EnableHelp(HelpCommandKind commandKind)
+    public ICliHostBuilder EnableHelp(params HelpCommandKind[] commandKinds)
     {
         _helpEnabled = true;
-        _helpCommandKind = commandKind;
+        _helpCommandKinds = commandKinds;
 
         return this;
     }
@@ -96,7 +96,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         {
             services.TryAddSingleton<HelpHandlerSettings>(_ => new HelpHandlerSettings
             {
-                CommandKind = _helpCommandKind
+                CommandKinds = _helpCommandKinds
             });
             services.TryAddSingleton<ICliCommandHelpHandler, CliCommandHelpHandler>();
         }

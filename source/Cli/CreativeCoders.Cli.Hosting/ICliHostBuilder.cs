@@ -54,7 +54,7 @@ public interface ICliHostBuilder
     /// This can be a command-specific help, argument-specific help, or both, as specified by the values in <see cref="HelpCommandKind"/>.
     /// </param>
     /// <returns>The same <see cref="ICliHostBuilder"/> instance to allow for method chaining.</returns>
-    ICliHostBuilder EnableHelp(HelpCommandKind commandKind);
+    ICliHostBuilder EnableHelp(params HelpCommandKind[] commandKinds);
 
     /// <summary>
     /// Enables or disables command options validation.
