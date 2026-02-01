@@ -6,7 +6,7 @@ namespace CreativeCoders.Cli.Hosting;
 public static class CliHostBuilderExtensions
 {
     public static ICliHostBuilder PrintHeaderText(this ICliHostBuilder builder, IEnumerable<string> lines,
-        PreProcessorExecutionCondition executionCondition = PreProcessorExecutionCondition.Always)
+        CliProcessorExecutionCondition executionCondition = CliProcessorExecutionCondition.Always)
     {
         return builder.RegisterPreProcessor<PrintHeaderPreProcessor>(x =>
         {
@@ -17,9 +17,31 @@ public static class CliHostBuilderExtensions
     }
 
     public static ICliHostBuilder PrintHeaderMarkup(this ICliHostBuilder builder, IEnumerable<string> lines,
-        PreProcessorExecutionCondition executionCondition = PreProcessorExecutionCondition.Always)
+        CliProcessorExecutionCondition executionCondition = CliProcessorExecutionCondition.Always)
     {
         return builder.RegisterPreProcessor<PrintHeaderPreProcessor>(x =>
+        {
+            x.Lines = lines;
+            x.PlainText = false;
+            x.ExecutionCondition = executionCondition;
+        });
+    }
+
+    public static ICliHostBuilder PrintFooterText(this ICliHostBuilder builder, IEnumerable<string> lines,
+        CliProcessorExecutionCondition executionCondition = CliProcessorExecutionCondition.Always)
+    {
+        return builder.RegisterPostProcessor<PrintFooterPostProcessor>(x =>
+        {
+            x.Lines = lines;
+            x.PlainText = true;
+            x.ExecutionCondition = executionCondition;
+        });
+    }
+
+    public static ICliHostBuilder PrintFooterMarkup(this ICliHostBuilder builder, IEnumerable<string> lines,
+        CliProcessorExecutionCondition executionCondition = CliProcessorExecutionCondition.Always)
+    {
+        return builder.RegisterPostProcessor<PrintFooterPostProcessor>(x =>
         {
             x.Lines = lines;
             x.PlainText = false;

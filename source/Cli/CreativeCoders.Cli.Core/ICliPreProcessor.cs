@@ -4,5 +4,5 @@ public interface ICliPreProcessor
 {
     Task ExecuteAsync(string[] args);
 
-    PreProcessorExecutionCondition ExecutionCondition { get; }
+    CliProcessorExecutionCondition ExecutionCondition { get; }
 }

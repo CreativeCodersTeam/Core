@@ -14,7 +14,10 @@ public static class Program
     {
         return CliHostBuilder.Create()
             .EnableHelp(HelpCommandKind.CommandOrArgument)
-            .PrintHeaderMarkup(["[red]This is a sample cli host[/]"])
+            .PrintHeaderText(["[red]This is a sample cli host[/]"])
+            .PrintHeaderMarkup(["[green]This is a second pre processor[/]"])
+            .PrintFooterText(["Bye bye"])
+            .PrintFooterMarkup(["[red]This is a second post processor[/]"])
             .Build();
     }
 }

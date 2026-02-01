@@ -1,6 +1,6 @@
 namespace CreativeCoders.Cli.Core;
 
-public enum PreProcessorExecutionCondition
+public enum CliProcessorExecutionCondition
 {
     Always,
     OnlyOnHelp,

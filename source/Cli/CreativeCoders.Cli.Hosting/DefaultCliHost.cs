@@ -112,11 +112,13 @@ public class DefaultCliHost(
         {
             if (_commandHelpHandler.ShouldPrintHelp(args))
             {
-                await ExecuteHelpPostProcessorsAsync(args).ConfigureAwait(false);
+                await ExecuteHelpPreProcessorsAsync(args).ConfigureAwait(false);
 
                 _commandHelpHandler.PrintHelp(args);
 
-                return new CliResult(CliExitCodes.Success);
+                var cliHelpResult = new CliResult(CliExitCodes.Success);
+
+                return await ExecuteHelpPostProcessorsAsync(cliHelpResult).ConfigureAwait(false);
             }
 
             await ExecuteCommandPostProcessorsAsync(args).ConfigureAwait(false);
@@ -129,7 +131,7 @@ public class DefaultCliHost(
 
             var cliResult = await ExecuteAsync(commandInfo, command, optionsArgs).ConfigureAwait(false);
 
-            return await ExecutePostProcessorsAsync(cliResult).ConfigureAwait(false);
+            return await ExecuteCommandPostProcessorsAsync(cliResult).ConfigureAwait(false);
         }
         catch (CliCommandConstructionFailedException e)
         {
@@ -163,10 +165,10 @@ public class DefaultCliHost(
         }
     }
 
-    private async Task ExecuteHelpPostProcessorsAsync(string[] args)
+    private async Task ExecuteHelpPreProcessorsAsync(string[] args)
     {
-        PreProcessorExecutionCondition[] conditions =
-            [PreProcessorExecutionCondition.OnlyOnHelp, PreProcessorExecutionCondition.Always];
+        CliProcessorExecutionCondition[] conditions =
+            [CliProcessorExecutionCondition.OnlyOnHelp, CliProcessorExecutionCondition.Always];
 
         foreach (var preProcessor in preProcessors.Where(x => conditions.Contains(x.ExecutionCondition)))
         {
@@ -176,8 +178,8 @@ public class DefaultCliHost(
 
     private async Task ExecuteCommandPostProcessorsAsync(string[] args)
     {
-        PreProcessorExecutionCondition[] conditions =
-            [PreProcessorExecutionCondition.OnlyOnCommand, PreProcessorExecutionCondition.Always];
+        CliProcessorExecutionCondition[] conditions =
+            [CliProcessorExecutionCondition.OnlyOnCommand, CliProcessorExecutionCondition.Always];
 
         foreach (var preProcessor in preProcessors.Where(x => conditions.Contains(x.ExecutionCondition)))
         {
@@ -185,9 +187,25 @@ public class DefaultCliHost(
         }
     }
 
-    private async Task<CliResult> ExecutePostProcessorsAsync(CliResult cliResult)
+    private async Task<CliResult> ExecuteCommandPostProcessorsAsync(CliResult cliResult)
     {
-        foreach (var postProcessor in postProcessors)
+        CliProcessorExecutionCondition[] conditions =
+            [CliProcessorExecutionCondition.OnlyOnCommand, CliProcessorExecutionCondition.Always];
+
+        foreach (var postProcessor in postProcessors.Where(x => conditions.Contains(x.ExecutionCondition)))
+        {
+            await postProcessor.ExecuteAsync(cliResult).ConfigureAwait(false);
+        }
+
+        return cliResult;
+    }
+
+    private async Task<CliResult> ExecuteHelpPostProcessorsAsync(CliResult cliResult)
+    {
+        CliProcessorExecutionCondition[] conditions =
+            [CliProcessorExecutionCondition.OnlyOnHelp, CliProcessorExecutionCondition.Always];
+
+        foreach (var postProcessor in postProcessors.Where(x => conditions.Contains(x.ExecutionCondition)))
         {
             await postProcessor.ExecuteAsync(cliResult).ConfigureAwait(false);
         }

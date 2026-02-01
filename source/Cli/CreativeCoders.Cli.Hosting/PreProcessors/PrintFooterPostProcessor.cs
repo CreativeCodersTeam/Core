@@ -4,11 +4,11 @@ using Spectre.Console;
 
 namespace CreativeCoders.Cli.Hosting.PreProcessors;
 
-public class PrintHeaderPreProcessor(IAnsiConsole ansiConsole) : ICliPreProcessor
+public class PrintFooterPostProcessor(IAnsiConsole ansiConsole) : ICliPostProcessor
 {
     private readonly IAnsiConsole _ansiConsole = Ensure.NotNull(ansiConsole);
 
-    public Task ExecuteAsync(string[] args)
+    public Task ExecuteAsync(CliResult cliResult)
     {
         if (PlainText)
         {
