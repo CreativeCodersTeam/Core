@@ -28,12 +28,18 @@ public class CliCommandHelpHandler(
     {
         var lowerCaseArgs = args.Select(x => x.ToLower()).ToArray();
 
-        return _settings.CommandKind switch
+        return _settings.CommandKinds.Any(x => ShouldPrintHelpFor(x, lowerCaseArgs));
+    }
+
+    private static bool ShouldPrintHelpFor(HelpCommandKind helpCommandKind, string[] args)
+    {
+        return helpCommandKind switch
         {
-            HelpCommandKind.Command => lowerCaseArgs.FirstOrDefault() == "help",
-            HelpCommandKind.Argument => lowerCaseArgs.Contains("--help"),
-            HelpCommandKind.CommandOrArgument => lowerCaseArgs.FirstOrDefault() == "help" ||
-                                                 lowerCaseArgs.Contains("--help"),
+            HelpCommandKind.Command => args.FirstOrDefault() == "help",
+            HelpCommandKind.Argument => args.Contains("--help"),
+            HelpCommandKind.EmptyArgs => args.Length == 0,
+            HelpCommandKind.CommandOrArgument => args.FirstOrDefault() == "help" ||
+                                                 args.Contains("--help"),
             _ => false
         };
     }

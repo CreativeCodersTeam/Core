@@ -16,11 +16,41 @@ namespace CreativeCoders.Cli.Tests.Hosting;
 [SuppressMessage("ReSharper", "NullableWarningSuppressionIsUsed")]
 public class CliCommandHelpHandlerTests
 {
+    [Theory]
+    [InlineData(new[] { HelpCommandKind.Command }, "help", "run")]
+    [InlineData(new[] { HelpCommandKind.Argument }, "run", "--help")]
+    [InlineData(new[] { HelpCommandKind.CommandOrArgument }, "help", "run")]
+    [InlineData(new[] { HelpCommandKind.CommandOrArgument }, "run", "--help")]
+    [InlineData(new[] { HelpCommandKind.Command, HelpCommandKind.Argument }, "help", "run")]
+    [InlineData(new[] { HelpCommandKind.Command, HelpCommandKind.Argument }, "run", "--help")]
+    [InlineData(new[] { HelpCommandKind.EmptyArgs })]
+    [InlineData(new[] { HelpCommandKind.Command, HelpCommandKind.Argument, HelpCommandKind.EmptyArgs },
+        "help", "run")]
+    [InlineData(new[] { HelpCommandKind.Command, HelpCommandKind.Argument, HelpCommandKind.EmptyArgs }, "run",
+        "--help")]
+    [InlineData(new[] { HelpCommandKind.Command, HelpCommandKind.Argument, HelpCommandKind.EmptyArgs })]
+    public void ShouldPrintHelp_DifferentKinds_RespectsHelpCommand(HelpCommandKind[] commandKinds,
+        params string[] args)
+    {
+        // Arrange
+        var handler = CreateHandler(commandKinds, out var stringWriter, out _);
+
+        // Act
+        var resultHelp = handler.ShouldPrintHelp(args);
+
+        // Assert
+        resultHelp
+            .Should()
+            .BeTrue();
+
+        stringWriter.Dispose();
+    }
+
     [Fact]
     public void ShouldPrintHelp_CommandKindCommand_RespectsHelpCommand()
     {
         // Arrange
-        var handler = CreateHandler(HelpCommandKind.Command, out var stringWriter, out _);
+        var handler = CreateHandler([HelpCommandKind.Command], out var stringWriter, out _);
 
         // Act
         var resultHelp = handler.ShouldPrintHelp(["help"]);
@@ -42,7 +72,7 @@ public class CliCommandHelpHandlerTests
     public void ShouldPrintHelp_CommandKindArgument_RespectsHelpArgument()
     {
         // Arrange
-        var handler = CreateHandler(HelpCommandKind.Argument, out var stringWriter, out _);
+        var handler = CreateHandler([HelpCommandKind.Argument], out var stringWriter, out _);
 
         // Act
         var resultHelp = handler.ShouldPrintHelp(["run", "--help"]);
@@ -85,7 +115,7 @@ public class CliCommandHelpHandlerTests
         var commandStore = new CliCommandStore();
         commandStore.AddCommands([commandInfo]);
 
-        var helpHandler = CreateHandler(HelpCommandKind.CommandOrArgument, out var writer,
+        var helpHandler = CreateHandler([HelpCommandKind.CommandOrArgument], out var writer,
             out var optionsHelpGenerator, commandStore);
 
         A.CallTo(() => optionsHelpGenerator.CreateHelp(typeof(DummyOptions)))
@@ -152,7 +182,7 @@ public class CliCommandHelpHandlerTests
         var commandStore = new CliCommandStore();
         commandStore.AddCommands([commandInfoOne, commandInfoTwo]);
 
-        var handler = CreateHandler(HelpCommandKind.CommandOrArgument, out var writer, out _, commandStore);
+        var handler = CreateHandler([HelpCommandKind.CommandOrArgument], out var writer, out _, commandStore);
 
         // Act
         handler.PrintHelp([]);
@@ -170,7 +200,7 @@ public class CliCommandHelpHandlerTests
     }
 
     private static CliCommandHelpHandler CreateHandler(
-        HelpCommandKind commandKind,
+        HelpCommandKind[] commandKinds,
         out StringWriter writer,
         out IOptionsHelpGenerator optionsHelpGenerator,
         ICliCommandStore? commandStore = null)
@@ -182,7 +212,7 @@ public class CliCommandHelpHandlerTests
             Out = new AnsiConsoleOutput(writer)
         });
 
-        var settings = new HelpHandlerSettings { CommandKind = commandKind };
+        var settings = new HelpHandlerSettings { CommandKinds = commandKinds };
         optionsHelpGenerator = A.Fake<IOptionsHelpGenerator>();
         var store = commandStore ?? new CliCommandStore();
 

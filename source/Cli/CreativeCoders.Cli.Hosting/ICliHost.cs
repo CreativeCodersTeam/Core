@@ -1,3 +1,4 @@
+using CreativeCoders.Cli.Core;
 using JetBrains.Annotations;
 
 namespace CreativeCoders.Cli.Hosting;

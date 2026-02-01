@@ -49,12 +49,12 @@ public interface ICliHostBuilder
     /// <summary>
     /// Enables help functionality for the CLI application by specifying the type of help commands to be supported.
     /// </summary>
-    /// <param name="commandKind">
+    /// <param name="commandKinds">
     /// Defines the type of help commands that can be used within the application.
     /// This can be a command-specific help, argument-specific help, or both, as specified by the values in <see cref="HelpCommandKind"/>.
     /// </param>
     /// <returns>The same <see cref="ICliHostBuilder"/> instance to allow for method chaining.</returns>
-    ICliHostBuilder EnableHelp(HelpCommandKind commandKind);
+    ICliHostBuilder EnableHelp(params HelpCommandKind[] commandKinds);
 
     /// <summary>
     /// Enables or disables command options validation.
@@ -73,6 +73,27 @@ public interface ICliHostBuilder
     /// </param>
     /// <returns>The same <see cref="ICliHostBuilder"/> instance.</returns>
     ICliHostBuilder SkipScanEntryAssembly(bool skipScanEntryAssembly = true);
+
+    /// <summary>
+    /// Registers a pre-processor for the CLI application.
+    /// </summary>
+    /// <typeparam name="T">The type of the pre-processor to be registered. Must implement <see cref="ICliPreProcessor"/>.</typeparam>
+    /// <param name="configure">
+    /// An optional action to configure the instance of <typeparamref name="T"/>. The action receives
+    /// the instance as a parameter.
+    /// </param>
+    /// <returns>The same <see cref="ICliHostBuilder"/> instance.</returns>
+    ICliHostBuilder RegisterPreProcessor<T>(Action<T>? configure = null) where T : class, ICliPreProcessor;
+
+    /// <summary>
+    /// Registers a post-processor to be executed after the CLI command is processed.
+    /// </summary>
+    /// <typeparam name="T">The type of the post-processor that implements <see cref="ICliPostProcessor"/>.</typeparam>
+    /// <param name="configure">
+    /// An optional action to configure the post-processor instance. The action receives a single parameter of type <typeparamref name="T"/>.
+    /// </param>
+    /// <returns>The same <see cref="ICliHostBuilder"/> instance.</returns>
+    ICliHostBuilder RegisterPostProcessor<T>(Action<T>? configure = null) where T : class, ICliPostProcessor;
 
     /// <summary>
     /// Builds and creates an instance of <see cref="ICliHost"/> configured through the current builder.

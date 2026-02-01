@@ -51,9 +51,9 @@ public class DefaultCliHostBuilderTests
 
         services
             .GetRequiredService<HelpHandlerSettings>()
-            .CommandKind
+            .CommandKinds
             .Should()
-            .Be(HelpCommandKind.Command);
+            .BeEquivalentTo([HelpCommandKind.Command]);
     }
 
     [Fact]

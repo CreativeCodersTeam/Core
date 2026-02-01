@@ -19,7 +19,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
 
     private bool _helpEnabled;
 
-    private HelpCommandKind _helpCommandKind;
+    private HelpCommandKind[] _helpCommandKinds = [];
 
     private bool _skipScanEntryAssembly;
 
@@ -65,10 +65,10 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return this;
     }
 
-    public ICliHostBuilder EnableHelp(HelpCommandKind commandKind)
+    public ICliHostBuilder EnableHelp(params HelpCommandKind[] commandKinds)
     {
         _helpEnabled = true;
-        _helpCommandKind = commandKind;
+        _helpCommandKinds = commandKinds;
 
         return this;
     }
@@ -87,6 +87,42 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return this;
     }
 
+    public ICliHostBuilder RegisterPreProcessor<T>(Action<T>? configure = null)
+        where T : class, ICliPreProcessor
+    {
+        if (configure != null)
+        {
+            return ConfigureServices(x => x.AddSingleton<ICliPreProcessor>(sp =>
+            {
+                var preProcessor = sp.GetServiceOrCreateInstance<T>();
+
+                configure(preProcessor);
+
+                return preProcessor;
+            }));
+        }
+
+        return ConfigureServices(x => x.AddSingleton<ICliPreProcessor, T>());
+    }
+
+    public ICliHostBuilder RegisterPostProcessor<T>(Action<T>? configure = null)
+        where T : class, ICliPostProcessor
+    {
+        if (configure != null)
+        {
+            return ConfigureServices(x => x.AddSingleton<ICliPostProcessor>(sp =>
+            {
+                var postProcessor = sp.GetServiceOrCreateInstance<T>();
+
+                configure(postProcessor);
+
+                return postProcessor;
+            }));
+        }
+
+        return ConfigureServices(x => x.AddSingleton<ICliPostProcessor, T>());
+    }
+
     [SuppressMessage("Performance", "CA1859:Use concrete types when possible for improved performance")]
     private IServiceProvider BuildServiceProvider()
     {
@@ -96,7 +132,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         {
             services.TryAddSingleton<HelpHandlerSettings>(_ => new HelpHandlerSettings
             {
-                CommandKind = _helpCommandKind
+                CommandKinds = _helpCommandKinds
             });
             services.TryAddSingleton<ICliCommandHelpHandler, CliCommandHelpHandler>();
         }

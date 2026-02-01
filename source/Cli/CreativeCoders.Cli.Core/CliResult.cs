@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 
-namespace CreativeCoders.Cli.Hosting;
+namespace CreativeCoders.Cli.Core;
 
 [PublicAPI]
 public class CliResult(int exitCode)
