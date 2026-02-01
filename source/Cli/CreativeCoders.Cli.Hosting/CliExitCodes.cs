@@ -11,4 +11,8 @@ public static class CliExitCodes
     public const int CommandResultUnknown = int.MinValue + 2;
 
     public const int CommandOptionsInvalid = int.MinValue + 3;
+
+    public const int PreProcessorFailed = int.MinValue + 4;
+
+    public const int PostProcessorFailed = int.MinValue + 5;
 }

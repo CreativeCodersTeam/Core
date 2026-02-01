@@ -121,7 +121,7 @@ public class DefaultCliHost(
                 return await ExecuteHelpPostProcessorsAsync(cliHelpResult).ConfigureAwait(false);
             }
 
-            await ExecuteCommandPostProcessorsAsync(args).ConfigureAwait(false);
+            await ExecuteCommandPreProcessorsAsync(args).ConfigureAwait(false);
 
             var (command, optionsArgs, commandInfo) = CreateCliCommand(args);
 
@@ -163,6 +163,12 @@ public class DefaultCliHost(
 
             return new CliResult(e.ExitCode);
         }
+        catch (CliExitException e)
+        {
+            _ansiConsole.MarkupLine($"[red]{e.Message}[/]");
+
+            return new CliResult(e.ExitCode);
+        }
     }
 
     private async Task ExecuteHelpPreProcessorsAsync(string[] args)
@@ -170,20 +176,33 @@ public class DefaultCliHost(
         CliProcessorExecutionCondition[] conditions =
             [CliProcessorExecutionCondition.OnlyOnHelp, CliProcessorExecutionCondition.Always];
 
-        foreach (var preProcessor in preProcessors.Where(x => conditions.Contains(x.ExecutionCondition)))
-        {
-            await preProcessor.ExecuteAsync(args).ConfigureAwait(false);
-        }
+        await ExecutePreProcessorsAsync(preProcessors, conditions, args)
+            .ConfigureAwait(false);
     }
 
-    private async Task ExecuteCommandPostProcessorsAsync(string[] args)
+    private async Task ExecuteCommandPreProcessorsAsync(string[] args)
     {
         CliProcessorExecutionCondition[] conditions =
             [CliProcessorExecutionCondition.OnlyOnCommand, CliProcessorExecutionCondition.Always];
 
+        await ExecutePreProcessorsAsync(preProcessors, conditions, args)
+            .ConfigureAwait(false);
+    }
+
+    private static async Task ExecutePreProcessorsAsync(IEnumerable<ICliPreProcessor> preProcessors,
+        CliProcessorExecutionCondition[] conditions, string[] args)
+    {
         foreach (var preProcessor in preProcessors.Where(x => conditions.Contains(x.ExecutionCondition)))
         {
-            await preProcessor.ExecuteAsync(args).ConfigureAwait(false);
+            try
+            {
+                await preProcessor.ExecuteAsync(args).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                throw new CliPreProcessorException(preProcessor,
+                    $"PreProcessor execution failed: {e.Message}", e);
+            }
         }
     }
 
@@ -192,12 +211,7 @@ public class DefaultCliHost(
         CliProcessorExecutionCondition[] conditions =
             [CliProcessorExecutionCondition.OnlyOnCommand, CliProcessorExecutionCondition.Always];
 
-        foreach (var postProcessor in postProcessors.Where(x => conditions.Contains(x.ExecutionCondition)))
-        {
-            await postProcessor.ExecuteAsync(cliResult).ConfigureAwait(false);
-        }
-
-        return cliResult;
+        return await ExecutePostProcessorsAsync(postProcessors, conditions, cliResult).ConfigureAwait(false);
     }
 
     private async Task<CliResult> ExecuteHelpPostProcessorsAsync(CliResult cliResult)
@@ -205,9 +219,24 @@ public class DefaultCliHost(
         CliProcessorExecutionCondition[] conditions =
             [CliProcessorExecutionCondition.OnlyOnHelp, CliProcessorExecutionCondition.Always];
 
+        return await ExecutePostProcessorsAsync(postProcessors, conditions, cliResult).ConfigureAwait(false);
+    }
+
+    private static async Task<CliResult> ExecutePostProcessorsAsync(
+        IEnumerable<ICliPostProcessor> postProcessors, CliProcessorExecutionCondition[] conditions,
+        CliResult cliResult)
+    {
         foreach (var postProcessor in postProcessors.Where(x => conditions.Contains(x.ExecutionCondition)))
         {
-            await postProcessor.ExecuteAsync(cliResult).ConfigureAwait(false);
+            try
+            {
+                await postProcessor.ExecuteAsync(cliResult).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                throw new CliPostProcessorException(postProcessor,
+                    $"PostProcessor execution failed: {e.Message}", e);
+            }
         }
 
         return cliResult;
@@ -238,9 +267,4 @@ public class DefaultCliHost(
 
         _commandHelpHandler.PrintHelpFor(findCommandGroupNodeResult.Node.ChildNodes);
     }
-}
-
-public class CliHostSettings
-{
-    public bool UseValidation { get; init; }
 }
