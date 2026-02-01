@@ -135,7 +135,9 @@ public class DefaultCliHost(
         }
         catch (CliCommandConstructionFailedException e)
         {
-            if (e.InnerException?.GetBaseException() is CliCommandAbortException abortException)
+            var abortException = FindAbortException(e.InnerException);
+
+            if (abortException != null)
             {
                 return HandleCommandAbortException(abortException);
             }
@@ -169,6 +171,23 @@ public class DefaultCliHost(
 
             return new CliResult(e.ExitCode);
         }
+    }
+
+    private static CliCommandAbortException? FindAbortException(Exception? exception)
+    {
+        var e = exception;
+
+        while (e != null)
+        {
+            if (e is CliCommandAbortException abortException)
+            {
+                return abortException;
+            }
+
+            e = e.InnerException;
+        }
+
+        return null;
     }
 
     private CliResult HandleCommandAbortException(CliCommandAbortException e)
