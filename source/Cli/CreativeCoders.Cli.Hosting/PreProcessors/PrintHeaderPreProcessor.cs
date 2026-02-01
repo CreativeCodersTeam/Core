@@ -1,9 +1,13 @@
+using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.Cli.Core;
 using CreativeCoders.Core;
+using JetBrains.Annotations;
 using Spectre.Console;
 
 namespace CreativeCoders.Cli.Hosting.PreProcessors;
 
+[UsedImplicitly]
+[ExcludeFromCodeCoverage]
 public class PrintHeaderPreProcessor(IAnsiConsole ansiConsole) : ICliPreProcessor
 {
     private readonly IAnsiConsole _ansiConsole = Ensure.NotNull(ansiConsole);

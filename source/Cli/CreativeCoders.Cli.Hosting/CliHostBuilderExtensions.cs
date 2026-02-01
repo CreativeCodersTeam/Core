@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.Cli.Core;
 using CreativeCoders.Cli.Hosting.PreProcessors;
 
 namespace CreativeCoders.Cli.Hosting;
 
+[ExcludeFromCodeCoverage]
 public static class CliHostBuilderExtensions
 {
     public static ICliHostBuilder PrintHeaderText(this ICliHostBuilder builder, IEnumerable<string> lines,
