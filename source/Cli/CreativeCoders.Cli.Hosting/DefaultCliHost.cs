@@ -135,6 +135,11 @@ public class DefaultCliHost(
         }
         catch (CliCommandConstructionFailedException e)
         {
+            if (e.InnerException is CliCommandAbortException abortException)
+            {
+                return HandleCommandAbortException(abortException);
+            }
+
             _ansiConsole.Markup(
                 $"[red]Error creating command: {e.InnerException?.Message ?? "Unknown error"}[/] ");
 
@@ -156,12 +161,7 @@ public class DefaultCliHost(
         }
         catch (CliCommandAbortException e)
         {
-            if (e.PrintMessage)
-            {
-                _ansiConsole.MarkupLine(e.IsError ? $"[red]{e.Message}[/]" : $"[yellow]{e.Message}[/]");
-            }
-
-            return new CliResult(e.ExitCode);
+            return HandleCommandAbortException(e);
         }
         catch (CliExitException e)
         {
@@ -169,6 +169,16 @@ public class DefaultCliHost(
 
             return new CliResult(e.ExitCode);
         }
+    }
+
+    private CliResult HandleCommandAbortException(CliCommandAbortException e)
+    {
+        if (e.PrintMessage)
+        {
+            _ansiConsole.MarkupLine(e.IsError ? $"[red]{e.Message}[/]" : $"[yellow]{e.Message}[/]");
+        }
+
+        return new CliResult(e.ExitCode);
     }
 
     private async Task ExecuteHelpPreProcessorsAsync(string[] args)
