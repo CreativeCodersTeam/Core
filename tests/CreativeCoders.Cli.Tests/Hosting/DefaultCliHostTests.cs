@@ -651,6 +651,44 @@ public class DefaultCliHostTests
     }
 
     [Fact]
+    public async Task RunAsync_WhenCommandCreationFailsWithAbort_PrintsErrorAndReturnsExitCodeFromAbort()
+    {
+        // Arrange
+        var args = new[] { "run" };
+
+        var ansiConsole = A.Fake<IAnsiConsole>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var serviceProvider = A.Fake<IServiceProvider>();
+        var helpHandler = A.Fake<ICliCommandHelpHandler>();
+
+        SetupServiceProvider(serviceProvider, null);
+
+        A.CallTo(() => helpHandler.ShouldPrintHelp(args))
+            .Returns(false);
+
+        var commandInfo = new CliCommandInfo
+        {
+            CommandAttribute = new CliCommandAttribute(["run"]),
+            CommandType = typeof(FailingCommandWithAbort)
+        };
+
+        var commandNode = new CliCommandNode(commandInfo, "run", null);
+
+        A.CallTo(() => commandStore.FindCommandNode(args))
+            .Returns(new FindCommandNodeResult<CliCommandNode>(commandNode, []));
+
+        var host = new DefaultCliHost(ansiConsole, commandStore, serviceProvider, helpHandler, [], []);
+
+        // Act
+        var result = await host.RunAsync(args);
+
+        // Assert
+        result.ExitCode
+            .Should()
+            .Be(FailingCommandWithAbort.ExitCode);
+    }
+
+    [Fact]
     public async Task RunAsync_WithOptionsValidation_ExecutesAndReturnsResult()
     {
         // Arrange
@@ -855,6 +893,22 @@ public class DefaultCliHostTests
         public FailingCommand()
         {
             throw new InvalidOperationException("Failure in constructor");
+        }
+
+        public Task<CommandResult> ExecuteAsync()
+        {
+            return Task.FromResult(new CommandResult());
+        }
+    }
+
+    private sealed class FailingCommandWithAbort : ICliCommand
+    {
+        public const int ExitCode = 123876;
+
+        [UsedImplicitly]
+        public FailingCommandWithAbort()
+        {
+            throw new CliCommandAbortException("Failure in constructor", ExitCode);
         }
 
         public Task<CommandResult> ExecuteAsync()
