@@ -49,7 +49,7 @@ public interface ICliHostBuilder
     /// <summary>
     /// Enables help functionality for the CLI application by specifying the type of help commands to be supported.
     /// </summary>
-    /// <param name="commandKind">
+    /// <param name="commandKinds">
     /// Defines the type of help commands that can be used within the application.
     /// This can be a command-specific help, argument-specific help, or both, as specified by the values in <see cref="HelpCommandKind"/>.
     /// </param>
