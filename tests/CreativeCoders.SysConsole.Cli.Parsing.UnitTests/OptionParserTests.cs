@@ -361,6 +361,58 @@ public class OptionParserTests
     }
 
     [Theory]
+    [InlineData("Ok", TestEnum.Ok)]
+    [InlineData("OK", TestEnum.OK)]
+    [InlineData("ok", null)]
+    [InlineData("", null)]
+    [InlineData("Default", TestEnum.Default)]
+    [InlineData("default", TestEnum.Default)]
+    [InlineData("Custom", TestEnum.Custom)]
+    [InlineData("CUSTOM", TestEnum.Custom)]
+    [InlineData("Failed", TestEnum.Failed)]
+    [InlineData("failED", TestEnum.Failed)]
+    [InlineData("None", TestEnum.None)]
+    [InlineData("nONe", TestEnum.None)]
+    public void Parse_NullableEnumValue_PropertyIsSetCorrect(string argValue, TestEnum? enumValue)
+    {
+        var args = new[] { "-ne", argValue };
+
+        var parser = new OptionParser(typeof(TestOptionWithEnum));
+
+        // Act
+        var option = parser.Parse(args) as TestOptionWithEnum;
+
+        // Assert
+        option
+            .Should()
+            .NotBeNull();
+
+        option.NullableEnumValue
+            .Should()
+            .Be(enumValue);
+    }
+
+    [Fact]
+    public void Parse_NotGivenNullableEnumValue_PropertyIsNull()
+    {
+        var args = Array.Empty<string>();
+
+        var parser = new OptionParser(typeof(TestOptionWithEnum));
+
+        // Act
+        var option = parser.Parse(args) as TestOptionWithEnum;
+
+        // Assert
+        option
+            .Should()
+            .NotBeNull();
+
+        option.NullableEnumValue
+            .Should()
+            .Be(null);
+    }
+
+    [Theory]
     [InlineData("Hello", "World")]
     [InlineData("World", "Hello")]
     [InlineData("Abc", "ABC")]
