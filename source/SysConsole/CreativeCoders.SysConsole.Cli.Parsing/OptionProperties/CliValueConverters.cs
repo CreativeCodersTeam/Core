@@ -69,7 +69,14 @@ public class CliValueConverters : ICliValueConverter
             return boolValue;
         }
 
-        var valueConverted = InternalConvert(value, nullableType, optionAttribute);
+        var valueConverted = nullableType.IsEnum
+            ? _enumConverter.Convert(value, nullableType, optionAttribute)
+            : InternalConvert(value, nullableType, optionAttribute);
+
+        if (valueConverted == ConverterAction.DoNothing)
+        {
+            return ConverterAction.DoNothing;
+        }
 
         return valueConverted == null
             ? Activator.CreateInstance(targetType)
