@@ -8,6 +8,7 @@ using CreativeCoders.Cli.Hosting.Commands.Validation;
 using CreativeCoders.Cli.Hosting.Help;
 using FakeItEasy;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -329,6 +330,97 @@ public class DefaultCliHostBuilderTests
 
         settings?.UseValidation
             .Should().NotBe(true);
+    }
+
+    [Fact]
+    public void UseConfiguration_AddsConfigurationToServices()
+    {
+        // Arrange
+        var builder = CreateBuilder();
+
+        builder.SkipScanEntryAssembly();
+
+        builder.UseConfiguration(config =>
+        {
+            config.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                { "TestKey", "TestValue" },
+                { "TestNumber", "42" }
+            });
+        });
+
+        var commandScanner = A.Fake<IAssemblyCommandScanner>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var validator = A.Fake<ICliCommandStructureValidator>();
+        var cliHost = A.Fake<ICliHost>();
+
+        A.CallTo(() => commandScanner.ScanForCommands(A<Assembly[]>.Ignored))
+            .Returns(CreateScanResult());
+
+        SubstituteServices(builder, commandScanner, commandStore, validator, cliHost);
+
+        var services = GetBuiltServiceProvider(builder);
+
+        // Act
+        builder.Build();
+
+        // Assert
+        var configuration = services.GetRequiredService<IConfiguration>();
+
+        configuration
+            .Should()
+            .NotBeNull();
+
+        configuration["TestKey"]
+            .Should()
+            .Be("TestValue");
+
+        configuration["TestNumber"]
+            .Should()
+            .Be("42");
+    }
+
+    [Fact]
+    public void UseConfiguration_AddsConfigurationRootToServices()
+    {
+        // Arrange
+        var builder = CreateBuilder();
+
+        builder.SkipScanEntryAssembly();
+
+        builder.UseConfiguration(config =>
+        {
+            config.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                { "Key", "Value" }
+            });
+        });
+
+        var commandScanner = A.Fake<IAssemblyCommandScanner>();
+        var commandStore = A.Fake<ICliCommandStore>();
+        var validator = A.Fake<ICliCommandStructureValidator>();
+        var cliHost = A.Fake<ICliHost>();
+
+        A.CallTo(() => commandScanner.ScanForCommands(A<Assembly[]>.Ignored))
+            .Returns(CreateScanResult());
+
+        SubstituteServices(builder, commandScanner, commandStore, validator, cliHost);
+
+        var services = GetBuiltServiceProvider(builder);
+
+        // Act
+        builder.Build();
+
+        // Assert
+        var configurationRoot = services.GetRequiredService<IConfigurationRoot>();
+
+        configurationRoot
+            .Should()
+            .NotBeNull();
+
+        configurationRoot["Key"]
+            .Should()
+            .Be("Value");
     }
 
     private static DefaultCliHostBuilder CreateBuilder()

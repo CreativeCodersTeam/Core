@@ -5,6 +5,7 @@ using CreativeCoders.Cli.Hosting;
 using CreativeCoders.Cli.Hosting.Help;
 using CreativeCoders.SysConsole.Cli.Parsing;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console;
 using Xunit;
@@ -129,6 +130,29 @@ public class CliHostingIntegrationTests
         await output.DisposeAsync();
     }
 
+    [Fact]
+    public async Task RunAsync_WhenConfigurationIsUsed_CommandCanAccessConfiguration()
+    {
+        // Arrange
+        var host = CreateHostWithConfiguration(out var output);
+
+        // Act
+        var result = await host.RunAsync(["int", "config"]);
+
+        // Assert
+        result.ExitCode
+            .Should()
+            .Be(CliExitCodes.Success);
+
+        output.ToString()
+            .Should()
+            .Contain("AppName: TestApp")
+            .And
+            .Contain("Version: 1.0.0");
+
+        await output.DisposeAsync();
+    }
+
     private static ICliHost CreateHostWithOutput(out StringWriter output)
     {
         var writer = new StringWriter();
@@ -139,6 +163,35 @@ public class CliHostingIntegrationTests
             .SkipScanEntryAssembly()
             .ScanAssemblies(Assembly.GetExecutingAssembly())
             .EnableHelp(HelpCommandKind.Command)
+            .ConfigureServices(services =>
+            {
+                services.AddSingleton<IAnsiConsole>(_ =>
+                    AnsiConsole.Create(new AnsiConsoleSettings
+                    {
+                        Out = new AnsiConsoleOutput(writer)
+                    }));
+            })
+            .Build();
+    }
+
+    private static ICliHost CreateHostWithConfiguration(out StringWriter output)
+    {
+        var writer = new StringWriter();
+        Console.SetOut(writer);
+        output = writer;
+
+        return CliHostBuilder.Create()
+            .SkipScanEntryAssembly()
+            .ScanAssemblies(Assembly.GetExecutingAssembly())
+            .EnableHelp(HelpCommandKind.Command)
+            .UseConfiguration(config =>
+            {
+                config.AddInMemoryCollection(new Dictionary<string, string?>
+                {
+                    { "AppName", "TestApp" },
+                    { "Version", "1.0.0" }
+                });
+            })
             .ConfigureServices(services =>
             {
                 services.AddSingleton<IAnsiConsole>(_ =>
@@ -201,6 +254,19 @@ public class CliHostingIntegrationTests
         public Task<CommandResult> ExecuteAsync()
         {
             return Task.FromResult(new CommandResult());
+        }
+    }
+
+    [UsedImplicitly]
+    [CliCommand(["int", "config"], Description = "configuration command")]
+    private sealed class ConfigCommand(IAnsiConsole ansiConsole, IConfiguration configuration) : ICliCommand
+    {
+        public Task<CommandResult> ExecuteAsync()
+        {
+            ansiConsole.WriteLine($"AppName: {configuration["AppName"]}");
+            ansiConsole.WriteLine($"Version: {configuration["Version"]}");
+
+            return Task.FromResult(new CommandResult { ExitCode = CliExitCodes.Success });
         }
     }
 }
