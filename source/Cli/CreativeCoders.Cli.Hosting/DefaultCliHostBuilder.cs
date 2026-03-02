@@ -6,6 +6,7 @@ using CreativeCoders.Cli.Hosting.Commands.Store;
 using CreativeCoders.Cli.Hosting.Commands.Validation;
 using CreativeCoders.Cli.Hosting.Help;
 using CreativeCoders.Core;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -121,6 +122,23 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         }
 
         return ConfigureServices(x => x.AddSingleton<ICliPostProcessor, T>());
+    }
+
+    public ICliHostBuilder UseConfiguration(Action<IConfigurationBuilder> configure)
+    {
+        Ensure.NotNull(configure);
+
+        return ConfigureServices(x =>
+        {
+            var configurationBuilder = new ConfigurationBuilder();
+
+            configure(configurationBuilder);
+
+            var configuration = configurationBuilder.Build();
+
+            x.AddSingleton(configuration);
+            x.AddSingleton<IConfiguration>(configuration);
+        });
     }
 
     [SuppressMessage("Performance", "CA1859:Use concrete types when possible for improved performance")]

@@ -2,6 +2,7 @@ using System.Reflection;
 using CreativeCoders.Cli.Core;
 using CreativeCoders.Cli.Hosting.Help;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CreativeCoders.Cli.Hosting;
@@ -94,6 +95,17 @@ public interface ICliHostBuilder
     /// </param>
     /// <returns>The same <see cref="ICliHostBuilder"/> instance.</returns>
     ICliHostBuilder RegisterPostProcessor<T>(Action<T>? configure = null) where T : class, ICliPostProcessor;
+
+    /// <summary>
+    /// Configures the application using a custom configuration setup.
+    /// </summary>
+    /// <param name="configure">
+    /// An action to configure the <see cref="IConfigurationBuilder"/>. The action allows adding sources,
+    /// modifying settings, or otherwise adjusting the configuration behavior.
+    /// </param>
+    /// <returns>The same <see cref="ICliHostBuilder"/> instance, enabling method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if the <paramref name="configure"/> parameter is null.</exception>
+    ICliHostBuilder UseConfiguration(Action<IConfigurationBuilder> configure);
 
     /// <summary>
     /// Builds and creates an instance of <see cref="ICliHost"/> configured through the current builder.
