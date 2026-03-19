@@ -74,7 +74,7 @@ public class MyClassTests
 2. Analyze the results:
   - On **failures**: Identify the cause and fix the test or test setup
   - On **success**: Continue to Phase 3
-3. Repeat until all tests are green
+3. Repeat until all tests are green. Don't fakely pass tests. If a test is too complex to set up, consider if it should be refactored or if the code under test should be made more testable.
 
 ## Phase 3: Identify Missing Test Cases
 
