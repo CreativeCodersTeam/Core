@@ -52,8 +52,10 @@ applyTo: '**/*.cs'
 ## Naming Conventions
 
 - Follow PascalCase for component names, method names, and public members.
-- Use camelCase for private fields and local variables.
+- Use camelCase for local variables.
+- Use _camelCase for private fields.
 - Prefix interface names with "I" (e.g., IUserService).
+- Use naming conventions from surrounding code if different from Naming conventions above.
 
 ## Formatting
 
