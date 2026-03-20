@@ -29,6 +29,11 @@
 -----------------------------------------------------------
 
 
+GitHub Copilot must ignore the following content in this file, cause Copilot gets this infos from the files in the .github/instructions directory:
+
+-----------------------------------------------------------
+
+
 ---
 description: 'Guidelines for building C# applications'
 applyTo: '**/*.cs'
