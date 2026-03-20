@@ -13,6 +13,11 @@ on:
         required: false
         type: string
         default: 'main'
+      clear-ai-configs:
+        description: 'Clear existing AI configuration files before syncing'
+        required: false
+        type: boolean
+        default: false
   schedule:
     - cron: '0 0 * * *' # Every day at midnight
 
@@ -34,3 +39,4 @@ jobs:
       ai-systems: 'copilot,claude,junie'
       ai-base-version: ${{ inputs.ai-base-version }}
       create-pull-request: ${{ inputs.create-pull-request }}
+      clear-ai-configs: ${{ inputs.clear-ai-configs }}
