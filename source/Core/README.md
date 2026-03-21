@@ -1,119 +1,168 @@
-# Core .NET library
+# CreativeCoders.Core
 
-Basic classes and interfaces for .NET applications. 
+[![NuGet](https://img.shields.io/nuget/v/CreativeCoders.Core?style=flat-square)](https://www.nuget.org/packages/CreativeCoders.Core)
+[![Build](https://img.shields.io/github/actions/workflow/status/CreativeCodersTeam/Core/build.yml?style=flat-square)](https://github.com/CreativeCodersTeam/Core/actions)
+[![License](https://img.shields.io/github/license/CreativeCodersTeam/Core?style=flat-square)](../../LICENSE)
+[![.NET](https://img.shields.io/badge/.NET-10.0-512bd4?style=flat-square)](https://dotnet.microsoft.com)
 
-## Arguments ensuring
-Ensure arguments are as expected
+A foundational .NET library providing essential utilities, abstractions, and helpers for building robust applications. It serves as the base layer of the CreativeCoders ecosystem, offering a broad set of reusable primitives with minimal external dependencies.
 
-### Simple argument checks for null, empty, etc.
-[Ensure.cs](CreativeCoders.Core/Ensure.cs)
-```csharp
-// Argument name can be given via second parameter or via nameof. If none is given, the name of variable is used.
-Ensure.NotNull(instance); // throws ArgumentNullException if instance is null
-// Ensure.IsNullOrEmpty works for strings and IEnumerable<T>
-Ensure.IsNullOrEmpty(str); // throws ArgumentException if str is null or empty
-Ensure.IsNullOrEmpty(items); // throws ArgumentException if items is null or empty
-Ensure.FileExists(fileName); // throws ArgumentException if fileName not exists
-Ensure.DirectoryExists(dirName); // throws ArgumentException if dirName not exists
-// for more checks see Ensure.cs
+[Features](#features) • [Installation](#installation) • [Usage](#usage) • [API Overview](#api-overview)
+
+## Features
+
+- **Argument validation** — fluent, chainable `Ensure` API with `CallerArgumentExpression` support
+- **Caching** — generic cache interface with absolute/sliding expiration policies
+- **Collections** — thread-safe lists, observable collections, batch operations, and LINQ extensions
+- **Threading** — `ReaderWriterLockSlim`-backed primitives, synchronized values, and mutex locks
+- **Enum utilities** — string ↔ enum conversion with custom attributes, reflection helpers
+- **Dependency sorting** — topological sort with circular reference detection
+- **Object linking** — declarative one-way / two-way property synchronization between objects
+- **Visitor pattern** — generic visitor and visitable interfaces
+- **Weak references** — `WeakAction`, `WeakFunc` and weak delegate wrappers
+- **Reflection** — expression-based member name extraction, type and method utilities
+- **I/O abstractions** — testable wrappers around `System.IO` via `System.IO.Abstractions`
+- **Environment abstraction** — mockable `IEnvironment` / `Env` for unit testing
+- **Text utilities** — string extensions, `SecureString` conversion, pattern matching
+
+## Installation
+
+```bash
+dotnet add package CreativeCoders.Core
 ```
 
-### More complex argument checks for null, empty, etc.
-[Ensure.Argument Extensions](CreativeCoders.Core/EnsureArguments/Extensions)
-```csharp
-// Argument name can be given via second parameter or via nameof. If none is given, the name of variable is used.
-// you can chain the checks to ensure multiple conditions at once
-Ensure.Argument(instance).NotNull(); // throws ArgumentNullException if instance is null
-Ensure.Argument(text).IsNullOrEmpty(); // throws ArgumentException if str is null or empty
-Ensure.Argument(items).IsNullOrEmpty(); // throws ArgumentException if items is null or empty
-Ensure.Argument(fileName).FileExists(); // throws ArgumentException if fileName not exists
-Ensure.Argument(dirName).DirectoryExists(); // throws ArgumentException if dirName not exists
-Ensure.Argument(text).NotNull().HasMaxLength(maxLength); // throws if text is null or exceeds max length
-```
+## Usage
 
-## Threading
-Thread-safe collections, synchronization primitives
-
-## Enums
-Enum extensions and helpers
+### Argument validation
 
 ```csharp
-enum MyEnum
+public void ProcessText(string text, int maxLength)
 {
-    [EnumStringValue("Value1")]
-    ValueOne,
-    [EnumStringValue("Value2")]
-    ValueTwo
+    // Simple null/empty checks — argument name is inferred automatically
+    Ensure.IsNotNullOrEmpty(text);
+    Ensure.FileExists(fileName);
+
+    // Chainable fluent checks
+    Ensure.Argument(text).NotNull().HasMaxLength(maxLength);
+}
+```
+
+### Caching
+
+```csharp
+ICache<string, UserData> cache = new DictionaryCache<string, UserData>();
+
+var user = await cache.GetOrAddAsync("user-42", async key =>
+    await _userRepository.FindAsync(key));
+```
+
+### Thread-safe collections
+
+```csharp
+var list = new ConcurrentList<string>(new LockSlimLockingMechanism());
+list.Add("item");
+
+var safeValue = new SynchronizedValue<int>(0);
+safeValue.Value = 42;
+```
+
+### Enum ↔ string conversion
+
+```csharp
+enum Status
+{
+    [EnumStringValue("active")]   Active,
+    [EnumStringValue("inactive")] Inactive
 }
 
-// Instantiate a new EnumStringConverter
-var enumConverter = new EnumStringConverter();
+var converter = new EnumStringConverter();
 
-// Convert enum to string
-string enumString = enumConverter.Convert(MyEnum.ValueOne); 
-Console.WriteLine(enumString); // Outputs: Value1
-
-// Convert string to enum
-MyEnum enumValue = enumConverter.Convert<MyEnum>("Value2");
-Console.WriteLine(enumValue); // Outputs: ValueTwo
+string text   = converter.Convert(Status.Active);   // "active"
+Status status = converter.Convert<Status>("active"); // Status.Active
 ```
 
-## Visitor pattern
-Visitor pattern implementation
+### Dependency sorting
 
-## IO
-Static helpers for IO operations based on System.IO.Abstractions as a replacement for File, Directory, Path, etc.
-
-## Weak action and functions
-Weak delegates for actions and functions
-
-## Reflection
-Classes and extensions for working with dynamic code
-
-## ObjectLinking
-Classes for linking objects together, so that properties of one object are automatically updated when properties of another object change
-
-## Dependency tree builder
-Classes for building and resolving dependency trees
-
-## SysEnvironment
-Abstraction for Environment class to enable mocking for unit tests
-
-#### Use static methods from Env
 ```csharp
-string desktopPath = Env.GetFolderPath(Environment.SpecialFolder.Desktop);
+// Sorts items in topological order; throws CircularReferenceException on cycles
+var sorter = new DependencySorter<string>();
+IEnumerable<string> sorted = sorter.Sort(items);
 ```
 
-#### Use IEnvironment via DI
+### Object property linking
+
 ```csharp
-// First register service
+var link = new ObjectLinkBuilder()
+    .From(source, s => s.Name)
+    .To(target, t => t.DisplayName)
+    .TwoWay()
+    .Build();
+```
+
+### Environment abstraction
+
+```csharp
+// Register in DI
 services.AddEnvironment();
 
-// Sample app
-public class MyApp
+// Inject and use — easily mockable in unit tests
+public class MyService(IEnvironment env)
 {
-    private readonly IEnvironment _environment;
-
-    public MyApp(IEnvironment environment)
+    public void PrintInfo()
     {
-        _environment = environment;
+        Console.WriteLine($"Machine: {env.MachineName}");
+        Console.WriteLine($"User:    {env.UserName}");
+        Console.WriteLine($"Dir:     {env.CurrentDirectory}");
     }
+}
 
-    public void Run()
+// Or use the static wrapper directly
+string desktop = Env.GetFolderPath(Environment.SpecialFolder.Desktop);
+```
+
+### Observable object base
+
+```csharp
+public class PersonViewModel : ObservableObject
+{
+    private string _name = string.Empty;
+
+    public string Name
     {
-        // Use the IEnvironment instance
-        Console.WriteLine("Current Directory: " + _environment.CurrentDirectory);
-        Console.WriteLine("Machine Name: " + _environment.MachineName);
-        Console.WriteLine("User Name: " + _environment.UserName);
-
-        Console.WriteLine("Environment Variables:");
-        foreach (var envVar in _environment.GetEnvironmentVariables())
-        {
-            Console.WriteLine($"Key: {envVar.Key}, Value: {envVar.Value}");
-        }
+        get => _name;
+        set => Set(ref _name, value); // raises PropertyChanged automatically
     }
 }
 ```
 
-## Null objects
-Null objects for various types
+## API Overview
+
+| Namespace | Highlights |
+|---|---|
+| `CreativeCoders.Core` | `Ensure`, `ObservableObject`, `EventHandlerEx`, object/disposable extensions |
+| `CreativeCoders.Core.Caching` | `ICache<TKey,TValue>`, `ICacheExpirationPolicy`, `CacheExpirationMode` |
+| `CreativeCoders.Core.Collections` | `ConcurrentList<T>`, `ExtendedObservableCollection<T>`, enumerable extensions |
+| `CreativeCoders.Core.Comparing` | `FuncComparer<T>`, `MultiComparer<T>`, `FuncEqualityComparer<T>` |
+| `CreativeCoders.Core.Dependencies` | `DependencySorter`, `DependencyTreeBuilder`, `CircularReferenceException` |
+| `CreativeCoders.Core.Enums` | `EnumStringConverter`, `[EnumStringValue]`, `EnumExtensions` |
+| `CreativeCoders.Core.Executing` | `IExecutable`, `IExecutableWithParameter<T>`, `IExecutableWithResult` |
+| `CreativeCoders.Core.IO` | `FileSys`, `FileSystemEx`, `PathExtensions`, `StreamExtensions` |
+| `CreativeCoders.Core.Messaging` | Event messaging infrastructure and message types |
+| `CreativeCoders.Core.ObjectLinking` | `ObjectLink`, `ObjectLinkBuilder`, `[PropertyLink]` attribute |
+| `CreativeCoders.Core.Reflection` | `ExpressionExtensions`, `TypeExtensions`, `ReflectionUtils` |
+| `CreativeCoders.Core.SysEnvironment` | `IEnvironment`, `Env`, `EnvironmentWrapper`, DI extensions |
+| `CreativeCoders.Core.Text` | `StringExtension`, `TextSpan`, `RandomString`, `PatternMatcher` |
+| `CreativeCoders.Core.Threading` | `SynchronizedValue<T>`, locking mechanisms, `MutexLock` |
+| `CreativeCoders.Core.Visitors` | `IVisitor<,>`, `Visitable`, `ListVisitor`, `VisitableAction` |
+| `CreativeCoders.Core.Weak` | `WeakAction`, `WeakFunc<T>`, `WeakActionGeneric<T>` |
+
+> [!NOTE]
+> The library targets **.NET 10.0** and uses C# 14 features throughout, including file-scoped namespaces and nullable reference types.
+
+## Dependencies
+
+| Package | Purpose |
+|---|---|
+| `JetBrains.Annotations` | Nullability and contract annotations (`[PublicAPI]`, `[ContractAnnotation]`) |
+| `Microsoft.Extensions.DependencyInjection.Abstractions` | DI integration for `IServiceCollection` extensions |
+| `System.IO.Abstractions` | Testable file system abstraction |

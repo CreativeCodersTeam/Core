@@ -267,6 +267,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Configuration", "source\Configuration\CreativeCoders.Configuration\CreativeCoders.Configuration.csproj", "{86E41188-7778-415E-A783-2CEF2DADB21A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plan", "plan", "{D432EE86-9930-4CAE-8AF3-268E6DCCDB9A}"
+	ProjectSection(SolutionItems) = preProject
+		.ai-plan\split-repos.md = .ai-plan\split-repos.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -709,6 +714,7 @@ Global
 		{A081DDB3-A9DB-498F-824B-C605ACFDB43A} = {5A3FFD14-2258-4007-AC77-BAFB3B3EB26F}
 		{2568D059-EB13-4489-8F12-769EB4DD449F} = {2A7105AA-05B6-469A-93F5-719723A4D90D}
 		{86E41188-7778-415E-A783-2CEF2DADB21A} = {2568D059-EB13-4489-8F12-769EB4DD449F}
+		{D432EE86-9930-4CAE-8AF3-268E6DCCDB9A} = {FCD8D558-7F1F-4D2E-B2EA-DE412BCEE1F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE24476B-9A4C-4146-B982-3461FAF8B3B0}
