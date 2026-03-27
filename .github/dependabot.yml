@@ -45,5 +45,11 @@ updates:
           - "Octokit"
           - "YamlDotNet"
           - "log4net"
+      # Catch-all: Any package not matched by the groups above.
+      # Dependabot assigns each package to the first matching group only,
+      # so this will never include packages already covered above.
+      other-dependencies:
+        patterns:
+          - "*"
     labels:
       - "dependencies"
