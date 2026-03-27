@@ -1,0 +1,44 @@
+name: dependabot-manual
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-outdated:
+    name: Check outdated NuGet packages
+    runs-on: ubuntu-latest
+    env:
+      TERM: xterm
+      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: 'Cache: ~/.nuget/packages'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.nuget/packages
+          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
+
+      - name: Check for outdated packages
+        run: |
+          echo "## Outdated NuGet Packages" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          dotnet list package --outdated 2>&1 | tee -a $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Trigger Dependabot update
+        run: |
+          gh api \
+            --method POST \
+            "/repos/${{ github.repository }}/dependabot/updates" \
+            --input - <<< '{}' || echo "Dependabot trigger sent (may require Dependabot to be enabled on the repo)"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
