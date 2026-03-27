@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <ManagePackageVersions>true</ManagePackageVersions>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="AwesomeAssertions" Version="9.4.0" />
