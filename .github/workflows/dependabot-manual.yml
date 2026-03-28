@@ -36,9 +36,19 @@ jobs:
 
       - name: Trigger Dependabot update
         run: |
-          gh api \
+          set -euo pipefail
+
+          echo "Triggering Dependabot update via GitHub CLI..."
+          if response=$(gh api \
             --method POST \
             "/repos/${{ github.repository }}/dependabot/updates" \
-            --input - <<< '{}' || echo "Dependabot trigger sent (may require Dependabot to be enabled on the repo)"
+            --input - <<< '{}' 2>&1); then
+            echo "Dependabot trigger sent successfully."
+            echo "$response"
+          else
+            echo "Failed to trigger Dependabot update. gh api output:"
+            echo "$response"
+            exit 1
+          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
