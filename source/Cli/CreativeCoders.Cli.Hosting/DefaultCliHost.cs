@@ -13,6 +13,16 @@ using Spectre.Console;
 
 namespace CreativeCoders.Cli.Hosting;
 
+/// <summary>
+/// Provides the default implementation of <see cref="ICliHost"/> that resolves and executes CLI commands
+/// with pre-processing, post-processing, help handling, and error management.
+/// </summary>
+/// <param name="ansiConsole">The console used for rendering output.</param>
+/// <param name="commandStore">The command store containing all registered commands.</param>
+/// <param name="serviceProvider">The service provider used for dependency resolution.</param>
+/// <param name="commandHelpHandler">The handler responsible for displaying help output.</param>
+/// <param name="preProcessors">The collection of pre-processors to execute before commands.</param>
+/// <param name="postProcessors">The collection of post-processors to execute after commands.</param>
 public class DefaultCliHost(
     IAnsiConsole ansiConsole,
     ICliCommandStore commandStore,
@@ -106,6 +116,7 @@ public class DefaultCliHost(
         }
     }
 
+    /// <inheritdoc />
     public async Task<CliResult> RunAsync(string[] args)
     {
         try

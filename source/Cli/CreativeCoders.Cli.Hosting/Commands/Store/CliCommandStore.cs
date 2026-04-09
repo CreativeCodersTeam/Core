@@ -4,6 +4,9 @@ using CreativeCoders.Core.Collections;
 
 namespace CreativeCoders.Cli.Hosting.Commands.Store;
 
+/// <summary>
+/// Provides the default implementation of <see cref="ICliCommandStore"/> that organizes commands in a tree structure.
+/// </summary>
 public class CliCommandStore : ICliCommandStore
 {
     private readonly List<CliCommandInfo> _commands = [];
@@ -12,6 +15,7 @@ public class CliCommandStore : ICliCommandStore
 
     private IEnumerable<CliCommandGroupAttribute>? _groupAttributes;
 
+    /// <inheritdoc />
     public void AddCommands(IEnumerable<CliCommandInfo> commands,
         IEnumerable<CliCommandGroupAttribute>? groupAttributes = null)
     {
@@ -22,6 +26,7 @@ public class CliCommandStore : ICliCommandStore
         commands.ForEach(AddCommand);
     }
 
+    /// <inheritdoc />
     public FindCommandNodeResult<CliCommandGroupNode>? FindCommandGroupNode(string[] args)
     {
         return FindCommandGroupNode(null, _treeRootNodes, args);
@@ -55,6 +60,7 @@ public class CliCommandStore : ICliCommandStore
         };
     }
 
+    /// <inheritdoc />
     public FindCommandNodeResult<CliCommandNode>? FindCommandNode(string[] args)
     {
         return FindCommandNode(_treeRootNodes, args);
@@ -151,9 +157,12 @@ public class CliCommandStore : ICliCommandStore
             : GetGroupNode(groupNode, groupNode.ChildNodes, cmds.Skip(1).ToArray());
     }
 
+    /// <inheritdoc />
     public IEnumerable<CliTreeNode> TreeRootNodes => _treeRootNodes;
 
+    /// <inheritdoc />
     public IEnumerable<CliCommandInfo> Commands => _commands;
 
+    /// <inheritdoc />
     public IEnumerable<CliCommandGroupAttribute> GroupAttributes => _groupAttributes ?? [];
 }

@@ -233,6 +233,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessUtilsSampleApp", "samples\ProcessUtilsSampleApp\ProcessUtilsSampleApp.csproj", "{58E94E6E-9A9A-4E3F-ACB5-89E47CE67C39}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cli", "Cli", "{CDCF2469-1668-4EB0-A73F-692115CF6776}"
+	ProjectSection(SolutionItems) = preProject
+		source\Cli\README.md = source\Cli\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreativeCoders.Cli.Core", "source\Cli\CreativeCoders.Cli.Core\CreativeCoders.Cli.Core.csproj", "{4E628A1A-953A-4274-B4EF-F33E943A650D}"
 EndProject

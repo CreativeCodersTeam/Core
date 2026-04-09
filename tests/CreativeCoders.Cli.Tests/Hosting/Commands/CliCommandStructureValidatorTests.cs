@@ -155,6 +155,38 @@ public class CliCommandStructureValidatorTests
             .ThrowExactly<AmbiguousCliCommandsException>();
     }
 
+    // <summary>
+    /// Ensures duplicate alternative command paths are treated as ambiguous.
+    /// </summary>
+    [Fact]
+    public void Validate_WithAlternativeCommandPaths_ThrowsNoException()
+    {
+        // Arrange
+        var commandStore = A.Fake<ICliCommandStore>();
+
+        A.CallTo(() => commandStore.GroupAttributes)
+            .Returns(Array.Empty<CliCommandGroupAttribute>());
+
+        var commands = new[]
+        {
+            CreateCommandInfo(["main", "command"], ["alias", "run"]),
+            CreateCommandInfo(["other", "command"], ["alias", "run1"])
+        };
+
+        A.CallTo(() => commandStore.Commands)
+            .Returns(commands);
+
+        var validator = new CliCommandStructureValidator();
+
+        // Act
+        var action = () => validator.Validate(commandStore);
+
+        // Assert
+        action
+            .Should()
+            .NotThrow();
+    }
+
     private static CliCommandInfo CreateCommandInfo(string[] commands, string[]? alternativeCommands = null)
     {
         // Builds a command info instance mimicking CLI command definitions for validator inputs.
