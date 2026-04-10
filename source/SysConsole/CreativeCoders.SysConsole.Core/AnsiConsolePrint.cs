@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using CreativeCoders.Core;
 using Spectre.Console;
-using Spectre.Console.Advanced;
 using Spectre.Console.Rendering;
 
 namespace CreativeCoders.SysConsole.Core;
