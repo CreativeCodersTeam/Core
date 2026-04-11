@@ -118,7 +118,7 @@ Register external tools via the builder:
 CakeHostBuilder.Create()
     .InstallTools(
         new DotNetToolInstallation("GitVersion.Tool", "6.5.1"),
-        new NuGetToolInstallation("ReportGenerator", "5.5.1"))
+        new DotNetToolInstallation("dotnet-reportgenerator-globaltool", "5.5.1"))
     // ...
 ```
 
