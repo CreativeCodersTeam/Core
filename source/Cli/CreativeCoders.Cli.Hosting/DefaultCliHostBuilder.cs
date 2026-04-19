@@ -12,6 +12,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CreativeCoders.Cli.Hosting;
 
+/// <summary>
+/// Provides the default implementation of <see cref="ICliHostBuilder"/> for configuring and building a CLI host.
+/// </summary>
 public class DefaultCliHostBuilder : ICliHostBuilder
 {
     private readonly List<Assembly> _scanAssemblies = [];
@@ -28,6 +31,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
 
     private bool _useValidation;
 
+    /// <inheritdoc />
     public ICliHostBuilder UseContext<TContext>(Action<IServiceProvider, TContext>? configure = null)
         where TContext : class, ICliCommandContext
     {
@@ -50,6 +54,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
             .AddSingleton<ICliCommandContext, TContext>());
     }
 
+    /// <inheritdoc />
     public ICliHostBuilder ConfigureServices(Action<IServiceCollection> configureServices)
     {
         Ensure.NotNull(configureServices);
@@ -59,6 +64,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return this;
     }
 
+    /// <inheritdoc />
     public ICliHostBuilder ScanAssemblies(params Assembly[] assemblies)
     {
         _scanAssemblies.AddRange(assemblies);
@@ -66,6 +72,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return this;
     }
 
+    /// <inheritdoc />
     public ICliHostBuilder EnableHelp(params HelpCommandKind[] commandKinds)
     {
         _helpEnabled = true;
@@ -74,6 +81,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return this;
     }
 
+    /// <inheritdoc />
     public ICliHostBuilder UseValidation(bool useValidation = true)
     {
         _useValidation = useValidation;
@@ -81,6 +89,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return this;
     }
 
+    /// <inheritdoc />
     public ICliHostBuilder SkipScanEntryAssembly(bool skipScanEntryAssembly = true)
     {
         _skipScanEntryAssembly = skipScanEntryAssembly;
@@ -88,6 +97,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return this;
     }
 
+    /// <inheritdoc />
     public ICliHostBuilder RegisterPreProcessor<T>(Action<T>? configure = null)
         where T : class, ICliPreProcessor
     {
@@ -106,6 +116,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return ConfigureServices(x => x.AddSingleton<ICliPreProcessor, T>());
     }
 
+    /// <inheritdoc />
     public ICliHostBuilder RegisterPostProcessor<T>(Action<T>? configure = null)
         where T : class, ICliPostProcessor
     {
@@ -124,6 +135,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         return ConfigureServices(x => x.AddSingleton<ICliPostProcessor, T>());
     }
 
+    /// <inheritdoc />
     public ICliHostBuilder UseConfiguration(Action<IConfigurationBuilder> configure)
     {
         Ensure.NotNull(configure);
@@ -191,6 +203,7 @@ public class DefaultCliHostBuilder : ICliHostBuilder
         }
     }
 
+    /// <inheritdoc />
     public ICliHost Build()
     {
         ScanEntryAssemblyIfNecessary();

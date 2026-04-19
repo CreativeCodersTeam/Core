@@ -3,8 +3,13 @@ using CreativeCoders.Cli.Hosting.Exceptions;
 
 namespace CreativeCoders.Cli.Hosting.Commands.Validation;
 
+/// <summary>
+/// Provides the default implementation of <see cref="ICliCommandStructureValidator"/> that checks
+/// for duplicate group attributes and ambiguous command definitions.
+/// </summary>
 public class CliCommandStructureValidator : ICliCommandStructureValidator
 {
+    /// <inheritdoc />
     public void Validate(ICliCommandStore commandStore)
     {
         // Ensure that all Group attributes commands are unique

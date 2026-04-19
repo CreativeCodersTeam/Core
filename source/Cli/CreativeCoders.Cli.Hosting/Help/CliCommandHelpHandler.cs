@@ -9,6 +9,14 @@ using Spectre.Console;
 
 namespace CreativeCoders.Cli.Hosting.Help;
 
+/// <summary>
+/// Provides the default implementation of <see cref="ICliCommandHelpHandler"/>
+/// that renders help output to the console using Spectre.Console.
+/// </summary>
+/// <param name="settings">The help handler configuration settings.</param>
+/// <param name="commandStore">The command store containing all registered commands.</param>
+/// <param name="ansiConsole">The console used for rendering output.</param>
+/// <param name="optionsHelpGenerator">The generator for options help text.</param>
 public class CliCommandHelpHandler(
     HelpHandlerSettings settings,
     ICliCommandStore commandStore,
@@ -24,6 +32,7 @@ public class CliCommandHelpHandler(
 
     private readonly HelpHandlerSettings _settings = Ensure.NotNull(settings);
 
+    /// <inheritdoc />
     public bool ShouldPrintHelp(string[] args)
     {
         var lowerCaseArgs = args.Select(x => x.ToLower()).ToArray();
@@ -44,6 +53,7 @@ public class CliCommandHelpHandler(
         };
     }
 
+    /// <inheritdoc />
     public void PrintHelp(string[] args)
     {
         if (args.FirstOrDefault()?.ToLower() == "help")
@@ -72,6 +82,7 @@ public class CliCommandHelpHandler(
         PrintHelpFor(_commandStore.TreeRootNodes.ToList());
     }
 
+    /// <inheritdoc />
     public void PrintHelpFor(IList<CliTreeNode> nodeChildNodes)
     {
         if (nodeChildNodes.Count == 0)
