@@ -7,7 +7,7 @@
     <PackageVersion Include="Cake.Frosting" Version="6.1.0" />
     <PackageVersion Include="Cake.Testing" Version="6.1.0" />
     <PackageVersion Include="Castle.Core" Version="5.2.1" />
-    <PackageVersion Include="coverlet.collector" Version="8.0.1" />
+    <PackageVersion Include="coverlet.collector" Version="10.0.0" />
     <PackageVersion Include="FakeItEasy" Version="9.0.1" />
     <PackageVersion Include="JetBrains.Annotations" Version="2025.2.4" />
     <PackageVersion Include="LiteDB" Version="5.0.21" />
