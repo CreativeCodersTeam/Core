@@ -14,6 +14,13 @@ using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Collections;
 
+/// <summary>
+///     A thread-safe observable collection that implements <see cref="IList{T}"/>,
+///     <see cref="IReadOnlyList{T}"/>, <see cref="INotifyPropertyChanged"/>,
+///     and <see cref="INotifyCollectionChanged"/>. Supports batch updates, item movement,
+///     and configurable synchronization context dispatch.
+/// </summary>
+/// <typeparam name="T">The type of elements in the collection.</typeparam>
 [PublicAPI]
 public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INotifyPropertyChanged,
     INotifyCollectionChanged
@@ -34,18 +41,51 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
 
     private readonly SynchronizedValue<int> _updateCounter;
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="ExtendedObservableCollection{T}"/> class
+    ///     that is empty, uses the current synchronization context with <see cref="SynchronizationMethod.Send"/>,
+    ///     and a <see cref="LockSlimLockingMechanism"/>.
+    /// </summary>
     public ExtendedObservableCollection()
         : this(SynchronizationContext.Current, SynchronizationMethod.Send,
             () => new LockSlimLockingMechanism(), []) { }
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="ExtendedObservableCollection{T}"/> class
+    ///     that contains the specified items, uses the current synchronization context with
+    ///     <see cref="SynchronizationMethod.Send"/>, and a <see cref="LockSlimLockingMechanism"/>.
+    /// </summary>
+    /// <param name="items">The initial elements to populate the collection with.</param>
     public ExtendedObservableCollection(IEnumerable<T> items)
         : this(SynchronizationContext.Current, SynchronizationMethod.Send,
             () => new LockSlimLockingMechanism(), items) { }
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="ExtendedObservableCollection{T}"/> class
+    ///     that is empty, using the specified synchronization context, method, and locking mechanism.
+    /// </summary>
+    /// <param name="synchronizationContext">
+    ///     The synchronization context for dispatching change notifications,
+    ///     or <see langword="null"/> for no synchronization.
+    /// </param>
+    /// <param name="synchronizationMethod">The method used to dispatch notifications.</param>
+    /// <param name="lockingMechanism">The factory that creates the locking mechanism for thread safety.</param>
     public ExtendedObservableCollection(SynchronizationContext? synchronizationContext,
         SynchronizationMethod synchronizationMethod, Func<ILockingMechanism> lockingMechanism)
         : this(synchronizationContext, synchronizationMethod, lockingMechanism, []) { }
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="ExtendedObservableCollection{T}"/> class
+    ///     that contains the specified items, using the specified synchronization context, method,
+    ///     and locking mechanism.
+    /// </summary>
+    /// <param name="synchronizationContext">
+    ///     The synchronization context for dispatching change notifications,
+    ///     or <see langword="null"/> for no synchronization.
+    /// </param>
+    /// <param name="synchronizationMethod">The method used to dispatch notifications.</param>
+    /// <param name="lockingMechanism">The factory that creates the locking mechanism for thread safety.</param>
+    /// <param name="items">The initial elements to populate the collection with.</param>
     public ExtendedObservableCollection(SynchronizationContext? synchronizationContext,
         SynchronizationMethod synchronizationMethod, Func<ILockingMechanism> lockingMechanism,
         IEnumerable<T> items)
@@ -65,6 +105,11 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         _reentrancyMonitor = new SimpleMonitor();
     }
 
+    /// <summary>
+    ///     Adds the elements of the specified sequence to the end of the collection
+    ///     and raises a reset notification.
+    /// </summary>
+    /// <param name="items">The elements to add.</param>
     public void AddRange(IEnumerable<T> items)
     {
         _lockingMechanism.Write(() =>
@@ -77,6 +122,11 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         NotifyItemsReset();
     }
 
+    /// <summary>
+    ///     Moves an element from one position to another within the collection.
+    /// </summary>
+    /// <param name="oldIndex">The zero-based index of the element to move.</param>
+    /// <param name="newIndex">The zero-based destination index.</param>
     public void Move(int oldIndex, int newIndex)
     {
         var movedItem = _lockingMechanism.Write(() =>
@@ -107,6 +157,11 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         });
     }
 
+    /// <summary>
+    ///     Begins a batch update scope. Change notifications are deferred until the returned
+    ///     <see cref="IDisposable"/> is disposed.
+    /// </summary>
+    /// <returns>An <see cref="IDisposable"/> that ends the batch update when disposed.</returns>
     public IDisposable Update()
     {
         BeginUpdate();
@@ -114,8 +169,17 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         return new DelegateDisposable(EndUpdate, true);
     }
 
+    /// <summary>
+    ///     Begins a batch update, deferring change notifications until <see cref="EndUpdate"/> is called.
+    ///     Multiple calls can be nested; notifications resume only when every <see cref="BeginUpdate"/>
+    ///     has a matching <see cref="EndUpdate"/>.
+    /// </summary>
     public void BeginUpdate() => _updateCounter.SetValue(x => x + 1);
 
+    /// <summary>
+    ///     Ends a batch update previously started with <see cref="BeginUpdate"/>. If this is the
+    ///     outermost update and the collection changed during the batch, a reset notification is raised.
+    /// </summary>
     [SuppressMessage("csharpsquid", "S2583", Justification = "Notify is set inside a lambda expression")]
     public void EndUpdate()
     {
@@ -253,12 +317,21 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         });
     }
 
+    /// <summary>
+    ///     Raises the <see cref="PropertyChanged"/> event.
+    /// </summary>
+    /// <param name="propertyName">The name of the property that changed.</param>
     [NotifyPropertyChangedInvocator]
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    /// <summary>
+    ///     Raises the <see cref="CollectionChanged"/> event, or defers the notification
+    ///     when a batch update is in progress.
+    /// </summary>
+    /// <param name="e">The event arguments describing the change.</param>
     protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {
         if (_updateCounter.Value > 0)
@@ -270,14 +343,17 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         CollectionChanged?.Invoke(this, e);
     }
 
+    /// <inheritdoc />
     [MustDisposeResource]
     public IEnumerator<T> GetEnumerator()
         => _lockingMechanism.Read([MustDisposeResource]() => _items.ToList().GetEnumerator());
 
+    /// <inheritdoc />
     [MustDisposeResource]
     IEnumerator IEnumerable.GetEnumerator()
         => _lockingMechanism.Read([MustDisposeResource]() => _items.ToList().GetEnumerator());
 
+    /// <inheritdoc />
     public void Add(T item)
     {
         var index = _lockingMechanism.Write(() =>
@@ -292,6 +368,7 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         NotifyItemAdded(item, index);
     }
 
+    /// <inheritdoc />
     public void Clear()
     {
         var itemsCleared = _lockingMechanism.Write(() =>
@@ -314,13 +391,16 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         }
     }
 
+    /// <inheritdoc />
     public bool Contains(T item) => _lockingMechanism.Read(() => _items.Contains(item));
 
+    /// <inheritdoc />
     public void CopyTo(T[] array, int arrayIndex)
     {
         _lockingMechanism.Read(() => Array.Copy(_items.ToArray(), 0, array, arrayIndex, _items.Count));
     }
 
+    /// <inheritdoc />
     public bool Remove(T item)
     {
         var isRemoved = _lockingMechanism.Write(() =>
@@ -340,8 +420,10 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         return isRemoved;
     }
 
+    /// <inheritdoc />
     public int IndexOf(T item) => _lockingMechanism.Read(() => _items.IndexOf(item));
 
+    /// <inheritdoc />
     public void Insert(int index, T item)
     {
         _lockingMechanism.Write(() =>
@@ -354,6 +436,7 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         NotifyItemAdded(item, index);
     }
 
+    /// <inheritdoc />
     public void RemoveAt(int index)
     {
         var removedItem = _lockingMechanism.Write(() =>
@@ -372,16 +455,23 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         NotifyItemRemoved(removedItem, index);
     }
 
+    /// <inheritdoc />
     public int Count => _lockingMechanism.Read(() => _items.Count);
 
+    /// <inheritdoc />
     public bool IsReadOnly => false;
 
+    /// <summary>
+    ///     Gets or sets the total number of elements the internal data structure can hold
+    ///     without resizing.
+    /// </summary>
     public int Capacity
     {
         get => _lockingMechanism.Read(() => _items.Capacity);
         set => _lockingMechanism.Write(() => _items.Capacity = value);
     }
 
+    /// <inheritdoc />
     public T this[int index]
     {
         get => _lockingMechanism.Read(() => _items[index]);
@@ -404,7 +494,9 @@ public class ExtendedObservableCollection<T> : IList<T>, IReadOnlyList<T>, INoti
         }
     }
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    /// <inheritdoc />
     public event NotifyCollectionChangedEventHandler? CollectionChanged;
 }

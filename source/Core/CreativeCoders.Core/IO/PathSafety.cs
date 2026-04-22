@@ -8,16 +8,16 @@ using CreativeCoders.Core.IO;
 namespace CreativeCoders.Core.IO;
 
 /// <summary>
-/// Provides methods for path safety checks, especially to prevent path traversal attacks.
+/// Provides methods for path safety checks to prevent path traversal attacks.
 /// </summary>
 public static class PathSafety
 {
     /// <summary>
-    /// Checks if the specified <paramref name="path"/> is safe to use within the given <paramref name="basePath"/>.
+    /// Determines whether the specified path is safe to use within the given base path.
     /// </summary>
     /// <param name="path">The path to check.</param>
     /// <param name="basePath">The base path that the <paramref name="path"/> must be contained in.</param>
-    /// <returns><c>true</c> if the path is safe; otherwise, <c>false</c>.</returns>
+    /// <returns><see langword="true"/> if the path is safe; otherwise, <see langword="false"/>.</returns>
     /// <example>
     /// <code>
     /// var isSafe = PathSafety.IsSafe("data/config.json", "/var/www");
@@ -29,12 +29,12 @@ public static class PathSafety
     }
 
     /// <summary>
-    /// Checks if the specified <paramref name="path"/> is safe to use within the given <paramref name="basePath"/>.
+    /// Determines whether the specified path is safe to use within the given base path.
     /// </summary>
-    /// <param name="pathHelper">The <see cref="IPath"/> helper to use for path operations.</param>
+    /// <param name="pathHelper">The <see cref="IPath"/> service for path operations.</param>
     /// <param name="path">The path to check.</param>
     /// <param name="basePath">The base path that the <paramref name="path"/> must be contained in.</param>
-    /// <returns><c>true</c> if the path is safe; otherwise, <c>false</c>.</returns>
+    /// <returns><see langword="true"/> if the path is safe; otherwise, <see langword="false"/>.</returns>
     public static bool IsSafe(IPath pathHelper, string path, string basePath)
     {
         Ensure.NotNull(pathHelper);
@@ -55,25 +55,23 @@ public static class PathSafety
     }
 
     /// <summary>
-    /// Ensures that the specified <paramref name="path"/> is safe to use within the given <paramref name="basePath"/>.
-    /// Throws an <see cref="UnauthorizedAccessException"/> if the path is not safe.
+    /// Ensures that the specified path is safe to use within the given base path.
     /// </summary>
     /// <param name="path">The path to check.</param>
     /// <param name="basePath">The base path that the <paramref name="path"/> must be contained in.</param>
-    /// <exception cref="UnauthorizedAccessException">Thrown when the path is not safe.</exception>
+    /// <exception cref="UnauthorizedAccessException">The path attempts to traverse outside the base path.</exception>
     public static void EnsureSafe(string path, string basePath)
     {
         EnsureSafe(FileSys.Path, path, basePath);
     }
 
     /// <summary>
-    /// Ensures that the specified <paramref name="path"/> is safe to use within the given <paramref name="basePath"/>.
-    /// Throws an <see cref="UnauthorizedAccessException"/> if the path is not safe.
+    /// Ensures that the specified path is safe to use within the given base path.
     /// </summary>
-    /// <param name="pathHelper">The <see cref="IPath"/> helper to use for path operations.</param>
+    /// <param name="pathHelper">The <see cref="IPath"/> service for path operations.</param>
     /// <param name="path">The path to check.</param>
     /// <param name="basePath">The base path that the <paramref name="path"/> must be contained in.</param>
-    /// <exception cref="UnauthorizedAccessException">Thrown when the path is not safe.</exception>
+    /// <exception cref="UnauthorizedAccessException">The path attempts to traverse outside the base path.</exception>
     public static void EnsureSafe(IPath pathHelper, string path, string basePath)
     {
         if (!IsSafe(pathHelper, path, basePath))

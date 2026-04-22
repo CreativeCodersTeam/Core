@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace CreativeCoders.Core.ObjectLinking;
 
+/// <summary>
+///     Builds an <see cref="ObjectLink"/> between two object instances by discovering and resolving
+///     <see cref="PropertyLinkAttribute"/> declarations on their properties.
+/// </summary>
 public class ObjectLinkBuilder
 {
     private readonly object _instance0;
@@ -14,6 +18,14 @@ public class ObjectLinkBuilder
 
     private readonly Type _instance1Type;
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="ObjectLinkBuilder"/> class.
+    /// </summary>
+    /// <param name="instance0">The first object instance to link.</param>
+    /// <param name="instance1">The second object instance to link.</param>
+    /// <exception cref="System.ArgumentNullException">
+    ///     <paramref name="instance0"/> or <paramref name="instance1"/> is <see langword="null"/>.
+    /// </exception>
     public ObjectLinkBuilder(object instance0, object instance1)
     {
         Ensure.IsNotNull(instance0, nameof(instance0));
@@ -25,6 +37,10 @@ public class ObjectLinkBuilder
         _instance1Type = _instance1.GetType();
     }
 
+    /// <summary>
+    ///     Builds and returns an <see cref="ObjectLink"/> that synchronizes properties between the two instances.
+    /// </summary>
+    /// <returns>A new <see cref="ObjectLink"/> instance managing the property links.</returns>
     public ObjectLink Build()
     {
         var linkItems = GetLinkItems();

@@ -2,19 +2,17 @@
 
 namespace CreativeCoders.Core.Dependencies;
 
-///-------------------------------------------------------------------------------------------------
-/// <summary>   A dependency object holding the element and its dependencies. </summary>
-///
-/// <typeparam name="T">    Generic type parameter of the <see cref="DependencyObject{T}.Element"/>. </typeparam>
-///-------------------------------------------------------------------------------------------------
+/// <summary>
+/// Represents an element and its dependencies within a dependency graph.
+/// </summary>
+/// <typeparam name="T">The type of the element.</typeparam>
 public class DependencyObject<T>
     where T : class
 {
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Initializes a new instance of the <see cref="DependencyObject{T}"/> class. </summary>
-    ///
-    /// <param name="element">  The element. </param>
-    ///-------------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DependencyObject{T}"/> class.
+    /// </summary>
+    /// <param name="element">The element to wrap.</param>
     public DependencyObject(T element)
     {
         Element = element;
@@ -22,17 +20,13 @@ public class DependencyObject<T>
         DependsOn = [];
     }
 
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Gets the element. </summary>
-    ///
-    /// <value> The element. </value>
-    ///-------------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the wrapped element.
+    /// </summary>
     public T Element { get; }
 
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Gets the objects it is dependent on. </summary>
-    ///
-    /// <value> A list of <see cref="DependencyObject{T}"/> this object depends on. </value>
-    ///-------------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the list of <see cref="DependencyObject{T}"/> instances this object depends on.
+    /// </summary>
     public List<DependencyObject<T>> DependsOn { get; }
 }

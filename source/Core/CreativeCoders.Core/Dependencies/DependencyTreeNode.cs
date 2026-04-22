@@ -3,11 +3,10 @@ using System.Linq;
 
 namespace CreativeCoders.Core.Dependencies;
 
-///-------------------------------------------------------------------------------------------------
-/// <summary>   A dependency tree node. </summary>
-///
-/// <typeparam name="T">    Generic type parameter. </typeparam>
-///-------------------------------------------------------------------------------------------------
+/// <summary>
+/// Represents a node in a dependency tree, containing an element and its child dependency nodes.
+/// </summary>
+/// <typeparam name="T">The type of the element in the tree node.</typeparam>
 public class DependencyTreeNode<T>
     where T : class
 {
@@ -17,17 +16,13 @@ public class DependencyTreeNode<T>
         SubNodes = subNodes.ToArray();
     }
 
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Gets the element of the tree node. </summary>
-    ///
-    /// <value> The element. </value>
-    ///-------------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the element associated with this tree node.
+    /// </summary>
     public T Element { get; }
 
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Gets the sub nodes. </summary>
-    ///
-    /// <value> The sub nodes. </value>
-    ///-------------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the child nodes representing the dependencies of this node's element.
+    /// </summary>
     public IReadOnlyCollection<DependencyTreeNode<T>> SubNodes { get; }
 }

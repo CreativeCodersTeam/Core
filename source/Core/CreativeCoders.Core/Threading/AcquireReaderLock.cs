@@ -5,6 +5,10 @@ using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Threading;
 
+/// <summary>
+///     Acquires a read lock on a <see cref="ReaderWriterLockSlim"/> upon construction
+///     and releases it upon disposal.
+/// </summary>
 [PublicAPI]
 public sealed class AcquireReaderLock : IDisposable
 {
@@ -12,11 +16,27 @@ public sealed class AcquireReaderLock : IDisposable
 
     private bool _disposed;
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="AcquireReaderLock"/> class
+    ///     with a new <see cref="ReaderWriterLockSlim"/>.
+    /// </summary>
     [ExcludeFromCodeCoverage]
     public AcquireReaderLock() : this(new ReaderWriterLockSlim()) { }
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="AcquireReaderLock"/> class
+    ///     with the specified lock and an infinite timeout.
+    /// </summary>
+    /// <param name="lockSlim">The reader-writer lock to acquire a read lock on.</param>
     public AcquireReaderLock(ReaderWriterLockSlim lockSlim) : this(lockSlim, Timeout.Infinite) { }
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="AcquireReaderLock"/> class
+    ///     with the specified lock and timeout.
+    /// </summary>
+    /// <param name="lockSlim">The reader-writer lock to acquire a read lock on.</param>
+    /// <param name="timeout">The timeout in milliseconds for acquiring the lock.</param>
+    /// <exception cref="AcquireLockFailedException">The read lock could not be acquired within the specified timeout or due to a lock recursion violation.</exception>
     public AcquireReaderLock(ReaderWriterLockSlim lockSlim, int timeout)
     {
         Ensure.IsNotNull(lockSlim);
@@ -35,6 +55,7 @@ public sealed class AcquireReaderLock : IDisposable
         }
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         Dispose(true);

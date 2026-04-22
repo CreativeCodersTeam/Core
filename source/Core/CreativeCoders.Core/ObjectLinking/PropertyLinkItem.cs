@@ -1,15 +1,29 @@
 ﻿namespace CreativeCoders.Core.ObjectLinking;
 
+/// <summary>
+///     Represents an individual property link between two objects and handles property change
+///     propagation based on the configured <see cref="LinkDirection"/>.
+/// </summary>
 public class PropertyLinkItem
 {
     private readonly PropertyValueCopier _propertyValueCopier;
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="PropertyLinkItem"/> class.
+    /// </summary>
+    /// <param name="propertyLinkInfo">The property link information describing the link configuration.</param>
     public PropertyLinkItem(PropertyLinkInfo propertyLinkInfo)
     {
         Info = propertyLinkInfo;
         _propertyValueCopier = new PropertyValueCopier();
     }
 
+    /// <summary>
+    ///     Handles a property change notification and copies the value in the appropriate direction
+    ///     if the changed property matches the link configuration.
+    /// </summary>
+    /// <param name="changedInstance">The object instance that raised the property change.</param>
+    /// <param name="changedPropertyName">The name of the property that changed.</param>
     public void HandleChange(object changedInstance, string changedPropertyName)
     {
         // ReSharper disable once SwitchStatementMissingSomeCases
@@ -41,6 +55,10 @@ public class PropertyLinkItem
         }
     }
 
+    /// <summary>
+    ///     Initializes the link by copying the current property value in the appropriate direction
+    ///     based on the link configuration.
+    /// </summary>
     public void Init()
     {
         if (Info.Direction == LinkDirection.OneWayFromTarget || Info.InitWithTargetValue)
@@ -67,5 +85,8 @@ public class PropertyLinkItem
             true, Info);
     }
 
+    /// <summary>
+    ///     Gets the property link information describing the link configuration.
+    /// </summary>
     public PropertyLinkInfo Info { get; }
 }
