@@ -10,6 +10,13 @@ using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Collections;
 
+/// <summary>
+///     Keeps a replica <see cref="ObservableCollection{T}"/> synchronized with a source
+///     <see cref="ObservableCollection{T}"/> by subscribing to
+///     <see cref="INotifyCollectionChanged.CollectionChanged"/> and mirroring all changes.
+/// </summary>
+/// <typeparam name="TSourceElement">The type of elements in the source collection.</typeparam>
+/// <typeparam name="TReplicaElement">The type of elements in the replica collection.</typeparam>
 [PublicAPI]
 public sealed class ObservableCollectionSynchronizer<TSourceElement, TReplicaElement> : IDisposable
 {
@@ -21,6 +28,20 @@ public sealed class ObservableCollectionSynchronizer<TSourceElement, TReplicaEle
 
     private readonly Func<TSourceElement, TReplicaElement> _getReplicaItemForSourceItem;
 
+    /// <summary>
+    ///     Initializes a new instance of the
+    ///     <see cref="ObservableCollectionSynchronizer{TSourceElement, TReplicaElement}"/> class,
+    ///     populates the replica with existing source elements, and begins listening for source changes.
+    /// </summary>
+    /// <param name="sourceCollection">The source collection whose changes are mirrored.</param>
+    /// <param name="replicaCollection">The replica collection that is kept in sync.</param>
+    /// <param name="createReplicaItemForSourceItem">
+    ///     The factory that creates a new replica element for a given source element.
+    /// </param>
+    /// <param name="getReplicaItemForSourceItem">
+    ///     The function that retrieves the existing replica element corresponding to a given source element,
+    ///     used during remove operations.
+    /// </param>
     public ObservableCollectionSynchronizer(ObservableCollection<TSourceElement> sourceCollection,
         ObservableCollection<TReplicaElement> replicaCollection, Func<TSourceElement,
             TReplicaElement> createReplicaItemForSourceItem,
@@ -105,6 +126,9 @@ public sealed class ObservableCollectionSynchronizer<TSourceElement, TReplicaEle
         }
     }
 
+    /// <summary>
+    ///     Unsubscribes from the source collection's change notifications, stopping synchronization.
+    /// </summary>
     public void Dispose()
     {
         _sourceCollection.CollectionChanged -= SourceCollectionOnCollectionChanged;

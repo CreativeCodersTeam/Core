@@ -18,7 +18,7 @@ public class ResponseModelReader : ModelReaderBase, IResponseModelReader
 
     public async Task<XmlRpcResponse> ReadAsync(Stream inputStream, bool isMultiCallResponse)
     {
-        Ensure.IsNotNull(inputStream, nameof(inputStream));
+        Ensure.IsNotNull(inputStream);
 
         var xmlDoc = await ReadXmlDocAsync(inputStream).ConfigureAwait(false);
 

@@ -24,13 +24,13 @@ public class SoapHttpClient : ISoapHttpClient
 
     public SoapHttpClient(HttpClient httpClient)
     {
-        _httpClient = Ensure.NotNull(httpClient, nameof(httpClient));
+        _httpClient = Ensure.NotNull(httpClient);
     }
 
     public async Task<TResponse> InvokeAsync<TRequest, TResponse>(Uri uri, TRequest actionRequest)
         where TResponse : class, new()
     {
-        Ensure.IsNotNull(actionRequest, nameof(actionRequest));
+        Ensure.IsNotNull(actionRequest);
 
         var soapRequestInfo = CreateRequestInfo(actionRequest, uri);
 

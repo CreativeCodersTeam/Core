@@ -35,7 +35,7 @@ public class XmlRpcServerMethods : IXmlRpcServerMethods
     public void RegisterMethods<T>(string methodSuffix, T methodsInterface)
         where T : class
     {
-        Ensure.IsNotNull(methodsInterface, nameof(methodsInterface));
+        Ensure.IsNotNull(methodsInterface);
 
         var methods =
             typeof(T).GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);

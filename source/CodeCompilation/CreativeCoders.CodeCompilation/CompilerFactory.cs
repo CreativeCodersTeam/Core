@@ -11,7 +11,7 @@ public class CompilerFactory : ICompilerFactory
 
     public CompilerFactory(Func<ICompiler> createCompiler)
     {
-        Ensure.IsNotNull(createCompiler, nameof(createCompiler));
+        Ensure.IsNotNull(createCompiler);
 
         _createCompiler = createCompiler;
     }

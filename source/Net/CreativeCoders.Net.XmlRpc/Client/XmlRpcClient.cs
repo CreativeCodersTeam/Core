@@ -25,7 +25,7 @@ public class XmlRpcClient : IXmlRpcClient
 
     public XmlRpcClient(HttpClient httpClient)
     {
-        Ensure.IsNotNull(httpClient, nameof(httpClient));
+        Ensure.IsNotNull(httpClient);
 
         _httpClient = httpClient;
         _requestBuilder = new RequestBuilder(new DataToXmlRpcValueConverter());
@@ -33,7 +33,7 @@ public class XmlRpcClient : IXmlRpcClient
 
     public async Task<XmlRpcResponse> SendRequestAsync(XmlRpcRequest request)
     {
-        Ensure.IsNotNull(request, nameof(request));
+        Ensure.IsNotNull(request);
 
         var httpRequest = await CreateHttpRequestAsync(request).ConfigureAwait(false);
 
@@ -97,7 +97,7 @@ public class XmlRpcClient : IXmlRpcClient
 
     public async Task<XmlRpcResponse> InvokeAsync(string methodName, params object[] parameters)
     {
-        Ensure.IsNotNullOrWhitespace(methodName, nameof(methodName));
+        Ensure.IsNotNullOrWhitespace(methodName);
 
         var request = _requestBuilder.Build(methodName, parameters);
 

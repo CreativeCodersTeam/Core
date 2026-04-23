@@ -9,7 +9,7 @@ public class XmlRpcMethodCall
 
     public XmlRpcMethodCall(string name, params XmlRpcValue[] parameters)
     {
-        Ensure.IsNotNullOrWhitespace(name, nameof(name));
+        Ensure.IsNotNullOrWhitespace(name);
 
         Name = name;
 

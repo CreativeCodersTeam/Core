@@ -13,7 +13,7 @@ public class ClassSyntaxTreeNode : IVisitableSubItems
 
     public void AddSubNode(ClassSyntaxTreeNode subNode)
     {
-        Ensure.IsNotNull(subNode, nameof(subNode));
+        Ensure.IsNotNull(subNode);
 
         _subNodes.Add(subNode);
     }

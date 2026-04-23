@@ -7,8 +7,18 @@ using CreativeCoders.Core.Collections;
 
 namespace CreativeCoders.Core.Reflection;
 
+/// <summary>
+/// Provides extension methods for dynamically invoking methods on objects using reflection.
+/// </summary>
 public static class MethodExtensions
 {
+    /// <summary>
+    /// Invokes a method by name on the specified object instance.
+    /// </summary>
+    /// <param name="instance">The object on which to invoke the method.</param>
+    /// <param name="methodName">The name of the method to invoke.</param>
+    /// <param name="arguments">The arguments to pass to the method.</param>
+    /// <exception cref="MissingMethodException">The method is not found on the instance type.</exception>
     public static void ExecuteMethod(this object instance, string methodName, params object[] arguments)
     {
         Ensure.IsNotNull(instance);
@@ -25,6 +35,15 @@ public static class MethodExtensions
         method.Invoke(instance, arguments);
     }
 
+    /// <summary>
+    /// Invokes a method by name on the specified object instance and returns the result.
+    /// </summary>
+    /// <typeparam name="TResult">The type of the return value.</typeparam>
+    /// <param name="instance">The object on which to invoke the method.</param>
+    /// <param name="methodName">The name of the method to invoke.</param>
+    /// <param name="arguments">The arguments to pass to the method.</param>
+    /// <returns>The result of the method invocation cast to <typeparamref name="TResult"/>.</returns>
+    /// <exception cref="MissingMethodException">The method is not found on the instance type.</exception>
     public static TResult ExecuteMethod<TResult>(this object instance, string methodName,
         params object[] arguments)
     {
@@ -42,6 +61,16 @@ public static class MethodExtensions
         return (TResult)method.Invoke(instance, arguments);
     }
 
+    /// <summary>
+    /// Invokes a generic method by name using named generic arguments and returns the result.
+    /// </summary>
+    /// <typeparam name="TResult">The type of the return value.</typeparam>
+    /// <param name="instance">The object on which to invoke the method.</param>
+    /// <param name="methodName">The name of the generic method to invoke.</param>
+    /// <param name="genericArguments">The named generic type arguments used to construct the generic method.</param>
+    /// <param name="methodParams">The parameters to pass to the method.</param>
+    /// <returns>The result of the method invocation cast to <typeparamref name="TResult"/>, or the default value if the result cannot be cast.</returns>
+    /// <exception cref="MissingMethodException">The generic method is not found on the instance type.</exception>
     public static TResult ExecuteGenericMethod<TResult>(this object instance, string methodName,
         IEnumerable<GenericArgument> genericArguments, params object[] methodParams)
     {
@@ -68,6 +97,16 @@ public static class MethodExtensions
         return default;
     }
 
+    /// <summary>
+    /// Invokes a generic method by name using type arguments and returns the result.
+    /// </summary>
+    /// <typeparam name="TResult">The type of the return value.</typeparam>
+    /// <param name="instance">The object on which to invoke the method.</param>
+    /// <param name="methodName">The name of the generic method to invoke.</param>
+    /// <param name="genericTypeArguments">The type arguments used to construct the generic method.</param>
+    /// <param name="methodParams">The parameters to pass to the method.</param>
+    /// <returns>The result of the method invocation cast to <typeparamref name="TResult"/>, or the default value if the result cannot be cast.</returns>
+    /// <exception cref="MissingMethodException">The generic method is not found on the instance type.</exception>
     public static TResult ExecuteGenericMethod<TResult>(this object instance, string methodName,
         Type[] genericTypeArguments, params object[] methodParams)
     {
@@ -197,18 +236,44 @@ public static class MethodExtensions
         return genericArguments.Select(genericArg => genericArg.Name).SequenceEqual(genericArgumentNames);
     }
 
+    /// <summary>
+    /// Invokes a generic method by name using named generic arguments, discarding the return value.
+    /// </summary>
+    /// <param name="instance">The object on which to invoke the method.</param>
+    /// <param name="methodName">The name of the generic method to invoke.</param>
+    /// <param name="genericArguments">The named generic type arguments used to construct the generic method.</param>
+    /// <param name="methodParams">The parameters to pass to the method.</param>
+    /// <exception cref="MissingMethodException">The generic method is not found on the instance type.</exception>
     public static void ExecuteGenericMethod(this object instance, string methodName,
         IEnumerable<GenericArgument> genericArguments, params object[] methodParams)
     {
         ExecuteGenericMethod<object>(instance, methodName, genericArguments, methodParams);
     }
 
+    /// <summary>
+    /// Invokes a generic method by name using type arguments, discarding the return value.
+    /// </summary>
+    /// <param name="instance">The object on which to invoke the method.</param>
+    /// <param name="methodName">The name of the generic method to invoke.</param>
+    /// <param name="genericTypeArguments">The type arguments used to construct the generic method.</param>
+    /// <param name="methodParams">The parameters to pass to the method.</param>
+    /// <exception cref="MissingMethodException">The generic method is not found on the instance type.</exception>
     public static void ExecuteGenericMethod(this object instance, string methodName,
         Type[] genericTypeArguments, params object[] methodParams)
     {
         ExecuteGenericMethod<object>(instance, methodName, genericTypeArguments, methodParams);
     }
 
+    /// <summary>
+    /// Creates a compiled delegate that invokes a generic method accepting an object array of parameters and returning a result.
+    /// </summary>
+    /// <typeparam name="TResult">The type of the return value.</typeparam>
+    /// <param name="instance">The object on which the method is called.</param>
+    /// <param name="methodName">The name of the generic method.</param>
+    /// <param name="parameterTypes">The types of the method parameters used for overload resolution.</param>
+    /// <param name="genericTypeArguments">The type arguments used to construct the generic method.</param>
+    /// <returns>A compiled delegate that invokes the method and returns the result.</returns>
+    /// <exception cref="MissingMethodException">The generic method is not found on the instance type.</exception>
     public static Func<object[], TResult> CreateGenericMethodFunc<TResult>(this object instance,
         string methodName,
         Type[] parameterTypes, params Type[] genericTypeArguments)
@@ -219,6 +284,17 @@ public static class MethodExtensions
         return methodParameters => ExecuteMethod<TResult>(instance, methodParameters, noneGenericMethod);
     }
 
+    /// <summary>
+    /// Creates a compiled strongly-typed delegate with one parameter that invokes a generic method.
+    /// </summary>
+    /// <typeparam name="T">The type of the method parameter.</typeparam>
+    /// <typeparam name="TResult">The type of the return value.</typeparam>
+    /// <param name="instance">The object on which the method is called.</param>
+    /// <param name="methodName">The name of the generic method.</param>
+    /// <param name="parameterTypes">The types of the method parameters used for overload resolution.</param>
+    /// <param name="genericTypeArguments">The type arguments used to construct the generic method.</param>
+    /// <returns>A compiled delegate that invokes the method and returns the result.</returns>
+    /// <exception cref="MissingMethodException">The generic method is not found on the instance type.</exception>
     public static Func<T, TResult> CreateGenericMethodFunc<T, TResult>(this object instance,
         string methodName,
         Type[] parameterTypes, params Type[] genericTypeArguments)
@@ -228,6 +304,18 @@ public static class MethodExtensions
         return ExpressionUtils.CreateCallFunc<T, TResult>(instance, noneGenericMethod);
     }
 
+    /// <summary>
+    /// Creates a compiled strongly-typed delegate with two parameters that invokes a generic method.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first method parameter.</typeparam>
+    /// <typeparam name="T2">The type of the second method parameter.</typeparam>
+    /// <typeparam name="TResult">The type of the return value.</typeparam>
+    /// <param name="instance">The object on which the method is called.</param>
+    /// <param name="methodName">The name of the generic method.</param>
+    /// <param name="parameterTypes">The types of the method parameters used for overload resolution.</param>
+    /// <param name="genericTypeArguments">The type arguments used to construct the generic method.</param>
+    /// <returns>A compiled delegate that invokes the method and returns the result.</returns>
+    /// <exception cref="MissingMethodException">The generic method is not found on the instance type.</exception>
     public static Func<T1, T2, TResult> CreateGenericMethodFunc<T1, T2, TResult>(this object instance,
         string methodName,
         Type[] parameterTypes, params Type[] genericTypeArguments)
@@ -238,6 +326,19 @@ public static class MethodExtensions
         return ExpressionUtils.CreateCallFunc<T1, T2, TResult>(instance, noneGenericMethod);
     }
 
+    /// <summary>
+    /// Creates a compiled strongly-typed delegate with three parameters that invokes a generic method.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first method parameter.</typeparam>
+    /// <typeparam name="T2">The type of the second method parameter.</typeparam>
+    /// <typeparam name="T3">The type of the third method parameter.</typeparam>
+    /// <typeparam name="TResult">The type of the return value.</typeparam>
+    /// <param name="instance">The object on which the method is called.</param>
+    /// <param name="methodName">The name of the generic method.</param>
+    /// <param name="parameterTypes">The types of the method parameters used for overload resolution.</param>
+    /// <param name="genericTypeArguments">The type arguments used to construct the generic method.</param>
+    /// <returns>A compiled delegate that invokes the method and returns the result.</returns>
+    /// <exception cref="MissingMethodException">The generic method is not found on the instance type.</exception>
     public static Func<T1, T2, T3, TResult> CreateGenericMethodFunc<T1, T2, T3, TResult>(this object instance,
         string methodName,
         Type[] parameterTypes, params Type[] genericTypeArguments)
@@ -248,6 +349,20 @@ public static class MethodExtensions
         return ExpressionUtils.CreateCallFunc<T1, T2, T3, TResult>(instance, noneGenericMethod);
     }
 
+    /// <summary>
+    /// Creates a compiled strongly-typed delegate with four parameters that invokes a generic method.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first method parameter.</typeparam>
+    /// <typeparam name="T2">The type of the second method parameter.</typeparam>
+    /// <typeparam name="T3">The type of the third method parameter.</typeparam>
+    /// <typeparam name="T4">The type of the fourth method parameter.</typeparam>
+    /// <typeparam name="TResult">The type of the return value.</typeparam>
+    /// <param name="instance">The object on which the method is called.</param>
+    /// <param name="methodName">The name of the generic method.</param>
+    /// <param name="parameterTypes">The types of the method parameters used for overload resolution.</param>
+    /// <param name="genericTypeArguments">The type arguments used to construct the generic method.</param>
+    /// <returns>A compiled delegate that invokes the method and returns the result.</returns>
+    /// <exception cref="MissingMethodException">The generic method is not found on the instance type.</exception>
     public static Func<T1, T2, T3, T4, TResult> CreateGenericMethodFunc<T1, T2, T3, T4, TResult>(
         this object instance,
         string methodName,

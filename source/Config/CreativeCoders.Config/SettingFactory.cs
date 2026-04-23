@@ -10,7 +10,7 @@ public class SettingFactory<T> : ISettingFactory<T>
 
     public SettingFactory(IConfiguration configuration)
     {
-        Ensure.IsNotNull(configuration, nameof(configuration));
+        Ensure.IsNotNull(configuration);
 
         _configuration = configuration;
     }

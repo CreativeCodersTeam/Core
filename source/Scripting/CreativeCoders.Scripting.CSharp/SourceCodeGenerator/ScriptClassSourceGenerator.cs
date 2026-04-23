@@ -12,8 +12,8 @@ public class ScriptClassSourceGenerator
     public ScriptClassSourceGenerator(ScriptClassTemplate template,
         CSharpScriptClassDefinition scriptClassDefinition)
     {
-        Ensure.IsNotNull(template, nameof(template));
-        Ensure.IsNotNull(scriptClassDefinition, nameof(scriptClassDefinition));
+        Ensure.IsNotNull(template);
+        Ensure.IsNotNull(scriptClassDefinition);
 
         _template = template;
         _scriptClassDefinition = scriptClassDefinition;

@@ -8,6 +8,9 @@ using CreativeCoders.Core.Collections;
 
 namespace CreativeCoders.Core.Enums;
 
+/// <summary>
+/// Converts between enum values and their string representations using <see cref="IEnumStringAttribute"/> metadata.
+/// </summary>
 public class EnumStringConverter : IEnumToStringConverter
 {
     private static readonly ICache<Type, IDictionary<Enum, string>> __textToEnumMappingCache =
@@ -38,12 +41,16 @@ public class EnumStringConverter : IEnumToStringConverter
         return null;
     }
 
+    /// <summary>
+    /// Clears the internal enum-to-string and string-to-enum mapping caches.
+    /// </summary>
     public static void ClearCaches()
     {
         __enumToTextCache.Clear();
         __textToEnumMappingCache.Clear();
     }
 
+    /// <inheritdoc />
     public string Convert(Enum enumValue)
     {
         if (enumValue == null)
@@ -56,6 +63,7 @@ public class EnumStringConverter : IEnumToStringConverter
         return GetTextForField(fieldInfo, enumValue);
     }
 
+    /// <inheritdoc />
     public T Convert<T>(string text)
         where T : Enum
     {

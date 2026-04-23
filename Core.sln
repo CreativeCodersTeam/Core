@@ -3,9 +3,6 @@
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{D0A3F2FC-664B-4A9D-ACF9-F00EF8E9DFE1}"
-	ProjectSection(SolutionItems) = preProject
-		source\Core\README.md = source\Core\README.md
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreativeCoders.Core", "source\Core\CreativeCoders.Core\CreativeCoders.Core.csproj", "{606AB477-7D63-48EB-814C-46DFE03CB6DE}"
 EndProject

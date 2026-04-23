@@ -16,8 +16,8 @@ internal class RoslynCompilationResult : ICompilationResult
 
     public RoslynCompilationResult(CSharpCompilation compilation, ICompilationOutputData outputData)
     {
-        Ensure.IsNotNull(compilation, nameof(compilation));
-        Ensure.IsNotNull(outputData, nameof(outputData));
+        Ensure.IsNotNull(compilation);
+        Ensure.IsNotNull(outputData);
 
         _compilation = compilation;
         _outputData = outputData;

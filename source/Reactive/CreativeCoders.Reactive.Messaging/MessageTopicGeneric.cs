@@ -19,7 +19,7 @@ public class MessageTopic<TMessage> : IMessageTopic<TMessage>
 
     public void Publish(TMessage message)
     {
-        Ensure.IsNotNull(message, nameof(message));
+        Ensure.IsNotNull(message);
 
         _messageSubject.OnNext(message);
     }
@@ -45,7 +45,7 @@ public class MessageTopic<TMessage> : IMessageTopic<TMessage>
 
     public IObservable<TMessage> Register(IScheduler scheduler)
     {
-        Ensure.IsNotNull(scheduler, nameof(scheduler));
+        Ensure.IsNotNull(scheduler);
 
         return Register().ObserveOn(scheduler);
     }
@@ -53,7 +53,7 @@ public class MessageTopic<TMessage> : IMessageTopic<TMessage>
     public IObservable<TRegisterMessage> Register<TRegisterMessage>(IScheduler scheduler)
         where TRegisterMessage : TMessage
     {
-        Ensure.IsNotNull(scheduler, nameof(scheduler));
+        Ensure.IsNotNull(scheduler);
 
         return Register<TRegisterMessage>().ObserveOn(scheduler);
     }

@@ -11,7 +11,7 @@ public class ProxyBuilderFactory : IProxyBuilderFactory
 
     public ProxyBuilderFactory(IServiceProvider serviceProvider)
     {
-        _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+        _serviceProvider = Ensure.NotNull(serviceProvider);
     }
 
     public IProxyBuilder<T> Create<T>() where T : class

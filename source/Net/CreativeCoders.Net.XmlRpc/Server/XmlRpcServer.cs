@@ -33,7 +33,7 @@ public sealed class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler
 
     public XmlRpcServer(IHttpServer httpServer, bool disposeHttpServer)
     {
-        _httpServer = Ensure.NotNull(httpServer, nameof(httpServer));
+        _httpServer = Ensure.NotNull(httpServer);
 
         _disposeHttpServer = disposeHttpServer;
         Encoding = Encoding.UTF8;
@@ -71,8 +71,8 @@ public sealed class XmlRpcServer : IXmlRpcServer, IHttpRequestHandler
 
     public async Task ProcessAsync(IHttpRequest request, IHttpResponse response)
     {
-        Ensure.IsNotNull(request, nameof(request));
-        Ensure.IsNotNull(response, nameof(response));
+        Ensure.IsNotNull(request);
+        Ensure.IsNotNull(response);
 
         if (!request.HttpMethod.Equals(HttpMethod.Post.Method, StringComparison.InvariantCultureIgnoreCase))
         {

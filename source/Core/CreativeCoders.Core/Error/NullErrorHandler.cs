@@ -4,20 +4,16 @@ using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Error;
 
-///-------------------------------------------------------------------------------------------------
-/// <summary>   An error handler which simply does nothing. </summary>
-///
-/// <seealso cref="IErrorHandler"/>
-///-------------------------------------------------------------------------------------------------
+/// <summary>
+/// Implements <see cref="IErrorHandler"/> as a no-op that silently ignores all exceptions.
+/// </summary>
 [PublicAPI]
 [ExcludeFromCodeCoverage]
 public class NullErrorHandler : IErrorHandler
 {
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Static instance for use, when a <see cref="NullErrorHandler"/> is needed. </summary>
-    ///
-    /// <value> The instance. </value>
-    ///-------------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Gets a shared instance of <see cref="NullErrorHandler"/>.
+    /// </summary>
     public static IErrorHandler Instance { get; } = new NullErrorHandler();
 
     /// <inheritdoc />

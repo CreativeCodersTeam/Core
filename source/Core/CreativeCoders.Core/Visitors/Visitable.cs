@@ -4,6 +4,12 @@ using JetBrains.Annotations;
 
 namespace CreativeCoders.Core.Visitors;
 
+/// <summary>
+/// Provides an abstract base class for visitable objects in the Visitor design pattern,
+/// supporting both strongly-typed and dynamically-registered visitor types.
+/// </summary>
+/// <typeparam name="TVisitor">The type of the primary visitor.</typeparam>
+/// <typeparam name="TVisitableObject">The type of the concrete visitable object.</typeparam>
 [PublicAPI]
 public abstract class Visitable<TVisitor, TVisitableObject> : IVisitable,
     IVisitable<TVisitor, TVisitableObject>
@@ -12,6 +18,11 @@ public abstract class Visitable<TVisitor, TVisitableObject> : IVisitable,
 {
     private readonly Dictionary<Type, Action<object>> _visitors = new Dictionary<Type, Action<object>>();
 
+    /// <summary>
+    /// Registers an additional visitor type that this object can accept.
+    /// </summary>
+    /// <typeparam name="T">The type of the visitor to register.</typeparam>
+    /// <param name="action">The action to invoke when a visitor of this type is accepted.</param>
     protected void AddVisitorType<T>(Action<T> action) where T : class
     {
         AddVisitorType(typeof(T), param => DoAccept(param, action));
@@ -30,6 +41,7 @@ public abstract class Visitable<TVisitor, TVisitableObject> : IVisitable,
         }
     }
 
+    /// <inheritdoc/>
     public void Accept(object visitor)
     {
         if (this is not TVisitableObject self)
@@ -54,6 +66,7 @@ public abstract class Visitable<TVisitor, TVisitableObject> : IVisitable,
         }
     }
 
+    /// <inheritdoc/>
     public void Accept(TVisitor visitor)
     {
         if (this is not TVisitableObject self)

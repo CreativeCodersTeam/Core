@@ -15,7 +15,7 @@ public class EnumerableArgumentExtensionsTests
         var items = new[] {1, 2, 3};
 
         // Act
-        var argument = Ensure.Argument(items, nameof(items)).NotNullOrEmpty();
+        var argument = Ensure.Argument(items).NotNullOrEmpty();
 
         // Assert
         argument.Value
@@ -31,7 +31,7 @@ public class EnumerableArgumentExtensionsTests
         var items = new[] {1, 2, 3}.Where(_ => true);
 
         // Act
-        var argument = Ensure.Argument(items, nameof(items)).NotNullOrEmpty();
+        var argument = Ensure.Argument(items).NotNullOrEmpty();
 
         // Assert
         argument.Value
@@ -45,7 +45,7 @@ public class EnumerableArgumentExtensionsTests
         var items = Array.Empty<int>();
 
         // Act
-        Action act = () => Ensure.Argument(items, nameof(items)).NotNullOrEmpty();
+        Action act = () => Ensure.Argument(items).NotNullOrEmpty();
 
         // Assert
         act
@@ -59,7 +59,7 @@ public class EnumerableArgumentExtensionsTests
         int[]? items = null;
 
         // Act
-        Action act = () => Ensure.Argument(items, nameof(items)).NotNullOrEmpty();
+        Action act = () => Ensure.Argument(items).NotNullOrEmpty();
 
         // Assert
         act
@@ -73,7 +73,7 @@ public class EnumerableArgumentExtensionsTests
         var items = new[] {1, 2, 3};
 
         // Act
-        var argument = Ensure.Argument(items, nameof(items)).NotNull().NotEmpty();
+        var argument = Ensure.Argument(items).NotNull().NotEmpty();
 
         // Assert
         argument.Value
@@ -89,7 +89,7 @@ public class EnumerableArgumentExtensionsTests
         var items = new[] {1, 2, 3}.Where(_ => true);
 
         // Act
-        var argument = Ensure.Argument(items, nameof(items)).NotNull().NotEmpty();
+        var argument = Ensure.Argument(items).NotNull().NotEmpty();
 
         // Assert
         argument.Value
@@ -103,7 +103,7 @@ public class EnumerableArgumentExtensionsTests
         var items = Array.Empty<int>();
 
         // Act
-        Action act = () => Ensure.Argument(items, nameof(items)).NotNull().NotEmpty();
+        Action act = () => Ensure.Argument(items).NotNull().NotEmpty();
 
         // Assert
         act
@@ -120,7 +120,7 @@ public class EnumerableArgumentExtensionsTests
         int minCount)
     {
         // Act
-        var argument = Ensure.Argument(items, nameof(items)).NotNull().MinCount(minCount);
+        var argument = Ensure.Argument(items).NotNull().MinCount(minCount);
 
         // Assert
         argument.Value
@@ -136,7 +136,7 @@ public class EnumerableArgumentExtensionsTests
     public void MinCount_ItemsCountNotMeetsMinCount_ThrowsException(int[] items, int minCount)
     {
         // Act
-        Action act = () => Ensure.Argument(items, nameof(items)).NotNull().MinCount(minCount);
+        Action act = () => Ensure.Argument(items).NotNull().MinCount(minCount);
 
         // Assert
         act
@@ -155,7 +155,7 @@ public class EnumerableArgumentExtensionsTests
         const string message = "TestMessage";
 
         // Act
-        Action act = () => Ensure.Argument(items, nameof(items)).NotNull().MinCount(minCount, message);
+        Action act = () => Ensure.Argument(items).NotNull().MinCount(minCount, message);
 
         // Assert
         act
@@ -173,7 +173,7 @@ public class EnumerableArgumentExtensionsTests
         int maxCount)
     {
         // Act
-        var argument = Ensure.Argument(items, nameof(items)).NotNull().MaxCount(maxCount);
+        var argument = Ensure.Argument(items).NotNull().MaxCount(maxCount);
 
         // Assert
         argument.Value
@@ -189,7 +189,7 @@ public class EnumerableArgumentExtensionsTests
     public void MaxCount_ItemsCountNotMeetsMaxCount_ThrowsException(int[] items, int maxCount)
     {
         // Act
-        Action act = () => Ensure.Argument(items, nameof(items)).NotNull().MaxCount(maxCount);
+        Action act = () => Ensure.Argument(items).NotNull().MaxCount(maxCount);
 
         // Assert
         act
@@ -208,7 +208,7 @@ public class EnumerableArgumentExtensionsTests
         const string message = "TestMessage";
 
         // Act
-        Action act = () => Ensure.Argument(items, nameof(items)).NotNull().MaxCount(maxCount, message);
+        Action act = () => Ensure.Argument(items).NotNull().MaxCount(maxCount, message);
 
         // Assert
         act
@@ -226,7 +226,7 @@ public class EnumerableArgumentExtensionsTests
         int[] items, int minCount, int maxCount)
     {
         // Act
-        var argument = Ensure.Argument(items, nameof(items)).NotNull().InRange(minCount, maxCount);
+        var argument = Ensure.Argument(items).NotNull().InRange(minCount, maxCount);
 
         // Assert
         argument.Value
@@ -243,7 +243,7 @@ public class EnumerableArgumentExtensionsTests
     public void InRange_ItemsCountIsNotInRange_ThrowsException(int[] items, int minCount, int maxCount)
     {
         // Act
-        Action act = () => Ensure.Argument(items, nameof(items)).NotNull().InRange(minCount, maxCount);
+        Action act = () => Ensure.Argument(items).NotNull().InRange(minCount, maxCount);
 
         // Assert
         act
@@ -264,7 +264,7 @@ public class EnumerableArgumentExtensionsTests
 
         // Act
         Action act = () =>
-            Ensure.Argument(items, nameof(items)).NotNull().InRange(minCount, maxCount, message);
+            Ensure.Argument(items).NotNull().InRange(minCount, maxCount, message);
 
         // Assert
         act

@@ -11,7 +11,7 @@ public class DelegateSourceCode : ISourceCode
 
     public DelegateSourceCode(Func<string> getSourceCode)
     {
-        Ensure.IsNotNull(getSourceCode, nameof(getSourceCode));
+        Ensure.IsNotNull(getSourceCode);
 
         _getSourceCode = getSourceCode;
     }

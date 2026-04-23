@@ -17,7 +17,7 @@ public class RequestModelReader : ModelReaderBase
 
     public async Task<XmlRpcRequest> ReadAsync(Stream inputStream)
     {
-        Ensure.IsNotNull(inputStream, nameof(inputStream));
+        Ensure.IsNotNull(inputStream);
 
         var xmlDoc = await ReadXmlDocAsync(inputStream).ConfigureAwait(false);
 

@@ -11,16 +11,16 @@ public abstract class ModelWriterBase<T>
 {
     protected ModelWriterBase(IValueWriters writers)
     {
-        Ensure.IsNotNull(writers, nameof(writers));
+        Ensure.IsNotNull(writers);
 
         Writers = writers;
     }
 
     public async Task WriteAsync(Stream outputStream, T data, Encoding encoding)
     {
-        Ensure.IsNotNull(outputStream, nameof(outputStream));
-        Ensure.IsNotNull(data, nameof(data));
-        Ensure.IsNotNull(encoding, nameof(encoding));
+        Ensure.IsNotNull(outputStream);
+        Ensure.IsNotNull(data);
+        Ensure.IsNotNull(encoding);
 
         var xmlDoc = CreateXml(data, encoding);
 

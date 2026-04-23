@@ -9,7 +9,7 @@ internal class MainExecutor : IConsoleAppExecutor
 
     public MainExecutor(IMain main)
     {
-        _main = Ensure.NotNull(main, nameof(main));
+        _main = Ensure.NotNull(main);
     }
 
     public async Task<int> ExecuteAsync(string[] args)

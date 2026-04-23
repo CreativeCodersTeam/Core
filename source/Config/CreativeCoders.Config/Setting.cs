@@ -12,7 +12,7 @@ public class Setting<T> : ISetting<T>
 
     public Setting(ISettingFactory<T> settingFactory)
     {
-        Ensure.IsNotNull(settingFactory, nameof(settingFactory));
+        Ensure.IsNotNull(settingFactory);
 
         _settingFactory = settingFactory;
     }

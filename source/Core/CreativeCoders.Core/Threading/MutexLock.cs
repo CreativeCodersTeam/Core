@@ -4,6 +4,10 @@ using System.Threading;
 
 namespace CreativeCoders.Core.Threading;
 
+/// <summary>
+///     Provides a disposable lock based on a named <see cref="Mutex"/>. Acquires the mutex
+///     upon construction and releases it upon disposal.
+/// </summary>
 public sealed class MutexLock : IDisposable
 {
     private Mutex _mutex;
@@ -12,9 +16,14 @@ public sealed class MutexLock : IDisposable
 
     private readonly bool _hasMutexLock;
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="MutexLock"/> class and acquires
+    ///     the named mutex, blocking until the mutex is available.
+    /// </summary>
+    /// <param name="mutexName">The name of the system mutex to acquire.</param>
     public MutexLock(string mutexName)
     {
-        Ensure.IsNotNullOrWhitespace(mutexName, nameof(mutexName));
+        Ensure.IsNotNullOrWhitespace(mutexName);
 
         if (!Mutex.TryOpenExisting(mutexName, out _mutex))
         {
@@ -53,6 +62,7 @@ public sealed class MutexLock : IDisposable
         _disposed = true;
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         Dispose(true);

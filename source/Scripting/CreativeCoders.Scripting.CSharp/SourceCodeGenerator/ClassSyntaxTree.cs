@@ -9,7 +9,7 @@ public class ClassSyntaxTree
 {
     public string Emit(string sourceCode)
     {
-        Ensure.IsNotNull(sourceCode, nameof(sourceCode));
+        Ensure.IsNotNull(sourceCode);
 
         var sb = new StringBuilder();
 

@@ -12,12 +12,12 @@ public class DefaultCliExecutor : ICliExecutor
 
     public DefaultCliExecutor(ExecutionContext context)
     {
-        _context = Ensure.NotNull(context, nameof(context));
+        _context = Ensure.NotNull(context);
     }
 
     public async Task<int> ExecuteAsync(string[] args)
     {
-        Ensure.NotNull(args, nameof(args));
+        Ensure.NotNull(args);
 
         var (groupCommandIsExecuted, groupCommandResult) = await TryExecuteGroupCommandAsync(args).ConfigureAwait(false);
 

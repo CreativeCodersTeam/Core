@@ -13,7 +13,7 @@ public class NullArgumentExtensionsTests
         const string testValue = "Test";
 
         // Act
-        var argument = Ensure.Argument(testValue, nameof(testValue)).NotNull();
+        var argument = Ensure.Argument(testValue).NotNull();
 
         // Assert
         argument
@@ -31,7 +31,7 @@ public class NullArgumentExtensionsTests
         string? testValue = null;
 
         // Act
-        Action act = () => Ensure.Argument(testValue, nameof(testValue)).NotNull();
+        Action act = () => Ensure.Argument(testValue).NotNull();
 
         // Assert
         act
@@ -46,7 +46,7 @@ public class NullArgumentExtensionsTests
         string? testValue = null;
 
         // Act
-        Action act = () => Ensure.Argument(testValue, nameof(testValue)).NotNull(message);
+        Action act = () => Ensure.Argument(testValue).NotNull(message);
 
         // Assert
         act
@@ -61,7 +61,7 @@ public class NullArgumentExtensionsTests
         const string? testValue = null;
 
         // Act
-        var value = Ensure.Argument(testValue, nameof(testValue)).Null();
+        var value = Ensure.Argument(testValue).Null();
 
         // Assert
         value
@@ -75,7 +75,7 @@ public class NullArgumentExtensionsTests
         const string testValue = "TestText";
 
         // Act
-        Action act = () => Ensure.Argument(testValue, nameof(testValue)).Null();
+        Action act = () => Ensure.Argument(testValue).Null();
 
         // Assert
         act
@@ -90,7 +90,7 @@ public class NullArgumentExtensionsTests
         const string testValue = "TestText";
 
         // Act
-        Action act = () => Ensure.Argument(testValue, nameof(testValue)).Null(message);
+        Action act = () => Ensure.Argument(testValue).Null(message);
 
         // Assert
         act

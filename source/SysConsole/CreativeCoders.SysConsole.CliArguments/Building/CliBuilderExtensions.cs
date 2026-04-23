@@ -16,8 +16,8 @@ public static class CliBuilderExtensions
         string name, Func<TOptions, Task<CliCommandResult>> executeAsync)
         where TOptions : class, new()
     {
-        Ensure.IsNotNullOrWhitespace(name, nameof(name));
-        Ensure.NotNull(executeAsync, nameof(executeAsync));
+        Ensure.IsNotNullOrWhitespace(name);
+        Ensure.NotNull(executeAsync);
 
         cliBuilder.AddCommand<DelegateCliCommand<TOptions>, TOptions>(x =>
         {
@@ -30,7 +30,7 @@ public static class CliBuilderExtensions
 
     public static ICliBuilder AddModule(this ICliBuilder cliBuilder, ICliModule cliModule)
     {
-        Ensure.NotNull(cliModule, nameof(cliModule));
+        Ensure.NotNull(cliModule);
 
         cliModule.Configure(cliBuilder);
 
@@ -39,7 +39,7 @@ public static class CliBuilderExtensions
 
     public static ICliBuilder AddModule(this ICliBuilder cliBuilder, Type cliModuleType)
     {
-        Ensure.NotNull(cliModuleType, nameof(cliModuleType));
+        Ensure.NotNull(cliModuleType);
 
         if (Activator.CreateInstance(cliModuleType) is ICliModule cliModule)
         {
@@ -57,7 +57,7 @@ public static class CliBuilderExtensions
 
     public static ICliBuilder AddModules(this ICliBuilder cliBuilder, Assembly assembly)
     {
-        Ensure.NotNull(assembly, nameof(assembly));
+        Ensure.NotNull(assembly);
 
         var cliModuleTypes = assembly
             .ExportedTypes

@@ -18,7 +18,7 @@ public class DemoCliController
     [CliAction("more/command")]
     public Task<CliActionResult> DoMoreAsync(DoCmdOptions options)
     {
-        Ensure.NotNull(options, nameof(options));
+        Ensure.NotNull(options);
 
         return Task.FromResult(new CliActionResult());
     }

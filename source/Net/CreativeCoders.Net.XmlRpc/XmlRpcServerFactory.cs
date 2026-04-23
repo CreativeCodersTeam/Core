@@ -12,7 +12,7 @@ public class XmlRpcServerFactory : IXmlRpcServerFactory
 
     public XmlRpcServerFactory(IServiceProvider serviceProvider)
     {
-        _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+        _serviceProvider = Ensure.NotNull(serviceProvider);
     }
 
     public IXmlRpcServer CreateServer()

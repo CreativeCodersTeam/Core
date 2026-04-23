@@ -2,35 +2,31 @@
 
 namespace CreativeCoders.Core.Threading;
 
-///-------------------------------------------------------------------------------------------------
 /// <summary>
-///     A locking mechanism implementation that does no locking. Can be used in single threaded
-///     environments.
+///     Provides a no-op locking mechanism that executes actions and functions without any
+///     synchronization. Suitable for single-threaded environments.
 /// </summary>
-///
-/// <seealso cref="ILockingMechanism"/>
-///-------------------------------------------------------------------------------------------------
 public class NoLockingMechanism : ILockingMechanism
 {
-    ///<inheritdoc />
+    /// <inheritdoc />
     public void Read(Action action)
     {
         action();
     }
 
-    ///<inheritdoc />
+    /// <inheritdoc />
     public T Read<T>(Func<T> function)
     {
         return function();
     }
 
-    ///<inheritdoc />
+    /// <inheritdoc />
     public void Write(Action action)
     {
         action();
     }
 
-    ///<inheritdoc />
+    /// <inheritdoc />
     public T Write<T>(Func<T> function)
     {
         return function();

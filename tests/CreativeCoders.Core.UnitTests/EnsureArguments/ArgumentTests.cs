@@ -15,7 +15,7 @@ public class ArgumentTests
     {
         const string text = "1234";
 
-        var argument = Ensure.Argument(text, nameof(text));
+        var argument = Ensure.Argument(text);
 
         // Act
         var value = argument.Cast<IEnumerable<char>>();
@@ -35,7 +35,7 @@ public class ArgumentTests
     {
         const string text = "1234";
 
-        var argument = Ensure.Argument(text, nameof(text));
+        var argument = Ensure.Argument(text);
 
         // Act
         string? value = argument;

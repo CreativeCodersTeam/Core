@@ -17,7 +17,7 @@ public class JwtHttpClientAuthenticator : IJwtHttpClientAuthenticator
 
     public JwtHttpClientAuthenticator(IJwtClient jwtClient)
     {
-        Ensure.IsNotNull(jwtClient, nameof(jwtClient));
+        Ensure.IsNotNull(jwtClient);
 
         _jwtClient = jwtClient;
     }

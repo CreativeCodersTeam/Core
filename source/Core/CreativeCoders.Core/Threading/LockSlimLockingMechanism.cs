@@ -3,19 +3,33 @@ using System.Threading;
 
 namespace CreativeCoders.Core.Threading;
 
+/// <summary>
+///     Provides a locking mechanism based on <see cref="ReaderWriterLockSlim"/>
+///     that supports concurrent reads, exclusive writes, and upgradeable read locks.
+/// </summary>
 public class LockSlimLockingMechanism : IUpgradeableLockingMechanism
 {
     private readonly ReaderWriterLockSlim _lock;
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="LockSlimLockingMechanism"/> class
+    ///     with a new <see cref="ReaderWriterLockSlim"/>.
+    /// </summary>
     public LockSlimLockingMechanism() : this(new ReaderWriterLockSlim()) { }
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="LockSlimLockingMechanism"/> class
+    ///     with the specified <see cref="ReaderWriterLockSlim"/>.
+    /// </summary>
+    /// <param name="lockSlim">The reader-writer lock to use.</param>
     public LockSlimLockingMechanism(ReaderWriterLockSlim lockSlim)
     {
-        Ensure.IsNotNull(lockSlim, nameof(lockSlim));
+        Ensure.IsNotNull(lockSlim);
 
         _lock = lockSlim;
     }
 
+    /// <inheritdoc />
     public void Read(Action action)
     {
         _lock.EnterReadLock();
@@ -29,6 +43,7 @@ public class LockSlimLockingMechanism : IUpgradeableLockingMechanism
         }
     }
 
+    /// <inheritdoc />
     public T Read<T>(Func<T> function)
     {
         _lock.EnterReadLock();
@@ -42,6 +57,7 @@ public class LockSlimLockingMechanism : IUpgradeableLockingMechanism
         }
     }
 
+    /// <inheritdoc />
     public void Write(Action action)
     {
         _lock.EnterWriteLock();
@@ -55,6 +71,7 @@ public class LockSlimLockingMechanism : IUpgradeableLockingMechanism
         }
     }
 
+    /// <inheritdoc />
     public T Write<T>(Func<T> function)
     {
         _lock.EnterWriteLock();
@@ -68,6 +85,7 @@ public class LockSlimLockingMechanism : IUpgradeableLockingMechanism
         }
     }
 
+    /// <inheritdoc />
     public void UpgradeableRead(UpgradeableReadAction action)
     {
         _lock.EnterUpgradeableReadLock();
@@ -88,6 +106,7 @@ public class LockSlimLockingMechanism : IUpgradeableLockingMechanism
         }
     }
 
+    /// <inheritdoc />
     public T UpgradeableRead<T>(UpgradeableReadFunc<T> function)
     {
         _lock.EnterUpgradeableReadLock();

@@ -5,17 +5,31 @@ using CreativeCoders.Core.Chaining;
 
 namespace CreativeCoders.Core.ObjectLinking;
 
+/// <summary>
+///     Builds a collection of <see cref="PropertyLinkItem"/> instances from a set of
+///     <see cref="PropertyLinkDefinition"/> entries, merging duplicate or opposite links
+///     into bidirectional links where appropriate.
+/// </summary>
 public class PropertyLinkItemsBuilder
 {
     private readonly HandlerChain<(PropertyLinkInfo, PropertyLinkInfo), bool> _handlerChain;
     private readonly IEnumerable<PropertyLinkDefinition> _propertyLinkDefinitions;
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="PropertyLinkItemsBuilder"/> class.
+    /// </summary>
+    /// <param name="propertyLinkDefinitions">The property link definitions to build link items from.</param>
     public PropertyLinkItemsBuilder(IEnumerable<PropertyLinkDefinition> propertyLinkDefinitions)
     {
         _propertyLinkDefinitions = propertyLinkDefinitions;
         _handlerChain = CreateHandlerChain();
     }
 
+    /// <summary>
+    ///     Builds and returns the collection of <see cref="PropertyLinkItem"/> instances,
+    ///     merging duplicate and opposite link definitions.
+    /// </summary>
+    /// <returns>A collection of resolved property link items.</returns>
     public IEnumerable<PropertyLinkItem> Build()
     {
         var linkItems = new List<PropertyLinkItem>();

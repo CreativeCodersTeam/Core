@@ -9,7 +9,7 @@ public class FritzBoxFactory : IFritzBoxFactory
 
     public FritzBoxFactory(IHttpClientFactory httpClientFactory)
     {
-        _httpClientFactory = Ensure.NotNull(httpClientFactory, nameof(httpClientFactory));
+        _httpClientFactory = Ensure.NotNull(httpClientFactory);
     }
 
     public IFritzBox Create(string name)

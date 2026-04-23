@@ -4,7 +4,7 @@ using CreativeCoders.Core.Weak;
 
 namespace CreativeCoders.Messaging.DefaultMediator;
 
-internal class AsyncMediatorRegistration<T> : IMediatorRegistration
+internal sealed class AsyncMediatorRegistration<T> : IMediatorRegistration
 {
     private readonly WeakFunc<T, Task> _weakAsyncAction;
 

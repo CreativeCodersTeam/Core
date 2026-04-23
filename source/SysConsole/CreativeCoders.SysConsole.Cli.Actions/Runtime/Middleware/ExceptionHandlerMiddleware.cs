@@ -18,7 +18,7 @@ public class ExceptionHandlerMiddleware : CliActionMiddlewareBase
         Action<CliActionContext> exceptionHandler, int errorReturnCode) : base(next)
     {
         _errorReturnCode = errorReturnCode;
-        _exceptionHandler = Ensure.NotNull(exceptionHandler, nameof(exceptionHandler));
+        _exceptionHandler = Ensure.NotNull(exceptionHandler);
     }
 
     public override async Task InvokeAsync(CliActionContext context)

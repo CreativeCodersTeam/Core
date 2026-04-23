@@ -10,7 +10,7 @@ public class TestProgramMainWithInvalidCtorArgs : IMain
 {
     public TestProgramMainWithInvalidCtorArgs(string text)
     {
-        Ensure.NotNull(text, nameof(text));
+        Ensure.NotNull(text);
     }
 
     public Task<int> ExecuteAsync(string[] args)

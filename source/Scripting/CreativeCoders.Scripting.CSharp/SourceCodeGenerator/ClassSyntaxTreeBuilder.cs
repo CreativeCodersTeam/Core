@@ -22,10 +22,10 @@ public class ClassSyntaxTreeBuilder
     public ClassSyntaxTreeBuilder(ScriptClassTemplate template, string nameSpace, string className,
         IEnumerable<string> scriptUsings)
     {
-        Ensure.IsNotNull(template, nameof(template));
-        Ensure.IsNotNullOrWhitespace(nameSpace, nameof(nameSpace));
-        Ensure.IsNotNullOrWhitespace(className, nameof(className));
-        Ensure.IsNotNull(scriptUsings, nameof(scriptUsings));
+        Ensure.IsNotNull(template);
+        Ensure.IsNotNullOrWhitespace(nameSpace);
+        Ensure.IsNotNullOrWhitespace(className);
+        Ensure.IsNotNull(scriptUsings);
 
         _template = template;
         _nameSpace = nameSpace;

@@ -15,7 +15,7 @@ public class NetworkInfo : INetworkInfo
     public int FindFreePort(IEnumerable<int> portRange)
     {
         var ports = portRange?.ToArray();
-        Ensure.IsNotNullOrEmpty(ports, nameof(ports));
+        Ensure.IsNotNullOrEmpty(ports);
 
         var ipProperties = IPGlobalProperties.GetIPGlobalProperties();
         var ipEndpoints = ipProperties.GetActiveTcpListeners().Concat(ipProperties.GetActiveUdpListeners())

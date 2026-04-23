@@ -8,7 +8,7 @@ public class ScriptClassProperty : ScriptClassMember
         string setterSourceCode) : base(
         ScriptClassMemberType.Property, name)
     {
-        Ensure.IsNotNullOrWhitespace(valueType, nameof(valueType));
+        Ensure.IsNotNullOrWhitespace(valueType);
 
         ValueType = valueType;
         GetterSourceCode = getterSourceCode;

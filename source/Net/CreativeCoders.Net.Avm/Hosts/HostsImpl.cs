@@ -20,7 +20,7 @@ internal class HostsImpl : IHosts
 
     public async Task<HostEntry> GetHostEntryAsync(string macAddress)
     {
-        Ensure.IsNotNullOrWhitespace(macAddress, nameof(macAddress));
+        Ensure.IsNotNullOrWhitespace(macAddress);
 
         var response = await _hostsApi.GetSpecificHostEntryAsync(macAddress)
             .ConfigureAwait(false);

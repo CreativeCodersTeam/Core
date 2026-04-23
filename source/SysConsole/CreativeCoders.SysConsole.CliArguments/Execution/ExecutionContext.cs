@@ -10,8 +10,8 @@ public class ExecutionContext
         IEnumerable<ICliCommand> commands, ICliCommand? defaultCommand,
         int defaultErrorReturnCode)
     {
-        CommandGroups = Ensure.NotNull(commandGroups, nameof(commandGroups));
-        Commands = Ensure.NotNull(commands, nameof(commands));
+        CommandGroups = Ensure.NotNull(commandGroups);
+        Commands = Ensure.NotNull(commands);
         DefaultCommand = defaultCommand;
         DefaultErrorReturnCode = defaultErrorReturnCode;
     }

@@ -2,13 +2,14 @@
 
 namespace CreativeCoders.Core.Error;
 
-/// <summary>   Interface for an error handler. </summary>
+/// <summary>
+/// Defines a contract for handling exceptions.
+/// </summary>
 public interface IErrorHandler
 {
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Handles the exception <paramref name="exception"/>. </summary>
-    ///
-    /// <param name="exception">    The exception that gets handled. </param>
-    ///-------------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Handles the specified exception.
+    /// </summary>
+    /// <param name="exception">The exception to handle.</param>
     void HandleException(Exception exception);
 }

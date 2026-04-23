@@ -3,38 +3,29 @@ using System.Linq;
 
 namespace CreativeCoders.Core.Dependencies;
 
-///-------------------------------------------------------------------------------------------------
-/// <summary>   A dependency resolver, which resolves dependencies for a element. </summary>
-///
-/// <typeparam name="T">    Generic type parameter of the element. </typeparam>
-///-------------------------------------------------------------------------------------------------
+/// <summary>
+/// Resolves all transitive dependencies for an element within a <see cref="DependencyObjectCollection{T}"/>.
+/// </summary>
+/// <typeparam name="T">The type of the elements in the dependency graph.</typeparam>
 public class DependencyResolver<T>
     where T : class
 {
     private readonly DependencyObjectCollection<T> _dependencyObjectCollection;
 
-    ///-------------------------------------------------------------------------------------------------
     /// <summary>
-    ///     Initializes a new instance of the <see cref="DependencyResolver{T}"/> class.
+    /// Initializes a new instance of the <see cref="DependencyResolver{T}"/> class.
     /// </summary>
-    ///
-    /// <param name="dependencyObjectCollection">   Collection of dependency objects. </param>
-    ///-------------------------------------------------------------------------------------------------
+    /// <param name="dependencyObjectCollection">The collection of dependency objects to resolve against.</param>
     public DependencyResolver(DependencyObjectCollection<T> dependencyObjectCollection)
     {
         _dependencyObjectCollection = dependencyObjectCollection;
     }
 
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Resolves all dependencies for <paramref name="element"/>. </summary>
-    ///
-    /// <param name="element">  The element. </param>
-    ///
-    /// <returns>
-    ///     The dependencies for <paramref name="element"/>. Only unique dependencies, duplicates are
-    ///     removed.
-    /// </returns>
-    ///-------------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Resolves all unique transitive dependencies for the specified element.
+    /// </summary>
+    /// <param name="element">The element whose dependencies are resolved.</param>
+    /// <returns>A distinct collection of all dependencies for <paramref name="element"/>.</returns>
     public IEnumerable<T> Resolve(T element)
     {
         return InternalResolve(element).Distinct().ToArray();

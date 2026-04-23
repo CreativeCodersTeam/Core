@@ -15,8 +15,8 @@ public class ConfigurationSource<T> : IConfigurationSource<T>
 
     public ConfigurationSource(Func<T> getSettingObject, Func<T> getDefaultSettingObject)
     {
-        Ensure.IsNotNull(getSettingObject, nameof(getSettingObject));
-        Ensure.IsNotNull(getDefaultSettingObject, nameof(getDefaultSettingObject));
+        Ensure.IsNotNull(getSettingObject);
+        Ensure.IsNotNull(getDefaultSettingObject);
 
         _getSettingObject = getSettingObject;
         _getDefaultSettingObject = getDefaultSettingObject;
