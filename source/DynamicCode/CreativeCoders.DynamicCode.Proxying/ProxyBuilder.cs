@@ -10,7 +10,7 @@ public class ProxyBuilder<T> : IProxyBuilder<T>
 
     public ProxyBuilder(IProxyGenerator proxyGenerator)
     {
-        _proxyGenerator = Ensure.NotNull(proxyGenerator, nameof(proxyGenerator));
+        _proxyGenerator = Ensure.NotNull(proxyGenerator);
     }
 
     public T Build(InterceptorBase<T> interceptor)

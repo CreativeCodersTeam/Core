@@ -28,7 +28,7 @@ public class DelegateHttpMessageHandler : HttpMessageHandler
     public DelegateHttpMessageHandler(
         Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> sendAsync)
     {
-        Ensure.IsNotNull(sendAsync, nameof(sendAsync));
+        Ensure.IsNotNull(sendAsync);
 
         _sendAsync = sendAsync;
     }
@@ -43,7 +43,7 @@ public class DelegateHttpMessageHandler : HttpMessageHandler
     ///-------------------------------------------------------------------------------------------------
     public DelegateHttpMessageHandler(Func<HttpRequestMessage, Task<HttpResponseMessage>> sendAsync)
     {
-        Ensure.IsNotNull(sendAsync, nameof(sendAsync));
+        Ensure.IsNotNull(sendAsync);
 
         _sendAsync = (request, _) => sendAsync(request);
     }

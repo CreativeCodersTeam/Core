@@ -21,14 +21,14 @@ public sealed class AspNetCoreWebHost : IDisposable
 
     public AspNetCoreWebHost(Func<HttpContext, Task> handleRequest)
     {
-        Ensure.IsNotNull(handleRequest, nameof(handleRequest));
+        Ensure.IsNotNull(handleRequest);
 
         _handleRequest = handleRequest;
     }
 
     public Task StartAsync(IWebHostConfig webHostConfig)
     {
-        Ensure.IsNotNull(webHostConfig, nameof(webHostConfig));
+        Ensure.IsNotNull(webHostConfig);
 
         var webHostBuilder = CreateWebHostBuilder(webHostConfig.Urls, webHostConfig.AllowSynchronousIO);
         if (webHostConfig.DisableLogging)

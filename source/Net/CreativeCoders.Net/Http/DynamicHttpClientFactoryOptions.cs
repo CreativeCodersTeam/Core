@@ -11,7 +11,7 @@ public class DynamicHttpClientFactoryOptions : IConfigureNamedOptions<HttpClient
 
     public DynamicHttpClientFactoryOptions(IHttpClientSettings optionsStore)
     {
-        _optionsStore = Ensure.NotNull(optionsStore, nameof(optionsStore));
+        _optionsStore = Ensure.NotNull(optionsStore);
     }
 
     [ExcludeFromCodeCoverage]

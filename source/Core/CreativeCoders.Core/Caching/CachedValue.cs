@@ -89,7 +89,7 @@ public class CachedValue<TKey, TValue> : ICachedValue<TValue>
             CachedValueMode.GetOrAdd => _cache.GetOrAdd(_key, _getValue, _expirationPolicy, _regionName),
             CachedValueMode.GetValue => _cache.GetValue(_key, true, _regionName),
             CachedValueMode.GetValueOrDefault => _cache.GetValueOrDefault(_key, _defaultValue, _regionName),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new ArgumentException("Invalid cached value mode")
         };
     }
 
@@ -102,7 +102,7 @@ public class CachedValue<TKey, TValue> : ICachedValue<TValue>
             CachedValueMode.GetValue => _cache.GetValueAsync(_key, true, _regionName),
             CachedValueMode.GetValueOrDefault => _cache.GetValueOrDefaultAsync(_key, _defaultValue,
                 _regionName),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new ArgumentException("Invalid cached value mode")
         };
     }
 

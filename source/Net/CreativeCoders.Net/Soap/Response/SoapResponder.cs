@@ -16,8 +16,8 @@ internal class SoapResponder<TResponse> where TResponse : class, new()
 
     public SoapResponder(Stream responseStream, SoapResponseInfo responseInfo)
     {
-        Ensure.IsNotNull(responseStream, nameof(responseStream));
-        Ensure.IsNotNull(responseInfo, nameof(responseInfo));
+        Ensure.IsNotNull(responseStream);
+        Ensure.IsNotNull(responseInfo);
 
         _responseStream = responseStream;
         _responseInfo = responseInfo;

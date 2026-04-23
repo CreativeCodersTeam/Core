@@ -13,7 +13,7 @@ public class MustArgumentExtensionsTests
         const string testValue = "Test";
 
         // Act
-        var argument = Ensure.Argument(testValue, nameof(testValue))
+        var argument = Ensure.Argument(testValue)
             .Must(x => x?.StartsWith("Te") == true);
 
         // Assert
@@ -28,7 +28,7 @@ public class MustArgumentExtensionsTests
         const string testValue = "Test";
 
         // Act
-        Action act = () => Ensure.Argument(testValue, nameof(testValue))
+        Action act = () => Ensure.Argument(testValue)
             .Must(x => x?.StartsWith("12") == true);
 
         // Assert
@@ -44,7 +44,7 @@ public class MustArgumentExtensionsTests
         const string message = "TestMessage";
 
         // Act
-        Action act = () => Ensure.Argument(testValue, nameof(testValue))
+        Action act = () => Ensure.Argument(testValue)
             .Must(x => x?.StartsWith("12") == true, message);
 
         // Assert
@@ -60,7 +60,7 @@ public class MustArgumentExtensionsTests
         const string testValue = "Test";
 
         // Act
-        var argument = Ensure.Argument(testValue, nameof(testValue)).NotNull()
+        var argument = Ensure.Argument(testValue).NotNull()
             .Must(x => x.StartsWith("Te", StringComparison.Ordinal));
 
         // Assert
@@ -75,7 +75,7 @@ public class MustArgumentExtensionsTests
         const string testValue = "Test";
 
         // Act
-        Action act = () => Ensure.Argument(testValue, nameof(testValue)).NotNull()
+        Action act = () => Ensure.Argument(testValue).NotNull()
             .Must(x => x.StartsWith("12", StringComparison.Ordinal));
 
         // Assert
@@ -91,7 +91,7 @@ public class MustArgumentExtensionsTests
         const string message = "TestMessage";
 
         // Act
-        Action act = () => Ensure.Argument(testValue, nameof(testValue)).NotNull()
+        Action act = () => Ensure.Argument(testValue).NotNull()
             .Must(x => x.StartsWith("12", StringComparison.Ordinal),
                 message);
 
@@ -109,7 +109,7 @@ public class MustArgumentExtensionsTests
         const string testValue = "Test";
 
         // Act
-        var argument = Ensure.Argument(testValue, nameof(testValue))
+        var argument = Ensure.Argument(testValue)
             .MustNot(x => x?.StartsWith("12") == true);
 
         // Assert
@@ -124,7 +124,7 @@ public class MustArgumentExtensionsTests
         const string testValue = "Test";
 
         // Act
-        Action act = () => Ensure.Argument(testValue, nameof(testValue))
+        Action act = () => Ensure.Argument(testValue)
             .MustNot(x => x?.StartsWith("Te") == true);
 
         // Assert
@@ -140,7 +140,7 @@ public class MustArgumentExtensionsTests
         const string message = "TestMessage";
 
         // Act
-        Action act = () => Ensure.Argument(testValue, nameof(testValue))
+        Action act = () => Ensure.Argument(testValue)
             .MustNot(x => x?.StartsWith("Te") == true, message);
 
         // Assert
@@ -156,7 +156,7 @@ public class MustArgumentExtensionsTests
         const string testValue = "Test";
 
         // Act
-        var argument = Ensure.Argument(testValue, nameof(testValue)).NotNull()
+        var argument = Ensure.Argument(testValue).NotNull()
             .MustNot(x => x.StartsWith("12", StringComparison.Ordinal));
 
         // Assert
@@ -171,7 +171,7 @@ public class MustArgumentExtensionsTests
         const string testValue = "Test";
 
         // Act
-        Action act = () => Ensure.Argument(testValue, nameof(testValue)).NotNull()
+        Action act = () => Ensure.Argument(testValue).NotNull()
             .MustNot(x => x.StartsWith("Te", StringComparison.Ordinal));
 
         // Assert
@@ -187,7 +187,7 @@ public class MustArgumentExtensionsTests
         const string message = "TestMessage";
 
         // Act
-        Action act = () => Ensure.Argument(testValue, nameof(testValue)).NotNull()
+        Action act = () => Ensure.Argument(testValue).NotNull()
             .MustNot(x => x.StartsWith("Te", StringComparison.Ordinal),
                 message);
 

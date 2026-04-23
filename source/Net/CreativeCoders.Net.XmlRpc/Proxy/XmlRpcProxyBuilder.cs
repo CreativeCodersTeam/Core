@@ -25,8 +25,8 @@ public class XmlRpcProxyBuilder<T> : IXmlRpcProxyBuilder<T>
 
     public XmlRpcProxyBuilder(IProxyBuilder<T> proxyBuilder, IHttpClientFactory httpClientFactory)
     {
-        Ensure.IsNotNull(proxyBuilder, nameof(proxyBuilder));
-        Ensure.IsNotNull(httpClientFactory, nameof(httpClientFactory));
+        Ensure.IsNotNull(proxyBuilder);
+        Ensure.IsNotNull(httpClientFactory);
 
         if (!typeof(T).IsInterface)
         {

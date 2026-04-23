@@ -10,7 +10,7 @@ public class XmlRpcResponse
 
     public XmlRpcResponse(IEnumerable<XmlRpcMethodResult> results, bool isMultiCall)
     {
-        Ensure.IsNotNull(results, nameof(results));
+        Ensure.IsNotNull(results);
 
         _results = new List<XmlRpcMethodResult>(results);
         IsMultiCall = isMultiCall;

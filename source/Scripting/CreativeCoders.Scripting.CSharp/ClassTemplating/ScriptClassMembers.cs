@@ -12,8 +12,8 @@ public class ScriptClassMembers : IEnumerable<ScriptClassMember>
 
     public ScriptClassMethod AddMethod(string methodName, string methodSourceCode)
     {
-        Ensure.IsNotNullOrWhitespace(methodName, nameof(methodName));
-        Ensure.IsNotNull(methodSourceCode, nameof(methodSourceCode));
+        Ensure.IsNotNullOrWhitespace(methodName);
+        Ensure.IsNotNull(methodSourceCode);
 
         var method = new ScriptClassMethod(methodName, methodSourceCode);
         _members.Add(method);
@@ -33,8 +33,8 @@ public class ScriptClassMembers : IEnumerable<ScriptClassMember>
     public ScriptClassProperty AddProperty(string propertyName, string valueType, string getterSourceCode,
         string setterSourceCode)
     {
-        Ensure.IsNotNullOrWhitespace(propertyName, nameof(propertyName));
-        Ensure.IsNotNullOrWhitespace(valueType, nameof(valueType));
+        Ensure.IsNotNullOrWhitespace(propertyName);
+        Ensure.IsNotNullOrWhitespace(valueType);
 
         var property = new ScriptClassProperty(propertyName, valueType, getterSourceCode, setterSourceCode);
         _members.Add(property);

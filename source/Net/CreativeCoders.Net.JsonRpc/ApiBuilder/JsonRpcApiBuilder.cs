@@ -15,8 +15,8 @@ public class JsonRpcApiBuilder<T> : IJsonRpcApiBuilder<T>
 
     public JsonRpcApiBuilder(IProxyBuilder<T> proxyBuilder, IJsonRpcClientFactory jsonRpcClientFactory)
     {
-        _proxyBuilder = Ensure.NotNull(proxyBuilder, nameof(proxyBuilder));
-        _jsonRpcClientFactory = Ensure.NotNull(jsonRpcClientFactory, nameof(jsonRpcClientFactory));
+        _proxyBuilder = Ensure.NotNull(proxyBuilder);
+        _jsonRpcClientFactory = Ensure.NotNull(jsonRpcClientFactory);
     }
 
     public IJsonRpcApiBuilder<T> ForUrl(Uri url)

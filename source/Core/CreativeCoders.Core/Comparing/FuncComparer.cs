@@ -23,7 +23,7 @@ public class FuncComparer<T, TKey> : IComparer<T>
     /// <param name="sortOrder">The direction in which to sort.</param>
     public FuncComparer(Func<T, TKey> keySelector, SortOrder sortOrder)
     {
-        Ensure.IsNotNull(keySelector, nameof(keySelector));
+        Ensure.IsNotNull(keySelector);
 
         _keySelector = keySelector;
         _sortOrder = sortOrder;
@@ -38,12 +38,12 @@ public class FuncComparer<T, TKey> : IComparer<T>
             return 0;
         }
 
-        if (x == null)
+        if (x is null)
         {
             return GetCompareResult(-1);
         }
 
-        if (y == null)
+        if (y is null)
         {
             return GetCompareResult(1);
         }

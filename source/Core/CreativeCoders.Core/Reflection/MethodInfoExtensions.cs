@@ -25,8 +25,8 @@ public static class MethodInfoExtensions
     public static T? Execute<T>(this MethodInfo methodInfo, object instance,
         IServiceProvider serviceProvider, params object[] args)
     {
-        Ensure.NotNull(methodInfo, nameof(methodInfo));
-        Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+        Ensure.NotNull(methodInfo);
+        Ensure.NotNull(serviceProvider);
 
         var arguments = methodInfo.GetParameters().CreateArguments(serviceProvider, out _, args);
 
@@ -43,8 +43,8 @@ public static class MethodInfoExtensions
     public static void Execute(this MethodInfo methodInfo, object instance,
         IServiceProvider serviceProvider, params object[] args)
     {
-        Ensure.NotNull(methodInfo, nameof(methodInfo));
-        Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+        Ensure.NotNull(methodInfo);
+        Ensure.NotNull(serviceProvider);
 
         var arguments = methodInfo.GetParameters().CreateArguments(serviceProvider, out _, args);
 
@@ -106,19 +106,16 @@ public static class MethodInfoExtensions
 
         var returnTypeEqual = methodInfoForCompare.ReturnType.IsAssignableFrom(methodInfo.ReturnType);
 
-        if (!returnTypeEqual)
+        if (!returnTypeEqual && (methodInfo.ReturnType.IsGenericType || methodInfoForCompare.ReturnType.IsGenericType))
         {
-            if (methodInfo.ReturnType.IsGenericType || methodInfoForCompare.ReturnType.IsGenericType)
-            {
-                var genericReturnTypeArguments = methodInfo.ReturnType.GenericTypeArguments;
-                var genericReturnTypeArgumentsForCompare =
-                    methodInfoForCompare.ReturnType.GenericTypeArguments;
+            var genericReturnTypeArguments = methodInfo.ReturnType.GenericTypeArguments;
+            var genericReturnTypeArgumentsForCompare =
+                methodInfoForCompare.ReturnType.GenericTypeArguments;
 
-                returnTypeEqual = genericReturnTypeArguments.SequenceEqual(
-                    genericReturnTypeArgumentsForCompare,
-                    new DelegateEqualityComparer<Type>(
-                        (x, y) => x == y || x.IsGenericParameter || y.IsGenericParameter));
-            }
+            returnTypeEqual = genericReturnTypeArguments.SequenceEqual(
+                genericReturnTypeArgumentsForCompare,
+                new DelegateEqualityComparer<Type>(
+                    (x, y) => x == y || x.IsGenericParameter || y.IsGenericParameter));
         }
 
         if (!returnTypeEqual)

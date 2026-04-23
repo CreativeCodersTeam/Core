@@ -24,7 +24,7 @@ public class LockSlimLockingMechanism : IUpgradeableLockingMechanism
     /// <param name="lockSlim">The reader-writer lock to use.</param>
     public LockSlimLockingMechanism(ReaderWriterLockSlim lockSlim)
     {
-        Ensure.IsNotNull(lockSlim, nameof(lockSlim));
+        Ensure.IsNotNull(lockSlim);
 
         _lock = lockSlim;
     }

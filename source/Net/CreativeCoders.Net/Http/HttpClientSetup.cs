@@ -18,7 +18,7 @@ public class HttpClientSetup : IHttpClientSetup
 
     public IHttpClientSetup ConfigureClient(Action<HttpClient> configureClient)
     {
-        Ensure.NotNull(configureClient, nameof(configureClient));
+        Ensure.NotNull(configureClient);
 
         _configureActions.Add(options => options.HttpClientActions.Add(configureClient));
 
@@ -27,7 +27,7 @@ public class HttpClientSetup : IHttpClientSetup
 
     public IHttpClientSetup ConfigureClientHandler(Func<HttpClientHandler> configureClientHandler)
     {
-        Ensure.NotNull(configureClientHandler, nameof(configureClientHandler));
+        Ensure.NotNull(configureClientHandler);
 
         _configureActions.Add(options =>
             options.HttpMessageHandlerBuilderActions.Add(builder =>

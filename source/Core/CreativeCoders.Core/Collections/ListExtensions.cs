@@ -20,7 +20,7 @@ public static class ListExtensions
     /// <returns>The same <paramref name="list"/> instance, for chaining.</returns>
     public static IList<T> AddRange<T>(this IList<T> list, IEnumerable<T> items)
     {
-        Ensure.IsNotNull(items, nameof(items));
+        Ensure.IsNotNull(items);
 
         items.ForEach(list.Add);
 
@@ -36,7 +36,7 @@ public static class ListExtensions
     /// <returns>The same <paramref name="list"/> instance, for chaining.</returns>
     public static IList<T> AddRange<T>(this IList<T> list, params T[] items)
     {
-        Ensure.IsNotNull(items, nameof(items));
+        Ensure.IsNotNull(items);
 
         items.ForEach(list.Add);
 
@@ -52,7 +52,7 @@ public static class ListExtensions
     /// <param name="items">The new elements to populate the list with.</param>
     public static void SetItems<T>(this IList<T> list, IEnumerable<T> items)
     {
-        Ensure.IsNotNull(items, nameof(items));
+        Ensure.IsNotNull(items);
 
         list.Clear();
         list.AddRange(items);

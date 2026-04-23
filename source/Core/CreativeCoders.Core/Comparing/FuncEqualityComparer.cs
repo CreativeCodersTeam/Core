@@ -19,7 +19,7 @@ public class FuncEqualityComparer<T, TKey> : IEqualityComparer<T>
     /// <param name="keySelector">Function that extracts the equality key from an object.</param>
     public FuncEqualityComparer(Func<T, TKey> keySelector)
     {
-        Ensure.IsNotNull(keySelector, nameof(keySelector));
+        Ensure.IsNotNull(keySelector);
 
         _keySelector = keySelector;
     }

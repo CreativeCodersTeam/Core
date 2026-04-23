@@ -20,7 +20,7 @@ public class MultiEqualityComparer<T> : IEqualityComparer<T>
     /// <param name="comparerList">Ordered collection of equality comparers that must all agree for two objects to be considered equal.</param>
     public MultiEqualityComparer(params IEqualityComparer<T>[] comparerList)
     {
-        Ensure.IsNotNullOrEmpty(comparerList, nameof(comparerList));
+        Ensure.IsNotNullOrEmpty(comparerList);
 
         _comparerList = comparerList;
     }
@@ -36,7 +36,7 @@ public class MultiEqualityComparer<T> : IEqualityComparer<T>
     {
         if (_comparerList.Length == 1)
         {
-            return _comparerList.First().GetHashCode(obj);
+            return _comparerList[0].GetHashCode(obj);
         }
 
         var hashCodes = _comparerList.Select(comparer => comparer.GetHashCode(obj));

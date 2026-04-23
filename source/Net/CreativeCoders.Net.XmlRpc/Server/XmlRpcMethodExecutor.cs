@@ -19,7 +19,7 @@ public class XmlRpcMethodExecutor
 
     public XmlRpcMethodExecutor(IXmlRpcServerMethods xmlRpcServerMethods)
     {
-        Ensure.IsNotNull(xmlRpcServerMethods, nameof(xmlRpcServerMethods));
+        Ensure.IsNotNull(xmlRpcServerMethods);
 
         _xmlRpcServerMethods = xmlRpcServerMethods;
         _xmlRpcServerMethods.RegisterMethods("system", this);
@@ -27,7 +27,7 @@ public class XmlRpcMethodExecutor
 
     public async Task<object> Invoke(XmlRpcMethodCall methodCall)
     {
-        Ensure.IsNotNull(methodCall, nameof(methodCall));
+        Ensure.IsNotNull(methodCall);
 
         var methodRegistration = _xmlRpcServerMethods.GetMethod(methodCall.Name);
 

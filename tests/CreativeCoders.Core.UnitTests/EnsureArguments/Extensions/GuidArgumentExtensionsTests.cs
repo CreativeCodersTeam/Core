@@ -13,7 +13,7 @@ public class GuidArgumentExtensionsTests
         var guid = Guid.NewGuid();
 
         // Act
-        var argument = Ensure.Argument(guid, nameof(guid)).NotEmpty();
+        var argument = Ensure.Argument(guid).NotEmpty();
 
         // Assert
         argument.Value
@@ -27,7 +27,7 @@ public class GuidArgumentExtensionsTests
         var guid = Guid.Empty;
 
         // Act
-        Action act = () => Ensure.Argument(guid, nameof(guid)).NotEmpty();
+        Action act = () => Ensure.Argument(guid).NotEmpty();
 
         // Assert
         act
@@ -42,7 +42,7 @@ public class GuidArgumentExtensionsTests
         const string message = "TestMessage";
 
         // Act
-        Action act = () => Ensure.Argument(guid, nameof(guid)).NotEmpty(message);
+        Action act = () => Ensure.Argument(guid).NotEmpty(message);
 
         // Assert
         act
@@ -57,7 +57,7 @@ public class GuidArgumentExtensionsTests
         Guid? guid = Guid.NewGuid();
 
         // Act
-        var argument = Ensure.Argument(guid, nameof(guid)).NotEmpty();
+        var argument = Ensure.Argument(guid).NotEmpty();
 
         // Assert
         argument.Value
@@ -71,7 +71,7 @@ public class GuidArgumentExtensionsTests
         Guid? guid = null;
 
         // Act
-        Action act = () => Ensure.Argument(guid, nameof(guid)).NotEmpty();
+        Action act = () => Ensure.Argument(guid).NotEmpty();
 
         // Assert
         act
@@ -85,7 +85,7 @@ public class GuidArgumentExtensionsTests
         Guid? guid = Guid.Empty;
 
         // Act
-        Action act = () => Ensure.Argument(guid, nameof(guid)).NotEmpty();
+        Action act = () => Ensure.Argument(guid).NotEmpty();
 
         // Assert
         act
@@ -100,7 +100,7 @@ public class GuidArgumentExtensionsTests
         const string message = "TestMessage";
 
         // Act
-        Action act = () => Ensure.Argument(guid, nameof(guid)).NotEmpty(message);
+        Action act = () => Ensure.Argument(guid).NotEmpty(message);
 
         // Assert
         act
@@ -116,7 +116,7 @@ public class GuidArgumentExtensionsTests
         var guid = Guid.NewGuid();
 
         // Act
-        var argument = Ensure.Argument(guid, nameof(guid)).NotNull().NotEmpty();
+        var argument = Ensure.Argument(guid).NotNull().NotEmpty();
 
         // Assert
         argument.Value
@@ -130,7 +130,7 @@ public class GuidArgumentExtensionsTests
         var guid = Guid.Empty;
 
         // Act
-        Action act = () => Ensure.Argument(guid, nameof(guid)).NotNull().NotEmpty();
+        Action act = () => Ensure.Argument(guid).NotNull().NotEmpty();
 
         // Assert
         act
@@ -145,7 +145,7 @@ public class GuidArgumentExtensionsTests
         const string message = "TestMessage";
 
         // Act
-        Action act = () => Ensure.Argument(guid, nameof(guid)).NotNull().NotEmpty(message);
+        Action act = () => Ensure.Argument(guid).NotNull().NotEmpty(message);
 
         // Assert
         act
@@ -160,7 +160,7 @@ public class GuidArgumentExtensionsTests
         Guid? guid = Guid.NewGuid();
 
         // Act
-        var argument = Ensure.Argument(guid, nameof(guid)).NotNull().NotEmpty();
+        var argument = Ensure.Argument(guid).NotNull().NotEmpty();
 
         // Assert
         argument.Value
@@ -174,7 +174,7 @@ public class GuidArgumentExtensionsTests
         Guid? guid = null;
 
         // Act
-        Action act = () => Ensure.Argument(guid, nameof(guid)).NotNull().NotEmpty();
+        Action act = () => Ensure.Argument(guid).NotNull().NotEmpty();
 
         // Assert
         act
@@ -188,7 +188,7 @@ public class GuidArgumentExtensionsTests
         Guid? guid = Guid.Empty;
 
         // Act
-        Action act = () => Ensure.Argument(guid, nameof(guid)).NotNull().NotEmpty();
+        Action act = () => Ensure.Argument(guid).NotNull().NotEmpty();
 
         // Assert
         act
@@ -203,7 +203,7 @@ public class GuidArgumentExtensionsTests
         const string message = "TestMessage";
 
         // Act
-        Action act = () => Ensure.Argument(guid, nameof(guid)).NotNull().NotEmpty(message);
+        Action act = () => Ensure.Argument(guid).NotNull().NotEmpty(message);
 
         // Assert
         act

@@ -19,8 +19,8 @@ public static class PatternMatcher
     /// <returns><see langword="true"/> if the name matches the mask; otherwise, <see langword="false"/>.</returns>
     public static bool MatchesPattern(string name, string mask)
     {
-        Ensure.IsNotNullOrEmpty(name, nameof(name));
-        Ensure.IsNotNullOrEmpty(mask, nameof(mask));
+        Ensure.IsNotNullOrEmpty(name);
+        Ensure.IsNotNullOrEmpty(mask);
 
         var pattern = '^' +
                       Regex.Escape(mask

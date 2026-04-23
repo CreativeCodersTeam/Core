@@ -15,7 +15,7 @@ public class CallbackMessage : MessageBase
     /// <param name="callback">The action to invoke when the message is executed.</param>
     public CallbackMessage(Action callback)
     {
-        _callback = Ensure.NotNull(callback, nameof(callback));
+        _callback = Ensure.NotNull(callback);
     }
 
     /// <summary>

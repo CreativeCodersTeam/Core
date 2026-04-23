@@ -7,7 +7,7 @@ namespace CreativeCoders.Core.Threading;
 ///     The exception that is thrown when a lock cannot be acquired within the specified timeout
 ///     or due to a lock recursion violation.
 /// </summary>
-public class AcquireLockFailedException : ApplicationException
+public class AcquireLockFailedException : Exception
 {
     /// <summary>
     ///     Initializes a new instance of the <see cref="AcquireLockFailedException"/> class

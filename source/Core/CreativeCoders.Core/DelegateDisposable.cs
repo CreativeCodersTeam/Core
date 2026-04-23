@@ -24,12 +24,13 @@ public sealed class DelegateDisposable : IDisposable
     /// </param>
     public DelegateDisposable(Action dispose, bool onlyDisposeOnce)
     {
-        Ensure.IsNotNull(dispose, nameof(dispose));
+        Ensure.IsNotNull(dispose);
 
         _dispose = dispose;
         _onlyDisposeOnce = onlyDisposeOnce;
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (_onlyDisposeOnce && _isDisposed)

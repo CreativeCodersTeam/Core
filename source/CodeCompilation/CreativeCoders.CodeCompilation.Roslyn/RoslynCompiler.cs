@@ -16,7 +16,7 @@ public class RoslynCompiler : ICompiler
     public ICompilationResult Compile(CompilationPackage compilationPackage,
         CompilationOutput compilationOutput)
     {
-        Ensure.IsNotNull(compilationOutput, nameof(compilationOutput));
+        Ensure.IsNotNull(compilationOutput);
 
         var syntaxTrees = CreateSyntaxTrees(compilationPackage.SourceCodes).ToArray();
 

@@ -15,8 +15,8 @@ public static class FritzBoxServiceCollectionExtensions
     public static void AddFritzBox(this IServiceCollection services,
         Action<FritzBoxConnection> configureOptions)
     {
-        Ensure.NotNull(services, nameof(services));
-        Ensure.NotNull(configureOptions, nameof(configureOptions));
+        Ensure.NotNull(services);
+        Ensure.NotNull(configureOptions);
 
         services.Configure(configureOptions);
 
@@ -58,7 +58,7 @@ public static class FritzBoxServiceCollectionExtensions
 
     public static void AddFritzBox(this IServiceCollection services)
     {
-        Ensure.NotNull(services, nameof(services));
+        Ensure.NotNull(services);
 
         services.AddDynamicHttpClient();
 

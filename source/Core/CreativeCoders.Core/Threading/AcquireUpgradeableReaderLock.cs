@@ -10,7 +10,7 @@ namespace CreativeCoders.Core.Threading;
 ///     and releases it upon disposal. Supports upgrading to a write lock via <see cref="UseWriteLock()"/>.
 /// </summary>
 [PublicAPI]
-public class AcquireUpgradeableReaderLock : IDisposable
+public sealed class AcquireUpgradeableReaderLock : IDisposable
 {
     private readonly ReaderWriterLockSlim _lockSlim;
 
@@ -39,7 +39,7 @@ public class AcquireUpgradeableReaderLock : IDisposable
     /// <exception cref="AcquireLockFailedException">The upgradeable read lock could not be acquired within the specified timeout.</exception>
     public AcquireUpgradeableReaderLock(ReaderWriterLockSlim lockSlim, int timeout)
     {
-        Ensure.IsNotNull(lockSlim, nameof(lockSlim));
+        Ensure.IsNotNull(lockSlim);
 
         _lockSlim = lockSlim;
         if (!_lockSlim.TryEnterUpgradeableReadLock(timeout))

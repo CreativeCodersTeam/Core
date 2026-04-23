@@ -43,7 +43,7 @@ public class Configuration : IConfiguration
     public IConfiguration AddSource<T>(IConfigurationSource<T> source)
         where T : class
     {
-        Ensure.IsNotNull(source, nameof(source));
+        Ensure.IsNotNull(source);
 
         _sourceRegistrations.Add(new SourceRegistration(typeof(T), source));
         return this;
@@ -52,7 +52,7 @@ public class Configuration : IConfiguration
     public IConfiguration AddSources<T>(IEnumerable<IConfigurationSource<T>> sources)
         where T : class
     {
-        Ensure.IsNotNull(sources, nameof(sources));
+        Ensure.IsNotNull(sources);
 
         sources.ForEach(source => AddSource(source));
         return this;
@@ -79,7 +79,7 @@ public class Configuration : IConfiguration
     public void OnSourceException(
         Action<IConfigurationSource, Exception, SourceExceptionHandleResult> onSourceException)
     {
-        Ensure.IsNotNull(onSourceException, nameof(onSourceException));
+        Ensure.IsNotNull(onSourceException);
 
         _onSourceExceptions.Add(onSourceException);
     }

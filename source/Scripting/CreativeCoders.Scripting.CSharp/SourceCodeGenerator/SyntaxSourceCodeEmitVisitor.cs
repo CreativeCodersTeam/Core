@@ -25,8 +25,8 @@ public class SyntaxSourceCodeEmitVisitor : VisitorBase<SyntaxSourceCodeEmitVisit
 
     public SyntaxSourceCodeEmitVisitor(StringBuilder output, string scriptSourceCode) : base(false)
     {
-        Ensure.IsNotNull(output, nameof(output));
-        Ensure.IsNotNull(scriptSourceCode, nameof(scriptSourceCode));
+        Ensure.IsNotNull(output);
+        Ensure.IsNotNull(scriptSourceCode);
 
         _output = output;
         _scriptSourceCode = scriptSourceCode;

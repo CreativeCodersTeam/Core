@@ -51,8 +51,8 @@ public class ConcurrentList<T> : IList<T>, IReadOnlyCollection<T>
     /// <param name="lockingMechanism">The locking mechanism used to synchronize access.</param>
     public ConcurrentList(IEnumerable<T> collection, ILockingMechanism lockingMechanism)
     {
-        Ensure.IsNotNull(lockingMechanism, nameof(lockingMechanism));
-        Ensure.IsNotNull(collection, nameof(collection));
+        Ensure.IsNotNull(lockingMechanism);
+        Ensure.IsNotNull(collection);
 
         _locking = lockingMechanism;
         _items = [..collection];

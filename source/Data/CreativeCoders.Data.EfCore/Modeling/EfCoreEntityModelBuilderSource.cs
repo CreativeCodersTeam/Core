@@ -18,7 +18,7 @@ public class EfCoreEntityModelBuilderSource : IEfCoreEntityModelBuilderSource
 
     public EfCoreEntityModelBuilderSource(IServiceProvider serviceProvider)
     {
-        _diContainer = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+        _diContainer = Ensure.NotNull(serviceProvider);
 
         _builders = new List<IEfCoreEntityModelBuilder>();
     }

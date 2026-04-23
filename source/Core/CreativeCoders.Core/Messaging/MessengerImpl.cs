@@ -84,7 +84,7 @@ internal class MessengerImpl : IMessenger
 
     public void Send<TMessage>(TMessage message)
     {
-        Ensure.IsNotNull(message, nameof(message));
+        Ensure.IsNotNull(message);
 
         var actions = GetRegistrationsForMessageType<TMessage>();
 

@@ -13,7 +13,7 @@ public class ScriptClassInjections
 
     public ScriptClassInjections(ScriptClassTemplate template)
     {
-        Ensure.IsNotNull(template, nameof(template));
+        Ensure.IsNotNull(template);
 
         _template = template;
         _injections = new List<IScriptClassInjection>();
@@ -21,8 +21,8 @@ public class ScriptClassInjections
 
     public void AddProperty<T>(string propertyName, Func<T> getInjectionData)
     {
-        Ensure.IsNotNullOrWhitespace(propertyName, nameof(propertyName));
-        Ensure.IsNotNull(getInjectionData, nameof(getInjectionData));
+        Ensure.IsNotNullOrWhitespace(propertyName);
+        Ensure.IsNotNull(getInjectionData);
 
         var propertyInjection = new PropertyInjection<T>(propertyName, getInjectionData);
         _injections.Add(propertyInjection);
@@ -31,7 +31,7 @@ public class ScriptClassInjections
 
     public void SetupScriptObject(object scriptObject)
     {
-        Ensure.IsNotNull(scriptObject, nameof(scriptObject));
+        Ensure.IsNotNull(scriptObject);
 
         _injections.ForEach(injection => injection.Inject(scriptObject));
     }

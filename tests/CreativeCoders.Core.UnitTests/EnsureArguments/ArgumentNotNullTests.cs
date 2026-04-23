@@ -17,7 +17,7 @@ public class ArgumentNotNullTests
     public void ArgumentNotNull_DifferentValues_ValueAndNameAndHasValueAreCorrect(string? textValue)
     {
         // Act
-        var argument = Ensure.Argument(textValue, nameof(textValue)).NotNull();
+        var argument = Ensure.Argument(textValue).NotNull();
 
         // Assert
         argument.Name
@@ -50,7 +50,7 @@ public class ArgumentNotNullTests
     {
         const string text = "1234";
 
-        var argument = Ensure.Argument(text, nameof(text)).NotNull();
+        var argument = Ensure.Argument(text).NotNull();
 
         // Act
         var value = argument.Cast<IEnumerable<char>>();
@@ -70,7 +70,7 @@ public class ArgumentNotNullTests
     {
         const string text = "1234";
 
-        var argument = Ensure.Argument(text, nameof(text)).NotNull();
+        var argument = Ensure.Argument(text).NotNull();
 
         // Act
         string value = argument;

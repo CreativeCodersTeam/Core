@@ -14,7 +14,7 @@ public class EfCoreRepository<TEntity> : IRepository<TEntity>
 {
     public EfCoreRepository(DbContext dbContext)
     {
-        Ensure.IsNotNull(dbContext, nameof(dbContext));
+        Ensure.IsNotNull(dbContext);
 
         DbSet = dbContext.Set<TEntity>();
     }

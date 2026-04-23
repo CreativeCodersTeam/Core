@@ -30,7 +30,7 @@ public class DelegateEqualityComparer<T> : IEqualityComparer<T>
     /// <param name="getHashCode">Delegate that computes the hash code for an object, or <see langword="null"/> to use the default.</param>
     public DelegateEqualityComparer(Func<T, T, bool> compare, Func<T, int> getHashCode)
     {
-        Ensure.IsNotNull(compare, nameof(compare));
+        Ensure.IsNotNull(compare);
 
         _compare = compare;
         _getHashCode = getHashCode;

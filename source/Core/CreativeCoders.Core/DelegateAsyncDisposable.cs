@@ -23,12 +23,13 @@ public sealed class DelegateAsyncDisposable : IAsyncDisposable
     /// </param>
     public DelegateAsyncDisposable(Func<ValueTask> dispose, bool onlyDisposeOnce)
     {
-        Ensure.IsNotNull(dispose, nameof(dispose));
+        Ensure.IsNotNull(dispose);
 
         _dispose = dispose;
         _onlyDisposeOnce = onlyDisposeOnce;
     }
 
+    /// <inheritdoc />
     public ValueTask DisposeAsync()
     {
         if (_onlyDisposeOnce && _isDisposed)

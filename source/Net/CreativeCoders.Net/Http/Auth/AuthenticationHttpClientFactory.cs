@@ -10,7 +10,7 @@ public class AuthenticationHttpClientFactory : IAuthenticationHttpClientFactory
 
     public AuthenticationHttpClientFactory(IHttpMessageHandlerFactory httpMessageHandlerFactory)
     {
-        Ensure.IsNotNull(httpMessageHandlerFactory, nameof(httpMessageHandlerFactory));
+        Ensure.IsNotNull(httpMessageHandlerFactory);
 
         _httpMessageHandlerFactory = httpMessageHandlerFactory;
     }

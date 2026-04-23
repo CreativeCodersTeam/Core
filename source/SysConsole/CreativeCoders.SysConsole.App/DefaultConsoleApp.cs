@@ -17,9 +17,9 @@ internal class DefaultConsoleApp : IConsoleApp
 
     public DefaultConsoleApp(IConsoleAppExecutor consoleAppExecutor, string[] args, ISysConsole sysConsole)
     {
-        _consoleAppExecutor = Ensure.NotNull(consoleAppExecutor, nameof(consoleAppExecutor));
-        _args = Ensure.NotNull(args, nameof(args));
-        _sysConsole = Ensure.NotNull(sysConsole, nameof(sysConsole));
+        _consoleAppExecutor = Ensure.NotNull(consoleAppExecutor);
+        _args = Ensure.NotNull(args);
+        _sysConsole = Ensure.NotNull(sysConsole);
     }
 
     public IConsoleApp ReThrowExceptions(bool reThrow)

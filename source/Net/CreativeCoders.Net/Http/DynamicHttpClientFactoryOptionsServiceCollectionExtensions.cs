@@ -7,7 +7,7 @@ public static class DynamicHttpClientFactoryOptionsServiceCollectionExtensions
 {
     public static void AddDynamicHttpClient(this IServiceCollection services)
     {
-        Ensure.NotNull(services, nameof(services));
+        Ensure.NotNull(services);
 
         services.AddHttpClient();
 

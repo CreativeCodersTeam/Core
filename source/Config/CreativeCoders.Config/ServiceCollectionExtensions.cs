@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
     [PublicAPI]
     public static void AddConfigSystem(this IServiceCollection services, IConfiguration configuration)
     {
-        Ensure.NotNull(configuration, nameof(configuration));
+        Ensure.NotNull(configuration);
 
         services.TryAddSingleton(typeof(ISettingFactory<>), typeof(SettingFactory<>));
         services.TryAddSingleton(typeof(ISettingsFactory<>), typeof(SettingsFactory<>));

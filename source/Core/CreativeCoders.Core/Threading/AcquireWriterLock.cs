@@ -10,7 +10,7 @@ namespace CreativeCoders.Core.Threading;
 ///     and releases it upon disposal.
 /// </summary>
 [PublicAPI]
-public class AcquireWriterLock : IDisposable
+public sealed class AcquireWriterLock : IDisposable
 {
     private readonly ReaderWriterLockSlim _lockSlim;
 
@@ -39,7 +39,7 @@ public class AcquireWriterLock : IDisposable
     /// <exception cref="AcquireLockFailedException">The write lock could not be acquired within the specified timeout.</exception>
     public AcquireWriterLock(ReaderWriterLockSlim lockSlim, int timeout)
     {
-        Ensure.IsNotNull(lockSlim, nameof(lockSlim));
+        Ensure.IsNotNull(lockSlim);
 
         _lockSlim = lockSlim;
 

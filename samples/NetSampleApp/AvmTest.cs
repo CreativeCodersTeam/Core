@@ -42,9 +42,5 @@ public static class AvmTest
             .ConfigureAwait(false);
 
         hostEntries.ForEach(x => Console.WriteLine($"{x.HostName}: {x.IpAddress}"));
-
-        //var device = fritzBox.Wlan.GetWlanDeviceInfo("8C:B8:4A:CA:8F:29");
-
-        //Console.WriteLine($"Ip: {device.IpAddress}");
     }
 }

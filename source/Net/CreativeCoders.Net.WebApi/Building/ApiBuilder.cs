@@ -14,8 +14,8 @@ internal class ApiBuilder : IApiBuilder
 
     public ApiBuilder(IHttpClientFactory httpClientFactory, IProxyBuilderFactory proxyBuilderFactory)
     {
-        _httpClientFactory = Ensure.NotNull(httpClientFactory, nameof(httpClientFactory));
-        _proxyBuilderFactory = Ensure.NotNull(proxyBuilderFactory, nameof(proxyBuilderFactory));
+        _httpClientFactory = Ensure.NotNull(httpClientFactory);
+        _proxyBuilderFactory = Ensure.NotNull(proxyBuilderFactory);
     }
 
     public T BuildApi<T>(string baseUri, IDataFormatter defaultDataFormatter)

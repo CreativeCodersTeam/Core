@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using CreativeCoders.Core.IO;
 
 // ReSharper disable once CheckNamespace

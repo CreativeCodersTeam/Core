@@ -15,7 +15,7 @@ public abstract class ModelReaderBase
 
     protected ModelReaderBase(IValueReaders readers)
     {
-        Ensure.IsNotNull(readers, nameof(readers));
+        Ensure.IsNotNull(readers);
 
         _readers = readers;
     }

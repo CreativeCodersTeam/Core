@@ -69,7 +69,7 @@ public static class EnumUtils
     /// <returns>The <see cref="FieldInfo"/> representing the enum field.</returns>
     public static FieldInfo GetFieldInfoForEnum(Enum enumValue)
     {
-        Ensure.IsNotNull(enumValue, nameof(enumValue));
+        Ensure.IsNotNull(enumValue);
 
         var enumType = enumValue.GetType();
         return enumType.GetField(enumValue.ToString());

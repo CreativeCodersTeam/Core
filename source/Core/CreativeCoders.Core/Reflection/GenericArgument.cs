@@ -14,8 +14,8 @@ public class GenericArgument
     /// <param name="type">The concrete type to substitute for the generic parameter.</param>
     public GenericArgument(string name, Type type)
     {
-        Ensure.IsNotNullOrWhitespace(name, nameof(name));
-        Ensure.IsNotNull(type, nameof(type));
+        Ensure.IsNotNullOrWhitespace(name);
+        Ensure.IsNotNull(type);
 
         Name = name;
         Type = type;

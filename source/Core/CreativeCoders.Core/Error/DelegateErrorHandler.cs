@@ -17,7 +17,7 @@ public class DelegateErrorHandler : IErrorHandler
     /// <param name="handleException">The delegate invoked to handle exceptions.</param>
     public DelegateErrorHandler(Action<Exception> handleException)
     {
-        Ensure.IsNotNull(handleException, nameof(handleException));
+        Ensure.IsNotNull(handleException);
 
         _handleException = handleException;
     }

@@ -14,15 +14,15 @@ public class HttpClientSettings : IHttpClientSettings
 
     public void Add(string name, Action<HttpClientFactoryOptions> configure)
     {
-        Ensure.NotNull(name, nameof(name));
-        Ensure.NotNull(configure, nameof(configure));
+        Ensure.NotNull(name);
+        Ensure.NotNull(configure);
 
         _options[name] = configure;
     }
 
     public IHttpClientSetup Add(string name)
     {
-        Ensure.NotNull(name, nameof(name));
+        Ensure.NotNull(name);
 
         var clientSetup = new HttpClientSetup();
 
@@ -33,7 +33,7 @@ public class HttpClientSettings : IHttpClientSettings
 
     public Action<HttpClientFactoryOptions>? Get(string name)
     {
-        Ensure.NotNull(name, nameof(name));
+        Ensure.NotNull(name);
 
         return _options.GetValueOrDefault(name);
     }

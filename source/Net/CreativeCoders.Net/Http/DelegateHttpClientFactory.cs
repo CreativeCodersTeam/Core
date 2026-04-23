@@ -26,7 +26,7 @@ public class DelegateHttpClientFactory : IHttpClientFactory
     ///-------------------------------------------------------------------------------------------------
     public DelegateHttpClientFactory(Func<string, HttpClient> createClient)
     {
-        Ensure.IsNotNull(createClient, nameof(createClient));
+        Ensure.IsNotNull(createClient);
 
         _createClient = createClient;
     }

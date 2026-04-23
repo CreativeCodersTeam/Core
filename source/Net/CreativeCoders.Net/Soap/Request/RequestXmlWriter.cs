@@ -15,8 +15,8 @@ internal class RequestXmlWriter
 
     public RequestXmlWriter(StreamWriter streamWriter, SoapRequestInfo soapRequestInfo)
     {
-        Ensure.IsNotNull(streamWriter, nameof(streamWriter));
-        Ensure.IsNotNull(soapRequestInfo, nameof(soapRequestInfo));
+        Ensure.IsNotNull(streamWriter);
+        Ensure.IsNotNull(soapRequestInfo);
 
         _streamWriter = streamWriter;
         _soapRequestInfo = soapRequestInfo;

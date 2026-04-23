@@ -11,7 +11,7 @@ public class SettingsFactory<T> : ISettingsFactory<T>
 
     public SettingsFactory(IConfiguration configuration)
     {
-        Ensure.IsNotNull(configuration, nameof(configuration));
+        Ensure.IsNotNull(configuration);
 
         _configuration = configuration;
     }

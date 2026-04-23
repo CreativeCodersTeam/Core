@@ -13,7 +13,7 @@ public class Settings<T> : ISettings<T>
 
     public Settings(ISettingsFactory<T> settingsFactory)
     {
-        Ensure.IsNotNull(settingsFactory, nameof(settingsFactory));
+        Ensure.IsNotNull(settingsFactory);
 
         _settingsFactory = settingsFactory;
     }

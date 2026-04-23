@@ -9,8 +9,8 @@ public class CompilationMessage
 {
     public CompilationMessage(CompilationMessageType messageType, TextSpan sourceSpan, string message)
     {
-        Ensure.IsNotNull(messageType, nameof(messageType));
-        Ensure.IsNotNull(sourceSpan, nameof(sourceSpan));
+        Ensure.IsNotNull(messageType);
+        Ensure.IsNotNull(sourceSpan);
 
         MessageType = messageType;
         SourceSpan = sourceSpan;

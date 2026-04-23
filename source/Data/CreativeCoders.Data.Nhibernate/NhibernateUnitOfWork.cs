@@ -15,7 +15,7 @@ public sealed class NhibernateUnitOfWork : UnitOfWorkBase
 
     public NhibernateUnitOfWork(ISessionFactory sessionFactory)
     {
-        Ensure.IsNotNull(sessionFactory, nameof(sessionFactory));
+        Ensure.IsNotNull(sessionFactory);
 
         _session = sessionFactory.OpenSession();
         _transaction = _session.BeginTransaction(IsolationLevel.ReadCommitted);

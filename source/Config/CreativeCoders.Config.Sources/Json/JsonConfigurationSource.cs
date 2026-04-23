@@ -22,8 +22,8 @@ public class JsonConfigurationSource<T> : IConfigurationSource<T>
 
     public JsonConfigurationSource(string jsonFileName, Func<T> getDefaultSettingObject)
     {
-        Ensure.IsNotNullOrWhitespace(jsonFileName, nameof(jsonFileName));
-        Ensure.IsNotNull(getDefaultSettingObject, nameof(getDefaultSettingObject));
+        Ensure.IsNotNullOrWhitespace(jsonFileName);
+        Ensure.IsNotNull(getDefaultSettingObject);
 
         _jsonFileName = jsonFileName;
         _getDefaultSettingObject = getDefaultSettingObject;
@@ -43,7 +43,7 @@ public class JsonConfigurationSource<T> : IConfigurationSource<T>
 
     public static IEnumerable<JsonConfigurationSource<T>> FromFiles(IEnumerable<string> jsonFileNames)
     {
-        Ensure.IsNotNull(jsonFileNames, nameof(jsonFileNames));
+        Ensure.IsNotNull(jsonFileNames);
 
         return jsonFileNames.Select(fileName => new JsonConfigurationSource<T>(fileName)).ToArray();
     }
@@ -51,7 +51,7 @@ public class JsonConfigurationSource<T> : IConfigurationSource<T>
     public static IEnumerable<JsonConfigurationSource<T>> FromFiles(IEnumerable<string> jsonFileNames,
         Func<T> getDefaultSetting)
     {
-        Ensure.IsNotNull(jsonFileNames, nameof(jsonFileNames));
+        Ensure.IsNotNull(jsonFileNames);
 
         return jsonFileNames.Select(fileName => new JsonConfigurationSource<T>(fileName, getDefaultSetting))
             .ToArray();

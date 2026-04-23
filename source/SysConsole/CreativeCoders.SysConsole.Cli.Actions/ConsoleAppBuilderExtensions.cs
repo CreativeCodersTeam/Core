@@ -52,7 +52,7 @@ public static class ConsoleAppBuilderExtensions
         Action<ICliActionRuntimeBuilder> setupRuntime)
         where TCliStartup : class, ICliStartup, new()
     {
-        Ensure.NotNull(setupRuntime, nameof(setupRuntime));
+        Ensure.NotNull(setupRuntime);
 
         return consoleAppBuilder
             .UseStartup<TCliStartup>()
@@ -86,7 +86,7 @@ public static class ConsoleAppBuilderExtensions
         Action<ICliActionRuntimeBuilder> setupRuntime)
         where TStartup : class, IStartup, new()
     {
-        Ensure.NotNull(setupRuntime, nameof(setupRuntime));
+        Ensure.NotNull(setupRuntime);
 
         return consoleAppBuilder
             .UseStartup<TStartup>()
@@ -114,7 +114,7 @@ public static class ConsoleAppBuilderExtensions
     public static ConsoleAppBuilder UseActions(this ConsoleAppBuilder consoleAppBuilder,
         Action<ICliActionRuntimeBuilder> setupRuntime)
     {
-        Ensure.NotNull(setupRuntime, nameof(setupRuntime));
+        Ensure.NotNull(setupRuntime);
 
         return consoleAppBuilder
             .ConfigureServices(services => services.AddCliActions())

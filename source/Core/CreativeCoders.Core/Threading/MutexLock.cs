@@ -23,7 +23,7 @@ public sealed class MutexLock : IDisposable
     /// <param name="mutexName">The name of the system mutex to acquire.</param>
     public MutexLock(string mutexName)
     {
-        Ensure.IsNotNullOrWhitespace(mutexName, nameof(mutexName));
+        Ensure.IsNotNullOrWhitespace(mutexName);
 
         if (!Mutex.TryOpenExisting(mutexName, out _mutex))
         {

@@ -8,7 +8,7 @@ public abstract class ScriptClassMember
 {
     protected ScriptClassMember(ScriptClassMemberType memberType, string name)
     {
-        Ensure.IsNotNullOrWhitespace(name, nameof(name));
+        Ensure.IsNotNullOrWhitespace(name);
 
         MemberType = memberType;
         Name = name;

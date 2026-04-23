@@ -14,8 +14,8 @@ public class CliBuilderExecutor : IConsoleAppExecutor
 
     public CliBuilderExecutor(Action<ICliBuilder> setupCliBuilder, IServiceProvider serviceProvider)
     {
-        _setupCliBuilder = Ensure.NotNull(setupCliBuilder, nameof(setupCliBuilder));
-        _serviceProvider = Ensure.NotNull(serviceProvider, nameof(serviceProvider));
+        _setupCliBuilder = Ensure.NotNull(setupCliBuilder);
+        _serviceProvider = Ensure.NotNull(serviceProvider);
     }
 
     public async Task<int> ExecuteAsync(string[] args)

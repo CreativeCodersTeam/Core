@@ -15,7 +15,7 @@ namespace CreativeCoders.Core.IO;
 /// </summary>
 [PublicAPI]
 [ExcludeFromCodeCoverage]
-public class StreamWrapper : Stream
+public sealed class StreamWrapper : Stream
 {
     private readonly Stream _dataStream;
 
@@ -39,7 +39,7 @@ public class StreamWrapper : Stream
     public StreamWrapper(Stream dataStream, Action<bool> disposeBeforeStreamAction,
         Action<bool> disposeAfterStreamAction)
     {
-        _dataStream = Ensure.NotNull(dataStream, nameof(dataStream));
+        _dataStream = Ensure.NotNull(dataStream);
 
         _disposeBeforeStreamAction = disposeBeforeStreamAction;
         _disposeAfterStreamAction = disposeAfterStreamAction;

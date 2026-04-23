@@ -28,8 +28,8 @@ public class ObjectLinkBuilder
     /// </exception>
     public ObjectLinkBuilder(object instance0, object instance1)
     {
-        Ensure.IsNotNull(instance0, nameof(instance0));
-        Ensure.IsNotNull(instance1, nameof(instance1));
+        Ensure.IsNotNull(instance0);
+        Ensure.IsNotNull(instance1);
 
         _instance0 = instance0;
         _instance1 = instance1;

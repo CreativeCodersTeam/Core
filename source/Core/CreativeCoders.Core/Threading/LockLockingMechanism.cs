@@ -26,7 +26,7 @@ public class LockLockingMechanism : ILockingMechanism
     /// <param name="lockObject">The object to use for locking.</param>
     public LockLockingMechanism(object lockObject)
     {
-        Ensure.IsNotNull(lockObject, nameof(lockObject));
+        Ensure.IsNotNull(lockObject);
 
         _lockObj = lockObject;
     }
