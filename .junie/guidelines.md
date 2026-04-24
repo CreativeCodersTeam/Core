@@ -1,5 +1,3 @@
-This is a general set of instructions that will be used were applicable.
-
 # General Instructions
 
 - Used language for comments, documentation and code must always be English unless another specific language is expressly requested.
@@ -7,31 +5,102 @@ This is a general set of instructions that will be used were applicable.
 - Always ask for help if you are stuck.
 - If a skill was explicitly requested in the prompt, use it without asking. If you can't find the skill, always ask if you should proceed without it.
 
-## Code Quality
-- Write clean, maintainable, and well-documented code
-- Follow SOLID principles
-- Use meaningful variable and function names
-- Keep functions small and focused on a single responsibility
 
-## Testing
-- Write unit tests for all new functionality
-- Aim for high test coverage
-- Use meaningful test names that describe the test scenario
+# CreativeCoders.Core
 
-## Documentation
-- Document public APIs and complex logic
-- Keep documentation up-to-date with code changes
-- Use clear and concise language
+A collection of reusable .NET 10 libraries published as NuGet packages under the `CreativeCoders.*` namespace. Licensed under Apache 2.0.
 
-## Error Handling
-- Always handle errors gracefully
-- Provide meaningful error messages
-- Log errors appropriately for debugging
+## Tech Stack
 
-## Security
-- Never commit secrets or sensitive data
-- Validate all user inputs
-- Follow security best practices for the specific technology stack
+- **Runtime:** .NET 10 (`net10.0`)
+- **Language:** C# (latest stable)
+- **SDK:** `10.0.100` (see `global.json`, rollForward: latestFeature)
+- **Build system:** Cake (Frosting) via `CreativeCoders.CakeBuild` — entry point is `build/Program.cs`
+- **Versioning:** GitVersion (ContinuousDeployment on `main`, ContinuousDelivery on feature branches)
+- **Package management:** Central Package Management (`Directory.Packages.props`)
+- **Testing:** xUnit, FakeItEasy, AwesomeAssertions, coverlet
+- **CI:** GitHub Actions (ubuntu, windows, macos) — workflows in `.github/workflows/`
+- **NuGet feed:** GitHub Packages (main builds), nuget.org (release builds)
+
+## Repository Layout
+
+```
+Core.sln                     Solution file
+Directory.Build.props         Shared MSBuild properties (TargetFramework, Authors)
+Directory.Packages.props      Central NuGet version pins
+global.json                   SDK version constraint
+GitVersion.yml                Versioning configuration
+build/                        Cake Frosting build project
+  Program.cs                  Build entry point (CakeHostBuilder)
+  BuildContext.cs             Build configuration (feeds, tools, settings)
+source/                       Library source code (see below)
+tests/                        Unit/integration test projects
+samples/                      Sample applications
+.github/workflows/            CI/CD pipelines
+```
+
+## Source Libraries
+
+| Area | Projects | Purpose |
+|------|----------|---------|
+| **Core** | `CreativeCoders.Core` | Ensure guards, collections, threading, enums, reflection, IO helpers, visitor pattern, object linking, dependency trees |
+| **AspNetCore** | `.AspNetCore`, `.Blazor`, `.TokenAuth.Jwt`, `.TokenAuthApi`, `.TokenAuthApi.Jwt` | ASP.NET Core extensions, Blazor helpers, JWT token auth |
+| **Cli** | `.Cli.Core`, `.Cli.Hosting` | CLI application framework with hosting support |
+| **SysConsole** | `.SysConsole.App`, `.Core`, `.Cli.Actions`, `.Cli.Parsing`, `.CliArguments` | Console applications with Spectre.Console, argument parsing, CLI actions |
+| **Data** | `.Data`, `.Data.EfCore`, `.Data.EfCore.SqlServer`, `.Data.Nhibernate`, `.Data.NoSql`, `.Data.NoSql.LiteDb` | Data access abstractions, EF Core, NHibernate, LiteDB |
+| **Net** | `.Net`, `.Net.Avm`, `.Net.JsonRpc`, `.Net.WebApi`, `.Net.XmlRpc`, `.Net.Servers.Http.AspNetCore` | Networking utilities, JSON-RPC, XML-RPC, WebApi client, HTTP server |
+| **Messaging** | `.Messaging.Core`, `.Messaging.DefaultMediator`, `.Messaging.DefaultMessageQueue` | In-process messaging, mediator pattern, message queues |
+| **Reactive** | `.Reactive.Messaging` | Reactive Extensions-based messaging |
+| **Config** | `.Config`, `.Config.Base`, `.Config.Sources` | Configuration abstraction layer |
+| **Configuration** | `.Configuration` | Microsoft.Extensions.Configuration integration |
+| **Options** | `.Options.Core`, `.Options.Serializers`, `.Options.Storage.FileSystem` | Options pattern with persistence |
+| **DependencyInjection** | `.DependencyInjection` | DI container extensions |
+| **Scripting** | `.Scripting.Base`, `.Scripting.CSharp` | C# scripting and source code generation |
+| **CodeCompilation** | `.CodeCompilation`, `.CodeCompilation.Roslyn` | Runtime code compilation via Roslyn |
+| **DynamicCode** | `.DynamicCode.Proxying` | Dynamic proxy generation (Castle.Core) |
+| **IO** | `.IO.Archives`, `.IO.Ports` | Archive handling, serial port abstractions |
+| **Localization** | `.Localization` | Microsoft.Extensions.Localization integration |
+| **Daemon** | `.Daemon`, `.Daemon.Linux`, `.Daemon.Windows` | Cross-platform daemon/service hosting (systemd, Windows Services) |
+| **ProcessUtils** | `.ProcessUtils` | Process execution utilities |
+| **UnitTests** | `.UnitTests` | Test helper library |
+| **CakeBuild** | `.CakeBuild` | Reusable Cake Frosting build tasks |
+| **NukeBuild** | `.NukeBuild`, `.NukeBuild.Components` | Nuke build system components |
+
+## Build & Test
+
+### Development
+
+Use standard `dotnet` commands for building, testing and restoring:
+
+```bash
+dotnet restore
+dotnet build
+dotnet test
+```
+
+### Build Pipeline (Cake Frosting)
+
+The full CI pipeline uses Cake Frosting. These commands are intended for CI/CD and release workflows — not for day-to-day development:
+
+```bash
+./build.sh -t pack            # Linux/macOS
+./build.cmd -t pack           # Windows
+./build.sh -t test            # Tests with coverage
+./build.cmd -t nugetpush      # Full pipeline with NuGet push (CI only)
+```
+
+Build targets are defined in `CreativeCoders.CakeBuild` and configured in `build/BuildContext.cs`. The build uses GitVersion for automatic semantic versioning and ReportGenerator for coverage reports (output: `.tests/coverage-report`).
+
+## CI/CD Workflows
+
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `main.yml` | Push to `main` | Build, test, pack, push to NuGet (Linux pushes, Windows/macOS build+test only) |
+| `pull-request.yml` | PR to `main` | Build and test on all platforms |
+| `integration.yml` | Manual/schedule | Integration testing |
+| `release.yml` | Release event | Publish to nuget.org |
+| `dependabot-auto-merge.yml` | Dependabot PRs | Auto-merge dependency updates |
+| `sync-ai-config.yml` | Config sync | Synchronize AI configuration files |
 
 -----------------------------------------------------------
 
@@ -51,14 +120,9 @@ applyTo: '**/*.cs'
 ## C# Instructions
 
 - Always use the latest stable C# version available in the project's target framework.
-- Write clear and concise comments for each function.
 
 ## General Instructions
 
-- Make only high confidence suggestions when reviewing code changes.
-- Write code with good maintainability practices, including comments on why certain design decisions were made.
-- Handle edge cases and write clear exception handling.
-- For libraries or external dependencies, mention their usage and purpose in comments.
 - Use `Ensure.NotNull(...)` from `CreativeCoders.Core` for null guards
 - Use `Ensure.IsNotNullOrEmpty(...)` from `CreativeCoders.Core` for string guards for arguments that must not be empty
 - Use `Ensure.IsNotNullOrWhitespace(...)` from `CreativeCoders.Core` for string guards for arguments that must not be empty or whitespace
@@ -76,14 +140,6 @@ public void DoSomething(string input, string fileName)
 _service = Ensure.NotNull(service);
 ```
 
-## Naming Conventions
-
-- Follow PascalCase for component names, method names and public members.
-- Use camelCase for local variables.
-- Use _camelCase for private fields.
-- Prefix interface names with "I" (e.g., IUserService).
-- Use naming conventions from surrounding code if different from Naming conventions above.
-
 ## Formatting
 
 - Apply code-formatting style defined in `.editorconfig`.
@@ -91,105 +147,55 @@ _service = Ensure.NotNull(service);
 - Insert a newline before the opening curly brace of any code block (e.g., after `if`, `for`, `while`, `foreach`,
   `using`, `try`, etc.).
 - Ensure that the final return statement of a method is on its own line.
-- Use pattern matching and switch expressions wherever possible.
 - Use `nameof` instead of string literals when referring to member names.
-- Use the `csharp-docs` skill to ensure XML documentation follows best practices.
-- Use `[UsedImplicitly]` from JetBrains.Annotations when types are only used via DI or reflection
-
-## Project Setup and Structure
-
-- Guide users through creating a new .NET project with the appropriate templates.
-- Explain the purpose of each generated file and folder to build understanding of the project structure.
-- Demonstrate how to organize code using feature folders or domain-driven design principles.
-- Show proper separation of concerns with models, services, and data access layers.
-- Explain the Program.cs and configuration system in ASP.NET Core including environment-specific settings.
+- Use `[UsedImplicitly]` from JetBrains.Annotations when types are only used via DI or reflection.
+- Use naming conventions from surrounding code when they differ from standard C# conventions.
 
 ## Modern C# Features
 
-- Prefer **switch expressions** over switch statements
-- Use **pattern matching** wherever possible
-- Use **primary constructors** when no constructor body is needed
+- Use **primary constructors** when no constructor body is needed.
 - Use private fields with guards instead of using primary constructor parameters directly, unless the parameter is assigned to a property.
 
 ## Async/Await
 
 - In **library code** always use `.ConfigureAwait(false)`
-- In **tests** do not use `.ConfigureAwait(false)` (disabled via tests/.editorconfig)
+- In **tests** do not use `.ConfigureAwait(false)` (disable for tests via tests/.editorconfig)
 
 ## Nullable Reference Types
 
 - Declare variables non-nullable, and check for `null` at entry points.
 - Always use `is null` or `is not null` instead of `== null` or `!= null`.
-- Trust the C# null annotations and don't add null checks when the type system says a value cannot be null.
-- Do not add redundant null checks when the type system already guarantees non-null
+- Trust the C# null annotations — don't add null checks when the type system guarantees non-null.
 
-## Data Access Patterns
+## Documentation
 
-- Guide the implementation of a data access layer using Entity Framework Core.
-- Explain different options (SQL Server, SQLite, In-Memory) for development and production.
-- Demonstrate repository pattern implementation and when it's beneficial.
-- Show how to implement database migrations and data seeding.
-- Explain efficient query patterns to avoid common performance issues.
-
-## Authentication and Authorization
-
-- Guide users through implementing authentication using JWT Bearer tokens.
-- Explain OAuth 2.0 and OpenID Connect concepts as they relate to ASP.NET Core.
-- Show how to implement role-based and policy-based authorization.
-- Demonstrate integration with Microsoft Entra ID (formerly Azure AD).
-- Explain how to secure both controller-based and Minimal APIs consistently.
-
-## Validation and Error Handling
-
-- Guide the implementation of model validation using data annotations and FluentValidation.
-- Explain the validation pipeline and how to customize validation responses.
-- Demonstrate a global exception handling strategy using middleware.
-- Show how to create consistent error responses across the API.
-- Explain problem details (RFC 7807) implementation for standardized error responses.
-
-## API Versioning and Documentation
-
-- Guide users through implementing and explaining API versioning strategies.
-- Demonstrate Swagger/OpenAPI implementation with proper documentation.
-- Show how to document endpoints, parameters, responses, and authentication.
-- Explain versioning in both controller-based and Minimal APIs.
-- Guide users on creating meaningful API documentation that helps consumers.
-
-## Logging and Monitoring
-
-- Guide the implementation of structured logging using Serilog or other providers.
-- Explain the logging levels and when to use each.
-- Demonstrate integration with Application Insights for telemetry collection.
-- Show how to implement custom telemetry and correlation IDs for request tracking.
-- Explain how to monitor API performance, errors and usage patterns.
+- Document all public members with XML documentation.
+- Use the `csharp-docs` skill to ensure XML documentation follows best practices.
+- If you change code, always update the relevant XML documentation.
 
 ## Testing
 
 - Always include test cases for critical paths of the application.
 - Always use the `dotnet-tester` skill for detailed testing conventions and workflows when writing tests.
 
-## Performance Optimization
-
-- Guide users on implementing caching strategies (in-memory, distributed, response caching).
-- Explain asynchronous programming patterns and why they matter for API performance.
-- Demonstrate pagination, filtering, and sorting for large data sets.
-- Show how to implement compression and other performance optimizations.
-- Explain how to measure and benchmark API performance.
-
-## Deployment and DevOps
-
-- Guide users through containerizing their API using .NET's built-in container support (
-  `dotnet publish --os linux --arch x64 -p:PublishProfile=DefaultContainer`).
-- Explain the differences between manual Dockerfile creation and .NET's container publishing features.
-- Explain CI/CD pipelines for NET applications.
-- Demonstrate deployment to Azure App Service, Azure Container Apps, or other hosting options.
-- Show how to implement health checks and readiness probes.
-- Explain environment-specific configurations for different deployment stages.
-
 ## Console
+
 - Use AnsiConsole for console input and output. Always use IAnsiConsole via dependency injection.
 - Use colored output where it makes sense. For example, use green for success messages, red for errors and yellow for warnings.
 - Use tables for structured output when displaying lists of data or multiple pieces of related information.
+
+## Logging
+
+- Use Serilog for logging.
+- Configure Serilog with appropriate sinks (e.g., file, console, Azure Application Insights) based on environment.
+- Always use structured logging with properties for better log analysis and correlation.
+
+## Skills Reference
+
+- Use the `dotnet-aspnet` skill for ASP.NET Core projects (project structure, middleware, auth, validation, error handling, API versioning, OpenAPI).
+- Use the `ef-core` skill for Entity Framework Core data access patterns.
+- Use the `dotnet-sdk-builder` skill for creating .NET SDK/client libraries.
+- Use the `nuget-manager` skill for NuGet package management.
 
 -----------------------------------------------------------
 
