@@ -60,16 +60,25 @@ samples/                      Sample applications
 
 ## Build & Test
 
+### Development
+
+Use standard `dotnet` commands for building, testing and restoring:
+
 ```bash
-# Build everything
+dotnet restore
+dotnet build
+dotnet test
+```
+
+### Build Pipeline (Cake Frosting)
+
+The full CI pipeline uses Cake Frosting. These commands are intended for CI/CD and release workflows — not for day-to-day development:
+
+```bash
 ./build.sh -t pack            # Linux/macOS
 ./build.cmd -t pack           # Windows
-
-# Run tests only
-./build.sh -t test
-
-# Full pipeline with NuGet push (CI)
-./build.cmd -t nugetpush
+./build.sh -t test            # Tests with coverage
+./build.cmd -t nugetpush      # Full pipeline with NuGet push (CI only)
 ```
 
 Build targets are defined in `CreativeCoders.CakeBuild` and configured in `build/BuildContext.cs`. The build uses GitVersion for automatic semantic versioning and ReportGenerator for coverage reports (output: `.tests/coverage-report`).
