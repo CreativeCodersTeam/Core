@@ -8,8 +8,10 @@
 
     <ItemGroup>
         <PackageReference Include="Cake.Frosting"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
         <PackageReference Include="MimeMapping"/>
         <PackageReference Include="Octokit"/>
+    <PackageReference Include="Spectre.Console" />
     </ItemGroup>
 
     <ItemGroup>
