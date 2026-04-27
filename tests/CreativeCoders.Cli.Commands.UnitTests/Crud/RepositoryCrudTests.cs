@@ -132,7 +132,9 @@ public class RepositoryCrudTests
 
         var result = await sut.ExecuteAsync(new RemoveOptions<int>
         {
-            Key = 7, Yes = true, DryRun = true
+            Key = 7,
+            Yes = true,
+            DryRun = true
         });
 
         result.ExitCode.Should().Be(0);
