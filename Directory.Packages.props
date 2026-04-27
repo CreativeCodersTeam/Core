@@ -44,6 +44,7 @@
     <PackageVersion Include="Octokit" Version="14.0.0" />
     <PackageVersion Include="Polly" Version="8.6.6" />
     <PackageVersion Include="Spectre.Console" Version="0.55.2" />
+    <PackageVersion Include="Spectre.Console.Testing" Version="0.55.2" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.1.7" />
     <PackageVersion Include="System.IO.Abstractions" Version="22.1.1" />
     <PackageVersion Include="System.IO.Abstractions.TestingHelpers" Version="22.1.1" />
