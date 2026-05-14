@@ -11,3 +11,197 @@
 - Stage files by name, not `git add -A` or `git add .` — those can sweep in secrets or large binaries.
 - Don't commit files that look like secrets (.env, credentials.json, *.pem). If
   the user explicitly asks, warn first.
+
+
+# CreativeCoders.Core
+
+A collection of reusable .NET 10 libraries published as NuGet packages under the `CreativeCoders.*` namespace. Licensed under Apache 2.0.
+
+## Tech Stack
+
+- **Runtime:** .NET 10 (`net10.0`)
+- **Language:** C# (latest stable)
+- **SDK:** `10.0.100` (see `global.json`, rollForward: latestFeature)
+- **Build system:** Cake (Frosting) via `CreativeCoders.CakeBuild` — entry point is `build/Program.cs`
+- **Versioning:** GitVersion (ContinuousDeployment on `main`, ContinuousDelivery on feature branches)
+- **Package management:** Central Package Management (`Directory.Packages.props`)
+- **Testing:** xUnit, FakeItEasy, AwesomeAssertions, coverlet
+- **CI:** GitHub Actions (ubuntu, windows, macos) — workflows in `.github/workflows/`
+- **NuGet feed:** GitHub Packages (main builds), nuget.org (release builds)
+
+## Repository Layout
+
+```
+Core.sln                     Solution file
+Directory.Build.props         Shared MSBuild properties (TargetFramework, Authors)
+Directory.Packages.props      Central NuGet version pins
+global.json                   SDK version constraint
+GitVersion.yml                Versioning configuration
+build/                        Cake Frosting build project
+  Program.cs                  Build entry point (CakeHostBuilder)
+  BuildContext.cs             Build configuration (feeds, tools, settings)
+source/                       Library source code (see below)
+tests/                        Unit/integration test projects
+samples/                      Sample applications
+.github/workflows/            CI/CD pipelines
+```
+
+## Source Libraries
+
+| Area | Projects | Purpose |
+|------|----------|---------|
+| **Core** | `CreativeCoders.Core` | Ensure guards, collections, threading, enums, reflection, IO helpers, visitor pattern, object linking, dependency trees |
+| **AspNetCore** | `.AspNetCore`, `.Blazor`, `.TokenAuth.Jwt`, `.TokenAuthApi`, `.TokenAuthApi.Jwt` | ASP.NET Core extensions, Blazor helpers, JWT token auth |
+| **Cli** | `.Cli.Core`, `.Cli.Hosting` | CLI application framework with hosting support |
+| **SysConsole** | `.SysConsole.App`, `.Core`, `.Cli.Actions`, `.Cli.Parsing`, `.CliArguments` | Console applications with Spectre.Console, argument parsing, CLI actions |
+| **Data** | `.Data`, `.Data.EfCore`, `.Data.EfCore.SqlServer`, `.Data.Nhibernate`, `.Data.NoSql`, `.Data.NoSql.LiteDb` | Data access abstractions, EF Core, NHibernate, LiteDB |
+| **Net** | `.Net`, `.Net.Avm`, `.Net.JsonRpc`, `.Net.WebApi`, `.Net.XmlRpc`, `.Net.Servers.Http.AspNetCore` | Networking utilities, JSON-RPC, XML-RPC, WebApi client, HTTP server |
+| **Messaging** | `.Messaging.Core`, `.Messaging.DefaultMediator`, `.Messaging.DefaultMessageQueue` | In-process messaging, mediator pattern, message queues |
+| **Reactive** | `.Reactive.Messaging` | Reactive Extensions-based messaging |
+| **Config** | `.Config`, `.Config.Base`, `.Config.Sources` | Configuration abstraction layer |
+| **Configuration** | `.Configuration` | Microsoft.Extensions.Configuration integration |
+| **Options** | `.Options.Core`, `.Options.Serializers`, `.Options.Storage.FileSystem` | Options pattern with persistence |
+| **DependencyInjection** | `.DependencyInjection` | DI container extensions |
+| **Scripting** | `.Scripting.Base`, `.Scripting.CSharp` | C# scripting and source code generation |
+| **CodeCompilation** | `.CodeCompilation`, `.CodeCompilation.Roslyn` | Runtime code compilation via Roslyn |
+| **DynamicCode** | `.DynamicCode.Proxying` | Dynamic proxy generation (Castle.Core) |
+| **IO** | `.IO.Archives`, `.IO.Ports` | Archive handling, serial port abstractions |
+| **Localization** | `.Localization` | Microsoft.Extensions.Localization integration |
+| **Daemon** | `.Daemon`, `.Daemon.Linux`, `.Daemon.Windows` | Cross-platform daemon/service hosting (systemd, Windows Services) |
+| **ProcessUtils** | `.ProcessUtils` | Process execution utilities |
+| **UnitTests** | `.UnitTests` | Test helper library |
+| **CakeBuild** | `.CakeBuild` | Reusable Cake Frosting build tasks |
+| **NukeBuild** | `.NukeBuild`, `.NukeBuild.Components` | Nuke build system components |
+
+## Build & Test
+
+### Development
+
+Use standard `dotnet` commands for building, testing and restoring:
+
+```bash
+dotnet restore
+dotnet build
+dotnet test
+```
+
+### Build Pipeline (Cake Frosting)
+
+The full CI pipeline uses Cake Frosting. These commands are intended for CI/CD and release workflows — not for day-to-day development:
+
+```bash
+./build.sh -t pack            # Linux/macOS
+./build.cmd -t pack           # Windows
+./build.sh -t test            # Tests with coverage
+./build.cmd -t nugetpush      # Full pipeline with NuGet push (CI only)
+```
+
+Build targets are defined in `CreativeCoders.CakeBuild` and configured in `build/BuildContext.cs`. The build uses GitVersion for automatic semantic versioning and ReportGenerator for coverage reports (output: `.tests/coverage-report`).
+
+## CI/CD Workflows
+
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `main.yml` | Push to `main` | Build, test, pack, push to NuGet (Linux pushes, Windows/macOS build+test only) |
+| `pull-request.yml` | PR to `main` | Build and test on all platforms |
+| `integration.yml` | Manual/schedule | Integration testing |
+| `release.yml` | Release event | Publish to nuget.org |
+| `dependabot-auto-merge.yml` | Dependabot PRs | Auto-merge dependency updates |
+| `sync-ai-config.yml` | Config sync | Synchronize AI configuration files |
+
+-----------------------------------------------------------
+
+
+---
+description: 'Guidelines for building C# applications'
+applyTo: '**/*.cs'
+---
+
+# C# Development
+
+- Always use the latest stable C# version available in the project's target framework.
+
+## General Instructions
+
+- Use `Ensure.NotNull(...)` from `CreativeCoders.Core` for null guards
+- Use `Ensure.IsNotNullOrEmpty(...)` from `CreativeCoders.Core` for string guards for arguments that must not be empty
+- Use `Ensure.IsNotNullOrWhitespace(...)` from `CreativeCoders.Core` for string guards for arguments that must not be empty or whitespace
+- Guard arguments for public methods in libraries with `Ensure.NotNull(...)` for all required parameters:
+```csharp
+public void DoSomething(string input, string fileName)
+{
+    Ensure.NotNull(input);
+    Ensure.NotNullOrWhitespace(fileName);
+    // method implementation
+}
+```
+- Guard constructor-injected dependencies with `Ensure.NotNull(...)` for all required parameters:
+```csharp
+_service = Ensure.NotNull(service);
+```
+
+## Formatting
+
+- Apply code-formatting style defined in `.editorconfig`.
+- Prefer file-scoped namespace declarations and single-line using directives.
+- Insert a newline before the opening curly brace of any code block (e.g., after `if`, `for`, `while`, `foreach`,
+  `using`, `try`, etc.).
+- Ensure that the final return statement of a method is on its own line.
+- Use `nameof` instead of string literals when referring to member names.
+- Use `[UsedImplicitly]` from JetBrains.Annotations when types are only used via DI or reflection.
+- Use naming conventions from surrounding code when they differ from standard C# conventions.
+
+## Modern C# Features
+
+- Use **primary constructors** when no constructor body is needed.
+- Use private fields with guards instead of using primary constructor parameters directly, unless the parameter is assigned to a property.
+
+## Async/Await
+
+- In **library code** always use `.ConfigureAwait(false)`
+- In **tests** do not use `.ConfigureAwait(false)` (disable for tests via tests/.editorconfig)
+- YOU MUST NOT USE `.GetAwaiter().GetResult()` OR `.Result` OR `.Wait()` TO BLOCK ON ASYNC CODE. If there is no other way ask the user what to do.
+
+## Nullable Reference Types
+
+- Declare variables non-nullable, and check for `null` at entry points.
+- Always use `is null` or `is not null` instead of `== null` or `!= null`.
+- Trust the C# null annotations — don't add null checks when the type system guarantees non-null.
+
+## Documentation
+
+- Document all public members with XML documentation.
+- Use the `csharp-docs` skill to ensure XML documentation follows best practices.
+- If you change code, always update the relevant XML documentation.
+
+## Testing
+
+- Always include test cases for code changes.
+- Always use the `dotnet-tester` skill for writing tests.
+
+## Console
+
+- Use AnsiConsole for console input and output. Always use IAnsiConsole via dependency injection.
+- Use colored output where it makes sense. For example, use green for success messages, red for errors and yellow for warnings.
+- Use tables for structured output when displaying lists of data or multiple pieces of related information.
+
+## Logging
+
+- Use Serilog for logging.
+- Configure Serilog with appropriate sinks (e.g., file, console, Azure Application Insights) based on environment.
+- Always use structured logging with properties for better log analysis and correlation.
+
+## Skills Reference
+
+- You MUST use the `dotnet-aspnet` skill for ASP.NET Core projects (project structure, middleware, auth, validation, error handling, API versioning, OpenAPI).
+- You MUST use the `ef-core` skill for Entity Framework Core data access patterns.
+- You MUST use the `dotnet-sdk-builder` skill for creating .NET SDK/client libraries.
+- You MUST use the `dotnet-reviewer` skill for Reviewing .NET Code.
+- You MUST use the `dotnet-tester` skill for writing and editing tests.
+- You MUST use the `nuget-manager` skill for NuGet package management.
+- You MUST use the `dotnet-inspect` skill to query .NET APIs in NuGet packages, platform libraries (System.*, Microsoft.AspNetCore.*), or local .dll/.nupkg files — discover types and members, diff API surfaces between versions, find extension methods/implementors, locate SourceLink URLs, and triage breakages caused by package upgrades.
+- You MUST use the `csharp-docs` skill to ensure XML documentation follows best practices.
+
+-----------------------------------------------------------
+
+
