@@ -1,0 +1,172 @@
+<Solution>
+  <Folder Name="/samples/">
+    <File Path="samples/Directory.Build.props" />
+    <Project Path="samples/BlazorWebAssemblySampleApp/BlazorWebAssemblySampleApp.csproj" />
+    <Project Path="samples/CakeBuildSample/CakeBuildSample.csproj">
+      <Build Project="false" />
+    </Project>
+    <Project Path="samples/CliHostSampleApp/CliHostSampleApp.csproj" />
+    <Project Path="samples/ConsoleTestApp/ConsoleTestApp.csproj" />
+    <Project Path="samples/MessagingSampleApp/MessagingSampleApp.csproj" />
+    <Project Path="samples/NetSampleApp/NetSampleApp.csproj" />
+    <Project Path="samples/ProcessUtilsSampleApp/ProcessUtilsSampleApp.csproj" />
+    <Project Path="samples/WebApiSampleApp/WebApiSampleApp.csproj" />
+    <Project Path="samples/WindowsServiceDaemonSampleApp/WindowsServiceDaemonSampleApp.csproj" />
+    <Project Path="samples/XmlRpcSampleApp/XmlRpcSampleApp.csproj" />
+  </Folder>
+  <Folder Name="/source/">
+    <File Path="source/Directory.Build.props" />
+  </Folder>
+  <Folder Name="/source/AspNetCore/">
+    <Project Path="source/AspNetCore/CreativeCoders.AspNetCore.Blazor/CreativeCoders.AspNetCore.Blazor.csproj" />
+    <Project Path="source/AspNetCore/CreativeCoders.AspNetCore.TokenAuth.Jwt/CreativeCoders.AspNetCore.TokenAuth.Jwt.csproj" />
+    <Project Path="source/AspNetCore/CreativeCoders.AspNetCore.TokenAuthApi.Jwt/CreativeCoders.AspNetCore.TokenAuthApi.Jwt.csproj" />
+    <Project Path="source/AspNetCore/CreativeCoders.AspNetCore.TokenAuthApi/CreativeCoders.AspNetCore.TokenAuthApi.csproj" />
+    <Project Path="source/AspNetCore/CreativeCoders.AspNetCore/CreativeCoders.AspNetCore.csproj" />
+  </Folder>
+  <Folder Name="/source/CakeBuild/">
+    <Project Path="source/CakeBuild/CreativeCoders.CakeBuild/CreativeCoders.CakeBuild.csproj" />
+  </Folder>
+  <Folder Name="/source/Cli/">
+    <File Path="source/Cli/README.md" />
+    <Project Path="source/Cli/CreativeCoders.Cli.Core/CreativeCoders.Cli.Core.csproj" />
+    <Project Path="source/Cli/CreativeCoders.Cli.Hosting/CreativeCoders.Cli.Hosting.csproj" />
+  </Folder>
+  <Folder Name="/source/CodeCompilation/">
+    <Project Path="source/CodeCompilation/CreativeCoders.CodeCompilation.Roslyn/CreativeCoders.CodeCompilation.Roslyn.csproj" />
+    <Project Path="source/CodeCompilation/CreativeCoders.CodeCompilation/CreativeCoders.CodeCompilation.csproj" />
+  </Folder>
+  <Folder Name="/source/Config/">
+    <Project Path="source/Config/CreativeCoders.Config.Base/CreativeCoders.Config.Base.csproj" />
+    <Project Path="source/Config/CreativeCoders.Config.Sources/CreativeCoders.Config.Sources.csproj" />
+    <Project Path="source/Config/CreativeCoders.Config/CreativeCoders.Config.csproj" />
+  </Folder>
+  <Folder Name="/source/Configuration/">
+    <Project Path="source/Configuration/CreativeCoders.Configuration/CreativeCoders.Configuration.csproj" />
+  </Folder>
+  <Folder Name="/source/Core/">
+    <Project Path="source/Core/CreativeCoders.Core/CreativeCoders.Core.csproj" />
+  </Folder>
+  <Folder Name="/source/Daemon/">
+    <Project Path="source/Daemon/CreativeCoders.Daemon.Linux/CreativeCoders.Daemon.Linux.csproj" />
+    <Project Path="source/Daemon/CreativeCoders.Daemon.Windows/CreativeCoders.Daemon.Windows.csproj" />
+    <Project Path="source/Daemon/CreativeCoders.Daemon/CreativeCoders.Daemon.csproj" />
+  </Folder>
+  <Folder Name="/source/Data/">
+    <Project Path="source/Data/CreativeCoders.Data.EfCore.SqlServer/CreativeCoders.Data.EfCore.SqlServer.csproj" />
+    <Project Path="source/Data/CreativeCoders.Data.EfCore/CreativeCoders.Data.EfCore.csproj" />
+    <Project Path="source/Data/CreativeCoders.Data.Nhibernate/CreativeCoders.Data.Nhibernate.csproj" />
+    <Project Path="source/Data/CreativeCoders.Data/CreativeCoders.Data.csproj" />
+  </Folder>
+  <Folder Name="/source/Data/NoSql/">
+    <Project Path="source/Data/CreativeCoders.Data.NoSql.LiteDb/CreativeCoders.Data.NoSql.LiteDb.csproj" />
+    <Project Path="source/Data/CreativeCoders.Data.NoSql/CreativeCoders.Data.NoSql.csproj" />
+  </Folder>
+  <Folder Name="/source/DependencyInjection/">
+    <Project Path="source/DependencyInjection/CreativeCoders.DependencyInjection/CreativeCoders.DependencyInjection.csproj" />
+  </Folder>
+  <Folder Name="/source/DynamicCode/">
+    <Project Path="source/DynamicCode/CreativeCoders.DynamicCode.Proxying/CreativeCoders.DynamicCode.Proxying.csproj" />
+  </Folder>
+  <Folder Name="/source/IO/">
+    <Project Path="source/IO/CreativeCoders.IO.Archives/CreativeCoders.IO.Archives.csproj" />
+    <Project Path="source/IO/CreativeCoders.IO.Ports/CreativeCoders.IO.Ports.csproj" />
+  </Folder>
+  <Folder Name="/source/Localization/">
+    <Project Path="source/Localization/CreativeCoders.Localization/CreativeCoders.Localization.csproj" />
+  </Folder>
+  <Folder Name="/source/Messaging/">
+    <Project Path="source/Messaging/CreativeCoders.Messaging.Core/CreativeCoders.Messaging.Core.csproj" />
+    <Project Path="source/Messaging/CreativeCoders.Messaging.DefaultMediator/CreativeCoders.Messaging.DefaultMediator.csproj" />
+    <Project Path="source/Messaging/CreativeCoders.Messaging.DefaultMessageQueue/CreativeCoders.Messaging.DefaultMessageQueue.csproj" />
+  </Folder>
+  <Folder Name="/source/Net/">
+    <Project Path="source/Net/CreativeCoders.Net.Avm/CreativeCoders.Net.Avm.csproj" />
+    <Project Path="source/Net/CreativeCoders.Net.JsonRpc/CreativeCoders.Net.JsonRpc.csproj" />
+    <Project Path="source/Net/CreativeCoders.Net.Servers.Http.AspNetCore/CreativeCoders.Net.Servers.Http.AspNetCore.csproj" />
+    <Project Path="source/Net/CreativeCoders.Net.WebApi/CreativeCoders.Net.WebApi.csproj" />
+    <Project Path="source/Net/CreativeCoders.Net.XmlRpc/CreativeCoders.Net.XmlRpc.csproj" />
+    <Project Path="source/Net/CreativeCoders.Net/CreativeCoders.Net.csproj" />
+  </Folder>
+  <Folder Name="/source/Options/">
+    <Project Path="source/Options/CreativeCoders.Options.Core/CreativeCoders.Options.Core.csproj" />
+    <Project Path="source/Options/CreativeCoders.Options.Serializers/CreativeCoders.Options.Serializers.csproj" />
+    <Project Path="source/Options/CreativeCoders.Options.Storage.FileSystem/CreativeCoders.Options.Storage.FileSystem.csproj" />
+  </Folder>
+  <Folder Name="/source/ProcessUtils/">
+    <Project Path="source/ProcessUtils/CreativeCoders.ProcessUtils/CreativeCoders.ProcessUtils.csproj" />
+  </Folder>
+  <Folder Name="/source/Reactive/">
+    <Project Path="source/Reactive/CreativeCoders.Reactive.Messaging/CreativeCoders.Reactive.Messaging.csproj" />
+  </Folder>
+  <Folder Name="/source/Scripting/">
+    <Project Path="source/Scripting/CreativeCoders.Scripting.Base/CreativeCoders.Scripting.Base.csproj" />
+    <Project Path="source/Scripting/CreativeCoders.Scripting.CSharp/CreativeCoders.Scripting.CSharp.csproj" />
+  </Folder>
+  <Folder Name="/source/SysConsole/">
+    <Project Path="source/SysConsole/CreativeCoders.SysConsole.App/CreativeCoders.SysConsole.App.csproj" />
+    <Project Path="source/SysConsole/CreativeCoders.SysConsole.Cli.Actions/CreativeCoders.SysConsole.Cli.Actions.csproj" />
+    <Project Path="source/SysConsole/CreativeCoders.SysConsole.Cli.Parsing/CreativeCoders.SysConsole.Cli.Parsing.csproj" />
+    <Project Path="source/SysConsole/CreativeCoders.SysConsole.CliArguments/CreativeCoders.SysConsole.CliArguments.csproj" />
+    <Project Path="source/SysConsole/CreativeCoders.SysConsole.Core/CreativeCoders.SysConsole.Core.csproj" />
+  </Folder>
+  <Folder Name="/source/UnitTests/">
+    <Project Path="source/UnitTests/CreativeCoders.UnitTests/CreativeCoders.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <File Path="tests/Directory.Build.props" />
+    <Project Path="tests/CreativeCoders.AspNetCore.Blazor.UnitTests/CreativeCoders.AspNetCore.Blazor.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.AspNetCore.Tests/CreativeCoders.AspNetCore.Tests.csproj" />
+    <Project Path="tests/CreativeCoders.CakeBuild.Tests/CreativeCoders.CakeBuild.Tests.csproj" />
+    <Project Path="tests/CreativeCoders.Cli.Tests/CreativeCoders.Cli.Tests.csproj" />
+    <Project Path="tests/CreativeCoders.CodeCompilation.UnitTests/CreativeCoders.CodeCompilation.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.Core.UnitTests/CreativeCoders.Core.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.Data.NoSql.LiteDb.Tests/CreativeCoders.Data.NoSql.LiteDb.Tests.csproj" />
+    <Project Path="tests/CreativeCoders.DependencyInjection.UnitTests/CreativeCoders.DependencyInjection.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.IO.UnitTests/CreativeCoders.IO.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.Localization.UnitTests/CreativeCoders.Localization.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.Messaging.UnitTests/CreativeCoders.Messaging.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.MiscTest.UnitTests/CreativeCoders.MiscTest.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.Net.UnitTests/CreativeCoders.Net.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.Reactive.UnitTests/CreativeCoders.Reactive.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.Scripting.UnitTests/CreativeCoders.Scripting.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.SysConsole.App.UnitTests/CreativeCoders.SysConsole.App.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.SysConsole.Cli.Actions.UnitTests/CreativeCoders.SysConsole.Cli.Actions.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.SysConsole.Cli.Parsing.UnitTests/CreativeCoders.SysConsole.Cli.Parsing.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.SysConsole.CliArguments.UnitTests/CreativeCoders.SysConsole.CliArguments.UnitTests.csproj" />
+    <Project Path="tests/CreativeCoders.SysConsole.UnitTests/CreativeCoders.SysConsole.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/_build/">
+    <File Path="build.cmd" />
+    <File Path="build.ps1" />
+    <File Path="build.sh" />
+    <Project Path="build/Build.csproj">
+      <Build Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/__ai/" />
+  <Folder Name="/__ai/copilot/">
+    <File Path=".github/csharp.instructions.md" />
+  </Folder>
+  <Folder Name="/__ai/junie/">
+    <File Path=".junie/guidelines.md" />
+  </Folder>
+  <Folder Name="/__global/">
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="GitVersion.yml" />
+    <File Path="global.json" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/__global/ci/">
+    <File Path=".github/workflows/integration.yml" />
+    <File Path=".github/workflows/main.yml" />
+    <File Path=".github/workflows/pull-request.yml" />
+    <File Path=".github/workflows/release.yml" />
+    <File Path=".github/workflows/sync-ai-config.yml" />
+  </Folder>
+</Solution>
