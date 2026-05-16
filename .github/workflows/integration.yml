@@ -6,9 +6,22 @@ on:
       - 'feature/**'
 
 jobs:
-  ubuntu-latest:
-    name: ubuntu-latest
-    runs-on: ubuntu-latest
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact-suffix: linux
+            build-target: nugetpush
+          - os: windows-latest
+            artifact-suffix: windows
+            build-target: pack
+          - os: macos-latest
+            artifact-suffix: macos
+            build-target: pack
     env:
       TERM: xterm
       DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
@@ -22,58 +35,12 @@ jobs:
           path: |
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
-      - name: 'Build with target: NuGetPush'
+      - name: 'Build with target: ${{ matrix.build-target }}'
+        run: ./build.cmd -t ${{ matrix.build-target }}
         env:
           NUGET_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./build.cmd -t nugetpush
       - name: 'Publish: coverage-report'
         uses: actions/upload-artifact@v7
         with:
-          name: coverage-report-linux
-          path: .tests/coverage-report
-  windows-latest:
-    name: windows-latest
-    runs-on: windows-latest
-    env:
-      TERM: xterm
-      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - name: 'Cache: ~/.nuget/packages'
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.nuget/packages
-          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
-      - name: 'Build with target: Pack'
-        run: ./build.cmd -t pack
-      - name: 'Publish: coverage_report'
-        uses: actions/upload-artifact@v7
-        with:
-          name: coverage-report-windows
-          path: .tests/coverage-report
-  macos-latest:
-    name: macos-latest
-    runs-on: macos-latest
-    env:
-      TERM: xterm
-      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - name: 'Cache: ~/.nuget/packages'
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.nuget/packages
-          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
-      - name: 'Build with target: Pack'
-        run: ./build.cmd -t pack
-      - name: 'Publish: coverage_report'
-        uses: actions/upload-artifact@v7
-        with:
-          name: coverage-report-macos
+          name: coverage-report-${{ matrix.artifact-suffix }}
           path: .tests/coverage-report
