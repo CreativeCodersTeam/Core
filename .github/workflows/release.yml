@@ -13,11 +13,11 @@ jobs:
       TERM: xterm
       DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: 'Cache: ~/.nuget/packages'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.nuget/packages
@@ -27,7 +27,7 @@ jobs:
         env:
           NUGET_TOKEN: ${{ secrets.NUGET_ORG_TOKEN }}
       - name: 'Publish: coverage_report'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-report-linux
           path: .tests/coverage-report
