@@ -40,7 +40,7 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.5.1" />
     <PackageVersion Include="MimeMapping" Version="4.0.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageVersion Include="NHibernate" Version="5.6.0" />
+    <PackageVersion Include="NHibernate" Version="5.6.1" />
     <PackageVersion Include="Octokit" Version="14.0.0" />
     <PackageVersion Include="Polly" Version="8.6.6" />
     <PackageVersion Include="Spectre.Console" Version="0.55.2" />
@@ -52,6 +52,6 @@
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="XunitXml.TestLogger" Version="8.0.0" />
-    <PackageVersion Include="YamlDotNet" Version="17.1.0" />
+    <PackageVersion Include="YamlDotNet" Version="18.0.0" />
   </ItemGroup>
 </Project>
