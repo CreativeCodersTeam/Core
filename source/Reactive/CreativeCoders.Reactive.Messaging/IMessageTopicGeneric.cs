@@ -6,6 +6,7 @@ namespace CreativeCoders.Reactive.Messaging;
 
 [PublicAPI]
 public interface IMessageTopic<TMessage>
+    where TMessage : notnull
 {
     void Publish(TMessage message);
 

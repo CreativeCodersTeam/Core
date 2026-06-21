@@ -20,7 +20,7 @@ public class MessageTopicTests
 
         topic.Publish("Test");
 
-        Assert.Throws<ArgumentNullException>(() => topic.Publish<object>(null));
+        Assert.Throws<ArgumentNullException>(() => topic.Publish<object>(null!));
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class MessageTopicTests
     {
         var topic = new MessageTopic();
 
-        object msgPublished = null;
+        object? msgPublished = null;
 
         topic
             .Register<object>()
@@ -46,7 +46,7 @@ public class MessageTopicTests
     {
         var topic = new MessageTopic();
 
-        object msgPublished = null;
+        object? msgPublished = null;
 
         topic
             .Register<object>(Scheduler.Immediate)
@@ -64,7 +64,7 @@ public class MessageTopicTests
     {
         var topic = new MessageTopic();
 
-        object msgPublished = null;
+        object? msgPublished = null;
         var strPublished = false;
 
         topic.Register<object>()
@@ -92,7 +92,7 @@ public class MessageTopicTests
     {
         var topic = new MessageTopic();
 
-        object objPublished = null;
+        object? objPublished = null;
 
         topic.Register<object>().Subscribe(o => objPublished = o);
 
@@ -100,7 +100,7 @@ public class MessageTopicTests
 
         topic.Publish(obj);
 
-        object secondObjPublished = null;
+        object? secondObjPublished = null;
 
         topic.Register<object>().Subscribe(o => secondObjPublished = o);
 

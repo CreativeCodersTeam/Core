@@ -20,7 +20,7 @@ public class MessageTopicGenericTests
 
         topic.Publish("Test");
 
-        Assert.Throws<ArgumentNullException>(() => topic.Publish(null));
+        Assert.Throws<ArgumentNullException>(() => topic.Publish(null!));
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class MessageTopicGenericTests
     {
         var topic = new MessageTopic<object>();
 
-        object msgPublished = null;
+        object? msgPublished = null;
 
         topic.Register().Subscribe(o => msgPublished = o);
 
@@ -44,7 +44,7 @@ public class MessageTopicGenericTests
     {
         var topic = new MessageTopic<object>();
 
-        object msgPublished = null;
+        object? msgPublished = null;
         var strPublished = false;
 
         topic.Register(Scheduler.Immediate).Subscribe(o => msgPublished = o);
@@ -70,7 +70,7 @@ public class MessageTopicGenericTests
     {
         var topic = new MessageTopic<object>();
 
-        object msgPublished = null;
+        object? msgPublished = null;
         var strPublished = false;
 
         topic.Register().Subscribe(o => msgPublished = o);
@@ -96,7 +96,7 @@ public class MessageTopicGenericTests
     {
         var topic = new MessageTopic<object>();
 
-        object objPublished = null;
+        object? objPublished = null;
 
         topic.Register<object>().Subscribe(o => objPublished = o);
 
@@ -104,7 +104,7 @@ public class MessageTopicGenericTests
 
         topic.Publish(obj);
 
-        object secondObjPublished = null;
+        object? secondObjPublished = null;
 
         topic.Register<object>().Subscribe(o => secondObjPublished = o);
 
@@ -125,7 +125,7 @@ public class MessageTopicGenericTests
     {
         var topic = new MessageTopic<object>();
 
-        object objPublished = null;
+        object? objPublished = null;
 
         topic.Register().Subscribe(o => objPublished = o);
 
@@ -133,7 +133,7 @@ public class MessageTopicGenericTests
 
         topic.Publish(obj);
 
-        object secondObjPublished = null;
+        object? secondObjPublished = null;
 
         topic.Register().Subscribe(o => secondObjPublished = o);
 

@@ -3,6 +3,7 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <Description>Simple message topic implementation based on Reactive.net</Description>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>

@@ -7,9 +7,12 @@ namespace CreativeCoders.Reactive.Messaging;
 [PublicAPI]
 public interface IMessageTopic
 {
-    void Publish<TMessage>(TMessage message);
+    void Publish<TMessage>(TMessage message)
+        where TMessage : notnull;
 
-    IObservable<TMessage> Register<TMessage>();
+    IObservable<TMessage> Register<TMessage>()
+        where TMessage : notnull;
 
-    IObservable<TMessage> Register<TMessage>(IScheduler scheduler);
+    IObservable<TMessage> Register<TMessage>(IScheduler scheduler)
+        where TMessage : notnull;
 }

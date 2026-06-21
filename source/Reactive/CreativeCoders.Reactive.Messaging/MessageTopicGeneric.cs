@@ -7,6 +7,7 @@ using CreativeCoders.Core;
 namespace CreativeCoders.Reactive.Messaging;
 
 public class MessageTopic<TMessage> : IMessageTopic<TMessage>
+    where TMessage : notnull
 {
     private readonly ISubject<TMessage> _messageSubject;
 

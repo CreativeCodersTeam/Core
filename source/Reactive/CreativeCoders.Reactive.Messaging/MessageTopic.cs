@@ -18,6 +18,7 @@ public class MessageTopic : IMessageTopic
     }
 
     public void Publish<TMessage>(TMessage message)
+        where TMessage : notnull
     {
         Ensure.IsNotNull(message);
 
@@ -25,6 +26,7 @@ public class MessageTopic : IMessageTopic
     }
 
     public IObservable<TMessage> Register<TMessage>()
+        where TMessage : notnull
     {
         var registration = _messageSubject
             .OfType<TMessage>()
@@ -35,6 +37,7 @@ public class MessageTopic : IMessageTopic
     }
 
     public IObservable<TMessage> Register<TMessage>(IScheduler scheduler)
+        where TMessage : notnull
     {
         Ensure.IsNotNull(scheduler);
 
