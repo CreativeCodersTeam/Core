@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
@@ -6,6 +7,7 @@ namespace CreativeCoders.Messaging.Core;
 
 [PublicAPI]
 public interface IMessageQueue<T> : IDisposable, IAsyncDisposable
+    where T : notnull
 {
     Task EnqueueAsync(T message);
 
@@ -19,7 +21,7 @@ public interface IMessageQueue<T> : IDisposable, IAsyncDisposable
 
     T Dequeue();
 
-    bool TryDequeue(out T message);
+    bool TryDequeue([MaybeNullWhen(false)] out T message);
 
     IObservable<T> AsObservable();
 

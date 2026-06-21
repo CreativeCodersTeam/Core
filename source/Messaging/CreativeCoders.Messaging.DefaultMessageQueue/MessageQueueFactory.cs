@@ -7,6 +7,7 @@ namespace CreativeCoders.Messaging.DefaultMessageQueue;
 public class MessageQueueFactory : IMessageQueueFactory
 {
     public IMessageQueue<T> Create<T>(int maxQueueLength)
+        where T : notnull
     {
         return MessageQueue<T>.Create(maxQueueLength);
     }

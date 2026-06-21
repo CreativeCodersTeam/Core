@@ -14,6 +14,7 @@ internal class MediatorRegistrations
         new ConcurrentDictionary<Type, IList<IMediatorRegistration>>();
 
     public IDisposable RegisterHandler<TMessage>(object target, Action<TMessage> action)
+        where TMessage : notnull
     {
         return RegisterAsyncHandler<TMessage>(target, message =>
         {
@@ -23,6 +24,7 @@ internal class MediatorRegistrations
     }
 
     public IDisposable RegisterAsyncHandler<TMessage>(object target, Func<TMessage, Task> asyncAction)
+        where TMessage : notnull
     {
         var registration = new AsyncMediatorRegistration<TMessage>(target, asyncAction);
 
@@ -40,6 +42,7 @@ internal class MediatorRegistrations
     }
 
     private IList<IMediatorRegistration> GetRegistrationList<TMessage>()
+        where TMessage : notnull
     {
         var typeRegistrations =
             _registrations.GetOrAdd(typeof(TMessage), _ => new ConcurrentList<IMediatorRegistration>());
@@ -49,6 +52,7 @@ internal class MediatorRegistrations
     }
 
     public IEnumerable<IMediatorRegistration> GetRegistrationsForMessage<TMessage>()
+        where TMessage : notnull
     {
         return GetRegistrationList<TMessage>();
     }
@@ -62,6 +66,7 @@ internal class MediatorRegistrations
     }
 
     public void UnregisterHandler<TMessage>(object target)
+        where TMessage : notnull
     {
         var typeRegistrations = GetRegistrationList<TMessage>();
 

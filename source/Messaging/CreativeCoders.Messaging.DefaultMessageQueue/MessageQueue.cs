@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -7,6 +8,7 @@ using CreativeCoders.Messaging.Core;
 namespace CreativeCoders.Messaging.DefaultMessageQueue;
 
 public sealed class MessageQueue<T> : IMessageQueue<T>
+    where T : notnull
 {
     private readonly BufferBlock<T> _bufferBlock;
 
@@ -76,7 +78,7 @@ public sealed class MessageQueue<T> : IMessageQueue<T>
         return _bufferBlock.Receive();
     }
 
-    public bool TryDequeue(out T message)
+    public bool TryDequeue([MaybeNullWhen(false)] out T message)
     {
         return _bufferBlock.TryReceive(out message);
     }
