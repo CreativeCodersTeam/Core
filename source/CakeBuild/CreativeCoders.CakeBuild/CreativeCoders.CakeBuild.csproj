@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="Cake.Frosting"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" VersionOverride="10.0.9" />
         <PackageReference Include="MimeMapping"/>
         <PackageReference Include="Octokit"/>
     </ItemGroup>
