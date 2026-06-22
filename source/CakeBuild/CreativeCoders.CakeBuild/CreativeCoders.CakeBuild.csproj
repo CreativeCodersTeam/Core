@@ -10,6 +10,7 @@
         <PackageReference Include="Cake.Frosting"/>
         <PackageReference Include="MimeMapping"/>
         <PackageReference Include="Octokit"/>
+        <PackageReference Include="Spectre.Console" VersionOverride="0.57.0" />
     </ItemGroup>
 
     <ItemGroup>
