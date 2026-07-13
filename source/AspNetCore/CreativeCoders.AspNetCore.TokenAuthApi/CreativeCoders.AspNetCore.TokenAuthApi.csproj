@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" />
         <ProjectReference Include="..\..\Core\CreativeCoders.Core\CreativeCoders.Core.csproj"/>
     </ItemGroup>
 
