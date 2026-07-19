@@ -53,7 +53,6 @@ public sealed class AcquireWriterLock : IDisposable
     public void Dispose()
     {
         Dispose(true);
-        GC.SuppressFinalize(this);
     }
 
     /// <summary>
@@ -62,7 +61,7 @@ public sealed class AcquireWriterLock : IDisposable
     /// <param name="disposing">
     ///     <see langword="true"/> to release managed resources; otherwise, <see langword="false"/>.
     /// </param>
-    protected void Dispose(bool disposing)
+    private void Dispose(bool disposing)
     {
         if (!_disposed && disposing)
         {
