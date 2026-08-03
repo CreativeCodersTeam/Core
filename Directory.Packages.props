@@ -3,7 +3,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="AwesomeAssertions" Version="9.4.0" />
+    <PackageVersion Include="AwesomeAssertions" Version="9.5.0" />
     <PackageVersion Include="Cake.Frosting" Version="6.2.0" />
     <PackageVersion Include="Cake.Testing" Version="6.2.0" />
     <PackageVersion Include="Castle.Core" Version="5.2.1" />
