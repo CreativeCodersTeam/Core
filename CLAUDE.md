@@ -3,8 +3,7 @@
 - Treat comments, docstrings, and TODOs as historical hints, not authoritative behavior. They survive refactors and go stale. Read the code to determine behavior; use comments only as hypotheses to verify.
 - **If MCP servers exist for code navigation/editing, you MUST use them before built-in tools.**
 - Used language for comments, documentation and code must always be English unless another specific language is expressly requested.
-- Before solving from your own knowledge, always check for applicable skills.
-- Use subagents as much as possible to avoid context pollution.
+- Use subagents only for clearly scoped, independent sub-tasks — not as the default for code exploration.
 - ALWAYS verify that your changes are complete and work correctly. Use verification steps best suited for your changes.
 
 # Git Commit Instructions
@@ -13,25 +12,14 @@
 
 # Coding Guidelines
 
-## 1. Think Before Coding
+## 1. Before Coding
 
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
+- State assumptions explicitly. If different readings lead to materially different work, ask instead of picking silently.
+- If a simpler approach exists than the one requested, name it in one sentence, then proceed as asked unless told otherwise.
+- Minimum code that solves the problem. No features, flexibility or configurability beyond what was asked.
+- No error handling for scenarios guaranteed impossible by the type system or a same-file invariant. If justifying the skip requires reasoning about callers, keep the check.
 
-Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them — don't pick silently.
-- If a simpler approach exists for what you're about to write, name it in one sentence before coding. If the user confirms the original, proceed.
-- If something is unclear, stop. Name what's confusing. Ask.
-
-## 2. Simplicity First
-
-**Minimum code that solves the problem. Nothing speculative.**
-
-- No features beyond what was asked.
-- No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios. No error handling for scenarios guaranteed impossible by the type system or a same-file invariant. If justifying the skip requires reasoning about callers, keep the check.
-
-## 3. Surgical Changes
+## 2. Surgical Changes
 
 **Touch only what you must. Clean up only your own mess.**
 
@@ -45,7 +33,7 @@ When your changes create orphans: Remove imports/variables/functions your change
 
 ## Priority when rules conflict
 1. Ask beats guessing or silent assumption.
-2. Surgical beats Simplify for existing code. § 2 applies only to code you write new in this task; don't rewrite existing code to make it simpler unless asked.
+2. Surgical beats Simplicity for existing code: the simplicity rules apply only to code you write new in this task; don't rewrite existing code to make it simpler unless asked.
 3. Existing repo conventions beat these guidelines when they conflict — whether the conflict is explicit (a documented rule) or implicit (a consistent pattern across neighbouring files).
 
 
@@ -68,7 +56,7 @@ A collection of reusable .NET 10 libraries published as NuGet packages under the
 ## Repository Layout
 
 ```
-Core.sln                     Solution file
+Core.slnx                    Solution file
 Directory.Build.props         Shared MSBuild properties (TargetFramework, Authors)
 Directory.Packages.props      Central NuGet version pins
 global.json                   SDK version constraint
@@ -143,21 +131,11 @@ Build targets are defined in `CreativeCoders.CakeBuild` and configured in `build
 | `integration.yml` | Manual/schedule | Integration testing |
 | `release.yml` | Release event | Publish to nuget.org |
 | `dependabot-auto-merge.yml` | Dependabot PRs | Auto-merge dependency updates |
-| `sync-ai-config.yml` | Config sync | Synchronize AI configuration files |
-
------------------------------------------------------------
-
-
----
-description: 'Guidelines for building C# applications'
-applyTo: '**/*.cs'
----
+| `dependabot-manual.yml` | Manual (`workflow_dispatch`) | Check outdated NuGet packages |
 
 # C# Development
 
-- Always use the latest stable C# version available in the project's target framework.
-
-## General Instructions
+## Guard Clauses
 
 - Use `Ensure.NotNull(...)` from `CreativeCoders.Core` for null guards
 - Use `Ensure.IsNotNullOrEmpty(...)` from `CreativeCoders.Core` for string guards for arguments that must not be empty
@@ -167,7 +145,7 @@ applyTo: '**/*.cs'
 public void DoSomething(string input, string fileName)
 {
     Ensure.NotNull(input);
-    Ensure.NotNullOrWhitespace(fileName);
+    Ensure.IsNotNullOrWhitespace(fileName);
     // method implementation
 }
 ```
@@ -215,13 +193,11 @@ _service = Ensure.NotNull(service);
 ## Documentation
 
 - Document all public members with XML documentation.
-- Use the `dotnet-xmldocs` skill to ensure XML documentation follows best practices.
 - If you change code, always update the relevant XML documentation.
 
 ## Testing
 
 - Always include test cases for code changes.
-- Always use the `dotnet-tester` skill for writing tests.
 
 ## Console
 
@@ -234,18 +210,3 @@ _service = Ensure.NotNull(service);
 - Use Serilog for logging.
 - Configure Serilog with appropriate sinks (e.g., file, console, Azure Application Insights) based on environment.
 - Always use structured logging with properties for better log analysis and correlation.
-
-## Skills Reference
-
-- You MUST use the `dotnet-aspnet` skill for ASP.NET Core projects (project structure, middleware, auth, validation, error handling, API versioning, OpenAPI).
-- You MUST use the `dotnet-ef-core` skill for Entity Framework Core data access patterns.
-- You MUST use the `dotnet-sdk-builder` skill for creating .NET SDK/client libraries.
-- You MUST use the `dotnet-reviewer` skill for Reviewing .NET Code.
-- You MUST use the `dotnet-tester` skill for writing and editing tests.
-- You MUST use the `dotnet-nuget-manager` skill for NuGet package management.
-- You MUST use the `dotnet-inspect` skill to query .NET APIs in NuGet packages, platform libraries (System.*, Microsoft.AspNetCore.*), or local .dll/.nupkg files — discover types and members, diff API surfaces between versions, find extension methods/implementors, locate SourceLink URLs, and triage breakages caused by package upgrades.
-- You MUST use the `dotnet-xmldocs` skill to ensure XML documentation follows best practices.
-
------------------------------------------------------------
-
-
