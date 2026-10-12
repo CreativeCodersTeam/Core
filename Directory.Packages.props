@@ -50,7 +50,7 @@
     <PackageVersion Include="System.IO.Ports" Version="10.0.12" />
     <PackageVersion Include="System.Reactive" Version="7.0.0" />
     <PackageVersion Include="xunit" Version="2.9.3" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
     <PackageVersion Include="XunitXml.TestLogger" Version="8.0.0" />
     <PackageVersion Include="YamlDotNet" Version="18.1.0" />
   </ItemGroup>
